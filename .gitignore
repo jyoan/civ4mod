@@ -1,0 +1,10 @@
+# Build intermediates (CvGameCoreDLL\Makefile)
+/CvGameCoreDLL/Release/
+
+# Output directories and files if CvGameCoreDLL.vcproj is opened in Visual Studio
+/CvGameCoreDLL/Debug/
+/CvGameCoreDLL/Final Release/
+/CvGameCoreDLL/Final Debug/
+*.ncb
+*.suo
+*.user
