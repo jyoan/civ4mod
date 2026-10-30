@@ -35,6 +35,22 @@ build.bat clean      CvGameCoreDLL\Release\ を削除
 - ビルド対象外: `CvTextScreens.cpp`（vcproj 未登録）、`CvGameCoreDLL.rc`（MFC の afxres.h が必要。中身はバージョン情報のみ）
 - `CYBERFRONT` と `FINAL_RELEASE` の定義は外さない（日本語版 exe に合わせた構成）
 
+## ゲーム本体と Mod の配置先
+
+以下、`<CIV4>` = `C:\Program Files (x86)\CYBERFRONT\Sid Meier's Civilization 4(J)`、`<BTS>` = `<CIV4>\Beyond the Sword(J)`。
+
+| パス | 内容 |
+|---|---|
+| `<BTS>\Assets\XML\`、`<BTS>\Assets\Python\` | BtS の元ファイル。Mod で変更するときはここからコピーする |
+| `<CIV4>\Assets\` | 無印 Civ4(J) の元ファイル。BtS に無いもの（テキスト XML の多くなど）はこちらにある。探す順は `<BTS>` → `<CIV4>` |
+| `<BTS>\Assets\CvGameCoreDLL.dll` | 製品版 DLL。**上書きしない** |
+| `<BTS>\CvGameCoreDLL\` | インストール済みの SDK。リポジトリの `2b1bf36` と同一 |
+| `<BTS>\Mods\claude_sample\` | **Mod の配置先**（普通のフォルダ。ジャンクションではない） |
+
+- `Mods\claude_sample\` には `claude_sample.ini`（Mod 設定。`ModularLoading = 0`）と `Assets\CvGameCoreDLL.dll` がある。ini はリポジトリには入っていない
+- build.bat がコピーするのはリポジトリの `Assets\` まで。ゲームで試すには `Assets\` の中身を `Mods\claude_sample\Assets\` にコピーする（現状は手動）
+- `Mods\` は Users に書き込み権限があるので、管理者権限なしでコピーできる（VirtualStore へのリダイレクトも起きない）
+
 ## ツールチェーン（MSVC 7.1 固定）
 
 Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows Kits のヘッダ・ライブラリは使わない**。
@@ -81,13 +97,15 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 5. Python から使うなら `CyInfoInterface*.cpp` で公開する
 
 - XML 内のタグの順序は Schema の順序に合わせる
-- Mod の XML は本体の同名ファイルを丸ごと置き換える。本体の `Beyond the Sword(J)\Assets\XML\...` から同じ相対パスで `Assets\XML\...` にコピーしてから編集する（Schema も同様）
-- テキスト XML は元ファイルの文字コードと encoding 宣言を維持する
+- Mod の XML は本体の同名ファイルを丸ごと置き換える（`ModularLoading = 0` のため）。`<BTS>\Assets\XML\...`（無ければ `<CIV4>\Assets\XML\...`）から同じ相対パスで `Assets\XML\...` にコピーしてから編集する（Schema も同様）
+- 元の XML はすべて ASCII・CRLF。Mod 側も ASCII・CRLF を保つ
+- テキスト XML（`XML\Text\`）は `encoding="ISO-8859-1"` 宣言の ASCII ファイル。日本語は `<Japanese><Text>` の中に **10 進の数値文字参照**で書く（例: 「戦士」→ `&#25126;&#22763;`）。他の言語タグ（`<English>` など）も元ファイルに倣って残す
 
 ## Python（2.4）
 
 - Python 2.4 の構文だけを使う。`with` 文、条件式（`a if c else b`）、`except E as e`、`str.format` は使えない
-- `Assets\Python\` に置いたファイルは本体の同名ファイルを置き換える。本体からコピーしてから編集する
+- `Assets\Python\` に置いたファイルは本体の同名ファイルを置き換える。`<BTS>\Assets\Python\` から同じ相対パス（`EntryPoints\`、`Screens\` など）でコピーしてから編集する
+- 元の Python はすべて ASCII・CRLF。日本語を書く必要があるなら、ファイル先頭に coding 宣言を入れる
 - DLL の機能を Python に公開するには `Cy*.cpp` と `Cy*Interface*.cpp`（boost::python）に追加する
 
 ## git
@@ -98,4 +116,5 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 
 ## 動作確認の記録
 
-- 2026-10-31: 無改造でビルドした DLL を Mod として読み込み、ゲームが起動することを確認
+- 2026-10-31: 無改造でビルドした DLL を `Mods\claude_sample` として読み込み、ゲームが起動することを確認
+- 2026-10-31: 製品版 DLL と比較。依存 DLL 7 つ・エクスポート 2432 個（名前も完全一致）・リンカ 7.10・LargeAddressAware が同じ。サイズ差 8,192 バイトはバージョン情報（`.rc`、製品版は 3.1.7.0）が無い分と考えられる
