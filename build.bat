@@ -1,13 +1,19 @@
 @echo off
-rem Build CvGameCoreDLL.dll with MSVC 7.1 and install it as Assets\CvGameCoreDLL.dll
+rem Build CvGameCoreDLL.dll with MSVC 7.1, install it as Assets\CvGameCoreDLL.dll,
+rem then deploy the mod (claude_sample.ini + Assets\) to the Civ4 Mods folder.
 rem
-rem   build.bat           incremental Release build, then copy to Assets\
-rem   build.bat rebuild   clean + full Release build, then copy to Assets\
+rem   build.bat           incremental Release build, then deploy
+rem   build.bat rebuild   clean + full Release build, then deploy
 rem   build.bat clean     delete CvGameCoreDLL\Release\
+rem
+rem Mods\claude_sample\Assets\ is mirrored from Assets\: files that are not in
+rem Assets\ are deleted there. Edit files in this repository, not in Mods\.
 
 setlocal
 set "TOOLKIT=C:\Program Files (x86)\Microsoft Visual C++ Toolkit 2003"
 set "PSDK=C:\Program Files\Microsoft Platform SDK"
+set "BTS=C:\Program Files (x86)\CYBERFRONT\Sid Meier's Civilization 4(J)\Beyond the Sword(J)"
+set "MODNAME=claude_sample"
 
 rem Only the 2003-era toolchain may be visible. A newer cl.exe / link.exe on PATH,
 rem or newer headers / libs in INCLUDE / LIB, would produce a DLL Civ4 cannot use.
@@ -18,6 +24,7 @@ set "LIB="
 set "SRCDIR=%~dp0CvGameCoreDLL"
 set "DLL=%SRCDIR%\Release\CvGameCoreDLL.dll"
 set "ASSETS=%~dp0Assets"
+set "MODDIR=%BTS%\Mods\%MODNAME%"
 
 cd /d "%SRCDIR%" || goto fail
 
@@ -44,6 +51,24 @@ if not exist "%ASSETS%" mkdir "%ASSETS%"
 copy /y "%DLL%" "%ASSETS%\CvGameCoreDLL.dll" >nul || goto fail
 echo.
 echo Build succeeded: %ASSETS%\CvGameCoreDLL.dll
+
+if not exist "%BTS%\Mods" goto nodeploy
+rem /R:2 /W:1 fails fast instead of retrying for a long time while Civ4 holds the DLL open.
+robocopy "%ASSETS%" "%MODDIR%\Assets" /MIR /R:2 /W:1 /NJH /NJS /NP /NDL
+if errorlevel 8 goto deployfail
+copy /y "%~dp0%MODNAME%.ini" "%MODDIR%\%MODNAME%.ini" >nul || goto deployfail
+echo Deployed to:     %MODDIR%
+goto done
+
+:nodeploy
+echo WARNING: Civ4 Mods folder not found; skipped deploy
+goto done
+
+:deployfail
+echo.
+echo DEPLOY FAILED: could not update the Mods folder. Quit Civ4 and run build.bat again.
+endlocal
+exit /b 1
 
 :done
 endlocal

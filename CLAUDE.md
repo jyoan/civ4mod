@@ -9,7 +9,8 @@ Civilization IV: Beyond the Sword 日本語版（CyberFront 版）向けの Mod�
 |---|---|
 | `CvGameCoreDLL/` | 公式 SDK ソース（日本語版、`CYBERFRONT` 定義）。`Boost-1.32.0/` と `Python24/` 同梱 |
 | `CvGameCoreDLL/Makefile` | nmake 用。`CvGameCoreDLL.vcproj` の **Final Release**（製品版 DLL と同じ構成）を再現 |
-| `build.bat` | ビルドの入口 |
+| `build.bat` | ビルドと Mod フォルダへの配置の入口 |
+| `claude_sample.ini` | Mod 設定（`ModularLoading = 0` など）。配置時に Mod フォルダへコピーされる |
 | `Assets/` | Mod 本体。`CvGameCoreDLL.dll`（ビルド成果物、git 管理）。今後 `XML/`・`Python/` を追加 |
 
 `CvGameCoreDLL.vcproj` は設定の参照用。新しい Visual Studio で開くと別のコンパイラ用に変換されるので開かない。
@@ -17,12 +18,13 @@ Civilization IV: Beyond the Sword 日本語版（CyberFront 版）向けの Mod�
 ## ビルド
 
 ```
-build.bat            差分ビルド → Assets\CvGameCoreDLL.dll にコピー
-build.bat rebuild    クリーン後に全ビルド
-build.bat clean      CvGameCoreDLL\Release\ を削除
+build.bat            差分ビルド → Assets\CvGameCoreDLL.dll にコピー → Mod フォルダへ配置
+build.bat rebuild    クリーン後に全ビルド → 配置
+build.bat clean      CvGameCoreDLL\Release\ を削除（配置はしない）
 ```
 
-- 出力: `CvGameCoreDLL\Release\CvGameCoreDLL.dll`（と `.pdb`）。成功時に `Assets\CvGameCoreDLL.dll` へコピー
+- 出力: `CvGameCoreDLL\Release\CvGameCoreDLL.dll`（と `.pdb`）。成功時に `Assets\CvGameCoreDLL.dll` へコピーし、続けて `<BTS>\Mods\claude_sample\` へ配置する
+- XML / Python だけを変えたときも `build.bat` を実行すればよい（DLL は 0 秒で終わり、配置だけが行われる）
 - Claude のツールから実行するときはフルパスで:
   - Bash: `cmd //c 'C:\claudeCode\civ4mod\build.bat'`（相対パスだと cmd が見つけられない）
   - PowerShell: `& 'C:\claudeCode\civ4mod\build.bat'`
@@ -47,9 +49,15 @@ build.bat clean      CvGameCoreDLL\Release\ を削除
 | `<BTS>\CvGameCoreDLL\` | インストール済みの SDK。リポジトリの `2b1bf36` と同一 |
 | `<BTS>\Mods\claude_sample\` | **Mod の配置先**（普通のフォルダ。ジャンクションではない） |
 
-- `Mods\claude_sample\` には `claude_sample.ini`（Mod 設定。`ModularLoading = 0`）と `Assets\CvGameCoreDLL.dll` がある。ini はリポジトリには入っていない
-- build.bat がコピーするのはリポジトリの `Assets\` まで。ゲームで試すには `Assets\` の中身を `Mods\claude_sample\Assets\` にコピーする（現状は手動）
-- `Mods\` は Users に書き込み権限があるので、管理者権限なしでコピーできる（VirtualStore へのリダイレクトも起きない）
+配置（build.bat が自動で行う）:
+
+- `Assets\` → `Mods\claude_sample\Assets\` を robocopy `/MIR` で**ミラー同期**する。リポジトリから消したファイルは Mod 側からも消える（`*EXTRA File` と表示される）
+- `claude_sample.ini` → `Mods\claude_sample\claude_sample.ini` を上書きコピーする。Mod フォルダ直下のその他のファイル（`claude_sample.ini.bak` など）には触れない
+- **Mod フォルダ側で直接編集しない**。編集はすべてリポジトリで行う（Mod 側の `Assets\` の変更は次の配置で消える）
+- Civ4 の起動中は DLL がロックされて `DEPLOY FAILED` になる。ゲームを終了して再実行する
+- `<BTS>\Mods` が無い環境では警告を出して配置をスキップする（ビルドは成功扱い）
+- ゲーム本体のパスと Mod 名は `build.bat` の `BTS` / `MODNAME` で定義している
+- `Mods\` は Users に書き込み権限があるので、管理者権限なしで配置できる（VirtualStore へのリダイレクトも起きない）
 
 ## ツールチェーン（MSVC 7.1 固定）
 
