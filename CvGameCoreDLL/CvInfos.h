@@ -4152,6 +4152,16 @@ public:
 	int getMaxTeamBuildingProductionModifier() const;				// Exposed to Python
 	int getMaxPlayerBuildingProductionModifier() const;				// Exposed to Python
 	int getWorkerSpeedModifier() const;				// Exposed to Python
+	// Player-wide modifiers that civics also have (applied once in CvPlayer::init)
+	int getFreeExperience() const;				// Exposed to Python
+	int getMilitaryProductionModifier() const;				// Exposed to Python
+	int getImprovementUpgradeRateModifier() const;				// Exposed to Python
+	int getDistanceMaintenanceModifier() const;				// Exposed to Python
+	int getNumCitiesMaintenanceModifier() const;				// Exposed to Python
+	int getWarWearinessModifier() const;				// Exposed to Python
+	int getFreeSpecialist() const;				// Exposed to Python
+	int getTradeRoutes() const;				// Exposed to Python
+	int getExpInBorderModifier() const;				// Exposed to Python
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -4162,6 +4172,14 @@ public:
 	int getTradeYieldModifier(int i) const;				// Exposed to Python
 	int getCommerceChange(int i) const;				// Exposed to Python
 	int getCommerceModifier(int i) const;				// Exposed to Python
+	int getYieldModifier(int i) const;				// Exposed to Python
+	int* getYieldModifierArray() const;
+	int getCapitalYieldModifier(int i) const;				// Exposed to Python
+	int* getCapitalYieldModifierArray() const;
+	int getCapitalCommerceModifier(int i) const;				// Exposed to Python
+	int* getCapitalCommerceModifierArray() const;
+	int getSpecialistExtraCommerce(int i) const;				// Exposed to Python
+	int* getSpecialistExtraCommerceArray() const;
 
 	int isFreePromotion(int i) const;				// Exposed to Python
 	int isFreePromotionUnitCombat(int i) const;			
@@ -4189,6 +4207,15 @@ protected:
 	int m_iMaxTeamBuildingProductionModifier;		
 	int m_iMaxPlayerBuildingProductionModifier;	
 	int m_iWorkerSpeedModifier;
+	int m_iFreeExperience;
+	int m_iMilitaryProductionModifier;
+	int m_iImprovementUpgradeRateModifier;
+	int m_iDistanceMaintenanceModifier;
+	int m_iNumCitiesMaintenanceModifier;
+	int m_iWarWearinessModifier;
+	int m_iFreeSpecialist;
+	int m_iTradeRoutes;
+	int m_iExpInBorderModifier;
 
 	CvString m_szShortDescription;
 
@@ -4198,6 +4225,10 @@ protected:
 	int* m_paiTradeYieldModifier;
 	int* m_paiCommerceChange;
 	int* m_paiCommerceModifier;
+	int* m_paiYieldModifier;
+	int* m_paiCapitalYieldModifier;
+	int* m_paiCapitalCommerceModifier;
+	int* m_paiSpecialistExtraCommerce;
 
 	bool* m_pabFreePromotion;
 	bool* m_pabFreePromotionUnitCombat;

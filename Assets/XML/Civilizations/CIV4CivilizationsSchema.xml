@@ -332,6 +332,27 @@
 		<element type="FreePromotionSet" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="iWorkerSpeedModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iFreeExperience" content="textOnly" dt:type="int"/>
+	<ElementType name="iMilitaryProductionModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iImprovementUpgradeRateModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iDistanceMaintenanceModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iNumCitiesMaintenanceModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iWarWearinessModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iFreeSpecialist" content="textOnly" dt:type="int"/>
+	<ElementType name="iTradeRoutes" content="textOnly" dt:type="int"/>
+	<ElementType name="iExpInBorderModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="YieldModifiers" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="CapitalYieldModifiers" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="CapitalCommerceModifiers" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="SpecialistExtraCommerces" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="TraitInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -349,10 +370,23 @@
 		<element type="iMaxTeamBuildingProductionModifier"/>
 		<element type="iMaxPlayerBuildingProductionModifier"/>
 		<element type="iWorkerSpeedModifier" minOccurs="0"/>
+		<element type="iFreeExperience" minOccurs="0"/>
+		<element type="iMilitaryProductionModifier" minOccurs="0"/>
+		<element type="iImprovementUpgradeRateModifier" minOccurs="0"/>
+		<element type="iDistanceMaintenanceModifier" minOccurs="0"/>
+		<element type="iNumCitiesMaintenanceModifier" minOccurs="0"/>
+		<element type="iWarWearinessModifier" minOccurs="0"/>
+		<element type="iFreeSpecialist" minOccurs="0"/>
+		<element type="iTradeRoutes" minOccurs="0"/>
+		<element type="iExpInBorderModifier" minOccurs="0"/>
 		<element type="ExtraYieldThresholds"/>
 		<element type="TradeYieldModifiers"/>
 		<element type="CommerceChanges"/>
 		<element type="CommerceModifiers"/>
+		<element type="YieldModifiers" minOccurs="0"/>
+		<element type="CapitalYieldModifiers" minOccurs="0"/>
+		<element type="CapitalCommerceModifiers" minOccurs="0"/>
+		<element type="SpecialistExtraCommerces" minOccurs="0"/>
 		<element type="FreePromotions"/>
 		<element type="FreePromotionUnitCombats"/>
 		<element type="FreePromotionSets" minOccurs="0"/>

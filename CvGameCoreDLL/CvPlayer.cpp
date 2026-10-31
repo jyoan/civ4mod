@@ -229,16 +229,29 @@ void CvPlayer::init(PlayerTypes eID)
 				changeMaxPlayerBuildingProductionModifier(GC.getTraitInfo((TraitTypes)iI).getMaxPlayerBuildingProductionModifier());
 
 				changeWorkerSpeedModifier(GC.getTraitInfo((TraitTypes)iI).getWorkerSpeedModifier());
+				changeFreeExperience(GC.getTraitInfo((TraitTypes)iI).getFreeExperience());
+				changeMilitaryProductionModifier(GC.getTraitInfo((TraitTypes)iI).getMilitaryProductionModifier());
+				changeImprovementUpgradeRateModifier(GC.getTraitInfo((TraitTypes)iI).getImprovementUpgradeRateModifier());
+				changeDistanceMaintenanceModifier(GC.getTraitInfo((TraitTypes)iI).getDistanceMaintenanceModifier());
+				changeNumCitiesMaintenanceModifier(GC.getTraitInfo((TraitTypes)iI).getNumCitiesMaintenanceModifier());
+				changeWarWearinessModifier(GC.getTraitInfo((TraitTypes)iI).getWarWearinessModifier());
+				changeFreeSpecialist(GC.getTraitInfo((TraitTypes)iI).getFreeSpecialist());
+				changeTradeRoutes(GC.getTraitInfo((TraitTypes)iI).getTradeRoutes());
+				changeExpInBorderModifier(GC.getTraitInfo((TraitTypes)iI).getExpInBorderModifier());
 
 				for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
 				{
 					changeTradeYieldModifier(((YieldTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getTradeYieldModifier(iJ));
+					changeYieldRateModifier(((YieldTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getYieldModifier(iJ));
+					changeCapitalYieldRateModifier(((YieldTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getCapitalYieldModifier(iJ));
 				}
 
 				for (iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)
 				{
 					changeFreeCityCommerce(((CommerceTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getCommerceChange(iJ));
 					changeCommerceRateModifier(((CommerceTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getCommerceModifier(iJ));
+					changeCapitalCommerceRateModifier(((CommerceTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getCapitalCommerceModifier(iJ));
+					changeSpecialistExtraCommerce(((CommerceTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getSpecialistExtraCommerce(iJ));
 				}
 
 				for (iJ = 0; iJ < GC.getNumCivicOptionInfos(); iJ++)

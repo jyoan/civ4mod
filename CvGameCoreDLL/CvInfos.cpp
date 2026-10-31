@@ -15998,7 +15998,20 @@ m_iMaxGlobalBuildingProductionModifier(0),
 m_iMaxTeamBuildingProductionModifier(0),		
 m_iMaxPlayerBuildingProductionModifier(0),
 m_iWorkerSpeedModifier(0),
+m_iFreeExperience(0),
+m_iMilitaryProductionModifier(0),
+m_iImprovementUpgradeRateModifier(0),
+m_iDistanceMaintenanceModifier(0),
+m_iNumCitiesMaintenanceModifier(0),
+m_iWarWearinessModifier(0),
+m_iFreeSpecialist(0),
+m_iTradeRoutes(0),
+m_iExpInBorderModifier(0),
 m_paiExtraYieldThreshold(NULL),
+m_paiYieldModifier(NULL),
+m_paiCapitalYieldModifier(NULL),
+m_paiCapitalCommerceModifier(NULL),
+m_paiSpecialistExtraCommerce(NULL),
 m_paiTradeYieldModifier(NULL),
 m_paiCommerceChange(NULL),
 m_paiCommerceModifier(NULL),
@@ -16020,6 +16033,10 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_paiTradeYieldModifier);
 	SAFE_DELETE_ARRAY(m_paiCommerceChange);
 	SAFE_DELETE_ARRAY(m_paiCommerceModifier);
+	SAFE_DELETE_ARRAY(m_paiYieldModifier);
+	SAFE_DELETE_ARRAY(m_paiCapitalYieldModifier);
+	SAFE_DELETE_ARRAY(m_paiCapitalCommerceModifier);
+	SAFE_DELETE_ARRAY(m_paiSpecialistExtraCommerce);
 	SAFE_DELETE_ARRAY(m_pabFreePromotionUnitCombat);
 	SAFE_DELETE_ARRAY(m_pabFreePromotion);
 }
@@ -16084,6 +16101,51 @@ int CvTraitInfo::getWorkerSpeedModifier() const
 	return m_iWorkerSpeedModifier;
 }
 
+int CvTraitInfo::getFreeExperience() const
+{
+	return m_iFreeExperience;
+}
+
+int CvTraitInfo::getMilitaryProductionModifier() const
+{
+	return m_iMilitaryProductionModifier;
+}
+
+int CvTraitInfo::getImprovementUpgradeRateModifier() const
+{
+	return m_iImprovementUpgradeRateModifier;
+}
+
+int CvTraitInfo::getDistanceMaintenanceModifier() const
+{
+	return m_iDistanceMaintenanceModifier;
+}
+
+int CvTraitInfo::getNumCitiesMaintenanceModifier() const
+{
+	return m_iNumCitiesMaintenanceModifier;
+}
+
+int CvTraitInfo::getWarWearinessModifier() const
+{
+	return m_iWarWearinessModifier;
+}
+
+int CvTraitInfo::getFreeSpecialist() const
+{
+	return m_iFreeSpecialist;
+}
+
+int CvTraitInfo::getTradeRoutes() const
+{
+	return m_iTradeRoutes;
+}
+
+int CvTraitInfo::getExpInBorderModifier() const
+{
+	return m_iExpInBorderModifier;
+}
+
 const TCHAR* CvTraitInfo::getShortDescription() const
 {
 	return m_szShortDescription; 
@@ -16114,6 +16176,54 @@ int CvTraitInfo::getCommerceChange(int i) const
 int CvTraitInfo::getCommerceModifier(int i) const		
 {
 	return m_paiCommerceModifier ? m_paiCommerceModifier[i] : -1; 
+}
+
+int CvTraitInfo::getYieldModifier(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiYieldModifier ? m_paiYieldModifier[i] : 0;
+}
+
+int* CvTraitInfo::getYieldModifierArray() const
+{
+	return m_paiYieldModifier;
+}
+
+int CvTraitInfo::getCapitalYieldModifier(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiCapitalYieldModifier ? m_paiCapitalYieldModifier[i] : 0;
+}
+
+int* CvTraitInfo::getCapitalYieldModifierArray() const
+{
+	return m_paiCapitalYieldModifier;
+}
+
+int CvTraitInfo::getCapitalCommerceModifier(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiCapitalCommerceModifier ? m_paiCapitalCommerceModifier[i] : 0;
+}
+
+int* CvTraitInfo::getCapitalCommerceModifierArray() const
+{
+	return m_paiCapitalCommerceModifier;
+}
+
+int CvTraitInfo::getSpecialistExtraCommerce(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiSpecialistExtraCommerce ? m_paiSpecialistExtraCommerce[i] : 0;
+}
+
+int* CvTraitInfo::getSpecialistExtraCommerceArray() const
+{
+	return m_paiSpecialistExtraCommerce;
 }
 
 int CvTraitInfo::isFreePromotion(int i) const
@@ -16193,6 +16303,15 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iMaxTeamBuildingProductionModifier, "iMaxTeamBuildingProductionModifier");
 	pXML->GetChildXmlValByName(&m_iMaxPlayerBuildingProductionModifier, "iMaxPlayerBuildingProductionModifier");
 	pXML->GetChildXmlValByName(&m_iWorkerSpeedModifier, "iWorkerSpeedModifier");
+	pXML->GetChildXmlValByName(&m_iFreeExperience, "iFreeExperience");
+	pXML->GetChildXmlValByName(&m_iMilitaryProductionModifier, "iMilitaryProductionModifier");
+	pXML->GetChildXmlValByName(&m_iImprovementUpgradeRateModifier, "iImprovementUpgradeRateModifier");
+	pXML->GetChildXmlValByName(&m_iDistanceMaintenanceModifier, "iDistanceMaintenanceModifier");
+	pXML->GetChildXmlValByName(&m_iNumCitiesMaintenanceModifier, "iNumCitiesMaintenanceModifier");
+	pXML->GetChildXmlValByName(&m_iWarWearinessModifier, "iWarWearinessModifier");
+	pXML->GetChildXmlValByName(&m_iFreeSpecialist, "iFreeSpecialist");
+	pXML->GetChildXmlValByName(&m_iTradeRoutes, "iTradeRoutes");
+	pXML->GetChildXmlValByName(&m_iExpInBorderModifier, "iExpInBorderModifier");
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ExtraYieldThresholds"))
 	{
@@ -16232,6 +16351,46 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	else
 	{
 		pXML->InitList(&m_paiCommerceModifier, NUM_COMMERCE_TYPES);
+	}
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "YieldModifiers"))
+	{
+		pXML->SetYields(&m_paiYieldModifier);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_paiYieldModifier, NUM_YIELD_TYPES);
+	}
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CapitalYieldModifiers"))
+	{
+		pXML->SetYields(&m_paiCapitalYieldModifier);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_paiCapitalYieldModifier, NUM_YIELD_TYPES);
+	}
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CapitalCommerceModifiers"))
+	{
+		pXML->SetCommerce(&m_paiCapitalCommerceModifier);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_paiCapitalCommerceModifier, NUM_COMMERCE_TYPES);
+	}
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "SpecialistExtraCommerces"))
+	{
+		pXML->SetCommerce(&m_paiSpecialistExtraCommerce);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_paiSpecialistExtraCommerce, NUM_COMMERCE_TYPES);
 	}
 
 	pXML->SetVariableListTagPair(&m_pabFreePromotion, "FreePromotions", sizeof(GC.getPromotionInfo((PromotionTypes)0)), GC.getNumPromotionInfos());

@@ -304,10 +304,35 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<iFreeExperience>2</iFreeExperience>
+			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
+			<iImprovementUpgradeRateModifier>50</iImprovementUpgradeRateModifier>
+			<iDistanceMaintenanceModifier>-25</iDistanceMaintenanceModifier>
+			<iNumCitiesMaintenanceModifier>-25</iNumCitiesMaintenanceModifier>
+			<iWarWearinessModifier>-25</iWarWearinessModifier>
+			<iFreeSpecialist>1</iFreeSpecialist>
+			<iTradeRoutes>1</iTradeRoutes>
+			<iExpInBorderModifier>50</iExpInBorderModifier>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>
 			<CommerceModifiers/>
+			<YieldModifiers>
+				<iYield>0</iYield>
+				<iYield>10</iYield>
+			</YieldModifiers>
+			<CapitalYieldModifiers>
+				<iYield>0</iYield>
+				<iYield>25</iYield>
+			</CapitalYieldModifiers>
+			<CapitalCommerceModifiers>
+				<iCommerce>25</iCommerce>
+			</CapitalCommerceModifiers>
+			<SpecialistExtraCommerces>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>1</iCommerce>
+			</SpecialistExtraCommerces>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 			<FreePromotionSets>

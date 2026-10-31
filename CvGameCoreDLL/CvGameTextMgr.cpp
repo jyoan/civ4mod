@@ -3337,6 +3337,100 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_WORKER_SPEED_MODIFIER", GC.getTraitInfo(eTrait).getWorkerSpeedModifier()));
 		}
 
+		// Civic-like modifiers. The civic text keys start with [ICON_BULLET] and no newline,
+		// so the newline and the trait indent are added here.
+		if (GC.getTraitInfo(eTrait).getFreeExperience() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_FREE_XP", GC.getTraitInfo(eTrait).getFreeExperience()));
+		}
+
+		if (GC.getTraitInfo(eTrait).getMilitaryProductionModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_MILITARY_PRODUCTION", GC.getTraitInfo(eTrait).getMilitaryProductionModifier()));
+		}
+
+		if (GC.getTraitInfo(eTrait).getImprovementUpgradeRateModifier() != 0)
+		{
+			bool bFirstImprovement = true;
+			for (iI = 0; iI < GC.getNumImprovementInfos(); ++iI)
+			{
+				if (GC.getImprovementInfo((ImprovementTypes)iI).getImprovementUpgrade() != NO_IMPROVEMENT)
+				{
+					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_UPGRADE", GC.getTraitInfo(eTrait).getImprovementUpgradeRateModifier()).c_str());
+					szText.Format(L"<link=literal>%s</link>", GC.getImprovementInfo((ImprovementTypes)iI).getDescription());
+					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstImprovement);
+					bFirstImprovement = false;
+				}
+			}
+		}
+
+		if (GC.getTraitInfo(eTrait).getDistanceMaintenanceModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			if (GC.getTraitInfo(eTrait).getDistanceMaintenanceModifier() <= -100)
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_DISTANCE_MAINT"));
+			}
+			else
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_DISTANCE_MAINT_MOD", GC.getTraitInfo(eTrait).getDistanceMaintenanceModifier()));
+			}
+		}
+
+		if (GC.getTraitInfo(eTrait).getNumCitiesMaintenanceModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			if (GC.getTraitInfo(eTrait).getNumCitiesMaintenanceModifier() <= -100)
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_NO_MAINT_NUM_CITIES"));
+			}
+			else
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_NO_MAINT_NUM_CITIES_MOD", GC.getTraitInfo(eTrait).getNumCitiesMaintenanceModifier()));
+			}
+		}
+
+		if (GC.getTraitInfo(eTrait).getWarWearinessModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			if (GC.getTraitInfo(eTrait).getWarWearinessModifier() <= -100)
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_NO_WAR_WEARINESS"));
+			}
+			else
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_EXTRA_WAR_WEARINESS", GC.getTraitInfo(eTrait).getWarWearinessModifier()));
+			}
+		}
+
+		if (GC.getTraitInfo(eTrait).getFreeSpecialist() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_FREE_SPECIALISTS", GC.getTraitInfo(eTrait).getFreeSpecialist()));
+		}
+
+		if (GC.getTraitInfo(eTrait).getTradeRoutes() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_TRADE_ROUTES", GC.getTraitInfo(eTrait).getTradeRoutes()));
+		}
+
+		if (GC.getTraitInfo(eTrait).getExpInBorderModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_EXPERIENCE_IN_BORDERS", GC.getTraitInfo(eTrait).getExpInBorderModifier()));
+		}
+
+		// Yield / commerce modifiers: bNewLine=false and the newline, indent and bullet passed as szStart,
+		// so nothing is written when all values are zero
+		szTempBuffer.Format(L"%s  %c", NEWLINE, gDLL->getSymbolID(BULLET_CHAR));
+		setYieldChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_IN_ALL_CITIES"), GC.getTraitInfo(eTrait).getYieldModifierArray(), true, false);
+		setYieldChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_IN_CAPITAL"), GC.getTraitInfo(eTrait).getCapitalYieldModifierArray(), true, false);
+		setCommerceChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_IN_CAPITAL"), GC.getTraitInfo(eTrait).getCapitalCommerceModifierArray(), true, false);
+		setCommerceChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_PER_SPECIALIST"), GC.getTraitInfo(eTrait).getSpecialistExtraCommerceArray(), false, false);
+
 		// Wonder Production Effects
 		if ((GC.getTraitInfo(eTrait).getMaxGlobalBuildingProductionModifier() != 0)
 			|| (GC.getTraitInfo(eTrait).getMaxTeamBuildingProductionModifier() != 0)
