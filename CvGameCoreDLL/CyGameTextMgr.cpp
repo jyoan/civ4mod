@@ -194,6 +194,16 @@ std::wstring CyGameTextMgr::parseLeaderTraits(int /*LeaderHeadTypes*/ iLeader, i
 	return szBuffer.getCString();
 }
 
+std::wstring CyGameTextMgr::parseTraits(int /*TraitTypes*/ iTrait, int /*CivilizationTypes*/ iCivilization, bool bDawnOfMan)
+{
+	CvWStringBuffer szBuffer;
+	if (iTrait > -1 && iTrait < GC.getNumTraitInfos())
+	{
+		GAMETEXT.parseTraits(szBuffer, (TraitTypes)iTrait, (CivilizationTypes) iCivilization, bDawnOfMan);
+	}
+	return szBuffer.getCString();
+}
+
 std::wstring CyGameTextMgr::getTradeString(TradeData* pTradeData, int iPlayer1, int iPlayer2)
 {
 	CvWStringBuffer szBuffer;

@@ -3266,7 +3266,8 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 	}
 	else
 	{
-		szTempBuffer.Format(NEWLINE SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_ALT_HIGHLIGHT_TEXT"), szText.GetCString());
+		// The name links to the trait's Civilopedia page
+		szTempBuffer.Format(NEWLINE SETCOLR L"<link=literal>%s</link>" ENDCOLR, TEXT_COLOR("COLOR_ALT_HIGHLIGHT_TEXT"), szText.GetCString());
 	}
 	szHelpString.append(szTempBuffer);
 
@@ -3898,8 +3899,8 @@ void CvGameTextMgr::parseCivInfos(CvWStringBuffer &szInfoText, CivilizationTypes
 						szInfoText.append(szBuffer);
 						bFound = true;
 					}
-					// No link: the Civilopedia has no trait pages
-					szBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), GC.getTraitInfo((TraitTypes)iTrait).getDescription());
+					szText.Format((bLinks ? L"<link=literal>%s</link>" : L"%s"), GC.getTraitInfo((TraitTypes)iTrait).getDescription());
+					szBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), szText.GetCString());
 					szInfoText.append(szBuffer);
 				}
 			}

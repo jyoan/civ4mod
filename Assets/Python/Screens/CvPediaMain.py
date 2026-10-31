@@ -23,6 +23,7 @@ import CvPediaHistory
 import CvPediaProject
 import CvPediaReligion
 import CvPediaCorporation
+import CvPediaTrait
 
 # globals
 gc = CyGlobalContext()
@@ -101,6 +102,7 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 		self.pediaReligion = CvPediaReligion.CvPediaReligion(self)
 		self.pediaCorporation = CvPediaCorporation.CvPediaCorporation(self)
 		self.pediaHistorical = CvPediaHistory.CvPediaHistory(self)
+		self.pediaTrait = CvPediaTrait.CvPediaTrait(self)
 				
 		# used for navigating "forward" and "back" in civilopedia
 		self.pediaHistory = []
@@ -134,6 +136,7 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 			CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT	: self.placeConcepts,
 			CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT_NEW	: self.placeNewConcepts,
 			CivilopediaPageTypes.CIVILOPEDIA_PAGE_HINTS	: self.placeHints,
+			CivilopediaPageTypes.CIVILOPEDIA_PAGE_TRAIT	: self.placeTraits,
 			}
 		
 	def getScreen(self):
@@ -165,6 +168,7 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 		self.szCategoryConcept = localText.getText("TXT_KEY_PEDIA_CATEGORY_CONCEPT", ())
 		self.szCategoryConceptNew = localText.getText("TXT_KEY_PEDIA_CATEGORY_CONCEPT_NEW", ())
 		self.szCategoryHints = localText.getText("TXT_KEY_PEDIA_CATEGORY_HINTS", ())
+		self.szCategoryTrait = localText.getText("TXT_KEY_PEDIA_CATEGORY_TRAIT", ())
 		
 		self.listCategories = [ self.szCategoryTech, 
 								self.szCategoryUnit, 
@@ -186,6 +190,8 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 								self.szCategoryConcept,
 								self.szCategoryConceptNew,
 								self.szCategoryHints]
+		# Added by this mod. The list index must equal the CivilopediaPageTypes value, so it goes last
+		self.listCategories.append(self.szCategoryTrait)
 								
 		# Create a new screen
 		screen = self.getScreen()
@@ -564,6 +570,34 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 			screen.setTableText(tableName, iColumn, iRow, u"<font=3>" + item[0] + u"</font>", gc.getLeaderHeadInfo(item[1]).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_LEADER, item[1], iLeaderCiv, CvUtil.FONT_LEFT_JUSTIFY)
 			iCounter += 1
 
+	def placeTraits(self):
+		screen = self.getScreen()
+
+		# Traits have no buttons, so the table only shows their names
+		listTraits = self.getSortedList( gc.getNumTraitInfos(), gc.getTraitInfo )
+
+		nColumns = 3
+		nEntries = len(listTraits)
+		nRows = nEntries // nColumns
+		if (nEntries % nColumns):
+			nRows += 1
+		tableName = self.getNextWidgetName()
+		screen.addTableControlGFC(tableName, nColumns, self.X_ITEMS_PANE, self.Y_ITEMS_PANE+5, self.W_ITEMS_PANE, self.H_ITEMS_PANE-5, False, False, 24, 24, TableStyles.TABLE_STYLE_STANDARD)
+		screen.enableSelect(tableName, False)
+		for i in range(nColumns):
+			screen.setTableColumnHeader(tableName, i, "", self.W_ITEMS_PANE/nColumns)
+
+		iCounter = 0
+		iNumRows = 0
+		for item in listTraits:
+			iRow = iCounter % nRows
+			iColumn = iCounter // nRows
+			if iRow >= iNumRows:
+				iNumRows += 1
+				screen.appendTableRow(tableName)
+			screen.setTableText(tableName, iColumn, iRow, u"<font=3>" + item[0] + u"</font>", "", WidgetTypes.WIDGET_PEDIA_JUMP_TO_TRAIT, item[1], -1, CvUtil.FONT_LEFT_JUSTIFY)
+			iCounter += 1
+
 	def placeReligions(self):
 		screen = self.getScreen()
 		
@@ -906,6 +940,9 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 		elif (iScreen == CvScreenEnums.PEDIA_HISTORY):
 			self.pediaHistorical.interfaceScreen(iEntry)	
 
+		elif (iScreen == CvScreenEnums.PEDIA_TRAIT):
+			self.pediaTrait.interfaceScreen(iEntry)
+
 	def back(self):
 		if (len(self.pediaHistory) > 1):
 			self.pediaFuture.append(self.pediaHistory.pop())
@@ -972,6 +1009,9 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 		if (szLink == "PEDIA_MAIN_HINTS"):
 			return self.pediaJump(CvScreenEnums.PEDIA_MAIN, int(CivilopediaPageTypes.CIVILOPEDIA_PAGE_HINTS), True)			
 
+		if (szLink == "PEDIA_MAIN_TRAIT"):
+			return self.pediaJump(CvScreenEnums.PEDIA_MAIN, int(CivilopediaPageTypes.CIVILOPEDIA_PAGE_TRAIT), True)
+
 		for i in range(gc.getNumConceptInfos()):
 			if (gc.getConceptInfo(i).isMatchForLink(szLink, False)):
 				iEntryId = self.pediaHistorical.getIdFromEntryInfo(CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT, i)
@@ -1029,6 +1069,10 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 			if (gc.getReligionInfo(i).isMatchForLink(szLink, False)):
 				return self.pediaJump(CvScreenEnums.PEDIA_RELIGION, i, True)
 																
+		for i in range(gc.getNumTraitInfos()):
+			if (gc.getTraitInfo(i).isMatchForLink(szLink, False)):
+				return self.pediaJump(CvScreenEnums.PEDIA_TRAIT, i, True)
+
 	def deleteAllWidgets(self):
 		screen = self.getScreen()
 		iNumWidgets = self.nWidgetCount
@@ -1076,6 +1120,8 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 			return self.pediaCorporation.handleInput(inputClass)
 		if (self.iLastScreen == CvScreenEnums.PEDIA_HISTORY):
 			return self.pediaHistorical.handleInput(inputClass)
+		if (self.iLastScreen == CvScreenEnums.PEDIA_TRAIT):
+			return self.pediaTrait.handleInput(inputClass)
 						
 		return 0
 

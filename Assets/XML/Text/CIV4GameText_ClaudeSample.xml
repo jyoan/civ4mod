@@ -74,6 +74,15 @@
 		<Spanish>[ICON_BULLET]%s1_UnitCombat can upgrade outside your territory (except in enemy territory)</Spanish>
 		<Japanese>[ICON_BULLET]%s1_UnitCombat&#12399;&#33258;&#22269;&#12398;&#38936;&#22303;&#22806;&#12391;&#12418;&#12450;&#12483;&#12503;&#12464;&#12524;&#12540;&#12489;&#21487;&#33021;&#65288;&#25973;&#22269;&#12398;&#38936;&#22303;&#12434;&#38500;&#12367;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PEDIA_CATEGORY_TRAIT</Tag>
+		<English>Traits</English>
+		<French>Traits</French>
+		<German>Traits</German>
+		<Italian>Traits</Italian>
+		<Spanish>Traits</Spanish>
+		<Japanese>&#24535;&#21521;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, UNIT_TEST_A/B, PROMOTION_TEST) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

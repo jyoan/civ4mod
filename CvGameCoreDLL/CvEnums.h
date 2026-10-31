@@ -540,6 +540,7 @@ enum WidgetTypes					// Exposed to Python
 	WIDGET_GLOBELAYER,
 	WIDGET_GLOBELAYER_OPTION,
 	WIDGET_GLOBELAYER_TOGGLE,
+	WIDGET_PEDIA_JUMP_TO_TRAIT,		// added by this mod (appended so existing values do not change)
 
 #ifdef _USRDLL
 	NUM_WIDGET_TYPES
@@ -2464,6 +2465,7 @@ enum CivilopediaPageTypes		// Exposed to Python
 	CIVILOPEDIA_PAGE_CONCEPT,
 	CIVILOPEDIA_PAGE_CONCEPT_NEW,
 	CIVILOPEDIA_PAGE_HINTS,
+	CIVILOPEDIA_PAGE_TRAIT,		// added by this mod (appended so existing values do not change)
 
 	NUM_CIVILOPEDIA_PAGE_TYPES
 };

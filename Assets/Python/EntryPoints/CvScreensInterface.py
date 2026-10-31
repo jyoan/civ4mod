@@ -250,6 +250,9 @@ def pediaJumpToCiv(argsList):
 def pediaJumpToLeader(argsList):
 	pediaMainScreen.pediaJump(PEDIA_LEADER, argsList[0], True)
 
+def pediaJumpToTrait(argsList):
+	pediaMainScreen.pediaJump(PEDIA_TRAIT, argsList[0], True)
+
 def pediaJumpToSpecialist(argsList):
 	pediaMainScreen.pediaJump(PEDIA_SPECIALIST, argsList[0], True)
 	
@@ -909,6 +912,7 @@ HandleInputMap = {  MAIN_INTERFACE : mainInterface,
 					PEDIA_RELIGION : pediaMainScreen,
 					PEDIA_CORPORATION : pediaMainScreen,
 					PEDIA_HISTORY : pediaMainScreen,
+					PEDIA_TRAIT : pediaMainScreen,
 					WORLDBUILDER_SCREEN : worldBuilderScreen,
 					WORLDBUILDER_DIPLOMACY_SCREEN : worldBuilderDiplomacyScreen,
 					
@@ -938,6 +942,7 @@ HandleNavigationMap = {
 					PEDIA_LEADER : pediaMainScreen,
 					PEDIA_HISTORY : pediaMainScreen,
 					PEDIA_RELIGION : pediaMainScreen,
+					PEDIA_TRAIT : pediaMainScreen,
 					PEDIA_CORPORATION : pediaMainScreen
 				
 				# add new screens here

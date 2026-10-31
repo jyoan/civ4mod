@@ -510,6 +510,10 @@ void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &w
 		parseLeaderHelp(widgetDataStruct, szBuffer);
 		break;
 
+	case WIDGET_PEDIA_JUMP_TO_TRAIT:
+		parseTraitHelp(widgetDataStruct, szBuffer);
+		break;
+
 	case WIDGET_PEDIA_JUMP_TO_SPECIALIST:
 		if (widgetDataStruct.m_iData1 != NO_SPECIALIST && widgetDataStruct.m_iData2 != 0)
 		{
@@ -789,6 +793,10 @@ bool CvDLLWidgetData::executeAction( CvWidgetDataStruct &widgetDataStruct )
 		doPediaLeaderJump(widgetDataStruct);
 		break;
 
+	case WIDGET_PEDIA_JUMP_TO_TRAIT:
+		doPediaTraitJump(widgetDataStruct);
+		break;
+
 	case WIDGET_PEDIA_JUMP_TO_SPECIALIST:
 		doPediaSpecialistJump(widgetDataStruct);
 		break;
@@ -998,6 +1006,7 @@ bool CvDLLWidgetData::isLink(const CvWidgetDataStruct &widgetDataStruct) const
 	case WIDGET_PEDIA_JUMP_TO_CIVIC:
 	case WIDGET_PEDIA_JUMP_TO_CIV:
 	case WIDGET_PEDIA_JUMP_TO_LEADER:
+	case WIDGET_PEDIA_JUMP_TO_TRAIT:
 	case WIDGET_PEDIA_JUMP_TO_SPECIALIST:
 	case WIDGET_PEDIA_JUMP_TO_PROJECT:
 	case WIDGET_PEDIA_JUMP_TO_RELIGION:
@@ -1524,6 +1533,13 @@ void CvDLLWidgetData::doPediaLeaderJump(CvWidgetDataStruct &widgetDataStruct)
 	CyArgsList argsList;
 	argsList.add(widgetDataStruct.m_iData1);
 	gDLL->getPythonIFace()->callFunction(PYScreensModule, "pediaJumpToLeader", argsList.makeFunctionArgs());
+}
+
+void CvDLLWidgetData::doPediaTraitJump(CvWidgetDataStruct &widgetDataStruct)
+{
+	CyArgsList argsList;
+	argsList.add(widgetDataStruct.m_iData1);
+	gDLL->getPythonIFace()->callFunction(PYScreensModule, "pediaJumpToTrait", argsList.makeFunctionArgs());
 }
 
 void CvDLLWidgetData::doPediaDescription(CvWidgetDataStruct &widgetDataStruct)
@@ -4263,6 +4279,15 @@ void CvDLLWidgetData::parseLeaderHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 	}
 }
 
+// m_iData1: TraitTypes
+void CvDLLWidgetData::parseTraitHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
+{
+	if (widgetDataStruct.m_iData1 > -1 && widgetDataStruct.m_iData1 < GC.getNumTraitInfos())
+	{
+		GAMETEXT.parseTraits(szBuffer, (TraitTypes)widgetDataStruct.m_iData1, NO_CIVILIZATION, false);
+	}
+}
+
 void CvDLLWidgetData::parseCloseScreenHelp(CvWStringBuffer& szBuffer)
 {
 	szBuffer.assign(gDLL->getText("TXT_KEY_MISC_CLOSE_SCREEN"));
@@ -4415,6 +4440,16 @@ void CvDLLWidgetData::parseDescriptionHelp(CvWidgetDataStruct &widgetDataStruct,
 			if (NO_SPECIALIST != eSpecialist)
 			{
 				szBuffer.assign(bMinimal ? GC.getSpecialistInfo(eSpecialist).getDescription() : gDLL->getText("TXT_KEY_MISC_HISTORICAL_INFO", GC.getSpecialistInfo(eSpecialist).getTextKeyWide()));
+			}
+		}
+		break;
+	case CIVILOPEDIA_PAGE_TRAIT:
+		{
+			// Traits have no Civilopedia article, so only the name is shown
+			TraitTypes eTrait = (TraitTypes)widgetDataStruct.m_iData2;
+			if (NO_TRAIT != eTrait)
+			{
+				szBuffer.assign(GC.getTraitInfo(eTrait).getDescription());
 			}
 		}
 		break;
