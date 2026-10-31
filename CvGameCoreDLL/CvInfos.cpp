@@ -6645,6 +6645,8 @@ m_piBonusHealthChanges(NULL),
 m_piBonusHappinessChanges(NULL),
 m_piBonusProductionModifier(NULL),
 m_piUnitCombatFreeExperience(NULL),
+m_pabUpgradeAnywhereUnitCombat(NULL),
+m_pabUpgradeAnywhereExcludeEnemy(NULL),
 m_piDomainFreeExperience(NULL),
 m_piDomainProductionModifier(NULL),
 m_piBuildingHappinessChanges(NULL),
@@ -6695,6 +6697,8 @@ CvBuildingInfo::~CvBuildingInfo()
 	SAFE_DELETE_ARRAY(m_piBonusHappinessChanges);
 	SAFE_DELETE_ARRAY(m_piBonusProductionModifier);
 	SAFE_DELETE_ARRAY(m_piUnitCombatFreeExperience);
+	SAFE_DELETE_ARRAY(m_pabUpgradeAnywhereUnitCombat);
+	SAFE_DELETE_ARRAY(m_pabUpgradeAnywhereExcludeEnemy);
 	SAFE_DELETE_ARRAY(m_piDomainFreeExperience);
 	SAFE_DELETE_ARRAY(m_piDomainProductionModifier);
 	SAFE_DELETE_ARRAY(m_piBuildingHappinessChanges);
@@ -7547,6 +7551,20 @@ int CvBuildingInfo::getUnitCombatFreeExperience(int i) const
 	return m_piUnitCombatFreeExperience ? m_piUnitCombatFreeExperience[i] : -1;
 }
 
+bool CvBuildingInfo::isUpgradeAnywhereUnitCombat(int i) const
+{
+	FAssertMsg(i < GC.getNumUnitCombatInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_pabUpgradeAnywhereUnitCombat ? m_pabUpgradeAnywhereUnitCombat[i] : false;
+}
+
+bool CvBuildingInfo::isUpgradeAnywhereExcludeEnemy(int i) const
+{
+	FAssertMsg(i < GC.getNumUnitCombatInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_pabUpgradeAnywhereExcludeEnemy ? m_pabUpgradeAnywhereExcludeEnemy[i] : false;
+}
+
 int CvBuildingInfo::getDomainFreeExperience(int i) const
 {
 	FAssertMsg(i < NUM_DOMAIN_TYPES, "Index out of bounds");
@@ -8020,6 +8038,25 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 		m_ppaiBonusYieldModifier[i]  = new int[NUM_YIELD_TYPES];
 		stream->Read(NUM_YIELD_TYPES, m_ppaiBonusYieldModifier[i]);
 	}
+
+	// uiFlag 0: cache written before UpgradeAnywhereUnitCombats existed
+	SAFE_DELETE_ARRAY(m_pabUpgradeAnywhereUnitCombat);
+	m_pabUpgradeAnywhereUnitCombat = new bool[GC.getNumUnitCombatInfos()];
+	SAFE_DELETE_ARRAY(m_pabUpgradeAnywhereExcludeEnemy);
+	m_pabUpgradeAnywhereExcludeEnemy = new bool[GC.getNumUnitCombatInfos()];
+	if (uiFlag > 0)
+	{
+		stream->Read(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereUnitCombat);
+		stream->Read(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereExcludeEnemy);
+	}
+	else
+	{
+		for (i = 0; i < GC.getNumUnitCombatInfos(); i++)
+		{
+			m_pabUpgradeAnywhereUnitCombat[i] = false;
+			m_pabUpgradeAnywhereExcludeEnemy[i] = false;
+		}
+	}
 }
 
 //
@@ -8029,7 +8066,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=0;
+	uint uiFlag=1;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -8197,6 +8234,9 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	{
 		stream->Write(NUM_YIELD_TYPES, m_ppaiBonusYieldModifier[i]);
 	}
+
+	stream->Write(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereUnitCombat);
+	stream->Write(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereExcludeEnemy);
 }
 
 //
@@ -8667,6 +8707,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_piBonusProductionModifier, "BonusProductionModifiers", sizeof(GC.getBonusInfo((BonusTypes)0)), GC.getNumBonusInfos());
 
 	pXML->SetVariableListTagPair(&m_piUnitCombatFreeExperience, "UnitCombatFreeExperiences", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
+	readUpgradeAnywhereUnitCombats(pXML, &m_pabUpgradeAnywhereUnitCombat, &m_pabUpgradeAnywhereExcludeEnemy);
 
 	pXML->SetVariableListTagPair(&m_piDomainFreeExperience, "DomainFreeExperiences", sizeof(GC.getDomainInfo((DomainTypes)0)), NUM_DOMAIN_TYPES);
 	pXML->SetVariableListTagPair(&m_piDomainProductionModifier, "DomainProductionModifiers", sizeof(GC.getDomainInfo((DomainTypes)0)), NUM_DOMAIN_TYPES);

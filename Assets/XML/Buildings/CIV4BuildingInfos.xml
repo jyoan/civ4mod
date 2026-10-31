@@ -1455,6 +1455,12 @@
 			<bShiftDown>0</bShiftDown>
 			<bCtrlDown>0</bCtrlDown>
 			<iHotKeyPriority>0</iHotKeyPriority>
+			<UpgradeAnywhereUnitCombats>
+				<UpgradeAnywhereUnitCombat>
+					<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
+					<bUpgradeAnywhere>1</bUpgradeAnywhere>
+				</UpgradeAnywhereUnitCombat>
+			</UpgradeAnywhereUnitCombats>
 		</BuildingInfo>
 		<BuildingInfo>
 			<BuildingClass>BUILDINGCLASS_BARRACKS</BuildingClass>

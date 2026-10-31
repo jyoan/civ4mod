@@ -7443,6 +7443,16 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 		}
 	}
 
+	// UpgradeAnywhereUnitCombats (effective while any of the player's cities has the building)
+	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+	{
+		if (kBuilding.isUpgradeAnywhereUnitCombat(iI))
+		{
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText(kBuilding.isUpgradeAnywhereExcludeEnemy(iI) ? "TXT_KEY_UNITCOMBAT_UPGRADE_ANYWHERE_NOT_ENEMY" : "TXT_KEY_UNITCOMBAT_UPGRADE_ANYWHERE", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide()));
+		}
+	}
+
 	for (iI = 0; iI < NUM_DOMAIN_TYPES; ++iI)
 	{
 		if (kBuilding.getDomainFreeExperience(iI) != 0)

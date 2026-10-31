@@ -1715,6 +1715,8 @@ public:
 	int getBonusHappinessChanges(int i) const;				// Exposed to Python
 	int getBonusProductionModifier(int i) const;				// Exposed to Python
 	int getUnitCombatFreeExperience(int i) const;				// Exposed to Python
+	bool isUpgradeAnywhereUnitCombat(int i) const;				// Exposed to Python
+	bool isUpgradeAnywhereExcludeEnemy(int i) const;				// Exposed to Python
 	int getDomainFreeExperience(int i) const;						// Exposed to Python
 	int getDomainProductionModifier(int i) const;				// Exposed to Python
 	int getPrereqAndTechs(int i) const;				// Exposed to Python
@@ -1897,6 +1899,8 @@ protected:
 	int* m_piBonusHappinessChanges;
 	int* m_piBonusProductionModifier;
 	int* m_piUnitCombatFreeExperience;
+	bool* m_pabUpgradeAnywhereUnitCombat;
+	bool* m_pabUpgradeAnywhereExcludeEnemy;
 	int* m_piDomainFreeExperience;
 	int* m_piDomainProductionModifier;
 	int* m_piBuildingHappinessChanges;

@@ -6770,7 +6770,7 @@ bool CvUnit::isReadyForUpgrade() const
 
 	if (plot()->getTeam() != getTeam())
 	{
-		// UpgradeAnywhereUnitCombats (traits / civics) lift the territory requirement
+		// UpgradeAnywhereUnitCombats (traits / civics / buildings) lift the territory requirement
 		if (!isUpgradeAnywhere())
 		{
 			return false;

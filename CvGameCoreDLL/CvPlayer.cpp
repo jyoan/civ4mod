@@ -5862,7 +5862,7 @@ int CvPlayer::getUnitCombatUpgradeDiscount(UnitCombatTypes eUnitCombat) const
 	return iDiscount;
 }
 
-// True if a trait or current civic lets eUnitCombat units upgrade outside the team's territory.
+// True if a trait, current civic or owned building lets eUnitCombat units upgrade outside the team's territory.
 // bEnemyTerritory: the unit stands in the territory of a team we are at war with; sources with
 // bExcludeEnemyTerritory do not count there.
 bool CvPlayer::isUpgradeAnywhere(UnitCombatTypes eUnitCombat, bool bEnemyTerritory) const
@@ -5892,6 +5892,24 @@ bool CvPlayer::isUpgradeAnywhere(UnitCombatTypes eUnitCombat, bool bEnemyTerrito
 			if (kCivic.isUpgradeAnywhereUnitCombat(eUnitCombat) && !(bEnemyTerritory && kCivic.isUpgradeAnywhereExcludeEnemy(eUnitCombat)))
 			{
 				return true;
+			}
+		}
+	}
+
+	// Buildings count if any of our cities has one that is not obsolete.
+	// Cities are only scanned for the (usually few) buildings that have the entry.
+	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+	{
+		CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)iI);
+		if (kBuilding.isUpgradeAnywhereUnitCombat(eUnitCombat) && !(bEnemyTerritory && kBuilding.isUpgradeAnywhereExcludeEnemy(eUnitCombat)))
+		{
+			int iLoop;
+			for (CvCity* pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+			{
+				if (pLoopCity->getNumActiveBuilding((BuildingTypes)iI) > 0)
+				{
+					return true;
+				}
 			}
 		}
 	}
