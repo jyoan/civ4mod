@@ -183,8 +183,12 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 | `CIV4TraitInfos.xml` | `TraitInfo/TerrainYieldChanges`、`FeatureYieldChanges` | FFH2 の文明の同名タグと同じ書式（`<TerrainYieldChange>` / `<FeatureYieldChange>` が `TerrainType` / `FeatureType` + `<Yields>`（`<iYield>` は食料・生産・商業の順））。その文明の領土の、その地形・地形の特徴のタイルの産出に加算する（`CvPlot::calculateTraitYieldChange`。`calculateYield` で施設・道路と同じ段階に足すので、金融志向の閾値や黄金時代の判定にも効く）。地形と特徴は重なる。**`TERRAIN_HILL` / `TERRAIN_PEAK` は丘陵・山岳のタイル**を指す（どちらも `bGraphicalOnly` で、タイルの地形としては使われないため。丘陵のタイルは元の地形の分と丘陵の分の両方）。通行できないタイル（山岳・氷河）は BtS では産出 0 なので、山岳の分と、通行できなくしている特徴（氷河）の分だけが効き、下の地形の分は効かない。産出があれば `CvCity::canWork` を通るので、**山岳・氷河も都市で働かせられる**。`CvPlayer::getTraitTerrainYieldChange()` / `getTraitFeatureYieldChange()` がそのつど合計するのでセーブデータは変わらないが、タイルの産出の値はセーブに保存されているので、既存のセーブではタイルが計算し直されるまで反映されない。説明文は社会制度の `TXT_KEY_CIVIC_IMPROVEMENT_YIELD_CHANGE`（「次のものより[生産]+1: 雪原、ツンドラ」）を流用し、地形と特徴を産出ごとに 1 行にまとめる |
 | `CIV4TraitInfos.xml` | `TraitInfo/ImprovementYieldChanges`、`RiverPlotYieldChanges` | 社会制度の `ImprovementYieldChanges`（`ImprovementType` + `ImprovementYields`）、建物の `RiverPlotYieldChanges`（`<iYield>` の並び）と同じ名前・書式。施設の分は `CvPlot::calculateImprovementYieldChange` で施設の持ち主の志向から足す（作業の説明「この施設で +○」にも反映される）。川の分は `calculateTraitYieldChange` で、建物と同じく川沿いの通行できるタイルに足す。そのつど合計（`CvPlayer::getTraitImprovementYieldChange()` / `getTraitRiverPlotYieldChange()`）。説明文は施設を地形・特徴と同じ行にまとめ、川は建物の `TXT_KEY_BUILDING_RIVER_PLOTS`（「河川スクエア: +1[食料]」）。**施設の XML は志向より後に読み込まれる**ので、`read()` では種類を文字列のまま持ち、施設の読み込み直後に `CvXMLLoadUtility::LoadPreMenuGlobals` から呼ぶ `CvTraitInfo::readPass3()` で番号に変える（名前の誤りは XML Error のメッセージで知らせる） |
 | `CIV4PromotionInfos.xml` | `PromotionInfo/iExpireChance`、`bRemovedByCombat`、`PromotionVictory`、`iPromotionVictoryChance` | 状態の昇進と戦闘結果（第 1 段階。名前は FFH2 と同じ。`PromotionVictory` / `iPromotionVictoryChance` だけ新規）。`iExpireChance`: 自分のターンの開始時に ○% で消える（`CvUnit::doTurnPromotions`）。`bRemovedByCombat`: 戦闘で生き残ると消える。`PromotionVictory`: 戦闘に勝利すると `iPromotionVictoryChance`%（省略時 100）でその昇進を得る。戦闘の処理は `CvUnit::doCombatPromotions`（`updateCombat` の決着時、両ユニットがまだ存在するうちに呼ぶ）で、**戦闘中に持っていた昇進**で判定し、戦闘で消える昇進を外してから勝利の効果を与える（勝利で得た昇進はその戦闘では消えない）。勝利は「相手が倒れて自分が生き残った」とき（自爆ユニットは除く。撤退は勝者なし）。対象は通常の攻撃・防御だけで、空中戦・迎撃・爆撃・付随ダメージ・核は含まない。昇進がその兵科で取れるかはチェックしない。状態用の昇進は `UnitCombats` を空にしてレベルアップで選べないようにする。乱数は `getSorenRandNum`。セーブデータは変わらない。`PromotionVictory` は昇進を参照するので `readPass2` で読む |
+| `CIV4PromotionInfos.xml` | `PromotionInfo/bRemovedWhenHealed`、`PromotionCombatApply`、`iPromotionCombatApplyChance`、`iFreeXPPerTurn`、`iFreeXPCap` | 第 2 段階（名前は FFH2 と同じ。`iPromotionCombatApplyChance` / `iFreeXPCap` だけ新規）。ターンの開始時（`doTurnPromotions`、回復の後）に、`iFreeXPPerTurn` の経験値を足し（戦闘の経験値ではないので補正・大将軍ポイントなし。**ユニットの経験値が `iFreeXPCap`（省略時 100）に達したらそれ以上増えない**）、`bRemovedWhenHealed` はダメージ 0 なら消える。`PromotionCombatApply`: 戦闘の後、生き残った相手に `iPromotionCombatApplyChance`%（省略時 100）でその昇進を与える（与える側が倒れていても与える。戦闘で消える昇進を外した後、勝利の効果の前）。`PromotionCombatApply` も `readPass2` で読む |
 
-BtS 本体の修正: `CvUnit::upgradePrice` は、割引の合計が 100% を超えると費用がマイナスになり、アップグレードで金が増えていた。この Mod では費用を 0 未満にしない
+BtS 本体の修正:
+
+- `CvUnit::upgradePrice` は、割引の合計が 100% を超えると費用がマイナスになり、アップグレードで金が増えていた。この Mod では費用を 0 未満にしない
+- `CvUnit::isPromotionValid` は「ユニットの撤退率 + その昇進の撤退率」が `MAX_WITHDRAWAL_PROBABILITY`（90）を超える昇進を選べなくする（迎撃率・回避率も同じ）。ユニットがすでに上限を超えていると、撤退率を上げない昇進や大将軍（指導者の昇進）まで**すべて**選べなくなっていた。BtS では昇進で上限を超えられないので起きないが、この Mod では選ばずに得る昇進（志向の昇進の組、`PromotionVictory`、`PromotionCombatApply`）で超えられる。この Mod では、その昇進が値を上げる（> 0）ときだけ上限で止める
 
 この Mod で追加した志向: `TRAIT_MARITIME`（海洋志向、短縮名「海」。昇進の組: 海洋ユニット → 航海術Ⅰ、白兵戦ユニット → 水陸両用。今はどの文明・指導者も持っていない）。`CIV4TraitInfos.xml` の末尾に追加（既存の志向の番号を変えないため、新しい志向は常に末尾に足す）
 
@@ -200,10 +204,11 @@ BtS 本体の修正: `CvUnit::upgradePrice` は、割引の合計が 100% を超
 | `CIVIC_TEST`（検証用社会制度） | 専制政治 | 政治の区分。前提技術なし・無政府期間 0・維持費なし・AI 評価 -10000。白兵戦に経験値 +1・生産 +10%・アップグレード割引 25%、弓兵に領土外アップグレード（敵国の領土を除く）。前提の志向 `TRAIT_TEST` |
 | `BUILDING_TEST` / `BUILDINGCLASS_TEST`（検証用建物） | 兵舎 | 前提技術なし・元の効果（攻撃志向の生産 2 倍、陸上ユニット経験値 +3）は削除・AI 評価 -10000。騎乗に領土外アップグレード。前提の志向 `TRAIT_TEST` |
 | `UNIT_TEST_A` / `UNIT_TEST_B`（検証用ユニット A・B） | 戦士・斧兵 | 白兵戦。前提技術・資源なし。A は B にだけアップグレードできる（1 ターン目からアップグレード関連を試せる）。AI 評価 -10000。B だけ前提の志向 `TRAIT_TEST` または `TRAIT_AGGRESSIVE`（「どれか 1 つ」の確認用。攻撃志向の徳川の日本でも作れる）。B を作れる文明では A は生産候補に出ない（BtS の仕様: アップグレード先がすべて作れるユニットは候補から外れる。`CvCity::canTrain` → `allUpgradesAvailable`）。A のアップグレードは検証用文明の開始ユニットで試す |
-| `PROMOTION_TEST`（検証用昇進） | 戦闘術Ⅰ | 戦闘力 +10%。`UnitCombats` が空なので通常のレベルアップでは誰も選べず、昇進の組でだけ付く。勝利すると `PROMOTION_TEST_STATE1` を得る |
+| `PROMOTION_TEST`（検証用昇進） | 戦闘術Ⅰ | 戦闘力 +10%。`UnitCombats` が空なので通常のレベルアップでは誰も選べず、昇進の組でだけ付く。勝利すると `PROMOTION_TEST_STATE1` を得る。生き残った戦闘相手に `PROMOTION_TEST_POISON` を与える。毎ターン経験値 +1（10 まで）。撤退率 +100%（攻撃で負けそうになると必ず撤退するので、相手が生き残って毒を受ける） |
 | `PROMOTION_TEST_STATE1` / `STATE2`（検証用状態Ⅰ・Ⅱ） | 検証用昇進 | 状態の昇進（`UnitCombats` は空）。Ⅰ: 戦闘力 +20%、毎ターン 50% で消える、勝利すると 50% でⅡを得る。Ⅱ: 戦闘力 +10%、戦闘すると消える。ボタンは戦闘術Ⅱ・Ⅲ |
+| `PROMOTION_TEST_POISON`（検証用毒） | 検証用状態Ⅱ | 状態の昇進。戦闘力 -20%、完全に回復すると消える、生き残った戦闘相手に 50% でうつる（毒を受けた敵と戦うと自分も受けることがある）。ボタンは戦闘術Ⅳ |
 
-検証用文明が `CIVIC_TEST` を採用したあと、白兵戦ユニット（都市で生産）で期待される値: 経験値 +5（志向 +2、白兵戦 +2、社会制度 +1）、ユニット A → B のアップグレード割引 75%（志向 50% + 社会制度 25%）、`PROMOTION_TEST` が付く
+検証用文明が `CIVIC_TEST` を採用したあと、白兵戦ユニット（都市で生産）で期待される値: 生産直後の経験値 5（志向 +2、白兵戦 +2、社会制度 +1。その後は毎ターン +1 で 10 まで増える）、ユニット A → B のアップグレード割引 75%（志向 50% + 社会制度 25%）、`PROMOTION_TEST` が付く
 
 ## git
 
@@ -231,3 +236,4 @@ BtS 本体の修正: `CvUnit::upgradePrice` は、割引の合計が 100% を超
 - 2026-10-31: `TerrainYieldChanges` / `FeatureYieldChanges`（丘陵・山岳・氷河を含む）の説明文とタイルの産出をゲーム内で確認（検証用文明）
 - 2026-10-31: `ImprovementYieldChanges` / `RiverPlotYieldChanges`（志向）の説明文・施設と川沿いのタイルの産出・作業ボタンの説明をゲーム内で確認（検証用文明）
 - 2026-10-31: 昇進の `iExpireChance` / `bRemovedByCombat` / `PromotionVictory`（D・E の第 1 段階）の説明文と動作をゲーム内で確認（検証用文明のユニット A で勝利 → 検証用状態Ⅰ・Ⅱ）
+- 2026-10-31: 昇進の `bRemovedWhenHealed` / `PromotionCombatApply` / `iFreeXPPerTurn`・`iFreeXPCap`（D・E の第 2 段階）と、撤退率などが上限を超えたユニットでも昇進・大将軍の合体ができる修正（`CvUnit::isPromotionValid`）をゲーム内で確認

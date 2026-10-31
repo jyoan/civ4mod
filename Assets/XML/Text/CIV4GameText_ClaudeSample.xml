@@ -119,7 +119,43 @@
 		<Spanish>[ICON_BULLET]%d2_Chance%% chance to gain [LINK=literal]%s1_Promotion[\LINK] on winning a combat</Spanish>
 		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d2_Chance%%&#12398;&#30906;&#29575;&#12391;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#24471;&#12427;</Japanese>
 	</TEXT>
-	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2) -->
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_REMOVED_WHEN_HEALED</Tag>
+		<English>[ICON_BULLET]Wears off when fully healed</English>
+		<French>[ICON_BULLET]Wears off when fully healed</French>
+		<German>[ICON_BULLET]Wears off when fully healed</German>
+		<Italian>[ICON_BULLET]Wears off when fully healed</Italian>
+		<Spanish>[ICON_BULLET]Wears off when fully healed</Spanish>
+		<Japanese>[ICON_BULLET]&#23436;&#20840;&#12395;&#22238;&#24489;&#12377;&#12427;&#12392;&#28040;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FREE_XP_PER_TURN</Tag>
+		<English>[ICON_BULLET]+%d1_XP experience each turn (up to %d2_Cap)</English>
+		<French>[ICON_BULLET]+%d1_XP experience each turn (up to %d2_Cap)</French>
+		<German>[ICON_BULLET]+%d1_XP experience each turn (up to %d2_Cap)</German>
+		<Italian>[ICON_BULLET]+%d1_XP experience each turn (up to %d2_Cap)</Italian>
+		<Spanish>[ICON_BULLET]+%d1_XP experience each turn (up to %d2_Cap)</Spanish>
+		<Japanese>[ICON_BULLET]&#27598;&#12479;&#12540;&#12531;&#32076;&#39443;&#20516;+%d1_XP&#65288;%d2_Cap&#12414;&#12391;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_APPLY</Tag>
+		<English>[ICON_BULLET]Gives [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</English>
+		<French>[ICON_BULLET]Gives [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</French>
+		<German>[ICON_BULLET]Gives [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</German>
+		<Italian>[ICON_BULLET]Gives [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</Italian>
+		<Spanish>[ICON_BULLET]Gives [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</Spanish>
+		<Japanese>[ICON_BULLET]&#29983;&#12365;&#27531;&#12387;&#12383;&#25126;&#38360;&#30456;&#25163;&#12395;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#19982;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_APPLY_CHANCE</Tag>
+		<English>[ICON_BULLET]%d2_Chance%% chance to give [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</English>
+		<French>[ICON_BULLET]%d2_Chance%% chance to give [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</French>
+		<German>[ICON_BULLET]%d2_Chance%% chance to give [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</German>
+		<Italian>[ICON_BULLET]%d2_Chance%% chance to give [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</Italian>
+		<Spanish>[ICON_BULLET]%d2_Chance%% chance to give [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</Spanish>
+		<Japanese>[ICON_BULLET]&#29983;&#12365;&#27531;&#12387;&#12383;&#25126;&#38360;&#30456;&#25163;&#12395;%d2_Chance%%&#12398;&#30906;&#29575;&#12391;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#19982;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
 		<English>Test data for checking the mod's features.</English>
@@ -245,5 +281,14 @@
 		<Italian>Test State II</Italian>
 		<Spanish>Test State II</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#29366;&#24907;&#8545;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_POISON</Tag>
+		<English>Test Poison</English>
+		<French>Test Poison</French>
+		<German>Test Poison</German>
+		<Italian>Test Poison</Italian>
+		<Spanish>Test Poison</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#27602;</Japanese>
 	</TEXT>
 </Civ4GameText>

@@ -4527,6 +4527,31 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_REMOVED_BY_COMBAT"));
 	}
 
+	if (GC.getPromotionInfo(ePromotion).isRemovedWhenHealed())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_REMOVED_WHEN_HEALED"));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getFreeXPPerTurn() > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_FREE_XP_PER_TURN", GC.getPromotionInfo(ePromotion).getFreeXPPerTurn(), GC.getPromotionInfo(ePromotion).getFreeXPCap()));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getPromotionCombatApply() != NO_PROMOTION)
+	{
+		szBuffer.append(pcNewline);
+		if (GC.getPromotionInfo(ePromotion).getPromotionCombatApplyChance() >= 100)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_APPLY", GC.getPromotionInfo((PromotionTypes)GC.getPromotionInfo(ePromotion).getPromotionCombatApply()).getTextKeyWide()));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_APPLY_CHANCE", GC.getPromotionInfo((PromotionTypes)GC.getPromotionInfo(ePromotion).getPromotionCombatApply()).getTextKeyWide(), GC.getPromotionInfo(ePromotion).getPromotionCombatApplyChance()));
+		}
+	}
+
 	if (GC.getPromotionInfo(ePromotion).getPromotionVictory() != NO_PROMOTION)
 	{
 		szBuffer.append(pcNewline);

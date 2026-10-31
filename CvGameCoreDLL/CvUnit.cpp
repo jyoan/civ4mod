@@ -745,9 +745,11 @@ void CvUnit::doTurn()
 	setMoves(0);
 }
 
-// Status promotions at the start of the owner's turn (added by this mod): iExpireChance
+// Status promotions at the start of the owner's turn, after healing (added by this mod):
+// iFreeXPPerTurn (up to iFreeXPCap), bRemovedWhenHealed and iExpireChance
 void CvUnit::doTurnPromotions()
 {
+	int iOldExperience = getExperience();
 	int iI;
 
 	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
@@ -756,7 +758,17 @@ void CvUnit::doTurnPromotions()
 		{
 			CvPromotionInfo& kPromotion = GC.getPromotionInfo((PromotionTypes)iI);
 
-			if (kPromotion.getExpireChance() > 0)
+			if (kPromotion.getFreeXPPerTurn() > 0)
+			{
+				// Not from combat: no experience modifiers and no great general points
+				changeExperience(kPromotion.getFreeXPPerTurn(), kPromotion.getFreeXPCap());
+			}
+
+			if (kPromotion.isRemovedWhenHealed() && (getDamage() == 0))
+			{
+				setHasPromotion((PromotionTypes)iI, false);
+			}
+			else if (kPromotion.getExpireChance() > 0)
 			{
 				if (GC.getGameINLINE().getSorenRandNum(100, "Promotion expire") < kPromotion.getExpireChance())
 				{
@@ -765,11 +777,18 @@ void CvUnit::doTurnPromotions()
 			}
 		}
 	}
+
+	// doTurn tested this before the experience was added
+	if (getExperience() != iOldExperience)
+	{
+		testPromotionReady();
+	}
 }
 
 // Promotion effects at the end of a normal combat (added by this mod). this is the attacker; both units still exist.
 // The effects are judged from the promotions the units had in the combat: first the survivors lose their
-// bRemovedByCombat promotions, then the winner (the survivor whose opponent died) gets its PromotionVictory promotions.
+// bRemovedByCombat promotions, then a surviving opponent gets the PromotionCombatApply promotions, and then
+// the winner (the survivor whose opponent died) gets its PromotionVictory promotions.
 void CvUnit::doCombatPromotions(CvUnit* pDefender)
 {
 	CvUnit* apUnits[2];
@@ -801,6 +820,26 @@ void CvUnit::doCombatPromotions(CvUnit* pDefender)
 				if (GC.getPromotionInfo(aaePromotions[iUnit][iI]).isRemovedByCombat())
 				{
 					apUnits[iUnit]->setHasPromotion(aaePromotions[iUnit][iI], false);
+				}
+			}
+		}
+	}
+
+	// iUnit gives its PromotionCombatApply promotions to the opponent (1 - iUnit), even when iUnit died
+	for (iUnit = 0; iUnit < 2; iUnit++)
+	{
+		if (!apUnits[1 - iUnit]->isDead())
+		{
+			for (iI = 0; iI < (int)aaePromotions[iUnit].size(); iI++)
+			{
+				CvPromotionInfo& kPromotion = GC.getPromotionInfo(aaePromotions[iUnit][iI]);
+
+				if (kPromotion.getPromotionCombatApply() != NO_PROMOTION)
+				{
+					if (GC.getGameINLINE().getSorenRandNum(100, "Promotion combat apply") < kPromotion.getPromotionCombatApplyChance())
+					{
+						apUnits[1 - iUnit]->setHasPromotion((PromotionTypes)kPromotion.getPromotionCombatApply(), true);
+					}
 				}
 			}
 		}
@@ -11202,17 +11241,20 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion) const
 
 	CvPromotionInfo& promotionInfo = GC.getPromotionInfo(ePromotion);
 
-	if (promotionInfo.getWithdrawalChange() + m_pUnitInfo->getWithdrawalProbability() + getExtraWithdrawal() > GC.getDefineINT("MAX_WITHDRAWAL_PROBABILITY"))
+	// The caps only stop promotions that raise the value (changed by this mod). Units can go over a cap with
+	// promotions they did not choose (trait promotion sets, PromotionVictory, PromotionCombatApply), and then
+	// these checks blocked every promotion, including the great general's.
+	if (promotionInfo.getWithdrawalChange() > 0 && promotionInfo.getWithdrawalChange() + m_pUnitInfo->getWithdrawalProbability() + getExtraWithdrawal() > GC.getDefineINT("MAX_WITHDRAWAL_PROBABILITY"))
 	{
 		return false;
 	}
 
-	if (promotionInfo.getInterceptChange() + maxInterceptionProbability() > GC.getDefineINT("MAX_INTERCEPTION_PROBABILITY"))
+	if (promotionInfo.getInterceptChange() > 0 && promotionInfo.getInterceptChange() + maxInterceptionProbability() > GC.getDefineINT("MAX_INTERCEPTION_PROBABILITY"))
 	{
 		return false;
 	}
 
-	if (promotionInfo.getEvasionChange() + evasionProbability() > GC.getDefineINT("MAX_EVASION_PROBABILITY"))
+	if (promotionInfo.getEvasionChange() > 0 && promotionInfo.getEvasionChange() + evasionProbability() > GC.getDefineINT("MAX_EVASION_PROBABILITY"))
 	{
 		return false;
 	}

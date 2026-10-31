@@ -496,6 +496,11 @@ public:
 	bool isRemovedByCombat() const;				// Exposed to Python
 	int getPromotionVictory() const;				// Exposed to Python
 	int getPromotionVictoryChance() const;				// Exposed to Python
+	bool isRemovedWhenHealed() const;				// Exposed to Python
+	int getPromotionCombatApply() const;				// Exposed to Python
+	int getPromotionCombatApplyChance() const;				// Exposed to Python
+	int getFreeXPPerTurn() const;				// Exposed to Python
+	int getFreeXPCap() const;				// Exposed to Python
 
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
@@ -564,7 +569,12 @@ protected:
 	int m_iExpireChance;
 	int m_iPromotionVictory;
 	int m_iPromotionVictoryChance;
+	int m_iPromotionCombatApply;
+	int m_iPromotionCombatApplyChance;
+	int m_iFreeXPPerTurn;
+	int m_iFreeXPCap;
 	bool m_bRemovedByCombat;
+	bool m_bRemovedWhenHealed;
 
 	bool m_bLeader;
 	bool m_bBlitz;									

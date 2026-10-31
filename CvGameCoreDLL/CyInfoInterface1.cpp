@@ -151,6 +151,11 @@ void CyInfoPythonInterface1()
 		.def("isRemovedByCombat", &CvPromotionInfo::isRemovedByCombat, "bool ()")
 		.def("getPromotionVictory", &CvPromotionInfo::getPromotionVictory, "int ()")
 		.def("getPromotionVictoryChance", &CvPromotionInfo::getPromotionVictoryChance, "int ()")
+		.def("isRemovedWhenHealed", &CvPromotionInfo::isRemovedWhenHealed, "bool ()")
+		.def("getPromotionCombatApply", &CvPromotionInfo::getPromotionCombatApply, "int ()")
+		.def("getPromotionCombatApplyChance", &CvPromotionInfo::getPromotionCombatApplyChance, "int ()")
+		.def("getFreeXPPerTurn", &CvPromotionInfo::getFreeXPPerTurn, "int ()")
+		.def("getFreeXPCap", &CvPromotionInfo::getFreeXPCap, "int ()")
 
 		.def("getSound", &CvPromotionInfo::getSound, "string ()")
 
