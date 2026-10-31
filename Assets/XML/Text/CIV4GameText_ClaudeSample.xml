@@ -74,4 +74,113 @@
 		<Spanish>[ICON_BULLET]%s1_UnitCombat can upgrade outside your territory (except in enemy territory)</Spanish>
 		<Japanese>[ICON_BULLET]%s1_UnitCombat&#12399;&#33258;&#22269;&#12398;&#38936;&#22303;&#22806;&#12391;&#12418;&#12450;&#12483;&#12503;&#12464;&#12524;&#12540;&#12489;&#21487;&#33021;&#65288;&#25973;&#22269;&#12398;&#38936;&#22303;&#12434;&#38500;&#12367;&#65289;</Japanese>
 	</TEXT>
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, UNIT_TEST_A/B, PROMOTION_TEST) -->
+	<TEXT>
+		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
+		<English>Test data for checking the mod's features.</English>
+		<French>Test data for checking the mod's features.</French>
+		<German>Test data for checking the mod's features.</German>
+		<Italian>Test data for checking the mod's features.</Italian>
+		<Spanish>Test data for checking the mod's features.</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#12487;&#12540;&#12479;&#12290;&#21205;&#20316;&#30906;&#35469;&#12398;&#12383;&#12417;&#12398;&#12418;&#12398;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_TEST_DESC</Tag>
+		<English>Test Civilization</English>
+		<French>Test Civilization</French>
+		<German>Test Civilization</German>
+		<Italian>Test Civilization</Italian>
+		<Spanish>Test Civilization</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#25991;&#26126;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_TEST_SHORT_DESC</Tag>
+		<English>Test</English>
+		<French>Test</French>
+		<German>Test</German>
+		<Italian>Test</Italian>
+		<Spanish>Test</Spanish>
+		<Japanese>&#26908;&#35388;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_TEST_ADJECTIVE</Tag>
+		<English>Test</English>
+		<French>Test</French>
+		<German>Test</German>
+		<Italian>Test</Italian>
+		<Spanish>Test</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TEST</Tag>
+		<English>Test Leader</English>
+		<French>Test Leader</French>
+		<German>Test Leader</German>
+		<Italian>Test Leader</Italian>
+		<Spanish>Test Leader</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#25351;&#23566;&#32773;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST</Tag>
+		<English>Test Trait</English>
+		<French>Test Trait</French>
+		<German>Test Trait</German>
+		<Italian>Test Trait</Italian>
+		<Spanish>Test Trait</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_SHORT</Tag>
+		<English>Tst</English>
+		<French>Tst</French>
+		<German>Tst</German>
+		<Italian>Tst</Italian>
+		<Spanish>Tst</Spanish>
+		<Japanese>&#26908;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIVIC_TEST</Tag>
+		<English>Test Civic</English>
+		<French>Test Civic</French>
+		<German>Test Civic</German>
+		<Italian>Test Civic</Italian>
+		<Spanish>Test Civic</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#31038;&#20250;&#21046;&#24230;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST</Tag>
+		<English>Test Building</English>
+		<French>Test Building</French>
+		<German>Test Building</German>
+		<Italian>Test Building</Italian>
+		<Spanish>Test Building</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_A</Tag>
+		<English>Test Unit A</English>
+		<French>Test Unit A</French>
+		<German>Test Unit A</German>
+		<Italian>Test Unit A</Italian>
+		<Spanish>Test Unit A</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#12518;&#12491;&#12483;&#12488;A</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_B</Tag>
+		<English>Test Unit B</English>
+		<French>Test Unit B</French>
+		<German>Test Unit B</German>
+		<Italian>Test Unit B</Italian>
+		<Spanish>Test Unit B</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#12518;&#12491;&#12483;&#12488;B</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST</Tag>
+		<English>Test Promotion</English>
+		<French>Test Promotion</French>
+		<German>Test Promotion</German>
+		<Italian>Test Promotion</Italian>
+		<Spanish>Test Promotion</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;</Japanese>
+	</TEXT>
 </Civ4GameText>

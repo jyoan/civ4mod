@@ -2066,16 +2066,6 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
-			<Traits>
-				<Trait>
-					<TraitType>TRAIT_INDUSTRIOUS</TraitType>
-					<bTrait>1</bTrait>
-				</Trait>
-				<Trait>
-					<TraitType>TRAIT_MARITIME</TraitType>
-					<bTrait>1</bTrait>
-				</Trait>
-			</Traits>
 			<DerivativeCiv>CIVILIZATION_KOREA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_JAPAN_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_JAPAN_ORDER</CivilizationActionSound>
@@ -4675,6 +4665,111 @@
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound/>
 			<CivilizationActionSound/>
+		</CivilizationInfo>
+		<CivilizationInfo>
+			<Type>CIVILIZATION_TEST</Type>
+			<Description>TXT_KEY_CIV_TEST_DESC</Description>
+			<ShortDescription>TXT_KEY_CIV_TEST_SHORT_DESC</ShortDescription>
+			<Adjective>TXT_KEY_CIV_TEST_ADJECTIVE</Adjective>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<DefaultPlayerColor>PLAYERCOLOR_GOLD_AND_BLACK</DefaultPlayerColor>
+			<ArtDefineTag>ART_DEF_CIVILIZATION_JAPAN</ArtDefineTag>
+			<ArtStyleType>ARTSTYLE_ASIAN</ArtStyleType>
+			<UnitArtStyleType>UNIT_ARTSTYLE_ASIAN</UnitArtStyleType>
+			<bPlayable>1</bPlayable>
+			<bAIPlayable>0</bAIPlayable>
+			<Cities>
+				<City>TXT_KEY_CITY_NAME_KYOTO</City>
+				<City>TXT_KEY_CITY_NAME_OSAKA</City>
+				<City>TXT_KEY_CITY_NAME_TOKYO</City>
+				<City>TXT_KEY_CITY_NAME_SATSUMA</City>
+				<City>TXT_KEY_CITY_NAME_KAGOSHIMA</City>
+				<City>TXT_KEY_CITY_NAME_NARA</City>
+				<City>TXT_KEY_CITY_NAME_NAGOYA</City>
+				<City>TXT_KEY_CITY_NAME_IZUMO</City>
+				<City>TXT_KEY_CITY_NAME_NAGASAKI</City>
+				<City>TXT_KEY_CITY_NAME_YOKOHAMA</City>
+				<City>TXT_KEY_CITY_NAME_SHIMONOSEKI</City>
+				<City>TXT_KEY_CITY_NAME_MATSUYAMA</City>
+				<City>TXT_KEY_CITY_NAME_SAPPORO</City>
+				<City>TXT_KEY_CITY_NAME_HAKODATE</City>
+				<City>TXT_KEY_CITY_NAME_ISE</City>
+				<City>TXT_KEY_CITY_NAME_TOYAMA</City>
+				<City>TXT_KEY_CITY_NAME_FUKUSHIMA</City>
+				<City>TXT_KEY_CITY_NAME_SUO</City>
+				<City>TXT_KEY_CITY_NAME_BIZEN</City>
+				<City>TXT_KEY_CITY_NAME_ECHIZEN</City>
+				<City>TXT_KEY_CITY_NAME_IZUMI</City>
+				<City>TXT_KEY_CITY_NAME_OMI</City>
+				<City>TXT_KEY_CITY_NAME_ECHIGO</City>
+				<City>TXT_KEY_CITY_NAME_KOZUKE</City>
+				<City>TXT_KEY_CITY_NAME_SADO</City>
+				<City>TXT_KEY_CITY_NAME_KOBE</City>
+				<City>TXT_KEY_CITY_NAME_NAGANO</City>
+				<City>TXT_KEY_CITY_NAME_HIROSHIMA</City>
+				<City>TXT_KEY_CITY_NAME_TAKAYAMA</City>
+				<City>TXT_KEY_CITY_NAME_AKITA</City>
+				<City>TXT_KEY_CITY_NAME_FUKUOKA</City>
+				<City>TXT_KEY_CITY_NAME_AOMORI</City>
+				<City>TXT_KEY_CITY_NAME_KAMAKURO</City>
+				<City>TXT_KEY_CITY_NAME_KOCHI</City>
+				<City>TXT_KEY_CITY_NAME_NAHA</City>
+			</Cities>
+			<Buildings/>
+			<Units/>
+			<FreeUnitClasses>
+				<FreeUnitClass>
+					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
+					<iFreeUnits>1</iFreeUnits>
+				</FreeUnitClass>
+				<FreeUnitClass>
+					<UnitClassType>UNITCLASS_TEST_A</UnitClassType>
+					<iFreeUnits>1</iFreeUnits>
+				</FreeUnitClass>
+			</FreeUnitClasses>
+			<FreeBuildingClasses>
+				<FreeBuildingClass>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<bFreeBuildingClass>1</bFreeBuildingClass>
+				</FreeBuildingClass>
+				<FreeBuildingClass>
+					<BuildingClassType>BUILDINGCLASS_TEST</BuildingClassType>
+					<bFreeBuildingClass>1</bFreeBuildingClass>
+				</FreeBuildingClass>
+			</FreeBuildingClasses>
+			<FreeTechs>
+				<FreeTech>
+					<TechType>TECH_FISHING</TechType>
+					<bFreeTech>1</bFreeTech>
+				</FreeTech>
+				<FreeTech>
+					<TechType>TECH_THE_WHEEL</TechType>
+					<bFreeTech>1</bFreeTech>
+				</FreeTech>
+			</FreeTechs>
+			<DisableTechs/>
+			<InitialCivics>
+				<CivicType>CIVIC_TEST</CivicType>
+				<CivicType>CIVIC_BARBARISM</CivicType>
+				<CivicType>CIVIC_TRIBALISM</CivicType>
+				<CivicType>CIVIC_DECENTRALIZATION</CivicType>
+				<CivicType>CIVIC_PAGANISM</CivicType>
+			</InitialCivics>
+			<Leaders>
+				<Leader>
+					<LeaderName>LEADER_TEST</LeaderName>
+					<bLeaderAvailability>1</bLeaderAvailability>
+				</Leader>
+			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_TEST</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
+			<DerivativeCiv>NONE</DerivativeCiv>
+			<CivilizationSelectionSound>AS3D_JAPAN_SELECT</CivilizationSelectionSound>
+			<CivilizationActionSound>AS3D_JAPAN_ORDER</CivilizationActionSound>
 		</CivilizationInfo>
 	</CivilizationInfos>
 </Civ4CivilizationInfos>
