@@ -4,7 +4,11 @@ rem then deploy the mod (claude_sample.ini + Assets\) to the Civ4 Mods folder.
 rem
 rem   build.bat           incremental Release build, then deploy
 rem   build.bat rebuild   clean + full Release build, then deploy
+rem   build.bat deploy    deploy only (no build)
 rem   build.bat clean     delete CvGameCoreDLL\Release\
+rem
+rem Exit code: 0 = done, 1 = build or deploy failed,
+rem            2 = built but not deployed because Civ4 is running (quit it, then "build.bat deploy")
 rem
 rem Mods\claude_sample\Assets\ is mirrored from Assets\: files that are not in
 rem Assets\ are deleted there. Edit files in this repository, not in Mods\.
@@ -14,6 +18,7 @@ set "TOOLKIT=C:\Program Files (x86)\Microsoft Visual C++ Toolkit 2003"
 set "PSDK=C:\Program Files\Microsoft Platform SDK"
 set "BTS=C:\Program Files (x86)\CYBERFRONT\Sid Meier's Civilization 4(J)\Beyond the Sword(J)"
 set "MODNAME=claude_sample"
+set "CIV4EXE=Civ4BeyondSword.exe"
 
 rem Only the 2003-era toolchain may be visible. A newer cl.exe / link.exe on PATH,
 rem or newer headers / libs in INCLUDE / LIB, would produce a DLL Civ4 cannot use.
@@ -32,6 +37,7 @@ if /i "%~1"=="clean" (
 	nmake /nologo clean || goto fail
 	goto done
 )
+if /i "%~1"=="deploy" goto deploy
 if /i "%~1"=="rebuild" (
 	nmake /nologo clean || goto fail
 )
@@ -52,8 +58,11 @@ copy /y "%DLL%" "%ASSETS%\CvGameCoreDLL.dll" >nul || goto fail
 echo.
 echo Build succeeded: %ASSETS%\CvGameCoreDLL.dll
 
+:deploy
 if not exist "%BTS%\Mods" goto nodeploy
-rem /R:2 /W:1 fails fast instead of retrying for a long time while Civ4 holds the DLL open.
+rem A running Civ4 keeps CvGameCoreDLL.dll open, so do not even try to copy.
+tasklist /NH /FI "IMAGENAME eq %CIV4EXE%" | findstr /i /c:"%CIV4EXE%" >nul && goto civ4running
+rem /R:2 /W:1 fails fast instead of retrying for a long time if a file is locked anyway.
 robocopy "%ASSETS%" "%MODDIR%\Assets" /MIR /R:2 /W:1 /NJH /NJS /NP /NDL
 if errorlevel 8 goto deployfail
 copy /y "%~dp0%MODNAME%.ini" "%MODDIR%\%MODNAME%.ini" >nul || goto deployfail
@@ -64,9 +73,15 @@ goto done
 echo WARNING: Civ4 Mods folder not found; skipped deploy
 goto done
 
+:civ4running
+echo.
+echo SKIPPED DEPLOY: Civ4 is running. Quit Civ4, then run "build.bat deploy".
+endlocal
+exit /b 2
+
 :deployfail
 echo.
-echo DEPLOY FAILED: could not update the Mods folder. Quit Civ4 and run build.bat again.
+echo DEPLOY FAILED: could not update the Mods folder. Quit Civ4, then run "build.bat deploy".
 endlocal
 exit /b 1
 
