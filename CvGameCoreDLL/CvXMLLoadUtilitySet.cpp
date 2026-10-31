@@ -691,6 +691,19 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 		}
 	}
 
+	// The largest city plot radius the XML allows (added by this mod): every positive trait iCityRadiusChange
+	// could add up on one player. setMaxCityPlotRadius keeps it within CITY_PLOTS_MAX_RADIUS.
+	int iMaxCityPlotRadius = CITY_PLOTS_DEFAULT_RADIUS;
+	for (int i=0; i < GC.getNumTraitInfos(); ++i)
+	{
+		iMaxCityPlotRadius += std::max(0, GC.getTraitInfo((TraitTypes) i).getCityRadiusChange());
+	}
+	GC.setMaxCityPlotRadius(iMaxCityPlotRadius);
+
+	// City screen camera (added by this mod): CvCity::updateCityScreenCamera changes CAMERA_CITY_ZOOM_IN_DISTANCE
+	// for each selected city, so the XML value is kept here
+	GC.getDefinesVarSystem()->SetValue("CAMERA_CITY_ZOOM_IN_DISTANCE_DEFAULT", GC.getDefineFLOAT("CAMERA_CITY_ZOOM_IN_DISTANCE"));
+
 	UpdateProgressCB("GlobalOther");
 
 	DestroyFXml();

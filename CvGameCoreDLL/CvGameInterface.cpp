@@ -793,6 +793,9 @@ bool CvGame::selectCity(CvCity* pSelectCity, bool bCtrl, bool bAlt, bool bShift)
 		return false;
 	}
 
+	// Before the exe zooms into the city (added by this mod); CvCity::updateSelectedCity does it for other ways in
+	pSelectCity->updateCityScreenCamera();
+
 	if (!bShift)
 	{
 		gDLL->getInterfaceIFace()->clearSelectedCities();

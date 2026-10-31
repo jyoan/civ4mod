@@ -33,6 +33,7 @@ public:
 	bool isCitySelected();
 	DllExport bool canBeSelected() const;
 	DllExport void updateSelectedCity(bool bTestProduction);
+	void updateCityScreenCamera() const;				// added by this mod
 
 	void updateYield();
 
@@ -49,6 +50,8 @@ public:
 	// City plot radius (added by this mod): the city uses the city plot indexes below getNumCityPlots()
 	int getPlotRadius() const;				// Exposed to Python
 	int getNumCityPlots() const;				// Exposed to Python
+	void setPlotRadius(int iNewValue);
+	void updatePlotRadius();				// sets the radius from the owner (traits)
 
 	bool canWork(CvPlot* pPlot) const;																			// Exposed to Python
 	void verifyWorkingPlot(int iIndex);

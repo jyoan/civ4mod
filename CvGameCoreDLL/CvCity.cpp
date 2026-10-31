@@ -18,6 +18,7 @@
 #include "CyCity.h"
 #include "CyArgsList.h"
 #include "FProfiler.h"
+#include "FVariableSystem.h"
 #include "CvGameTextMgr.h"
 
 // interfaces used
@@ -167,6 +168,9 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 	//--------------------------------
 	// Init saved data
 	reset(iID, eOwner, pPlot->getX_INLINE(), pPlot->getY_INLINE());
+
+	// The city plot radius of the owner, before setPlotCity counts the plots in the radius (added by this mod)
+	m_iPlotRadius = GET_PLAYER(eOwner).getNextCityRadius();
 
 	//--------------------------------
 	// Init non-saved data
@@ -865,6 +869,9 @@ void CvCity::doTurn()
 	setAirliftTargeted(false);
 	setCurrAirlift(0);
 
+	// Existing cities follow the radius of the owner, e.g. in a game saved before the radius changed (added by this mod)
+	updatePlotRadius();
+
 	AI_doTurn();
 
 	bool bAllowNoProduction = !doCheckProduction();
@@ -1065,6 +1072,8 @@ bool CvCity::canBeSelected() const
 
 void CvCity::updateSelectedCity(bool bTestProduction)
 {
+	updateCityScreenCamera();
+
 	for (int iI = 0; iI < getNumCityPlots(); iI++)
 	{
 		CvPlot* pLoopPlot = getCityIndexPlot(iI);
@@ -1081,6 +1090,36 @@ void CvCity::updateSelectedCity(bool bTestProduction)
 			chooseProduction(NO_UNIT, NO_BUILDING, NO_PROJECT, false, true);
 		}
 	}
+}
+
+
+// City screen camera: the exe zooms into a city with the define CAMERA_CITY_ZOOM_IN_DISTANCE. A city that can work
+// a plot of its third ring (radius 3 and the plot inside its borders) gets CAMERA_CITY_ZOOM_IN_DISTANCE_RADIUS_3,
+// so that the outer rows are not hidden under the interface. Called when a city is selected; only the camera of
+// this machine changes, so the game state stays the same in multiplayer.
+void CvCity::updateCityScreenCamera() const
+{
+	float fDistance = GC.getDefineFLOAT("CAMERA_CITY_ZOOM_IN_DISTANCE_DEFAULT");
+	CvPlot* pLoopPlot;
+	int iI;
+
+	if (fDistance <= 0.0f)
+	{
+		return;
+	}
+
+	for (iI = calculateNumCityPlots(CITY_PLOTS_DEFAULT_RADIUS); iI < getNumCityPlots(); iI++)
+	{
+		pLoopPlot = getCityIndexPlot(iI);
+
+		if ((pLoopPlot != NULL) && (pLoopPlot->getWorkingCity() == this))
+		{
+			fDistance = std::max(fDistance, GC.getDefineFLOAT("CAMERA_CITY_ZOOM_IN_DISTANCE_RADIUS_3"));
+			break;
+		}
+	}
+
+	GC.getDefinesVarSystem()->SetValue("CAMERA_CITY_ZOOM_IN_DISTANCE", fDistance);
 }
 
 
@@ -1263,6 +1302,73 @@ int CvCity::getPlotRadius() const
 int CvCity::getNumCityPlots() const
 {
 	return calculateNumCityPlots(getPlotRadius());
+}
+
+
+// Changes the radius of an existing city. Citizens leave the plots that drop out first, then the city radius counts
+// of the plots change as in CvPlot::setPlotCity, and the plots choose their working city again.
+void CvCity::setPlotRadius(int iNewValue)
+{
+	CvPlot* pLoopPlot;
+	int iOldNumPlots;
+	int iNewNumPlots;
+	int iChange;
+	int iI;
+
+	iNewValue = range(iNewValue, 1, CITY_PLOTS_MAX_RADIUS);
+
+	if (iNewValue == getPlotRadius())
+	{
+		return;
+	}
+
+	iOldNumPlots = getNumCityPlots();
+	iNewNumPlots = calculateNumCityPlots(iNewValue);
+	iChange = ((iNewNumPlots > iOldNumPlots) ? 1 : -1);
+
+	for (iI = iNewNumPlots; iI < iOldNumPlots; iI++)
+	{
+		if (isWorkingPlot(iI))
+		{
+			setWorkingPlot(iI, false);
+		}
+	}
+
+	for (iI = std::min(iOldNumPlots, iNewNumPlots); iI < std::max(iOldNumPlots, iNewNumPlots); iI++)
+	{
+		pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
+
+		if (pLoopPlot != NULL)
+		{
+			pLoopPlot->changeCityRadiusCount(iChange);
+			pLoopPlot->changePlayerCityRadiusCount(getOwnerINLINE(), iChange);
+		}
+	}
+
+	m_iPlotRadius = iNewValue;
+
+	for (iI = 0; iI < std::max(iOldNumPlots, iNewNumPlots); iI++)
+	{
+		pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
+
+		if (pLoopPlot != NULL)
+		{
+			pLoopPlot->updateWorkingCity();
+		}
+	}
+
+	updateFeatureHealth();
+	updateFeatureHappiness();
+	AI_updateBestBuild();
+	AI_setAssignWorkDirty(true);
+	setLayoutDirty(true);
+}
+
+
+// The radius this city should have: the radius of new cities of its owner (traits)
+void CvCity::updatePlotRadius()
+{
+	setPlotRadius(GET_PLAYER(getOwnerINLINE()).getNextCityRadius());
 }
 
 
@@ -9851,6 +9957,13 @@ void CvCity::setWorkingPlot(int iIndex, bool bNewValue)
 
 void CvCity::setWorkingPlot(CvPlot* pPlot, bool bNewValue)
 {
+	// The plot can be outside the radius after the radius shrank (setPlotRadius); it is not worked then (added by this mod)
+	if (getCityPlotIndex(pPlot) == -1)
+	{
+		FAssertMsg(!bNewValue, "Working a plot outside the city radius");
+		return;
+	}
+
 	setWorkingPlot(getCityPlotIndex(pPlot), bNewValue);
 }
 

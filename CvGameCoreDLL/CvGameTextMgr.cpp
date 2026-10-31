@@ -3424,6 +3424,12 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_EXPERIENCE_IN_BORDERS", GC.getTraitInfo(eTrait).getExpInBorderModifier()));
 		}
 
+		if (GC.getTraitInfo(eTrait).getCityRadiusChange() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CITY_RADIUS_CHANGE", GC.getTraitInfo(eTrait).getCityRadiusChange(), CITY_PLOTS_MAX_RADIUS));
+		}
+
 		// UnitCombatFreeExperiences / UnitCombatProductionModifiers (building text keys)
 		for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
 		{

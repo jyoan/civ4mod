@@ -4214,6 +4214,7 @@ public:
 	int getFreeSpecialist() const;				// Exposed to Python
 	int getTradeRoutes() const;				// Exposed to Python
 	int getExpInBorderModifier() const;				// Exposed to Python
+	int getCityRadiusChange() const;				// Exposed to Python
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -4279,6 +4280,7 @@ protected:
 	int m_iFreeSpecialist;
 	int m_iTradeRoutes;
 	int m_iExpInBorderModifier;
+	int m_iCityRadiusChange;
 
 	CvString m_szShortDescription;
 

@@ -16497,6 +16497,7 @@ m_iWarWearinessModifier(0),
 m_iFreeSpecialist(0),
 m_iTradeRoutes(0),
 m_iExpInBorderModifier(0),
+m_iCityRadiusChange(0),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
 m_paiCapitalYieldModifier(NULL),
@@ -16646,6 +16647,11 @@ int CvTraitInfo::getTradeRoutes() const
 int CvTraitInfo::getExpInBorderModifier() const
 {
 	return m_iExpInBorderModifier;
+}
+
+int CvTraitInfo::getCityRadiusChange() const
+{
+	return m_iCityRadiusChange;
 }
 
 const TCHAR* CvTraitInfo::getShortDescription() const
@@ -16972,6 +16978,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iFreeSpecialist, "iFreeSpecialist");
 	pXML->GetChildXmlValByName(&m_iTradeRoutes, "iTradeRoutes");
 	pXML->GetChildXmlValByName(&m_iExpInBorderModifier, "iExpInBorderModifier");
+	pXML->GetChildXmlValByName(&m_iCityRadiusChange, "iCityRadiusChange");
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ExtraYieldThresholds"))
 	{

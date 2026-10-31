@@ -365,6 +365,7 @@
 			<iFreeSpecialist>1</iFreeSpecialist>
 			<iTradeRoutes>1</iTradeRoutes>
 			<iExpInBorderModifier>50</iExpInBorderModifier>
+			<iCityRadiusChange>1</iCityRadiusChange>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

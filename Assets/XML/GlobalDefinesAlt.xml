@@ -9,4 +9,10 @@
 		<DefineName>MODS_SHOULD_OVERRIDE_GLOBAL_DEFINES_HERE</DefineName>
 		<iDefineIntVal>0</iDefineIntVal>
 	</Define>
+	<!-- Added by this mod: city screen camera distance for a city that can work plots of its third ring
+		(radius 3 from iCityRadiusChange, inside its borders). Other cities use CAMERA_CITY_ZOOM_IN_DISTANCE. -->
+	<Define>
+		<DefineName>CAMERA_CITY_ZOOM_IN_DISTANCE_RADIUS_3</DefineName>
+		<fDefineFloatVal>4500</fDefineFloatVal>
+	</Define>
 </Civ4Defines>

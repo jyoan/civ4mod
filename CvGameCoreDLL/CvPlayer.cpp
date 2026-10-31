@@ -5961,7 +5961,18 @@ int CvPlayer::getTraitRiverPlotYieldChange(YieldTypes eYield) const
 
 int CvPlayer::getNextCityRadius() const
 {
-	return CITY_PLOTS_DEFAULT_RADIUS;
+	int iRadius = CITY_PLOTS_DEFAULT_RADIUS;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iRadius += GC.getTraitInfo((TraitTypes)iI).getCityRadiusChange();
+		}
+	}
+
+	return range(iRadius, 1, CITY_PLOTS_MAX_RADIUS);
 }
 
 // True if a trait, current civic or owned building lets eUnitCombat units upgrade outside the team's territory.

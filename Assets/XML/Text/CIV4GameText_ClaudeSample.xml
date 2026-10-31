@@ -182,6 +182,15 @@
 		<Spanish>%s1_UnitName gained %d2_Gold[ICON_GOLD] from the victory</Spanish>
 		<Japanese>%s1_UnitName&#12364;&#25126;&#38360;&#12395;&#21213;&#21033;&#12375;&#12289;%d2_Gold[ICON_GOLD]&#12434;&#24471;&#12414;&#12375;&#12383;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CITY_RADIUS_CHANGE</Tag>
+		<English>[ICON_BULLET]%D1_Change city radius (up to %d2_Max)</English>
+		<French>[ICON_BULLET]%D1_Change city radius (up to %d2_Max)</French>
+		<German>[ICON_BULLET]%D1_Change city radius (up to %d2_Max)</German>
+		<Italian>[ICON_BULLET]%D1_Change city radius (up to %d2_Max)</Italian>
+		<Spanish>[ICON_BULLET]%D1_Change city radius (up to %d2_Max)</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#22287;&#12398;&#21322;&#24452;%D1_Change&#65288;&#26368;&#22823;%d2_Max&#65289;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
