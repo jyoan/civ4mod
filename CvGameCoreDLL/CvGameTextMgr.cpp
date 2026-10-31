@@ -3452,6 +3452,16 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			}
 		}
 
+		// UpgradeAnywhereUnitCombats
+		for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+		{
+			if (GC.getTraitInfo(eTrait).isUpgradeAnywhereUnitCombat(iI))
+			{
+				szHelpString.append(NEWLINE L"  ");
+				szHelpString.append(gDLL->getText(GC.getTraitInfo(eTrait).isUpgradeAnywhereExcludeEnemy(iI) ? "TXT_KEY_UNITCOMBAT_UPGRADE_ANYWHERE_NOT_ENEMY" : "TXT_KEY_UNITCOMBAT_UPGRADE_ANYWHERE", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide()));
+			}
+		}
+
 		// Yield / commerce modifiers: bNewLine=false and the newline, indent and bullet passed as szStart,
 		// so nothing is written when all values are zero
 		szTempBuffer.Format(L"%s  %c", NEWLINE, gDLL->getSymbolID(BULLET_CHAR));
@@ -4687,6 +4697,16 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		{
 			szHelpText.append(NEWLINE);
 			szHelpText.append(gDLL->getText("TXT_KEY_UNITCOMBAT_UPGRADE_COST_MODIFIER", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), -GC.getCivicInfo(eCivic).getUnitCombatUpgradeDiscount(iI)));
+		}
+	}
+
+	//	UpgradeAnywhereUnitCombats
+	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+	{
+		if (GC.getCivicInfo(eCivic).isUpgradeAnywhereUnitCombat(iI))
+		{
+			szHelpText.append(NEWLINE);
+			szHelpText.append(gDLL->getText(GC.getCivicInfo(eCivic).isUpgradeAnywhereExcludeEnemy(iI) ? "TXT_KEY_UNITCOMBAT_UPGRADE_ANYWHERE_NOT_ENEMY" : "TXT_KEY_UNITCOMBAT_UPGRADE_ANYWHERE", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide()));
 		}
 	}
 

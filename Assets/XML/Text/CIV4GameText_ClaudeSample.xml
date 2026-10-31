@@ -56,4 +56,22 @@
 		<Spanish>[ICON_BULLET]%D2_percent%% [ICON_GOLD] to Upgrade %s1_UnitCombat</Spanish>
 		<Japanese>[ICON_BULLET]%s1_UnitCombat&#12398;&#12450;&#12483;&#12503;&#12464;&#12524;&#12540;&#12489;&#12395;&#24517;&#35201;&#12394;[ICON_GOLD] %D2_percent%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNITCOMBAT_UPGRADE_ANYWHERE</Tag>
+		<English>[ICON_BULLET]%s1_UnitCombat can upgrade outside your territory</English>
+		<French>[ICON_BULLET]%s1_UnitCombat can upgrade outside your territory</French>
+		<German>[ICON_BULLET]%s1_UnitCombat can upgrade outside your territory</German>
+		<Italian>[ICON_BULLET]%s1_UnitCombat can upgrade outside your territory</Italian>
+		<Spanish>[ICON_BULLET]%s1_UnitCombat can upgrade outside your territory</Spanish>
+		<Japanese>[ICON_BULLET]%s1_UnitCombat&#12399;&#33258;&#22269;&#12398;&#38936;&#22303;&#22806;&#12391;&#12418;&#12450;&#12483;&#12503;&#12464;&#12524;&#12540;&#12489;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNITCOMBAT_UPGRADE_ANYWHERE_NOT_ENEMY</Tag>
+		<English>[ICON_BULLET]%s1_UnitCombat can upgrade outside your territory (except in enemy territory)</English>
+		<French>[ICON_BULLET]%s1_UnitCombat can upgrade outside your territory (except in enemy territory)</French>
+		<German>[ICON_BULLET]%s1_UnitCombat can upgrade outside your territory (except in enemy territory)</German>
+		<Italian>[ICON_BULLET]%s1_UnitCombat can upgrade outside your territory (except in enemy territory)</Italian>
+		<Spanish>[ICON_BULLET]%s1_UnitCombat can upgrade outside your territory (except in enemy territory)</Spanish>
+		<Japanese>[ICON_BULLET]%s1_UnitCombat&#12399;&#33258;&#22269;&#12398;&#38936;&#22303;&#22806;&#12391;&#12418;&#12450;&#12483;&#12503;&#12464;&#12524;&#12540;&#12489;&#21487;&#33021;&#65288;&#25973;&#22269;&#12398;&#38936;&#22303;&#12434;&#38500;&#12367;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

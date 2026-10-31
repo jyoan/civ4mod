@@ -70,6 +70,18 @@
 			<FeatureHappinessChanges/>
 			<ImprovementYieldChanges/>
 			<WeLoveTheKing>TXT_KEY_CIVIC_WE_LOVE_DESPOT</WeLoveTheKing>
+			<UpgradeAnywhereUnitCombats>
+				<UpgradeAnywhereUnitCombat>
+					<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
+					<bUpgradeAnywhere>1</bUpgradeAnywhere>
+					<bExcludeEnemyTerritory>1</bExcludeEnemyTerritory>
+				</UpgradeAnywhereUnitCombat>
+				<UpgradeAnywhereUnitCombat>
+					<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
+					<bUpgradeAnywhere>1</bUpgradeAnywhere>
+					<bExcludeEnemyTerritory>1</bExcludeEnemyTerritory>
+				</UpgradeAnywhereUnitCombat>
+			</UpgradeAnywhereUnitCombats>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_GOVERNMENT</CivicOptionType>

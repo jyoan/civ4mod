@@ -1365,6 +1365,8 @@ public:
 	int getUnitCombatFreeExperience(int i) const;				// Exposed to Python
 	int getUnitCombatProductionModifier(int i) const;				// Exposed to Python
 	int getUnitCombatUpgradeDiscount(int i) const;				// Exposed to Python
+	bool isUpgradeAnywhereUnitCombat(int i) const;				// Exposed to Python
+	bool isUpgradeAnywhereExcludeEnemy(int i) const;				// Exposed to Python
 	int getBuildingHappinessChanges(int i) const;				// Exposed to Python
 	int getBuildingHealthChanges(int i) const;				// Exposed to Python
 	int getFeatureHappinessChanges(int i) const;				// Exposed to Python
@@ -1442,6 +1444,8 @@ protected:
 	int* m_piUnitCombatFreeExperience;
 	int* m_piUnitCombatProductionModifier;
 	int* m_piUnitCombatUpgradeDiscount;
+	bool* m_pabUpgradeAnywhereUnitCombat;
+	bool* m_pabUpgradeAnywhereExcludeEnemy;
 	int* m_paiBuildingHappinessChanges;
 	int* m_paiBuildingHealthChanges;
 	int* m_paiFeatureHappinessChanges;
@@ -4189,6 +4193,8 @@ public:
 	int getUnitCombatFreeExperience(int i) const;				// Exposed to Python
 	int getUnitCombatProductionModifier(int i) const;				// Exposed to Python
 	int getUnitCombatUpgradeDiscount(int i) const;				// Exposed to Python
+	bool isUpgradeAnywhereUnitCombat(int i) const;				// Exposed to Python
+	bool isUpgradeAnywhereExcludeEnemy(int i) const;				// Exposed to Python
 
 	int isFreePromotion(int i) const;				// Exposed to Python
 	int isFreePromotionUnitCombat(int i) const;			
@@ -4241,6 +4247,8 @@ protected:
 	int* m_paiUnitCombatFreeExperience;
 	int* m_paiUnitCombatProductionModifier;
 	int* m_paiUnitCombatUpgradeDiscount;
+	bool* m_pabUpgradeAnywhereUnitCombat;
+	bool* m_pabUpgradeAnywhereExcludeEnemy;
 
 	bool* m_pabFreePromotion;
 	bool* m_pabFreePromotionUnitCombat;

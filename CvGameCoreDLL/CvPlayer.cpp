@@ -5862,6 +5862,43 @@ int CvPlayer::getUnitCombatUpgradeDiscount(UnitCombatTypes eUnitCombat) const
 	return iDiscount;
 }
 
+// True if a trait or current civic lets eUnitCombat units upgrade outside the team's territory.
+// bEnemyTerritory: the unit stands in the territory of a team we are at war with; sources with
+// bExcludeEnemyTerritory do not count there.
+bool CvPlayer::isUpgradeAnywhere(UnitCombatTypes eUnitCombat, bool bEnemyTerritory) const
+{
+	int iI;
+
+	FAssertMsg(eUnitCombat >= 0, "eUnitCombat is expected to be non-negative");
+	FAssertMsg(eUnitCombat < GC.getNumUnitCombatInfos(), "eUnitCombat is expected to be within maximum bounds");
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+			if (kTrait.isUpgradeAnywhereUnitCombat(eUnitCombat) && !(bEnemyTerritory && kTrait.isUpgradeAnywhereExcludeEnemy(eUnitCombat)))
+			{
+				return true;
+			}
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	{
+		if (getCivics((CivicOptionTypes)iI) != NO_CIVIC)
+		{
+			CvCivicInfo& kCivic = GC.getCivicInfo(getCivics((CivicOptionTypes)iI));
+			if (kCivic.isUpgradeAnywhereUnitCombat(eUnitCombat) && !(bEnemyTerritory && kCivic.isUpgradeAnywhereExcludeEnemy(eUnitCombat)))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 int CvPlayer::getProductionModifier(BuildingTypes eBuilding) const
 {
 	int iMultiplier = 0;

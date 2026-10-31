@@ -260,6 +260,7 @@ public:
 	bool upgradeAvailable(UnitTypes eFromUnit, UnitClassTypes eToUnitClass, int iCount = 0) const;					// Exposed to Python
 	bool canUpgrade(UnitTypes eUnit, bool bTestVisible = false) const;														// Exposed to Python
 	bool isReadyForUpgrade() const;
+	bool isUpgradeAnywhere() const;
 	bool hasUpgrade(bool bSearch = false) const;																											// Exposed to Python
 	bool hasUpgrade(UnitTypes eUnit, bool bSearch = false) const;
 	CvCity* getUpgradeCity(bool bSearch = false) const;

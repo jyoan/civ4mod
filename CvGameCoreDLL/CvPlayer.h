@@ -189,6 +189,7 @@ public:
 	int getUnitCombatFreeExperience(UnitCombatTypes eUnitCombat) const;
 	int getUnitCombatProductionModifier(UnitCombatTypes eUnitCombat) const;
 	int getUnitCombatUpgradeDiscount(UnitCombatTypes eUnitCombat) const;
+	bool isUpgradeAnywhere(UnitCombatTypes eUnitCombat, bool bEnemyTerritory) const;
 	int getProductionModifier(BuildingTypes eBuilding) const;
 	int getProductionModifier(ProjectTypes eProject) const;
 

@@ -351,6 +351,12 @@
 					<iUpgradeDiscount>50</iUpgradeDiscount>
 				</UnitCombatUpgradeDiscount>
 			</UnitCombatUpgradeDiscounts>
+			<UpgradeAnywhereUnitCombats>
+				<UpgradeAnywhereUnitCombat>
+					<UnitCombatType>UNITCOMBAT_NAVAL</UnitCombatType>
+					<bUpgradeAnywhere>1</bUpgradeAnywhere>
+				</UpgradeAnywhereUnitCombat>
+			</UpgradeAnywhereUnitCombats>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 			<FreePromotionSets>

@@ -305,6 +305,8 @@ void CyInfoPythonInterface3()
 		.def("getUnitCombatFreeExperience", &CvTraitInfo::getUnitCombatFreeExperience, "int (int i)")
 		.def("getUnitCombatProductionModifier", &CvTraitInfo::getUnitCombatProductionModifier, "int (int i)")
 		.def("getUnitCombatUpgradeDiscount", &CvTraitInfo::getUnitCombatUpgradeDiscount, "int (int i)")
+		.def("isUpgradeAnywhereUnitCombat", &CvTraitInfo::isUpgradeAnywhereUnitCombat, "bool (int i)")
+		.def("isUpgradeAnywhereExcludeEnemy", &CvTraitInfo::isUpgradeAnywhereExcludeEnemy, "bool (int i)")
 
 		.def("getShortDescription", &CvTraitInfo::getShortDescription, "int (int i)")
 		.def("getExtraYieldThreshold", &CvTraitInfo::getExtraYieldThreshold, "int (int i)")

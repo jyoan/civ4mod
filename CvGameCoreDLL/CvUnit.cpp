@@ -6770,10 +6770,26 @@ bool CvUnit::isReadyForUpgrade() const
 
 	if (plot()->getTeam() != getTeam())
 	{
-		return false;
+		// UpgradeAnywhereUnitCombats (traits / civics) lift the territory requirement
+		if (!isUpgradeAnywhere())
+		{
+			return false;
+		}
 	}
 
 	return true;
+}
+
+// True if UpgradeAnywhereUnitCombats lets this unit upgrade on its current plot outside its team's territory
+bool CvUnit::isUpgradeAnywhere() const
+{
+	if (getUnitCombatType() == NO_UNITCOMBAT)
+	{
+		return false;
+	}
+
+	bool bEnemyTerritory = (plot()->isOwned() && GET_TEAM(getTeam()).isAtWar(plot()->getTeam()));
+	return GET_PLAYER(getOwnerINLINE()).isUpgradeAnywhere(getUnitCombatType(), bEnemyTerritory);
 }
 
 // has upgrade is used to determine if an upgrade is possible,
@@ -6967,8 +6983,9 @@ CvCity* CvUnit::getUpgradeCity(UnitTypes eUnit, bool bSearch, int* iSearchValue)
 	}
 	else
 	{
-		// find the closest city
-		CvCity* pClosestCity = GC.getMapINLINE().findCity(getX_INLINE(), getY_INLINE(), NO_PLAYER, getTeam(), true, bCoastalOnly);
+		// find the closest city. Outside our territory with UpgradeAnywhereUnitCombats, it may be in any area
+		bool bSameArea = !((plot()->getTeam() != getTeam()) && isUpgradeAnywhere());
+		CvCity* pClosestCity = GC.getMapINLINE().findCity(getX_INLINE(), getY_INLINE(), NO_PLAYER, getTeam(), bSameArea, bCoastalOnly);
 		if (pClosestCity != NULL)
 		{
 			// if we can train, then return this city (otherwise it will return NULL)

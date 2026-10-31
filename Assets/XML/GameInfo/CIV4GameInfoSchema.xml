@@ -762,6 +762,16 @@
 	<ElementType name="UnitCombatUpgradeDiscounts" content="eltOnly">
 		<element type="UnitCombatUpgradeDiscount" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="bUpgradeAnywhere" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bExcludeEnemyTerritory" content="textOnly" dt:type="boolean"/>
+	<ElementType name="UpgradeAnywhereUnitCombat" content="eltOnly">
+		<element type="UnitCombatType"/>
+		<element type="bUpgradeAnywhere"/>
+		<element type="bExcludeEnemyTerritory" minOccurs="0"/>
+	</ElementType>
+	<ElementType name="UpgradeAnywhereUnitCombats" content="eltOnly">
+		<element type="UpgradeAnywhereUnitCombat" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="CivicInfo" content="eltOnly">
 		<element type="CivicOptionType"/>
 		<element type="Type"/>
@@ -830,6 +840,7 @@
 		<element type="UnitCombatFreeExperiences" minOccurs="0"/>
 		<element type="UnitCombatProductionModifiers" minOccurs="0"/>
 		<element type="UnitCombatUpgradeDiscounts" minOccurs="0"/>
+		<element type="UpgradeAnywhereUnitCombats" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="CivicInfos" content="eltOnly">
 		<element type="CivicInfo" maxOccurs="*"/>
