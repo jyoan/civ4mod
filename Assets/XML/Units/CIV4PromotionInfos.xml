@@ -4540,6 +4540,8 @@
 			<PromotionCombatApply>PROMOTION_TEST_POISON</PromotionCombatApply>
 			<iFreeXPPerTurn>1</iFreeXPPerTurn>
 			<iFreeXPCap>10</iFreeXPCap>
+			<iGoldFromCombat>5</iGoldFromCombat>
+			<iCombatCapturePercent>50</iCombatCapturePercent>
 			<HotKey/>
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>
@@ -4605,6 +4607,8 @@
 			<iExpireChance>50</iExpireChance>
 			<PromotionVictory>PROMOTION_TEST_STATE2</PromotionVictory>
 			<iPromotionVictoryChance>50</iPromotionVictoryChance>
+			<iGoldFromCombat>3</iGoldFromCombat>
+			<iCombatCapturePercent>50</iCombatCapturePercent>
 			<HotKey/>
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>

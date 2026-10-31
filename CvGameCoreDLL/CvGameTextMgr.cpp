@@ -4552,6 +4552,18 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 		}
 	}
 
+	if (GC.getPromotionInfo(ePromotion).getGoldFromCombat() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_GOLD_FROM_COMBAT", GC.getPromotionInfo(ePromotion).getGoldFromCombat()));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getCombatCapturePercent() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_CAPTURE", GC.getPromotionInfo(ePromotion).getCombatCapturePercent()));
+	}
+
 	if (GC.getPromotionInfo(ePromotion).getPromotionVictory() != NO_PROMOTION)
 	{
 		szBuffer.append(pcNewline);

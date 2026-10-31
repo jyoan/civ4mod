@@ -788,12 +788,19 @@ void CvUnit::doTurnPromotions()
 // Promotion effects at the end of a normal combat (added by this mod). this is the attacker; both units still exist.
 // The effects are judged from the promotions the units had in the combat: first the survivors lose their
 // bRemovedByCombat promotions, then a surviving opponent gets the PromotionCombatApply promotions, and then
-// the winner (the survivor whose opponent died) gets its PromotionVictory promotions.
+// the winner (the survivor whose opponent died) gets its PromotionVictory promotions, iGoldFromCombat and
+// iCombatCapturePercent (both added up over its promotions).
 void CvUnit::doCombatPromotions(CvUnit* pDefender)
 {
+	CvWString szBuffer;
 	CvUnit* apUnits[2];
 	std::vector<PromotionTypes> aaePromotions[2];
+	CvUnit* pWinner;
+	CvUnit* pLoser;
+	CvUnit* pCapturedUnit;
 	int iWinner;
+	int iGold = 0;
+	int iCapturePercent = 0;
 	int iUnit;
 	int iI;
 
@@ -867,6 +874,41 @@ void CvUnit::doCombatPromotions(CvUnit* pDefender)
 				if (GC.getGameINLINE().getSorenRandNum(100, "Promotion victory") < kPromotion.getPromotionVictoryChance())
 				{
 					apUnits[iWinner]->setHasPromotion((PromotionTypes)kPromotion.getPromotionVictory(), true);
+				}
+			}
+
+			iGold += kPromotion.getGoldFromCombat();
+			iCapturePercent += kPromotion.getCombatCapturePercent();
+		}
+
+		pWinner = apUnits[iWinner];
+		pLoser = apUnits[1 - iWinner];
+
+		if (iGold > 0)
+		{
+			GET_PLAYER(pWinner->getOwnerINLINE()).changeGold(iGold);
+
+			szBuffer = gDLL->getText("TXT_KEY_MISC_GOLD_FROM_COMBAT", pWinner->getNameKey(), iGold);
+			gDLL->getInterfaceIFace()->addMessage(pWinner->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, pWinner->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pWinner->getX_INLINE(), pWinner->getY_INLINE());
+		}
+
+		// The captured unit is a new unit of the loser's type on the winner's plot. Not from animals (they cannot
+		// enter owned plots), not across domains, not onto water for land units (an amphibious attack from a ship),
+		// and not by barbarians (as with the BtS captures of non-combat units).
+		if ((iCapturePercent > 0) && !pLoser->isAnimal() && (pLoser->getDomainType() == pWinner->getDomainType())
+			&& ((pWinner->getDomainType() != DOMAIN_LAND) || !pWinner->plot()->isWater())
+			&& !GET_PLAYER(pWinner->getOwnerINLINE()).isBarbarian())
+		{
+			if (GC.getGameINLINE().getSorenRandNum(100, "Combat capture") < iCapturePercent)
+			{
+				pCapturedUnit = GET_PLAYER(pWinner->getOwnerINLINE()).initUnit(pLoser->getUnitType(), pWinner->getX_INLINE(), pWinner->getY_INLINE());
+
+				if (pCapturedUnit != NULL)
+				{
+					pCapturedUnit->finishMoves();
+
+					szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_CAPTURED_UNIT", GC.getUnitInfo(pLoser->getUnitType()).getTextKeyWide());
+					gDLL->getInterfaceIFace()->addMessage(pWinner->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_UNITCAPTURE", MESSAGE_TYPE_INFO, pCapturedUnit->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pWinner->getX_INLINE(), pWinner->getY_INLINE());
 				}
 			}
 		}

@@ -155,6 +155,33 @@
 		<Spanish>[ICON_BULLET]%d2_Chance%% chance to give [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</Spanish>
 		<Japanese>[ICON_BULLET]&#29983;&#12365;&#27531;&#12387;&#12383;&#25126;&#38360;&#30456;&#25163;&#12395;%d2_Chance%%&#12398;&#30906;&#29575;&#12391;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#19982;&#12360;&#12427;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_GOLD_FROM_COMBAT</Tag>
+		<English>[ICON_BULLET]%D1_Gold[ICON_GOLD] on winning a combat</English>
+		<French>[ICON_BULLET]%D1_Gold[ICON_GOLD] on winning a combat</French>
+		<German>[ICON_BULLET]%D1_Gold[ICON_GOLD] on winning a combat</German>
+		<Italian>[ICON_BULLET]%D1_Gold[ICON_GOLD] on winning a combat</Italian>
+		<Spanish>[ICON_BULLET]%D1_Gold[ICON_GOLD] on winning a combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%D1_Gold[ICON_GOLD]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_CAPTURE</Tag>
+		<English>[ICON_BULLET]%d1_Chance%% chance to capture the defeated unit on winning a combat</English>
+		<French>[ICON_BULLET]%d1_Chance%% chance to capture the defeated unit on winning a combat</French>
+		<German>[ICON_BULLET]%d1_Chance%% chance to capture the defeated unit on winning a combat</German>
+		<Italian>[ICON_BULLET]%d1_Chance%% chance to capture the defeated unit on winning a combat</Italian>
+		<Spanish>[ICON_BULLET]%d1_Chance%% chance to capture the defeated unit on winning a combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d1_Chance%%&#12398;&#30906;&#29575;&#12391;&#20498;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12434;&#25429;&#29554;&#12377;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_GOLD_FROM_COMBAT</Tag>
+		<English>%s1_UnitName gained %d2_Gold[ICON_GOLD] from the victory</English>
+		<French>%s1_UnitName gained %d2_Gold[ICON_GOLD] from the victory</French>
+		<German>%s1_UnitName gained %d2_Gold[ICON_GOLD] from the victory</German>
+		<Italian>%s1_UnitName gained %d2_Gold[ICON_GOLD] from the victory</Italian>
+		<Spanish>%s1_UnitName gained %d2_Gold[ICON_GOLD] from the victory</Spanish>
+		<Japanese>%s1_UnitName&#12364;&#25126;&#38360;&#12395;&#21213;&#21033;&#12375;&#12289;%d2_Gold[ICON_GOLD]&#12434;&#24471;&#12414;&#12375;&#12383;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

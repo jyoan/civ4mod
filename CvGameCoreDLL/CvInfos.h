@@ -501,6 +501,8 @@ public:
 	int getPromotionCombatApplyChance() const;				// Exposed to Python
 	int getFreeXPPerTurn() const;				// Exposed to Python
 	int getFreeXPCap() const;				// Exposed to Python
+	int getGoldFromCombat() const;				// Exposed to Python
+	int getCombatCapturePercent() const;				// Exposed to Python
 
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
@@ -573,6 +575,8 @@ protected:
 	int m_iPromotionCombatApplyChance;
 	int m_iFreeXPPerTurn;
 	int m_iFreeXPCap;
+	int m_iGoldFromCombat;
+	int m_iCombatCapturePercent;
 	bool m_bRemovedByCombat;
 	bool m_bRemovedWhenHealed;
 

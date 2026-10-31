@@ -1615,6 +1615,8 @@ m_iPromotionCombatApply(NO_PROMOTION),
 m_iPromotionCombatApplyChance(100),
 m_iFreeXPPerTurn(0),
 m_iFreeXPCap(100),
+m_iGoldFromCombat(0),
+m_iCombatCapturePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
 m_bLeader(false),
@@ -1937,6 +1939,16 @@ int CvPromotionInfo::getFreeXPCap() const
 	return m_iFreeXPCap;
 }
 
+int CvPromotionInfo::getGoldFromCombat() const
+{
+	return m_iGoldFromCombat;
+}
+
+int CvPromotionInfo::getCombatCapturePercent() const
+{
+	return m_iCombatCapturePercent;
+}
+
 const TCHAR* CvPromotionInfo::getSound() const										
 {
 	return m_szSound;
@@ -2138,13 +2150,25 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 		m_iFreeXPPerTurn = 0;
 		m_iFreeXPCap = 100;
 	}
+
+	// uiFlag < 3: cache written before iGoldFromCombat and iCombatCapturePercent existed
+	if (uiFlag > 2)
+	{
+		stream->Read(&m_iGoldFromCombat);
+		stream->Read(&m_iCombatCapturePercent);
+	}
+	else
+	{
+		m_iGoldFromCombat = 0;
+		m_iCombatCapturePercent = 0;
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 2;
+	uint uiFlag = 3;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2217,6 +2241,9 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iPromotionCombatApplyChance);
 	stream->Write(m_iFreeXPPerTurn);
 	stream->Write(m_iFreeXPCap);
+
+	stream->Write(m_iGoldFromCombat);
+	stream->Write(m_iCombatCapturePercent);
 }
 
 bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
@@ -2287,6 +2314,8 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iPromotionCombatApplyChance, "iPromotionCombatApplyChance", 100);
 	pXML->GetChildXmlValByName(&m_iFreeXPPerTurn, "iFreeXPPerTurn");
 	pXML->GetChildXmlValByName(&m_iFreeXPCap, "iFreeXPCap", 100);
+	pXML->GetChildXmlValByName(&m_iGoldFromCombat, "iGoldFromCombat");
+	pXML->GetChildXmlValByName(&m_iCombatCapturePercent, "iCombatCapturePercent");
 
 	pXML->SetVariableListTagPair(&m_piTerrainAttackPercent, "TerrainAttacks", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());
 	pXML->SetVariableListTagPair(&m_piTerrainDefensePercent, "TerrainDefenses", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());

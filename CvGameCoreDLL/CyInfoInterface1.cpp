@@ -156,6 +156,8 @@ void CyInfoPythonInterface1()
 		.def("getPromotionCombatApplyChance", &CvPromotionInfo::getPromotionCombatApplyChance, "int ()")
 		.def("getFreeXPPerTurn", &CvPromotionInfo::getFreeXPPerTurn, "int ()")
 		.def("getFreeXPCap", &CvPromotionInfo::getFreeXPCap, "int ()")
+		.def("getGoldFromCombat", &CvPromotionInfo::getGoldFromCombat, "int ()")
+		.def("getCombatCapturePercent", &CvPromotionInfo::getCombatCapturePercent, "int ()")
 
 		.def("getSound", &CvPromotionInfo::getSound, "string ()")
 

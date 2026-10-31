@@ -789,6 +789,8 @@
 	<ElementType name="iPromotionCombatApplyChance" content="textOnly" dt:type="int"/>
 	<ElementType name="iFreeXPPerTurn" content="textOnly" dt:type="int"/>
 	<ElementType name="iFreeXPCap" content="textOnly" dt:type="int"/>
+	<ElementType name="iGoldFromCombat" content="textOnly" dt:type="int"/>
+	<ElementType name="iCombatCapturePercent" content="textOnly" dt:type="int"/>
 	<ElementType name="TechPrereq" content="textOnly"/>
 	<ElementType name="StateReligionPrereq" content="textOnly"/>
 	<ElementType name="bLeader" content="textOnly" dt:type="boolean"/>
@@ -906,6 +908,8 @@
 		<element type="iPromotionCombatApplyChance" minOccurs="0"/>
 		<element type="iFreeXPPerTurn" minOccurs="0"/>
 		<element type="iFreeXPCap" minOccurs="0"/>
+		<element type="iGoldFromCombat" minOccurs="0"/>
+		<element type="iCombatCapturePercent" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>
