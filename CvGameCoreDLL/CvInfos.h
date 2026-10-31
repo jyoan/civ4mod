@@ -4211,6 +4211,8 @@ public:
 	int getUnitCombatUpgradeDiscount(int i) const;				// Exposed to Python
 	bool isUpgradeAnywhereUnitCombat(int i) const;				// Exposed to Python
 	bool isUpgradeAnywhereExcludeEnemy(int i) const;				// Exposed to Python
+	int getTerrainYieldChange(int iTerrain, int iYield) const;				// Exposed to Python
+	int getFeatureYieldChange(int iFeature, int iYield) const;				// Exposed to Python
 
 	int isFreePromotion(int i) const;				// Exposed to Python
 	int isFreePromotionUnitCombat(int i) const;			
@@ -4265,6 +4267,8 @@ protected:
 	int* m_paiUnitCombatUpgradeDiscount;
 	bool* m_pabUpgradeAnywhereUnitCombat;
 	bool* m_pabUpgradeAnywhereExcludeEnemy;
+	std::vector< std::vector<int> > m_aaiTerrainYieldChange;		// [terrain][yield], empty when not set
+	std::vector< std::vector<int> > m_aaiFeatureYieldChange;		// [feature][yield], empty when not set
 
 	bool* m_pabFreePromotion;
 	bool* m_pabFreePromotionUnitCombat;

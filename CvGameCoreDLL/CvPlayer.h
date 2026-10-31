@@ -191,6 +191,9 @@ public:
 	int getUnitCombatProductionModifier(UnitCombatTypes eUnitCombat) const;
 	int getUnitCombatUpgradeDiscount(UnitCombatTypes eUnitCombat) const;
 	bool isUpgradeAnywhere(UnitCombatTypes eUnitCombat, bool bEnemyTerritory) const;
+	// Sum of the trait TerrainYieldChanges / FeatureYieldChanges, computed on each call (nothing is saved)
+	int getTraitTerrainYieldChange(TerrainTypes eTerrain, YieldTypes eYield) const;
+	int getTraitFeatureYieldChange(FeatureTypes eFeature, YieldTypes eYield) const;
 	int getProductionModifier(BuildingTypes eBuilding) const;
 	int getProductionModifier(ProjectTypes eProject) const;
 

@@ -338,6 +338,7 @@ public:
 	int calculateTotalBestNatureYield(TeamTypes eTeam) const;																						// Exposed to Python
 	int calculateImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield, PlayerTypes ePlayer, bool bOptimal = false) const;	// Exposed to Python
 	int calculateYield(YieldTypes eIndex, bool bDisplay = false) const;												// Exposed to Python
+	int calculateTraitYieldChange(YieldTypes eYield, PlayerTypes ePlayer) const;
 	bool hasYield() const;																																		// Exposed to Python
 	void updateYield();
 	int calculateMaxYield(YieldTypes eYield) const;

@@ -5923,6 +5923,8 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 
 	if (ePlayer != NO_PLAYER)
 	{
+		iYield += calculateTraitYieldChange(eYield, ePlayer);
+
 		pCity = getPlotCity();
 
 		if (pCity != NULL)
@@ -6000,6 +6002,48 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 	}
 
 	return std::max(0, iYield);
+}
+
+// TerrainYieldChanges / FeatureYieldChanges of ePlayer's traits.
+// TERRAIN_HILL and TERRAIN_PEAK are graphical only terrains that no plot has, so here they stand for hill and peak plots.
+// A hill plot gets both its terrain and TERRAIN_HILL. Impassable plots (peaks, ice) have no base yields in BtS,
+// so there only the peak or the impassable feature counts, not the terrain under it.
+int CvPlot::calculateTraitYieldChange(YieldTypes eYield, PlayerTypes ePlayer) const
+{
+	CvPlayer& kPlayer = GET_PLAYER(ePlayer);
+	TerrainTypes eHillTerrain;
+	TerrainTypes ePeakTerrain;
+	int iYield = 0;
+
+	if (isPeak())
+	{
+		ePeakTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_PEAK", true);
+		if (ePeakTerrain != NO_TERRAIN)
+		{
+			iYield += kPlayer.getTraitTerrainYieldChange(ePeakTerrain, eYield);
+		}
+	}
+	else if (!isImpassable() || (getFeatureType() == NO_FEATURE))
+	{
+		// Passable, or impassable because of the terrain itself
+		iYield += kPlayer.getTraitTerrainYieldChange(getTerrainType(), eYield);
+
+		if (isHills())
+		{
+			eHillTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_HILL", true);
+			if (eHillTerrain != NO_TERRAIN)
+			{
+				iYield += kPlayer.getTraitTerrainYieldChange(eHillTerrain, eYield);
+			}
+		}
+	}
+
+	if (getFeatureType() != NO_FEATURE)
+	{
+		iYield += kPlayer.getTraitFeatureYieldChange(getFeatureType(), eYield);
+	}
+
+	return iYield;
 }
 
 

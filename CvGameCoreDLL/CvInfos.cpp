@@ -16671,6 +16671,83 @@ bool CvTraitInfo::isUnitCombatFreePromotion(int iUnitCombat, int iPromotion) con
 	return false;
 }
 
+int CvTraitInfo::getTerrainYieldChange(int iTerrain, int iYield) const
+{
+	FAssertMsg(iTerrain < GC.getNumTerrainInfos(), "Index out of bounds");
+	FAssertMsg(iTerrain > -1, "Index out of bounds");
+	FAssertMsg(iYield < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(iYield > -1, "Index out of bounds");
+	if ((iTerrain < 0) || (iTerrain >= (int)m_aaiTerrainYieldChange.size()) || (iYield < 0) || (iYield >= NUM_YIELD_TYPES))
+	{
+		return 0;
+	}
+	return m_aaiTerrainYieldChange[iTerrain][iYield];
+}
+
+int CvTraitInfo::getFeatureYieldChange(int iFeature, int iYield) const
+{
+	FAssertMsg(iFeature < GC.getNumFeatureInfos(), "Index out of bounds");
+	FAssertMsg(iFeature > -1, "Index out of bounds");
+	FAssertMsg(iYield < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(iYield > -1, "Index out of bounds");
+	if ((iFeature < 0) || (iFeature >= (int)m_aaiFeatureYieldChange.size()) || (iYield < 0) || (iYield >= NUM_YIELD_TYPES))
+	{
+		return 0;
+	}
+	return m_aaiFeatureYieldChange[iFeature][iYield];
+}
+
+// Reads <TerrainYieldChanges> / <FeatureYieldChanges> (the FFH2 format): each item has the type tag
+// (TerrainType / FeatureType) and <Yields>. The result has one row per info, or is empty when nothing is set.
+static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, int iNumInfos, std::vector< std::vector<int> >& aaiYieldChanges)
+{
+	CvString szTextVal;
+	int* paiYields;
+	int iIndex;
+	int iI;
+
+	aaiYieldChanges.clear();
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szListTag))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szItemTag))
+		{
+			do
+			{
+				pXML->GetChildXmlValByName(szTextVal, szTypeTag);
+				iIndex = pXML->FindInInfoClass(szTextVal);
+				if (iIndex > -1)
+				{
+					if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Yields"))
+					{
+						paiYields = NULL;
+						pXML->SetYields(&paiYields);
+						if (paiYields != NULL)
+						{
+							if (aaiYieldChanges.empty())
+							{
+								aaiYieldChanges.resize(iNumInfos, std::vector<int>(NUM_YIELD_TYPES, 0));
+							}
+							for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+							{
+								aaiYieldChanges[iIndex][iI] = paiYields[iI];
+							}
+							SAFE_DELETE_ARRAY(paiYields);
+						}
+
+						gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+					}
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), const_cast<TCHAR*>(szItemTag)));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
 bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 {
 	CvString szTextVal;
@@ -16820,6 +16897,9 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+
+	readYieldChanges(pXML, "TerrainYieldChanges", "TerrainYieldChange", "TerrainType", GC.getNumTerrainInfos(), m_aaiTerrainYieldChange);
+	readYieldChanges(pXML, "FeatureYieldChanges", "FeatureYieldChange", "FeatureType", GC.getNumFeatureInfos(), m_aaiFeatureYieldChange);
 
 	return true;
 }

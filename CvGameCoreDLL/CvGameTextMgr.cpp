@@ -3471,6 +3471,34 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		setCommerceChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_IN_CAPITAL"), GC.getTraitInfo(eTrait).getCapitalCommerceModifierArray(), true, false);
 		setCommerceChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_PER_SPECIALIST"), GC.getTraitInfo(eTrait).getSpecialistExtraCommerceArray(), false, false);
 
+		// TerrainYieldChanges / FeatureYieldChanges: one line per yield and value, like the civic improvement yields
+		for (iI = 0; iI < NUM_YIELD_TYPES; ++iI)
+		{
+			iLast = 0;
+
+			for (iJ = 0; iJ < GC.getNumTerrainInfos(); ++iJ)
+			{
+				if (GC.getTraitInfo(eTrait).getTerrainYieldChange(iJ, iI) != 0)
+				{
+					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_YIELD_CHANGE", GC.getTraitInfo(eTrait).getTerrainYieldChange(iJ, iI), GC.getYieldInfo((YieldTypes)iI).getChar()).c_str());
+					szText.Format(L"<link=literal>%s</link>", GC.getTerrainInfo((TerrainTypes)iJ).getDescription());
+					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", (GC.getTraitInfo(eTrait).getTerrainYieldChange(iJ, iI) != iLast));
+					iLast = GC.getTraitInfo(eTrait).getTerrainYieldChange(iJ, iI);
+				}
+			}
+
+			for (iJ = 0; iJ < GC.getNumFeatureInfos(); ++iJ)
+			{
+				if (GC.getTraitInfo(eTrait).getFeatureYieldChange(iJ, iI) != 0)
+				{
+					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_YIELD_CHANGE", GC.getTraitInfo(eTrait).getFeatureYieldChange(iJ, iI), GC.getYieldInfo((YieldTypes)iI).getChar()).c_str());
+					szText.Format(L"<link=literal>%s</link>", GC.getFeatureInfo((FeatureTypes)iJ).getDescription());
+					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", (GC.getTraitInfo(eTrait).getFeatureYieldChange(iJ, iI) != iLast));
+					iLast = GC.getTraitInfo(eTrait).getFeatureYieldChange(iJ, iI);
+				}
+			}
+		}
+
 		// Wonder Production Effects
 		if ((GC.getTraitInfo(eTrait).getMaxGlobalBuildingProductionModifier() != 0)
 			|| (GC.getTraitInfo(eTrait).getMaxTeamBuildingProductionModifier() != 0)

@@ -409,6 +409,66 @@
 					<bUpgradeAnywhere>1</bUpgradeAnywhere>
 				</UpgradeAnywhereUnitCombat>
 			</UpgradeAnywhereUnitCombats>
+			<TerrainYieldChanges>
+				<TerrainYieldChange>
+					<TerrainType>TERRAIN_DESERT</TerrainType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</TerrainYieldChange>
+				<TerrainYieldChange>
+					<TerrainType>TERRAIN_TUNDRA</TerrainType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</TerrainYieldChange>
+				<TerrainYieldChange>
+					<TerrainType>TERRAIN_SNOW</TerrainType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</TerrainYieldChange>
+				<TerrainYieldChange>
+					<TerrainType>TERRAIN_HILL</TerrainType>
+					<Yields>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</TerrainYieldChange>
+				<TerrainYieldChange>
+					<TerrainType>TERRAIN_PEAK</TerrainType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>2</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</TerrainYieldChange>
+			</TerrainYieldChanges>
+			<FeatureYieldChanges>
+				<FeatureYieldChange>
+					<FeatureType>FEATURE_ICE</FeatureType>
+					<Yields>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+					</Yields>
+				</FeatureYieldChange>
+				<FeatureYieldChange>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+					</Yields>
+				</FeatureYieldChange>
+			</FeatureYieldChanges>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 			<FreePromotionSets>

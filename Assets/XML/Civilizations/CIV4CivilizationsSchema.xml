@@ -387,6 +387,25 @@
 	<ElementType name="UpgradeAnywhereUnitCombats" content="eltOnly">
 		<element type="UpgradeAnywhereUnitCombat" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="TerrainType" content="textOnly"/>
+	<ElementType name="FeatureType" content="textOnly"/>
+	<ElementType name="Yields" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="TerrainYieldChange" content="eltOnly">
+		<element type="TerrainType"/>
+		<element type="Yields"/>
+	</ElementType>
+	<ElementType name="TerrainYieldChanges" content="eltOnly">
+		<element type="TerrainYieldChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="FeatureYieldChange" content="eltOnly">
+		<element type="FeatureType"/>
+		<element type="Yields"/>
+	</ElementType>
+	<ElementType name="FeatureYieldChanges" content="eltOnly">
+		<element type="FeatureYieldChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="TraitInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -425,6 +444,8 @@
 		<element type="UnitCombatProductionModifiers" minOccurs="0"/>
 		<element type="UnitCombatUpgradeDiscounts" minOccurs="0"/>
 		<element type="UpgradeAnywhereUnitCombats" minOccurs="0"/>
+		<element type="TerrainYieldChanges" minOccurs="0"/>
+		<element type="FeatureYieldChanges" minOccurs="0"/>
 		<element type="FreePromotions"/>
 		<element type="FreePromotionUnitCombats"/>
 		<element type="FreePromotionSets" minOccurs="0"/>
