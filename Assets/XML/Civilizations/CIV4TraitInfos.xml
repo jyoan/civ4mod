@@ -123,6 +123,7 @@
 			<iMaxGlobalBuildingProductionModifier>50</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>50</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>50</iMaxPlayerBuildingProductionModifier>
+			<iWorkerSpeedModifier>50</iWorkerSpeedModifier>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

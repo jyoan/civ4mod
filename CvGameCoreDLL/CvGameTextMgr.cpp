@@ -3331,6 +3331,12 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_DOMESTIC_GREAT_GENERAL_MODIFIER", GC.getTraitInfo(eTrait).getDomesticGreatGeneralRateModifier()));
 		}
 
+		// iWorkerSpeedModifier
+		if (GC.getTraitInfo(eTrait).getWorkerSpeedModifier() != 0)
+		{
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_WORKER_SPEED_MODIFIER", GC.getTraitInfo(eTrait).getWorkerSpeedModifier()));
+		}
+
 		// Wonder Production Effects
 		if ((GC.getTraitInfo(eTrait).getMaxGlobalBuildingProductionModifier() != 0)
 			|| (GC.getTraitInfo(eTrait).getMaxTeamBuildingProductionModifier() != 0)
@@ -3596,10 +3602,13 @@ void CvGameTextMgr::parseLeaderTraits(CvWStringBuffer &szHelpString, LeaderHeadT
 		FAssert((GC.getNumTraitInfos() > 0) &&
 			"GC.getNumTraitInfos() is less than or equal to zero but is expected to be larger than zero in CvSimpleCivPicker::setLeaderText");
 
+		// Also list the civilization's traits, except on the leader's own Civilopedia page
+		bool bCivTraits = ((eCivilization != NO_CIVILIZATION) && !bCivilopediaText);
+
 		bool bFirst = true;
 		for (iI = 0; iI < GC.getNumTraitInfos(); ++iI)
 		{
-			if (GC.getLeaderHeadInfo(eLeader).hasTrait(iI))
+			if (GC.getLeaderHeadInfo(eLeader).hasTrait(iI) || (bCivTraits && GC.getCivilizationInfo(eCivilization).hasTrait(iI)))
 			{
 				if (!bFirst)
 				{
@@ -3708,6 +3717,24 @@ void CvGameTextMgr::parseCivInfos(CvWStringBuffer &szInfoText, CivilizationTypes
 			{
 				szBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_FREE_TECHS_NO").GetCString());
 				szInfoText.append(szBuffer);
+			}
+
+			// Civilization Traits (only shown when the civilization has any)
+			bFound = false;
+			for (int iTrait = 0; iTrait < GC.getNumTraitInfos(); ++iTrait)
+			{
+				if (GC.getCivilizationInfo(eCivilization).hasTrait(iTrait))
+				{
+					if (!bFound)
+					{
+						szBuffer.Format(NEWLINE SETCOLR L"%s" ENDCOLR , TEXT_COLOR("COLOR_ALT_HIGHLIGHT_TEXT"), gDLL->getText("TXT_KEY_CIV_TRAITS").GetCString());
+						szInfoText.append(szBuffer);
+						bFound = true;
+					}
+					// No link: the Civilopedia has no trait pages
+					szBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), GC.getTraitInfo((TraitTypes)iTrait).getDescription());
+					szInfoText.append(szBuffer);
+				}
 			}
 		}
 

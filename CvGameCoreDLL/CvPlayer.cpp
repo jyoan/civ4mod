@@ -228,6 +228,8 @@ void CvPlayer::init(PlayerTypes eID)
 				changeMaxTeamBuildingProductionModifier(GC.getTraitInfo((TraitTypes)iI).getMaxTeamBuildingProductionModifier());
 				changeMaxPlayerBuildingProductionModifier(GC.getTraitInfo((TraitTypes)iI).getMaxPlayerBuildingProductionModifier());
 
+				changeWorkerSpeedModifier(GC.getTraitInfo((TraitTypes)iI).getWorkerSpeedModifier());
+
 				for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
 				{
 					changeTradeYieldModifier(((YieldTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getTradeYieldModifier(iJ));
@@ -2222,7 +2224,13 @@ bool CvPlayer::hasTrait(TraitTypes eTrait) const
 {
 	FAssertMsg((getLeaderType() >= 0), "getLeaderType() is less than zero");
 	FAssertMsg((eTrait >= 0), "eTrait is less than zero");
-	return GC.getLeaderHeadInfo(getLeaderType()).hasTrait(eTrait);
+	if (GC.getLeaderHeadInfo(getLeaderType()).hasTrait(eTrait))
+	{
+		return true;
+	}
+
+	// Traits can also come from the civilization (<Traits> in CIV4CivilizationInfos.xml)
+	return ((getCivilizationType() != NO_CIVILIZATION) && GC.getCivilizationInfo(getCivilizationType()).hasTrait(eTrait));
 }
 
 bool CvPlayer::isHuman() const

@@ -2163,6 +2163,7 @@ public:
 	DllExport bool isCivilizationFreeBuildingClass(int i) const;				// Exposed to Python
 	DllExport bool isCivilizationFreeTechs(int i) const;				// Exposed to Python
 	DllExport bool isCivilizationDisableTechs(int i) const;				// Exposed to Python
+	bool hasTrait(int i) const;				// Exposed to Python
 
 	DllExport std::string getCityNames(int i) const;				// Exposed to Python
 
@@ -2207,6 +2208,7 @@ protected:
 	bool* m_pbCivilizationFreeBuildingClass;
 	bool* m_pbCivilizationFreeTechs;
 	bool* m_pbCivilizationDisableTechs;
+	bool* m_pbTraits;
 
 	CvString* m_paszCityNames;
 
@@ -4149,6 +4151,7 @@ public:
 	int getMaxGlobalBuildingProductionModifier() const;				// Exposed to Python
 	int getMaxTeamBuildingProductionModifier() const;				// Exposed to Python
 	int getMaxPlayerBuildingProductionModifier() const;				// Exposed to Python
+	int getWorkerSpeedModifier() const;				// Exposed to Python
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -4179,6 +4182,7 @@ protected:
 	int m_iMaxGlobalBuildingProductionModifier;	
 	int m_iMaxTeamBuildingProductionModifier;		
 	int m_iMaxPlayerBuildingProductionModifier;	
+	int m_iWorkerSpeedModifier;
 
 	CvString m_szShortDescription;
 

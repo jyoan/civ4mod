@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- claude_sample: text for features added by this mod -->
+<!-- Japanese text is written as decimal character references (ASCII file) -->
+<Civ4GameText xmlns="http://www.firaxis.com">
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_WORKER_SPEED_MODIFIER</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Workers Build Improvements %D1_Mod%% Faster</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Vitesse de construction des am&#233;nagements : %D1_Mod%%</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Bautrupps errichten Modernisierungen %D1_Mod%% schneller</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]I lavoratori costruiscono i miglioramenti il %D1_Mod%% pi&#249; rapidamente</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Los trabajadores construyen mejoras un %D1_Mod%% m&#225;s r&#225;pido</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#21172;&#20685;&#32773;&#12398;&#36039;&#28304;&#27963;&#29992;&#26045;&#35373;&#12398;&#24314;&#35373;&#36895;&#24230;&#12364;%D1_Mod%%&#21521;&#19978;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_TRAITS</Tag>
+		<English>Civilization Traits</English>
+		<French>Civilization Traits</French>
+		<German>Civilization Traits</German>
+		<Italian>Civilization Traits</Italian>
+		<Spanish>Civilization Traits</Spanish>
+		<Japanese>&#25991;&#26126;&#12398;&#24535;&#21521;</Japanese>
+	</TEXT>
+</Civ4GameText>

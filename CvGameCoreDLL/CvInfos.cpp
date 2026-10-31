@@ -9090,6 +9090,7 @@ m_pbLeaders(NULL),
 m_pbCivilizationFreeBuildingClass(NULL),
 m_pbCivilizationFreeTechs(NULL),
 m_pbCivilizationDisableTechs(NULL),
+m_pbTraits(NULL),
 m_paszCityNames(NULL)
 {
 }
@@ -9111,6 +9112,7 @@ CvCivilizationInfo::~CvCivilizationInfo()
 	SAFE_DELETE_ARRAY(m_pbCivilizationFreeBuildingClass);
 	SAFE_DELETE_ARRAY(m_pbCivilizationFreeTechs);
 	SAFE_DELETE_ARRAY(m_pbCivilizationDisableTechs);
+	SAFE_DELETE_ARRAY(m_pbTraits);
 	SAFE_DELETE_ARRAY(m_paszCityNames);
 }
 
@@ -9270,6 +9272,13 @@ bool CvCivilizationInfo::isCivilizationDisableTechs(int i) const
 	return m_pbCivilizationDisableTechs ? m_pbCivilizationDisableTechs[i] : false;
 }
 
+bool CvCivilizationInfo::hasTrait(int i) const
+{
+	FAssertMsg(i < GC.getNumTraitInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_pbTraits ? m_pbTraits[i] : false;
+}
+
 const CvArtInfoCivilization* CvCivilizationInfo::getArtInfo() const
 {
 	return ARTFILEMGR.getCivilizationArtInfo( getArtDefineTag() );
@@ -9357,13 +9366,28 @@ void CvCivilizationInfo::read(FDataStreamBase* stream)
 	SAFE_DELETE_ARRAY(m_paszCityNames);
 	m_paszCityNames = new CvString[m_iNumCityNames];
 	stream->ReadString(m_iNumCityNames, m_paszCityNames);
+
+	// uiFlag 0: cache written before civilization traits existed
+	SAFE_DELETE_ARRAY(m_pbTraits);
+	m_pbTraits = new bool[GC.getNumTraitInfos()];
+	if (uiFlag > 0)
+	{
+		stream->Read(GC.getNumTraitInfos(), m_pbTraits);
+	}
+	else
+	{
+		for (int iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			m_pbTraits[iI] = false;
+		}
+	}
 }
 
 void CvCivilizationInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=0;
+	uint uiFlag=1;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iDefaultPlayerColor);
@@ -9393,6 +9417,7 @@ void CvCivilizationInfo::write(FDataStreamBase* stream)
 	stream->Write(GC.getNumTechInfos(), m_pbCivilizationFreeTechs);
 	stream->Write(GC.getNumTechInfos(), m_pbCivilizationDisableTechs);
 	stream->WriteString(m_iNumCityNames, m_paszCityNames);
+	stream->Write(GC.getNumTraitInfos(), m_pbTraits);
 }
 
 bool CvCivilizationInfo::read(CvXMLLoadUtility* pXML)
@@ -9597,6 +9622,7 @@ bool CvCivilizationInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	pXML->SetVariableListTagPair(&m_pbLeaders, "Leaders", sizeof(GC.getLeaderHeadInfo((LeaderHeadTypes)0)), GC.getNumLeaderHeadInfos());
+	pXML->SetVariableListTagPair(&m_pbTraits, "Traits", sizeof(GC.getTraitInfo((TraitTypes)0)), GC.getNumTraitInfos());
 
 	pXML->GetChildXmlValByName(szTextVal, "CivilizationSelectionSound");
 
@@ -15971,6 +15997,7 @@ m_iDomesticGreatGeneralRateModifier(0),
 m_iMaxGlobalBuildingProductionModifier(0),	
 m_iMaxTeamBuildingProductionModifier(0),		
 m_iMaxPlayerBuildingProductionModifier(0),
+m_iWorkerSpeedModifier(0),
 m_paiExtraYieldThreshold(NULL),
 m_paiTradeYieldModifier(NULL),
 m_paiCommerceChange(NULL),
@@ -16052,6 +16079,11 @@ int CvTraitInfo::getMaxPlayerBuildingProductionModifier() const
 	return m_iMaxPlayerBuildingProductionModifier; 
 }
 
+int CvTraitInfo::getWorkerSpeedModifier() const
+{
+	return m_iWorkerSpeedModifier;
+}
+
 const TCHAR* CvTraitInfo::getShortDescription() const
 {
 	return m_szShortDescription; 
@@ -16116,6 +16148,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iMaxGlobalBuildingProductionModifier, "iMaxGlobalBuildingProductionModifier");
 	pXML->GetChildXmlValByName(&m_iMaxTeamBuildingProductionModifier, "iMaxTeamBuildingProductionModifier");
 	pXML->GetChildXmlValByName(&m_iMaxPlayerBuildingProductionModifier, "iMaxPlayerBuildingProductionModifier");
+	pXML->GetChildXmlValByName(&m_iWorkerSpeedModifier, "iWorkerSpeedModifier");
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ExtraYieldThresholds"))
 	{
