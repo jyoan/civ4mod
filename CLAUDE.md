@@ -20,8 +20,12 @@ Civilization IV: Beyond the Sword 日本語版（CyberFront 版）向けの Mod�
 ```
 build.bat            差分ビルド → Assets\CvGameCoreDLL.dll にコピー → Mod フォルダへ配置
 build.bat rebuild    クリーン後に全ビルド → 配置
+build.bat deploy     配置だけ（ビルドしない）
 build.bat clean      CvGameCoreDLL\Release\ を削除（配置はしない）
 ```
+
+- 終了コード: `0` = 完了、`1` = ビルドまたは配置に失敗、`2` = ビルドは成功したが **Civ4 が起動中なので配置を飛ばした**
+- **Claude は Civ4 を終了させない**（強制終了になり、最後のオートセーブ以降の進行が失われるため）。終了コード `2` のときは、ユーザーにゲームの終了を頼み、終了したと言われてから `build.bat deploy` を実行する
 
 - 出力: `CvGameCoreDLL\Release\CvGameCoreDLL.dll`（と `.pdb`）。成功時に `Assets\CvGameCoreDLL.dll` へコピーし、続けて `<BTS>\Mods\claude_sample\` へ配置する
 - XML / Python だけを変えたときも `build.bat` を実行すればよい（DLL は 0 秒で終わり、配置だけが行われる）
@@ -57,7 +61,8 @@ build.bat clean      CvGameCoreDLL\Release\ を削除（配置はしない）
 - `Assets\` → `Mods\claude_sample\Assets\` を robocopy `/MIR` で**ミラー同期**する。リポジトリから消したファイルは Mod 側からも消える（`*EXTRA File` と表示される）
 - `claude_sample.ini` → `Mods\claude_sample\claude_sample.ini` を上書きコピーする。Mod フォルダ直下のその他のファイル（`claude_sample.ini.bak` など）には触れない
 - **Mod フォルダ側で直接編集しない**。編集はすべてリポジトリで行う（Mod 側の `Assets\` の変更は次の配置で消える）
-- Civ4 の起動中は DLL がロックされて `DEPLOY FAILED` になる。ゲームを終了して再実行する
+- Civ4（`Civ4BeyondSword.exe`）の起動中は DLL がロックされるので、build.bat は配置の前に起動を確認し、起動中なら配置を飛ばす（終了コード `2`）。それでもファイルがロックされていた場合は `DEPLOY FAILED`（終了コード `1`）。どちらも、ゲームを終了してから `build.bat deploy` を実行する
+- Civ4 は DLL を起動時に読み込むので、起動中のゲームに新しい DLL は反映されない（反映には再起動が必要）
 - `<BTS>\Mods` が無い環境では警告を出して配置をスキップする（ビルドは成功扱い）
 - ゲーム本体のパスと Mod 名は `build.bat` の `BTS` / `MODNAME` で定義している
 - `Mods\` は Users に書き込み権限があるので、管理者権限なしで配置できる（VirtualStore へのリダイレクトも起きない）
@@ -118,10 +123,11 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 ### XML キャッシュ
 
 - `CvCivilizationInfo` などストリーム版 `read` / `write` を持つ Info クラスは、exe が XML キャッシュ（`%LOCALAPPDATA%\My Games\Beyond the Sword(J)\cache`）経由でも読み込む。exe は `CvGlobals::read/write*InfoArray` を呼び、そこから各 Info の `read` / `write` が使われる
-- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする（`CvCivilizationInfo` は現在 `uiFlag=1`）
+- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする（`CvCivilizationInfo`・`CvCivicInfo` は現在 `uiFlag=1`）
 - **Info の数が変わる変更（志向・昇進・技術・ユニットなどの追加や削除）をしたら、必ずキャッシュを消す**。ユニット・建物・指導者・文明などのキャッシュは「志向の数」などの数だけ配列を読むため、XML を変えていないファイルの古いキャッシュがずれて読まれ、データ破損や強制終了の原因になる
 - キャッシュを消すときは、Civ4 が起動していないことを確認してから、上記の cache フォルダ内の `*.dat` だけを消す（フォルダは残す。次回起動時に作り直される。BtS 本体や他の Mod も次回の起動が少し遅くなるだけ）
 - キャッシュが原因と思われる不具合が出たときも、同じ手順で消す
+- 観察（2026-10-31）: cache フォルダにあるのは `catalogCiv4BeyondSword*.dat`（ファイル一覧のキャッシュ）だけで、XML の Info ごとのキャッシュは見当たらなかった。Mod 実行時は XML キャッシュが使われていない可能性が高い。ただし確証はないので、上記の `uiFlag` による形式の区別とキャッシュ削除のルールは守る
 - exe がどの Info クラスを直接使っているかは `link.exe /dump /imports <BTS>\Civ4BeyondSword.exe` で確認できる。`CvCivilizationInfo` は getter 8 個だけで、コンストラクタは使っていない（メンバ追加は安全）
 
 ## Python（2.4）
@@ -153,8 +159,9 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 | `CIV4CivilizationInfos.xml` | `CivilizationInfo/Traits` | 文明が持つ志向（書式は指導者の `<Traits>` と同じ）。`CvPlayer::hasTrait()` は「指導者 または 文明」が持っていれば真。両方が同じ志向を持っても効果は 1 回分 |
 | `CIV4TraitInfos.xml` | `TraitInfo/iWorkerSpeedModifier` | 労働者の作業速度 %（文明全体に 1 回だけ適用） |
 | `CIV4TraitInfos.xml` | `TraitInfo/FreePromotionSets` | `<FreePromotionSet>` を何個でも書ける。各組は `<FreePromotions>` と `<FreePromotionUnitCombats>`（既存と同じ書式。どちらも省略不可）を持ち、組の中の全昇進を組の中の全兵科に付与する。既存の `FreePromotions` / `FreePromotionUnitCombats` と併用可。付与はユニット生成時（既存のセーブでも新しいユニットには効く）。その兵科が本来取れる昇進かはチェックしない |
-| `CIV4TraitInfos.xml` | `TraitInfo/iFreeExperience`、`iMilitaryProductionModifier`、`iImprovementUpgradeRateModifier`、`iDistanceMaintenanceModifier`、`iNumCitiesMaintenanceModifier`、`iWarWearinessModifier`、`iFreeSpecialist`、`iTradeRoutes`、`iExpInBorderModifier` | 社会制度の同名タグと同じ効果（新ユニットの経験値、軍事ユニット生産 %、小屋などの成長速度 %、距離／都市数による維持費 %、厭戦感情 %、全都市の無償の専門家、全都市の交易路、国境内の戦闘経験値 %）。文明全体に 1 回だけ適用 |
+| `CIV4TraitInfos.xml` | `TraitInfo/iFreeExperience`、`iMilitaryProductionModifier`、`iImprovementUpgradeRateModifier`、`iDistanceMaintenanceModifier`、`iNumCitiesMaintenanceModifier`、`iWarWearinessModifier`、`iFreeSpecialist`、`iTradeRoutes`、`iExpInBorderModifier` | 社会制度の同名タグと同じ効果（新ユニットの経験値、軍事ユニット生産 %、小屋などの成長速度 %、距離／都市数による維持費 %、厭戦感情 %、全都市の無償の専門家、全都市の交易路、国境内の戦闘経験値 %）。文明全体に 1 回だけ適用。`iFreeExperience` は社会制度と同じく**都市で生産したユニットだけ**に付く（ゲーム開始時に配られるユニットには付かない） |
 | `CIV4TraitInfos.xml` | `TraitInfo/YieldModifiers`、`CapitalYieldModifiers`、`CapitalCommerceModifiers`、`SpecialistExtraCommerces` | 社会制度の同名タグと同じ効果（全都市／首都の産出 %、首都の商業 %、専門家 1 人あたりの商業）。`<iYield>` は食料・生産・商業、`<iCommerce>` は金・研究・文化・諜報の順。文明全体に 1 回だけ適用 |
+| `CIV4TraitInfos.xml`、`CIV4CivicInfos.xml` | `TraitInfo/UnitCombatFreeExperiences`、`UnitCombatProductionModifiers`（`CivicInfo` にも同名タグ） | 兵科ごとの新ユニットの経験値（建物の同名タグと同じ書式: `UnitCombatType` + `iExperience`）と、兵科ごとのユニット生産 %（`UnitCombatType` + `iProductionModifier`）。既存の `iFreeExperience` / `iMilitaryProductionModifier` に上乗せされる。`CvPlayer::getUnitCombatFreeExperience()` / `getUnitCombatProductionModifier()` が「持っている志向 + 今の社会制度」を**そのつど合計**するので、セーブデータは変わらず、社会制度の切り替えも既存のセーブもそのまま反映される。経験値は都市で生産したユニットだけ。生産の内訳では、志向の分は既存の志向の行に含め、社会制度の分は `TXT_KEY_MISC_HELP_PROD_CIVIC_UNITCOMBAT` の行で表示 |
 
 この Mod で追加した志向: `TRAIT_MARITIME`（海洋志向、短縮名「海」）。`CIV4TraitInfos.xml` の末尾に追加（既存の志向の番号を変えないため、新しい志向は常に末尾に足す）
 
@@ -172,3 +179,5 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - 2026-10-31: 文明の志向（`CivilizationInfo/Traits`）と `TraitInfo/iWorkerSpeedModifier` の動作をゲーム内で確認（検証用データ: 日本に勤労志向、勤労志向に労働者の作業速度 +50%）
 - 2026-10-31: `TraitInfo/FreePromotionSets` と新しい志向 `TRAIT_MARITIME` の動作をゲーム内で確認（検証用データ: 日本に海洋志向を追加。海洋ユニット → 航海術Ⅰ、白兵戦ユニット → 水陸両用）
 - 2026-10-31: 社会制度と同じ効果の志向タグ 13 個（`iFreeExperience` ほか数値 9 個、`YieldModifiers` ほか配列 4 個）の表示と効果をゲーム内で確認（検証用データ: 海洋志向に全タグを設定。値は検証用）
+- 2026-10-31: `UnitCombatFreeExperiences` / `UnitCombatProductionModifiers` の志向側の動作をゲーム内で確認（検証用データ: 海洋志向で海洋ユニットに経験値 +2・生産 +25%）。社会制度側は検証用データなし（編集した Schema で元の `CIV4CivicInfos.xml` が読み込めることは確認済み）
+- 2026-10-31: build.bat の「Civ4 起動中は配置を飛ばす（終了コード 2）」と `build.bat deploy` を、起動確認の対象を `explorer.exe` に差し替えた複製で確認
