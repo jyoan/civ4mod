@@ -20,4 +20,22 @@
 		<Spanish>Civilization Traits</Spanish>
 		<Japanese>&#25991;&#26126;&#12398;&#24535;&#21521;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MARITIME</Tag>
+		<English>Maritime</English>
+		<French>Maritime</French>
+		<German>Maritime</German>
+		<Italian>Maritime</Italian>
+		<Spanish>Maritime</Spanish>
+		<Japanese>&#28023;&#27915;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MARITIME_SHORT</Tag>
+		<English>Mar</English>
+		<French>Mar</French>
+		<German>Mar</German>
+		<Italian>Mar</Italian>
+		<Spanish>Mar</Spanish>
+		<Japanese>&#28023;</Japanese>
+	</TEXT>
 </Civ4GameText>

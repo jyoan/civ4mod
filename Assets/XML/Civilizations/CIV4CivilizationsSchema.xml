@@ -324,6 +324,13 @@
 	<ElementType name="FreePromotionUnitCombats" content="eltOnly">
 		<element type="FreePromotionUnitCombat" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="FreePromotionSet" content="eltOnly">
+		<element type="FreePromotions"/>
+		<element type="FreePromotionUnitCombats"/>
+	</ElementType>
+	<ElementType name="FreePromotionSets" content="eltOnly">
+		<element type="FreePromotionSet" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="iWorkerSpeedModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="TraitInfo" content="eltOnly">
 		<element type="Type"/>
@@ -348,6 +355,7 @@
 		<element type="CommerceModifiers"/>
 		<element type="FreePromotions"/>
 		<element type="FreePromotionUnitCombats"/>
+		<element type="FreePromotionSets" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="TraitInfos" content="eltOnly">
 		<element type="TraitInfo" maxOccurs="*"/>

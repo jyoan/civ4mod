@@ -3425,6 +3425,40 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			}
 		}
 
+		// Free Promotion Sets (same layout as above, once per set)
+		for (int iSet = 0; iSet < GC.getTraitInfo(eTrait).getNumFreePromotionSets(); ++iSet)
+		{
+			bFoundPromotion = false;
+			szTempBuffer.clear();
+			for (iI = 0; iI < GC.getNumPromotionInfos(); ++iI)
+			{
+				if (GC.getTraitInfo(eTrait).isFreePromotionSetPromotion(iSet, iI))
+				{
+					if (bFoundPromotion)
+					{
+						szTempBuffer += L", ";
+					}
+
+					szTempBuffer += CvWString::format(L"<link=literal>%s</link>", GC.getPromotionInfo((PromotionTypes) iI).getDescription());
+					bFoundPromotion = true;
+				}
+			}
+
+			if (bFoundPromotion)
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_FREE_PROMOTIONS", szTempBuffer.GetCString()));
+
+				for (iJ = 0; iJ < GC.getNumUnitCombatInfos(); iJ++)
+				{
+					if (GC.getTraitInfo(eTrait).isFreePromotionSetUnitCombat(iSet, iJ))
+					{
+						szTempBuffer.Format(L"\n        %c<link=literal>%s</link>", gDLL->getSymbolID(BULLET_CHAR), GC.getUnitCombatInfo((UnitCombatTypes)iJ).getDescription());
+						szHelpString.append(szTempBuffer);
+					}
+				}
+			}
+		}
+
 		// No Civic Maintenance
 		for (iI = 0; iI < GC.getNumCivicOptionInfos(); ++iI)
 		{

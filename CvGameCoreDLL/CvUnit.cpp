@@ -181,6 +181,11 @@ void CvUnit::init(int iID, UnitTypes eUnit, UnitAITypes eUnitAI, PlayerTypes eOw
 						setHasPromotion(((PromotionTypes)iJ), true);
 					}
 				}
+
+				if ((getUnitCombatType() != NO_UNITCOMBAT) && GC.getTraitInfo((TraitTypes) iI).isUnitCombatFreePromotion(getUnitCombatType(), iJ))
+				{
+					setHasPromotion(((PromotionTypes)iJ), true);
+				}
 			}
 		}
 	}

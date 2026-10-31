@@ -4166,6 +4166,12 @@ public:
 	int isFreePromotion(int i) const;				// Exposed to Python
 	int isFreePromotionUnitCombat(int i) const;			
 
+	// FreePromotionSets: each set gives its promotions to its unit combats
+	int getNumFreePromotionSets() const;				// Exposed to Python
+	bool isFreePromotionSetPromotion(int iSet, int iPromotion) const;				// Exposed to Python
+	bool isFreePromotionSetUnitCombat(int iSet, int iUnitCombat) const;				// Exposed to Python
+	bool isUnitCombatFreePromotion(int iUnitCombat, int iPromotion) const;				// Exposed to Python
+
 	bool read(CvXMLLoadUtility* pXML);
 
 	//---------------------------------------PROTECTED MEMBER VARIABLES---------------------------------
@@ -4195,6 +4201,9 @@ protected:
 
 	bool* m_pabFreePromotion;
 	bool* m_pabFreePromotionUnitCombat;
+
+	std::vector< std::vector<bool> > m_aabFreePromotionSetPromotion;		// [set][promotion]
+	std::vector< std::vector<bool> > m_aabFreePromotionSetUnitCombat;		// [set][unit combat]
 
 };
 

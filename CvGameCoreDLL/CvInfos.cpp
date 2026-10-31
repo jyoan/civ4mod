@@ -16126,6 +16126,50 @@ int CvTraitInfo::isFreePromotionUnitCombat(int i) const
 	return m_pabFreePromotionUnitCombat ? m_pabFreePromotionUnitCombat[i] : -1; 
 }
 
+int CvTraitInfo::getNumFreePromotionSets() const
+{
+	return (int)m_aabFreePromotionSetPromotion.size();
+}
+
+bool CvTraitInfo::isFreePromotionSetPromotion(int iSet, int iPromotion) const
+{
+	FAssertMsg(iSet < getNumFreePromotionSets(), "Index out of bounds");
+	FAssertMsg(iSet > -1, "Index out of bounds");
+	FAssertMsg(iPromotion < GC.getNumPromotionInfos(), "Index out of bounds");
+	FAssertMsg(iPromotion > -1, "Index out of bounds");
+	if ((iSet < 0) || (iSet >= getNumFreePromotionSets()) || (iPromotion < 0) || (iPromotion >= GC.getNumPromotionInfos()))
+	{
+		return false;
+	}
+	return m_aabFreePromotionSetPromotion[iSet][iPromotion];
+}
+
+bool CvTraitInfo::isFreePromotionSetUnitCombat(int iSet, int iUnitCombat) const
+{
+	FAssertMsg(iSet < getNumFreePromotionSets(), "Index out of bounds");
+	FAssertMsg(iSet > -1, "Index out of bounds");
+	FAssertMsg(iUnitCombat < GC.getNumUnitCombatInfos(), "Index out of bounds");
+	FAssertMsg(iUnitCombat > -1, "Index out of bounds");
+	if ((iSet < 0) || (iSet >= getNumFreePromotionSets()) || (iUnitCombat < 0) || (iUnitCombat >= GC.getNumUnitCombatInfos()))
+	{
+		return false;
+	}
+	return m_aabFreePromotionSetUnitCombat[iSet][iUnitCombat];
+}
+
+// True if any FreePromotionSet gives iPromotion to units of iUnitCombat
+bool CvTraitInfo::isUnitCombatFreePromotion(int iUnitCombat, int iPromotion) const
+{
+	for (int iSet = 0; iSet < getNumFreePromotionSets(); iSet++)
+	{
+		if (isFreePromotionSetUnitCombat(iSet, iUnitCombat) && isFreePromotionSetPromotion(iSet, iPromotion))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 {
 	CvString szTextVal;
@@ -16193,6 +16237,34 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_pabFreePromotion, "FreePromotions", sizeof(GC.getPromotionInfo((PromotionTypes)0)), GC.getNumPromotionInfos());
 
 	pXML->SetVariableListTagPair(&m_pabFreePromotionUnitCombat, "FreePromotionUnitCombats", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
+
+	// FreePromotionSets: any number of <FreePromotions> x <FreePromotionUnitCombats> pairs
+	m_aabFreePromotionSetPromotion.clear();
+	m_aabFreePromotionSetUnitCombat.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FreePromotionSets"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FreePromotionSet"))
+		{
+			do
+			{
+				bool* pabPromotions = NULL;
+				bool* pabUnitCombats = NULL;
+				pXML->SetVariableListTagPair(&pabPromotions, "FreePromotions", sizeof(GC.getPromotionInfo((PromotionTypes)0)), GC.getNumPromotionInfos());
+				pXML->SetVariableListTagPair(&pabUnitCombats, "FreePromotionUnitCombats", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
+
+				m_aabFreePromotionSetPromotion.push_back(std::vector<bool>(pabPromotions, pabPromotions + GC.getNumPromotionInfos()));
+				m_aabFreePromotionSetUnitCombat.push_back(std::vector<bool>(pabUnitCombats, pabUnitCombats + GC.getNumUnitCombatInfos()));
+
+				SAFE_DELETE_ARRAY(pabPromotions);
+				SAFE_DELETE_ARRAY(pabUnitCombats);
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "FreePromotionSet"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 
 	return true;
 }
