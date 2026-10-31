@@ -2295,6 +2295,7 @@ int CvCity::getProductionExperience(UnitTypes eUnit)
 		if (GC.getUnitInfo(eUnit).getUnitCombatType() != NO_UNITCOMBAT)
 		{
 			iExperience += getUnitCombatFreeExperience((UnitCombatTypes)(GC.getUnitInfo(eUnit).getUnitCombatType()));
+			iExperience += GET_PLAYER(getOwnerINLINE()).getUnitCombatFreeExperience((UnitCombatTypes)(GC.getUnitInfo(eUnit).getUnitCombatType()));
 		}
 		iExperience += getDomainFreeExperience((DomainTypes)(GC.getUnitInfo(eUnit).getDomainType()));
 

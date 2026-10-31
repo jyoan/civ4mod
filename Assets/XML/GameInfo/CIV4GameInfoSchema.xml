@@ -738,6 +738,22 @@
 		<element type="ImprovementYieldChange" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="WeLoveTheKing" content="textOnly"/>
+	<ElementType name="UnitCombatType" content="textOnly"/>
+	<ElementType name="UnitCombatFreeExperience" content="eltOnly">
+		<element type="UnitCombatType"/>
+		<element type="iExperience"/>
+	</ElementType>
+	<ElementType name="UnitCombatFreeExperiences" content="eltOnly">
+		<element type="UnitCombatFreeExperience" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iProductionModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="UnitCombatProductionModifier" content="eltOnly">
+		<element type="UnitCombatType"/>
+		<element type="iProductionModifier"/>
+	</ElementType>
+	<ElementType name="UnitCombatProductionModifiers" content="eltOnly">
+		<element type="UnitCombatProductionModifier" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="CivicInfo" content="eltOnly">
 		<element type="CivicOptionType"/>
 		<element type="Type"/>
@@ -803,6 +819,8 @@
 		<element type="FeatureHappinessChanges"/>
 		<element type="ImprovementYieldChanges"/>
 		<element type="WeLoveTheKing"/>
+		<element type="UnitCombatFreeExperiences" minOccurs="0"/>
+		<element type="UnitCombatProductionModifiers" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="CivicInfos" content="eltOnly">
 		<element type="CivicInfo" maxOccurs="*"/>

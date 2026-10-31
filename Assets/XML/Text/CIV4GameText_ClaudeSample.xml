@@ -38,4 +38,13 @@
 		<Spanish>Mar</Spanish>
 		<Japanese>&#28023;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_PROD_CIVIC_UNITCOMBAT</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for %s2_unitcombat by %s3_civic</English>
+		<French>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for %s2_unitcombat by %s3_civic</French>
+		<German>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for %s2_unitcombat by %s3_civic</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for %s2_unitcombat by %s3_civic</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for %s2_unitcombat by %s3_civic</Spanish>
+		<Japanese>[ICON_BULLET]%s3_civic&#12395;&#12424;&#12427;%s2_unitcombat&#24314;&#35373;&#12398;&#12383;&#12417;&#12395;[ICON_PRODUCTION] %D1%%</Japanese>
+	</TEXT>
 </Civ4GameText>

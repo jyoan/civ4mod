@@ -353,6 +353,22 @@
 	<ElementType name="SpecialistExtraCommerces" content="eltOnly">
 		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="iExperience" content="textOnly" dt:type="int"/>
+	<ElementType name="UnitCombatFreeExperience" content="eltOnly">
+		<element type="UnitCombatType"/>
+		<element type="iExperience"/>
+	</ElementType>
+	<ElementType name="UnitCombatFreeExperiences" content="eltOnly">
+		<element type="UnitCombatFreeExperience" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iProductionModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="UnitCombatProductionModifier" content="eltOnly">
+		<element type="UnitCombatType"/>
+		<element type="iProductionModifier"/>
+	</ElementType>
+	<ElementType name="UnitCombatProductionModifiers" content="eltOnly">
+		<element type="UnitCombatProductionModifier" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="TraitInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -387,6 +403,8 @@
 		<element type="CapitalYieldModifiers" minOccurs="0"/>
 		<element type="CapitalCommerceModifiers" minOccurs="0"/>
 		<element type="SpecialistExtraCommerces" minOccurs="0"/>
+		<element type="UnitCombatFreeExperiences" minOccurs="0"/>
+		<element type="UnitCombatProductionModifiers" minOccurs="0"/>
 		<element type="FreePromotions"/>
 		<element type="FreePromotionUnitCombats"/>
 		<element type="FreePromotionSets" minOccurs="0"/>

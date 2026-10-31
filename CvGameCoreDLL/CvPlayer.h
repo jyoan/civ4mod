@@ -185,6 +185,9 @@ public:
 	DllExport int getProductionNeeded(BuildingTypes eBuilding) const;																						// Exposed to Python
 	DllExport int getProductionNeeded(ProjectTypes eProject) const;																							// Exposed to Python
 	int getProductionModifier(UnitTypes eUnit) const;
+	// Sum of the trait and current civic UnitCombat* values, computed on each call (nothing is saved)
+	int getUnitCombatFreeExperience(UnitCombatTypes eUnitCombat) const;
+	int getUnitCombatProductionModifier(UnitCombatTypes eUnitCombat) const;
 	int getProductionModifier(BuildingTypes eBuilding) const;
 	int getProductionModifier(ProjectTypes eProject) const;
 

@@ -1362,6 +1362,8 @@ public:
 	int* getCapitalCommerceModifierArray() const;
 	int getSpecialistExtraCommerce(int i) const;				// Exposed to Python
 	int* getSpecialistExtraCommerceArray() const;
+	int getUnitCombatFreeExperience(int i) const;				// Exposed to Python
+	int getUnitCombatProductionModifier(int i) const;				// Exposed to Python
 	int getBuildingHappinessChanges(int i) const;				// Exposed to Python
 	int getBuildingHealthChanges(int i) const;				// Exposed to Python
 	int getFeatureHappinessChanges(int i) const;				// Exposed to Python
@@ -1436,6 +1438,8 @@ protected:
 	int* m_piCommerceModifier;
 	int* m_piCapitalCommerceModifier;
 	int* m_piSpecialistExtraCommerce;
+	int* m_piUnitCombatFreeExperience;
+	int* m_piUnitCombatProductionModifier;
 	int* m_paiBuildingHappinessChanges;
 	int* m_paiBuildingHealthChanges;
 	int* m_paiFeatureHappinessChanges;
@@ -4180,6 +4184,8 @@ public:
 	int* getCapitalCommerceModifierArray() const;
 	int getSpecialistExtraCommerce(int i) const;				// Exposed to Python
 	int* getSpecialistExtraCommerceArray() const;
+	int getUnitCombatFreeExperience(int i) const;				// Exposed to Python
+	int getUnitCombatProductionModifier(int i) const;				// Exposed to Python
 
 	int isFreePromotion(int i) const;				// Exposed to Python
 	int isFreePromotionUnitCombat(int i) const;			
@@ -4229,6 +4235,8 @@ protected:
 	int* m_paiCapitalYieldModifier;
 	int* m_paiCapitalCommerceModifier;
 	int* m_paiSpecialistExtraCommerce;
+	int* m_paiUnitCombatFreeExperience;
+	int* m_paiUnitCombatProductionModifier;
 
 	bool* m_pabFreePromotion;
 	bool* m_pabFreePromotionUnitCombat;

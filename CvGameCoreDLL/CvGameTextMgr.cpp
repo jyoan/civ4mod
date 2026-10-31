@@ -3423,6 +3423,25 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_EXPERIENCE_IN_BORDERS", GC.getTraitInfo(eTrait).getExpInBorderModifier()));
 		}
 
+		// UnitCombatFreeExperiences / UnitCombatProductionModifiers (building text keys)
+		for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+		{
+			if (GC.getTraitInfo(eTrait).getUnitCombatFreeExperience(iI) != 0)
+			{
+				szHelpString.append(NEWLINE L"  ");
+				szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_FREE_XP", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), GC.getTraitInfo(eTrait).getUnitCombatFreeExperience(iI)));
+			}
+		}
+
+		for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+		{
+			if (GC.getTraitInfo(eTrait).getUnitCombatProductionModifier(iI) != 0)
+			{
+				szHelpString.append(NEWLINE L"  ");
+				szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_BUILDS_FASTER_DOMAIN", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), GC.getTraitInfo(eTrait).getUnitCombatProductionModifier(iI)));
+			}
+		}
+
 		// Yield / commerce modifiers: bNewLine=false and the newline, indent and bullet passed as szStart,
 		// so nothing is written when all values are zero
 		szTempBuffer.Format(L"%s  %c", NEWLINE, gDLL->getSymbolID(BULLET_CHAR));
@@ -4630,6 +4649,25 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	{
 		szHelpText.append(NEWLINE);
 		szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_MILITARY_PRODUCTION", GC.getCivicInfo(eCivic).getMilitaryProductionModifier()));
+	}
+
+	//	UnitCombatFreeExperiences / UnitCombatProductionModifiers (building text keys)
+	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+	{
+		if (GC.getCivicInfo(eCivic).getUnitCombatFreeExperience(iI) != 0)
+		{
+			szHelpText.append(NEWLINE);
+			szHelpText.append(gDLL->getText("TXT_KEY_BUILDING_FREE_XP", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), GC.getCivicInfo(eCivic).getUnitCombatFreeExperience(iI)));
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+	{
+		if (GC.getCivicInfo(eCivic).getUnitCombatProductionModifier(iI) != 0)
+		{
+			szHelpText.append(NEWLINE);
+			szHelpText.append(gDLL->getText("TXT_KEY_BUILDING_BUILDS_FASTER_DOMAIN", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), GC.getCivicInfo(eCivic).getUnitCombatProductionModifier(iI)));
+		}
 	}
 
 	//	Free units population percent
@@ -11361,11 +11399,34 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 				{
 					iTraitMod += GC.getSpecialUnitInfo((SpecialUnitTypes) unit.getSpecialUnitType()).getProductionTraits(i);
 				}
+				if (unit.getUnitCombatType() != NO_UNITCOMBAT)
+				{
+					iTraitMod += GC.getTraitInfo((TraitTypes)i).getUnitCombatProductionModifier(unit.getUnitCombatType());
+				}
 				if (0 != iTraitMod)
 				{
 					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PROD_TRAIT", iTraitMod, unit.getTextKeyWide(), GC.getTraitInfo((TraitTypes)i).getTextKeyWide()));
 					szBuffer.append(NEWLINE);
 					iBaseModifier += iTraitMod;
+				}
+			}
+		}
+
+		// Civics (UnitCombatProductionModifiers)
+		if ((unit.getUnitCombatType() != NO_UNITCOMBAT) && (NO_PLAYER != city.getOwnerINLINE()))
+		{
+			for (int i = 0; i < GC.getNumCivicOptionInfos(); i++)
+			{
+				CivicTypes eCivic = GET_PLAYER(city.getOwnerINLINE()).getCivics((CivicOptionTypes)i);
+				if (NO_CIVIC != eCivic)
+				{
+					int iCivicMod = GC.getCivicInfo(eCivic).getUnitCombatProductionModifier(unit.getUnitCombatType());
+					if (0 != iCivicMod)
+					{
+						szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PROD_CIVIC_UNITCOMBAT", iCivicMod, GC.getUnitCombatInfo((UnitCombatTypes)unit.getUnitCombatType()).getTextKeyWide(), GC.getCivicInfo(eCivic).getTextKeyWide()));
+						szBuffer.append(NEWLINE);
+						iBaseModifier += iCivicMod;
+					}
 				}
 			}
 		}

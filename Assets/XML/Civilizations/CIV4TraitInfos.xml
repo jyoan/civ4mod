@@ -333,6 +333,18 @@
 				<iCommerce>0</iCommerce>
 				<iCommerce>1</iCommerce>
 			</SpecialistExtraCommerces>
+			<UnitCombatFreeExperiences>
+				<UnitCombatFreeExperience>
+					<UnitCombatType>UNITCOMBAT_NAVAL</UnitCombatType>
+					<iExperience>2</iExperience>
+				</UnitCombatFreeExperience>
+			</UnitCombatFreeExperiences>
+			<UnitCombatProductionModifiers>
+				<UnitCombatProductionModifier>
+					<UnitCombatType>UNITCOMBAT_NAVAL</UnitCombatType>
+					<iProductionModifier>25</iProductionModifier>
+				</UnitCombatProductionModifier>
+			</UnitCombatProductionModifiers>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 			<FreePromotionSets>

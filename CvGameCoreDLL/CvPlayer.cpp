@@ -5773,7 +5773,66 @@ int CvPlayer::getProductionModifier(UnitTypes eUnit) const
 		}
 	}
 
+	if (GC.getUnitInfo(eUnit).getUnitCombatType() != NO_UNITCOMBAT)
+	{
+		iMultiplier += getUnitCombatProductionModifier((UnitCombatTypes)GC.getUnitInfo(eUnit).getUnitCombatType());
+	}
+
 	return iMultiplier;
+}
+
+int CvPlayer::getUnitCombatFreeExperience(UnitCombatTypes eUnitCombat) const
+{
+	int iExperience = 0;
+	int iI;
+
+	FAssertMsg(eUnitCombat >= 0, "eUnitCombat is expected to be non-negative");
+	FAssertMsg(eUnitCombat < GC.getNumUnitCombatInfos(), "eUnitCombat is expected to be within maximum bounds");
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iExperience += GC.getTraitInfo((TraitTypes)iI).getUnitCombatFreeExperience(eUnitCombat);
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	{
+		if (getCivics((CivicOptionTypes)iI) != NO_CIVIC)
+		{
+			iExperience += GC.getCivicInfo(getCivics((CivicOptionTypes)iI)).getUnitCombatFreeExperience(eUnitCombat);
+		}
+	}
+
+	return iExperience;
+}
+
+int CvPlayer::getUnitCombatProductionModifier(UnitCombatTypes eUnitCombat) const
+{
+	int iModifier = 0;
+	int iI;
+
+	FAssertMsg(eUnitCombat >= 0, "eUnitCombat is expected to be non-negative");
+	FAssertMsg(eUnitCombat < GC.getNumUnitCombatInfos(), "eUnitCombat is expected to be within maximum bounds");
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iModifier += GC.getTraitInfo((TraitTypes)iI).getUnitCombatProductionModifier(eUnitCombat);
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	{
+		if (getCivics((CivicOptionTypes)iI) != NO_CIVIC)
+		{
+			iModifier += GC.getCivicInfo(getCivics((CivicOptionTypes)iI)).getUnitCombatProductionModifier(eUnitCombat);
+		}
+	}
+
+	return iModifier;
 }
 
 int CvPlayer::getProductionModifier(BuildingTypes eBuilding) const
