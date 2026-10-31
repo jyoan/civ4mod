@@ -772,6 +772,9 @@
 	<ElementType name="UpgradeAnywhereUnitCombats" content="eltOnly">
 		<element type="UpgradeAnywhereUnitCombat" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="PrereqOrTraits" content="eltOnly">
+		<element type="TraitType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="CivicInfo" content="eltOnly">
 		<element type="CivicOptionType"/>
 		<element type="Type"/>
@@ -781,6 +784,7 @@
 		<element type="Help" minOccurs="0"/>
 		<element type="Button"/>
 		<element type="TechPrereq"/>
+		<element type="PrereqOrTraits" minOccurs="0"/>
 		<element type="iAnarchyLength"/>
 		<element type="Upkeep"/>
 		<element type="iAIWeight"/>

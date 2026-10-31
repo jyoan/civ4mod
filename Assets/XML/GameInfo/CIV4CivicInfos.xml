@@ -1763,6 +1763,9 @@
 			<Strategy>TXT_KEY_CLAUDE_TEST_PEDIA</Strategy>
 			<Button>,Art/Interface/Buttons/Civics/Despotism.dds,Art/Interface/Buttons/Civics_Civilizations_Religions_Atlas.dds,5,1</Button>
 			<TechPrereq>NONE</TechPrereq>
+			<PrereqOrTraits>
+				<TraitType>TRAIT_TEST</TraitType>
+			</PrereqOrTraits>
 			<iAnarchyLength>0</iAnarchyLength>
 			<Upkeep>NONE</Upkeep>
 			<iAIWeight>-10000</iAIWeight>

@@ -4519,6 +4519,11 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		}
 	}
 
+	if (bCivilopediaText || !bPlayerContext || !(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).hasPrereqOrTrait(GC.getCivicInfo(eCivic).getPrereqOrTraitsVector())))
+	{
+		buildPrereqOrTraitsString(szHelpText, GC.getCivicInfo(eCivic).getPrereqOrTraitsVector());
+	}
+
 	// Special Building Not Required...
 	for (iI = 0; iI < GC.getNumSpecialBuildingInfos(); ++iI)
 	{
@@ -6363,6 +6368,11 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool
 			}
 		}
 
+		if (bCivilopediaText || (ePlayer == NO_PLAYER) || !(GET_PLAYER(ePlayer).hasPrereqOrTrait(GC.getUnitInfo(eUnit).getPrereqOrTraitsVector())))
+		{
+			buildPrereqOrTraitsString(szBuffer, GC.getUnitInfo(eUnit).getPrereqOrTraitsVector());
+		}
+
 		bFirst = true;
 
 		if (GC.getUnitInfo(eUnit).getSpecialUnitType() != NO_SPECIALUNIT)
@@ -7837,6 +7847,11 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 			}
 		}
 
+		if (bCivilopediaText || (ePlayer == NO_PLAYER) || !(GET_PLAYER(ePlayer).hasPrereqOrTrait(kBuilding.getPrereqOrTraitsVector())))
+		{
+			buildPrereqOrTraitsString(szBuffer, kBuilding.getPrereqOrTraitsVector());
+		}
+
 		bFirst = true;
 
 		if (kBuilding.getSpecialBuildingType() != NO_SPECIALBUILDING)
@@ -8112,6 +8127,28 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 				}
 			}
 		}
+	}
+}
+
+// PrereqOrTraits of units, buildings and civics: "Requires Trait A or Trait B". The trait names link to the trait pages.
+void CvGameTextMgr::buildPrereqOrTraitsString(CvWStringBuffer& szBuffer, const std::vector<int>& aiPrereqOrTraits)
+{
+	CvWString szTempBuffer;
+	CvWString szTrait;
+	bool bFirst = true;
+	int iI;
+
+	for (iI = 0; iI < (int)aiPrereqOrTraits.size(); iI++)
+	{
+		szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_REQUIRES").c_str());
+		szTrait.Format(L"<link=literal>%s</link>", GC.getTraitInfo((TraitTypes)aiPrereqOrTraits[iI]).getDescription());
+		setListHelp(szBuffer, szTempBuffer, szTrait, gDLL->getText("TXT_KEY_OR").c_str(), bFirst);
+		bFirst = false;
+	}
+
+	if (!bFirst)
+	{
+		szBuffer.append(ENDCOLR);
 	}
 }
 

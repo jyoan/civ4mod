@@ -42,6 +42,13 @@ class CvCivicsScreen:
 		self.BOTTOM_LINE_WIDTH = 1014
 		self.BOTTOM_LINE_HEIGHT = 60
 
+		# Added by this mod: HEADINGS_BOTTOM and HELP_TOP above are recalculated in updateLayout(),
+		# so that the headings have room for the civic option with the most civics
+		self.MIN_ROWS = 5
+		self.MAX_ROWS_HEIGHT = 240		# with more rows than fit here, the rows get closer so that the help text keeps its room
+		self.HEADINGS_BOTTOM_MARGIN = 45
+		self.iRowHeight = 2 * self.TEXT_MARGIN
+
 		self.X_EXIT = 994
 		self.Y_EXIT = 726
 
@@ -123,6 +130,8 @@ class CvCivicsScreen:
 	# Draw the contents...
 	def drawContents(self):
 	
+		self.updateLayout()
+
 		# Draw the radio buttons
 		self.drawAllButtons()
 				
@@ -139,7 +148,7 @@ class CvCivicsScreen:
 		
 		for j in range(gc.getNumCivicInfos()):
 
-			if (gc.getCivicInfo(j).getCivicOptionType() == iCivicOption):										
+			if (gc.getCivicInfo(j).getCivicOptionType() == iCivicOption and self.isCivicShown(j)):										
 				screen.setState(self.getCivicsButtonName(j), self.m_paeCurrentCivics[iCivicOption] == j)
 							
 				if (self.m_paeDisplayCivics[iCivicOption] == j):
@@ -167,13 +176,45 @@ class CvCivicsScreen:
 			
 			for j in range(gc.getNumCivicInfos()):
 				if (gc.getCivicInfo(j).getCivicOptionType() == i):										
-					fY += 2 * self.TEXT_MARGIN
+					if not self.isCivicShown(j):
+						screen.deleteWidget(self.getCivicsButtonName(j))
+						screen.deleteWidget(self.getCivicsTextName(j))
+						continue
+					fY += self.iRowHeight
 					screen.addCheckBoxGFC(self.getCivicsButtonName(j), gc.getCivicInfo(j).getButton(), ArtFileMgr.getInterfaceArtInfo("BUTTON_HILITE_SQUARE").getPath(), fX + self.BUTTON_SIZE/2, fY, self.BUTTON_SIZE, self.BUTTON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1, ButtonStyles.BUTTON_STYLE_LABEL)
 					screen.setText(self.getCivicsTextName(j), "", gc.getCivicInfo(j).getDescription(), CvUtil.FONT_LEFT_JUSTIFY, fX + self.BUTTON_SIZE + self.TEXT_MARGIN, fY, 0, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
 			self.drawCivicOptionButtons(i)
 					
 							
+	# Added by this mod: civics that need a trait (PrereqOrTraits) the player does not have are not listed.
+	# The civic the player has now is always listed.
+	def isCivicShown(self, iCivic):
+		info = gc.getCivicInfo(iCivic)
+		if info.getNumPrereqOrTraits() == 0:
+			return True
+		if self.m_paeOriginalCivics[info.getCivicOptionType()] == iCivic:
+			return True
+		activePlayer = gc.getPlayer(self.iActivePlayer)
+		for i in range(info.getNumPrereqOrTraits()):
+			if activePlayer.hasTrait(info.getPrereqOrTraits(i)):
+				return True
+		return False
+
+	# Added by this mod: sets the row height, HEADINGS_BOTTOM and HELP_TOP from the civic option with the most listed civics
+	def updateLayout(self):
+		iMaxRows = self.MIN_ROWS
+		for i in range(gc.getNumCivicOptionInfos()):
+			iRows = 0
+			for j in range(gc.getNumCivicInfos()):
+				if (gc.getCivicInfo(j).getCivicOptionType() == i and self.isCivicShown(j)):
+					iRows += 1
+			iMaxRows = max(iMaxRows, iRows)
+
+		self.iRowHeight = min(2 * self.TEXT_MARGIN, self.MAX_ROWS_HEIGHT // iMaxRows)
+		self.HEADINGS_BOTTOM = self.HEADINGS_TOP + self.TEXT_MARGIN + self.iRowHeight * iMaxRows + self.HEADINGS_BOTTOM_MARGIN
+		self.HELP_TOP = self.HEADINGS_BOTTOM + self.BIG_BUTTON_SIZE + 6
+
 	def highlight(self, iCivic):
 		iCivicOption = gc.getCivicInfo(iCivic).getCivicOptionType()
 		if self.m_paeDisplayCivics[iCivicOption] != iCivic:

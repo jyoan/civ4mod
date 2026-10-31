@@ -3779,6 +3779,23 @@ int CvUnitInfo::getPrereqOrBonuses(int i) const
 	return m_piPrereqOrBonuses ? m_piPrereqOrBonuses[i] : -1;
 }
 
+int CvUnitInfo::getNumPrereqOrTraits() const
+{
+	return (int)m_aiPrereqOrTraits.size();
+}
+
+int CvUnitInfo::getPrereqOrTraits(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrTraits(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrTraits()) ? m_aiPrereqOrTraits[i] : -1;
+}
+
+const std::vector<int>& CvUnitInfo::getPrereqOrTraitsVector() const
+{
+	return m_aiPrereqOrTraits;
+}
+
 int CvUnitInfo::getProductionTraits(int i) const			
 {
 	FAssertMsg(i < GC.getNumTraitInfos(), "Index out of bounds");
@@ -4151,6 +4168,77 @@ const CvArtInfoUnit* CvUnitInfo::getArtInfo(int i, EraTypes eEra, UnitArtStyleTy
 	}
 }
 
+// PrereqOrTraits (units, buildings and civics): the player needs at least one of the traits.
+// An empty list means no trait is needed.
+static void readPrereqOrTraits(FDataStreamBase* stream, std::vector<int>& aiPrereqOrTraits)
+{
+	int iNumElements;
+	int iElement;
+	int i;
+
+	aiPrereqOrTraits.clear();
+	stream->Read(&iNumElements);
+	for (i = 0; i < iNumElements; i++)
+	{
+		stream->Read(&iElement);
+		aiPrereqOrTraits.push_back(iElement);
+	}
+}
+
+static void writePrereqOrTraits(FDataStreamBase* stream, const std::vector<int>& aiPrereqOrTraits)
+{
+	int i;
+
+	stream->Write((int)aiPrereqOrTraits.size());
+	for (i = 0; i < (int)aiPrereqOrTraits.size(); i++)
+	{
+		stream->Write(aiPrereqOrTraits[i]);
+	}
+}
+
+// Reads <PrereqOrTraits>, which holds any number of <TraitType>. NONE is skipped.
+static void readPrereqOrTraits(CvXMLLoadUtility* pXML, std::vector<int>& aiPrereqOrTraits)
+{
+	CvString szTextVal;
+	int iNumSibs;
+	int iTrait;
+	int j;
+
+	aiPrereqOrTraits.clear();
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "PrereqOrTraits"))
+	{
+		if (pXML->SkipToNextVal())
+		{
+			iNumSibs = gDLL->getXMLIFace()->GetNumChildren(pXML->GetXML());
+
+			if (0 < iNumSibs)
+			{
+				if (pXML->GetChildXmlVal(szTextVal))
+				{
+					for (j = 0; j < iNumSibs; j++)
+					{
+						iTrait = pXML->FindInInfoClass(szTextVal);
+						if (iTrait > -1)
+						{
+							aiPrereqOrTraits.push_back(iTrait);
+						}
+
+						if (!pXML->GetNextXmlVal(szTextVal))
+						{
+							break;
+						}
+					}
+
+					gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+				}
+			}
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
 void CvUnitInfo::read(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::read(stream);
@@ -4447,6 +4535,16 @@ void CvUnitInfo::read(FDataStreamBase* stream)
 
 	stream->ReadString(m_szFormationType);
 
+	// uiFlag 0: cache written before PrereqOrTraits existed
+	if (uiFlag > 0)
+	{
+		readPrereqOrTraits(stream, m_aiPrereqOrTraits);
+	}
+	else
+	{
+		m_aiPrereqOrTraits.clear();
+	}
+
 	updateArtDefineButton();
 }
 
@@ -4454,7 +4552,7 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=0;
+	uint uiFlag=1;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAIWeight);
@@ -4624,6 +4722,8 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 	stream->WriteString(m_iNumUnitNames, m_paszUnitNames);
 
 	stream->WriteString(m_szFormationType);
+
+	writePrereqOrTraits(stream, m_aiPrereqOrTraits);
 }
 
 //
@@ -4836,6 +4936,8 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+
+	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
 
 	pXML->SetVariableListTagPair(&m_piProductionTraits, "ProductionTraits", sizeof(GC.getTraitInfo((TraitTypes)0)), GC.getNumTraitInfos());
 
@@ -5694,6 +5796,23 @@ bool CvCivicInfo::isUpgradeAnywhereExcludeEnemy(int i) const
 	return m_pabUpgradeAnywhereExcludeEnemy ? m_pabUpgradeAnywhereExcludeEnemy[i] : false;
 }
 
+int CvCivicInfo::getNumPrereqOrTraits() const
+{
+	return (int)m_aiPrereqOrTraits.size();
+}
+
+int CvCivicInfo::getPrereqOrTraits(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrTraits(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrTraits()) ? m_aiPrereqOrTraits[i] : -1;
+}
+
+const std::vector<int>& CvCivicInfo::getPrereqOrTraitsVector() const
+{
+	return m_aiPrereqOrTraits;
+}
+
 int CvCivicInfo::getBuildingHappinessChanges(int i) const
 {
 	FAssertMsg(i < GC.getNumBuildingClassInfos(), "Index out of bounds");
@@ -5918,13 +6037,23 @@ void CvCivicInfo::read(FDataStreamBase* stream)
 			m_pabUpgradeAnywhereExcludeEnemy[i] = false;
 		}
 	}
+
+	// uiFlag < 4: cache written before PrereqOrTraits existed
+	if (uiFlag > 3)
+	{
+		readPrereqOrTraits(stream, m_aiPrereqOrTraits);
+	}
+	else
+	{
+		m_aiPrereqOrTraits.clear();
+	}
 }
 
 void CvCivicInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=3;
+	uint uiFlag=4;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iCivicOptionType);
@@ -6000,6 +6129,7 @@ void CvCivicInfo::write(FDataStreamBase* stream)
 	stream->Write(GC.getNumUnitCombatInfos(), m_piUnitCombatUpgradeDiscount);
 	stream->Write(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereUnitCombat);
 	stream->Write(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereExcludeEnemy);
+	writePrereqOrTraits(stream, m_aiPrereqOrTraits);
 }
 
 // Reads <UpgradeAnywhereUnitCombats> (used by traits, civics and buildings). Each <UpgradeAnywhereUnitCombat>
@@ -6166,6 +6296,7 @@ bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_piUnitCombatProductionModifier, "UnitCombatProductionModifiers", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
 	pXML->SetVariableListTagPair(&m_piUnitCombatUpgradeDiscount, "UnitCombatUpgradeDiscounts", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
 	readUpgradeAnywhereUnitCombats(pXML, &m_pabUpgradeAnywhereUnitCombat, &m_pabUpgradeAnywhereExcludeEnemy);
+	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
 
 	pXML->SetVariableListTagPair(&m_pabHurry, "Hurrys", sizeof(GC.getHurryInfo((HurryTypes)0)), GC.getNumHurryInfos());
 	pXML->SetVariableListTagPair(&m_pabSpecialBuildingNotRequired, "SpecialBuildingNotRequireds", sizeof(GC.getSpecialBuildingInfo((SpecialBuildingTypes)0)), GC.getNumSpecialBuildingInfos());
@@ -7593,6 +7724,23 @@ int CvBuildingInfo::getPrereqOrBonuses(int i) const
 	return m_piPrereqOrBonuses ? m_piPrereqOrBonuses[i] : -1;
 }
 
+int CvBuildingInfo::getNumPrereqOrTraits() const
+{
+	return (int)m_aiPrereqOrTraits.size();
+}
+
+int CvBuildingInfo::getPrereqOrTraits(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrTraits(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrTraits()) ? m_aiPrereqOrTraits[i] : -1;
+}
+
+const std::vector<int>& CvBuildingInfo::getPrereqOrTraitsVector() const
+{
+	return m_aiPrereqOrTraits;
+}
+
 int CvBuildingInfo::getProductionTraits(int i) const		
 {
 	FAssertMsg(i < GC.getNumTraitInfos(), "Index out of bounds");
@@ -8057,6 +8205,16 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 			m_pabUpgradeAnywhereExcludeEnemy[i] = false;
 		}
 	}
+
+	// uiFlag < 2: cache written before PrereqOrTraits existed
+	if (uiFlag > 1)
+	{
+		readPrereqOrTraits(stream, m_aiPrereqOrTraits);
+	}
+	else
+	{
+		m_aiPrereqOrTraits.clear();
+	}
 }
 
 //
@@ -8066,7 +8224,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=1;
+	uint uiFlag=2;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -8237,6 +8395,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 
 	stream->Write(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereUnitCombat);
 	stream->Write(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereExcludeEnemy);
+	writePrereqOrTraits(stream, m_aiPrereqOrTraits);
 }
 
 //
@@ -8384,6 +8543,8 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 		// set the current xml node to it's parent node
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+
+	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
 
 	pXML->SetVariableListTagPair(&m_piProductionTraits, "ProductionTraits", sizeof(GC.getTraitInfo((TraitTypes)0)), GC.getNumTraitInfos());
 

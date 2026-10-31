@@ -23523,6 +23523,10 @@
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
+			<PrereqOrTraits>
+				<TraitType>TRAIT_TEST</TraitType>
+				<TraitType>TRAIT_AGGRESSIVE</TraitType>
+			</PrereqOrTraits>
 			<ProductionTraits/>
 			<Flavors/>
 			<iAIWeight>-10000</iAIWeight>

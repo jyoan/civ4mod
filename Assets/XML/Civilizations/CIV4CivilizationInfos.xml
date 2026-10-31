@@ -4749,7 +4749,7 @@
 			</FreeTechs>
 			<DisableTechs/>
 			<InitialCivics>
-				<CivicType>CIVIC_TEST</CivicType>
+				<CivicType>CIVIC_DESPOTISM</CivicType>
 				<CivicType>CIVIC_BARBARISM</CivicType>
 				<CivicType>CIVIC_TRIBALISM</CivicType>
 				<CivicType>CIVIC_DECENTRALIZATION</CivicType>

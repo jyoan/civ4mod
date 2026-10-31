@@ -68,6 +68,7 @@ public:
 	CvSelectionGroup* cycleSelectionGroups(CvUnit* pUnit, bool bForward, bool bWorkers, bool* pbWrap);
 
 	bool hasTrait(TraitTypes eTrait) const;																																			// Exposed to Python						
+	bool hasPrereqOrTrait(const std::vector<int>& aiPrereqOrTraits) const;	// PrereqOrTraits: empty, or the player has one of the traits
 	DllExport bool isHuman() const;																																							// Exposed to Python						
 	DllExport void updateHuman();
 	DllExport bool isBarbarian() const;																																					// Exposed to Python						

@@ -29,10 +29,15 @@ class CvPediaTrait:
 		self.W_CIV_PANE = 250
 		self.H_CIV_PANE = 300
 
+		self.X_ALLOWS_PANE = 330
+		self.Y_ALLOWS_PANE = 60
+		self.W_ALLOWS_PANE = 420
+		self.H_ALLOWS_PANE = 124
+
 		self.X_SPECIAL_PANE = 330
-		self.Y_SPECIAL_PANE = 60
+		self.Y_SPECIAL_PANE = 198
 		self.W_SPECIAL_PANE = 420
-		self.H_SPECIAL_PANE = 614
+		self.H_SPECIAL_PANE = 476
 
 	# Screen construction function
 	def interfaceScreen(self, iTrait):
@@ -62,6 +67,7 @@ class CvPediaTrait:
 
 		self.placeLeaders()
 		self.placeCivs()
+		self.placeAllows()
 		self.placeSpecial()
 
 	# Leaders that have this trait themselves
@@ -116,6 +122,38 @@ class CvPediaTrait:
 				screen.appendTableRow(szTable)
 				screen.setTableText(szTable, 0, iRow, u"<font=2>" + item[0] + u"</font>", gc.getCivilizationInfo(iCiv).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIV, iCiv, -1, CvUtil.FONT_LEFT_JUSTIFY)
 				iRow += 1
+
+	# Units, buildings and civics that list this trait in <PrereqOrTraits>
+	def placeAllows(self):
+		screen = self.top.getScreen()
+
+		panelName = self.top.getNextWidgetName()
+		screen.addPanel( panelName, localText.getText("TXT_KEY_PEDIA_ALLOWS", ()), "", False, True,
+			self.X_ALLOWS_PANE, self.Y_ALLOWS_PANE, self.W_ALLOWS_PANE, self.H_ALLOWS_PANE, PanelStyles.PANEL_STYLE_BLUE50 )
+
+		screen.attachLabel(panelName, "", "  ")
+
+		for iUnit in range(gc.getNumUnitInfos()):
+			if self.isPrereqTrait(gc.getUnitInfo(iUnit)):
+				szButton = gc.getUnitInfo(iUnit).getButton()
+				if self.top.iActivePlayer != -1:
+					szButton = gc.getPlayer(self.top.iActivePlayer).getUnitButton(iUnit)
+				screen.attachImageButton( panelName, "", szButton, GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, False )
+
+		for iBuilding in range(gc.getNumBuildingInfos()):
+			if self.isPrereqTrait(gc.getBuildingInfo(iBuilding)):
+				screen.attachImageButton( panelName, "", gc.getBuildingInfo(iBuilding).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iBuilding, 1, False )
+
+		for iCivic in range(gc.getNumCivicInfos()):
+			if self.isPrereqTrait(gc.getCivicInfo(iCivic)):
+				screen.attachImageButton( panelName, "", gc.getCivicInfo(iCivic).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIVIC, iCivic, 1, False )
+
+	# info: a unit, building or civic info
+	def isPrereqTrait(self, info):
+		for i in range(info.getNumPrereqOrTraits()):
+			if info.getPrereqOrTraits(i) == self.iTrait:
+				return True
+		return False
 
 	# Effects, from the same text as the trait help
 	def placeSpecial(self):

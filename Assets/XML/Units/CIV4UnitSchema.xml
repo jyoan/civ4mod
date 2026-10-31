@@ -270,6 +270,10 @@
 	<ElementType name="PrereqBonuses" content="eltOnly">
 		<element type="BonusType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="TraitType" content="textOnly"/>
+	<ElementType name="PrereqOrTraits" content="eltOnly">
+		<element type="TraitType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="ProductionTraitType" content="textOnly"/>
 	<ElementType name="iProductionTrait" content="textOnly" dt:type="int"/>
 	<ElementType name="ProductionTrait" content="eltOnly">
@@ -586,6 +590,7 @@
 		<element type="TechTypes"/>
 		<element type="BonusType"/>
 		<element type="PrereqBonuses"/>
+		<element type="PrereqOrTraits" minOccurs="0"/>
 		<element type="ProductionTraits"/>
 		<element type="Flavors"/>
 		<element type="iAIWeight"/>

@@ -926,6 +926,9 @@ public:
 
 	int getPrereqAndTechs(int i) const;				// Exposed to Python
 	int getPrereqOrBonuses(int i) const;				// Exposed to Python
+	int getNumPrereqOrTraits() const;				// Exposed to Python
+	int getPrereqOrTraits(int i) const;				// Exposed to Python
+	const std::vector<int>& getPrereqOrTraitsVector() const;
 	int getProductionTraits(int i) const;				// Exposed to Python
 	int getFlavorValue(int i) const;				// Exposed to Python
 	int getTerrainAttackModifier(int i) const;				// Exposed to Python
@@ -1108,6 +1111,7 @@ protected:
 
 	int* m_piPrereqAndTechs;
 	int* m_piPrereqOrBonuses;
+	std::vector<int> m_aiPrereqOrTraits;
 	int* m_piProductionTraits;
 	int* m_piFlavorValue;
 	int* m_piTerrainAttackModifier;
@@ -1367,6 +1371,9 @@ public:
 	int getUnitCombatUpgradeDiscount(int i) const;				// Exposed to Python
 	bool isUpgradeAnywhereUnitCombat(int i) const;				// Exposed to Python
 	bool isUpgradeAnywhereExcludeEnemy(int i) const;				// Exposed to Python
+	int getNumPrereqOrTraits() const;				// Exposed to Python
+	int getPrereqOrTraits(int i) const;				// Exposed to Python
+	const std::vector<int>& getPrereqOrTraitsVector() const;
 	int getBuildingHappinessChanges(int i) const;				// Exposed to Python
 	int getBuildingHealthChanges(int i) const;				// Exposed to Python
 	int getFeatureHappinessChanges(int i) const;				// Exposed to Python
@@ -1446,6 +1453,7 @@ protected:
 	int* m_piUnitCombatUpgradeDiscount;
 	bool* m_pabUpgradeAnywhereUnitCombat;
 	bool* m_pabUpgradeAnywhereExcludeEnemy;
+	std::vector<int> m_aiPrereqOrTraits;
 	int* m_paiBuildingHappinessChanges;
 	int* m_paiBuildingHealthChanges;
 	int* m_paiFeatureHappinessChanges;
@@ -1721,6 +1729,9 @@ public:
 	int getDomainProductionModifier(int i) const;				// Exposed to Python
 	int getPrereqAndTechs(int i) const;				// Exposed to Python
 	int getPrereqOrBonuses(int i) const;				// Exposed to Python
+	int getNumPrereqOrTraits() const;				// Exposed to Python
+	int getPrereqOrTraits(int i) const;				// Exposed to Python
+	const std::vector<int>& getPrereqOrTraitsVector() const;
 	int getProductionTraits(int i) const;				// Exposed to Python
 	int getHappinessTraits(int i) const;				// Exposed to Python
 	int getBuildingHappinessChanges(int i) const;				// Exposed to Python
@@ -1874,6 +1885,7 @@ protected:
 
 	int* m_piPrereqAndTechs;
 	int* m_piPrereqOrBonuses;
+	std::vector<int> m_aiPrereqOrTraits;
 	int* m_piProductionTraits;
 	int* m_piHappinessTraits;
 	int* m_piSeaPlotYieldChange;

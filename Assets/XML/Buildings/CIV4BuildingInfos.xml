@@ -28351,6 +28351,9 @@
 			<TechTypes/>
 			<Bonus>NONE</Bonus>
 			<PrereqBonuses/>
+			<PrereqOrTraits>
+				<TraitType>TRAIT_TEST</TraitType>
+			</PrereqOrTraits>
 			<ProductionTraits/>
 			<HappinessTraits/>
 			<NoBonus>NONE</NoBonus>

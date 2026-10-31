@@ -2246,6 +2246,27 @@ bool CvPlayer::hasTrait(TraitTypes eTrait) const
 	return ((getCivilizationType() != NO_CIVILIZATION) && GC.getCivilizationInfo(getCivilizationType()).hasTrait(eTrait));
 }
 
+// PrereqOrTraits of units, buildings and civics: an empty list needs no trait, otherwise one of the traits is enough
+bool CvPlayer::hasPrereqOrTrait(const std::vector<int>& aiPrereqOrTraits) const
+{
+	int iI;
+
+	if (aiPrereqOrTraits.empty())
+	{
+		return true;
+	}
+
+	for (iI = 0; iI < (int)aiPrereqOrTraits.size(); iI++)
+	{
+		if (hasTrait((TraitTypes)aiPrereqOrTraits[iI]))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool CvPlayer::isHuman() const
 {
 	return m_bHuman;
@@ -5158,6 +5179,12 @@ bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool
 		return false;
 	}
 
+	// Checked before bTestVisible: a player without the trait never sees the unit in the build list
+	if (!hasPrereqOrTrait(GC.getUnitInfo(eUnit).getPrereqOrTraitsVector()))
+	{
+		return false;
+	}
+
 	if (!bIgnoreCost)
 	{
 		if (GC.getUnitInfo(eUnit).getProductionCost() == -1)
@@ -5269,6 +5296,12 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 
 	FAssert(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(eBuildingClass) == eBuilding);
 	if (GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(eBuildingClass) != eBuilding)
+	{
+		return false;
+	}
+
+	// Checked before bTestVisible: a player without the trait never sees the building in the build list
+	if (!hasPrereqOrTrait(GC.getBuildingInfo(eBuilding).getPrereqOrTraitsVector()))
 	{
 		return false;
 	}
@@ -6934,6 +6967,11 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 	}
 
 	if (!isHasCivicOption((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())) && !(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getCivicInfo(eCivic).getTechPrereq()))))
+	{
+		return false;
+	}
+
+	if (!hasPrereqOrTrait(GC.getCivicInfo(eCivic).getPrereqOrTraitsVector()))
 	{
 		return false;
 	}
