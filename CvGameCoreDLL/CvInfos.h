@@ -1755,6 +1755,7 @@ public:
 	int getDomainProductionModifier(int i) const;				// Exposed to Python
 	int getPrereqAndTechs(int i) const;				// Exposed to Python
 	int getPrereqOrBonuses(int i) const;				// Exposed to Python
+	int getPlotRadius() const;				// Exposed to Python
 	int getNumPrereqOrTraits() const;				// Exposed to Python
 	int getPrereqOrTraits(int i) const;				// Exposed to Python
 	const std::vector<int>& getPrereqOrTraitsVector() const;
@@ -1912,6 +1913,7 @@ protected:
 	int* m_piPrereqAndTechs;
 	int* m_piPrereqOrBonuses;
 	std::vector<int> m_aiPrereqOrTraits;
+	int m_iPlotRadius;
 	int* m_piProductionTraits;
 	int* m_piHappinessTraits;
 	int* m_piSeaPlotYieldChange;

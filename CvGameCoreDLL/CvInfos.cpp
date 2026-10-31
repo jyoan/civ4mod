@@ -6784,6 +6784,7 @@ bool CvUnitClassInfo::readPass3()
 //------------------------------------------------------------------------------------------------------
 CvBuildingInfo::CvBuildingInfo() :
 m_iBuildingClassType(NO_BUILDINGCLASS),
+m_iPlotRadius(0),
 m_iVictoryPrereq(NO_VICTORY),
 m_iFreeStartEra(NO_ERA),
 m_iMaxStartEra(NO_ERA),
@@ -7885,6 +7886,12 @@ const std::vector<int>& CvBuildingInfo::getPrereqOrTraitsVector() const
 	return m_aiPrereqOrTraits;
 }
 
+// City plot radius of a city with this building (added by this mod; 0: no change)
+int CvBuildingInfo::getPlotRadius() const
+{
+	return m_iPlotRadius;
+}
+
 int CvBuildingInfo::getProductionTraits(int i) const		
 {
 	FAssertMsg(i < GC.getNumTraitInfos(), "Index out of bounds");
@@ -8359,6 +8366,13 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 	{
 		m_aiPrereqOrTraits.clear();
 	}
+
+	// uiFlag < 3: cache written before iPlotRadius existed
+	m_iPlotRadius = 0;
+	if (uiFlag > 2)
+	{
+		stream->Read(&m_iPlotRadius);
+	}
 }
 
 //
@@ -8368,7 +8382,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=2;
+	uint uiFlag=3;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -8540,6 +8554,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	stream->Write(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereUnitCombat);
 	stream->Write(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereExcludeEnemy);
 	writePrereqOrTraits(stream, m_aiPrereqOrTraits);
+	stream->Write(m_iPlotRadius);
 }
 
 //
@@ -8689,6 +8704,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
+	pXML->GetChildXmlValByName(&m_iPlotRadius, "iPlotRadius");
 
 	pXML->SetVariableListTagPair(&m_piProductionTraits, "ProductionTraits", sizeof(GC.getTraitInfo((TraitTypes)0)), GC.getNumTraitInfos());
 

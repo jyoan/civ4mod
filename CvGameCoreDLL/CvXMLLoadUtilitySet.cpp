@@ -692,11 +692,15 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 	}
 
 	// The largest city plot radius the XML allows (added by this mod): every positive trait iCityRadiusChange
-	// could add up on one player. setMaxCityPlotRadius keeps it within CITY_PLOTS_MAX_RADIUS.
+	// could add up on one player, and a building iPlotRadius can be larger. setMaxCityPlotRadius keeps it within CITY_PLOTS_MAX_RADIUS.
 	int iMaxCityPlotRadius = CITY_PLOTS_DEFAULT_RADIUS;
 	for (int i=0; i < GC.getNumTraitInfos(); ++i)
 	{
 		iMaxCityPlotRadius += std::max(0, GC.getTraitInfo((TraitTypes) i).getCityRadiusChange());
+	}
+	for (int i=0; i < GC.getNumBuildingInfos(); ++i)
+	{
+		iMaxCityPlotRadius = std::max(iMaxCityPlotRadius, GC.getBuildingInfo((BuildingTypes) i).getPlotRadius());
 	}
 	GC.setMaxCityPlotRadius(iMaxCityPlotRadius);
 

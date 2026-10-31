@@ -1365,10 +1365,25 @@ void CvCity::setPlotRadius(int iNewValue)
 }
 
 
-// The radius this city should have: the radius of new cities of its owner (traits)
+// The radius this city should have: the radius of new cities of its owner (traits), or more with the iPlotRadius
+// of a building in the city (not obsolete)
 void CvCity::updatePlotRadius()
 {
-	setPlotRadius(GET_PLAYER(getOwnerINLINE()).getNextCityRadius());
+	int iRadius = GET_PLAYER(getOwnerINLINE()).getNextCityRadius();
+	int iI;
+
+	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+	{
+		if (GC.getBuildingInfo((BuildingTypes)iI).getPlotRadius() > iRadius)
+		{
+			if (getNumActiveBuilding((BuildingTypes)iI) > 0)
+			{
+				iRadius = GC.getBuildingInfo((BuildingTypes)iI).getPlotRadius();
+			}
+		}
+	}
+
+	setPlotRadius(iRadius);
 }
 
 
@@ -3935,6 +3950,12 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 	}
 
 	updateBuildingCommerce();
+
+	// Building iPlotRadius (added by this mod): the building count and obsolescence are already updated here
+	if (GC.getBuildingInfo(eBuilding).getPlotRadius() > 0)
+	{
+		updatePlotRadius();
+	}
 
 	setLayoutDirty(true);
 }

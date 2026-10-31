@@ -191,7 +191,16 @@
 		<Spanish>[ICON_BULLET]%D1_Change city radius (up to %d2_Max)</Spanish>
 		<Japanese>[ICON_BULLET]&#37117;&#24066;&#22287;&#12398;&#21322;&#24452;%D1_Change&#65288;&#26368;&#22823;%d2_Max&#65289;</Japanese>
 	</TEXT>
-	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON) -->
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PLOT_RADIUS</Tag>
+		<English>[ICON_BULLET]City radius %d1_Radius</English>
+		<French>[ICON_BULLET]City radius %d1_Radius</French>
+		<German>[ICON_BULLET]City radius %d1_Radius</German>
+		<Italian>[ICON_BULLET]City radius %d1_Radius</Italian>
+		<Spanish>[ICON_BULLET]City radius %d1_Radius</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#22287;&#12398;&#21322;&#24452;%d1_Radius</Japanese>
+	</TEXT>
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
 		<English>Test data for checking the mod's features.</English>
@@ -326,5 +335,14 @@
 		<Italian>Test Poison</Italian>
 		<Spanish>Test Poison</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#27602;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_RADIUS</Tag>
+		<English>Test Building (City Radius)</English>
+		<French>Test Building (City Radius)</French>
+		<German>Test Building (City Radius)</German>
+		<Italian>Test Building (City Radius)</Italian>
+		<Spanish>Test Building (City Radius)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#37117;&#24066;&#22287;&#65289;</Japanese>
 	</TEXT>
 </Civ4GameText>

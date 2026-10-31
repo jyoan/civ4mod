@@ -393,6 +393,7 @@
 	<ElementType name="UpgradeAnywhereUnitCombats" content="eltOnly">
 		<element type="UpgradeAnywhereUnitCombat" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="iPlotRadius" content="textOnly" dt:type="int"/>
 	<ElementType name="BuildingInfo" content="eltOnly">
 		<element type="BuildingClass"/>
 		<element type="Type"/>
@@ -557,6 +558,7 @@
 		<element type="iHotKeyPriority"/>
 		<element type="iOrderPriority" minOccurs="0"/>
 		<element type="UpgradeAnywhereUnitCombats" minOccurs="0"/>
+		<element type="iPlotRadius" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="BuildingInfos" content="eltOnly">
 		<element type="BuildingInfo" maxOccurs="*"/>

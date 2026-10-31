@@ -7569,6 +7569,13 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 		}
 	}
 
+	// iPlotRadius (added by this mod)
+	if (kBuilding.getPlotRadius() > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_PLOT_RADIUS", kBuilding.getPlotRadius()));
+	}
+
 	// UpgradeAnywhereUnitCombats (effective while any of the player's cities has the building)
 	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
 	{
