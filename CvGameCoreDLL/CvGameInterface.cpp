@@ -100,7 +100,7 @@ void CvGame::updateColoredPlots()
 	{
 		if (gDLL->getInterfaceIFace()->isCityScreenUp())
 		{
-			for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+			for (iI = 0; iI < pHeadSelectedCity->getNumCityPlots(); iI++)
 			{
 				if (pHeadSelectedCity->isWorkingPlot(iI))
 				{

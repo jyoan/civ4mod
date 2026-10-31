@@ -172,6 +172,12 @@ inline int stepDistance(int iX1, int iY1, int iX2, int iY2)													// Expos
 	return std::max(xDistance(iX1, iX2), yDistance(iY1, iY2));
 }
 
+// Number of city plots within iRadius (1: 9, 2: 21, 3: 37). Added by this mod for the city plot radius
+inline int calculateNumCityPlots(int iRadius)
+{
+	return (iRadius * (iRadius + 3) * 2 + 1);
+}
+
 inline CvPlot* plotDirection(int iX, int iY, DirectionTypes eDirection)							// Exposed to Python
 {
 	if(eDirection == NO_DIRECTION)

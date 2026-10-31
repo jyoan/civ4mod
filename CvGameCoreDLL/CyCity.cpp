@@ -49,6 +49,16 @@ int CyCity::getCityPlotIndex(CyPlot* pPlot)
 	return m_pCity ? m_pCity->getCityPlotIndex(pPlot->getPlot()) : -1;
 }
 
+int CyCity::getPlotRadius()
+{
+	return m_pCity ? m_pCity->getPlotRadius() : -1;
+}
+
+int CyCity::getNumCityPlots()
+{
+	return m_pCity ? m_pCity->getNumCityPlots() : -1;
+}
+
 CyPlot* CyCity::getCityIndexPlot(int iIndex)
 {
 	return m_pCity ? new CyPlot(m_pCity->getCityIndexPlot(iIndex)) : NULL;

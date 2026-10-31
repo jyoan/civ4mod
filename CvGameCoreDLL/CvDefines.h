@@ -50,10 +50,16 @@
 #define INVALID_PLOT_COORD										(-(MAX_INT))	// don't use -1 since that is a valid wrap coordinate
 #define DIRECTION_RADIUS											(1)
 #define DIRECTION_DIAMETER										((DIRECTION_RADIUS * 2) + 1)
-#define NUM_CITY_PLOTS												(21)
 #define CITY_HOME_PLOT												(0)
-#define CITY_PLOTS_RADIUS											(2)
-#define CITY_PLOTS_DIAMETER										((CITY_PLOTS_RADIUS*2) + 1)
+// City plot radius (changed by this mod): each city has its own radius (CvCity::getPlotRadius), up to
+// CITY_PLOTS_MAX_RADIUS. City plot indexes go ring by ring (0, 1-8, 9-20, 21-36), so a city with radius r
+// uses the indexes below calculateNumCityPlots(r). The first 21 are the same as in BtS.
+// NUM_CITY_PLOTS, CITY_PLOTS_RADIUS and CITY_PLOTS_DIAMETER were removed so that every use had to be revised.
+#define CITY_PLOTS_DEFAULT_RADIUS								(2)
+#define CITY_PLOTS_MAX_RADIUS									(3)
+#define NUM_DEFAULT_CITY_PLOTS									(CITY_PLOTS_DEFAULT_RADIUS * (CITY_PLOTS_DEFAULT_RADIUS + 3) * 2 + 1)
+#define NUM_MAX_CITY_PLOTS										(CITY_PLOTS_MAX_RADIUS * (CITY_PLOTS_MAX_RADIUS + 3) * 2 + 1)
+#define CITY_PLOTS_MAX_DIAMETER								((CITY_PLOTS_MAX_RADIUS * 2) + 1)
 
 #define GAME_NAME															("Game")
 

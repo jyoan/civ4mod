@@ -197,6 +197,8 @@ public:
 	int getTraitFeatureYieldChange(FeatureTypes eFeature, YieldTypes eYield) const;
 	int getTraitImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield) const;
 	int getTraitRiverPlotYieldChange(YieldTypes eYield) const;
+	// City plot radius of a new city of this player (added by this mod)
+	int getNextCityRadius() const;
 	int getProductionModifier(BuildingTypes eBuilding) const;
 	int getProductionModifier(ProjectTypes eProject) const;
 

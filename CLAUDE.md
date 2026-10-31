@@ -152,6 +152,22 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - **画面番号の落とし穴**: `CvScreenEnums.py` では `PEDIA_X = CIVILOPEDIA_PAGE_X + 200` だが、`PEDIA_HISTORY = PEDIA_HINTS + 1` が決め打ち。末尾に足したページ種別に + 200 すると `PEDIA_HISTORY` と同じ値になるので、`PEDIA_TRAIT = PEDIA_HISTORY + 1` にしている
 - 志向の名前は説明文の中で `<link=literal>` のリンクになっている（`parseTraits` の見出し、文明の説明の志向一覧）。ペディアでクリックすると志向のページへ移動する
 
+### 都市圏の半径
+
+BtS は全都市が半径 2（21 タイル）固定。この Mod では都市ごとに半径を持つ（既定 2、最大 3）。FFH2 の `bSprawling` と Denev さんの 056Patch12 の実装を参考にした（第 1 段階は土台だけで、半径を変えるタグはまだない）。
+
+- `CvDefines.h`: `NUM_CITY_PLOTS` / `CITY_PLOTS_RADIUS` / `CITY_PLOTS_DIAMETER` は**わざと消した**（使う箇所をすべて見直すため）。代わりに `CITY_PLOTS_DEFAULT_RADIUS`（2）、`CITY_PLOTS_MAX_RADIUS`（3）、`NUM_DEFAULT_CITY_PLOTS`（21）、`NUM_MAX_CITY_PLOTS`（37）、`CITY_PLOTS_MAX_DIAMETER`（7）。タイル数は `calculateNumCityPlots(半径)`（`CvGameCoreUtils.h`。1: 9、2: 21、3: 37）
+- 都市圏のタイル番号は「中心 → 1 周目（1〜8）→ 2 周目（9〜20）→ 3 周目（21〜36）」の順で、最初の 21 個は BtS と同じ。**半径 r の都市は番号 `calculateNumCityPlots(r)` 未満のタイルを使う**。表（`CvGlobals` の `aiCityPlotX` / `Y` / `Priority`、`aaiXYCityPlot` 7×7）は FFH2 と同じ並び
+- `CvCity::getPlotRadius()` / `getNumCityPlots()`（Python にも公開）。`getCityIndexPlot(i)` は半径の外の番号なら NULL、`getCityPlotIndex(pPlot)`（`plotCityXY(pCity, pPlot)`）は半径の外なら -1。`plotCityXY(dx, dy)` と `plotCity(x, y, i)` は最大半径までの位置の変換だけ
+- 新しく足すループの書き分け:
+  - その都市自身のタイル: `for (i = 0; i < pCity->getNumCityPlots(); i++)`
+  - あるタイルを働かせられる都市を探す（`CvPlot::updateWorkingCity`、`calculateCulturalOwner`）: `NUM_MAX_CITY_PLOTS` まで探し、`i < pLoopCity->getNumCityPlots()` を確かめる（番号の周回はタイルから見ても都市から見ても同じ）
+  - まだない都市を評価する（AI の候補地 `AI_foundValue` など）: `CvPlayer::getNextCityRadius()`（その文明の新しい都市の半径）
+  - マップ生成・開始位置の調整（`CvGame::normalize*`、`CvPlayer::addFreeUnit` / `startingPlotRange` / `findStartingArea`）: 既定の半径のまま（乱数の引き方が変わるとマップが変わるため）
+- 「どれかの都市が働かせられるか」（`CvPlot::updatePotentialCityWork`。偽ならタイルの産出は 0）は `GC.getMaxCityPlotRadius()`（XML で都市が取りうる最大の半径。半径を広げるタグが無ければ 2）で判定する。文化の広がり（`CvCity::doPlotCulture` の `isPotentialCityWorkForArea`）は文化を広げる都市自身の半径で判定する。最大の半径（3）で判定すると、半径 3 の都市がいなくても国境が海へ広がってしまうため（056 はそうなっている）
+- セーブ: `CvCity`（`uiFlag=1`）は半径と 37 個分の働き先を、`CvCityAI`（`uiFlag=1`）は 37 個分の最善の改善を保存する。`uiFlag=0`（この変更より前のセーブ）は 21 個分を読み、半径は 2
+- exe が使う都市圏の関数は、都市画面のクリック（`CvGame::handleCityScreenPlotPicked` など）だけで、表（`getXYCityPlot` など）や `getNUM_CITY_PLOTS` は使っていない（`link.exe /dump /imports` で確認）。都市圏の表示も DLL が決めるので、変更は DLL だけで済む。BtS の Python も都市圏のタイルを扱っていない
+
 ## Mod の設計方針
 
 この Mod の狙いは、FFH2 のような大規模なソース改変ではなく、**XML から設定できる要素を増やすこと**。AI がその要素を使いこなせるかは考慮しない。
@@ -239,3 +255,4 @@ BtS 本体の修正:
 - 2026-10-31: 昇進の `iExpireChance` / `bRemovedByCombat` / `PromotionVictory`（D・E の第 1 段階）の説明文と動作をゲーム内で確認（検証用文明のユニット A で勝利 → 検証用状態Ⅰ・Ⅱ）
 - 2026-10-31: 昇進の `bRemovedWhenHealed` / `PromotionCombatApply` / `iFreeXPPerTurn`・`iFreeXPCap`（D・E の第 2 段階）と、撤退率などが上限を超えたユニットでも昇進・大将軍の合体ができる修正（`CvUnit::isPromotionValid`）をゲーム内で確認
 - 2026-10-31: 昇進の `iGoldFromCombat` / `iCombatCapturePercent`（D・E の第 3 段階）の説明文・資金・捕獲（足し算、動物は捕獲しない）をゲーム内で確認
+- 2026-10-31: 都市圏の半径の土台（第 1 段階。都市ごとの半径、既定 2）で、既存のセーブの読み込みと、新しいゲームが今までどおり動くことを確認

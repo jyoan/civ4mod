@@ -140,6 +140,7 @@ m_aeTurnRightDirection(NULL),
 m_Profiler(NULL),
 m_VarSystem(NULL),
 m_iMOVE_DENOMINATOR(0),
+m_iMaxCityPlotRadius(CITY_PLOTS_DEFAULT_RADIUS),
 m_iNUM_UNIT_PREREQ_OR_BONUSES(0),
 m_iNUM_BUILDING_PREREQ_OR_BONUSES(0),
 m_iFOOD_CONSUMPTION_PER_POPULATION(0),
@@ -270,38 +271,47 @@ void CvGlobals::init()
 		0,	// CARDINALDIRECTION_WEST
 	};
 
-	int aiCityPlotX[NUM_CITY_PLOTS] =
+	// The third ring (indexes 21-36) was added by this mod for the city plot radius, in the same order as FFH2
+	int aiCityPlotX[NUM_MAX_CITY_PLOTS] =
 	{
 		0,
 		0, 1, 1, 1, 0,-1,-1,-1,
 		0, 1, 2, 2, 2, 1, 0,-1,-2,-2,-2,-1,
+		0, 1, 2, 3, 3, 3, 2, 1, 0,-1,-2,-3,-3,-3,-2,-1,
 	};
 
-	int aiCityPlotY[NUM_CITY_PLOTS] =
+	int aiCityPlotY[NUM_MAX_CITY_PLOTS] =
 	{
 		0,
 		1, 1, 0,-1,-1,-1, 0, 1,
 		2, 2, 1, 0,-1,-2,-2,-2,-1, 0, 1, 2,
+		3, 3, 2, 1, 0,-1,-2,-3,-3,-3,-2,-1, 0, 1, 2, 3,
 	};
 
-	int aiCityPlotPriority[NUM_CITY_PLOTS] =
+	int aiCityPlotPriority[NUM_MAX_CITY_PLOTS] =
 	{
 		0,
 		1, 2, 1, 2, 1, 2, 1, 2,
 		3, 4, 4, 3, 4, 4, 3, 4, 4, 3, 4, 4,
+		5, 6, 7, 6, 5, 6, 7, 6, 5, 6, 7, 6, 5, 6, 7, 6,
 	};
 
-	int aaiXYCityPlot[CITY_PLOTS_DIAMETER][CITY_PLOTS_DIAMETER] =
+	// [iDX + CITY_PLOTS_MAX_RADIUS][iDY + CITY_PLOTS_MAX_RADIUS]
+	int aaiXYCityPlot[CITY_PLOTS_MAX_DIAMETER][CITY_PLOTS_MAX_DIAMETER] =
 	{
-		{-1, 17, 18, 19, -1,},
+		{-1, -1, 32, 33, 34, -1, -1,},
 
-		{16, 6, 7, 8, 20,},
+		{-1, 31, 17, 18, 19, 35, -1,},
 
-		{15, 5, 0, 1, 9,},
+		{30, 16, 6, 7, 8, 20, 36,},
 
-		{14, 4, 3, 2, 10,},
+		{29, 15, 5, 0, 1, 9, 21,},
 
-		{-1, 13, 12, 11, -1,}
+		{28, 14, 4, 3, 2, 10, 22,},
+
+		{-1, 27, 13, 12, 11, 23, -1,},
+
+		{-1, -1, 26, 25, 24, -1, -1,}
 	};
 
 	DirectionTypes aeTurnRightDirection[NUM_DIRECTION_TYPES] =
@@ -635,9 +645,9 @@ int* CvGlobals::getCityPlotPriority()
 
 int CvGlobals::getXYCityPlot(int i, int j)
 {
-	FAssertMsg(i < CITY_PLOTS_DIAMETER, "Index out of bounds");
+	FAssertMsg(i < CITY_PLOTS_MAX_DIAMETER, "Index out of bounds");
 	FAssertMsg(i > -1, "Index out of bounds");
-	FAssertMsg(j < CITY_PLOTS_DIAMETER, "Index out of bounds");
+	FAssertMsg(j < CITY_PLOTS_MAX_DIAMETER, "Index out of bounds");
 	FAssertMsg(j > -1, "Index out of bounds");
 	return m_aaiXYCityPlot[i][j];
 }
@@ -3103,7 +3113,17 @@ int CvGlobals::getINVALID_PLOT_COORD()
 
 int CvGlobals::getNUM_CITY_PLOTS()
 {
-	return NUM_CITY_PLOTS;
+	return NUM_MAX_CITY_PLOTS;
+}
+
+int CvGlobals::getMaxCityPlotRadius() const
+{
+	return m_iMaxCityPlotRadius;
+}
+
+void CvGlobals::setMaxCityPlotRadius(int iNewValue)
+{
+	m_iMaxCityPlotRadius = range(iNewValue, CITY_PLOTS_DEFAULT_RADIUS, CITY_PLOTS_MAX_RADIUS);
 }
 
 int CvGlobals::getCITY_HOME_PLOT()

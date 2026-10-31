@@ -30,6 +30,8 @@ public:
 	void doTask(int /*TaskTypes*/ eTask, int iData1, int iData2, bool bOption);
 	void chooseProduction(int /*UnitTypes*/ eTrainUnit, int /*BuildingTypes*/ eConstructBuilding, int /*ProjectTypes*/ eCreateProject, bool bFinish, bool bFront);
 	int getCityPlotIndex(CyPlot* pPlot);
+	int getPlotRadius();
+	int getNumCityPlots();
 	CyPlot* getCityIndexPlot(int iIndex);
 	bool canWork(CyPlot* pPlot);
 	void clearWorkingOverride(int iIndex);

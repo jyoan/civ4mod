@@ -2887,7 +2887,7 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 			iBestPriority = MAX_INT;
 			pBestCity = NULL;
 
-			for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+			for (iI = 0; iI < NUM_MAX_CITY_PLOTS; ++iI)
 			{
 				pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
 
@@ -2895,7 +2895,7 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 				{
 					pLoopCity = pLoopPlot->getPlotCity();
 
-					if (pLoopCity != NULL)
+					if ((pLoopCity != NULL) && (iI < pLoopCity->getNumCityPlots())) // within the radius of that city (added by this mod)
 					{
 						if (pLoopCity->getTeam() == GET_PLAYER(eBestPlayer).getTeam() || GET_TEAM(GET_PLAYER(eBestPlayer).getTeam()).isVassal(pLoopCity->getTeam()))
 						{
@@ -4329,14 +4329,21 @@ bool CvPlot::isPotentialCityWork() const
 }
 
 
+// A city of pArea could work this plot (changed by this mod: with the largest radius the XML allows)
 bool CvPlot::isPotentialCityWorkForArea(CvArea* pArea) const
+{
+	return isPotentialCityWorkForArea(pArea, GC.getMaxCityPlotRadius());
+}
+
+// A city of pArea with iRadius could work this plot (added by this mod)
+bool CvPlot::isPotentialCityWorkForArea(CvArea* pArea, int iRadius) const
 {
 	PROFILE_FUNC();
 
 	CvPlot* pLoopPlot;
 	int iI;
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+	for (iI = 0; iI < calculateNumCityPlots(iRadius); ++iI)
 	{
 		pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
 
@@ -4366,7 +4373,8 @@ void CvPlot::updatePotentialCityWork()
 
 	bValid = false;
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+	// Any city could work this plot: the largest radius the XML allows (changed by this mod)
+	for (iI = 0; iI < calculateNumCityPlots(GC.getMaxCityPlotRadius()); ++iI)
 	{
 		pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
 
@@ -4404,7 +4412,7 @@ void CvPlot::updateShowCitySymbols()
 
 	bNewShowCitySymbols = false;
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+	for (iI = 0; iI < NUM_MAX_CITY_PLOTS; ++iI)
 	{
 		pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
 
@@ -4806,7 +4814,7 @@ void CvPlot::setPlotType(PlotTypes eNewValue, bool bRecalculate, bool bRebuildGr
 				}
 			}
 
-			for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+			for (iI = 0; iI < NUM_MAX_CITY_PLOTS; ++iI)
 			{
 				pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
 
@@ -5085,7 +5093,7 @@ void CvPlot::setFeatureType(FeatureTypes eNewValue, int iVariety)
 			updateRiverSymbolArt(true);
 		}
 
-		for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+		for (iI = 0; iI < NUM_MAX_CITY_PLOTS; ++iI)
 		{
 			pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
 
@@ -5302,7 +5310,7 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 		updateIrrigated();
 		updateYield();
 
-		for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+		for (iI = 0; iI < NUM_MAX_CITY_PLOTS; ++iI)
 		{
 			CvPlot* pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
 
@@ -5450,7 +5458,7 @@ void CvPlot::setPlotCity(CvCity* pNewValue)
 	{
 		if (isCity())
 		{
-			for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+			for (iI = 0; iI < getPlotCity()->getNumCityPlots(); ++iI)
 			{
 				pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
 
@@ -5501,7 +5509,7 @@ void CvPlot::setPlotCity(CvCity* pNewValue)
 
 		if (isCity())
 		{
-			for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+			for (iI = 0; iI < getPlotCity()->getNumCityPlots(); ++iI)
 			{
 				pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
 
@@ -5548,7 +5556,7 @@ void CvPlot::updateWorkingCity()
 	{
 		iBestPlot = 0;
 
-		for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+		for (iI = 0; iI < NUM_MAX_CITY_PLOTS; ++iI)
 		{
 			pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
 
@@ -5556,7 +5564,7 @@ void CvPlot::updateWorkingCity()
 			{
 				pLoopCity = pLoopPlot->getPlotCity();
 
-				if (pLoopCity != NULL)
+				if ((pLoopCity != NULL) && (iI < pLoopCity->getNumCityPlots())) // within the radius of that city (added by this mod)
 				{
 					if (pLoopCity->getOwnerINLINE() == getOwnerINLINE())
 					{

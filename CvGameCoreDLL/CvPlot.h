@@ -264,6 +264,7 @@ public:
 
 	bool isPotentialCityWork() const;																																						// Exposed to Python
 	bool isPotentialCityWorkForArea(CvArea* pArea) const;																												// Exposed to Python
+	bool isPotentialCityWorkForArea(CvArea* pArea, int iRadius) const;	// added by this mod: for a city with iRadius
 	void updatePotentialCityWork();
 
 	bool isShowCitySymbols() const;

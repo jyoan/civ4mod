@@ -773,6 +773,10 @@ public:
 	DllExport int getBARBARIAN_TEAM();
 	DllExport int getINVALID_PLOT_COORD();
 	DllExport int getNUM_CITY_PLOTS();
+	// The largest city plot radius that the XML allows (added by this mod): CITY_PLOTS_DEFAULT_RADIUS unless traits or
+	// buildings raise it. Used where BtS checks whether any city could work a plot.
+	int getMaxCityPlotRadius() const;
+	void setMaxCityPlotRadius(int iNewValue);
 	DllExport int getCITY_HOME_PLOT();
 
 	// ***** END EXPOSED TO PYTHON *****
@@ -931,10 +935,10 @@ protected:
 	int* m_aiPlotDirectionY;	// [NUM_DIRECTION_TYPES];
 	int* m_aiPlotCardinalDirectionX;	// [NUM_CARDINALDIRECTION_TYPES];
 	int* m_aiPlotCardinalDirectionY;	// [NUM_CARDINALDIRECTION_TYPES];
-	int* m_aiCityPlotX;	// [NUM_CITY_PLOTS];
-	int* m_aiCityPlotY;	// [NUM_CITY_PLOTS];
-	int* m_aiCityPlotPriority;	// [NUM_CITY_PLOTS];
-	int m_aaiXYCityPlot[CITY_PLOTS_DIAMETER][CITY_PLOTS_DIAMETER];
+	int* m_aiCityPlotX;	// [NUM_MAX_CITY_PLOTS];
+	int* m_aiCityPlotY;	// [NUM_MAX_CITY_PLOTS];
+	int* m_aiCityPlotPriority;	// [NUM_MAX_CITY_PLOTS];
+	int m_aaiXYCityPlot[CITY_PLOTS_MAX_DIAMETER][CITY_PLOTS_MAX_DIAMETER];
 
 	DirectionTypes* m_aeTurnLeftDirection;	// [NUM_DIRECTION_TYPES];
 	DirectionTypes* m_aeTurnRightDirection;	// [NUM_DIRECTION_TYPES];
@@ -1108,6 +1112,7 @@ protected:
 	FVariableSystem* m_VarSystem;
 
 	int m_iMOVE_DENOMINATOR;
+	int m_iMaxCityPlotRadius;
 	int m_iNUM_UNIT_PREREQ_OR_BONUSES;
 	int m_iNUM_BUILDING_PREREQ_OR_BONUSES;
 	int m_iFOOD_CONSUMPTION_PER_POPULATION;

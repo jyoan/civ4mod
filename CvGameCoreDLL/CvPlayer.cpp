@@ -972,11 +972,11 @@ void CvPlayer::addFreeUnit(UnitTypes eUnit, UnitAITypes eUnitAI)
 			{
 				if (!(GC.getUnitInfo(eUnit).isFound()))
 				{
-					iRandOffset = GC.getGameINLINE().getSorenRandNum(NUM_CITY_PLOTS, "Place Units (Player)");
+					iRandOffset = GC.getGameINLINE().getSorenRandNum(NUM_DEFAULT_CITY_PLOTS, "Place Units (Player)");
 
-					for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+					for (iI = 0; iI < NUM_DEFAULT_CITY_PLOTS; iI++)
 					{
-						pLoopPlot = plotCity(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), ((iI + iRandOffset) % NUM_CITY_PLOTS));
+						pLoopPlot = plotCity(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), ((iI + iRandOffset) % NUM_DEFAULT_CITY_PLOTS));
 
 						if (pLoopPlot != NULL)
 						{
@@ -1020,7 +1020,7 @@ int CvPlayer::startingPlotRange() const
 	iRange /= 100;
 
 	iRange *= (GC.getMapINLINE().getLandPlots() / (GC.getWorldInfo(GC.getMapINLINE().getWorldSize()).getTargetNumCities() * GC.getGameINLINE().countCivPlayersAlive()));
-	iRange /= NUM_CITY_PLOTS;
+	iRange /= NUM_DEFAULT_CITY_PLOTS;
 
 	iRange += std::min(((GC.getMapINLINE().getNumAreas() + 1) / 2), GC.getGameINLINE().countCivPlayersAlive());
 
@@ -1129,8 +1129,8 @@ int CvPlayer::findStartingArea() const
 			int iTileValue = ((pLoopArea->calculateTotalBestNatureYield() + (pLoopArea->countCoastalLand() * 2) + pLoopArea->getNumRiverEdges() + (pLoopArea->getNumTiles())) + 1);
 			iValue = iTileValue / iNumPlayersOnArea;
 
-			iValue *= std::min(NUM_CITY_PLOTS + 1, pLoopArea->getNumTiles() + 1);
-			iValue /= (NUM_CITY_PLOTS + 1);
+			iValue *= std::min(NUM_DEFAULT_CITY_PLOTS + 1, pLoopArea->getNumTiles() + 1);
+			iValue /= (NUM_DEFAULT_CITY_PLOTS + 1);
 
 			if (iNumPlayersOnArea <= 2)
 			{
@@ -3359,7 +3359,7 @@ int CvPlayer::countCityFeatures(FeatureTypes eFeature) const
 
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
-		for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+		for (iI = 0; iI < pLoopCity->getNumCityPlots(); iI++)
 		{
 			pLoopPlot = plotCity(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE(), iI);
 
@@ -5957,6 +5957,11 @@ int CvPlayer::getTraitRiverPlotYieldChange(YieldTypes eYield) const
 	}
 
 	return iChange;
+}
+
+int CvPlayer::getNextCityRadius() const
+{
+	return CITY_PLOTS_DEFAULT_RADIUS;
 }
 
 // True if a trait, current civic or owned building lets eUnitCombat units upgrade outside the team's territory.
@@ -17038,7 +17043,7 @@ EventTriggeredData* CvPlayer::initTriggeredData(EventTriggerTypes eEventTrigger,
 		{
 			if (bPickPlot)
 			{
-				for (int iPlot = 0; iPlot < NUM_CITY_PLOTS; ++iPlot)
+				for (int iPlot = 0; iPlot < pCity->getNumCityPlots(); ++iPlot)
 				{
 					if (CITY_HOME_PLOT != iPlot)
 					{
@@ -21635,7 +21640,7 @@ void CvPlayer::getReligionLayerColors(ReligionTypes eSelectedReligion, std::vect
 						}
 
 						// loop through the city's plots
-						for (int iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+						for (int iJ = 0; iJ < pLoopCity->getNumCityPlots(); iJ++)
 						{
 							CvPlot* pLoopPlot = plotCity(pLoopCity->getX(), pLoopCity->getY(), iJ);
 							if (pLoopPlot != NULL)

@@ -1197,7 +1197,7 @@ CvPlot* CvGame::normalizeFindLakePlot(PlayerTypes ePlayer)
 	{
 		if (!(pStartingPlot->isFreshWater()))
 		{
-			for (int iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+			for (int iJ = 0; iJ < NUM_DEFAULT_CITY_PLOTS; iJ++)
 			{
 				CvPlot* pLoopPlot = plotCity(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), iJ);
 
@@ -1256,7 +1256,7 @@ void CvGame::normalizeRemoveBadFeatures()
 
 			if (pStartingPlot != NULL)
 			{
-				for (iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+				for (iJ = 0; iJ < NUM_DEFAULT_CITY_PLOTS; iJ++)
 				{
 					pLoopPlot = plotCity(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), iJ);
 
@@ -1274,7 +1274,7 @@ void CvGame::normalizeRemoveBadFeatures()
 				}
 			
 				int iX, iY;
-				int iCityRange = CITY_PLOTS_RADIUS;
+				int iCityRange = CITY_PLOTS_DEFAULT_RADIUS;
 				int iExtraRange = 2;
 				int iMaxRange = iCityRange + iExtraRange;
 				
@@ -1332,7 +1332,7 @@ void CvGame::normalizeRemoveBadTerrain()
 	int iPlotProduction;
 	
 	
-	int iCityRange = CITY_PLOTS_RADIUS;
+	int iCityRange = CITY_PLOTS_DEFAULT_RADIUS;
 	int iExtraRange = 1;
 	int iMaxRange = iCityRange + iExtraRange;
 
@@ -1419,7 +1419,7 @@ void CvGame::normalizeAddFoodBonuses()
 				int iFoodBonus = 0;
 				int iGoodNatureTileCount = 0;
 
-				for (int iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+				for (int iJ = 0; iJ < NUM_DEFAULT_CITY_PLOTS; iJ++)
 				{
 					CvPlot* pLoopPlot = plotCity(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), iJ);
 
@@ -1461,7 +1461,7 @@ void CvGame::normalizeAddFoodBonuses()
 				int iTargetFoodBonusCount = 3;
 				iTargetFoodBonusCount += (iGoodNatureTileCount == 0) ? 2 : 0;
 
-				for (int iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+				for (int iJ = 0; iJ < NUM_DEFAULT_CITY_PLOTS; iJ++)
 				{
 					if (iFoodBonus >= iTargetFoodBonusCount)
 					{
@@ -1532,7 +1532,7 @@ void CvGame::normalizeAddGoodTerrain()
 			{
 				iGoodPlot = 0;
 
-				for (iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+				for (iJ = 0; iJ < NUM_DEFAULT_CITY_PLOTS; iJ++)
 				{
 					pLoopPlot = plotCity(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), iJ);
 
@@ -1549,7 +1549,7 @@ void CvGame::normalizeAddGoodTerrain()
 					}
 				}
 
-				for (iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+				for (iJ = 0; iJ < NUM_DEFAULT_CITY_PLOTS; iJ++)
 				{
 					if (iGoodPlot >= 4)
 					{
@@ -1660,10 +1660,10 @@ void CvGame::normalizeAddExtras()
 			{
                 int iCount = 0;
 				int iFeatureCount = 0;
-				int aiShuffle[NUM_CITY_PLOTS];
-				shuffleArray(aiShuffle, NUM_CITY_PLOTS, getMapRand());
+				int aiShuffle[NUM_DEFAULT_CITY_PLOTS];
+				shuffleArray(aiShuffle, NUM_DEFAULT_CITY_PLOTS, getMapRand());
 
-				for (int iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+				for (int iJ = 0; iJ < NUM_DEFAULT_CITY_PLOTS; iJ++)
 				{
 					if (GET_PLAYER((PlayerTypes)iI).AI_foundValue(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), -1, true) >= iTargetValue)
 					{
@@ -1706,7 +1706,7 @@ void CvGame::normalizeAddExtras()
 				int iOceanFoodCount = 0;
 				int iOtherCount = 0;
 				int iWaterCount = 0;
-				for (int iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+				for (int iJ = 0; iJ < NUM_DEFAULT_CITY_PLOTS; iJ++)
 				{
 					CvPlot* pLoopPlot = plotCity(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), iJ);
 					if (pLoopPlot != NULL)
@@ -1739,11 +1739,11 @@ void CvGame::normalizeAddExtras()
 					}
 				}
 				
-			    bool bLandBias = (iWaterCount > NUM_CITY_PLOTS / 2);
+			    bool bLandBias = (iWaterCount > NUM_DEFAULT_CITY_PLOTS / 2);
                 
-                shuffleArray(aiShuffle, NUM_CITY_PLOTS, getMapRand());                
+                shuffleArray(aiShuffle, NUM_DEFAULT_CITY_PLOTS, getMapRand());                
 
-				for (int iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+				for (int iJ = 0; iJ < NUM_DEFAULT_CITY_PLOTS; iJ++)
 				{
 				    CvPlot* pLoopPlot = plotCity(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), aiShuffle[iJ]);
 
@@ -1836,9 +1836,9 @@ void CvGame::normalizeAddExtras()
 					}
 				}
 				
-				shuffleArray(aiShuffle, NUM_CITY_PLOTS, getMapRand());
+				shuffleArray(aiShuffle, NUM_DEFAULT_CITY_PLOTS, getMapRand());
 
-				for (iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+				for (iJ = 0; iJ < NUM_DEFAULT_CITY_PLOTS; iJ++)
 				{
 					if (GET_PLAYER((PlayerTypes)iI).AI_foundValue(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), -1, true) >= iTargetValue)
 					{
@@ -1874,7 +1874,7 @@ void CvGame::normalizeAddExtras()
 				
 				int iHillsCount = 0;
 				
-				for (int iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+				for (int iJ = 0; iJ < NUM_DEFAULT_CITY_PLOTS; iJ++)
 				{
 					CvPlot* pLoopPlot =plotCity(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), iJ);
 					if (pLoopPlot != NULL)
@@ -1885,8 +1885,8 @@ void CvGame::normalizeAddExtras()
 						}
 					}
 				}
-				shuffleArray(aiShuffle, NUM_CITY_PLOTS, getMapRand());
-				for (int iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+				shuffleArray(aiShuffle, NUM_DEFAULT_CITY_PLOTS, getMapRand());
+				for (int iJ = 0; iJ < NUM_DEFAULT_CITY_PLOTS; iJ++)
 				{
 					if (iHillsCount >= 3)
 					{
@@ -3829,7 +3829,7 @@ void CvGame::initScoreCalculation()
 	{
 		int iNumSettlers = GC.getEraInfo(getStartEra()).getStartingUnitMultiplier();
 		m_iInitPopulation = getPopulationScore(iNumSettlers * (GC.getEraInfo(getStartEra()).getFreePopulation() + 1));
-		m_iInitLand = getLandPlotsScore(iNumSettlers *  NUM_CITY_PLOTS);
+		m_iInitLand = getLandPlotsScore(iNumSettlers *  NUM_DEFAULT_CITY_PLOTS);
 	}
 	else
 	{

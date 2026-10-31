@@ -46,6 +46,9 @@ public:
 
 	int getCityPlotIndex(const CvPlot* pPlot) const;				// Exposed to Python 
 	CvPlot* getCityIndexPlot(int iIndex) const;															// Exposed to Python
+	// City plot radius (added by this mod): the city uses the city plot indexes below getNumCityPlots()
+	int getPlotRadius() const;				// Exposed to Python
+	int getNumCityPlots() const;				// Exposed to Python
 
 	bool canWork(CvPlot* pPlot) const;																			// Exposed to Python
 	void verifyWorkingPlot(int iIndex);
@@ -937,6 +940,7 @@ protected:
 	int m_iGameTurnFounded;
 	int m_iGameTurnAcquired;
 	int m_iPopulation;
+	int m_iPlotRadius;
 	int m_iHighestPopulation;
 	int m_iWorkingPopulation;
 	int m_iSpecialistPopulation;

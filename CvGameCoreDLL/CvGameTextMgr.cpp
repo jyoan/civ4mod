@@ -3095,7 +3095,7 @@ void CvGameTextMgr::setCityPlotYieldValueString(CvWStringBuffer &szString, CvCit
 
 	CvPlot* pPlot = NULL;
 	
-	if (iIndex >= 0 && iIndex < NUM_CITY_PLOTS)
+	if (iIndex >= 0 && iIndex < pCity->getNumCityPlots())
 		pPlot = pCity->getCityIndexPlot(iIndex);
 	
 	if (pPlot != NULL)
@@ -8573,7 +8573,7 @@ void CvGameTextMgr::setBadHealthHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		{
 			eFeature = NO_FEATURE;
 
-			for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+			for (iI = 0; iI < city.getNumCityPlots(); ++iI)
 			{
 				pLoopPlot = plotCity(city.getX_INLINE(), city.getY_INLINE(), iI);
 
@@ -8684,7 +8684,7 @@ void CvGameTextMgr::setGoodHealthHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		{
 			eFeature = NO_FEATURE;
 
-			for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+			for (iI = 0; iI < city.getNumCityPlots(); ++iI)
 			{
 				pLoopPlot = plotCity(city.getX_INLINE(), city.getY_INLINE(), iI);
 

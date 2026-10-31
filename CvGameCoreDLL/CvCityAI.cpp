@@ -113,12 +113,12 @@ void CvCityAI::AI_reset()
 		m_aiEmphasizeCommerceCount[iI] = 0;
 	}
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < NUM_MAX_CITY_PLOTS; iI++)
 	{
 		m_aiBestBuildValue[iI] = NO_BUILD;
 	}
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < NUM_MAX_CITY_PLOTS; iI++)
 	{
 		m_aeBestBuild[iI] = NO_BUILD;
 	}
@@ -209,7 +209,7 @@ void CvCityAI::AI_assignWorkingPlots()
 	// remove all assigned plots if we automated
 	if (!isHuman() || isCitizensAutomated())
 	{
-		for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+		for (iI = 0; iI < getNumCityPlots(); iI++)
 		{
 			setWorkingPlot(iI, false);
 		}
@@ -3574,7 +3574,7 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 					if (kBuilding.getSeaPlotYieldChange(YIELD_PRODUCTION) > 0)
 					{
 						int iNumWaterPlots = countNumWaterPlots();
-						if (!bIsLimitedWonder || (iNumWaterPlots > NUM_CITY_PLOTS / 2))
+						if (!bIsLimitedWonder || (iNumWaterPlots > getNumCityPlots() / 2))
 						{
 					    	iTempValue += kBuilding.getSeaPlotYieldChange(YIELD_PRODUCTION) * iNumWaterPlots;
 						}
@@ -4745,7 +4745,7 @@ void CvCityAI::AI_forceEmphasizeCulture(bool bNewValue)
 int CvCityAI::AI_getBestBuildValue(int iIndex)
 {
 	FAssertMsg(iIndex >= 0, "iIndex is expected to be non-negative (invalid Index)");
-	FAssertMsg(iIndex < NUM_CITY_PLOTS, "eIndex is expected to be within maximum bounds (invalid Index)");
+	FAssertMsg(iIndex < NUM_MAX_CITY_PLOTS, "eIndex is expected to be within maximum bounds (invalid Index)");
 	return m_aiBestBuildValue[iIndex];
 }
 
@@ -4758,7 +4758,7 @@ int CvCityAI::AI_totalBestBuildValue(CvArea* pArea)
 
 	iTotalValue = 0;
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < getNumCityPlots(); iI++)
 	{
 		if (iI != CITY_HOME_PLOT)
 		{
@@ -4852,7 +4852,7 @@ int CvCityAI::AI_clearFeatureValue(int iIndex)
 BuildTypes CvCityAI::AI_getBestBuild(int iIndex)
 {
 	FAssertMsg(iIndex >= 0, "iIndex is expected to be non-negative (invalid Index)");
-	FAssertMsg(iIndex < NUM_CITY_PLOTS, "eIndex is expected to be within maximum bounds (invalid Index)");
+	FAssertMsg(iIndex < NUM_MAX_CITY_PLOTS, "eIndex is expected to be within maximum bounds (invalid Index)");
 	return m_aeBestBuild[iIndex];
 }
 
@@ -4865,7 +4865,7 @@ int CvCityAI::AI_countBestBuilds(CvArea* pArea)
 
 	iCount = 0;
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < getNumCityPlots(); iI++)
 	{
 		if (iI != CITY_HOME_PLOT)
 		{
@@ -4925,7 +4925,7 @@ void CvCityAI::AI_updateBestBuild()
 	int iHappyAdjust = 0;
 	int iHealthAdjust = 0;
 	
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < getNumCityPlots(); iI++)
 	{
 		if (iI != CITY_HOME_PLOT)
 		{
@@ -5228,7 +5228,7 @@ void CvCityAI::AI_updateBestBuild()
     	iHealthAdjust += getBuildingHealth(getProductionBuilding());    	
     }
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < getNumCityPlots(); iI++)
 	{
 		m_aiBestBuildValue[iI] = 0;
 		m_aeBestBuild[iI] = NO_BUILD;
@@ -5265,9 +5265,9 @@ void CvCityAI::AI_updateBestBuild()
 		
 		int iBestUnworkedPlotValue = 0;
 		
-		int aiValues[NUM_CITY_PLOTS];
+		int aiValues[NUM_MAX_CITY_PLOTS];
 		
-		for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+		for (iI = 0; iI < getNumCityPlots(); iI++)
 		{
 			if (iI != CITY_HOME_PLOT)
 			{
@@ -5323,7 +5323,7 @@ void CvCityAI::AI_updateBestBuild()
 		//Prune plots which are sub-par.
 		if (iBestUnworkedPlotValue > 0)
 		{
-			for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+			for (iI = 0; iI < getNumCityPlots(); iI++)
 			{
 				if (iI != CITY_HOME_PLOT)
 				{
@@ -5855,7 +5855,7 @@ void CvCityAI::AI_doHurry(bool bForce)
 								int iFoodSurplus = 0;
 								CvPlot * pLoopPlot;
 
-								for (iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+								for (iJ = 0; iJ < getNumCityPlots(); iJ++)
 								{
 									if (iJ != CITY_HOME_PLOT)
 									{
@@ -5964,7 +5964,7 @@ void CvCityAI::AI_doEmphasize()
 				int iHighHammerTotal = 0;
 				int iGoodFoodSink = 0;
 				int iFoodPerPop = GC.getFOOD_CONSUMPTION_PER_POPULATION();
-				for (int iPlot = 0; iPlot < NUM_CITY_PLOTS; iPlot++)
+				for (int iPlot = 0; iPlot < getNumCityPlots(); iPlot++)
 				{
 					CvPlot* pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iPlot);
 					if (pLoopPlot != NULL && pLoopPlot->getWorkingCity() == this)
@@ -6385,7 +6385,7 @@ bool CvCityAI::AI_addBestCitizen(bool bWorkers, bool bSpecialists, int* piBestPl
 	int iBestPlot = -1;
 	if (bWorkers)
 	{
-		for (int iI = 0; iI < NUM_CITY_PLOTS; iI++)
+		for (int iI = 0; iI < getNumCityPlots(); iI++)
 		{
 			if (iI != CITY_HOME_PLOT)
 			{
@@ -6512,7 +6512,7 @@ bool CvCityAI::AI_removeWorstCitizen(SpecialistTypes eIgnoreSpecialist)
 	}
 	
 	// check all the plots we working
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < getNumCityPlots(); iI++)
 	{
 		if (iI != CITY_HOME_PLOT)
 		{
@@ -6595,7 +6595,7 @@ void CvCityAI::AI_juggleCitizens()
 			int iWorstPlot = -1;
 			int iValue;
 
-			for (int iI = 0; iI < NUM_CITY_PLOTS; iI++)
+			for (int iI = 0; iI < getNumCityPlots(); iI++)
 			{
 				if (iI != CITY_HOME_PLOT)
 				{
@@ -6640,7 +6640,7 @@ void CvCityAI::AI_juggleCitizens()
 			}
 
 			iCount++;
-			if (iCount > (NUM_CITY_PLOTS + 1))
+			if (iCount > (getNumCityPlots() + 1))
 			{
 				FAssertMsg(false, "infinite loop");
 				break; // XXX
@@ -6687,7 +6687,7 @@ bool CvCityAI::AI_foodAvailable(int iExtra)
 	PROFILE_FUNC();
 
 	CvPlot* pLoopPlot;
-	bool abPlotAvailable[NUM_CITY_PLOTS];
+	bool abPlotAvailable[NUM_MAX_CITY_PLOTS];
 	int iFoodCount;
 	int iPopulation;
 	int iBestPlot;
@@ -6697,12 +6697,12 @@ bool CvCityAI::AI_foodAvailable(int iExtra)
 
 	iFoodCount = 0;
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < NUM_MAX_CITY_PLOTS; iI++)
 	{
 		abPlotAvailable[iI] = false;
 	}
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < getNumCityPlots(); iI++)
 	{
 		pLoopPlot = getCityIndexPlot(iI);
 
@@ -6726,7 +6726,7 @@ bool CvCityAI::AI_foodAvailable(int iExtra)
 		iBestValue = 0;
 		iBestPlot = CITY_HOME_PLOT;
 
-		for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+		for (iI = 0; iI < getNumCityPlots(); iI++)
 		{
 			if (abPlotAvailable[iI])
 			{
@@ -6864,7 +6864,7 @@ int CvCityAI::AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoi
 		int iHealthLevel = goodHealth() - badHealth(/*bNoAngry*/ false, 0);
 		int iHappinessLevel = (isNoUnhappiness() ? std::max(3, iHealthLevel + 5) : happyLevel() - unhappyLevel(0));
 		int iPopulation = getPopulation();
-		int	iExtraPopulationThatCanWork = std::min(iPopulation - range(-iHappinessLevel, 0, iPopulation) + std::min(0, extraFreeSpecialists()) , NUM_CITY_PLOTS) - getWorkingPopulation() + ((bRemove) ? 1 : 0);
+		int	iExtraPopulationThatCanWork = std::min(iPopulation - range(-iHappinessLevel, 0, iPopulation) + std::min(0, extraFreeSpecialists()) , getNumCityPlots()) - getWorkingPopulation() + ((bRemove) ? 1 : 0);
 		int iConsumtionPerPop = GC.getFOOD_CONSUMPTION_PER_POPULATION();
 
 		int iAdjustedFoodDifference = (getYieldRate(YIELD_FOOD) + std::min(0, iHealthLevel)) - ((iPopulation + std::min(0, iHappinessLevel) - ((bRemove) ? 1 : 0)) * iConsumtionPerPop);
@@ -8222,7 +8222,7 @@ int CvCityAI::AI_calculateCulturePressure(bool bGreatWork)
     int iI;
 
     iValue = 0;
-    for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+    for (iI = 0; iI < getNumCityPlots(); iI++)
     {
         pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
 		if (pLoopPlot != NULL)
@@ -8251,7 +8251,7 @@ int CvCityAI::AI_calculateCulturePressure(bool bGreatWork)
                     if (iI != CITY_HOME_PLOT)
                     {
                         iTempValue *= 4;
-                        iTempValue /= NUM_CITY_PLOTS;
+                        iTempValue /= getNumCityPlots();
                     }
 
                     eNonObsoleteBonus = pLoopPlot->getNonObsoleteBonusType(getTeam());
@@ -8583,7 +8583,7 @@ int CvCityAI::AI_countGoodTiles(bool bHealthy, bool bUnworkedOnly, int iThreshol
     int iCount;
     
     iCount = 0;
-    for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+    for (iI = 0; iI < getNumCityPlots(); iI++)
     {
         pLoopPlot = plotCity(getX_INLINE(),getY_INLINE(), iI);
         if ((iI != CITY_HOME_PLOT) && (pLoopPlot != NULL))
@@ -8611,7 +8611,7 @@ int CvCityAI::AI_calculateTargetCulturePerTurn()
 	bool bAnyGoodPlotUnowned = false;
 	bool bAnyGoodPlotHighPressure = false;	
 	
-	for (int iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (int iI = 0; iI < getNumCityPlots(); iI++)
 	{
 		CvPlot* pLoopPlot = plotCity(getX_INLINE(),getY_INLINE(),iI);
         
@@ -8711,7 +8711,7 @@ void CvCityAI::AI_stealPlots()
     
     int iImportance = AI_getCityImportance(true, false);
 
-    for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+    for (iI = 0; iI < getNumCityPlots(); iI++)
     {
         pLoopPlot = plotCity(getX_INLINE(),getY_INLINE(),iI);
         
@@ -8765,7 +8765,7 @@ int CvCityAI::AI_buildingSpecialYieldChangeValue(BuildingTypes eBuilding, YieldT
     if (iYieldChange > 0)
     {
         int iWaterCount = 0;
-        for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+        for (iI = 0; iI < getNumCityPlots(); iI++)
         {
             if (iI != CITY_HOME_PLOT)
             {
@@ -8937,7 +8937,7 @@ int CvCityAI::AI_countNumBonuses(BonusTypes eBonus, bool bIncludeOurs, bool bInc
     BonusTypes eLoopBonus;
     int iI;
     int iCount = 0;
-    for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+    for (iI = 0; iI < getNumCityPlots(); iI++)
     {
         pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
         
@@ -9200,7 +9200,7 @@ void CvCityAI::AI_updateWorkersNeededHere()
 			}
 		}
 	}
-	for (int iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (int iI = 0; iI < getNumCityPlots(); iI++)
 	{
 		pLoopPlot = getCityIndexPlot(iI);
 
@@ -9284,7 +9284,7 @@ void CvCityAI::AI_updateWorkersNeededHere()
 			AI_addBestCitizen(true, true, &iBestPlot, &eBestSpecialist);
 		}
 		
-		for (int iI = 0; iI < NUM_CITY_PLOTS; iI++)
+		for (int iI = 0; iI < getNumCityPlots(); iI++)
 		{
 			if (iI != CITY_HOME_PLOT)
 			{
@@ -9418,8 +9418,17 @@ void CvCityAI::read(FDataStreamBase* pStream)
 	pStream->Read(NUM_YIELD_TYPES, m_aiEmphasizeYieldCount);
 	pStream->Read(NUM_COMMERCE_TYPES, m_aiEmphasizeCommerceCount);
 	pStream->Read(&m_bForceEmphasizeCulture);
-	pStream->Read(NUM_CITY_PLOTS, m_aiBestBuildValue);
-	pStream->Read(NUM_CITY_PLOTS, (int*)m_aeBestBuild);
+	// uiFlag 0: saved before the city plot radius existed, with the 21 plots of radius 2 (changed by this mod)
+	if (uiFlag > 0)
+	{
+		pStream->Read(NUM_MAX_CITY_PLOTS, m_aiBestBuildValue);
+		pStream->Read(NUM_MAX_CITY_PLOTS, (int*)m_aeBestBuild);
+	}
+	else
+	{
+		pStream->Read(NUM_DEFAULT_CITY_PLOTS, m_aiBestBuildValue);
+		pStream->Read(NUM_DEFAULT_CITY_PLOTS, (int*)m_aeBestBuild);
+	}
 	pStream->Read(GC.getNumEmphasizeInfos(), m_pbEmphasize);
 	pStream->Read(NUM_YIELD_TYPES, m_aiSpecialYieldMultiplier);
 	pStream->Read(&m_iCachePlayerClosenessTurn);
@@ -9438,7 +9447,7 @@ void CvCityAI::write(FDataStreamBase* pStream)
 {
 	CvCity::write(pStream);
 
-	uint uiFlag=0;
+	uint uiFlag=1;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iEmphasizeAvoidGrowthCount);
@@ -9452,8 +9461,8 @@ void CvCityAI::write(FDataStreamBase* pStream)
 	pStream->Write(NUM_YIELD_TYPES, m_aiEmphasizeYieldCount);
 	pStream->Write(NUM_COMMERCE_TYPES, m_aiEmphasizeCommerceCount);
 	pStream->Write(m_bForceEmphasizeCulture);
-	pStream->Write(NUM_CITY_PLOTS, m_aiBestBuildValue);
-	pStream->Write(NUM_CITY_PLOTS, (int*)m_aeBestBuild);
+	pStream->Write(NUM_MAX_CITY_PLOTS, m_aiBestBuildValue);
+	pStream->Write(NUM_MAX_CITY_PLOTS, (int*)m_aeBestBuild);
 	pStream->Write(GC.getNumEmphasizeInfos(), m_pbEmphasize);
 	pStream->Write(NUM_YIELD_TYPES, m_aiSpecialYieldMultiplier);
 	pStream->Write(m_iCachePlayerClosenessTurn);

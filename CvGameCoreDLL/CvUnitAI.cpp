@@ -802,7 +802,7 @@ bool CvUnitAI::AI_bestCityBuild(CvCity* pCity, CvPlot** ppBestPlot, BuildTypes* 
 	
 	for (int iPass = 0; iPass < 2; iPass++)
 	{
-		for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+		for (iI = 0; iI < pCity->getNumCityPlots(); iI++)
 		{
 			CvPlot* pLoopPlot = plotCity(pCity->getX_INLINE(), pCity->getY_INLINE(), iI);
 

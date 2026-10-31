@@ -33,21 +33,30 @@ CvPlot* plotCity(int iX, int iY, int iIndex)
 	return GC.getMapINLINE().plotINLINE((iX + GC.getCityPlotX()[iIndex]), (iY + GC.getCityPlotY()[iIndex]));
 }
 
+// The city plot index of an offset, up to CITY_PLOTS_MAX_RADIUS (changed by this mod), or -1
 int plotCityXY(int iDX, int iDY)
 {
-	if ((abs(iDX) > CITY_PLOTS_RADIUS) || (abs(iDY) > CITY_PLOTS_RADIUS))
+	if ((abs(iDX) > CITY_PLOTS_MAX_RADIUS) || (abs(iDY) > CITY_PLOTS_MAX_RADIUS))
 	{
 		return -1;
 	}
 	else
 	{
-		return GC.getXYCityPlot((iDX + CITY_PLOTS_RADIUS), (iDY + CITY_PLOTS_RADIUS));
+		return GC.getXYCityPlot((iDX + CITY_PLOTS_MAX_RADIUS), (iDY + CITY_PLOTS_MAX_RADIUS));
 	}
 }
 
+// -1 also for a plot outside the radius of this city (changed by this mod)
 int plotCityXY(const CvCity* pCity, const CvPlot* pPlot)
 {
-	return plotCityXY(dxWrap(pPlot->getX_INLINE() - pCity->getX_INLINE()), dyWrap(pPlot->getY_INLINE() - pCity->getY_INLINE()));
+	int iIndex = plotCityXY(dxWrap(pPlot->getX_INLINE() - pCity->getX_INLINE()), dyWrap(pPlot->getY_INLINE() - pCity->getY_INLINE()));
+
+	if (iIndex >= pCity->getNumCityPlots())
+	{
+		return -1;
+	}
+
+	return iIndex;
 }
 
 CardinalDirectionTypes getOppositeCardinalDirection(CardinalDirectionTypes eDir)

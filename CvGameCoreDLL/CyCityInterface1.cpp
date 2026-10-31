@@ -24,6 +24,8 @@ void CyCityPythonInterface1(python::class_<CyCity>& x)
 		.def("createGreatPeople", &CyCity::createGreatPeople, "void (int /*UnitTypes*/ eGreatPersonUnit, bool bIncrementThreshold) - Creates a great person in this city and whether it should increment the threshold to the next level")
 
 		.def("getCityPlotIndex", &CyCity::getCityPlotIndex, "int (CyPlot* pPlot)")
+		.def("getPlotRadius", &CyCity::getPlotRadius, "int () - city plot radius (added by this mod)")
+		.def("getNumCityPlots", &CyCity::getNumCityPlots, "int () - number of city plots within the radius (added by this mod)")
 		.def("getCityIndexPlot", &CyCity::getCityIndexPlot, python::return_value_policy<python::manage_new_object>(), "CyPlot* (int iIndex)")		
 		.def("canWork", &CyCity::canWork, "bool (CyPlot*) - can the city work the plot?")
 		.def("clearWorkingOverride", &CyCity::clearWorkingOverride, "void (int iIndex)")

@@ -1607,6 +1607,9 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 	int iRange;
 	int iDX, iDY;
 	int iI;
+	// The city plot radius of a new city of this player (added by this mod)
+	int iCityRadius = getNextCityRadius();
+	int iNumCityPlots = calculateNumCityPlots(iCityRadius);
 	bool bIsCoastal;
 	int iResourceValue = 0;
 	int iSpecialFood = 0;
@@ -1654,13 +1657,13 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 	//Explaination of city site adjustment:
 	//Any plot which is otherwise within the radius of a city site
 	//is basically treated as if it's within an existing city radius
-	std::vector<bool> abCitySiteRadius(NUM_CITY_PLOTS, false);
+	std::vector<bool> abCitySiteRadius(iNumCityPlots, false);
 		
 	if (!bStartingLoc)
 	{
 		if (!AI_isPlotCitySite(pPlot))
 		{
-			for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+			for (iI = 0; iI < iNumCityPlots; iI++)
 			{
 				pLoopPlot = plotCity(iX, iY, iI);
 				if (pLoopPlot != NULL)
@@ -1670,7 +1673,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 						CvPlot* pCitySitePlot = AI_getCitySite(iJ);
 						if (pCitySitePlot != pPlot)
 						{
-							if (plotDistance(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), pCitySitePlot->getX_INLINE(), pCitySitePlot->getY_INLINE()) <= CITY_PLOTS_RADIUS)
+							if (plotDistance(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), pCitySitePlot->getX_INLINE(), pCitySitePlot->getY_INLINE()) <= iCityRadius)
 							{
 								//Plot is inside the radius of a city site
 								abCitySiteRadius[iI] = true;
@@ -1716,7 +1719,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 			return 0;
 		}
 
-		for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+		for (iI = 0; iI < iNumCityPlots; iI++)
 		{
 			pLoopPlot = plotCity(iX, iY, iI);
 
@@ -1729,7 +1732,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 
 	iOwnedTiles = 0;
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < iNumCityPlots; iI++)
 	{
 		pLoopPlot = plotCity(iX, iY, iI);
 
@@ -1746,14 +1749,14 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
         }
 	}
 
-	if (iOwnedTiles > (NUM_CITY_PLOTS / 3))
+	if (iOwnedTiles > (iNumCityPlots / 3))
 	{
 		return 0;
 	}
 
 	iBadTile = 0;
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < iNumCityPlots; iI++)
 	{
 		pLoopPlot = plotCity(iX, iY, iI);
 
@@ -1791,11 +1794,11 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 
 	if (!bStartingLoc)
 	{
-		if ((iBadTile > (NUM_CITY_PLOTS / 2)) || (pArea->getNumTiles() <= 2))
+		if ((iBadTile > (iNumCityPlots / 2)) || (pArea->getNumTiles() <= 2))
 		{
 			bHasGoodBonus = false;
 
-			for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+			for (iI = 0; iI < iNumCityPlots; iI++)
 			{
 				pLoopPlot = plotCity(iX, iY, iI);
 
@@ -1859,7 +1862,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
     
     int iYieldLostHere = 0;
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < iNumCityPlots; iI++)
 	{
 		pLoopPlot = plotCity(iX, iY, iI);
 
@@ -2123,7 +2126,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 
 	iValue += std::max(0, iResourceValue);
 
-	if (iTakenTiles > (NUM_CITY_PLOTS / 3) && iResourceValue < 250)
+	if (iTakenTiles > (iNumCityPlots / 3) && iResourceValue < 250)
 	{
 		return 0;
 	}
@@ -2233,7 +2236,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 		
 		int iWaterCount = 0;
 		
-		for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+		for (iI = 0; iI < iNumCityPlots; iI++)
 		{
 		    pLoopPlot = plotCity(iX, iY, iI);
             
@@ -2251,13 +2254,13 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 		}
 		iWaterCount /= 2;
 		
-		int iLandCount = (NUM_CITY_PLOTS - iWaterCount);
+		int iLandCount = (iNumCityPlots - iWaterCount);
 		
-		if (iLandCount < (NUM_CITY_PLOTS / 2))
+		if (iLandCount < (iNumCityPlots / 2))
 		{
 		    //discourage very water-heavy starts.
 		    iValue *= 1 + iLandCount;
-		    iValue /= (1 + (NUM_CITY_PLOTS / 2));
+		    iValue /= (1 + (iNumCityPlots / 2));
 		}
 	}
 
@@ -2468,13 +2471,13 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 		iValue /= (1 + iDeadLockCount);
 	}
 
-	iValue /= (std::max(0, (iBadTile - (NUM_CITY_PLOTS / 4))) + 3);
+	iValue /= (std::max(0, (iBadTile - (iNumCityPlots / 4))) + 3);
 
 	if (bStartingLoc)
 	{
 		iDifferentAreaTile = 0;
 
-		for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+		for (iI = 0; iI < iNumCityPlots; iI++)
 		{
 			pLoopPlot = plotCity(iX, iY, iI);
 
@@ -2484,7 +2487,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 			}
 		}
 
-		iValue /= (std::max(0, (iDifferentAreaTile - ((NUM_CITY_PLOTS * 2) / 3))) + 2);
+		iValue /= (std::max(0, (iDifferentAreaTile - ((iNumCityPlots * 2) / 3))) + 2);
 	}
 
 	return std::max(1, iValue);
@@ -2590,7 +2593,7 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 	iValue += AI_adjacentPotentialAttackers(pCity->plot());
 	}
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < pCity->getNumCityPlots(); iI++)
 	{
 		pLoopPlot = plotCity(pCity->getX_INLINE(), pCity->getY_INLINE(), iI);
 
@@ -6949,7 +6952,7 @@ int CvPlayerAI::AI_cityTradeVal(CvCity* pCity) const
 
 	iValue += (((((pCity->getPopulation() * 50) + GC.getGameINLINE().getElapsedGameTurns() + 100) * 4) * pCity->plot()->calculateCulturePercent(pCity->getOwnerINLINE())) / 100);
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (iI = 0; iI < pCity->getNumCityPlots(); iI++)
 	{
 		pLoopPlot = plotCity(pCity->getX_INLINE(), pCity->getY_INLINE(), iI);
 
@@ -11200,7 +11203,7 @@ void CvPlayerAI::AI_doDiplo()
 													iCount = 0;
 													iPossibleCount = 0;
 
-													for (iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+													for (iJ = 0; iJ < pLoopCity->getNumCityPlots(); iJ++)
 													{
 														pLoopPlot = plotCity(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE(), iJ);
 
@@ -14380,7 +14383,7 @@ int CvPlayerAI::AI_countDeadlockedBonuses(CvPlot* pPlot) const
     {
         for (iDY = -(iRange); iDY <= iRange; iDY++)
         {
-            if (plotDistance(iDX, iDY, 0, 0) > CITY_PLOTS_RADIUS)
+            if (plotDistance(iDX, iDY, 0, 0) > getNextCityRadius())
             {
                 pLoopPlot = plotXY(pPlot->getX_INLINE(), pPlot->getY_INLINE(), iDX, iDY);
 
@@ -14394,7 +14397,7 @@ int CvPlayerAI::AI_countDeadlockedBonuses(CvPlot* pPlot) const
                             bool bNeverFound = true;
                             //potentially blockable resource
                             //look for a city site within a city radius
-                            for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+                            for (iI = 0; iI < calculateNumCityPlots(getNextCityRadius()); iI++)
                             {
                                 pLoopPlot2 = plotCity(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), iI);
                                 if (pLoopPlot2 != NULL)
@@ -14751,7 +14754,7 @@ void CvPlayerAI::AI_calculateAverages() const
 	
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
-		iPopulation = std::max(pLoopCity->getPopulation(), NUM_CITY_PLOTS);
+		iPopulation = std::max(pLoopCity->getPopulation(), pLoopCity->getNumCityPlots());
 		iTotalPopulation += iPopulation;
 			
 		for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
@@ -15414,7 +15417,7 @@ bool CvPlayerAI::AI_advancedStartPlaceCity(CvPlot* pPlot)
 	pCity->AI_updateBestBuild();
 	
 	int iPlotsImproved = 0;
-	for (int iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	for (int iI = 0; iI < pCity->getNumCityPlots(); iI++)
 	{
 		if (iI != CITY_HOME_PLOT)
 		{
@@ -15436,7 +15439,7 @@ bool CvPlayerAI::AI_advancedStartPlaceCity(CvPlot* pPlot)
 		CvPlot* pBestPlot;
 		ImprovementTypes eBestImprovement = NO_IMPROVEMENT;
 		int iBestValue = 0;
-		for (int iI = 0; iI < NUM_CITY_PLOTS; iI++)
+		for (int iI = 0; iI < pCity->getNumCityPlots(); iI++)
 		{
 			int iValue = pCity->AI_getBestBuildValue(iI);
 			if (iValue > iBestValue)
@@ -15820,7 +15823,7 @@ void CvPlayerAI::AI_doAdvancedStart(bool bNoExit)
 			{
 				if (pLoopPlot->getBonusType(getTeam()) != NO_BONUS)
 				{
-					AI_advancedStartRevealRadius(pLoopPlot, CITY_PLOTS_RADIUS);					
+					AI_advancedStartRevealRadius(pLoopPlot, getNextCityRadius());					
 				}
 				else
 				{
@@ -16156,7 +16159,7 @@ void CvPlayerAI::AI_updateCitySites(int iMinFoundValueThreshold, int iMaxSites) 
 				{
 					if (!AI_isPlotCitySite(pLoopPlot))
 					{
-						iValue *= std::min(NUM_CITY_PLOTS * 2, pLoopPlot->area()->getNumUnownedTiles());					
+						iValue *= std::min(calculateNumCityPlots(getNextCityRadius()) * 2, pLoopPlot->area()->getNumUnownedTiles());					
 
 						if (iValue > iBestFoundValue)
 						{
@@ -16170,7 +16173,7 @@ void CvPlayerAI::AI_updateCitySites(int iMinFoundValueThreshold, int iMaxSites) 
 		if (pBestFoundPlot != NULL)
 		{
 			m_aiAICitySites.push_back(GC.getMapINLINE().plotNum(pBestFoundPlot->getX_INLINE(), pBestFoundPlot->getY_INLINE()));
-			AI_recalculateFoundValues(pBestFoundPlot->getX_INLINE(), pBestFoundPlot->getY_INLINE(), CITY_PLOTS_RADIUS, 2 * CITY_PLOTS_RADIUS);
+			AI_recalculateFoundValues(pBestFoundPlot->getX_INLINE(), pBestFoundPlot->getY_INLINE(), getNextCityRadius(), 2 * getNextCityRadius());
 		}
 		else
 		{
