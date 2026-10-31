@@ -5835,6 +5835,33 @@ int CvPlayer::getUnitCombatProductionModifier(UnitCombatTypes eUnitCombat) const
 	return iModifier;
 }
 
+int CvPlayer::getUnitCombatUpgradeDiscount(UnitCombatTypes eUnitCombat) const
+{
+	int iDiscount = 0;
+	int iI;
+
+	FAssertMsg(eUnitCombat >= 0, "eUnitCombat is expected to be non-negative");
+	FAssertMsg(eUnitCombat < GC.getNumUnitCombatInfos(), "eUnitCombat is expected to be within maximum bounds");
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iDiscount += GC.getTraitInfo((TraitTypes)iI).getUnitCombatUpgradeDiscount(eUnitCombat);
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	{
+		if (getCivics((CivicOptionTypes)iI) != NO_CIVIC)
+		{
+			iDiscount += GC.getCivicInfo(getCivics((CivicOptionTypes)iI)).getUnitCombatUpgradeDiscount(eUnitCombat);
+		}
+	}
+
+	return iDiscount;
+}
+
 int CvPlayer::getProductionModifier(BuildingTypes eBuilding) const
 {
 	int iMultiplier = 0;

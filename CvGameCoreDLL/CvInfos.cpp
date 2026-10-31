@@ -5304,6 +5304,7 @@ m_piCapitalCommerceModifier(NULL),
 m_piSpecialistExtraCommerce(NULL),
 m_piUnitCombatFreeExperience(NULL),
 m_piUnitCombatProductionModifier(NULL),
+m_piUnitCombatUpgradeDiscount(NULL),
 m_paiBuildingHappinessChanges(NULL),
 m_paiBuildingHealthChanges(NULL),
 m_paiFeatureHappinessChanges(NULL),
@@ -5333,6 +5334,7 @@ CvCivicInfo::~CvCivicInfo()
 	SAFE_DELETE_ARRAY(m_piSpecialistExtraCommerce);
 	SAFE_DELETE_ARRAY(m_piUnitCombatFreeExperience);
 	SAFE_DELETE_ARRAY(m_piUnitCombatProductionModifier);
+	SAFE_DELETE_ARRAY(m_piUnitCombatUpgradeDiscount);
 	SAFE_DELETE_ARRAY(m_paiBuildingHappinessChanges);
 	SAFE_DELETE_ARRAY(m_paiBuildingHealthChanges);
 	SAFE_DELETE_ARRAY(m_paiFeatureHappinessChanges);
@@ -5667,6 +5669,13 @@ int CvCivicInfo::getUnitCombatProductionModifier(int i) const
 	return m_piUnitCombatProductionModifier ? m_piUnitCombatProductionModifier[i] : 0;
 }
 
+int CvCivicInfo::getUnitCombatUpgradeDiscount(int i) const
+{
+	FAssertMsg(i < GC.getNumUnitCombatInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piUnitCombatUpgradeDiscount ? m_piUnitCombatUpgradeDiscount[i] : 0;
+}
+
 int CvCivicInfo::getBuildingHappinessChanges(int i) const
 {
 	FAssertMsg(i < GC.getNumBuildingClassInfos(), "Index out of bounds");
@@ -5857,13 +5866,28 @@ void CvCivicInfo::read(FDataStreamBase* stream)
 			m_piUnitCombatProductionModifier[i] = 0;
 		}
 	}
+
+	// uiFlag < 2: cache written before UnitCombatUpgradeDiscounts existed
+	SAFE_DELETE_ARRAY(m_piUnitCombatUpgradeDiscount);
+	m_piUnitCombatUpgradeDiscount = new int[GC.getNumUnitCombatInfos()];
+	if (uiFlag > 1)
+	{
+		stream->Read(GC.getNumUnitCombatInfos(), m_piUnitCombatUpgradeDiscount);
+	}
+	else
+	{
+		for (i = 0; i < GC.getNumUnitCombatInfos(); i++)
+		{
+			m_piUnitCombatUpgradeDiscount[i] = 0;
+		}
+	}
 }
 
 void CvCivicInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=1;
+	uint uiFlag=2;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iCivicOptionType);
@@ -5936,6 +5960,7 @@ void CvCivicInfo::write(FDataStreamBase* stream)
 	stream->WriteString(m_szWeLoveTheKingKey);
 	stream->Write(GC.getNumUnitCombatInfos(), m_piUnitCombatFreeExperience);
 	stream->Write(GC.getNumUnitCombatInfos(), m_piUnitCombatProductionModifier);
+	stream->Write(GC.getNumUnitCombatInfos(), m_piUnitCombatUpgradeDiscount);
 }
 
 bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
@@ -6064,6 +6089,7 @@ bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->SetVariableListTagPair(&m_piUnitCombatFreeExperience, "UnitCombatFreeExperiences", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
 	pXML->SetVariableListTagPair(&m_piUnitCombatProductionModifier, "UnitCombatProductionModifiers", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
+	pXML->SetVariableListTagPair(&m_piUnitCombatUpgradeDiscount, "UnitCombatUpgradeDiscounts", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
 
 	pXML->SetVariableListTagPair(&m_pabHurry, "Hurrys", sizeof(GC.getHurryInfo((HurryTypes)0)), GC.getNumHurryInfos());
 	pXML->SetVariableListTagPair(&m_pabSpecialBuildingNotRequired, "SpecialBuildingNotRequireds", sizeof(GC.getSpecialBuildingInfo((SpecialBuildingTypes)0)), GC.getNumSpecialBuildingInfos());
@@ -16056,6 +16082,7 @@ m_paiCapitalCommerceModifier(NULL),
 m_paiSpecialistExtraCommerce(NULL),
 m_paiUnitCombatFreeExperience(NULL),
 m_paiUnitCombatProductionModifier(NULL),
+m_paiUnitCombatUpgradeDiscount(NULL),
 m_paiTradeYieldModifier(NULL),
 m_paiCommerceChange(NULL),
 m_paiCommerceModifier(NULL),
@@ -16083,6 +16110,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_paiSpecialistExtraCommerce);
 	SAFE_DELETE_ARRAY(m_paiUnitCombatFreeExperience);
 	SAFE_DELETE_ARRAY(m_paiUnitCombatProductionModifier);
+	SAFE_DELETE_ARRAY(m_paiUnitCombatUpgradeDiscount);
 	SAFE_DELETE_ARRAY(m_pabFreePromotionUnitCombat);
 	SAFE_DELETE_ARRAY(m_pabFreePromotion);
 }
@@ -16286,6 +16314,13 @@ int CvTraitInfo::getUnitCombatProductionModifier(int i) const
 	return m_paiUnitCombatProductionModifier ? m_paiUnitCombatProductionModifier[i] : 0;
 }
 
+int CvTraitInfo::getUnitCombatUpgradeDiscount(int i) const
+{
+	FAssertMsg(i < GC.getNumUnitCombatInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiUnitCombatUpgradeDiscount ? m_paiUnitCombatUpgradeDiscount[i] : 0;
+}
+
 int CvTraitInfo::isFreePromotion(int i) const
 {
 	return m_pabFreePromotion ? m_pabFreePromotion[i] : -1; 
@@ -16455,6 +16490,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->SetVariableListTagPair(&m_paiUnitCombatFreeExperience, "UnitCombatFreeExperiences", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
 	pXML->SetVariableListTagPair(&m_paiUnitCombatProductionModifier, "UnitCombatProductionModifiers", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
+	pXML->SetVariableListTagPair(&m_paiUnitCombatUpgradeDiscount, "UnitCombatUpgradeDiscounts", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
 
 	pXML->SetVariableListTagPair(&m_pabFreePromotion, "FreePromotions", sizeof(GC.getPromotionInfo((PromotionTypes)0)), GC.getNumPromotionInfos());
 

@@ -754,6 +754,14 @@
 	<ElementType name="UnitCombatProductionModifiers" content="eltOnly">
 		<element type="UnitCombatProductionModifier" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="iUpgradeDiscount" content="textOnly" dt:type="int"/>
+	<ElementType name="UnitCombatUpgradeDiscount" content="eltOnly">
+		<element type="UnitCombatType"/>
+		<element type="iUpgradeDiscount"/>
+	</ElementType>
+	<ElementType name="UnitCombatUpgradeDiscounts" content="eltOnly">
+		<element type="UnitCombatUpgradeDiscount" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="CivicInfo" content="eltOnly">
 		<element type="CivicOptionType"/>
 		<element type="Type"/>
@@ -821,6 +829,7 @@
 		<element type="WeLoveTheKing"/>
 		<element type="UnitCombatFreeExperiences" minOccurs="0"/>
 		<element type="UnitCombatProductionModifiers" minOccurs="0"/>
+		<element type="UnitCombatUpgradeDiscounts" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="CivicInfos" content="eltOnly">
 		<element type="CivicInfo" maxOccurs="*"/>

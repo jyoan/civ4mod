@@ -47,4 +47,13 @@
 		<Spanish>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for %s2_unitcombat by %s3_civic</Spanish>
 		<Japanese>[ICON_BULLET]%s3_civic&#12395;&#12424;&#12427;%s2_unitcombat&#24314;&#35373;&#12398;&#12383;&#12417;&#12395;[ICON_PRODUCTION] %D1%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNITCOMBAT_UPGRADE_COST_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D2_percent%% [ICON_GOLD] to Upgrade %s1_UnitCombat</English>
+		<French>[ICON_BULLET]%D2_percent%% [ICON_GOLD] to Upgrade %s1_UnitCombat</French>
+		<German>[ICON_BULLET]%D2_percent%% [ICON_GOLD] to Upgrade %s1_UnitCombat</German>
+		<Italian>[ICON_BULLET]%D2_percent%% [ICON_GOLD] to Upgrade %s1_UnitCombat</Italian>
+		<Spanish>[ICON_BULLET]%D2_percent%% [ICON_GOLD] to Upgrade %s1_UnitCombat</Spanish>
+		<Japanese>[ICON_BULLET]%s1_UnitCombat&#12398;&#12450;&#12483;&#12503;&#12464;&#12524;&#12540;&#12489;&#12395;&#24517;&#35201;&#12394;[ICON_GOLD] %D2_percent%%</Japanese>
+	</TEXT>
 </Civ4GameText>

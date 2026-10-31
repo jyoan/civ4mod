@@ -188,6 +188,7 @@ public:
 	// Sum of the trait and current civic UnitCombat* values, computed on each call (nothing is saved)
 	int getUnitCombatFreeExperience(UnitCombatTypes eUnitCombat) const;
 	int getUnitCombatProductionModifier(UnitCombatTypes eUnitCombat) const;
+	int getUnitCombatUpgradeDiscount(UnitCombatTypes eUnitCombat) const;
 	int getProductionModifier(BuildingTypes eBuilding) const;
 	int getProductionModifier(ProjectTypes eProject) const;
 

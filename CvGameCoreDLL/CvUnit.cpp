@@ -6682,9 +6682,16 @@ int CvUnit::upgradePrice(UnitTypes eUnit) const
 		iPrice /= 100;
 	}
 
-	iPrice -= (iPrice * getUpgradeDiscount()) / 100;
+	// Promotion discount + trait/civic UnitCombatUpgradeDiscounts of the unit being upgraded (added together)
+	int iDiscount = getUpgradeDiscount();
+	if (getUnitCombatType() != NO_UNITCOMBAT)
+	{
+		iDiscount += GET_PLAYER(getOwnerINLINE()).getUnitCombatUpgradeDiscount(getUnitCombatType());
+	}
+	iPrice -= (iPrice * iDiscount) / 100;
 
-	return iPrice;
+	// A total discount over 100% must not make the upgrade pay gold
+	return std::max(0, iPrice);
 }
 
 

@@ -345,6 +345,12 @@
 					<iProductionModifier>25</iProductionModifier>
 				</UnitCombatProductionModifier>
 			</UnitCombatProductionModifiers>
+			<UnitCombatUpgradeDiscounts>
+				<UnitCombatUpgradeDiscount>
+					<UnitCombatType>UNITCOMBAT_NAVAL</UnitCombatType>
+					<iUpgradeDiscount>50</iUpgradeDiscount>
+				</UnitCombatUpgradeDiscount>
+			</UnitCombatUpgradeDiscounts>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 			<FreePromotionSets>

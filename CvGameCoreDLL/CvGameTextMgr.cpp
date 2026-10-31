@@ -3442,6 +3442,16 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			}
 		}
 
+		// UnitCombatUpgradeDiscounts: shown as a cost change, so a 50% discount reads "-50%"
+		for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+		{
+			if (GC.getTraitInfo(eTrait).getUnitCombatUpgradeDiscount(iI) != 0)
+			{
+				szHelpString.append(NEWLINE L"  ");
+				szHelpString.append(gDLL->getText("TXT_KEY_UNITCOMBAT_UPGRADE_COST_MODIFIER", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), -GC.getTraitInfo(eTrait).getUnitCombatUpgradeDiscount(iI)));
+			}
+		}
+
 		// Yield / commerce modifiers: bNewLine=false and the newline, indent and bullet passed as szStart,
 		// so nothing is written when all values are zero
 		szTempBuffer.Format(L"%s  %c", NEWLINE, gDLL->getSymbolID(BULLET_CHAR));
@@ -4667,6 +4677,16 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		{
 			szHelpText.append(NEWLINE);
 			szHelpText.append(gDLL->getText("TXT_KEY_BUILDING_BUILDS_FASTER_DOMAIN", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), GC.getCivicInfo(eCivic).getUnitCombatProductionModifier(iI)));
+		}
+	}
+
+	//	UnitCombatUpgradeDiscounts: shown as a cost change, so a 50% discount reads "-50%"
+	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+	{
+		if (GC.getCivicInfo(eCivic).getUnitCombatUpgradeDiscount(iI) != 0)
+		{
+			szHelpText.append(NEWLINE);
+			szHelpText.append(gDLL->getText("TXT_KEY_UNITCOMBAT_UPGRADE_COST_MODIFIER", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), -GC.getCivicInfo(eCivic).getUnitCombatUpgradeDiscount(iI)));
 		}
 	}
 
