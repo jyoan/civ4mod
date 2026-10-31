@@ -780,6 +780,10 @@
 	<ElementType name="PromotionPrereq" content="textOnly"/>
 	<ElementType name="PromotionPrereqOr1" content="textOnly"/>
 	<ElementType name="PromotionPrereqOr2" content="textOnly"/>
+	<ElementType name="iExpireChance" content="textOnly" dt:type="int"/>
+	<ElementType name="bRemovedByCombat" content="textOnly" dt:type="boolean"/>
+	<ElementType name="PromotionVictory" content="textOnly"/>
+	<ElementType name="iPromotionVictoryChance" content="textOnly" dt:type="int"/>
 	<ElementType name="TechPrereq" content="textOnly"/>
 	<ElementType name="StateReligionPrereq" content="textOnly"/>
 	<ElementType name="bLeader" content="textOnly" dt:type="boolean"/>
@@ -888,6 +892,10 @@
 		<element type="TerrainDoubleMoves"/>
 		<element type="FeatureDoubleMoves"/>
 		<element type="UnitCombats"/>
+		<element type="iExpireChance" minOccurs="0"/>
+		<element type="bRemovedByCombat" minOccurs="0"/>
+		<element type="PromotionVictory" minOccurs="0"/>
+		<element type="iPromotionVictoryChance" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

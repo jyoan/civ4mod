@@ -1608,6 +1608,10 @@ m_iPillageChange(0),
 m_iUpgradeDiscount(0),
 m_iExperiencePercent(0),
 m_iKamikazePercent(0),
+m_iExpireChance(0),
+m_iPromotionVictory(NO_PROMOTION),
+m_iPromotionVictoryChance(100),
+m_bRemovedByCombat(false),
 m_bLeader(false),
 m_bBlitz(false),
 m_bAmphib(false),
@@ -1883,6 +1887,26 @@ bool CvPromotionInfo::isImmuneToFirstStrikes() const
 	return m_bImmuneToFirstStrikes;
 }
 
+int CvPromotionInfo::getExpireChance() const
+{
+	return m_iExpireChance;
+}
+
+bool CvPromotionInfo::isRemovedByCombat() const
+{
+	return m_bRemovedByCombat;
+}
+
+int CvPromotionInfo::getPromotionVictory() const
+{
+	return m_iPromotionVictory;
+}
+
+int CvPromotionInfo::getPromotionVictoryChance() const
+{
+	return m_iPromotionVictoryChance;
+}
+
 const TCHAR* CvPromotionInfo::getSound() const										
 {
 	return m_szSound;
@@ -2050,13 +2074,29 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	SAFE_DELETE_ARRAY(m_pbUnitCombat);
 	m_pbUnitCombat = new bool[GC.getNumUnitCombatInfos()];
 	stream->Read(GC.getNumUnitCombatInfos(), m_pbUnitCombat);
+
+	// uiFlag 0: cache written before the status and combat result tags existed
+	if (uiFlag > 0)
+	{
+		stream->Read(&m_iExpireChance);
+		stream->Read(&m_bRemovedByCombat);
+		stream->Read(&m_iPromotionVictory);
+		stream->Read(&m_iPromotionVictoryChance);
+	}
+	else
+	{
+		m_iExpireChance = 0;
+		m_bRemovedByCombat = false;
+		m_iPromotionVictory = NO_PROMOTION;
+		m_iPromotionVictoryChance = 100;
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 0;
+	uint uiFlag = 1;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2118,6 +2158,11 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(GC.getNumTerrainInfos(), m_pbTerrainDoubleMove);
 	stream->Write(GC.getNumFeatureInfos(), m_pbFeatureDoubleMove);
 	stream->Write(GC.getNumUnitCombatInfos(), m_pbUnitCombat);
+
+	stream->Write(m_iExpireChance);
+	stream->Write(m_bRemovedByCombat);
+	stream->Write(m_iPromotionVictory);
+	stream->Write(m_iPromotionVictoryChance);
 }
 
 bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
@@ -2180,6 +2225,10 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iUpgradeDiscount, "iUpgradeDiscount");
 	pXML->GetChildXmlValByName(&m_iExperiencePercent, "iExperiencePercent");
 	pXML->GetChildXmlValByName(&m_iKamikazePercent, "iKamikazePercent");
+	pXML->GetChildXmlValByName(&m_iExpireChance, "iExpireChance");
+	pXML->GetChildXmlValByName(&m_bRemovedByCombat, "bRemovedByCombat");
+	// PromotionVictory names a promotion, so it is read in readPass2
+	pXML->GetChildXmlValByName(&m_iPromotionVictoryChance, "iPromotionVictoryChance", 100);
 
 	pXML->SetVariableListTagPair(&m_piTerrainAttackPercent, "TerrainAttacks", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());
 	pXML->SetVariableListTagPair(&m_piTerrainDefensePercent, "TerrainDefenses", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());
@@ -2205,6 +2254,10 @@ bool CvPromotionInfo::readPass2(CvXMLLoadUtility* pXML)
 	m_iPrereqOrPromotion1 = GC.getInfoTypeForString(szTextVal);
 	pXML->GetChildXmlValByName(szTextVal, "PromotionPrereqOr2");
 	m_iPrereqOrPromotion2 = GC.getInfoTypeForString(szTextVal);
+
+	szTextVal = "";
+	pXML->GetChildXmlValByName(szTextVal, "PromotionVictory");
+	m_iPromotionVictory = pXML->FindInInfoClass(szTextVal);
 
 	return true;
 }

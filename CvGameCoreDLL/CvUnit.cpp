@@ -730,6 +730,11 @@ void CvUnit::doTurn()
 		}
 	}
 
+	if (!isDead())
+	{
+		doTurnPromotions();
+	}
+
 	changeImmobileTimer(-1);
 
 	setMadeAttack(false);
@@ -738,6 +743,95 @@ void CvUnit::doTurn()
 	setReconPlot(NULL);
 
 	setMoves(0);
+}
+
+// Status promotions at the start of the owner's turn (added by this mod): iExpireChance
+void CvUnit::doTurnPromotions()
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	{
+		if (isHasPromotion((PromotionTypes)iI))
+		{
+			CvPromotionInfo& kPromotion = GC.getPromotionInfo((PromotionTypes)iI);
+
+			if (kPromotion.getExpireChance() > 0)
+			{
+				if (GC.getGameINLINE().getSorenRandNum(100, "Promotion expire") < kPromotion.getExpireChance())
+				{
+					setHasPromotion((PromotionTypes)iI, false);
+				}
+			}
+		}
+	}
+}
+
+// Promotion effects at the end of a normal combat (added by this mod). this is the attacker; both units still exist.
+// The effects are judged from the promotions the units had in the combat: first the survivors lose their
+// bRemovedByCombat promotions, then the winner (the survivor whose opponent died) gets its PromotionVictory promotions.
+void CvUnit::doCombatPromotions(CvUnit* pDefender)
+{
+	CvUnit* apUnits[2];
+	std::vector<PromotionTypes> aaePromotions[2];
+	int iWinner;
+	int iUnit;
+	int iI;
+
+	apUnits[0] = this;
+	apUnits[1] = pDefender;
+
+	for (iUnit = 0; iUnit < 2; iUnit++)
+	{
+		for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+		{
+			if (apUnits[iUnit]->isHasPromotion((PromotionTypes)iI))
+			{
+				aaePromotions[iUnit].push_back((PromotionTypes)iI);
+			}
+		}
+	}
+
+	for (iUnit = 0; iUnit < 2; iUnit++)
+	{
+		if (!apUnits[iUnit]->isDead())
+		{
+			for (iI = 0; iI < (int)aaePromotions[iUnit].size(); iI++)
+			{
+				if (GC.getPromotionInfo(aaePromotions[iUnit][iI]).isRemovedByCombat())
+				{
+					apUnits[iUnit]->setHasPromotion(aaePromotions[iUnit][iI], false);
+				}
+			}
+		}
+	}
+
+	// A suicide attacker dies even when it wins; nobody wins when the attacker withdraws
+	iWinner = -1;
+	if (pDefender->isDead() && !isDead() && !isSuicide())
+	{
+		iWinner = 0;
+	}
+	else if (isDead() && !pDefender->isDead())
+	{
+		iWinner = 1;
+	}
+
+	if (iWinner != -1)
+	{
+		for (iI = 0; iI < (int)aaePromotions[iWinner].size(); iI++)
+		{
+			CvPromotionInfo& kPromotion = GC.getPromotionInfo(aaePromotions[iWinner][iI]);
+
+			if (kPromotion.getPromotionVictory() != NO_PROMOTION)
+			{
+				if (GC.getGameINLINE().getSorenRandNum(100, "Promotion victory") < kPromotion.getPromotionVictoryChance())
+				{
+					apUnits[iWinner]->setHasPromotion((PromotionTypes)kPromotion.getPromotionVictory(), true);
+				}
+			}
+		}
+	}
 }
 
 
@@ -1405,6 +1499,8 @@ void CvUnit::updateCombat(bool bQuick)
 		pDefender->setCombatUnit(NULL);
 		NotifyEntity(MISSION_DAMAGE);
 		pDefender->NotifyEntity(MISSION_DAMAGE);
+
+		doCombatPromotions(pDefender);
 
 		if (isDead())
 		{

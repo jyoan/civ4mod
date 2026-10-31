@@ -491,6 +491,12 @@ public:
 	bool isHillsDoubleMove() const;				// Exposed to Python
 	bool isImmuneToFirstStrikes() const;				// Exposed to Python
 
+	// Status and combat result tags (added by this mod)
+	int getExpireChance() const;				// Exposed to Python
+	bool isRemovedByCombat() const;				// Exposed to Python
+	int getPromotionVictory() const;				// Exposed to Python
+	int getPromotionVictoryChance() const;				// Exposed to Python
+
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
 
@@ -553,6 +559,12 @@ protected:
 	int m_iUpgradeDiscount;
 	int m_iExperiencePercent;
 	int m_iKamikazePercent;
+
+	// Status and combat result tags (added by this mod)
+	int m_iExpireChance;
+	int m_iPromotionVictory;
+	int m_iPromotionVictoryChance;
+	bool m_bRemovedByCombat;
 
 	bool m_bLeader;
 	bool m_bBlitz;									

@@ -147,6 +147,10 @@ void CyInfoPythonInterface1()
 		.def("isAlwaysHeal", &CvPromotionInfo::isAlwaysHeal, "bool ()")
 		.def("isHillsDoubleMove", &CvPromotionInfo::isHillsDoubleMove, "bool ()")
 		.def("isImmuneToFirstStrikes", &CvPromotionInfo::isImmuneToFirstStrikes, "bool ()")
+		.def("getExpireChance", &CvPromotionInfo::getExpireChance, "int ()")
+		.def("isRemovedByCombat", &CvPromotionInfo::isRemovedByCombat, "bool ()")
+		.def("getPromotionVictory", &CvPromotionInfo::getPromotionVictory, "int ()")
+		.def("getPromotionVictoryChance", &CvPromotionInfo::getPromotionVictoryChance, "int ()")
 
 		.def("getSound", &CvPromotionInfo::getSound, "string ()")
 

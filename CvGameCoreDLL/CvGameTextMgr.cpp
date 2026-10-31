@@ -4514,6 +4514,32 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 		}
 	}
 
+	// Status and combat result tags (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getExpireChance() > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_EXPIRE_CHANCE", GC.getPromotionInfo(ePromotion).getExpireChance()));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).isRemovedByCombat())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_REMOVED_BY_COMBAT"));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getPromotionVictory() != NO_PROMOTION)
+	{
+		szBuffer.append(pcNewline);
+		if (GC.getPromotionInfo(ePromotion).getPromotionVictoryChance() >= 100)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_VICTORY", GC.getPromotionInfo((PromotionTypes)GC.getPromotionInfo(ePromotion).getPromotionVictory()).getTextKeyWide()));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_VICTORY_CHANCE", GC.getPromotionInfo((PromotionTypes)GC.getPromotionInfo(ePromotion).getPromotionVictory()).getTextKeyWide(), GC.getPromotionInfo(ePromotion).getPromotionVictoryChance()));
+		}
+	}
+
 	if (wcslen(GC.getPromotionInfo(ePromotion).getHelp()) > 0)
 	{
 		szBuffer.append(pcNewline);

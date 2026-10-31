@@ -84,8 +84,10 @@ public:
 	DllExport void NotifyEntity(MissionTypes eMission);
 
 	void doTurn();
+	void doTurnPromotions();
 
 	void updateCombat(bool bQuick = false);
+	void doCombatPromotions(CvUnit* pDefender);
 	void updateAirCombat(bool bQuick = false);
 	void updateAirStrike(CvPlot* pPlot, bool bQuick, bool bFinish);
 

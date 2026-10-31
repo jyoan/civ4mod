@@ -83,7 +83,43 @@
 		<Spanish>Traits</Spanish>
 		<Japanese>&#24535;&#21521;</Japanese>
 	</TEXT>
-	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, UNIT_TEST_A/B, PROMOTION_TEST) -->
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_EXPIRE_CHANCE</Tag>
+		<English>[ICON_BULLET]%d1_Chance%% chance to wear off each turn</English>
+		<French>[ICON_BULLET]%d1_Chance%% chance to wear off each turn</French>
+		<German>[ICON_BULLET]%d1_Chance%% chance to wear off each turn</German>
+		<Italian>[ICON_BULLET]%d1_Chance%% chance to wear off each turn</Italian>
+		<Spanish>[ICON_BULLET]%d1_Chance%% chance to wear off each turn</Spanish>
+		<Japanese>[ICON_BULLET]&#27598;&#12479;&#12540;&#12531;%d1_Chance%%&#12398;&#30906;&#29575;&#12391;&#28040;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_REMOVED_BY_COMBAT</Tag>
+		<English>[ICON_BULLET]Wears off after combat</English>
+		<French>[ICON_BULLET]Wears off after combat</French>
+		<German>[ICON_BULLET]Wears off after combat</German>
+		<Italian>[ICON_BULLET]Wears off after combat</Italian>
+		<Spanish>[ICON_BULLET]Wears off after combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12377;&#12427;&#12392;&#28040;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_VICTORY</Tag>
+		<English>[ICON_BULLET]Gains [LINK=literal]%s1_Promotion[\LINK] on winning a combat</English>
+		<French>[ICON_BULLET]Gains [LINK=literal]%s1_Promotion[\LINK] on winning a combat</French>
+		<German>[ICON_BULLET]Gains [LINK=literal]%s1_Promotion[\LINK] on winning a combat</German>
+		<Italian>[ICON_BULLET]Gains [LINK=literal]%s1_Promotion[\LINK] on winning a combat</Italian>
+		<Spanish>[ICON_BULLET]Gains [LINK=literal]%s1_Promotion[\LINK] on winning a combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_VICTORY_CHANCE</Tag>
+		<English>[ICON_BULLET]%d2_Chance%% chance to gain [LINK=literal]%s1_Promotion[\LINK] on winning a combat</English>
+		<French>[ICON_BULLET]%d2_Chance%% chance to gain [LINK=literal]%s1_Promotion[\LINK] on winning a combat</French>
+		<German>[ICON_BULLET]%d2_Chance%% chance to gain [LINK=literal]%s1_Promotion[\LINK] on winning a combat</German>
+		<Italian>[ICON_BULLET]%d2_Chance%% chance to gain [LINK=literal]%s1_Promotion[\LINK] on winning a combat</Italian>
+		<Spanish>[ICON_BULLET]%d2_Chance%% chance to gain [LINK=literal]%s1_Promotion[\LINK] on winning a combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d2_Chance%%&#12398;&#30906;&#29575;&#12391;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
 		<English>Test data for checking the mod's features.</English>
@@ -191,5 +227,23 @@
 		<Italian>Test Promotion</Italian>
 		<Spanish>Test Promotion</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_STATE1</Tag>
+		<English>Test State I</English>
+		<French>Test State I</French>
+		<German>Test State I</German>
+		<Italian>Test State I</Italian>
+		<Spanish>Test State I</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#29366;&#24907;&#8544;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_STATE2</Tag>
+		<English>Test State II</English>
+		<French>Test State II</French>
+		<German>Test State II</German>
+		<Italian>Test State II</Italian>
+		<Spanish>Test State II</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#29366;&#24907;&#8545;</Japanese>
 	</TEXT>
 </Civ4GameText>
