@@ -5927,6 +5927,38 @@ int CvPlayer::getTraitFeatureYieldChange(FeatureTypes eFeature, YieldTypes eYiel
 	return iChange;
 }
 
+int CvPlayer::getTraitImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield) const
+{
+	int iChange = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iChange += GC.getTraitInfo((TraitTypes)iI).getImprovementYieldChanges(eImprovement, eYield);
+		}
+	}
+
+	return iChange;
+}
+
+int CvPlayer::getTraitRiverPlotYieldChange(YieldTypes eYield) const
+{
+	int iChange = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iChange += GC.getTraitInfo((TraitTypes)iI).getRiverPlotYieldChange(eYield);
+		}
+	}
+
+	return iChange;
+}
+
 // True if a trait, current civic or owned building lets eUnitCombat units upgrade outside the team's territory.
 // bEnemyTerritory: the unit stands in the territory of a team we are at war with; sources with
 // bExcludeEnemyTerritory do not count there.

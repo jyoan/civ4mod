@@ -309,6 +309,8 @@ void CyInfoPythonInterface3()
 		.def("isUpgradeAnywhereExcludeEnemy", &CvTraitInfo::isUpgradeAnywhereExcludeEnemy, "bool (int i)")
 		.def("getTerrainYieldChange", &CvTraitInfo::getTerrainYieldChange, "int (int iTerrain, int iYield)")
 		.def("getFeatureYieldChange", &CvTraitInfo::getFeatureYieldChange, "int (int iFeature, int iYield)")
+		.def("getImprovementYieldChanges", &CvTraitInfo::getImprovementYieldChanges, "int (int iImprovement, int iYield)")
+		.def("getRiverPlotYieldChange", &CvTraitInfo::getRiverPlotYieldChange, "int (int i)")
 
 		.def("getShortDescription", &CvTraitInfo::getShortDescription, "int (int i)")
 		.def("getExtraYieldThreshold", &CvTraitInfo::getExtraYieldThreshold, "int (int i)")

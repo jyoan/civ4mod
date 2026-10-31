@@ -406,6 +406,19 @@
 	<ElementType name="FeatureYieldChanges" content="eltOnly">
 		<element type="FeatureYieldChange" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="ImprovementYields" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="ImprovementYieldChange" content="eltOnly">
+		<element type="ImprovementType"/>
+		<element type="ImprovementYields"/>
+	</ElementType>
+	<ElementType name="ImprovementYieldChanges" content="eltOnly">
+		<element type="ImprovementYieldChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="RiverPlotYieldChanges" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="TraitInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -446,6 +459,8 @@
 		<element type="UpgradeAnywhereUnitCombats" minOccurs="0"/>
 		<element type="TerrainYieldChanges" minOccurs="0"/>
 		<element type="FeatureYieldChanges" minOccurs="0"/>
+		<element type="ImprovementYieldChanges" minOccurs="0"/>
+		<element type="RiverPlotYieldChanges" minOccurs="0"/>
 		<element type="FreePromotions"/>
 		<element type="FreePromotionUnitCombats"/>
 		<element type="FreePromotionSets" minOccurs="0"/>

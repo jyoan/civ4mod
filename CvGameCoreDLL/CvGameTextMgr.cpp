@@ -3497,6 +3497,24 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 					iLast = GC.getTraitInfo(eTrait).getFeatureYieldChange(iJ, iI);
 				}
 			}
+
+			for (iJ = 0; iJ < GC.getNumImprovementInfos(); ++iJ)
+			{
+				if (GC.getTraitInfo(eTrait).getImprovementYieldChanges(iJ, iI) != 0)
+				{
+					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_YIELD_CHANGE", GC.getTraitInfo(eTrait).getImprovementYieldChanges(iJ, iI), GC.getYieldInfo((YieldTypes)iI).getChar()).c_str());
+					szText.Format(L"<link=literal>%s</link>", GC.getImprovementInfo((ImprovementTypes)iJ).getDescription());
+					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", (GC.getTraitInfo(eTrait).getImprovementYieldChanges(iJ, iI) != iLast));
+					iLast = GC.getTraitInfo(eTrait).getImprovementYieldChanges(iJ, iI);
+				}
+			}
+		}
+
+		// RiverPlotYieldChanges: "River Tiles: +1 food", with the building text key
+		if (GC.getTraitInfo(eTrait).getRiverPlotYieldChangeArray() != NULL)
+		{
+			szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_BUILDING_RIVER_PLOTS").c_str());
+			setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", GC.getTraitInfo(eTrait).getRiverPlotYieldChangeArray(), false, false);
 		}
 
 		// Wonder Production Effects

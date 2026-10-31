@@ -4213,6 +4213,9 @@ public:
 	bool isUpgradeAnywhereExcludeEnemy(int i) const;				// Exposed to Python
 	int getTerrainYieldChange(int iTerrain, int iYield) const;				// Exposed to Python
 	int getFeatureYieldChange(int iFeature, int iYield) const;				// Exposed to Python
+	int getImprovementYieldChanges(int iImprovement, int iYield) const;				// Exposed to Python
+	int getRiverPlotYieldChange(int i) const;				// Exposed to Python
+	int* getRiverPlotYieldChangeArray() const;
 
 	int isFreePromotion(int i) const;				// Exposed to Python
 	int isFreePromotionUnitCombat(int i) const;			
@@ -4224,6 +4227,7 @@ public:
 	bool isUnitCombatFreePromotion(int iUnitCombat, int iPromotion) const;				// Exposed to Python
 
 	bool read(CvXMLLoadUtility* pXML);
+	bool readPass3();
 
 	//---------------------------------------PROTECTED MEMBER VARIABLES---------------------------------
 protected:
@@ -4269,6 +4273,10 @@ protected:
 	bool* m_pabUpgradeAnywhereExcludeEnemy;
 	std::vector< std::vector<int> > m_aaiTerrainYieldChange;		// [terrain][yield], empty when not set
 	std::vector< std::vector<int> > m_aaiFeatureYieldChange;		// [feature][yield], empty when not set
+	std::vector< std::vector<int> > m_aaiImprovementYieldChange;		// [improvement][yield], empty when not set
+	std::vector<CvString> m_aszImprovementYieldChangeTypes;		// read() keeps the types as strings until readPass3(),
+	std::vector< std::vector<int> > m_aaiImprovementYieldChangeValues;		// because improvements are loaded after traits
+	int* m_paiRiverPlotYieldChange;
 
 	bool* m_pabFreePromotion;
 	bool* m_pabFreePromotionUnitCombat;

@@ -16363,6 +16363,7 @@ m_paiUnitCombatProductionModifier(NULL),
 m_paiUnitCombatUpgradeDiscount(NULL),
 m_pabUpgradeAnywhereUnitCombat(NULL),
 m_pabUpgradeAnywhereExcludeEnemy(NULL),
+m_paiRiverPlotYieldChange(NULL),
 m_paiTradeYieldModifier(NULL),
 m_paiCommerceChange(NULL),
 m_paiCommerceModifier(NULL),
@@ -16393,6 +16394,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_paiUnitCombatUpgradeDiscount);
 	SAFE_DELETE_ARRAY(m_pabUpgradeAnywhereUnitCombat);
 	SAFE_DELETE_ARRAY(m_pabUpgradeAnywhereExcludeEnemy);
+	SAFE_DELETE_ARRAY(m_paiRiverPlotYieldChange);
 	SAFE_DELETE_ARRAY(m_pabFreePromotionUnitCombat);
 	SAFE_DELETE_ARRAY(m_pabFreePromotion);
 }
@@ -16697,16 +16699,40 @@ int CvTraitInfo::getFeatureYieldChange(int iFeature, int iYield) const
 	return m_aaiFeatureYieldChange[iFeature][iYield];
 }
 
-// Reads <TerrainYieldChanges> / <FeatureYieldChanges> (the FFH2 format): each item has the type tag
-// (TerrainType / FeatureType) and <Yields>. The result has one row per info, or is empty when nothing is set.
-static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, int iNumInfos, std::vector< std::vector<int> >& aaiYieldChanges)
+int CvTraitInfo::getImprovementYieldChanges(int iImprovement, int iYield) const
+{
+	FAssertMsg(iImprovement < GC.getNumImprovementInfos(), "Index out of bounds");
+	FAssertMsg(iImprovement > -1, "Index out of bounds");
+	FAssertMsg(iYield < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(iYield > -1, "Index out of bounds");
+	if ((iImprovement < 0) || (iImprovement >= (int)m_aaiImprovementYieldChange.size()) || (iYield < 0) || (iYield >= NUM_YIELD_TYPES))
+	{
+		return 0;
+	}
+	return m_aaiImprovementYieldChange[iImprovement][iYield];
+}
+
+int CvTraitInfo::getRiverPlotYieldChange(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiRiverPlotYieldChange ? m_paiRiverPlotYieldChange[i] : 0;
+}
+
+int* CvTraitInfo::getRiverPlotYieldChangeArray() const
+{
+	return m_paiRiverPlotYieldChange;
+}
+
+// Reads a list of yield changes such as <TerrainYieldChanges>: each item has the type tag (TerrainType) and
+// the yields tag (Yields). The types are kept as strings, because some (improvements) are loaded after traits.
+static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, const TCHAR* szYieldsTag, std::vector<CvString>& aszTypes, std::vector< std::vector<int> >& aaiYields)
 {
 	CvString szTextVal;
 	int* paiYields;
-	int iIndex;
-	int iI;
 
-	aaiYieldChanges.clear();
+	aszTypes.clear();
+	aaiYields.clear();
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szListTag))
 	{
@@ -16714,29 +16740,20 @@ static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, con
 		{
 			do
 			{
+				szTextVal = "";
 				pXML->GetChildXmlValByName(szTextVal, szTypeTag);
-				iIndex = pXML->FindInInfoClass(szTextVal);
-				if (iIndex > -1)
+				if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szYieldsTag))
 				{
-					if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Yields"))
+					paiYields = NULL;
+					pXML->SetYields(&paiYields);
+					if (paiYields != NULL)
 					{
-						paiYields = NULL;
-						pXML->SetYields(&paiYields);
-						if (paiYields != NULL)
-						{
-							if (aaiYieldChanges.empty())
-							{
-								aaiYieldChanges.resize(iNumInfos, std::vector<int>(NUM_YIELD_TYPES, 0));
-							}
-							for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
-							{
-								aaiYieldChanges[iIndex][iI] = paiYields[iI];
-							}
-							SAFE_DELETE_ARRAY(paiYields);
-						}
-
-						gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+						aszTypes.push_back(szTextVal);
+						aaiYields.push_back(std::vector<int>(paiYields, paiYields + NUM_YIELD_TYPES));
+						SAFE_DELETE_ARRAY(paiYields);
 					}
+
+					gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 				}
 			}
 			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), const_cast<TCHAR*>(szItemTag)));
@@ -16745,6 +16762,37 @@ static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, con
 		}
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
+// Turns the types and yields from readYieldChanges() into one row per info (iNumInfos), or an empty result when
+// nothing is set. An unknown type shows the same message as FindInInfoClass.
+static void resolveYieldChanges(const TCHAR* szListTag, const std::vector<CvString>& aszTypes, const std::vector< std::vector<int> >& aaiYields, int iNumInfos, std::vector< std::vector<int> >& aaiYieldChanges)
+{
+	char szMessage[1024];
+	int iIndex;
+	int i;
+
+	aaiYieldChanges.clear();
+
+	for (i = 0; i < (int)aszTypes.size(); i++)
+	{
+		iIndex = GC.getInfoTypeForString(aszTypes[i].GetCString(), true);
+		if (iIndex < 0)
+		{
+			if (aszTypes[i] != "NONE" && !aszTypes[i].empty())
+			{
+				sprintf(szMessage, "Tag: %s in %s of CIV4TraitInfos.xml was incorrect", aszTypes[i].GetCString(), szListTag);
+				gDLL->MessageBox(szMessage, "XML Error");
+			}
+			continue;
+		}
+
+		if (aaiYieldChanges.empty())
+		{
+			aaiYieldChanges.resize(iNumInfos, std::vector<int>(NUM_YIELD_TYPES, 0));
+		}
+		aaiYieldChanges[iIndex] = aaiYields[i];
 	}
 }
 
@@ -16898,8 +16946,34 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 
-	readYieldChanges(pXML, "TerrainYieldChanges", "TerrainYieldChange", "TerrainType", GC.getNumTerrainInfos(), m_aaiTerrainYieldChange);
-	readYieldChanges(pXML, "FeatureYieldChanges", "FeatureYieldChange", "FeatureType", GC.getNumFeatureInfos(), m_aaiFeatureYieldChange);
+	std::vector<CvString> aszTypes;
+	std::vector< std::vector<int> > aaiYields;
+	readYieldChanges(pXML, "TerrainYieldChanges", "TerrainYieldChange", "TerrainType", "Yields", aszTypes, aaiYields);
+	resolveYieldChanges("TerrainYieldChanges", aszTypes, aaiYields, GC.getNumTerrainInfos(), m_aaiTerrainYieldChange);
+	readYieldChanges(pXML, "FeatureYieldChanges", "FeatureYieldChange", "FeatureType", "Yields", aszTypes, aaiYields);
+	resolveYieldChanges("FeatureYieldChanges", aszTypes, aaiYields, GC.getNumFeatureInfos(), m_aaiFeatureYieldChange);
+	// Same format as the civic ImprovementYieldChanges. Resolved in readPass3()
+	readYieldChanges(pXML, "ImprovementYieldChanges", "ImprovementYieldChange", "ImprovementType", "ImprovementYields", m_aszImprovementYieldChangeTypes, m_aaiImprovementYieldChangeValues);
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "RiverPlotYieldChanges"))
+	{
+		pXML->SetYields(&m_paiRiverPlotYieldChange);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_paiRiverPlotYieldChange, NUM_YIELD_TYPES);
+	}
+
+	return true;
+}
+
+// Improvements are loaded after traits (CvXMLLoadUtility::LoadPreMenuGlobals calls this after them)
+bool CvTraitInfo::readPass3()
+{
+	resolveYieldChanges("ImprovementYieldChanges", m_aszImprovementYieldChangeTypes, m_aaiImprovementYieldChangeValues, GC.getNumImprovementInfos(), m_aaiImprovementYieldChange);
+	m_aszImprovementYieldChangeTypes.clear();
+	m_aaiImprovementYieldChangeValues.clear();
 
 	return true;
 }

@@ -5858,6 +5858,9 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 		{
 			iYield += GC.getImprovementInfo(eImprovement).getImprovementBonusYield(eBonus, eYield);
 		}
+
+		// Trait ImprovementYieldChanges (added by this mod)
+		iYield += GET_PLAYER(ePlayer).getTraitImprovementYieldChange(eImprovement, eYield);
 	}
 
 	return iYield;
@@ -6004,10 +6007,11 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 	return std::max(0, iYield);
 }
 
-// TerrainYieldChanges / FeatureYieldChanges of ePlayer's traits.
+// TerrainYieldChanges / FeatureYieldChanges / RiverPlotYieldChanges of ePlayer's traits
+// (ImprovementYieldChanges are in calculateImprovementYieldChange).
 // TERRAIN_HILL and TERRAIN_PEAK are graphical only terrains that no plot has, so here they stand for hill and peak plots.
 // A hill plot gets both its terrain and TERRAIN_HILL. Impassable plots (peaks, ice) have no base yields in BtS,
-// so there only the peak or the impassable feature counts, not the terrain under it.
+// so there only the peak or the impassable feature counts, not the terrain under it or the river.
 int CvPlot::calculateTraitYieldChange(YieldTypes eYield, PlayerTypes ePlayer) const
 {
 	CvPlayer& kPlayer = GET_PLAYER(ePlayer);
@@ -6041,6 +6045,12 @@ int CvPlot::calculateTraitYieldChange(YieldTypes eYield, PlayerTypes ePlayer) co
 	if (getFeatureType() != NO_FEATURE)
 	{
 		iYield += kPlayer.getTraitFeatureYieldChange(getFeatureType(), eYield);
+	}
+
+	// Same condition as the building RiverPlotYieldChanges
+	if (isRiver() && !isImpassable())
+	{
+		iYield += kPlayer.getTraitRiverPlotYieldChange(eYield);
 	}
 
 	return iYield;
