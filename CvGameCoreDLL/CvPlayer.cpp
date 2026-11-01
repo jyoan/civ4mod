@@ -2650,6 +2650,30 @@ void CvPlayer::doTurnUnits()
 		}
 	}
 
+	// Spells with iDelay take effect when the delay ends, after all the units have started the turn: a unit summoned
+	// here does not start the turn again (added by this mod)
+	std::vector<IDInfo> aDelayedCasters;
+	CvUnit* pLoopUnit;
+	uint iI;
+
+	for (pLoopUnit = firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = nextUnit(&iLoop))
+	{
+		if (pLoopUnit->getDelayedSpell() != NO_SPELL)
+		{
+			aDelayedCasters.push_back(pLoopUnit->getIDInfo());
+		}
+	}
+
+	for (iI = 0; iI < aDelayedCasters.size(); iI++)
+	{
+		pLoopUnit = ::getUnit(aDelayedCasters[iI]);
+
+		if (pLoopUnit != NULL)
+		{
+			pLoopUnit->doDelayedSpell();
+		}
+	}
+
 	if (getID() == GC.getGameINLINE().getActivePlayer())
 	{
 		gDLL->getFAStarIFace()->ForceReset(&GC.getInterfacePathFinder());
@@ -5975,6 +5999,22 @@ int CvPlayer::getNextCityRadius() const
 	return range(iRadius, 1, CITY_PLOTS_MAX_RADIUS);
 }
 
+int CvPlayer::getSummonDuration() const
+{
+	int iDuration = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iDuration += GC.getTraitInfo((TraitTypes)iI).getSummonDuration();
+		}
+	}
+
+	return std::max(0, iDuration);
+}
+
 // True if a trait, current civic or owned building lets eUnitCombat units upgrade outside the team's territory.
 // bEnemyTerritory: the unit stands in the territory of a team we are at war with; sources with
 // bExcludeEnemyTerritory do not count there.
@@ -6462,6 +6502,22 @@ int CvPlayer::calculateUnitCost(int& iFreeUnits, int& iFreeMilitaryUnits, int& i
 
 	iFreeMilitaryUnits = getBaseFreeMilitaryUnits();
 	iFreeMilitaryUnits += ((getTotalPopulation() * getFreeMilitaryUnitsPopulationPercent()) / 100);
+
+	// Summoned units that disappear (CvUnit::getDuration) are free (added by this mod, same as FFH2)
+	CvUnit* pLoopUnit;
+	int iLoop;
+	for (pLoopUnit = firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = nextUnit(&iLoop))
+	{
+		if (pLoopUnit->getDuration() > 0)
+		{
+			iFreeUnits++;
+
+			if (pLoopUnit->getUnitInfo().isMilitarySupport())
+			{
+				iFreeMilitaryUnits++;
+			}
+		}
+	}
 
 	if (!isHuman())
 	{
@@ -15984,7 +16040,15 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	pStream->Read(MAX_PLAYERS, m_aiGoldPerTurnByPlayer);
 	pStream->Read(MAX_TEAMS, m_aiEspionageSpendingWeightAgainstTeam);
 
-	pStream->Read(NUM_FEAT_TYPES, m_abFeatAccomplished);
+	// FEAT_GLOBAL_SPELL was added by this mod (uiFlag 2)
+	if (uiFlag > 1)
+	{
+		pStream->Read(NUM_FEAT_TYPES, m_abFeatAccomplished);
+	}
+	else
+	{
+		pStream->Read(FEAT_GLOBAL_SPELL, m_abFeatAccomplished);
+	}
 	pStream->Read(NUM_PLAYEROPTION_TYPES, m_abOptions);
 
 	pStream->ReadString(m_szScriptData);
@@ -16317,7 +16381,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 1;
+	uint uiFlag = 2;	// 2: FEAT_GLOBAL_SPELL (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);

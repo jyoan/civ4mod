@@ -2027,6 +2027,7 @@ enum FeatTypes						// Exposed to Python
 	FEAT_POPULATION_2_BILLION,
 	FEAT_CORPORATION_ENABLED,
 	FEAT_PAD,
+	FEAT_GLOBAL_SPELL,			// added by this mod (cast a world spell, same as FFH2)
 
 	NUM_FEAT_TYPES
 };

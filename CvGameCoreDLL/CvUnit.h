@@ -101,6 +101,13 @@ public:
 	// Spells (added by this mod, same as FFH2)
 	bool canCast(int spell, bool bTestVisible);																	// Exposed to Python
 	void cast(int spell);																						// Exposed to Python
+	void castEffects(int spell);
+	void doDelayedSpell();
+	int getDelayedSpell() const;																				// Exposed to Python
+	void setDelayedSpell(int iNewValue);
+	int getDuration() const;																					// Exposed to Python
+	void setDuration(int iNewValue);																			// Exposed to Python
+	void changeDuration(int iChange);																			// Exposed to Python
 	bool isHasCasted() const;																					// Exposed to Python
 	void setHasCasted(bool bNewValue);																			// Exposed to Python
 	bool canAddPromotion(int spell) const;
@@ -118,6 +125,8 @@ public:
 	bool canImmobile(int spell) const;
 	void castDamage(int spell);
 	void castImmobile(int spell);
+	bool canCreateUnit(int spell) const;
+	void castCreateUnit(int spell);
 
 	FAStarNode* getPathLastNode() const;
 	CvPlot* getPathEndTurnPlot() const;																																						// Exposed to Python
@@ -854,6 +863,8 @@ protected:
 	int m_iBaseCombat;
 	DirectionTypes m_eFacingDirection;
 	int m_iImmobileTimer;
+	int m_iDuration;		// added by this mod: turns until a summoned unit disappears (0: it stays)
+	int m_iDelayedSpell;	// added by this mod: the spell with iDelay being cast (NO_SPELL: none)
 
 	bool m_bMadeAttack;
 	bool m_bMadeInterception;

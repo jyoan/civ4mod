@@ -366,6 +366,7 @@
 			<iTradeRoutes>1</iTradeRoutes>
 			<iExpInBorderModifier>50</iExpInBorderModifier>
 			<iCityRadiusChange>1</iCityRadiusChange>
+			<iSummonDuration>1</iSummonDuration>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

@@ -140,5 +140,50 @@
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Button>,Art/Interface/Buttons/Promotions/Ambush.dds,Art/Interface/Buttons/Promotions_Atlas.dds,2,1</Button>
 		</SpellInfo>
+		<SpellInfo>
+			<Type>SPELL_TEST_SUMMON</Type>
+			<Description>TXT_KEY_SPELL_TEST_SUMMON</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<PromotionPrereq1>PROMOTION_TEST</PromotionPrereq1>
+			<CivilizationPrereq>CIVILIZATION_TEST</CivilizationPrereq>
+			<bCasterNoDuration>1</bCasterNoDuration>
+			<bHasCasted>1</bHasCasted>
+			<iMiscastChance>25</iMiscastChance>
+			<iCreateUnitNum>2</iCreateUnitNum>
+			<CreateUnitType>UNIT_WARRIOR</CreateUnitType>
+			<bCopyCastersPromotions>1</bCopyCastersPromotions>
+			<PyMiscast>spellDamageCaster(pCaster, 20)</PyMiscast>
+			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
+			<Effect>EFFECT_SETTLERSMOKE</Effect>
+			<Button>,Art/Interface/Buttons/Units/Warrior.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,2,1</Button>
+		</SpellInfo>
+		<SpellInfo>
+			<Type>SPELL_TEST_PERMANENT</Type>
+			<Description>TXT_KEY_SPELL_TEST_PERMANENT</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<PromotionPrereq1>PROMOTION_TEST</PromotionPrereq1>
+			<CivilizationPrereq>CIVILIZATION_TEST</CivilizationPrereq>
+			<bHasCasted>1</bHasCasted>
+			<iCost>10</iCost>
+			<iDelay>1</iDelay>
+			<CreateUnitType>UNIT_EXPLORER</CreateUnitType>
+			<CreateUnitPromotion>PROMOTION_TEST_STATE2</CreateUnitPromotion>
+			<bPermanentUnitCreate>1</bPermanentUnitCreate>
+			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
+			<Effect>EFFECT_SETTLERSMOKE</Effect>
+			<Button>,Art/Interface/Buttons/Units/Explorer.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,3,8</Button>
+		</SpellInfo>
+		<SpellInfo>
+			<Type>SPELL_TEST_WORLD</Type>
+			<Description>TXT_KEY_SPELL_TEST_WORLD</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<CivilizationPrereq>CIVILIZATION_TEST</CivilizationPrereq>
+			<bHasCasted>1</bHasCasted>
+			<iCost>-100</iCost>
+			<bGlobal>1</bGlobal>
+			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
+			<Sound>AS2D_GOODY_GOLD</Sound>
+			<Button>,Art/Interface/Buttons/Actions/GoldenAge.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,3,4</Button>
+		</SpellInfo>
 	</SpellInfos>
 </Civ4SpellInfos>

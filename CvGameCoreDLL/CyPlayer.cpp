@@ -1942,6 +1942,11 @@ int CyPlayer::getNumUnits()
 	return m_pPlayer ? m_pPlayer->getNumUnits() : -1;
 }
 
+int CyPlayer::getSummonDuration()
+{
+	return m_pPlayer ? m_pPlayer->getSummonDuration() : -1;
+}
+
 CyUnit* CyPlayer::getUnit(int iID)
 {
 	return m_pPlayer ? new CyUnit(m_pPlayer->getUnit(iID)) : NULL;

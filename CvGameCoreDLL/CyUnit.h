@@ -38,6 +38,10 @@ public:
 	void cast(int iSpell);
 	bool isHasCasted();
 	void setHasCasted(bool bNewValue);
+	int getDuration();
+	void setDuration(int iNewValue);
+	void changeDuration(int iChange);
+	int getDelayedSpell();
 
 	CyPlot* getPathEndTurnPlot();
 	bool generatePath(CyPlot* pToPlot, int iFlags = 0, bool bReuse = false, int* piPathTurns = NULL);

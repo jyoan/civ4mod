@@ -444,6 +444,7 @@ public:
 	python::tuple firstUnit(bool bRev);	// returns tuple of (CyUnit, iterOut)
 	python::tuple nextUnit(int iterIn, bool bRev);		// returns tuple of (CyUnit, iterOut)
 	int getNumUnits();
+	int getSummonDuration();
 	CyUnit* getUnit(int iID);
 	python::tuple firstSelectionGroup(bool bRev);	// returns tuple of (CySelectionGroup, iterOut)
 	python::tuple nextSelectionGroup(int iterIn, bool bRev);	// returns tuple of (CySelectionGroup, iterOut)

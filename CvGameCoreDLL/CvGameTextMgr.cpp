@@ -573,10 +573,23 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szString, const CvUnit* pUnit, 
 		szString.append(gDLL->getText("TXT_KEY_UNIT_HAS_CASTED"));
 	}
 
-	if (pUnit->getImmobileTimer() > 0)
+	if (pUnit->getDelayedSpell() != NO_SPELL)
+	{
+		szString.append(L", ");
+		szString.append(gDLL->getText("TXT_KEY_UNIT_HELP_DELAYED_CASTING", GC.getSpellInfo((SpellTypes)pUnit->getDelayedSpell()).getTextKeyWide(), pUnit->getImmobileTimer()));
+	}
+	else if (pUnit->getImmobileTimer() > 0)
 	{
 		szString.append(L", ");
 		szString.append(gDLL->getText("TXT_KEY_UNIT_IMMOBILE"));
+	}
+
+	if (pUnit->getDuration() > 0)
+	{
+		szString.append(L", ");
+		szString.append(CvWString::format(SETCOLR, TEXT_COLOR("COLOR_NEGATIVE_TEXT")));
+		szString.append(gDLL->getText("TXT_KEY_UNIT_DURATION", pUnit->getDuration()));
+		szString.append(CvWString::format(ENDCOLR));
 	}
 
 	/*if (!bOneLine)
@@ -3443,6 +3456,12 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CITY_RADIUS_CHANGE", GC.getTraitInfo(eTrait).getCityRadiusChange(), CITY_PLOTS_MAX_RADIUS));
 		}
 
+		if (GC.getTraitInfo(eTrait).getSummonDuration() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_SUMMON_DURATION", GC.getTraitInfo(eTrait).getSummonDuration()));
+		}
+
 		// UnitCombatFreeExperiences / UnitCombatProductionModifiers (building text keys)
 		for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
 		{
@@ -4614,7 +4633,14 @@ void CvGameTextMgr::parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell,
 	CvSpellInfo& kSpell = GC.getSpellInfo(eSpell);
 	int aiAddPromotions[3] = {kSpell.getAddPromotionType1(), kSpell.getAddPromotionType2(), kSpell.getAddPromotionType3()};
 	int aiRemovePromotions[3] = {kSpell.getRemovePromotionType1(), kSpell.getRemovePromotionType2(), kSpell.getRemovePromotionType3()};
+	int iSummonDuration;
 	int iI;
+
+	if (kSpell.isGlobal())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_GLOBAL"));
+	}
 
 	// Prerequisites
 
@@ -4721,7 +4747,56 @@ void CvGameTextMgr::parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell,
 		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_UNIT_IN_STACK_PREREQ", GC.getUnitInfo((UnitTypes)kSpell.getUnitInStackPrereq()).getTextKeyWide()));
 	}
 
+	if (kSpell.isCasterNoDuration())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_CASTER_NO_DURATION"));
+	}
+
 	// Effects
+
+	// The turns of a summoned unit are those of the active player (the help is shown for its units)
+	if (kSpell.getCreateUnitType() != NO_UNIT)
+	{
+		szBuffer.append(pcNewline);
+
+		if (kSpell.getCreateUnitNum() == 1)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_SUMMON_UNIT", GC.getUnitInfo((UnitTypes)kSpell.getCreateUnitType()).getTextKeyWide()));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_SUMMON_UNIT_MULTIPLE", kSpell.getCreateUnitNum(), GC.getUnitInfo((UnitTypes)kSpell.getCreateUnitType()).getTextKeyWide()));
+		}
+
+		if (kSpell.isPermanentUnitCreate())
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_SUMMON_UNIT_PERMANENT"));
+		}
+		else
+		{
+			iSummonDuration = 1;
+
+			if (GC.getGameINLINE().getActivePlayer() != NO_PLAYER)
+			{
+				iSummonDuration += GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getSummonDuration();
+			}
+
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_SUMMON_UNIT_DURATION", iSummonDuration));
+		}
+
+		if (kSpell.isCopyCastersPromotions())
+		{
+			szBuffer.append(pcNewline);
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_COPY_CASTERS_PROMOTIONS"));
+		}
+
+		if (kSpell.getCreateUnitPromotion() != NO_PROMOTION)
+		{
+			szBuffer.append(pcNewline);
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_CREATE_UNIT_PROMOTION", GC.getPromotionInfo((PromotionTypes)kSpell.getCreateUnitPromotion()).getTextKeyWide()));
+		}
+	}
 
 	for (iI = 0; iI < 3; iI++)
 	{
@@ -4892,6 +4967,18 @@ void CvGameTextMgr::parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell,
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_COST", kSpell.getCost()));
+	}
+
+	if (kSpell.getDelay() > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_DELAY", kSpell.getDelay()));
+	}
+
+	if (kSpell.getMiscastChance() > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_MISCAST_CHANCE", kSpell.getMiscastChance()));
 	}
 
 	if (kSpell.isSacrificeCaster())

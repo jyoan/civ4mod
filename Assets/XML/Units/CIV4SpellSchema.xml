@@ -25,12 +25,16 @@
 	<ElementType name="TechPrereq" content="textOnly"/>
 	<ElementType name="iCasterMinLevel" content="textOnly" dt:type="int"/>
 	<ElementType name="bAdjacentToWaterOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bCasterNoDuration" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bInBordersOnly" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bInCityOnly" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bIgnoreHasCasted" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bHasCasted" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bSacrificeCaster" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iCost" content="textOnly" dt:type="int"/>
+	<ElementType name="bGlobal" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iDelay" content="textOnly" dt:type="int"/>
+	<ElementType name="iMiscastChance" content="textOnly" dt:type="int"/>
 	<ElementType name="iDamage" content="textOnly" dt:type="int"/>
 	<ElementType name="iDamageLimit" content="textOnly" dt:type="int"/>
 	<ElementType name="ConvertUnitType" content="textOnly"/>
@@ -38,6 +42,11 @@
 	<ElementType name="CreateFeatureType" content="textOnly"/>
 	<ElementType name="CreateImprovementType" content="textOnly"/>
 	<ElementType name="SpreadReligion" content="textOnly"/>
+	<ElementType name="iCreateUnitNum" content="textOnly" dt:type="int"/>
+	<ElementType name="CreateUnitType" content="textOnly"/>
+	<ElementType name="CreateUnitPromotion" content="textOnly"/>
+	<ElementType name="bCopyCastersPromotions" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bPermanentUnitCreate" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bRemoveHasCasted" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iChangePopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iImmobileTurns" content="textOnly" dt:type="int"/>
@@ -46,6 +55,7 @@
 	<ElementType name="bImmuneTeam" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bImmuneEnemy" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bImmuneFlying" content="textOnly" dt:type="boolean"/>
+	<ElementType name="PyMiscast" content="textOnly"/>
 	<ElementType name="PyResult" content="textOnly"/>
 	<ElementType name="PyRequirement" content="textOnly"/>
 	<ElementType name="AddPromotionType1" content="textOnly"/>
@@ -88,12 +98,16 @@
 		<element type="TechPrereq" minOccurs="0"/>
 		<element type="iCasterMinLevel" minOccurs="0"/>
 		<element type="bAdjacentToWaterOnly" minOccurs="0"/>
+		<element type="bCasterNoDuration" minOccurs="0"/>
 		<element type="bInBordersOnly" minOccurs="0"/>
 		<element type="bInCityOnly" minOccurs="0"/>
 		<element type="bIgnoreHasCasted" minOccurs="0"/>
 		<element type="bHasCasted" minOccurs="0"/>
 		<element type="bSacrificeCaster" minOccurs="0"/>
 		<element type="iCost" minOccurs="0"/>
+		<element type="bGlobal" minOccurs="0"/>
+		<element type="iDelay" minOccurs="0"/>
+		<element type="iMiscastChance" minOccurs="0"/>
 		<element type="iDamage" minOccurs="0"/>
 		<element type="iDamageLimit" minOccurs="0"/>
 		<element type="ConvertUnitType" minOccurs="0"/>
@@ -101,6 +115,11 @@
 		<element type="CreateFeatureType" minOccurs="0"/>
 		<element type="CreateImprovementType" minOccurs="0"/>
 		<element type="SpreadReligion" minOccurs="0"/>
+		<element type="iCreateUnitNum" minOccurs="0"/>
+		<element type="CreateUnitType" minOccurs="0"/>
+		<element type="CreateUnitPromotion" minOccurs="0"/>
+		<element type="bCopyCastersPromotions" minOccurs="0"/>
+		<element type="bPermanentUnitCreate" minOccurs="0"/>
 		<element type="bRemoveHasCasted" minOccurs="0"/>
 		<element type="iChangePopulation" minOccurs="0"/>
 		<element type="iImmobileTurns" minOccurs="0"/>
@@ -109,6 +128,7 @@
 		<element type="bImmuneTeam" minOccurs="0"/>
 		<element type="bImmuneEnemy" minOccurs="0"/>
 		<element type="bImmuneFlying" minOccurs="0"/>
+		<element type="PyMiscast" minOccurs="0"/>
 		<element type="PyResult" minOccurs="0"/>
 		<element type="PyRequirement" minOccurs="0"/>
 		<element type="AddPromotionType1" minOccurs="0"/>

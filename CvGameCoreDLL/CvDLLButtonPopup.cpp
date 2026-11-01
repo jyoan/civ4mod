@@ -1665,7 +1665,15 @@ bool CvDLLButtonPopup::launchConfirmCommandPopup(CvPopup* pPopup, CvPopupInfo &i
 {
 	int iAction = info.getData1();
 	CvWString szBuffer;
-	szBuffer = gDLL->getText("TXT_KEY_POPUP_ARE_YOU_SURE_ACTION", GC.getActionInfo(iAction).getTextKeyWide());
+	// World spells (bGlobal) ask with their own text (added by this mod, FFH2 text key)
+	if (GC.getActionInfo(iAction).getSubType() == ACTIONSUBTYPE_SPELL)
+	{
+		szBuffer = gDLL->getText("TXT_KEY_POPUP_CONFIRM_CAST_GLOBAL", GC.getActionInfo(iAction).getTextKeyWide());
+	}
+	else
+	{
+		szBuffer = gDLL->getText("TXT_KEY_POPUP_ARE_YOU_SURE_ACTION", GC.getActionInfo(iAction).getTextKeyWide());
+	}
 	gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, szBuffer);
 	gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_POPUP_YES").c_str(), NULL, 0);
 	gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_POPUP_NO").c_str());

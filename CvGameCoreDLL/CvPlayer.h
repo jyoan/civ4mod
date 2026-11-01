@@ -199,6 +199,8 @@ public:
 	int getTraitRiverPlotYieldChange(YieldTypes eYield) const;
 	// City plot radius of a new city of this player (added by this mod)
 	int getNextCityRadius() const;
+	// Extra turns of the summoned units of this player (added by this mod, traits only, computed on each call)
+	int getSummonDuration() const;																								// Exposed to Python
 	int getProductionModifier(BuildingTypes eBuilding) const;
 	int getProductionModifier(ProjectTypes eProject) const;
 

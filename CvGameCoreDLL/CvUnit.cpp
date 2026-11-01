@@ -336,6 +336,8 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iKamikazePercent = 0;
 	m_eFacingDirection = DIRECTION_SOUTH;
 	m_iImmobileTimer = 0;
+	m_iDuration = 0;
+	m_iDelayedSpell = NO_SPELL;
 
 	m_bMadeAttack = false;
 	m_bMadeInterception = false;
@@ -441,6 +443,7 @@ void CvUnit::convert(CvUnit* pUnit)
 	setDamage(pUnit->getDamage());
 	setMoves(pUnit->getMoves());
 	setHasCasted(pUnit->isHasCasted());
+	setDuration(pUnit->getDuration());
 
 	setLevel(pUnit->getLevel());
 	int iOldModifier = std::max(1, 100 + GET_PLAYER(pUnit->getOwnerINLINE()).getLevelExperienceModifier());
@@ -616,6 +619,11 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 	eOwner = getOwnerINLINE();
 	eCapturingPlayer = getCapturingPlayer();
 	eCaptureUnitType = ((eCapturingPlayer != NO_PLAYER) ? getCaptureUnitType(GET_PLAYER(eCapturingPlayer).getCivilizationType()) : NO_UNIT);
+	// A summoned unit that would disappear is not captured (added by this mod)
+	if (getDuration() > 0)
+	{
+		eCaptureUnitType = NO_UNIT;
+	}
 
 	setXY(INVALID_PLOT_COORD, INVALID_PLOT_COORD, true);
 
@@ -676,6 +684,18 @@ void CvUnit::doTurn()
 
 	FAssertMsg(!isDead(), "isDead did not return false as expected");
 	FAssertMsg(getGroup() != NULL, "getGroup() is not expected to be equal with NULL");
+
+	// A summoned unit disappears at the start of its owner's turn when its duration runs out (added by this mod, FFH2)
+	if (getDuration() > 0)
+	{
+		changeDuration(-1);
+
+		if (getDuration() == 0)
+		{
+			kill(true);
+			return;
+		}
+	}
 
 	testPromotionReady();
 
@@ -897,10 +917,11 @@ void CvUnit::doCombatPromotions(CvUnit* pDefender)
 
 		// The captured unit is a new unit of the loser's type on the winner's plot. Not from animals (they cannot
 		// enter owned plots), not across domains, not onto water for land units (an amphibious attack from a ship),
-		// and not by barbarians (as with the BtS captures of non-combat units).
+		// not by barbarians (as with the BtS captures of non-combat units), and not from summoned units that would
+		// disappear. A summoned winner makes a unit that disappears with it (FFH2).
 		if ((iCapturePercent > 0) && !pLoser->isAnimal() && (pLoser->getDomainType() == pWinner->getDomainType())
 			&& ((pWinner->getDomainType() != DOMAIN_LAND) || !pWinner->plot()->isWater())
-			&& !GET_PLAYER(pWinner->getOwnerINLINE()).isBarbarian())
+			&& !GET_PLAYER(pWinner->getOwnerINLINE()).isBarbarian() && (pLoser->getDuration() == 0))
 		{
 			if (GC.getGameINLINE().getSorenRandNum(100, "Combat capture") < iCapturePercent)
 			{
@@ -908,6 +929,7 @@ void CvUnit::doCombatPromotions(CvUnit* pDefender)
 
 				if (pCapturedUnit != NULL)
 				{
+					pCapturedUnit->setDuration(pWinner->getDuration());
 					pCapturedUnit->finishMoves();
 
 					szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_CAPTURED_UNIT", GC.getUnitInfo(pLoser->getUnitType()).getTextKeyWide());
@@ -1593,7 +1615,8 @@ void CvUnit::updateCombat(bool bQuick)
 				GET_PLAYER(pDefender->getOwnerINLINE()).changeWinsVsBarbs(1);
 			}
 
-			if (!m_pUnitInfo->isHiddenNationality() && !pDefender->getUnitInfo().isHiddenNationality())
+			// Not for a summoned unit that would disappear (added by this mod, same as FFH2)
+			if (!m_pUnitInfo->isHiddenNationality() && !pDefender->getUnitInfo().isHiddenNationality() && (getDuration() == 0))
 			{
 				GET_TEAM(getTeam()).changeWarWeariness(pDefender->getTeam(), *pPlot, GC.getDefineINT("WW_UNIT_KILLED_ATTACKING"));
 				GET_TEAM(pDefender->getTeam()).changeWarWeariness(getTeam(), *pPlot, GC.getDefineINT("WW_KILLED_UNIT_DEFENDING"));
@@ -1615,7 +1638,8 @@ void CvUnit::updateCombat(bool bQuick)
 				GET_PLAYER(getOwnerINLINE()).changeWinsVsBarbs(1);
 			}
 
-			if (!m_pUnitInfo->isHiddenNationality() && !pDefender->getUnitInfo().isHiddenNationality())
+			// Not for a summoned unit that would disappear (added by this mod, same as FFH2)
+			if (!m_pUnitInfo->isHiddenNationality() && !pDefender->getUnitInfo().isHiddenNationality() && (pDefender->getDuration() == 0))
 			{
 				GET_TEAM(pDefender->getTeam()).changeWarWeariness(getTeam(), *pPlot, GC.getDefineINT("WW_UNIT_KILLED_DEFENDING"));
 				GET_TEAM(getTeam()).changeWarWeariness(pDefender->getTeam(), *pPlot, GC.getDefineINT("WW_KILLED_UNIT_ATTACKING"));
@@ -2444,9 +2468,27 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 		}
 	}
 
+	// A world spell: once a game for each player, for all the world spells together (FFH2)
+	if (kSpell.isGlobal())
+	{
+		if (GET_PLAYER(getOwnerINLINE()).isFeatAccomplished(FEAT_GLOBAL_SPELL))
+		{
+			return false;
+		}
+	}
+
 	if (kSpell.getCasterMinLevel() != 0)
 	{
 		if (getLevel() < kSpell.getCasterMinLevel())
+		{
+			return false;
+		}
+	}
+
+	// Not by a summoned unit that will disappear
+	if (kSpell.isCasterNoDuration())
+	{
+		if (getDuration() != 0)
 		{
 			return false;
 		}
@@ -2592,9 +2634,18 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 		}
 	}
 
+	// Not by a summoned unit that will disappear (FFH2)
 	if (kSpell.isRemoveHasCasted())
 	{
-		if (!isHasCasted())
+		if (!isHasCasted() || getDuration() > 0)
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getCreateUnitType() != NO_UNIT)
+	{
+		if (!canCreateUnit(spell))
 		{
 			return false;
 		}
@@ -2628,6 +2679,11 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 	}
 
 	if (canAddPromotion(spell) || canRemovePromotion(spell))
+	{
+		return true;
+	}
+
+	if (kSpell.getCreateUnitType() != NO_UNIT)
 	{
 		return true;
 	}
@@ -2672,14 +2728,102 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 }
 
 
+// Starts a spell (FFH2): the has-casted flag, the world spell and the miscast come first. A miscast spell has no
+// effects and costs nothing. A positive iCost is paid here (this mod; FFH2 pays it with the effects), and a spell with
+// iDelay takes effect when the delay ends (doDelayedSpell)
 void CvUnit::cast(int spell)
 {
 	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
-	CvCity* pCity = plot()->getPlotCity();
+	CvWString szBuffer;
+	int iI;
 
 	if (kSpell.isHasCasted())
 	{
 		setHasCasted(true);
+	}
+
+	if (kSpell.isGlobal())
+	{
+		GET_PLAYER(getOwnerINLINE()).setFeatAccomplished(FEAT_GLOBAL_SPELL, true);
+
+		for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+		{
+			if (GET_PLAYER((PlayerTypes)iI).isAlive())
+			{
+				if (GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam()).isHasMet(getTeam()))
+				{
+					szBuffer = gDLL->getText("TXT_KEY_MESSAGE_GLOBAL_SPELL", GET_PLAYER(getOwnerINLINE()).getNameKey(), kSpell.getTextKeyWide());
+				}
+				else
+				{
+					szBuffer = gDLL->getText("TXT_KEY_MESSAGE_GLOBAL_SPELL_UNKNOWN", kSpell.getTextKeyWide());
+				}
+
+				gDLL->getInterfaceIFace()->addMessage((PlayerTypes)iI, false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_CIVIC_ADOPT", MESSAGE_TYPE_MINOR_EVENT, kSpell.getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
+			}
+		}
+	}
+
+	if (kSpell.getMiscastChance() > 0)
+	{
+		if (GC.getGameINLINE().getSorenRandNum(100, "Spell miscast") < kSpell.getMiscastChance())
+		{
+			szBuffer = gDLL->getText("TXT_KEY_MESSAGE_SPELL_MISCAST", getNameKey(), kSpell.getTextKeyWide());
+			gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_WONDER_UNIT_BUILD", MESSAGE_TYPE_MAJOR_EVENT, kSpell.getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), getX_INLINE(), getY_INLINE(), true, true);
+			gDLL->getInterfaceIFace()->setDirty(SelectionButtons_DIRTY_BIT, true);
+
+			// PyMiscast is evaluated by miscast in CvSpellInterface.py. It may kill the caster, but only with a delay
+			if (!CvString(kSpell.getPyMiscast()).empty())
+			{
+				CyUnit* pyUnit = new CyUnit(this);
+				CyArgsList argsList;
+				argsList.add(gDLL->getPythonIFace()->makePythonObject(pyUnit));	// pass in unit class
+				argsList.add(spell);
+				gDLL->getPythonIFace()->callFunction(PYSpellModule, "miscast", argsList.makeFunctionArgs());
+				delete pyUnit;	// python fxn must not hold on to this pointer
+			}
+
+			return;
+		}
+	}
+
+	if (kSpell.getCost() > 0)
+	{
+		GET_PLAYER(getOwnerINLINE()).changeGold(-(kSpell.getCost()));
+	}
+
+	// The caster cannot move until the spell takes effect at the start of its owner's turn after iDelay turns
+	if (kSpell.getDelay() > 0)
+	{
+		changeImmobileTimer(kSpell.getDelay());
+		setDelayedSpell(spell);
+		gDLL->getInterfaceIFace()->setDirty(SelectionButtons_DIRTY_BIT, true);
+		return;
+	}
+
+	castEffects(spell);
+}
+
+
+// The effects of a spell, in the order of FFH2. Each effect checks again whether it can still apply here, as the
+// effects of a spell with iDelay come some turns after canCast
+void CvUnit::castEffects(int spell)
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	CvCity* pCity = plot()->getPlotCity();
+	int iI;
+
+	if (kSpell.getCreateUnitType() != NO_UNIT)
+	{
+		for (iI = 0; iI < kSpell.getCreateUnitNum(); iI++)
+		{
+			if (!canCreateUnit(spell))
+			{
+				break;
+			}
+
+			castCreateUnit(spell);
+		}
 	}
 
 	castAddPromotion(spell);
@@ -2719,14 +2863,15 @@ void CvUnit::cast(int spell)
 		setHasCasted(false);
 	}
 
-	if (kSpell.getCost() != 0)
+	// Gaining gold (a negative iCost); a positive iCost was paid when the spell started
+	if (kSpell.getCost() < 0)
 	{
 		GET_PLAYER(getOwnerINLINE()).changeGold(-(kSpell.getCost()));
 	}
 
 	if (kSpell.getChangePopulation() != 0)
 	{
-		if (pCity != NULL)
+		if (pCity != NULL && pCity->getOwnerINLINE() == getOwnerINLINE() && pCity->getPopulation() > -(kSpell.getChangePopulation()))
 		{
 			pCity->changePopulation(kSpell.getChangePopulation());
 		}
@@ -2764,6 +2909,53 @@ void CvUnit::cast(int spell)
 	{
 		kill(true);
 	}
+}
+
+
+// Called by CvPlayer::doTurnUnits after all the units of the owner have started the turn, so that the units it
+// summons are not started (and do not lose a turn of their duration) in the same turn
+void CvUnit::doDelayedSpell()
+{
+	int iSpell = getDelayedSpell();
+
+	if (iSpell == NO_SPELL || getImmobileTimer() > 0 || isDelayedDeath())
+	{
+		return;
+	}
+
+	setDelayedSpell(NO_SPELL);
+	castEffects(iSpell);
+}
+
+
+int CvUnit::getDelayedSpell() const
+{
+	return m_iDelayedSpell;
+}
+
+
+void CvUnit::setDelayedSpell(int iNewValue)
+{
+	m_iDelayedSpell = iNewValue;
+}
+
+
+int CvUnit::getDuration() const
+{
+	return m_iDuration;
+}
+
+
+void CvUnit::setDuration(int iNewValue)
+{
+	m_iDuration = std::max(0, iNewValue);
+	setInfoBarDirty(true);
+}
+
+
+void CvUnit::changeDuration(int iChange)
+{
+	setDuration(getDuration() + iChange);
 }
 
 
@@ -3341,6 +3533,155 @@ void CvUnit::castImmobile(int spell)
 		pLoopUnit->changeImmobileTimer(iTurns);
 
 		addSpellTargetMessage(this, pLoopUnit, spell, gDLL->getText("TXT_KEY_MESSAGE_SPELL_IMMOBILE", pLoopUnit->getNameKey(), kSpell.getTextKeyWide()));
+	}
+}
+
+
+// Summons (spell stage 2c, FFH2). Not by a summoned unit of the same type, not on a tile with a visible enemy, only on a
+// tile the unit could stay on, and not beyond the national, team or world limit of the unit class (this mod). With
+// bPermanentUnitCreate, each unit of the owner that meets the unit conditions of the spell (FFH2: the promotions and the
+// religion; this mod: the promotions, unit, unit class and unit combat) keeps one unit of the class
+bool CvUnit::canCreateUnit(int spell) const
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	UnitTypes eUnit = (UnitTypes)kSpell.getCreateUnitType();
+	CvUnit* pLoopUnit;
+	int iCount;
+	int iLoop;
+
+	if (eUnit == NO_UNIT)
+	{
+		return false;
+	}
+
+	CvUnitInfo& kUnit = GC.getUnitInfo(eUnit);
+	UnitClassTypes eUnitClass = (UnitClassTypes)kUnit.getUnitClassType();
+	CvPlot* pPlot = plot();
+
+	if (getDuration() > 0 && getUnitType() == eUnit)
+	{
+		return false;
+	}
+
+	if (pPlot->isVisibleEnemyUnit(getOwnerINLINE()))
+	{
+		return false;
+	}
+
+	if (!pPlot->isCity(true, getTeam()) && !kUnit.isCanMoveAllTerrain())
+	{
+		switch (kUnit.getDomainType())
+		{
+		case DOMAIN_SEA:
+			if (!pPlot->isWater())
+			{
+				return false;
+			}
+			break;
+
+		case DOMAIN_LAND:
+		case DOMAIN_IMMOBILE:
+			if (pPlot->isWater())
+			{
+				return false;
+			}
+			break;
+
+		default:
+			return false;
+		}
+	}
+
+	if (GC.getGameINLINE().isUnitClassMaxedOut(eUnitClass) || GET_TEAM(getTeam()).isUnitClassMaxedOut(eUnitClass) || GET_PLAYER(getOwnerINLINE()).isUnitClassMaxedOut(eUnitClass))
+	{
+		return false;
+	}
+
+	if (kSpell.isPermanentUnitCreate())
+	{
+		iCount = 0;
+
+		for (pLoopUnit = GET_PLAYER(getOwnerINLINE()).firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = GET_PLAYER(getOwnerINLINE()).nextUnit(&iLoop))
+		{
+			if (kSpell.getPromotionPrereq1() != NO_PROMOTION && !pLoopUnit->isHasPromotion((PromotionTypes)kSpell.getPromotionPrereq1()))
+			{
+				continue;
+			}
+
+			if (kSpell.getPromotionPrereq2() != NO_PROMOTION && !pLoopUnit->isHasPromotion((PromotionTypes)kSpell.getPromotionPrereq2()))
+			{
+				continue;
+			}
+
+			if (kSpell.getUnitClassPrereq() != NO_UNITCLASS && pLoopUnit->getUnitClassType() != (UnitClassTypes)kSpell.getUnitClassPrereq())
+			{
+				continue;
+			}
+
+			if (kSpell.getUnitPrereq() != NO_UNIT && pLoopUnit->getUnitType() != (UnitTypes)kSpell.getUnitPrereq())
+			{
+				continue;
+			}
+
+			if (kSpell.getUnitCombatPrereq() != NO_UNITCOMBAT && pLoopUnit->getUnitCombatType() != (UnitCombatTypes)kSpell.getUnitCombatPrereq())
+			{
+				continue;
+			}
+
+			iCount++;
+		}
+
+		if (iCount <= GET_PLAYER(getOwnerINLINE()).getUnitClassCount(eUnitClass))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+
+// The summoned unit appears on the caster's tile. Without bPermanentUnitCreate it disappears at the start of its
+// owner's turn after 1 + CvPlayer::getSummonDuration turns, and it can act in the turn it is summoned (FFH2).
+// A permanent unit cannot move in the turn it is summoned (FFH2). bCopyCastersPromotions copies all the promotions of
+// the caster but the leader promotions of great generals (this mod; FFH2 leaves out its equipment and race promotions)
+void CvUnit::castCreateUnit(int spell)
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	UnitTypes eUnit = (UnitTypes)kSpell.getCreateUnitType();
+	CvUnit* pUnit;
+	int iI;
+
+	pUnit = GET_PLAYER(getOwnerINLINE()).initUnit(eUnit, getX_INLINE(), getY_INLINE(), (UnitAITypes)GC.getUnitInfo(eUnit).getDefaultUnitAIType());
+
+	if (pUnit == NULL)
+	{
+		return;
+	}
+
+	if (kSpell.isPermanentUnitCreate())
+	{
+		pUnit->changeImmobileTimer(1);
+	}
+	else
+	{
+		pUnit->setDuration(1 + GET_PLAYER(getOwnerINLINE()).getSummonDuration());
+	}
+
+	if (kSpell.isCopyCastersPromotions())
+	{
+		for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+		{
+			if (isHasPromotion((PromotionTypes)iI) && !GC.getPromotionInfo((PromotionTypes)iI).isLeader())
+			{
+				pUnit->setHasPromotion((PromotionTypes)iI, true);
+			}
+		}
+	}
+
+	if (kSpell.getCreateUnitPromotion() != NO_PROMOTION)
+	{
+		pUnit->setHasPromotion((PromotionTypes)kSpell.getCreateUnitPromotion(), true);
 	}
 }
 
@@ -12609,6 +12950,16 @@ void CvUnit::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(&m_bHasCasted);
 	}
+	if (uiFlag > 3)
+	{
+		pStream->Read(&m_iDuration);
+		pStream->Read(&m_iDelayedSpell);
+
+		if (m_iDelayedSpell >= GC.getNumSpellInfos())
+		{
+			m_iDelayedSpell = NO_SPELL;
+		}
+	}
 
 	pStream->Read((int*)&m_eOwner);
 	pStream->Read((int*)&m_eCapturingPlayer);
@@ -12641,7 +12992,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 
 void CvUnit::write(FDataStreamBase* pStream)
 {
-	uint uiFlag=3;	// 3: m_bHasCasted (added by this mod)
+	uint uiFlag=4;	// 3: m_bHasCasted, 4: m_iDuration and m_iDelayedSpell (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -12711,6 +13062,8 @@ void CvUnit::write(FDataStreamBase* pStream)
 	pStream->Write(m_bBlockading);
 	pStream->Write(m_bAirCombat);
 	pStream->Write(m_bHasCasted);
+	pStream->Write(m_iDuration);
+	pStream->Write(m_iDelayedSpell);
 
 	pStream->Write(m_eOwner);
 	pStream->Write(m_eCapturingPlayer);

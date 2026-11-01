@@ -91,6 +91,28 @@ void CyUnit::setHasCasted(bool bNewValue)
 		m_pUnit->setHasCasted(bNewValue);
 }
 
+int CyUnit::getDuration()
+{
+	return m_pUnit ? m_pUnit->getDuration() : 0;
+}
+
+void CyUnit::setDuration(int iNewValue)
+{
+	if (m_pUnit)
+		m_pUnit->setDuration(iNewValue);
+}
+
+void CyUnit::changeDuration(int iChange)
+{
+	if (m_pUnit)
+		m_pUnit->changeDuration(iChange);
+}
+
+int CyUnit::getDelayedSpell()
+{
+	return m_pUnit ? m_pUnit->getDelayedSpell() : -1;
+}
+
 CyPlot* CyUnit::getPathEndTurnPlot()
 {
 	return m_pUnit ? new CyPlot(m_pUnit->getPathEndTurnPlot()) : false;

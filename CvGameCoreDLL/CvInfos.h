@@ -675,6 +675,18 @@ public:
 	bool isImmuneEnemy() const;						// Exposed to Python
 	bool isImmuneFlying() const;					// Exposed to Python
 
+	// Summons, miscasts, world spells and delays (spell stage 2c)
+	int getCreateUnitType() const;					// Exposed to Python
+	int getCreateUnitNum() const;					// Exposed to Python
+	int getCreateUnitPromotion() const;				// Exposed to Python
+	int getDelay() const;							// Exposed to Python
+	int getMiscastChance() const;					// Exposed to Python
+	bool isPermanentUnitCreate() const;				// Exposed to Python
+	bool isCopyCastersPromotions() const;			// Exposed to Python
+	bool isCasterNoDuration() const;				// Exposed to Python
+	bool isGlobal() const;							// Exposed to Python
+	const TCHAR* getPyMiscast() const;				// Exposed to Python
+
 	const TCHAR* getPyRequirement() const;			// Exposed to Python
 	const TCHAR* getPyResult() const;				// Exposed to Python
 
@@ -723,6 +735,11 @@ protected:
 	int m_iDamage;
 	int m_iDamageLimit;
 	int m_iImmobileTurns;
+	int m_iCreateUnitType;
+	int m_iCreateUnitNum;
+	int m_iCreateUnitPromotion;
+	int m_iDelay;
+	int m_iMiscastChance;
 
 	bool m_bInCityOnly;
 	bool m_bInBordersOnly;
@@ -736,10 +753,15 @@ protected:
 	bool m_bImmuneTeam;
 	bool m_bImmuneEnemy;
 	bool m_bImmuneFlying;
+	bool m_bPermanentUnitCreate;
+	bool m_bCopyCastersPromotions;
+	bool m_bCasterNoDuration;
+	bool m_bGlobal;
 
 	CvString m_szSound;
 	CvString m_szPyRequirement;
 	CvString m_szPyResult;
+	CvString m_szPyMiscast;
 
 };
 
@@ -4354,6 +4376,7 @@ public:
 	int getTradeRoutes() const;				// Exposed to Python
 	int getExpInBorderModifier() const;				// Exposed to Python
 	int getCityRadiusChange() const;				// Exposed to Python
+	int getSummonDuration() const;				// Exposed to Python
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -4420,6 +4443,7 @@ protected:
 	int m_iTradeRoutes;
 	int m_iExpInBorderModifier;
 	int m_iCityRadiusChange;
+	int m_iSummonDuration;
 
 	CvString m_szShortDescription;
 

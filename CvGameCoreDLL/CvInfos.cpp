@@ -2393,9 +2393,18 @@ m_iRange(0),
 m_iDamage(0),
 m_iDamageLimit(100),
 m_iImmobileTurns(0),
+m_iCreateUnitType(NO_UNIT),
+m_iCreateUnitNum(1),
+m_iCreateUnitPromotion(NO_PROMOTION),
+m_iDelay(0),
+m_iMiscastChance(0),
 m_bImmuneTeam(false),
 m_bImmuneEnemy(false),
 m_bImmuneFlying(false),
+m_bPermanentUnitCreate(false),
+m_bCopyCastersPromotions(false),
+m_bCasterNoDuration(false),
+m_bGlobal(false),
 m_bAdjacentToWaterOnly(false),
 m_bBuffCasterOnly(false),
 m_bSacrificeCaster(false),
@@ -2653,6 +2662,56 @@ bool CvSpellInfo::isImmuneFlying() const
 	return m_bImmuneFlying;
 }
 
+int CvSpellInfo::getCreateUnitType() const
+{
+	return m_iCreateUnitType;
+}
+
+int CvSpellInfo::getCreateUnitNum() const
+{
+	return m_iCreateUnitNum;
+}
+
+int CvSpellInfo::getCreateUnitPromotion() const
+{
+	return m_iCreateUnitPromotion;
+}
+
+int CvSpellInfo::getDelay() const
+{
+	return m_iDelay;
+}
+
+int CvSpellInfo::getMiscastChance() const
+{
+	return m_iMiscastChance;
+}
+
+bool CvSpellInfo::isPermanentUnitCreate() const
+{
+	return m_bPermanentUnitCreate;
+}
+
+bool CvSpellInfo::isCopyCastersPromotions() const
+{
+	return m_bCopyCastersPromotions;
+}
+
+bool CvSpellInfo::isCasterNoDuration() const
+{
+	return m_bCasterNoDuration;
+}
+
+bool CvSpellInfo::isGlobal() const
+{
+	return m_bGlobal;
+}
+
+const TCHAR* CvSpellInfo::getPyMiscast() const
+{
+	return m_szPyMiscast;
+}
+
 const TCHAR* CvSpellInfo::getPyRequirement() const
 {
 	return m_szPyRequirement;
@@ -2789,8 +2848,24 @@ bool CvSpellInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bImmuneEnemy, "bImmuneEnemy");
 	pXML->GetChildXmlValByName(&m_bImmuneFlying, "bImmuneFlying");
 
+	pXML->GetChildXmlValByName(szTextVal, "CreateUnitType");
+	m_iCreateUnitType = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "CreateUnitPromotion");
+	m_iCreateUnitPromotion = pXML->FindInInfoClass(szTextVal);
+
+	// 1 if omitted (this mod; 0 in FFH2, where every summon writes it)
+	pXML->GetChildXmlValByName(&m_iCreateUnitNum, "iCreateUnitNum", 1);
+	pXML->GetChildXmlValByName(&m_bPermanentUnitCreate, "bPermanentUnitCreate");
+	pXML->GetChildXmlValByName(&m_bCopyCastersPromotions, "bCopyCastersPromotions");
+	pXML->GetChildXmlValByName(&m_bCasterNoDuration, "bCasterNoDuration");
+	pXML->GetChildXmlValByName(&m_bGlobal, "bGlobal");
+	pXML->GetChildXmlValByName(&m_iDelay, "iDelay");
+	pXML->GetChildXmlValByName(&m_iMiscastChance, "iMiscastChance");
+
 	pXML->GetChildXmlValByName(m_szPyRequirement, "PyRequirement");
 	pXML->GetChildXmlValByName(m_szPyResult, "PyResult");
+	pXML->GetChildXmlValByName(m_szPyMiscast, "PyMiscast");
 
 	return true;
 }
@@ -3256,6 +3331,11 @@ bool CvActionInfo::isConfirmCommand() const
 	else if (ACTIONSUBTYPE_AUTOMATE == m_eSubType)
 	{
 		return GC.getAutomateInfo(m_iOriginalIndex).getConfirmCommand();
+	}
+	// A world spell (bGlobal) asks first, as it can be cast only once a game (FFH2 has its own popup for this)
+	else if (ACTIONSUBTYPE_SPELL == m_eSubType)
+	{
+		return GC.getSpellInfo((SpellTypes)m_iOriginalIndex).isGlobal();
 	}
 
 	return false;
@@ -16964,6 +17044,7 @@ m_iFreeSpecialist(0),
 m_iTradeRoutes(0),
 m_iExpInBorderModifier(0),
 m_iCityRadiusChange(0),
+m_iSummonDuration(0),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
 m_paiCapitalYieldModifier(NULL),
@@ -17118,6 +17199,11 @@ int CvTraitInfo::getExpInBorderModifier() const
 int CvTraitInfo::getCityRadiusChange() const
 {
 	return m_iCityRadiusChange;
+}
+
+int CvTraitInfo::getSummonDuration() const
+{
+	return m_iSummonDuration;
 }
 
 const TCHAR* CvTraitInfo::getShortDescription() const
@@ -17445,6 +17531,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iTradeRoutes, "iTradeRoutes");
 	pXML->GetChildXmlValByName(&m_iExpInBorderModifier, "iExpInBorderModifier");
 	pXML->GetChildXmlValByName(&m_iCityRadiusChange, "iCityRadiusChange");
+	pXML->GetChildXmlValByName(&m_iSummonDuration, "iSummonDuration");
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ExtraYieldThresholds"))
 	{

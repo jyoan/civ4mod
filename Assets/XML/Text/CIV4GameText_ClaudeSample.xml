@@ -623,7 +623,160 @@
 		<Spanish>Immobile</Spanish>
 		<Japanese>&#31227;&#21205;&#19981;&#33021;</Japanese>
 	</TEXT>
-	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE) -->
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_GLOBAL</Tag>
+		<English>[ICON_BULLET]World spell: can be cast only once a game (once for all your world spells)</English>
+		<French>[ICON_BULLET]World spell: can be cast only once a game (once for all your world spells)</French>
+		<German>[ICON_BULLET]World spell: can be cast only once a game (once for all your world spells)</German>
+		<Italian>[ICON_BULLET]World spell: can be cast only once a game (once for all your world spells)</Italian>
+		<Spanish>[ICON_BULLET]World spell: can be cast only once a game (once for all your world spells)</Spanish>
+		<Japanese>[ICON_BULLET]&#19990;&#30028;&#21610;&#25991;: &#12466;&#12540;&#12512;&#12434;&#36890;&#12376;&#12390;&#19968;&#24230;&#12384;&#12369;&#23455;&#34892;&#12391;&#12365;&#12427;&#65288;&#19990;&#30028;&#21610;&#25991;&#12377;&#12409;&#12390;&#12391;&#21512;&#12431;&#12379;&#12390;1&#22238;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CASTER_NO_DURATION</Tag>
+		<English>[ICON_BULLET]Cannot be cast by summoned units that disappear</English>
+		<French>[ICON_BULLET]Cannot be cast by summoned units that disappear</French>
+		<German>[ICON_BULLET]Cannot be cast by summoned units that disappear</German>
+		<Italian>[ICON_BULLET]Cannot be cast by summoned units that disappear</Italian>
+		<Spanish>[ICON_BULLET]Cannot be cast by summoned units that disappear</Spanish>
+		<Japanese>[ICON_BULLET]&#21484;&#21914;&#12375;&#12383;&#65288;&#12356;&#12378;&#12428;&#28040;&#12360;&#12427;&#65289;&#12518;&#12491;&#12483;&#12488;&#12399;&#23455;&#34892;&#12391;&#12365;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_SUMMON_UNIT</Tag>
+		<English>[ICON_BULLET]Summons [LINK=literal]%s1_Unit[\LINK]</English>
+		<French>[ICON_BULLET]Summons [LINK=literal]%s1_Unit[\LINK]</French>
+		<German>[ICON_BULLET]Summons [LINK=literal]%s1_Unit[\LINK]</German>
+		<Italian>[ICON_BULLET]Summons [LINK=literal]%s1_Unit[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Summons [LINK=literal]%s1_Unit[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s1_Unit[\LINK]&#12434;&#21484;&#21914;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_SUMMON_UNIT_MULTIPLE</Tag>
+		<English>[ICON_BULLET]Summons %d1_Num [LINK=literal]%s2_Unit[\LINK]</English>
+		<French>[ICON_BULLET]Summons %d1_Num [LINK=literal]%s2_Unit[\LINK]</French>
+		<German>[ICON_BULLET]Summons %d1_Num [LINK=literal]%s2_Unit[\LINK]</German>
+		<Italian>[ICON_BULLET]Summons %d1_Num [LINK=literal]%s2_Unit[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Summons %d1_Num [LINK=literal]%s2_Unit[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s2_Unit[\LINK]&#12434;%d1_Num&#20307;&#21484;&#21914;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_SUMMON_UNIT_PERMANENT</Tag>
+		<English> (permanent; cannot move this turn)</English>
+		<French> (permanent; cannot move this turn)</French>
+		<German> (permanent; cannot move this turn)</German>
+		<Italian> (permanent; cannot move this turn)</Italian>
+		<Spanish> (permanent; cannot move this turn)</Spanish>
+		<Japanese>&#65288;&#28040;&#12360;&#12394;&#12356;&#12290;&#12371;&#12398;&#12479;&#12540;&#12531;&#12399;&#21205;&#12369;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_SUMMON_UNIT_DURATION</Tag>
+		<English> (disappears in %d1_Turns [NUM1:turn:turns])</English>
+		<French> (disappears in %d1_Turns [NUM1:turn:turns])</French>
+		<German> (disappears in %d1_Turns [NUM1:turn:turns])</German>
+		<Italian> (disappears in %d1_Turns [NUM1:turn:turns])</Italian>
+		<Spanish> (disappears in %d1_Turns [NUM1:turn:turns])</Spanish>
+		<Japanese>&#65288;%d1_Turns&#12479;&#12540;&#12531;&#12391;&#28040;&#12360;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_COPY_CASTERS_PROMOTIONS</Tag>
+		<English>[ICON_BULLET]Summoned units gain all the promotions of the caster (except those of great generals)</English>
+		<French>[ICON_BULLET]Summoned units gain all the promotions of the caster (except those of great generals)</French>
+		<German>[ICON_BULLET]Summoned units gain all the promotions of the caster (except those of great generals)</German>
+		<Italian>[ICON_BULLET]Summoned units gain all the promotions of the caster (except those of great generals)</Italian>
+		<Spanish>[ICON_BULLET]Summoned units gain all the promotions of the caster (except those of great generals)</Spanish>
+		<Japanese>[ICON_BULLET]&#21484;&#21914;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12399;&#12289;&#23455;&#34892;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12398;&#26119;&#36914;&#12434;&#12377;&#12409;&#12390;&#24471;&#12427;&#65288;&#22823;&#23558;&#36557;&#12398;&#26119;&#36914;&#12434;&#38500;&#12367;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CREATE_UNIT_PROMOTION</Tag>
+		<English>[ICON_BULLET]Summoned units gain [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]Summoned units gain [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]Summoned units gain [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]Summoned units gain [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Summoned units gain [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#21484;&#21914;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12364;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_DELAY</Tag>
+		<English>[ICON_BULLET]Takes effect at the start of your turn after %d1_Turns [NUM1:turn:turns] (the caster cannot move until then)</English>
+		<French>[ICON_BULLET]Takes effect at the start of your turn after %d1_Turns [NUM1:turn:turns] (the caster cannot move until then)</French>
+		<German>[ICON_BULLET]Takes effect at the start of your turn after %d1_Turns [NUM1:turn:turns] (the caster cannot move until then)</German>
+		<Italian>[ICON_BULLET]Takes effect at the start of your turn after %d1_Turns [NUM1:turn:turns] (the caster cannot move until then)</Italian>
+		<Spanish>[ICON_BULLET]Takes effect at the start of your turn after %d1_Turns [NUM1:turn:turns] (the caster cannot move until then)</Spanish>
+		<Japanese>[ICON_BULLET]&#21177;&#26524;&#12399;%d1_Turns&#12479;&#12540;&#12531;&#24460;&#12398;&#33258;&#20998;&#12398;&#12479;&#12540;&#12531;&#12398;&#21021;&#12417;&#12395;&#20986;&#12427;&#65288;&#12381;&#12428;&#12414;&#12391;&#23455;&#34892;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12399;&#21205;&#12369;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_MISCAST_CHANCE</Tag>
+		<English>[ICON_BULLET]%d1_Chance%% chance to be miscast (no effects and no cost)</English>
+		<French>[ICON_BULLET]%d1_Chance%% chance to be miscast (no effects and no cost)</French>
+		<German>[ICON_BULLET]%d1_Chance%% chance to be miscast (no effects and no cost)</German>
+		<Italian>[ICON_BULLET]%d1_Chance%% chance to be miscast (no effects and no cost)</Italian>
+		<Spanish>[ICON_BULLET]%d1_Chance%% chance to be miscast (no effects and no cost)</Spanish>
+		<Japanese>[ICON_BULLET]%d1_Chance%%&#12398;&#30906;&#29575;&#12391;&#22833;&#25943;&#12377;&#12427;&#65288;&#21177;&#26524;&#12399;&#20986;&#12378;&#12289;&#36039;&#37329;&#12418;&#28040;&#36027;&#12375;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MESSAGE_GLOBAL_SPELL</Tag>
+		<English>%s1_Leader has cast %s2_Spell!</English>
+		<French>%s1_Leader has cast %s2_Spell!</French>
+		<German>%s1_Leader has cast %s2_Spell!</German>
+		<Italian>%s1_Leader has cast %s2_Spell!</Italian>
+		<Spanish>%s1_Leader has cast %s2_Spell!</Spanish>
+		<Japanese>%s1_Leader&#12364;%s2_Spell&#12434;&#23455;&#34892;&#12375;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MESSAGE_GLOBAL_SPELL_UNKNOWN</Tag>
+		<English>An unknown leader has cast %s1_Spell!</English>
+		<French>An unknown leader has cast %s1_Spell!</French>
+		<German>An unknown leader has cast %s1_Spell!</German>
+		<Italian>An unknown leader has cast %s1_Spell!</Italian>
+		<Spanish>An unknown leader has cast %s1_Spell!</Spanish>
+		<Japanese>&#26410;&#30693;&#12398;&#25351;&#23566;&#32773;&#12364;%s1_Spell&#12434;&#23455;&#34892;&#12375;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MESSAGE_SPELL_MISCAST</Tag>
+		<English>%s1_Unit miscast %s2_Spell</English>
+		<French>%s1_Unit miscast %s2_Spell</French>
+		<German>%s1_Unit miscast %s2_Spell</German>
+		<Italian>%s1_Unit miscast %s2_Spell</Italian>
+		<Spanish>%s1_Unit miscast %s2_Spell</Spanish>
+		<Japanese>%s1_Unit&#12398;%s2_Spell&#12399;&#22833;&#25943;&#12375;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_POPUP_CONFIRM_CAST_GLOBAL</Tag>
+		<English>World spells can be cast only once a game. Are you sure you want to cast %s1_ActionName?</English>
+		<French>World spells can be cast only once a game. Are you sure you want to cast %s1_ActionName?</French>
+		<German>World spells can be cast only once a game. Are you sure you want to cast %s1_ActionName?</German>
+		<Italian>World spells can be cast only once a game. Are you sure you want to cast %s1_ActionName?</Italian>
+		<Spanish>World spells can be cast only once a game. Are you sure you want to cast %s1_ActionName?</Spanish>
+		<Japanese>&#19990;&#30028;&#21610;&#25991;&#12399;&#12466;&#12540;&#12512;&#12434;&#36890;&#12376;&#12390;&#19968;&#24230;&#12384;&#12369;&#23455;&#34892;&#12391;&#12365;&#12414;&#12377;&#12290;&#26412;&#24403;&#12395;%s1_ActionName&#12434;&#23455;&#34892;&#12375;&#12414;&#12377;&#12363;&#65311;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_DURATION</Tag>
+		<English>Disappears in %d1_Turns [NUM1:turn:turns]</English>
+		<French>Disappears in %d1_Turns [NUM1:turn:turns]</French>
+		<German>Disappears in %d1_Turns [NUM1:turn:turns]</German>
+		<Italian>Disappears in %d1_Turns [NUM1:turn:turns]</Italian>
+		<Spanish>Disappears in %d1_Turns [NUM1:turn:turns]</Spanish>
+		<Japanese>&#12354;&#12392;%d1_Turns&#12479;&#12540;&#12531;&#12391;&#28040;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_HELP_DELAYED_CASTING</Tag>
+		<English>Casting %s1_Spell (%d2_Turns [NUM2:turn:turns] left)</English>
+		<French>Casting %s1_Spell (%d2_Turns [NUM2:turn:turns] left)</French>
+		<German>Casting %s1_Spell (%d2_Turns [NUM2:turn:turns] left)</German>
+		<Italian>Casting %s1_Spell (%d2_Turns [NUM2:turn:turns] left)</Italian>
+		<Spanish>Casting %s1_Spell (%d2_Turns [NUM2:turn:turns] left)</Spanish>
+		<Japanese>&#23455;&#34892;&#20013;: %s1_Spell&#65288;&#27531;&#12426;%d2_Turns&#12479;&#12540;&#12531;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SUMMON_DURATION</Tag>
+		<English>[ICON_BULLET]%D1_Turns [NUM1:turn:turns] for summoned units to disappear</English>
+		<French>[ICON_BULLET]%D1_Turns [NUM1:turn:turns] for summoned units to disappear</French>
+		<German>[ICON_BULLET]%D1_Turns [NUM1:turn:turns] for summoned units to disappear</German>
+		<Italian>[ICON_BULLET]%D1_Turns [NUM1:turn:turns] for summoned units to disappear</Italian>
+		<Spanish>[ICON_BULLET]%D1_Turns [NUM1:turn:turns] for summoned units to disappear</Spanish>
+		<Japanese>[ICON_BULLET]&#21484;&#21914;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12364;&#28040;&#12360;&#12427;&#12414;&#12391;&#12398;&#12479;&#12540;&#12531;&#25968;%D1_Turns</Japanese>
+	</TEXT>
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
 		<English>Test data for checking the mod's features.</English>
@@ -875,5 +1028,32 @@
 		<Italian>Test Spell (Snare)</Italian>
 		<Spanish>Test Spell (Snare)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#36275;&#27490;&#12417;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_SUMMON</Tag>
+		<English>Test Spell (Summon)</English>
+		<French>Test Spell (Summon)</French>
+		<German>Test Spell (Summon)</German>
+		<Italian>Test Spell (Summon)</Italian>
+		<Spanish>Test Spell (Summon)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#21484;&#21914;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_PERMANENT</Tag>
+		<English>Test Spell (Permanent Summon)</English>
+		<French>Test Spell (Permanent Summon)</French>
+		<German>Test Spell (Permanent Summon)</German>
+		<Italian>Test Spell (Permanent Summon)</Italian>
+		<Spanish>Test Spell (Permanent Summon)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#27704;&#32154;&#21484;&#21914;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_WORLD</Tag>
+		<English>Test Spell (World)</English>
+		<French>Test Spell (World)</French>
+		<German>Test Spell (World)</German>
+		<Italian>Test Spell (World)</Italian>
+		<Spanish>Test Spell (World)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#19990;&#30028;&#65289;</Japanese>
 	</TEXT>
 </Civ4GameText>
