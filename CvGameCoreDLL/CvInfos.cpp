@@ -17132,7 +17132,8 @@ m_paiTradeYieldModifier(NULL),
 m_paiCommerceChange(NULL),
 m_paiCommerceModifier(NULL),
 m_pabFreePromotionUnitCombat(NULL),
-m_pabFreePromotion(NULL)
+m_pabFreePromotion(NULL),
+m_pabMaintainFeatures(NULL)
 {
 }
 
@@ -17161,6 +17162,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_paiRiverPlotYieldChange);
 	SAFE_DELETE_ARRAY(m_pabFreePromotionUnitCombat);
 	SAFE_DELETE_ARRAY(m_pabFreePromotion);
+	SAFE_DELETE_ARRAY(m_pabMaintainFeatures);
 }
 
 int CvTraitInfo::getHealth() const									
@@ -17415,6 +17417,14 @@ bool CvTraitInfo::isUpgradeAnywhereExcludeEnemy(int i) const
 	FAssertMsg(i < GC.getNumUnitCombatInfos(), "Index out of bounds");
 	FAssertMsg(i > -1, "Index out of bounds");
 	return m_pabUpgradeAnywhereExcludeEnemy ? m_pabUpgradeAnywhereExcludeEnemy[i] : false;
+}
+
+// Builds with an improvement keep the feature on the plots of the player (added by this mod, as FFH2's civilizations)
+bool CvTraitInfo::isMaintainFeatures(int i) const
+{
+	FAssertMsg(i < GC.getNumFeatureInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_pabMaintainFeatures ? m_pabMaintainFeatures[i] : false;
 }
 
 int CvTraitInfo::isFreePromotion(int i) const
@@ -17722,6 +17732,8 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_pabFreePromotion, "FreePromotions", sizeof(GC.getPromotionInfo((PromotionTypes)0)), GC.getNumPromotionInfos());
 
 	pXML->SetVariableListTagPair(&m_pabFreePromotionUnitCombat, "FreePromotionUnitCombats", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
+
+	pXML->SetVariableListTagPair(&m_pabMaintainFeatures, "MaintainFeatures", sizeof(GC.getFeatureInfo((FeatureTypes)0)), GC.getNumFeatureInfos());
 
 	// FreePromotionSets: any number of <FreePromotions> x <FreePromotionUnitCombats> pairs
 	m_aabFreePromotionSetPromotion.clear();

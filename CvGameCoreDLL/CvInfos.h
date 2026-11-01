@@ -4425,6 +4425,7 @@ public:
 	int* getRiverPlotYieldChangeArray() const;
 
 	int isFreePromotion(int i) const;				// Exposed to Python
+	bool isMaintainFeatures(int i) const;			// Exposed to Python
 	int isFreePromotionUnitCombat(int i) const;			
 
 	// FreePromotionSets: each set gives its promotions to its unit combats
@@ -4493,6 +4494,7 @@ protected:
 	int* m_paiRiverPlotYieldChange;
 
 	bool* m_pabFreePromotion;
+	bool* m_pabMaintainFeatures;
 	bool* m_pabFreePromotionUnitCombat;
 
 	std::vector< std::vector<bool> > m_aabFreePromotionSetPromotion;		// [set][promotion]

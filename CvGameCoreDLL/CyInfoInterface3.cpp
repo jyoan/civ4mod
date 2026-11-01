@@ -325,6 +325,7 @@ void CyInfoPythonInterface3()
 		.def("getCommerceModifier", &CvTraitInfo::getCommerceModifier, "int (int i)")
 
 		.def("isFreePromotion", &CvTraitInfo::isFreePromotion, "int (int i)")
+		.def("isMaintainFeatures", &CvTraitInfo::isMaintainFeatures, "bool (int i)")
 		.def("getNumFreePromotionSets", &CvTraitInfo::getNumFreePromotionSets, "int ()")
 		.def("isFreePromotionSetPromotion", &CvTraitInfo::isFreePromotionSetPromotion, "bool (int iSet, int iPromotion)")
 		.def("isFreePromotionSetUnitCombat", &CvTraitInfo::isFreePromotionSetUnitCombat, "bool (int iSet, int iUnitCombat)")

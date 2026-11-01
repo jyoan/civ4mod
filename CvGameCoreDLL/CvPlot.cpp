@@ -2348,7 +2348,7 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 
 	if (getFeatureType() != NO_FEATURE)
 	{
-		if (GC.getBuildInfo(eBuild).isFeatureRemove(getFeatureType()))
+		if (GC.getBuildInfo(eBuild).isFeatureRemove(getFeatureType()) && !isBuildKeepsFeature(eBuild))
 		{
 			if (isOwned() && (GET_PLAYER(ePlayer).getTeam() != getTeam()) && !atWar(GET_PLAYER(ePlayer).getTeam(), getTeam()))
 			{
@@ -2363,6 +2363,25 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 }
 
 
+// True if the build would remove the feature of this plot but keeps it (added by this mod, as FFH2): a build with an
+// improvement on a plot whose owner has a trait with MaintainFeatures for the feature. A build without an improvement
+// (clearing the feature only) still removes it, and so does any build on a plot nobody owns
+bool CvPlot::isBuildKeepsFeature(BuildTypes eBuild) const
+{
+	if (getFeatureType() == NO_FEATURE || !GC.getBuildInfo(eBuild).isFeatureRemove(getFeatureType()))
+	{
+		return false;
+	}
+
+	if (GC.getBuildInfo(eBuild).getImprovement() == NO_IMPROVEMENT || !isOwned())
+	{
+		return false;
+	}
+
+	return GET_PLAYER(getOwnerINLINE()).isMaintainFeatures(getFeatureType());
+}
+
+
 int CvPlot::getBuildTime(BuildTypes eBuild) const
 {
 	int iTime;
@@ -2371,7 +2390,8 @@ int CvPlot::getBuildTime(BuildTypes eBuild) const
 
 	iTime = GC.getBuildInfo(eBuild).getTime();
 
-	if (getFeatureType() != NO_FEATURE)
+	// No time for removing a feature that the build keeps (added by this mod)
+	if (getFeatureType() != NO_FEATURE && !isBuildKeepsFeature(eBuild))
 	{
 		iTime += GC.getBuildInfo(eBuild).getFeatureTime(getFeatureType());
 	}
@@ -7465,9 +7485,10 @@ bool CvPlot::changeBuildProgress(BuildTypes eBuild, int iChange, TeamTypes eTeam
 				setRouteType((RouteTypes)GC.getBuildInfo(eBuild).getRoute(), true);
 			}
 
+			// The improvement is already set: a feature kept by the owner of the plot stays under it (added by this mod)
 			if (getFeatureType() != NO_FEATURE)
 			{
-				if (GC.getBuildInfo(eBuild).isFeatureRemove(getFeatureType()))
+				if (GC.getBuildInfo(eBuild).isFeatureRemove(getFeatureType()) && !isBuildKeepsFeature(eBuild))
 				{
 					FAssertMsg(eTeam != NO_TEAM, "eTeam should be valid");
 
@@ -9187,7 +9208,7 @@ int CvPlot::getYieldWithBuild(BuildTypes eBuild, YieldTypes eYield, bool bWithUp
 	bool bIgnoreFeature = false;
 	if (getFeatureType() != NO_FEATURE)
 	{
-		if (GC.getBuildInfo(eBuild).isFeatureRemove(getFeatureType()))
+		if (GC.getBuildInfo(eBuild).isFeatureRemove(getFeatureType()) && !isBuildKeepsFeature(eBuild))
 		{
 			bIgnoreFeature = true;
 		}

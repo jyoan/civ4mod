@@ -3103,7 +3103,8 @@ bool CvUnit::canCreateBuilding(int spell) const
 }
 
 
-// Not in the territory of another team and not on an improvement (this mod; FFH2 checks only the civilization's bMaintainFeatures)
+// Not in the territory of another team, and on an improvement only if the owner of the plot keeps the feature under
+// improvements (MaintainFeatures of traits; FFH2: of the civilization)
 bool CvUnit::canCreateFeature(int spell) const
 {
 	FeatureTypes eFeature = (FeatureTypes)GC.getSpellInfo((SpellTypes)spell).getCreateFeatureType();
@@ -3124,9 +3125,17 @@ bool CvUnit::canCreateFeature(int spell) const
 		return false;
 	}
 
-	if (pPlot->getFeatureType() != NO_FEATURE || pPlot->getImprovementType() != NO_IMPROVEMENT)
+	if (pPlot->getFeatureType() != NO_FEATURE)
 	{
 		return false;
+	}
+
+	if (pPlot->getImprovementType() != NO_IMPROVEMENT)
+	{
+		if (!pPlot->isOwned() || !GET_PLAYER(pPlot->getOwnerINLINE()).isMaintainFeatures(eFeature) || GC.getFeatureInfo(eFeature).isNoImprovement())
+		{
+			return false;
+		}
 	}
 
 	if (!pPlot->canHaveFeature(eFeature))

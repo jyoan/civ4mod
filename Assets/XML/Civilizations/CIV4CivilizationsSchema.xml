@@ -395,6 +395,14 @@
 	</ElementType>
 	<ElementType name="TerrainType" content="textOnly"/>
 	<ElementType name="FeatureType" content="textOnly"/>
+	<ElementType name="bMaintain" content="textOnly" dt:type="boolean"/>
+	<ElementType name="MaintainFeature" content="eltOnly">
+		<element type="FeatureType"/>
+		<element type="bMaintain"/>
+	</ElementType>
+	<ElementType name="MaintainFeatures" content="eltOnly">
+		<element type="MaintainFeature" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="Yields" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -457,6 +465,7 @@
 		<element type="iNewCityPopulation" minOccurs="0"/>
 		<element type="bNewCityStateReligion" minOccurs="0"/>
 		<element type="iOccupationTimeModifier" minOccurs="0"/>
+		<element type="MaintainFeatures" minOccurs="0"/>
 		<element type="ExtraYieldThresholds"/>
 		<element type="TradeYieldModifiers"/>
 		<element type="CommerceChanges"/>

@@ -3580,6 +3580,19 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", GC.getTraitInfo(eTrait).getRiverPlotYieldChangeArray(), false, false);
 		}
 
+		// MaintainFeatures: "Improvements keep: Forest, Jungle"
+		bool bFirstFeature = true;
+		for (iI = 0; iI < GC.getNumFeatureInfos(); ++iI)
+		{
+			if (GC.getTraitInfo(eTrait).isMaintainFeatures(iI))
+			{
+				szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_MAINTAIN_FEATURES").c_str());
+				szText.Format(L"<link=literal>%s</link>", GC.getFeatureInfo((FeatureTypes)iI).getDescription());
+				setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstFeature);
+				bFirstFeature = false;
+			}
+		}
+
 		// Wonder Production Effects
 		if ((GC.getTraitInfo(eTrait).getMaxGlobalBuildingProductionModifier() != 0)
 			|| (GC.getTraitInfo(eTrait).getMaxTeamBuildingProductionModifier() != 0)

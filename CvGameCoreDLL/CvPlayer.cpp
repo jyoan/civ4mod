@@ -6041,6 +6041,24 @@ int CvPlayer::getSummonDuration() const
 	return std::max(0, iDuration);
 }
 
+bool CvPlayer::isMaintainFeatures(FeatureTypes eFeature) const
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			if (GC.getTraitInfo((TraitTypes)iI).isMaintainFeatures(eFeature))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 bool CvPlayer::hasActiveBuilding(BuildingTypes eBuilding) const
 {
 	CvCity* pLoopCity;
@@ -6405,7 +6423,8 @@ bool CvPlayer::canBuild(const CvPlot* pPlot, BuildTypes eBuild, bool bTestEra, b
 
 	if (!bTestVisible)
 	{
-		if (pPlot->getFeatureType() != NO_FEATURE)
+		// No tech for removing a feature that the build keeps (added by this mod, as FFH2)
+		if (pPlot->getFeatureType() != NO_FEATURE && !pPlot->isBuildKeepsFeature(eBuild))
 		{
 			if (!(GET_TEAM(getTeam()).isHasTech((TechTypes)GC.getBuildInfo(eBuild).getFeatureTech(pPlot->getFeatureType()))))
 			{
@@ -14778,7 +14797,7 @@ void CvPlayer::doAdvancedStartAction(AdvancedStartActionTypes eAction, int iX, i
 
 							if (eImprovement == eLoopImprovement)
 							{
-								if (GC.getBuildInfo((BuildTypes)iI).isFeatureRemove(pPlot->getFeatureType()) && canBuild(pPlot, (BuildTypes)iI))
+								if (GC.getBuildInfo((BuildTypes)iI).isFeatureRemove(pPlot->getFeatureType()) && !pPlot->isBuildKeepsFeature((BuildTypes)iI) && canBuild(pPlot, (BuildTypes)iI))
 								{
 									pPlot->setFeatureType(NO_FEATURE);
 									break;
@@ -15538,7 +15557,7 @@ int CvPlayer::getAdvancedStartImprovementCost(ImprovementTypes eImprovement, boo
 					bValid = true;
 
 					FeatureTypes eFeature = pPlot->getFeatureType();
-					if (NO_FEATURE != eFeature && kBuild.isFeatureRemove(eFeature))
+					if (NO_FEATURE != eFeature && kBuild.isFeatureRemove(eFeature) && !pPlot->isBuildKeepsFeature((BuildTypes)iI))
 					{
 						iCost += GC.getFeatureInfo(eFeature).getAdvancedStartRemoveCost();
 					}

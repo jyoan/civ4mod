@@ -35,6 +35,7 @@ build.bat clean      CvGameCoreDLL\Release\ を削除（配置はしない）
 - 全ビルド約 2 分、変更なしなら 0 秒。ヘッダを 1 つでも変えると PCH 経由で全再コンパイルになる
 - build.bat はビルド後に依存 DLL を検査し、MSVCR71.dll に依存しない／MSVCR80 以降に依存する DLL は失敗扱いにしてコピーしない
 - 元ソースは `/W3` で**警告 0 件**。警告が出たら自分の変更が原因
+- `CyPlayerInterface1.cpp` は MSVC 7.1 のデバッグ情報の上限に達している（`.def` を足すと `fatal error C1067: compiler limit : debug information module size exceeded`）。この Mod で足す `CyPlayer` の `.def` は `CyPlayerInterface2.cpp` の末尾に書く
 - 新しい `.cpp` を追加したら Makefile の `OBJS` に 1 行足す（ワイルドカードは使っていない）
 - Debug 構成は未整備（Release のみ）。Release では `FAssert` は無効
 - `Makefile` と `build.bat` は ASCII のみ・CRLF（日本語を書くと cmd / nmake で壊れる可能性がある）
@@ -200,7 +201,7 @@ FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・�
   - `AddPromotionType1`〜`3` / `RemovePromotionType1`〜`3` は、`bBuffCasterOnly=1` なら術者自身、0 なら `iRange` の範囲のユニット（下記）
   - `ConvertUnitType`: 新しいユニットを作り、`CvUnit::convert` で経験値・昇進・実行済み・積み荷を引き継ぐ。新しいユニットはそのターン動けない（移動できないタイマー 1）。変身より後の効果と `PyResult` は元のユニット（遅延で消える）に対して働く
   - `CreateBuildingType`: 自分の都市だけ（FFH2 はどの都市でも可）。すでにその建物がある都市では、呪文全体が使えない。世界遺産などの数の制限は見ない
-  - `CreateFeatureType`: 都市でなく、他チームの領土でなく、地形の特徴も施設もないタイル（FFH2 は施設があっても、文明が地形の特徴を保つなら可）。地形との組み合わせは `canHaveFeature`
+  - `CreateFeatureType`: 都市でなく、他チームの領土でなく、地形の特徴のないタイル。施設のあるタイルは、タイルの持ち主が志向の `MaintainFeatures` でその特徴を保つときだけ（FFH2 と同じ。施設を禁止する特徴（`bNoImprovement`）は不可）。地形との組み合わせは `canHaveFeature`
   - `CreateImprovementType`: 都市でなく、他チームの領土でなく、施設のないタイル（FFH2 は他国の領土でも可）。`canHaveImprovement`
   - `SpreadReligion`: 今いる都市（他国の都市でも可。まだ創始されていない宗教でも広まる。FFH2 と同じ）
   - `iCost`: 正なら消費、負なら得る
@@ -272,6 +273,7 @@ FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・�
 | `CIV4BuildingInfos.xml` | `BuildingInfo/iPlotRadius` | その建物（陳腐化していないもの）がある都市の都市圏の半径を ○ にする（持ち主の半径の方が広ければそちら。最大 3）。FFH2 と同じ名前。説明文は `TXT_KEY_BUILDING_PLOT_RADIUS`（「都市圏の半径3」）。建設は止めない。`PlotRadiusCultureLevel`（文化レベル）を書くと、都市がその文化レベル以上のときだけ効く（説明文 `TXT_KEY_BUILDING_PLOT_RADIUS_CULTURE`「文化レベルが未熟以上で都市圏の半径3」） |
 | `CIV4TraitInfos.xml` | `TraitInfo/iCityRadiusChange` | 都市圏の半径 +○（既定 2、最大 3）。FFH2 の `bSprawling` から都市圏の部分だけを取り出したもの（都市数の上限は別のタグにする予定）。仕組みは「都市圏の半径」の節。説明文は `TXT_KEY_TRAIT_CITY_RADIUS_CHANGE`（「都市圏の半径+1（最大3）」）。`CityRadiusCultureLevel`（文化レベル）を書くと、その文化レベル以上の都市だけに効く（説明文 `TXT_KEY_TRAIT_CITY_RADIUS_CHANGE_CULTURE`） |
 | `CIV4TraitInfos.xml`、`CIV4BuildingInfos.xml` | `TraitInfo/iNewCityPopulation`、`bNewCityStateReligion`、`iOccupationTimeModifier`（`BuildingInfo` にも同名タグ） | 新しい都市と占領した都市（ex 氏の CivGoldEmpires の農耕志向・伝道志向・法隆寺・大衆志向・桃源郷を参考にした）。`iNewCityPopulation`: 建設した都市（開拓者などで建てたもの。占領した都市は含まない）の人口 +○（`CvPlayer::found`。人口は 1 未満にしない。アドバンスドスタートでは、この分の人口は売れない）。`bNewCityStateReligion`: 建設した都市に国教が広まる（国教があれば。メッセージあり）。`iOccupationTimeModifier`: 占領した都市の反乱期間 ○%（征服した側の値。BtS の反乱期間「(3 + 人口の 50%) × (100 − 自チームの文化の割合)%」に掛ける。`CvPlayer::acquireCity`。-100 以下で反乱なし）。有効になるのは「その志向を持つ」か「その建物（陳腐化していないもの）をどこかの都市に持つ」とき。建物は種類ごとに 1 回分（何都市にあっても同じ）。値は足し算（国教はどれか 1 つで有効）。`CvPlayer::getNewCityPopulation()` / `isNewCityStateReligion()` / `getOccupationTimeModifier()` がそのつど合計するので、セーブデータは変わらず、既存のセーブにも効く。説明文は `TXT_KEY_NEW_CITY_POPULATION`（「新しい都市の人口+1」）・`TXT_KEY_NEW_CITY_STATE_RELIGION`・`TXT_KEY_OCCUPATION_TIME_MODIFIER`（「占領した都市の反乱期間-50%」）で、志向と建物で共通 |
+| `CIV4TraitInfos.xml` | `TraitInfo/MaintainFeatures` | FFH2 の文明の同名タグと同じ書式（`<MaintainFeature>` が `FeatureType` + `bMaintain`）。その志向を持つプレイヤーの領土では、施設を作る作業をしても、その地形の特徴（森・ジャングルなど）が消えず、施設の下に残る（`CvPlot::isBuildKeepsFeature`。誰の志向かはタイルの持ち主で決まる。FFH2 と同じ）。誰の領土でもないタイルと、施設のない作業（伐採だけ）では今までどおり消える。残すときは、特徴を取り除く時間を足さず（FFH2 は足す）、伐採の生産は入らず、取り除くための技術（青銅器など）も要らない（FFH2 と同じ）。産出は特徴の分も足され、衛生（森 +0.5・ジャングル -0.25）も残る。作業ボタンの説明は「森は残ります」（`TXT_KEY_ACTION_KEEP_FEATURE`）になり、産出の予測も特徴を残した値。アドバンスドスタートで施設を置いても特徴は消えない。そのつど判定（`CvPlayer::isMaintainFeatures`）。AI の作業の判断は変えていない。説明文は `TXT_KEY_TRAIT_MAINTAIN_FEATURES`（「施設を作っても残る: 森, ジャングル」） |
 | `CIV4PromotionInfos.xml` | `PromotionInfo/iExpireChance`、`bRemovedByCombat`、`PromotionVictory`、`iPromotionVictoryChance` | 状態の昇進と戦闘結果（第 1 段階。名前は FFH2 と同じ。`PromotionVictory` / `iPromotionVictoryChance` だけ新規）。`iExpireChance`: 自分のターンの開始時に ○% で消える（`CvUnit::doTurnPromotions`）。`bRemovedByCombat`: 戦闘で生き残ると消える。`PromotionVictory`: 戦闘に勝利すると `iPromotionVictoryChance`%（省略時 100）でその昇進を得る。戦闘の処理は `CvUnit::doCombatPromotions`（`updateCombat` の決着時、両ユニットがまだ存在するうちに呼ぶ）で、**戦闘中に持っていた昇進**で判定し、戦闘で消える昇進を外してから勝利の効果を与える（勝利で得た昇進はその戦闘では消えない）。勝利は「相手が倒れて自分が生き残った」とき（自爆ユニットは除く。撤退は勝者なし）。対象は通常の攻撃・防御だけで、空中戦・迎撃・爆撃・付随ダメージ・核は含まない。昇進がその兵科で取れるかはチェックしない。状態用の昇進は `UnitCombats` を空にしてレベルアップで選べないようにする。乱数は `getSorenRandNum`。セーブデータは変わらない。`PromotionVictory` は昇進を参照するので `readPass2` で読む |
 | `CIV4PromotionInfos.xml` | `PromotionInfo/bRemovedWhenHealed`、`PromotionCombatApply`、`iPromotionCombatApplyChance`、`iFreeXPPerTurn`、`iFreeXPCap` | 第 2 段階（名前は FFH2 と同じ。`iPromotionCombatApplyChance` / `iFreeXPCap` だけ新規）。ターンの開始時（`doTurnPromotions`、回復の後）に、`iFreeXPPerTurn` の経験値を足し（戦闘の経験値ではないので補正・大将軍ポイントなし。**ユニットの経験値が `iFreeXPCap`（省略時 100）に達したらそれ以上増えない**）、`bRemovedWhenHealed` はダメージ 0 なら消える。`PromotionCombatApply`: 戦闘の後、生き残った相手に `iPromotionCombatApplyChance`%（省略時 100）でその昇進を与える（与える側が倒れていても与える。戦闘で消える昇進を外した後、勝利の効果の前）。`PromotionCombatApply` も `readPass2` で読む |
 | `CIV4PromotionInfos.xml` | `PromotionInfo/iGoldFromCombat`、`iCombatCapturePercent` | 第 3 段階（名前は FFH2 と同じ）。どちらも勝者の（戦闘中に持っていた）昇進の値を**足し算**する。`iGoldFromCombat`: 勝利すると合計が正なら資金を得る（メッセージ `TXT_KEY_MISC_GOLD_FROM_COMBAT`）。`iCombatCapturePercent`: 勝利すると合計 % で、倒したユニットと同じ種類のユニットを勝者のタイルに新しく作る（倒したユニットの昇進・経験値は引き継がない。新しいユニットと同じく志向の昇進の組などは付く。そのターンは動けない。メッセージは BtS の `TXT_KEY_MISC_YOU_CAPTURED_UNIT`）。捕獲しないのは、倒したのが動物（領土に入れないため）、陸と海などドメインが違う、陸のユニットが水上から勝った（船からの上陸攻撃）、勝者が蛮族のとき |
@@ -297,7 +299,7 @@ BtS 本体の修正:
 |---|---|---|
 | `CIVILIZATION_TEST`（検証用文明） | 日本 | プレイ可・**AI は選ばない**（`bAIPlayable=0`）。色 `PLAYERCOLOR_GOLD_AND_BLACK`。固有ユニット・固有建物なし。文明の志向 `TRAIT_TEST`、首都に `BUILDING_TEST` が無料、開始ユニットに `UNIT_TEST_A`。初期の社会制度は他の文明と同じ（専制政治など）で、`CIVIC_TEST` は革命で採用する（無政府 1 ターン） |
 | `LEADER_TEST`（検証用指導者） | 徳川 | **指導者の志向なし**（検証の邪魔をしないため） |
-| `TRAIT_TEST`（検証用志向） | — | 志向のタグをすべて持つ: 労働者速度 +50%、社会制度風の数値 9 個と配列 4 個（新ユニット経験値 +2、軍事生産 +10% など）、白兵戦に経験値 +2・生産 +25%・アップグレード割引 50%・領土外アップグレード（敵国でも可）、昇進の組（白兵戦 → `PROMOTION_TEST`、海洋 → 航海術Ⅰ）、タイルの産出（砂漠・ツンドラ・雪原に生産 +1、丘陵に食料 +1、山岳に生産 +2、氷河に食料 +1・商業 +1、森に商業 +1、農場に生産 +1、鉱山に商業 +1、川沿いに食料 +1）、都市圏の半径 +1（文化レベル未熟以上の都市）、召喚したユニットが消えるまで +1 ターン、新しい都市の人口 +1・新しい都市に国教・占領した都市の反乱期間 -50% |
+| `TRAIT_TEST`（検証用志向） | — | 志向のタグをすべて持つ: 労働者速度 +50%、社会制度風の数値 9 個と配列 4 個（新ユニット経験値 +2、軍事生産 +10% など）、白兵戦に経験値 +2・生産 +25%・アップグレード割引 50%・領土外アップグレード（敵国でも可）、昇進の組（白兵戦 → `PROMOTION_TEST`、海洋 → 航海術Ⅰ）、タイルの産出（砂漠・ツンドラ・雪原に生産 +1、丘陵に食料 +1、山岳に生産 +2、氷河に食料 +1・商業 +1、森に商業 +1、農場に生産 +1、鉱山に商業 +1、川沿いに食料 +1）、都市圏の半径 +1（文化レベル未熟以上の都市）、召喚したユニットが消えるまで +1 ターン、新しい都市の人口 +1・新しい都市に国教・占領した都市の反乱期間 -50%、施設を作っても森・ジャングルが残る |
 | `CIVIC_TEST`（検証用社会制度） | 専制政治 | 政治の区分。前提技術なし・無政府期間 0・維持費なし・AI 評価 -10000。白兵戦に経験値 +1・生産 +10%・アップグレード割引 25%、弓兵に領土外アップグレード（敵国の領土を除く）。前提の志向 `TRAIT_TEST` |
 | `BUILDING_TEST` / `BUILDINGCLASS_TEST`（検証用建物） | 兵舎 | 前提技術なし・元の効果（攻撃志向の生産 2 倍、陸上ユニット経験値 +3）は削除・AI 評価 -10000。騎乗に領土外アップグレード。前提の志向 `TRAIT_TEST` |
 | `BUILDING_TEST_RADIUS` / `BUILDINGCLASS_TEST_RADIUS`（検証用建物（都市圏）） | 検証用建物 | `iPlotRadius` 3（文化レベル未熟以上で）。前提の志向なし（どの文明も建てられる）・費用 20。検証用文明は志向で半径 3 になるので、建物の効果は他の文明（日本など）で確かめる |
@@ -363,3 +365,4 @@ BtS 本体の修正:
 - 2026-11-01: 呪文の第 4 段階（ペディアのカテゴリ「呪文」、呪文のページ、ボタンとリンク）をゲーム内で確認
 - 2026-11-01: 都市圏の半径の文化レベルの条件（志向の `CityRadiusCultureLevel`・建物の `PlotRadiusCultureLevel`、文化のバーの表示）をゲーム内で確認（検証用文明・日本で検証用建物（都市圏））
 - 2026-11-01: 志向・建物の `iNewCityPopulation`・`bNewCityStateReligion`・`iOccupationTimeModifier` をゲーム内で確認（検証用文明・日本で検証用建物（新しい都市））
+- 2026-11-01: 志向の `MaintainFeatures`（施設を作っても森・ジャングルが残る。作業ボタンの説明、伐採だけの作業、領土外、呪文の `CreateFeatureType`）をゲーム内で確認（検証用文明）

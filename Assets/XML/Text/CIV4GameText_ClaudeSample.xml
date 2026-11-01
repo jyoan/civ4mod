@@ -848,6 +848,24 @@
 		<Spanish>[ICON_BULLET]%D1_Percent%% revolt time in conquered cities</Spanish>
 		<Japanese>[ICON_BULLET]&#21344;&#38936;&#12375;&#12383;&#37117;&#24066;&#12398;&#21453;&#20081;&#26399;&#38291;%D1_Percent%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MAINTAIN_FEATURES</Tag>
+		<English>[ICON_BULLET]Improvements keep: </English>
+		<French>[ICON_BULLET]Improvements keep: </French>
+		<German>[ICON_BULLET]Improvements keep: </German>
+		<Italian>[ICON_BULLET]Improvements keep: </Italian>
+		<Spanish>[ICON_BULLET]Improvements keep: </Spanish>
+		<Japanese>[ICON_BULLET]&#26045;&#35373;&#12434;&#20316;&#12387;&#12390;&#12418;&#27531;&#12427;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ACTION_KEEP_FEATURE</Tag>
+		<English>[COLOR_POSITIVE_TEXT]The %s1_FeatName remains[COLOR_REVERT]</English>
+		<French>[COLOR_POSITIVE_TEXT]The %s1_FeatName remains[COLOR_REVERT]</French>
+		<German>[COLOR_POSITIVE_TEXT]The %s1_FeatName remains[COLOR_REVERT]</German>
+		<Italian>[COLOR_POSITIVE_TEXT]The %s1_FeatName remains[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_POSITIVE_TEXT]The %s1_FeatName remains[COLOR_REVERT]</Spanish>
+		<Japanese>[COLOR_POSITIVE_TEXT]%s1_FeatName&#12399;&#27531;&#12426;&#12414;&#12377;[COLOR_REVERT]</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

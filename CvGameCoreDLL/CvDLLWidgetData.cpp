@@ -2526,7 +2526,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 
 					if (NO_FEATURE != pMissionPlot->getFeatureType())
 					{
-						if (GC.getBuildInfo(eBuild).isFeatureRemove(pMissionPlot->getFeatureType()))
+						if (GC.getBuildInfo(eBuild).isFeatureRemove(pMissionPlot->getFeatureType()) && !pMissionPlot->isBuildKeepsFeature(eBuild))
 						{
 							iYield -= GC.getFeatureInfo(pMissionPlot->getFeatureType()).getYieldChange(iI);
 						}
@@ -2655,7 +2655,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 						}
 					}
 
-					if (pMissionPlot->getFeatureType() != NO_FEATURE)
+					if (pMissionPlot->getFeatureType() != NO_FEATURE && !pMissionPlot->isBuildKeepsFeature(eBuild))
 					{
 						if (!(GET_TEAM(pHeadSelectedUnit->getTeam()).isHasTech((TechTypes)GC.getBuildInfo(eBuild).getFeatureTech(pMissionPlot->getFeatureType()))))
 						{
@@ -2682,7 +2682,13 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 
 				if (pMissionPlot->getFeatureType() != NO_FEATURE)
 				{
-					if (GC.getBuildInfo(eBuild).isFeatureRemove(pMissionPlot->getFeatureType()))
+					// A feature kept by the owner of the plot (added by this mod)
+					if (pMissionPlot->isBuildKeepsFeature(eBuild))
+					{
+						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_ACTION_KEEP_FEATURE", GC.getFeatureInfo(pMissionPlot->getFeatureType()).getTextKeyWide()));
+					}
+					else if (GC.getBuildInfo(eBuild).isFeatureRemove(pMissionPlot->getFeatureType()))
 					{
 						iProduction = pMissionPlot->getFeatureProduction(eBuild, pHeadSelectedUnit->getTeam(), &pCity);
 

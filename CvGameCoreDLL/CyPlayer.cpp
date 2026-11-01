@@ -1957,6 +1957,11 @@ bool CyPlayer::isNewCityStateReligion()
 	return m_pPlayer ? m_pPlayer->isNewCityStateReligion() : false;
 }
 
+bool CyPlayer::isMaintainFeatures(int /*FeatureTypes*/ eFeature)
+{
+	return m_pPlayer ? m_pPlayer->isMaintainFeatures((FeatureTypes)eFeature) : false;
+}
+
 int CyPlayer::getOccupationTimeModifier()
 {
 	return m_pPlayer ? m_pPlayer->getOccupationTimeModifier() : -1;

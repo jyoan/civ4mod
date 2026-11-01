@@ -60,5 +60,12 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("canSplitArea", &CyPlayer::canSplitArea, "bool (int)")
 		.def("canHaveTradeRoutesWith", &CyPlayer::canHaveTradeRoutesWith, "bool (int)")
 		.def("forcePeace", &CyPlayer::forcePeace, "void (int)")
+
+		// Added by this mod (here, as CyPlayerInterface1.cpp reached the debug information limit of MSVC 7.1: C1067)
+		.def("getSummonDuration", &CyPlayer::getSummonDuration, "int () - extra turns of the summoned units from traits (added by this mod)")
+		.def("getNewCityPopulation", &CyPlayer::getNewCityPopulation, "int () - extra population of new cities from traits and buildings (added by this mod)")
+		.def("isNewCityStateReligion", &CyPlayer::isNewCityStateReligion, "bool () - the state religion spreads to new cities (added by this mod)")
+		.def("isMaintainFeatures", &CyPlayer::isMaintainFeatures, "bool (int /*FeatureTypes*/ eFeature) - builds with an improvement keep the feature on our plots (added by this mod)")
+		.def("getOccupationTimeModifier", &CyPlayer::getOccupationTimeModifier, "int () - revolt time % of conquered cities from traits and buildings (added by this mod)")
 		;
 }

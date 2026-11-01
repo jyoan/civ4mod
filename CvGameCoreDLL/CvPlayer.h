@@ -209,6 +209,8 @@ public:
 	int getNewCityPopulation() const;				// Exposed to Python
 	bool isNewCityStateReligion() const;				// Exposed to Python
 	int getOccupationTimeModifier() const;				// Exposed to Python
+	// Builds with an improvement keep the feature on the plots of this player (traits, added by this mod)
+	bool isMaintainFeatures(FeatureTypes eFeature) const;				// Exposed to Python
 	int getProductionModifier(BuildingTypes eBuilding) const;
 	int getProductionModifier(ProjectTypes eProject) const;
 

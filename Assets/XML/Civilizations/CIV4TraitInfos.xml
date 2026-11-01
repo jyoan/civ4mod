@@ -371,6 +371,16 @@
 			<iNewCityPopulation>1</iNewCityPopulation>
 			<bNewCityStateReligion>1</bNewCityStateReligion>
 			<iOccupationTimeModifier>-50</iOccupationTimeModifier>
+			<MaintainFeatures>
+				<MaintainFeature>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<bMaintain>1</bMaintain>
+				</MaintainFeature>
+				<MaintainFeature>
+					<FeatureType>FEATURE_JUNGLE</FeatureType>
+					<bMaintain>1</bMaintain>
+				</MaintainFeature>
+			</MaintainFeatures>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>
