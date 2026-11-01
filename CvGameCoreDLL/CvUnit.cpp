@@ -2312,6 +2312,10 @@ void CvUnit::doCommand(CommandTypes eCommand, int iData1, int iData2)
 // spell at all; a spell with bDisplayWhenDisabled is then shown as a disabled button when the later checks fail.
 bool CvUnit::canCast(int spell, bool bTestVisible)
 {
+	CLLNode<IDInfo>* pUnitNode;
+	CvUnit* pLoopUnit;
+	bool bValid;
+
 	if (spell < 0 || spell >= GC.getNumSpellInfos())
 	{
 		return false;
@@ -2319,6 +2323,7 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 
 	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
 	CvPlot* pPlot = plot();
+	CvCity* pCity = pPlot->getPlotCity();
 
 	if (getImmobileTimer() > 0)
 	{
@@ -2365,9 +2370,59 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 		}
 	}
 
+	if (kSpell.getBuildingPrereq() != NO_BUILDING)
+	{
+		if (pCity == NULL)
+		{
+			return false;
+		}
+
+		if (pCity->getNumBuilding((BuildingTypes)kSpell.getBuildingPrereq()) == 0)
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getBuildingClassOwnedPrereq() != NO_BUILDINGCLASS)
+	{
+		if (GET_PLAYER(getOwnerINLINE()).getBuildingClassCount((BuildingClassTypes)kSpell.getBuildingClassOwnedPrereq()) == 0)
+		{
+			return false;
+		}
+	}
+
 	if (kSpell.getCivilizationPrereq() != NO_CIVILIZATION)
 	{
 		if (getCivilizationType() != (CivilizationTypes)kSpell.getCivilizationPrereq())
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getCorporationPrereq() != NO_CORPORATION)
+	{
+		if (pCity == NULL)
+		{
+			return false;
+		}
+
+		if (!pCity->isHasCorporation((CorporationTypes)kSpell.getCorporationPrereq()))
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getImprovementPrereq() != NO_IMPROVEMENT)
+	{
+		if (pPlot->getImprovementType() != (ImprovementTypes)kSpell.getImprovementPrereq())
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getStateReligionPrereq() != NO_RELIGION)
+	{
+		if (GET_PLAYER(getOwnerINLINE()).getStateReligion() != (ReligionTypes)kSpell.getStateReligionPrereq())
 		{
 			return false;
 		}
@@ -2381,9 +2436,84 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 		}
 	}
 
+	if (kSpell.getConvertUnitType() != NO_UNIT)
+	{
+		if (getUnitType() == (UnitTypes)kSpell.getConvertUnitType())
+		{
+			return false;
+		}
+	}
+
 	if (kSpell.getCasterMinLevel() != 0)
 	{
 		if (getLevel() < kSpell.getCasterMinLevel())
+		{
+			return false;
+		}
+	}
+
+	// Another unit of the same owner on the tile must have the promotion (not the caster itself)
+	if (kSpell.getPromotionInStackPrereq() != NO_PROMOTION)
+	{
+		if (isHasPromotion((PromotionTypes)kSpell.getPromotionInStackPrereq()))
+		{
+			return false;
+		}
+
+		bValid = false;
+		pUnitNode = pPlot->headUnitNode();
+
+		while (pUnitNode != NULL)
+		{
+			pLoopUnit = ::getUnit(pUnitNode->m_data);
+			pUnitNode = pPlot->nextUnitNode(pUnitNode);
+
+			if (pLoopUnit->getOwnerINLINE() == getOwnerINLINE())
+			{
+				if (pLoopUnit->isHasPromotion((PromotionTypes)kSpell.getPromotionInStackPrereq()))
+				{
+					bValid = true;
+					break;
+				}
+			}
+		}
+
+		if (!bValid)
+		{
+			return false;
+		}
+	}
+
+	// Another unit of the same owner and of the type must be on the tile (the caster is not of the type)
+	if (kSpell.getUnitInStackPrereq() != NO_UNIT)
+	{
+		if (getUnitType() == (UnitTypes)kSpell.getUnitInStackPrereq())
+		{
+			return false;
+		}
+
+		bValid = false;
+		pUnitNode = pPlot->headUnitNode();
+
+		while (pUnitNode != NULL)
+		{
+			pLoopUnit = ::getUnit(pUnitNode->m_data);
+			pUnitNode = pPlot->nextUnitNode(pUnitNode);
+
+			if (pLoopUnit->getOwnerINLINE() == getOwnerINLINE())
+			{
+				if (pLoopUnit->getUnitType() == (UnitTypes)kSpell.getUnitInStackPrereq())
+				{
+					if (!pLoopUnit->isDelayedDeath())
+					{
+						bValid = true;
+						break;
+					}
+				}
+			}
+		}
+
+		if (!bValid)
 		{
 			return false;
 		}
@@ -2397,9 +2527,28 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 		}
 	}
 
+	if (kSpell.getFeatureOrPrereq1() != NO_FEATURE)
+	{
+		if (pPlot->getFeatureType() != (FeatureTypes)kSpell.getFeatureOrPrereq1())
+		{
+			if (kSpell.getFeatureOrPrereq2() == NO_FEATURE || pPlot->getFeatureType() != (FeatureTypes)kSpell.getFeatureOrPrereq2())
+			{
+				return false;
+			}
+		}
+	}
+
 	if (!kSpell.isIgnoreHasCasted())
 	{
 		if (isHasCasted())
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.isAdjacentToWaterOnly())
+	{
+		if (!pPlot->isAdjacentToWater())
 		{
 			return false;
 		}
@@ -2421,6 +2570,44 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 		}
 	}
 
+	// Only in a city of the caster's owner (this mod; FFH2 allows any city), and the city keeps at least 1 population
+	if (kSpell.getChangePopulation() != 0)
+	{
+		if (pCity == NULL || pCity->getOwnerINLINE() != getOwnerINLINE())
+		{
+			return false;
+		}
+
+		if (pCity->getPopulation() <= -(kSpell.getChangePopulation()))
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getCost() > 0)
+	{
+		if (GET_PLAYER(getOwnerINLINE()).getGold() < kSpell.getCost())
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.isRemoveHasCasted())
+	{
+		if (!isHasCasted())
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getCreateBuildingType() != NO_BUILDING)
+	{
+		if (!canCreateBuilding(spell))
+		{
+			return false;
+		}
+	}
+
 	// PyRequirement is evaluated by canCast in CvSpellInterface.py and decides the rest
 	if (!CvString(kSpell.getPyRequirement()).empty())
 	{
@@ -2434,7 +2621,43 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 		return (lResult != 0);
 	}
 
-	// A spell must have some effect. The only effect so far is PyResult
+	// A spell must have some effect that applies here
+	if (kSpell.isRemoveHasCasted())
+	{
+		return true;
+	}
+
+	if (canAddPromotion(spell) || canRemovePromotion(spell))
+	{
+		return true;
+	}
+
+	if (kSpell.getConvertUnitType() != NO_UNIT)
+	{
+		return true;
+	}
+
+	if (canCreateFeature(spell) || canCreateImprovement(spell) || canSpreadReligion(spell))
+	{
+		return true;
+	}
+
+	if (kSpell.getCreateBuildingType() != NO_BUILDING)
+	{
+		return true;
+	}
+
+	if (kSpell.getChangePopulation() > 0)
+	{
+		return true;
+	}
+
+	// Gaining gold (a negative iCost) is an effect in this mod
+	if (kSpell.getCost() < 0)
+	{
+		return true;
+	}
+
 	if (!CvString(kSpell.getPyResult()).empty())
 	{
 		return true;
@@ -2447,20 +2670,78 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 void CvUnit::cast(int spell)
 {
 	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	CvCity* pCity = plot()->getPlotCity();
 
 	if (kSpell.isHasCasted())
 	{
 		setHasCasted(true);
 	}
 
+	castAddPromotion(spell);
+	castRemovePromotion(spell);
+
+	// The caster is replaced here (with a delayed death); the rest of the spell still runs for the old unit
+	if (kSpell.getConvertUnitType() != NO_UNIT)
+	{
+		castConvertUnit(spell);
+	}
+
+	if (canCreateBuilding(spell))
+	{
+		pCity->setNumRealBuilding((BuildingTypes)kSpell.getCreateBuildingType(), 1);
+	}
+
+	if (canCreateFeature(spell))
+	{
+		plot()->setFeatureType((FeatureTypes)kSpell.getCreateFeatureType(), -1);
+	}
+
+	if (canCreateImprovement(spell))
+	{
+		plot()->setImprovementType((ImprovementTypes)kSpell.getCreateImprovementType());
+	}
+
+	if (canSpreadReligion(spell))
+	{
+		pCity->setHasReligion((ReligionTypes)kSpell.getSpreadReligion(), true, true, true);
+	}
+
+	if (kSpell.isRemoveHasCasted())
+	{
+		setHasCasted(false);
+	}
+
+	if (kSpell.getCost() != 0)
+	{
+		GET_PLAYER(getOwnerINLINE()).changeGold(-(kSpell.getCost()));
+	}
+
+	if (kSpell.getChangePopulation() != 0)
+	{
+		if (pCity != NULL)
+		{
+			pCity->changePopulation(kSpell.getChangePopulation());
+		}
+	}
+
 	if (plot()->isVisibleToWatchingHuman())
 	{
+		if (kSpell.getEffect() != NO_EFFECT)
+		{
+			gDLL->getEngineIFace()->TriggerEffect(kSpell.getEffect(), plot()->getPoint(), (float)(GC.getASyncRand().get(360)));
+		}
+
+		if (!CvString(kSpell.getSound()).empty())
+		{
+			gDLL->getInterfaceIFace()->playGeneralSound(kSpell.getSound(), plot()->getPoint());
+		}
+
 		gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), kSpell.getDescription(), "AS2D_WONDER_UNIT_BUILD", MESSAGE_TYPE_MAJOR_EVENT, kSpell.getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_UNIT_TEXT"), getX_INLINE(), getY_INLINE(), true, true);
 	}
 
 	gDLL->getInterfaceIFace()->setDirty(SelectionButtons_DIRTY_BIT, true);
 
-	// PyResult is evaluated by cast in CvSpellInterface.py. It is called last, as it may kill the caster (with a delay)
+	// PyResult is evaluated by cast in CvSpellInterface.py. It may kill the caster, but only with a delay
 	if (!CvString(kSpell.getPyResult()).empty())
 	{
 		CyUnit* pyUnit = new CyUnit(this);
@@ -2470,6 +2751,236 @@ void CvUnit::cast(int spell)
 		gDLL->getPythonIFace()->callFunction(PYSpellModule, "cast", argsList.makeFunctionArgs());
 		delete pyUnit;	// python fxn must not hold on to this pointer
 	}
+
+	if (kSpell.isSacrificeCaster())
+	{
+		kill(true);
+	}
+}
+
+
+// AddPromotionType1-3 and RemovePromotionType1-3 work on the caster only (bBuffCasterOnly) so far.
+// Spells that affect the units in iRange come in spell stage 2b.
+bool CvUnit::canAddPromotion(int spell) const
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	int aiPromotions[3] = {kSpell.getAddPromotionType1(), kSpell.getAddPromotionType2(), kSpell.getAddPromotionType3()};
+	int iI;
+
+	if (!kSpell.isBuffCasterOnly())
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < 3; iI++)
+	{
+		if (aiPromotions[iI] != NO_PROMOTION)
+		{
+			if (!isHasPromotion((PromotionTypes)aiPromotions[iI]))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
+bool CvUnit::canRemovePromotion(int spell) const
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	int aiPromotions[3] = {kSpell.getRemovePromotionType1(), kSpell.getRemovePromotionType2(), kSpell.getRemovePromotionType3()};
+	int iI;
+
+	if (!kSpell.isBuffCasterOnly())
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < 3; iI++)
+	{
+		if (aiPromotions[iI] != NO_PROMOTION)
+		{
+			if (isHasPromotion((PromotionTypes)aiPromotions[iI]))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
+// Only in a city of the caster's owner (this mod; FFH2 allows any city)
+bool CvUnit::canCreateBuilding(int spell) const
+{
+	BuildingTypes eBuilding = (BuildingTypes)GC.getSpellInfo((SpellTypes)spell).getCreateBuildingType();
+	CvCity* pCity = plot()->getPlotCity();
+
+	if (eBuilding == NO_BUILDING)
+	{
+		return false;
+	}
+
+	if (pCity == NULL || pCity->getOwnerINLINE() != getOwnerINLINE())
+	{
+		return false;
+	}
+
+	if (pCity->getNumBuilding(eBuilding) > 0)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+
+// Not in the territory of another team and not on an improvement (this mod; FFH2 checks only the civilization's bMaintainFeatures)
+bool CvUnit::canCreateFeature(int spell) const
+{
+	FeatureTypes eFeature = (FeatureTypes)GC.getSpellInfo((SpellTypes)spell).getCreateFeatureType();
+	CvPlot* pPlot = plot();
+
+	if (eFeature == NO_FEATURE)
+	{
+		return false;
+	}
+
+	if (pPlot->isCity())
+	{
+		return false;
+	}
+
+	if (pPlot->getTeam() != NO_TEAM && pPlot->getTeam() != getTeam())
+	{
+		return false;
+	}
+
+	if (pPlot->getFeatureType() != NO_FEATURE || pPlot->getImprovementType() != NO_IMPROVEMENT)
+	{
+		return false;
+	}
+
+	if (!pPlot->canHaveFeature(eFeature))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+
+// Not in the territory of another team (this mod; FFH2 allows it)
+bool CvUnit::canCreateImprovement(int spell) const
+{
+	ImprovementTypes eImprovement = (ImprovementTypes)GC.getSpellInfo((SpellTypes)spell).getCreateImprovementType();
+	CvPlot* pPlot = plot();
+
+	if (eImprovement == NO_IMPROVEMENT)
+	{
+		return false;
+	}
+
+	if (pPlot->isCity())
+	{
+		return false;
+	}
+
+	if (pPlot->getTeam() != NO_TEAM && pPlot->getTeam() != getTeam())
+	{
+		return false;
+	}
+
+	if (pPlot->getImprovementType() != NO_IMPROVEMENT)
+	{
+		return false;
+	}
+
+	if (!pPlot->canHaveImprovement(eImprovement, getTeam()))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+
+bool CvUnit::canSpreadReligion(int spell) const
+{
+	ReligionTypes eReligion = (ReligionTypes)GC.getSpellInfo((SpellTypes)spell).getSpreadReligion();
+	CvCity* pCity = plot()->getPlotCity();
+
+	if (eReligion == NO_RELIGION)
+	{
+		return false;
+	}
+
+	if (pCity == NULL)
+	{
+		return false;
+	}
+
+	if (pCity->isHasReligion(eReligion))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+
+void CvUnit::castAddPromotion(int spell)
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	int aiPromotions[3] = {kSpell.getAddPromotionType1(), kSpell.getAddPromotionType2(), kSpell.getAddPromotionType3()};
+	int iI;
+
+	if (!kSpell.isBuffCasterOnly())
+	{
+		return;
+	}
+
+	for (iI = 0; iI < 3; iI++)
+	{
+		if (aiPromotions[iI] != NO_PROMOTION)
+		{
+			setHasPromotion((PromotionTypes)aiPromotions[iI], true);
+		}
+	}
+}
+
+
+void CvUnit::castRemovePromotion(int spell)
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	int aiPromotions[3] = {kSpell.getRemovePromotionType1(), kSpell.getRemovePromotionType2(), kSpell.getRemovePromotionType3()};
+	int iI;
+
+	if (!kSpell.isBuffCasterOnly())
+	{
+		return;
+	}
+
+	for (iI = 0; iI < 3; iI++)
+	{
+		if (aiPromotions[iI] != NO_PROMOTION)
+		{
+			setHasPromotion((PromotionTypes)aiPromotions[iI], false);
+		}
+	}
+}
+
+
+// The new unit keeps the experience and promotions (CvUnit::convert) and cannot move this turn
+void CvUnit::castConvertUnit(int spell)
+{
+	CvUnit* pUnit = GET_PLAYER(getOwnerINLINE()).initUnit((UnitTypes)GC.getSpellInfo((SpellTypes)spell).getConvertUnitType(), getX_INLINE(), getY_INLINE(), AI_getUnitAIType());
+
+	pUnit->convert(this);
+	pUnit->changeImmobileTimer(1);
 }
 
 

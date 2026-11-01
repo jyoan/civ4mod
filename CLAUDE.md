@@ -177,23 +177,37 @@ BtS は全都市が半径 2（21 タイル）固定。この Mod では都市ご
 
 ### 呪文
 
-FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・関数の名前は FFH2 と同じ。使えるのはユニットだけ。第 1 段階は土台と基本の条件だけで、XML だけで書ける効果・AI・ペディアはまだない。
+FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・関数の名前は FFH2 と同じ。使えるのはユニットだけ。第 1 段階は土台と基本の条件、第 2 段階 a は XML だけで書ける効果のうち、術者自身・今いるタイル・今いる都市へのもの。周りのユニットへの効果（2b）、召喚・失敗・1 ゲーム 1 回など（2c）、AI、ペディアはまだない。
 
 - XML: `Units\CIV4SpellInfos.xml`。Schema は FFH2 と同じく別ファイルの `Units\CIV4SpellSchema.xml`。昇進・ユニット・技術・文明を参照するので、`LoadPreMenuGlobals` で文明の後に読み込む。`CvSpellInfo` はストリーム版の `read` / `write` を持たない（キャッシュを使わない）
 - 行動ボタン: `SetGlobalActionInfo` が呪文ごとに `ACTIONSUBTYPE_SPELL` の行動を作る。コマンドは `COMMAND_CAST`、データは呪文の番号。ボタンを押すと、既存のコマンドのネットメッセージ（`GAMEMESSAGE_DO_COMMAND`）で全マシンの `CvUnit::doCommand` → `cast` が呼ばれる（マルチプレイでも同期する）。選択中のユニットはすべて実行する
 - `COMMAND_CAST` は `CvEnums.h` の `CommandTypes` の末尾（`COMMAND_HOTKEY` の後）と、`CIV4CommandInfos.xml`（無印 Civ4(J) のコピー）の末尾に足した。**XML の並びは列挙型と同じでなければならない**。`<Help/>` は空にしてある（中身があると、全呪文の説明に同じ文が付く）
 - `CvUnit::canCast(iSpell, bTestVisible)` の判定順（FFH2 と同じ）:
   1. 移動できないタイマー（`getImmobileTimer`）
-  2. `PromotionPrereq1` / `2`・`UnitClassPrereq`・`UnitPrereq`・`UnitCombatPrereq`・`CivilizationPrereq`・`TechPrereq`・`iCasterMinLevel`
-  3. ボタンを出すかの判定（`bTestVisible`）で `bDisplayWhenDisabled` なら、ここで「出す」と決まる。この後の条件を満たさないと無効のボタンになる。`bDisplayWhenDisabled` でない呪文は、使えないときはボタン自体が出ない
-  4. `bHasCasted`: `bIgnoreHasCasted` でなければ、このターンに実行済みのユニットは使えない
-  5. `bInBordersOnly`（自分の領土）・`bInCityOnly`（都市。他国の都市でも可）
-  6. `PyRequirement` があれば、その結果で決まる。なければ `PyResult` がある呪文だけ使える（効果のない呪文は使えない）
-- `CvUnit::cast`: `bHasCasted` の呪文なら実行済みにし、メッセージ（呪文の名前とボタン）を出してから `PyResult` を呼ぶ
+  2. ユニットの条件: `PromotionPrereq1` / `2`・`UnitClassPrereq`・`UnitPrereq`・`UnitCombatPrereq`
+  3. 文明・都市・タイルの条件: `BuildingPrereq`（今いる都市にその建物）・`BuildingClassOwnedPrereq`（自国のどこかにその建物）・`CivilizationPrereq`・`CorporationPrereq`（今いる都市にその企業）・`ImprovementPrereq`（今いるタイルの施設）・`StateReligionPrereq`・`TechPrereq`。`ConvertUnitType` の呪文は、すでにその種類のユニットなら使えない。`iCasterMinLevel`
+  4. `PromotionInStackPrereq` / `UnitInStackPrereq`: 同じタイルに、その昇進を持つ・その種類の、自国のほかのユニットがいる（術者自身がその昇進を持つ・その種類だと使えない。FFH2 と同じ）
+  5. ボタンを出すかの判定（`bTestVisible`）で `bDisplayWhenDisabled` なら、ここで「出す」と決まる。この後の条件を満たさないと無効のボタンになる。`bDisplayWhenDisabled` でない呪文は、使えないときはボタン自体が出ない
+  6. `FeatureOrPrereq1` / `2`（今いるタイルの地形の特徴。どちらか）
+  7. `bHasCasted`: `bIgnoreHasCasted` でなければ、このターンに実行済みのユニットは使えない
+  8. `bAdjacentToWaterOnly`（周りの 8 タイルに水のタイル（海・湖）がある。川・オアシスは含まない。`CvPlot::isAdjacentToWater` は FFH2 と同じものを足した）・`bInBordersOnly`（自分の領土）・`bInCityOnly`（都市。他国の都市でも可）
+  9. 効果の前提: `iChangePopulation` は自分の都市で、人口が 1 以上残ること（FFH2 はどの都市でも可）。`iCost` が正なら資金が足りること。`bRemoveHasCasted` は実行済みのユニットだけ。`CreateBuildingType` は建てられること（下記）
+  10. `PyRequirement` があれば、その結果で決まる
+  11. なければ、効果のどれかがここで効くときだけ使える（効果のない呪文は使えない）: 昇進の付与（まだ持っていない）・除去（持っている）、変身、建物、地形の特徴・施設・宗教（作れる・広められる）、人口の増加、資金を得る（`iCost` が負。数えるのはこの Mod の追加）、`bRemoveHasCasted`、`PyResult`
+- `CvUnit::cast` の順（FFH2 と同じ）: 実行済みにする（`bHasCasted`）→ 昇進の付与・除去 → 変身 → 建物 → 地形の特徴 → 施設 → 宗教 → 実行済みの取り消し（`bRemoveHasCasted`）→ 資金（`iCost`）→ 人口 → 演出（`Effect`・`Sound`）とメッセージ（呪文の名前とボタン）→ `PyResult` → 術者が消える（`bSacrificeCaster`、遅延）
+- 効果の細部（第 2 段階 a）:
+  - `AddPromotionType1`〜`3` / `RemovePromotionType1`〜`3` は、今は `bBuffCasterOnly=1`（術者自身）のときだけ効く。0 のとき（`iRange` の範囲のユニット）は 2b で入れる
+  - `ConvertUnitType`: 新しいユニットを作り、`CvUnit::convert` で経験値・昇進・実行済み・積み荷を引き継ぐ。新しいユニットはそのターン動けない（移動できないタイマー 1）。変身より後の効果と `PyResult` は元のユニット（遅延で消える）に対して働く
+  - `CreateBuildingType`: 自分の都市だけ（FFH2 はどの都市でも可）。すでにその建物がある都市では、呪文全体が使えない。世界遺産などの数の制限は見ない
+  - `CreateFeatureType`: 都市でなく、他チームの領土でなく、地形の特徴も施設もないタイル（FFH2 は施設があっても、文明が地形の特徴を保つなら可）。地形との組み合わせは `canHaveFeature`
+  - `CreateImprovementType`: 都市でなく、他チームの領土でなく、施設のないタイル（FFH2 は他国の領土でも可）。`canHaveImprovement`
+  - `SpreadReligion`: 今いる都市（他国の都市でも可。まだ創始されていない宗教でも広まる。FFH2 と同じ）
+  - `iCost`: 正なら消費、負なら得る
+  - `Effect`（`CIV4EffectInfos.xml` の `EFFECT_`）と `Sound`（`AS2D_` などのスクリプト）は、タイルが見えているマシンでだけ出る（演出なので向きの乱数は `ASyncRand`）
 - 実行済み（`m_bHasCasted`）はターンの開始時（`CvUnit::doTurn`）に戻り、アップグレードでは引き継ぐ（`CvUnit::convert`）。ユニットの説明に「実行済み」（`TXT_KEY_UNIT_HAS_CASTED`）と出る。セーブは `CvUnit` の `uiFlag=3`（2 以下のセーブは実行済みでない扱い）
 - Python: `EntryPoints\CvSpellInterface.py`（`CvDefines.h` の `PYSpellModule`）。DLL は `canCast([pCaster, eSpell])` / `cast([pCaster, eSpell])` を呼び、それぞれが `PyRequirement` / `PyResult` の文字列を `eval` する（FFH2 0.41 と同じ。インストール済みの FFH2（Denev さんの版）は関数名だけを書く別の方式）。式の中では `pCaster`（CyUnit）と `eSpell` が使えるので、引数つきの共通関数を XML から呼べる（例: `spellGainGold(pCaster, 25)`）。今ある共通関数は `reqNotHasPromotion`・`spellAddPromotion`・`spellGainGold`
 - `PyRequirement` はボタンを描くたびに各マシンで別々に呼ばれるので、ゲーム状態を変えない。`PyResult` で術者を消すときは遅延（`pCaster.kill(True, -1)`）にする（`cast` の後で `doCommand` がまだユニットを使うため）
-- 説明文（`CvGameTextMgr::parseSpellHelp`。行動ボタンのマウスオーバー）: 前提（文明・技術・ユニット・兵科・ユニットクラス・昇進・レベル）→ `Help` → 場所の条件。見出しは「実行 (呪文名)」（`TXT_KEY_COMMAND_CAST`）。テキストキーは、FFH2 にあるものは同じ名前（`TXT_KEY_SPELL_*`）。Python の効果は自動では説明されないので、`Help` に書く
+- 説明文（`CvGameTextMgr::parseSpellHelp`。行動ボタンのマウスオーバー）: 前提（文明・技術・国教・ユニット・兵科・ユニットクラス・昇進・レベル・建物・企業・地形の特徴・施設・同じタイルのユニット）→ 効果 → `Help` → 場所の条件 → 実行済みの取り消し・費用・術者が消える。見出しは「実行 (呪文名)」（`TXT_KEY_COMMAND_CAST`）。テキストキーは、FFH2 にあるものは同じ名前（`TXT_KEY_SPELL_*`）。Python の効果は自動では説明されないので、`Help` に書く
 - Python への公開: `gc.getNumSpellInfos()` / `gc.getSpellInfo(i)`（`CvSpellInfo` の getter）、`CyUnit.canCast` / `cast`（`canCast` の判定を通さない）/ `isHasCasted` / `setHasCasted`、`CommandTypes.COMMAND_CAST`、`ActionSubTypes.ACTIONSUBTYPE_SPELL`、`SpellTypes.NO_SPELL`
 - AI は呪文を使わない（第 3 段階で `bAllowAI` などを入れる予定）
 
@@ -233,6 +247,7 @@ FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・�
 | `CIV4PromotionInfos.xml` | `PromotionInfo/bRemovedWhenHealed`、`PromotionCombatApply`、`iPromotionCombatApplyChance`、`iFreeXPPerTurn`、`iFreeXPCap` | 第 2 段階（名前は FFH2 と同じ。`iPromotionCombatApplyChance` / `iFreeXPCap` だけ新規）。ターンの開始時（`doTurnPromotions`、回復の後）に、`iFreeXPPerTurn` の経験値を足し（戦闘の経験値ではないので補正・大将軍ポイントなし。**ユニットの経験値が `iFreeXPCap`（省略時 100）に達したらそれ以上増えない**）、`bRemovedWhenHealed` はダメージ 0 なら消える。`PromotionCombatApply`: 戦闘の後、生き残った相手に `iPromotionCombatApplyChance`%（省略時 100）でその昇進を与える（与える側が倒れていても与える。戦闘で消える昇進を外した後、勝利の効果の前）。`PromotionCombatApply` も `readPass2` で読む |
 | `CIV4PromotionInfos.xml` | `PromotionInfo/iGoldFromCombat`、`iCombatCapturePercent` | 第 3 段階（名前は FFH2 と同じ）。どちらも勝者の（戦闘中に持っていた）昇進の値を**足し算**する。`iGoldFromCombat`: 勝利すると合計が正なら資金を得る（メッセージ `TXT_KEY_MISC_GOLD_FROM_COMBAT`）。`iCombatCapturePercent`: 勝利すると合計 % で、倒したユニットと同じ種類のユニットを勝者のタイルに新しく作る（倒したユニットの昇進・経験値は引き継がない。新しいユニットと同じく志向の昇進の組などは付く。そのターンは動けない。メッセージは BtS の `TXT_KEY_MISC_YOU_CAPTURED_UNIT`）。捕獲しないのは、倒したのが動物（領土に入れないため）、陸と海などドメインが違う、陸のユニットが水上から勝った（船からの上陸攻撃）、勝者が蛮族のとき |
 | `CIV4SpellInfos.xml`（新規） | `SpellInfo` の `PromotionPrereq1` / `PromotionPrereq2`、`UnitPrereq`、`UnitClassPrereq`、`UnitCombatPrereq`、`CivilizationPrereq`、`TechPrereq`、`iCasterMinLevel`、`bInBordersOnly`、`bInCityOnly`、`bHasCasted`、`bIgnoreHasCasted`、`bDisplayWhenDisabled`、`PyRequirement`、`PyResult`（と `Type`・`Description`・`Civilopedia`・`Help`・`Button`・ホットキー） | 呪文（第 1 段階。名前は FFH2 と同じ）。仕組みは「呪文」の節 |
+| `CIV4SpellInfos.xml` | `SpellInfo` の前提 `UnitInStackPrereq`、`BuildingPrereq`、`BuildingClassOwnedPrereq`、`CorporationPrereq`、`FeatureOrPrereq1` / `2`、`ImprovementPrereq`、`PromotionInStackPrereq`、`StateReligionPrereq`、`bAdjacentToWaterOnly` と、効果 `iCost`、`AddPromotionType1`〜`3`、`RemovePromotionType1`〜`3`、`bBuffCasterOnly`、`ConvertUnitType`、`CreateBuildingType`、`CreateFeatureType`、`CreateImprovementType`、`SpreadReligion`、`iChangePopulation`、`bSacrificeCaster`、`bRemoveHasCasted`、`Effect`、`Sound` | 呪文の第 2 段階 a（名前は FFH2 と同じ）。術者自身・今いるタイル・今いる都市への効果。FFH2 との違い（自分の都市・領土に限るものなど）は「呪文」の節 |
 
 BtS 本体の修正:
 
@@ -259,6 +274,11 @@ BtS 本体の修正:
 | `PROMOTION_TEST_POISON`（検証用毒） | 検証用状態Ⅱ | 状態の昇進。戦闘力 -20%、完全に回復すると消える、生き残った戦闘相手に 50% でうつる（毒を受けた敵と戦うと自分も受けることがある）。ボタンは戦闘術Ⅳ |
 | `SPELL_TEST_GOLD`（検証用呪文（資金）） | — | 検証用文明の白兵戦ユニットが、自国の領土で資金 +25（`spellGainGold(pCaster, 25)`。`PyRequirement` なし）。使えないときも無効のボタンで出る（`bDisplayWhenDisabled`）。実行済みになる。ボタンは「富」 |
 | `SPELL_TEST_PROMOTION`（検証用呪文（昇進）） | — | 検証用昇進を持つユニットが、都市で、検証用状態Ⅰを持っていなければ得る（`reqNotHasPromotion` / `spellAddPromotion`）。使えないときはボタンが出ない。実行済みになる。ボタンは戦闘術Ⅱ |
+| `SPELL_TEST_CONVERT`（検証用呪文（変身）） | — | ユニット A が、資金 10 で検証用状態Ⅱを得てからユニット B に変わる（状態Ⅱ・経験値・実行済みは B に引き継ぐ。B はそのターン動けない）。演出 `EFFECT_SETTLERSMOKE`、音 `AS2D_GOODY_WARRIOR`。使えないときも無効のボタンで出る。実行済みになる |
+| `SPELL_TEST_CITY`（検証用呪文（都市））| — | 検証用建物のある都市（検証用文明の首都）で、オベリスクを建て、仏教を広め、人口 +1、資金 +50（`iCost` -50）。実行したユニットは消える。オベリスクがあると使えない（ボタンも出ない）。音 `AS2D_GOODY_GOLD` |
+| `SPELL_TEST_FOREST`（検証用呪文（森）） | — | 検証用建物を持つ文明が、自国の領土の水に隣接したタイルで、資金 5 で森を作り、検証用毒を外す（どちらかが効けば使える）。使えないときも無効のボタンで出る。実行済みになる |
+| `SPELL_TEST_FORT`（検証用呪文（砦）） | — | 検証用文明の、検証用昇進を持たないユニット（開拓者など）が、検証用昇進を持つ自国のユニットと同じタイルにいるとき、森かジャングルのタイルに砦を作る。使えないときも無効のボタンで出る（同じタイルの条件を満たさないとボタンは出ない）。実行済みになる |
+| `SPELL_TEST_REFRESH`（検証用呪文（再実行）） | — | 検証用文明のユニットが、砦のタイルで、資金 20 で実行済みを取り消す（`bIgnoreHasCasted`・`bRemoveHasCasted`）。実行済みでないときは無効のボタン（砦のタイルでないとボタンは出ない） |
 
 検証用文明が `CIVIC_TEST` を採用したあと、白兵戦ユニット（都市で生産）で期待される値: 生産直後の経験値 5（志向 +2、白兵戦 +2、社会制度 +1。その後は毎ターン +1 で 10 まで増える）、ユニット A → B のアップグレード割引 75%（志向 50% + 社会制度 25%）、`PROMOTION_TEST` が付く
 
@@ -294,3 +314,4 @@ BtS 本体の修正:
 - 2026-11-01: 志向の `iCityRadiusChange`（都市圏の半径 第 2 段階）と都市画面のカメラ（3 周目を働かせられる都市だけ引く）をゲーム内で確認。近くの都市の文化で広がった国境のタイルを 3 周目で働かせられる都市も引く（文明単位の国境なので仕様どおり）
 - 2026-11-01: 建物の `iPlotRadius`（都市圏の半径 第 3 段階）をゲーム内で確認（日本で検証用建物（都市圏）を建てた都市だけ 3 周目まで広がり、取り除くと戻る）
 - 2026-11-01: 呪文の第 1 段階（`CIV4SpellInfos.xml`、行動ボタン、基本の条件、`PyRequirement` / `PyResult`、実行済み）をゲーム内で確認（検証用呪文（資金）・検証用呪文（昇進））
+- 2026-11-01: 呪文の第 2 段階 a（術者自身・今いるタイル・今いる都市への効果と、建物・地形の特徴・施設・同じタイルのユニットなどの前提）をゲーム内で確認（検証用呪文（変身）・（都市）・（森）・（砦）・（再実行））

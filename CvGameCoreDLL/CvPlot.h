@@ -83,6 +83,7 @@ public:
 	bool isAdjacentToArea(const CvArea* pArea) const;																						// Exposed to Python
 	bool shareAdjacentArea( const CvPlot* pPlot) const;																					// Exposed to Python
 	bool isAdjacentToLand() const;																															// Exposed to Python 
+	bool isAdjacentToWater() const;		// added by this mod (spells, same as FFH2)
 	bool isCoastalLand(int iMinWaterSize = -1) const;																																	// Exposed to Python
 
 	bool isVisibleWorked() const;

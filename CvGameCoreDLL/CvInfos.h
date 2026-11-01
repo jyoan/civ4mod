@@ -629,12 +629,42 @@ public:
 	int getTechPrereq() const;						// Exposed to Python
 	int getCivilizationPrereq() const;				// Exposed to Python
 	int getCasterMinLevel() const;					// Exposed to Python
+	int getUnitInStackPrereq() const;				// Exposed to Python
+	int getBuildingPrereq() const;					// Exposed to Python
+	int getBuildingClassOwnedPrereq() const;		// Exposed to Python
+	int getCorporationPrereq() const;				// Exposed to Python
+	int getFeatureOrPrereq1() const;				// Exposed to Python
+	int getFeatureOrPrereq2() const;				// Exposed to Python
+	int getImprovementPrereq() const;				// Exposed to Python
+	int getPromotionInStackPrereq() const;			// Exposed to Python
+	int getStateReligionPrereq() const;				// Exposed to Python
 
 	bool isInCityOnly() const;						// Exposed to Python
 	bool isInBordersOnly() const;					// Exposed to Python
+	bool isAdjacentToWaterOnly() const;				// Exposed to Python
 	bool isHasCasted() const;						// Exposed to Python
 	bool isIgnoreHasCasted() const;					// Exposed to Python
 	bool isDisplayWhenDisabled() const;				// Exposed to Python
+
+	// Effects (spell stage 2a)
+	int getCost() const;							// Exposed to Python
+	int getAddPromotionType1() const;				// Exposed to Python
+	int getAddPromotionType2() const;				// Exposed to Python
+	int getAddPromotionType3() const;				// Exposed to Python
+	int getRemovePromotionType1() const;			// Exposed to Python
+	int getRemovePromotionType2() const;			// Exposed to Python
+	int getRemovePromotionType3() const;			// Exposed to Python
+	int getConvertUnitType() const;					// Exposed to Python
+	int getCreateBuildingType() const;				// Exposed to Python
+	int getCreateFeatureType() const;				// Exposed to Python
+	int getCreateImprovementType() const;			// Exposed to Python
+	int getSpreadReligion() const;					// Exposed to Python
+	int getChangePopulation() const;				// Exposed to Python
+	int getEffect() const;							// Exposed to Python
+	bool isBuffCasterOnly() const;					// Exposed to Python
+	bool isSacrificeCaster() const;					// Exposed to Python
+	bool isRemoveHasCasted() const;					// Exposed to Python
+	const TCHAR* getSound() const;					// Exposed to Python
 
 	const TCHAR* getPyRequirement() const;			// Exposed to Python
 	const TCHAR* getPyResult() const;				// Exposed to Python
@@ -655,14 +685,43 @@ protected:
 	int m_iTechPrereq;
 	int m_iCivilizationPrereq;
 	int m_iCasterMinLevel;
+	int m_iUnitInStackPrereq;
+	int m_iBuildingPrereq;
+	int m_iBuildingClassOwnedPrereq;
+	int m_iCorporationPrereq;
+	int m_iFeatureOrPrereq1;
+	int m_iFeatureOrPrereq2;
+	int m_iImprovementPrereq;
+	int m_iPromotionInStackPrereq;
+	int m_iStateReligionPrereq;
 	int m_iCommandType;
+
+	int m_iCost;
+	int m_iAddPromotionType1;
+	int m_iAddPromotionType2;
+	int m_iAddPromotionType3;
+	int m_iRemovePromotionType1;
+	int m_iRemovePromotionType2;
+	int m_iRemovePromotionType3;
+	int m_iConvertUnitType;
+	int m_iCreateBuildingType;
+	int m_iCreateFeatureType;
+	int m_iCreateImprovementType;
+	int m_iSpreadReligion;
+	int m_iChangePopulation;
+	int m_iEffect;
 
 	bool m_bInCityOnly;
 	bool m_bInBordersOnly;
+	bool m_bAdjacentToWaterOnly;
 	bool m_bHasCasted;
 	bool m_bIgnoreHasCasted;
 	bool m_bDisplayWhenDisabled;
+	bool m_bBuffCasterOnly;
+	bool m_bSacrificeCaster;
+	bool m_bRemoveHasCasted;
 
+	CvString m_szSound;
 	CvString m_szPyRequirement;
 	CvString m_szPyResult;
 

@@ -2366,6 +2366,33 @@ m_iUnitCombatPrereq(NO_UNITCOMBAT),
 m_iTechPrereq(NO_TECH),
 m_iCivilizationPrereq(NO_CIVILIZATION),
 m_iCasterMinLevel(0),
+m_iUnitInStackPrereq(NO_UNIT),
+m_iBuildingPrereq(NO_BUILDING),
+m_iBuildingClassOwnedPrereq(NO_BUILDINGCLASS),
+m_iCorporationPrereq(NO_CORPORATION),
+m_iFeatureOrPrereq1(NO_FEATURE),
+m_iFeatureOrPrereq2(NO_FEATURE),
+m_iImprovementPrereq(NO_IMPROVEMENT),
+m_iPromotionInStackPrereq(NO_PROMOTION),
+m_iStateReligionPrereq(NO_RELIGION),
+m_iCost(0),
+m_iAddPromotionType1(NO_PROMOTION),
+m_iAddPromotionType2(NO_PROMOTION),
+m_iAddPromotionType3(NO_PROMOTION),
+m_iRemovePromotionType1(NO_PROMOTION),
+m_iRemovePromotionType2(NO_PROMOTION),
+m_iRemovePromotionType3(NO_PROMOTION),
+m_iConvertUnitType(NO_UNIT),
+m_iCreateBuildingType(NO_BUILDING),
+m_iCreateFeatureType(NO_FEATURE),
+m_iCreateImprovementType(NO_IMPROVEMENT),
+m_iSpreadReligion(NO_RELIGION),
+m_iChangePopulation(0),
+m_iEffect(NO_EFFECT),
+m_bAdjacentToWaterOnly(false),
+m_bBuffCasterOnly(false),
+m_bSacrificeCaster(false),
+m_bRemoveHasCasted(false),
 m_iCommandType(NO_COMMAND),
 m_bInCityOnly(false),
 m_bInBordersOnly(false),
@@ -2419,6 +2446,51 @@ int CvSpellInfo::getCasterMinLevel() const
 	return m_iCasterMinLevel;
 }
 
+int CvSpellInfo::getUnitInStackPrereq() const
+{
+	return m_iUnitInStackPrereq;
+}
+
+int CvSpellInfo::getBuildingPrereq() const
+{
+	return m_iBuildingPrereq;
+}
+
+int CvSpellInfo::getBuildingClassOwnedPrereq() const
+{
+	return m_iBuildingClassOwnedPrereq;
+}
+
+int CvSpellInfo::getCorporationPrereq() const
+{
+	return m_iCorporationPrereq;
+}
+
+int CvSpellInfo::getFeatureOrPrereq1() const
+{
+	return m_iFeatureOrPrereq1;
+}
+
+int CvSpellInfo::getFeatureOrPrereq2() const
+{
+	return m_iFeatureOrPrereq2;
+}
+
+int CvSpellInfo::getImprovementPrereq() const
+{
+	return m_iImprovementPrereq;
+}
+
+int CvSpellInfo::getPromotionInStackPrereq() const
+{
+	return m_iPromotionInStackPrereq;
+}
+
+int CvSpellInfo::getStateReligionPrereq() const
+{
+	return m_iStateReligionPrereq;
+}
+
 bool CvSpellInfo::isInCityOnly() const
 {
 	return m_bInCityOnly;
@@ -2442,6 +2514,101 @@ bool CvSpellInfo::isIgnoreHasCasted() const
 bool CvSpellInfo::isDisplayWhenDisabled() const
 {
 	return m_bDisplayWhenDisabled;
+}
+
+bool CvSpellInfo::isAdjacentToWaterOnly() const
+{
+	return m_bAdjacentToWaterOnly;
+}
+
+bool CvSpellInfo::isBuffCasterOnly() const
+{
+	return m_bBuffCasterOnly;
+}
+
+bool CvSpellInfo::isSacrificeCaster() const
+{
+	return m_bSacrificeCaster;
+}
+
+bool CvSpellInfo::isRemoveHasCasted() const
+{
+	return m_bRemoveHasCasted;
+}
+
+int CvSpellInfo::getCost() const
+{
+	return m_iCost;
+}
+
+int CvSpellInfo::getAddPromotionType1() const
+{
+	return m_iAddPromotionType1;
+}
+
+int CvSpellInfo::getAddPromotionType2() const
+{
+	return m_iAddPromotionType2;
+}
+
+int CvSpellInfo::getAddPromotionType3() const
+{
+	return m_iAddPromotionType3;
+}
+
+int CvSpellInfo::getRemovePromotionType1() const
+{
+	return m_iRemovePromotionType1;
+}
+
+int CvSpellInfo::getRemovePromotionType2() const
+{
+	return m_iRemovePromotionType2;
+}
+
+int CvSpellInfo::getRemovePromotionType3() const
+{
+	return m_iRemovePromotionType3;
+}
+
+int CvSpellInfo::getConvertUnitType() const
+{
+	return m_iConvertUnitType;
+}
+
+int CvSpellInfo::getCreateBuildingType() const
+{
+	return m_iCreateBuildingType;
+}
+
+int CvSpellInfo::getCreateFeatureType() const
+{
+	return m_iCreateFeatureType;
+}
+
+int CvSpellInfo::getCreateImprovementType() const
+{
+	return m_iCreateImprovementType;
+}
+
+int CvSpellInfo::getSpreadReligion() const
+{
+	return m_iSpreadReligion;
+}
+
+int CvSpellInfo::getChangePopulation() const
+{
+	return m_iChangePopulation;
+}
+
+int CvSpellInfo::getEffect() const
+{
+	return m_iEffect;
+}
+
+const TCHAR* CvSpellInfo::getSound() const
+{
+	return m_szSound;
 }
 
 const TCHAR* CvSpellInfo::getPyRequirement() const
@@ -2500,6 +2667,77 @@ bool CvSpellInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bHasCasted, "bHasCasted");
 	pXML->GetChildXmlValByName(&m_bIgnoreHasCasted, "bIgnoreHasCasted");
 	pXML->GetChildXmlValByName(&m_bDisplayWhenDisabled, "bDisplayWhenDisabled");
+
+	pXML->GetChildXmlValByName(szTextVal, "UnitInStackPrereq");
+	m_iUnitInStackPrereq = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "BuildingPrereq");
+	m_iBuildingPrereq = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "BuildingClassOwnedPrereq");
+	m_iBuildingClassOwnedPrereq = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "CorporationPrereq");
+	m_iCorporationPrereq = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "FeatureOrPrereq1");
+	m_iFeatureOrPrereq1 = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "FeatureOrPrereq2");
+	m_iFeatureOrPrereq2 = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "ImprovementPrereq");
+	m_iImprovementPrereq = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "PromotionInStackPrereq");
+	m_iPromotionInStackPrereq = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "StateReligionPrereq");
+	m_iStateReligionPrereq = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "AddPromotionType1");
+	m_iAddPromotionType1 = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "AddPromotionType2");
+	m_iAddPromotionType2 = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "AddPromotionType3");
+	m_iAddPromotionType3 = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "RemovePromotionType1");
+	m_iRemovePromotionType1 = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "RemovePromotionType2");
+	m_iRemovePromotionType2 = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "RemovePromotionType3");
+	m_iRemovePromotionType3 = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "ConvertUnitType");
+	m_iConvertUnitType = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "CreateBuildingType");
+	m_iCreateBuildingType = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "CreateFeatureType");
+	m_iCreateFeatureType = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "CreateImprovementType");
+	m_iCreateImprovementType = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "SpreadReligion");
+	m_iSpreadReligion = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "Effect");
+	m_iEffect = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(&m_iCost, "iCost");
+	pXML->GetChildXmlValByName(&m_iChangePopulation, "iChangePopulation");
+	pXML->GetChildXmlValByName(&m_bAdjacentToWaterOnly, "bAdjacentToWaterOnly");
+	pXML->GetChildXmlValByName(&m_bBuffCasterOnly, "bBuffCasterOnly");
+	pXML->GetChildXmlValByName(&m_bSacrificeCaster, "bSacrificeCaster");
+	pXML->GetChildXmlValByName(&m_bRemoveHasCasted, "bRemoveHasCasted");
+	pXML->GetChildXmlValByName(m_szSound, "Sound");
 
 	pXML->GetChildXmlValByName(m_szPyRequirement, "PyRequirement");
 	pXML->GetChildXmlValByName(m_szPyResult, "PyResult");

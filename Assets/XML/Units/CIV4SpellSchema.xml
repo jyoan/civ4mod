@@ -12,16 +12,44 @@
 	<ElementType name="UnitCombatPrereq" content="textOnly"/>
 	<ElementType name="UnitClassPrereq" content="textOnly"/>
 	<ElementType name="UnitPrereq" content="textOnly"/>
+	<ElementType name="UnitInStackPrereq" content="textOnly"/>
+	<ElementType name="BuildingPrereq" content="textOnly"/>
+	<ElementType name="BuildingClassOwnedPrereq" content="textOnly"/>
 	<ElementType name="CivilizationPrereq" content="textOnly"/>
+	<ElementType name="CorporationPrereq" content="textOnly"/>
+	<ElementType name="FeatureOrPrereq1" content="textOnly"/>
+	<ElementType name="FeatureOrPrereq2" content="textOnly"/>
+	<ElementType name="ImprovementPrereq" content="textOnly"/>
+	<ElementType name="PromotionInStackPrereq" content="textOnly"/>
+	<ElementType name="StateReligionPrereq" content="textOnly"/>
 	<ElementType name="TechPrereq" content="textOnly"/>
 	<ElementType name="iCasterMinLevel" content="textOnly" dt:type="int"/>
+	<ElementType name="bAdjacentToWaterOnly" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bInBordersOnly" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bInCityOnly" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bIgnoreHasCasted" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bHasCasted" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bSacrificeCaster" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iCost" content="textOnly" dt:type="int"/>
+	<ElementType name="ConvertUnitType" content="textOnly"/>
+	<ElementType name="CreateBuildingType" content="textOnly"/>
+	<ElementType name="CreateFeatureType" content="textOnly"/>
+	<ElementType name="CreateImprovementType" content="textOnly"/>
+	<ElementType name="SpreadReligion" content="textOnly"/>
+	<ElementType name="bRemoveHasCasted" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iChangePopulation" content="textOnly" dt:type="int"/>
+	<ElementType name="bBuffCasterOnly" content="textOnly" dt:type="boolean"/>
 	<ElementType name="PyResult" content="textOnly"/>
 	<ElementType name="PyRequirement" content="textOnly"/>
+	<ElementType name="AddPromotionType1" content="textOnly"/>
+	<ElementType name="AddPromotionType2" content="textOnly"/>
+	<ElementType name="AddPromotionType3" content="textOnly"/>
+	<ElementType name="RemovePromotionType1" content="textOnly"/>
+	<ElementType name="RemovePromotionType2" content="textOnly"/>
+	<ElementType name="RemovePromotionType3" content="textOnly"/>
 	<ElementType name="bDisplayWhenDisabled" content="textOnly" dt:type="boolean"/>
+	<ElementType name="Effect" content="textOnly"/>
+	<ElementType name="Sound" content="textOnly"/>
 	<ElementType name="HotKey" content="textOnly"/>
 	<ElementType name="bAltDown" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bShiftDown" content="textOnly" dt:type="boolean"/>
@@ -40,16 +68,44 @@
 		<element type="UnitCombatPrereq" minOccurs="0"/>
 		<element type="UnitClassPrereq" minOccurs="0"/>
 		<element type="UnitPrereq" minOccurs="0"/>
+		<element type="UnitInStackPrereq" minOccurs="0"/>
+		<element type="BuildingPrereq" minOccurs="0"/>
+		<element type="BuildingClassOwnedPrereq" minOccurs="0"/>
 		<element type="CivilizationPrereq" minOccurs="0"/>
+		<element type="CorporationPrereq" minOccurs="0"/>
+		<element type="FeatureOrPrereq1" minOccurs="0"/>
+		<element type="FeatureOrPrereq2" minOccurs="0"/>
+		<element type="ImprovementPrereq" minOccurs="0"/>
+		<element type="PromotionInStackPrereq" minOccurs="0"/>
+		<element type="StateReligionPrereq" minOccurs="0"/>
 		<element type="TechPrereq" minOccurs="0"/>
 		<element type="iCasterMinLevel" minOccurs="0"/>
+		<element type="bAdjacentToWaterOnly" minOccurs="0"/>
 		<element type="bInBordersOnly" minOccurs="0"/>
 		<element type="bInCityOnly" minOccurs="0"/>
 		<element type="bIgnoreHasCasted" minOccurs="0"/>
 		<element type="bHasCasted" minOccurs="0"/>
+		<element type="bSacrificeCaster" minOccurs="0"/>
+		<element type="iCost" minOccurs="0"/>
+		<element type="ConvertUnitType" minOccurs="0"/>
+		<element type="CreateBuildingType" minOccurs="0"/>
+		<element type="CreateFeatureType" minOccurs="0"/>
+		<element type="CreateImprovementType" minOccurs="0"/>
+		<element type="SpreadReligion" minOccurs="0"/>
+		<element type="bRemoveHasCasted" minOccurs="0"/>
+		<element type="iChangePopulation" minOccurs="0"/>
+		<element type="bBuffCasterOnly" minOccurs="0"/>
 		<element type="PyResult" minOccurs="0"/>
 		<element type="PyRequirement" minOccurs="0"/>
+		<element type="AddPromotionType1" minOccurs="0"/>
+		<element type="AddPromotionType2" minOccurs="0"/>
+		<element type="AddPromotionType3" minOccurs="0"/>
+		<element type="RemovePromotionType1" minOccurs="0"/>
+		<element type="RemovePromotionType2" minOccurs="0"/>
+		<element type="RemovePromotionType3" minOccurs="0"/>
 		<element type="bDisplayWhenDisabled" minOccurs="0"/>
+		<element type="Effect" minOccurs="0"/>
+		<element type="Sound" minOccurs="0"/>
 		<element type="HotKey" minOccurs="0"/>
 		<element type="bAltDown" minOccurs="0"/>
 		<element type="bShiftDown" minOccurs="0"/>

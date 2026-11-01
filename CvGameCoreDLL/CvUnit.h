@@ -103,6 +103,15 @@ public:
 	void cast(int spell);																						// Exposed to Python
 	bool isHasCasted() const;																					// Exposed to Python
 	void setHasCasted(bool bNewValue);																			// Exposed to Python
+	bool canAddPromotion(int spell) const;
+	bool canRemovePromotion(int spell) const;
+	bool canCreateBuilding(int spell) const;
+	bool canCreateFeature(int spell) const;
+	bool canCreateImprovement(int spell) const;
+	bool canSpreadReligion(int spell) const;
+	void castAddPromotion(int spell);
+	void castRemovePromotion(int spell);
+	void castConvertUnit(int spell);
 
 	FAStarNode* getPathLastNode() const;
 	CvPlot* getPathEndTurnPlot() const;																																						// Exposed to Python

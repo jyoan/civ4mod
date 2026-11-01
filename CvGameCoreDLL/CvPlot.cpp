@@ -1161,6 +1161,31 @@ bool CvPlot::isAdjacentToLand() const
 }
 
 
+// Added by this mod (spells, same as FFH2)
+bool CvPlot::isAdjacentToWater() const
+{
+	PROFILE_FUNC();
+
+	CvPlot* pAdjacentPlot;
+	int iI;
+
+	for (iI = 0; iI < NUM_DIRECTION_TYPES; ++iI)
+	{
+		pAdjacentPlot = plotDirection(getX_INLINE(), getY_INLINE(), ((DirectionTypes)iI));
+
+		if (pAdjacentPlot != NULL)
+		{
+			if (pAdjacentPlot->isWater())
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
 bool CvPlot::isCoastalLand(int iMinWaterSize) const
 {
 	PROFILE_FUNC();

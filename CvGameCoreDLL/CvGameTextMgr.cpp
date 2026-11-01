@@ -4606,6 +4606,11 @@ void CvGameTextMgr::parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell,
 	}
 
 	CvSpellInfo& kSpell = GC.getSpellInfo(eSpell);
+	int aiAddPromotions[3] = {kSpell.getAddPromotionType1(), kSpell.getAddPromotionType2(), kSpell.getAddPromotionType3()};
+	int aiRemovePromotions[3] = {kSpell.getRemovePromotionType1(), kSpell.getRemovePromotionType2(), kSpell.getRemovePromotionType3()};
+	int iI;
+
+	// Prerequisites
 
 	if (kSpell.getCivilizationPrereq() != NO_CIVILIZATION)
 	{
@@ -4617,6 +4622,12 @@ void CvGameTextMgr::parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell,
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_TECH_PREREQ", GC.getTechInfo((TechTypes)kSpell.getTechPrereq()).getTextKeyWide()));
+	}
+
+	if (kSpell.getStateReligionPrereq() != NO_RELIGION)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_STATE_RELIGION_PREREQ", GC.getReligionInfo((ReligionTypes)kSpell.getStateReligionPrereq()).getTextKeyWide()));
 	}
 
 	if (kSpell.getUnitPrereq() != NO_UNIT)
@@ -4655,10 +4666,132 @@ void CvGameTextMgr::parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell,
 		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_CASTER_MIN_LEVEL", kSpell.getCasterMinLevel()));
 	}
 
+	if (kSpell.getBuildingClassOwnedPrereq() != NO_BUILDINGCLASS)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_BUILDINGCLASS_OWNED_PREREQ", GC.getBuildingClassInfo((BuildingClassTypes)kSpell.getBuildingClassOwnedPrereq()).getTextKeyWide()));
+	}
+
+	if (kSpell.getBuildingPrereq() != NO_BUILDING)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_BUILDING_PREREQ", GC.getBuildingInfo((BuildingTypes)kSpell.getBuildingPrereq()).getTextKeyWide()));
+	}
+
+	if (kSpell.getCorporationPrereq() != NO_CORPORATION)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_CORPORATION_PREREQ", GC.getCorporationInfo((CorporationTypes)kSpell.getCorporationPrereq()).getTextKeyWide()));
+	}
+
+	if (kSpell.getFeatureOrPrereq1() != NO_FEATURE)
+	{
+		szBuffer.append(pcNewline);
+		if (kSpell.getFeatureOrPrereq2() == NO_FEATURE)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_FEATURE_PREREQ", GC.getFeatureInfo((FeatureTypes)kSpell.getFeatureOrPrereq1()).getTextKeyWide()));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_FEATURE2_PREREQ", GC.getFeatureInfo((FeatureTypes)kSpell.getFeatureOrPrereq1()).getTextKeyWide(), GC.getFeatureInfo((FeatureTypes)kSpell.getFeatureOrPrereq2()).getTextKeyWide()));
+		}
+	}
+
+	if (kSpell.getImprovementPrereq() != NO_IMPROVEMENT)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_IMPROVEMENT_PREREQ", GC.getImprovementInfo((ImprovementTypes)kSpell.getImprovementPrereq()).getTextKeyWide()));
+	}
+
+	if (kSpell.getPromotionInStackPrereq() != NO_PROMOTION)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_PROMOTION_IN_STACK_PREREQ", GC.getPromotionInfo((PromotionTypes)kSpell.getPromotionInStackPrereq()).getTextKeyWide()));
+	}
+
+	if (kSpell.getUnitInStackPrereq() != NO_UNIT)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_UNIT_IN_STACK_PREREQ", GC.getUnitInfo((UnitTypes)kSpell.getUnitInStackPrereq()).getTextKeyWide()));
+	}
+
+	// Effects (promotions only on the caster so far)
+
+	if (kSpell.isBuffCasterOnly())
+	{
+		for (iI = 0; iI < 3; iI++)
+		{
+			if (aiAddPromotions[iI] != NO_PROMOTION)
+			{
+				szBuffer.append(pcNewline);
+				szBuffer.append(gDLL->getText("TXT_KEY_SPELL_ADD_PROMOTION_CASTER", GC.getPromotionInfo((PromotionTypes)aiAddPromotions[iI]).getTextKeyWide()));
+			}
+		}
+
+		for (iI = 0; iI < 3; iI++)
+		{
+			if (aiRemovePromotions[iI] != NO_PROMOTION)
+			{
+				szBuffer.append(pcNewline);
+				szBuffer.append(gDLL->getText("TXT_KEY_SPELL_REMOVE_PROMOTION_CASTER", GC.getPromotionInfo((PromotionTypes)aiRemovePromotions[iI]).getTextKeyWide()));
+			}
+		}
+	}
+
+	if (kSpell.getConvertUnitType() != NO_UNIT)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_CONVERT_UNIT", GC.getUnitInfo((UnitTypes)kSpell.getConvertUnitType()).getTextKeyWide()));
+	}
+
+	if (kSpell.getCreateBuildingType() != NO_BUILDING)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_CREATE_BUILDING", GC.getBuildingInfo((BuildingTypes)kSpell.getCreateBuildingType()).getTextKeyWide()));
+	}
+
+	if (kSpell.getCreateFeatureType() != NO_FEATURE)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_CREATE_FEATURE", GC.getFeatureInfo((FeatureTypes)kSpell.getCreateFeatureType()).getTextKeyWide()));
+	}
+
+	if (kSpell.getCreateImprovementType() != NO_IMPROVEMENT)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_CREATE_IMPROVEMENT", GC.getImprovementInfo((ImprovementTypes)kSpell.getCreateImprovementType()).getTextKeyWide()));
+	}
+
+	if (kSpell.getSpreadReligion() != NO_RELIGION)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_SPREAD_RELIGION", GC.getReligionInfo((ReligionTypes)kSpell.getSpreadReligion()).getTextKeyWide()));
+	}
+
+	if (kSpell.getChangePopulation() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_CHANGE_POPULATION", kSpell.getChangePopulation()));
+	}
+
+	if (kSpell.getCost() < 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_GAIN_GOLD", -(kSpell.getCost())));
+	}
+
 	if (wcslen(kSpell.getHelp()) > 0)
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(kSpell.getHelp());
+	}
+
+	// Where and how
+
+	if (kSpell.isAdjacentToWaterOnly())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_ADJACENT_TO_WATER_ONLY"));
 	}
 
 	if (kSpell.isInBordersOnly() && kSpell.isInCityOnly())
@@ -4675,6 +4808,24 @@ void CvGameTextMgr::parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell,
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_IN_CITY_ONLY"));
+	}
+
+	if (kSpell.isRemoveHasCasted())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_REMOVE_HAS_CASTED"));
+	}
+
+	if (kSpell.getCost() > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_COST", kSpell.getCost()));
+	}
+
+	if (kSpell.isSacrificeCaster())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_SACRIFICE_CASTER"));
 	}
 }
 
