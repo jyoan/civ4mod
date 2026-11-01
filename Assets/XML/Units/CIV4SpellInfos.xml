@@ -98,5 +98,47 @@
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Button>Art/Interface/Buttons/Actions/Wake.dds</Button>
 		</SpellInfo>
+		<SpellInfo>
+			<Type>SPELL_TEST_BLESS</Type>
+			<Description>TXT_KEY_SPELL_TEST_BLESS</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<CivilizationPrereq>CIVILIZATION_TEST</CivilizationPrereq>
+			<bHasCasted>1</bHasCasted>
+			<iRange>1</iRange>
+			<bImmuneEnemy>1</bImmuneEnemy>
+			<AddPromotionType1>PROMOTION_TEST_STATE2</AddPromotionType1>
+			<RemovePromotionType1>PROMOTION_TEST_POISON</RemovePromotionType1>
+			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
+			<Effect>EFFECT_PROMOTION_UNIT</Effect>
+			<Button>,Art/Interface/Buttons/Promotions/Medic1.dds,Art/Interface/Buttons/Promotions_Atlas.dds,3,4</Button>
+		</SpellInfo>
+		<SpellInfo>
+			<Type>SPELL_TEST_FIREBALL</Type>
+			<Description>TXT_KEY_SPELL_TEST_FIREBALL</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<CivilizationPrereq>CIVILIZATION_TEST</CivilizationPrereq>
+			<bHasCasted>1</bHasCasted>
+			<iDamage>40</iDamage>
+			<iRange>1</iRange>
+			<bImmuneTeam>1</bImmuneTeam>
+			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
+			<Effect>EFFECT_ARTILLERY_SHELL_EXPLODE</Effect>
+			<Button>,Art/Interface/Buttons/Actions/Bombard.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,2,1</Button>
+		</SpellInfo>
+		<SpellInfo>
+			<Type>SPELL_TEST_SNARE</Type>
+			<Description>TXT_KEY_SPELL_TEST_SNARE</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<CivilizationPrereq>CIVILIZATION_TEST</CivilizationPrereq>
+			<bHasCasted>1</bHasCasted>
+			<iDamage>10</iDamage>
+			<iDamageLimit>25</iDamageLimit>
+			<iImmobileTurns>2</iImmobileTurns>
+			<iRange>2</iRange>
+			<bImmuneTeam>1</bImmuneTeam>
+			<bImmuneFlying>1</bImmuneFlying>
+			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
+			<Button>,Art/Interface/Buttons/Promotions/Ambush.dds,Art/Interface/Buttons/Promotions_Atlas.dds,2,1</Button>
+		</SpellInfo>
 	</SpellInfos>
 </Civ4SpellInfos>

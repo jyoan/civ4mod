@@ -666,6 +666,15 @@ public:
 	bool isRemoveHasCasted() const;					// Exposed to Python
 	const TCHAR* getSound() const;					// Exposed to Python
 
+	// Effects on the units in range (spell stage 2b)
+	int getRange() const;							// Exposed to Python
+	int getDamage() const;							// Exposed to Python
+	int getDamageLimit() const;						// Exposed to Python
+	int getImmobileTurns() const;					// Exposed to Python
+	bool isImmuneTeam() const;						// Exposed to Python
+	bool isImmuneEnemy() const;						// Exposed to Python
+	bool isImmuneFlying() const;					// Exposed to Python
+
 	const TCHAR* getPyRequirement() const;			// Exposed to Python
 	const TCHAR* getPyResult() const;				// Exposed to Python
 
@@ -710,6 +719,10 @@ protected:
 	int m_iSpreadReligion;
 	int m_iChangePopulation;
 	int m_iEffect;
+	int m_iRange;
+	int m_iDamage;
+	int m_iDamageLimit;
+	int m_iImmobileTurns;
 
 	bool m_bInCityOnly;
 	bool m_bInBordersOnly;
@@ -720,6 +733,9 @@ protected:
 	bool m_bBuffCasterOnly;
 	bool m_bSacrificeCaster;
 	bool m_bRemoveHasCasted;
+	bool m_bImmuneTeam;
+	bool m_bImmuneEnemy;
+	bool m_bImmuneFlying;
 
 	CvString m_szSound;
 	CvString m_szPyRequirement;

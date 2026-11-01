@@ -177,7 +177,7 @@ BtS は全都市が半径 2（21 タイル）固定。この Mod では都市ご
 
 ### 呪文
 
-FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・関数の名前は FFH2 と同じ。使えるのはユニットだけ。第 1 段階は土台と基本の条件、第 2 段階 a は XML だけで書ける効果のうち、術者自身・今いるタイル・今いる都市へのもの。周りのユニットへの効果（2b）、召喚・失敗・1 ゲーム 1 回など（2c）、AI、ペディアはまだない。
+FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・関数の名前は FFH2 と同じ。使えるのはユニットだけ。第 1 段階は土台と基本の条件、第 2 段階 a は XML だけで書ける効果のうち、術者自身・今いるタイル・今いる都市へのもの、第 2 段階 b は周りのユニットへのもの。召喚・失敗・1 ゲーム 1 回など（2c）、AI、ペディアはまだない。
 
 - XML: `Units\CIV4SpellInfos.xml`。Schema は FFH2 と同じく別ファイルの `Units\CIV4SpellSchema.xml`。昇進・ユニット・技術・文明を参照するので、`LoadPreMenuGlobals` で文明の後に読み込む。`CvSpellInfo` はストリーム版の `read` / `write` を持たない（キャッシュを使わない）
 - 行動ボタン: `SetGlobalActionInfo` が呪文ごとに `ACTIONSUBTYPE_SPELL` の行動を作る。コマンドは `COMMAND_CAST`、データは呪文の番号。ボタンを押すと、既存のコマンドのネットメッセージ（`GAMEMESSAGE_DO_COMMAND`）で全マシンの `CvUnit::doCommand` → `cast` が呼ばれる（マルチプレイでも同期する）。選択中のユニットはすべて実行する
@@ -193,10 +193,10 @@ FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・�
   8. `bAdjacentToWaterOnly`（周りの 8 タイルに水のタイル（海・湖）がある。川・オアシスは含まない。`CvPlot::isAdjacentToWater` は FFH2 と同じものを足した）・`bInBordersOnly`（自分の領土）・`bInCityOnly`（都市。他国の都市でも可）
   9. 効果の前提: `iChangePopulation` は自分の都市で、人口が 1 以上残ること（FFH2 はどの都市でも可）。`iCost` が正なら資金が足りること。`bRemoveHasCasted` は実行済みのユニットだけ。`CreateBuildingType` は建てられること（下記）
   10. `PyRequirement` があれば、その結果で決まる
-  11. なければ、効果のどれかがここで効くときだけ使える（効果のない呪文は使えない）: 昇進の付与（まだ持っていない）・除去（持っている）、変身、建物、地形の特徴・施設・宗教（作れる・広められる）、人口の増加、資金を得る（`iCost` が負。数えるのはこの Mod の追加）、`bRemoveHasCasted`、`PyResult`
-- `CvUnit::cast` の順（FFH2 と同じ）: 実行済みにする（`bHasCasted`）→ 昇進の付与・除去 → 変身 → 建物 → 地形の特徴 → 施設 → 宗教 → 実行済みの取り消し（`bRemoveHasCasted`）→ 資金（`iCost`）→ 人口 → 演出（`Effect`・`Sound`）とメッセージ（呪文の名前とボタン）→ `PyResult` → 術者が消える（`bSacrificeCaster`、遅延）
+  11. なければ、効果のどれかがここで効くときだけ使える（効果のない呪文は使えない）: 昇進の付与（まだ持っていない）・除去（持っている）、変身、建物、地形の特徴・施設・宗教（作れる・広められる）、人口の増加、資金を得る（`iCost` が負。数えるのはこの Mod の追加）、ダメージ・移動不能（効く相手がいる。FFH2 のダメージは相手がいなくても使える）、`bRemoveHasCasted`、`PyResult`
+- `CvUnit::cast` の順（FFH2 と同じ）: 実行済みにする（`bHasCasted`）→ 昇進の付与・除去 → 変身 → 建物 → 地形の特徴 → 施設 → 宗教 → ダメージ → 移動不能 → 実行済みの取り消し（`bRemoveHasCasted`）→ 資金（`iCost`）→ 人口 → 演出（`Effect`・`Sound`）とメッセージ（呪文の名前とボタン）→ `PyResult` → 術者が消える（`bSacrificeCaster`、遅延）
 - 効果の細部（第 2 段階 a）:
-  - `AddPromotionType1`〜`3` / `RemovePromotionType1`〜`3` は、今は `bBuffCasterOnly=1`（術者自身）のときだけ効く。0 のとき（`iRange` の範囲のユニット）は 2b で入れる
+  - `AddPromotionType1`〜`3` / `RemovePromotionType1`〜`3` は、`bBuffCasterOnly=1` なら術者自身、0 なら `iRange` の範囲のユニット（下記）
   - `ConvertUnitType`: 新しいユニットを作り、`CvUnit::convert` で経験値・昇進・実行済み・積み荷を引き継ぐ。新しいユニットはそのターン動けない（移動できないタイマー 1）。変身より後の効果と `PyResult` は元のユニット（遅延で消える）に対して働く
   - `CreateBuildingType`: 自分の都市だけ（FFH2 はどの都市でも可）。すでにその建物がある都市では、呪文全体が使えない。世界遺産などの数の制限は見ない
   - `CreateFeatureType`: 都市でなく、他チームの領土でなく、地形の特徴も施設もないタイル（FFH2 は施設があっても、文明が地形の特徴を保つなら可）。地形との組み合わせは `canHaveFeature`
@@ -204,6 +204,13 @@ FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・�
   - `SpreadReligion`: 今いる都市（他国の都市でも可。まだ創始されていない宗教でも広まる。FFH2 と同じ）
   - `iCost`: 正なら消費、負なら得る
   - `Effect`（`CIV4EffectInfos.xml` の `EFFECT_`）と `Sound`（`AS2D_` などのスクリプト）は、タイルが見えているマシンでだけ出る（演出なので向きの乱数は `ASyncRand`）
+- 周りのユニットへの効果（第 2 段階 b）:
+  - 範囲: 術者から縦横 `iRange` タイル以内の正方形（FFH2 と同じ。0 なら術者のタイルだけ）。昇進の付与・除去は術者のタイル（術者自身を含む）も含み、ダメージと移動不能は術者のタイルを除く（FFH2 と同じ）。対象は `CvUnit::getSpellTargets` で先に ID で集めてから効果を与える（輸送ユニットが倒れると積み荷がその場で消えるため）
+  - 対象にならないユニット（`CvUnit::isImmuneToSpell`）: `bImmuneTeam` なら自チーム、`bImmuneEnemy` なら交戦中の相手、`bImmuneFlying` なら航空ユニット（FFH2 の飛行ユニットの代わり）。**交戦中でない他チームのユニットは常に対象外**（FFH2 の `bImmuneNeutral` が常に有効な扱い。FFH2 は中立のユニットにダメージを与えると宣戦する。`bImmuneNeutral`・`bCausesWar` は入れていない）。私掠船など国籍を隠すユニットは、BtS の戦闘と同じく交戦中の扱い（`CvUnit::isEnemy`）。他チームのユニットは、術者のチームから見えているタイルにいて、見えているもの（潜水艦などの見えないユニットは除く）だけ
+  - 昇進の付与は兵科のあるユニットだけ（FFH2 と同じ。開拓者・労働者には付かない）。昇進の `UnitCombats` は見ない（この Mod のほかの昇進のタグと同じ。FFH2 は見る）。除去は兵科を問わない
+  - `iDamage`: 対象ごとに `iDamage` の 50〜149%（`iDamage / 2 + 乱数(iDamage)`）のダメージ。ただし `iDamageLimit`（省略時 100）を超えない。100 に達すると倒れる（倒したのは術者の持ち主）。FFH2 の、防御力・レベル・都市の防御・ダメージの種類（`DamageType`）による軽減は入れていない。メッセージは両方の持ち主に出る（`TXT_KEY_MESSAGE_SPELL_DAMAGED` / `KILLED`）
+  - `iImmobileTurns`: まだ移動できないタイマーが 0 の対象を、**その持ち主のターンで数えて** ○ ターン動けなくする（今がその持ち主のターンなら、そのターンを含む）。タイマーは持ち主のターンの開始時に減るので、持ち主のターンがまだ来ていなければ 1 多く設定する。FFH2 はそのまま設定するので、1 だと後で手番の来る相手には効かない。動けないユニットも防御はする。ユニットの説明に「移動不能」（`TXT_KEY_UNIT_IMMOBILE`）と出る
+  - 説明文: 範囲の昇進・ダメージ・移動不能の行と、対象外の行（自チーム・交戦中の相手・交戦中でない他国（常に表示）・航空ユニット）
 - 実行済み（`m_bHasCasted`）はターンの開始時（`CvUnit::doTurn`）に戻り、アップグレードでは引き継ぐ（`CvUnit::convert`）。ユニットの説明に「実行済み」（`TXT_KEY_UNIT_HAS_CASTED`）と出る。セーブは `CvUnit` の `uiFlag=3`（2 以下のセーブは実行済みでない扱い）
 - Python: `EntryPoints\CvSpellInterface.py`（`CvDefines.h` の `PYSpellModule`）。DLL は `canCast([pCaster, eSpell])` / `cast([pCaster, eSpell])` を呼び、それぞれが `PyRequirement` / `PyResult` の文字列を `eval` する（FFH2 0.41 と同じ。インストール済みの FFH2（Denev さんの版）は関数名だけを書く別の方式）。式の中では `pCaster`（CyUnit）と `eSpell` が使えるので、引数つきの共通関数を XML から呼べる（例: `spellGainGold(pCaster, 25)`）。今ある共通関数は `reqNotHasPromotion`・`spellAddPromotion`・`spellGainGold`
 - `PyRequirement` はボタンを描くたびに各マシンで別々に呼ばれるので、ゲーム状態を変えない。`PyResult` で術者を消すときは遅延（`pCaster.kill(True, -1)`）にする（`cast` の後で `doCommand` がまだユニットを使うため）
@@ -247,6 +254,7 @@ FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・�
 | `CIV4PromotionInfos.xml` | `PromotionInfo/bRemovedWhenHealed`、`PromotionCombatApply`、`iPromotionCombatApplyChance`、`iFreeXPPerTurn`、`iFreeXPCap` | 第 2 段階（名前は FFH2 と同じ。`iPromotionCombatApplyChance` / `iFreeXPCap` だけ新規）。ターンの開始時（`doTurnPromotions`、回復の後）に、`iFreeXPPerTurn` の経験値を足し（戦闘の経験値ではないので補正・大将軍ポイントなし。**ユニットの経験値が `iFreeXPCap`（省略時 100）に達したらそれ以上増えない**）、`bRemovedWhenHealed` はダメージ 0 なら消える。`PromotionCombatApply`: 戦闘の後、生き残った相手に `iPromotionCombatApplyChance`%（省略時 100）でその昇進を与える（与える側が倒れていても与える。戦闘で消える昇進を外した後、勝利の効果の前）。`PromotionCombatApply` も `readPass2` で読む |
 | `CIV4PromotionInfos.xml` | `PromotionInfo/iGoldFromCombat`、`iCombatCapturePercent` | 第 3 段階（名前は FFH2 と同じ）。どちらも勝者の（戦闘中に持っていた）昇進の値を**足し算**する。`iGoldFromCombat`: 勝利すると合計が正なら資金を得る（メッセージ `TXT_KEY_MISC_GOLD_FROM_COMBAT`）。`iCombatCapturePercent`: 勝利すると合計 % で、倒したユニットと同じ種類のユニットを勝者のタイルに新しく作る（倒したユニットの昇進・経験値は引き継がない。新しいユニットと同じく志向の昇進の組などは付く。そのターンは動けない。メッセージは BtS の `TXT_KEY_MISC_YOU_CAPTURED_UNIT`）。捕獲しないのは、倒したのが動物（領土に入れないため）、陸と海などドメインが違う、陸のユニットが水上から勝った（船からの上陸攻撃）、勝者が蛮族のとき |
 | `CIV4SpellInfos.xml`（新規） | `SpellInfo` の `PromotionPrereq1` / `PromotionPrereq2`、`UnitPrereq`、`UnitClassPrereq`、`UnitCombatPrereq`、`CivilizationPrereq`、`TechPrereq`、`iCasterMinLevel`、`bInBordersOnly`、`bInCityOnly`、`bHasCasted`、`bIgnoreHasCasted`、`bDisplayWhenDisabled`、`PyRequirement`、`PyResult`（と `Type`・`Description`・`Civilopedia`・`Help`・`Button`・ホットキー） | 呪文（第 1 段階。名前は FFH2 と同じ）。仕組みは「呪文」の節 |
+| `CIV4SpellInfos.xml` | `SpellInfo` の `iRange`、`iDamage`、`iDamageLimit`、`iImmobileTurns`、`bImmuneTeam`、`bImmuneEnemy`、`bImmuneFlying`（と、`bBuffCasterOnly=0` の `AddPromotionType1`〜`3` / `RemovePromotionType1`〜`3`） | 呪文の第 2 段階 b（名前は FFH2 と同じ）。周りのユニットへの効果。交戦中でない他国のユニットは常に対象外など、FFH2 との違いは「呪文」の節 |
 | `CIV4SpellInfos.xml` | `SpellInfo` の前提 `UnitInStackPrereq`、`BuildingPrereq`、`BuildingClassOwnedPrereq`、`CorporationPrereq`、`FeatureOrPrereq1` / `2`、`ImprovementPrereq`、`PromotionInStackPrereq`、`StateReligionPrereq`、`bAdjacentToWaterOnly` と、効果 `iCost`、`AddPromotionType1`〜`3`、`RemovePromotionType1`〜`3`、`bBuffCasterOnly`、`ConvertUnitType`、`CreateBuildingType`、`CreateFeatureType`、`CreateImprovementType`、`SpreadReligion`、`iChangePopulation`、`bSacrificeCaster`、`bRemoveHasCasted`、`Effect`、`Sound` | 呪文の第 2 段階 a（名前は FFH2 と同じ）。術者自身・今いるタイル・今いる都市への効果。FFH2 との違い（自分の都市・領土に限るものなど）は「呪文」の節 |
 
 BtS 本体の修正:
@@ -279,6 +287,9 @@ BtS 本体の修正:
 | `SPELL_TEST_FOREST`（検証用呪文（森）） | — | 検証用建物を持つ文明が、自国の領土の水に隣接したタイルで、資金 5 で森を作り、検証用毒を外す（どちらかが効けば使える）。使えないときも無効のボタンで出る。実行済みになる |
 | `SPELL_TEST_FORT`（検証用呪文（砦）） | — | 検証用文明の、検証用昇進を持たないユニット（開拓者など）が、検証用昇進を持つ自国のユニットと同じタイルにいるとき、森かジャングルのタイルに砦を作る。使えないときも無効のボタンで出る（同じタイルの条件を満たさないとボタンは出ない）。実行済みになる |
 | `SPELL_TEST_REFRESH`（検証用呪文（再実行）） | — | 検証用文明のユニットが、砦のタイルで、資金 20 で実行済みを取り消す（`bIgnoreHasCasted`・`bRemoveHasCasted`）。実行済みでないときは無効のボタン（砦のタイルでないとボタンは出ない） |
+| `SPELL_TEST_BLESS`（検証用呪文（祝福）） | — | 検証用文明のユニットが、1 タイル以内の自国（と同じチーム）のユニットに検証用状態Ⅱを与え、検証用毒を外す（`bImmuneEnemy`。兵科のないユニットには状態Ⅱは付かない）。演出 `EFFECT_PROMOTION_UNIT`。使えないときも無効のボタンで出る。実行済みになる |
+| `SPELL_TEST_FIREBALL`（検証用呪文（火球）） | — | 検証用文明のユニットが、周囲 1 タイル（自分のタイルを除く）の交戦中の相手（動物・蛮族）に 40 前後のダメージ（`bImmuneTeam`。上限なしなので倒すこともある）。演出 `EFFECT_ARTILLERY_SHELL_EXPLODE`。使えないときも無効のボタンで出る。実行済みになる |
+| `SPELL_TEST_SNARE`（検証用呪文（足止め）） | — | 検証用文明のユニットが、周囲 2 タイル（自分のタイルを除く）の交戦中の相手を 2 ターン動けなくし、10 前後のダメージ（25 まで）を与える（`bImmuneTeam`・`bImmuneFlying`）。使えないときも無効のボタンで出る。実行済みになる |
 
 検証用文明が `CIVIC_TEST` を採用したあと、白兵戦ユニット（都市で生産）で期待される値: 生産直後の経験値 5（志向 +2、白兵戦 +2、社会制度 +1。その後は毎ターン +1 で 10 まで増える）、ユニット A → B のアップグレード割引 75%（志向 50% + 社会制度 25%）、`PROMOTION_TEST` が付く
 
@@ -315,3 +326,4 @@ BtS 本体の修正:
 - 2026-11-01: 建物の `iPlotRadius`（都市圏の半径 第 3 段階）をゲーム内で確認（日本で検証用建物（都市圏）を建てた都市だけ 3 周目まで広がり、取り除くと戻る）
 - 2026-11-01: 呪文の第 1 段階（`CIV4SpellInfos.xml`、行動ボタン、基本の条件、`PyRequirement` / `PyResult`、実行済み）をゲーム内で確認（検証用呪文（資金）・検証用呪文（昇進））
 - 2026-11-01: 呪文の第 2 段階 a（術者自身・今いるタイル・今いる都市への効果と、建物・地形の特徴・施設・同じタイルのユニットなどの前提）をゲーム内で確認（検証用呪文（変身）・（都市）・（森）・（砦）・（再実行））
+- 2026-11-01: 呪文の第 2 段階 b（周りのユニットへの昇進の付与・除去、ダメージ、移動不能と、対象外の条件）をゲーム内で確認（検証用呪文（祝福）・（火球）・（足止め））

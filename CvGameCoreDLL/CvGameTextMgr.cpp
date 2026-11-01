@@ -573,6 +573,12 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szString, const CvUnit* pUnit, 
 		szString.append(gDLL->getText("TXT_KEY_UNIT_HAS_CASTED"));
 	}
 
+	if (pUnit->getImmobileTimer() > 0)
+	{
+		szString.append(L", ");
+		szString.append(gDLL->getText("TXT_KEY_UNIT_IMMOBILE"));
+	}
+
 	/*if (!bOneLine)
 	{
 		if (pUnit->getUnitCombatType() != NO_UNITCOMBAT)
@@ -4715,26 +4721,92 @@ void CvGameTextMgr::parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell,
 		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_UNIT_IN_STACK_PREREQ", GC.getUnitInfo((UnitTypes)kSpell.getUnitInStackPrereq()).getTextKeyWide()));
 	}
 
-	// Effects (promotions only on the caster so far)
+	// Effects
 
-	if (kSpell.isBuffCasterOnly())
+	for (iI = 0; iI < 3; iI++)
 	{
-		for (iI = 0; iI < 3; iI++)
+		if (aiAddPromotions[iI] != NO_PROMOTION)
 		{
-			if (aiAddPromotions[iI] != NO_PROMOTION)
+			szBuffer.append(pcNewline);
+
+			if (kSpell.isBuffCasterOnly())
 			{
-				szBuffer.append(pcNewline);
 				szBuffer.append(gDLL->getText("TXT_KEY_SPELL_ADD_PROMOTION_CASTER", GC.getPromotionInfo((PromotionTypes)aiAddPromotions[iI]).getTextKeyWide()));
 			}
-		}
-
-		for (iI = 0; iI < 3; iI++)
-		{
-			if (aiRemovePromotions[iI] != NO_PROMOTION)
+			else if (kSpell.getRange() <= 0)
 			{
-				szBuffer.append(pcNewline);
+				szBuffer.append(gDLL->getText("TXT_KEY_SPELL_ADD_PROMOTION", GC.getPromotionInfo((PromotionTypes)aiAddPromotions[iI]).getTextKeyWide()));
+			}
+			else
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_SPELL_ADD_PROMOTION_AT_RANGE", GC.getPromotionInfo((PromotionTypes)aiAddPromotions[iI]).getTextKeyWide(), kSpell.getRange()));
+			}
+		}
+	}
+
+	for (iI = 0; iI < 3; iI++)
+	{
+		if (aiRemovePromotions[iI] != NO_PROMOTION)
+		{
+			szBuffer.append(pcNewline);
+
+			if (kSpell.isBuffCasterOnly())
+			{
 				szBuffer.append(gDLL->getText("TXT_KEY_SPELL_REMOVE_PROMOTION_CASTER", GC.getPromotionInfo((PromotionTypes)aiRemovePromotions[iI]).getTextKeyWide()));
 			}
+			else if (kSpell.getRange() <= 0)
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_SPELL_REMOVE_PROMOTION", GC.getPromotionInfo((PromotionTypes)aiRemovePromotions[iI]).getTextKeyWide()));
+			}
+			else
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_SPELL_REMOVE_PROMOTION_AT_RANGE", GC.getPromotionInfo((PromotionTypes)aiRemovePromotions[iI]).getTextKeyWide(), kSpell.getRange()));
+			}
+		}
+	}
+
+	if (kSpell.getDamage() > 0)
+	{
+		szBuffer.append(pcNewline);
+
+		if (kSpell.getDamageLimit() >= GC.getMAX_HIT_POINTS())
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_DAMAGE_LETHAL", kSpell.getDamage(), kSpell.getRange()));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_DAMAGE", kSpell.getDamage(), kSpell.getDamageLimit(), kSpell.getRange()));
+		}
+	}
+
+	if (kSpell.getImmobileTurns() > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_IMMOBILE_TURNS", kSpell.getImmobileTurns(), kSpell.getRange()));
+	}
+
+	// Which units in range are affected
+	if (kSpell.getDamage() > 0 || kSpell.getImmobileTurns() > 0 || (!kSpell.isBuffCasterOnly() && (aiAddPromotions[0] != NO_PROMOTION || aiAddPromotions[1] != NO_PROMOTION || aiAddPromotions[2] != NO_PROMOTION || aiRemovePromotions[0] != NO_PROMOTION || aiRemovePromotions[1] != NO_PROMOTION || aiRemovePromotions[2] != NO_PROMOTION)))
+	{
+		if (kSpell.isImmuneTeam())
+		{
+			szBuffer.append(pcNewline);
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_IMMUNE_TEAM"));
+		}
+
+		if (kSpell.isImmuneEnemy())
+		{
+			szBuffer.append(pcNewline);
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_IMMUNE_ENEMY"));
+		}
+
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_IMMUNE_NEUTRAL"));
+
+		if (kSpell.isImmuneFlying())
+		{
+			szBuffer.append(pcNewline);
+			szBuffer.append(gDLL->getText("TXT_KEY_SPELL_IMMUNE_FLYING"));
 		}
 	}
 

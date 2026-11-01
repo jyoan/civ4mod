@@ -2647,6 +2647,11 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 		return true;
 	}
 
+	if (canDamage(spell) || canImmobile(spell))
+	{
+		return true;
+	}
+
 	if (kSpell.getChangePopulation() > 0)
 	{
 		return true;
@@ -2706,6 +2711,9 @@ void CvUnit::cast(int spell)
 		pCity->setHasReligion((ReligionTypes)kSpell.getSpreadReligion(), true, true, true);
 	}
 
+	castDamage(spell);
+	castImmobile(spell);
+
 	if (kSpell.isRemoveHasCasted())
 	{
 		setHasCasted(false);
@@ -2759,26 +2767,56 @@ void CvUnit::cast(int spell)
 }
 
 
-// AddPromotionType1-3 and RemovePromotionType1-3 work on the caster only (bBuffCasterOnly) so far.
-// Spells that affect the units in iRange come in spell stage 2b.
+// AddPromotionType1-3 and RemovePromotionType1-3 work on the caster with bBuffCasterOnly, and otherwise on the units in
+// iRange including the caster's tile (FFH2). Promotions are added only to units with a unit combat (FFH2), but whether
+// the unit combat could take the promotion is not checked (as with the other promotion tags of this mod)
 bool CvUnit::canAddPromotion(int spell) const
 {
 	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
 	int aiPromotions[3] = {kSpell.getAddPromotionType1(), kSpell.getAddPromotionType2(), kSpell.getAddPromotionType3()};
+	std::vector<IDInfo> aTargets;
+	CvUnit* pLoopUnit;
+	uint iJ;
 	int iI;
 
-	if (!kSpell.isBuffCasterOnly())
+	if (kSpell.isBuffCasterOnly())
+	{
+		for (iI = 0; iI < 3; iI++)
+		{
+			if (aiPromotions[iI] != NO_PROMOTION)
+			{
+				if (!isHasPromotion((PromotionTypes)aiPromotions[iI]))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	if (aiPromotions[0] == NO_PROMOTION && aiPromotions[1] == NO_PROMOTION && aiPromotions[2] == NO_PROMOTION)
 	{
 		return false;
 	}
 
-	for (iI = 0; iI < 3; iI++)
+	getSpellTargets(spell, true, aTargets);
+
+	for (iJ = 0; iJ < aTargets.size(); iJ++)
 	{
-		if (aiPromotions[iI] != NO_PROMOTION)
+		pLoopUnit = ::getUnit(aTargets[iJ]);
+
+		if (pLoopUnit->getUnitCombatType() != NO_UNITCOMBAT)
 		{
-			if (!isHasPromotion((PromotionTypes)aiPromotions[iI]))
+			for (iI = 0; iI < 3; iI++)
 			{
-				return true;
+				if (aiPromotions[iI] != NO_PROMOTION)
+				{
+					if (!pLoopUnit->isHasPromotion((PromotionTypes)aiPromotions[iI]))
+					{
+						return true;
+					}
+				}
 			}
 		}
 	}
@@ -2791,20 +2829,46 @@ bool CvUnit::canRemovePromotion(int spell) const
 {
 	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
 	int aiPromotions[3] = {kSpell.getRemovePromotionType1(), kSpell.getRemovePromotionType2(), kSpell.getRemovePromotionType3()};
+	std::vector<IDInfo> aTargets;
+	CvUnit* pLoopUnit;
+	uint iJ;
 	int iI;
 
-	if (!kSpell.isBuffCasterOnly())
+	if (kSpell.isBuffCasterOnly())
+	{
+		for (iI = 0; iI < 3; iI++)
+		{
+			if (aiPromotions[iI] != NO_PROMOTION)
+			{
+				if (isHasPromotion((PromotionTypes)aiPromotions[iI]))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	if (aiPromotions[0] == NO_PROMOTION && aiPromotions[1] == NO_PROMOTION && aiPromotions[2] == NO_PROMOTION)
 	{
 		return false;
 	}
 
-	for (iI = 0; iI < 3; iI++)
+	getSpellTargets(spell, true, aTargets);
+
+	for (iJ = 0; iJ < aTargets.size(); iJ++)
 	{
-		if (aiPromotions[iI] != NO_PROMOTION)
+		pLoopUnit = ::getUnit(aTargets[iJ]);
+
+		for (iI = 0; iI < 3; iI++)
 		{
-			if (isHasPromotion((PromotionTypes)aiPromotions[iI]))
+			if (aiPromotions[iI] != NO_PROMOTION)
 			{
-				return true;
+				if (pLoopUnit->isHasPromotion((PromotionTypes)aiPromotions[iI]))
+				{
+					return true;
+				}
 			}
 		}
 	}
@@ -2936,18 +3000,44 @@ void CvUnit::castAddPromotion(int spell)
 {
 	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
 	int aiPromotions[3] = {kSpell.getAddPromotionType1(), kSpell.getAddPromotionType2(), kSpell.getAddPromotionType3()};
+	std::vector<IDInfo> aTargets;
+	CvUnit* pLoopUnit;
+	uint iJ;
 	int iI;
 
-	if (!kSpell.isBuffCasterOnly())
+	if (kSpell.isBuffCasterOnly())
+	{
+		for (iI = 0; iI < 3; iI++)
+		{
+			if (aiPromotions[iI] != NO_PROMOTION)
+			{
+				setHasPromotion((PromotionTypes)aiPromotions[iI], true);
+			}
+		}
+
+		return;
+	}
+
+	if (aiPromotions[0] == NO_PROMOTION && aiPromotions[1] == NO_PROMOTION && aiPromotions[2] == NO_PROMOTION)
 	{
 		return;
 	}
 
-	for (iI = 0; iI < 3; iI++)
+	getSpellTargets(spell, true, aTargets);
+
+	for (iJ = 0; iJ < aTargets.size(); iJ++)
 	{
-		if (aiPromotions[iI] != NO_PROMOTION)
+		pLoopUnit = ::getUnit(aTargets[iJ]);
+
+		if (pLoopUnit != NULL && pLoopUnit->getUnitCombatType() != NO_UNITCOMBAT)
 		{
-			setHasPromotion((PromotionTypes)aiPromotions[iI], true);
+			for (iI = 0; iI < 3; iI++)
+			{
+				if (aiPromotions[iI] != NO_PROMOTION)
+				{
+					pLoopUnit->setHasPromotion((PromotionTypes)aiPromotions[iI], true);
+				}
+			}
 		}
 	}
 }
@@ -2957,18 +3047,44 @@ void CvUnit::castRemovePromotion(int spell)
 {
 	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
 	int aiPromotions[3] = {kSpell.getRemovePromotionType1(), kSpell.getRemovePromotionType2(), kSpell.getRemovePromotionType3()};
+	std::vector<IDInfo> aTargets;
+	CvUnit* pLoopUnit;
+	uint iJ;
 	int iI;
 
-	if (!kSpell.isBuffCasterOnly())
+	if (kSpell.isBuffCasterOnly())
+	{
+		for (iI = 0; iI < 3; iI++)
+		{
+			if (aiPromotions[iI] != NO_PROMOTION)
+			{
+				setHasPromotion((PromotionTypes)aiPromotions[iI], false);
+			}
+		}
+
+		return;
+	}
+
+	if (aiPromotions[0] == NO_PROMOTION && aiPromotions[1] == NO_PROMOTION && aiPromotions[2] == NO_PROMOTION)
 	{
 		return;
 	}
 
-	for (iI = 0; iI < 3; iI++)
+	getSpellTargets(spell, true, aTargets);
+
+	for (iJ = 0; iJ < aTargets.size(); iJ++)
 	{
-		if (aiPromotions[iI] != NO_PROMOTION)
+		pLoopUnit = ::getUnit(aTargets[iJ]);
+
+		if (pLoopUnit != NULL)
 		{
-			setHasPromotion((PromotionTypes)aiPromotions[iI], false);
+			for (iI = 0; iI < 3; iI++)
+			{
+				if (aiPromotions[iI] != NO_PROMOTION)
+				{
+					pLoopUnit->setHasPromotion((PromotionTypes)aiPromotions[iI], false);
+				}
+			}
 		}
 	}
 }
@@ -2981,6 +3097,251 @@ void CvUnit::castConvertUnit(int spell)
 
 	pUnit->convert(this);
 	pUnit->changeImmobileTimer(1);
+}
+
+
+// Spell effects on the units in range (spell stage 2b). Units of other teams that are not at war with the caster's team
+// are always immune (this mod; FFH2 has bImmuneNeutral and declares war on them), and so are the units of other teams
+// that the caster's team cannot see
+bool CvUnit::isImmuneToSpell(const CvUnit* pCaster, int spell) const
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+
+	if (isDelayedDeath())
+	{
+		return true;
+	}
+
+	if (getTeam() == pCaster->getTeam())
+	{
+		if (kSpell.isImmuneTeam())
+		{
+			return true;
+		}
+	}
+	else
+	{
+		if (!isEnemy(pCaster->getTeam()))
+		{
+			return true;
+		}
+
+		if (kSpell.isImmuneEnemy())
+		{
+			return true;
+		}
+
+		if (!plot()->isVisible(pCaster->getTeam(), false) || isInvisible(pCaster->getTeam(), false))
+		{
+			return true;
+		}
+	}
+
+	// Flying units in FFH2, aircraft here
+	if (kSpell.isImmuneFlying())
+	{
+		if (getDomainType() == DOMAIN_AIR)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+// The units in iRange (a square, as in FFH2) that are not immune. They are collected before the spell changes anything,
+// as a transport that is killed also kills its cargo at once. bCasterPlot: include the caster's tile
+void CvUnit::getSpellTargets(int spell, bool bCasterPlot, std::vector<IDInfo>& aTargets) const
+{
+	CLLNode<IDInfo>* pUnitNode;
+	CvUnit* pLoopUnit;
+	CvPlot* pLoopPlot;
+	int iRange;
+	int iDX, iDY;
+
+	aTargets.clear();
+
+	// A wider range only visits the same tiles again
+	iRange = std::min(GC.getSpellInfo((SpellTypes)spell).getRange(), std::max(GC.getMapINLINE().getGridWidthINLINE(), GC.getMapINLINE().getGridHeightINLINE()));
+
+	for (iDX = -iRange; iDX <= iRange; iDX++)
+	{
+		for (iDY = -iRange; iDY <= iRange; iDY++)
+		{
+			pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+
+			if (pLoopPlot != NULL && (bCasterPlot || pLoopPlot != plot()))
+			{
+				pUnitNode = pLoopPlot->headUnitNode();
+
+				while (pUnitNode != NULL)
+				{
+					pLoopUnit = ::getUnit(pUnitNode->m_data);
+					pUnitNode = pLoopPlot->nextUnitNode(pUnitNode);
+
+					if (!pLoopUnit->isImmuneToSpell(this, spell))
+					{
+						// A small wrapping map has the same tile at two distances
+						if (std::find(aTargets.begin(), aTargets.end(), pLoopUnit->getIDInfo()) == aTargets.end())
+						{
+							aTargets.push_back(pLoopUnit->getIDInfo());
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+// Tells the owners of the caster and the target what the spell did to the target
+static void addSpellTargetMessage(const CvUnit* pCaster, const CvUnit* pTarget, int spell, const CvWString& szText)
+{
+	gDLL->getInterfaceIFace()->addMessage(pTarget->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szText, "", MESSAGE_TYPE_INFO, GC.getSpellInfo((SpellTypes)spell).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pTarget->getX_INLINE(), pTarget->getY_INLINE(), true, true);
+
+	if (pCaster->getOwnerINLINE() != pTarget->getOwnerINLINE())
+	{
+		gDLL->getInterfaceIFace()->addMessage(pCaster->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szText, "", MESSAGE_TYPE_INFO, GC.getSpellInfo((SpellTypes)spell).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pTarget->getX_INLINE(), pTarget->getY_INLINE(), true, true);
+	}
+}
+
+
+// iDamage: each unit in iRange except on the caster's tile takes 50% to 149% of iDamage (FFH2 without the resistances),
+// but not beyond iDamageLimit (100 if omitted; a unit with 100 damage dies)
+bool CvUnit::canDamage(int spell) const
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	std::vector<IDInfo> aTargets;
+	uint iI;
+
+	if (kSpell.getDamage() <= 0)
+	{
+		return false;
+	}
+
+	getSpellTargets(spell, false, aTargets);
+
+	for (iI = 0; iI < aTargets.size(); iI++)
+	{
+		if (::getUnit(aTargets[iI])->getDamage() < kSpell.getDamageLimit())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+void CvUnit::castDamage(int spell)
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	std::vector<IDInfo> aTargets;
+	CvUnit* pLoopUnit;
+	int iDamage;
+	uint iI;
+
+	if (kSpell.getDamage() <= 0)
+	{
+		return;
+	}
+
+	getSpellTargets(spell, false, aTargets);
+
+	for (iI = 0; iI < aTargets.size(); iI++)
+	{
+		pLoopUnit = ::getUnit(aTargets[iI]);
+
+		// The cargo of a transport that was killed before
+		if (pLoopUnit == NULL || pLoopUnit->isDelayedDeath())
+		{
+			continue;
+		}
+
+		iDamage = (kSpell.getDamage() / 2) + GC.getGameINLINE().getSorenRandNum(kSpell.getDamage(), "Spell Damage");
+		iDamage = std::min(iDamage, kSpell.getDamageLimit() - pLoopUnit->getDamage());
+
+		if (iDamage > 0)
+		{
+			if (pLoopUnit->getDamage() + iDamage >= pLoopUnit->maxHitPoints())
+			{
+				addSpellTargetMessage(this, pLoopUnit, spell, gDLL->getText("TXT_KEY_MESSAGE_SPELL_KILLED", pLoopUnit->getNameKey(), kSpell.getTextKeyWide()));
+			}
+			else
+			{
+				addSpellTargetMessage(this, pLoopUnit, spell, gDLL->getText("TXT_KEY_MESSAGE_SPELL_DAMAGED", pLoopUnit->getNameKey(), iDamage, kSpell.getTextKeyWide()));
+			}
+
+			pLoopUnit->changeDamage(iDamage, getOwnerINLINE());
+		}
+	}
+}
+
+
+// iImmobileTurns: each unit in iRange except on the caster's tile that is not immobile yet cannot move for iImmobileTurns
+// turns of its owner, counting the current turn if it is the owner's turn (this mod; FFH2 sets the timer as it is,
+// which decreases at the start of the owner's turn, so 1 does nothing to a unit whose owner plays later)
+bool CvUnit::canImmobile(int spell) const
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	std::vector<IDInfo> aTargets;
+	uint iI;
+
+	if (kSpell.getImmobileTurns() <= 0)
+	{
+		return false;
+	}
+
+	getSpellTargets(spell, false, aTargets);
+
+	for (iI = 0; iI < aTargets.size(); iI++)
+	{
+		if (::getUnit(aTargets[iI])->getImmobileTimer() == 0)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+void CvUnit::castImmobile(int spell)
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	std::vector<IDInfo> aTargets;
+	CvUnit* pLoopUnit;
+	int iTurns;
+	uint iI;
+
+	if (kSpell.getImmobileTurns() <= 0)
+	{
+		return;
+	}
+
+	getSpellTargets(spell, false, aTargets);
+
+	for (iI = 0; iI < aTargets.size(); iI++)
+	{
+		pLoopUnit = ::getUnit(aTargets[iI]);
+
+		if (pLoopUnit == NULL || pLoopUnit->getImmobileTimer() > 0)
+		{
+			continue;
+		}
+
+		iTurns = kSpell.getImmobileTurns();
+
+		if (!GET_PLAYER(pLoopUnit->getOwnerINLINE()).isTurnActive())
+		{
+			iTurns++;
+		}
+
+		pLoopUnit->changeImmobileTimer(iTurns);
+
+		addSpellTargetMessage(this, pLoopUnit, spell, gDLL->getText("TXT_KEY_MESSAGE_SPELL_IMMOBILE", pLoopUnit->getNameKey(), kSpell.getTextKeyWide()));
+	}
 }
 
 

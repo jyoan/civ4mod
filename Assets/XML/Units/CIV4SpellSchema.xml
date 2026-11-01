@@ -31,6 +31,8 @@
 	<ElementType name="bHasCasted" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bSacrificeCaster" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iCost" content="textOnly" dt:type="int"/>
+	<ElementType name="iDamage" content="textOnly" dt:type="int"/>
+	<ElementType name="iDamageLimit" content="textOnly" dt:type="int"/>
 	<ElementType name="ConvertUnitType" content="textOnly"/>
 	<ElementType name="CreateBuildingType" content="textOnly"/>
 	<ElementType name="CreateFeatureType" content="textOnly"/>
@@ -38,7 +40,12 @@
 	<ElementType name="SpreadReligion" content="textOnly"/>
 	<ElementType name="bRemoveHasCasted" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iChangePopulation" content="textOnly" dt:type="int"/>
+	<ElementType name="iImmobileTurns" content="textOnly" dt:type="int"/>
+	<ElementType name="iRange" content="textOnly" dt:type="int"/>
 	<ElementType name="bBuffCasterOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bImmuneTeam" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bImmuneEnemy" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bImmuneFlying" content="textOnly" dt:type="boolean"/>
 	<ElementType name="PyResult" content="textOnly"/>
 	<ElementType name="PyRequirement" content="textOnly"/>
 	<ElementType name="AddPromotionType1" content="textOnly"/>
@@ -87,6 +94,8 @@
 		<element type="bHasCasted" minOccurs="0"/>
 		<element type="bSacrificeCaster" minOccurs="0"/>
 		<element type="iCost" minOccurs="0"/>
+		<element type="iDamage" minOccurs="0"/>
+		<element type="iDamageLimit" minOccurs="0"/>
 		<element type="ConvertUnitType" minOccurs="0"/>
 		<element type="CreateBuildingType" minOccurs="0"/>
 		<element type="CreateFeatureType" minOccurs="0"/>
@@ -94,7 +103,12 @@
 		<element type="SpreadReligion" minOccurs="0"/>
 		<element type="bRemoveHasCasted" minOccurs="0"/>
 		<element type="iChangePopulation" minOccurs="0"/>
+		<element type="iImmobileTurns" minOccurs="0"/>
+		<element type="iRange" minOccurs="0"/>
 		<element type="bBuffCasterOnly" minOccurs="0"/>
+		<element type="bImmuneTeam" minOccurs="0"/>
+		<element type="bImmuneEnemy" minOccurs="0"/>
+		<element type="bImmuneFlying" minOccurs="0"/>
 		<element type="PyResult" minOccurs="0"/>
 		<element type="PyRequirement" minOccurs="0"/>
 		<element type="AddPromotionType1" minOccurs="0"/>

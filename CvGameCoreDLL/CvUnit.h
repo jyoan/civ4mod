@@ -112,6 +112,12 @@ public:
 	void castAddPromotion(int spell);
 	void castRemovePromotion(int spell);
 	void castConvertUnit(int spell);
+	bool isImmuneToSpell(const CvUnit* pCaster, int spell) const;
+	void getSpellTargets(int spell, bool bCasterPlot, std::vector<IDInfo>& aTargets) const;
+	bool canDamage(int spell) const;
+	bool canImmobile(int spell) const;
+	void castDamage(int spell);
+	void castImmobile(int spell);
 
 	FAStarNode* getPathLastNode() const;
 	CvPlot* getPathEndTurnPlot() const;																																						// Exposed to Python

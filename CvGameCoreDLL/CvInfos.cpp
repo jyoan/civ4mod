@@ -2389,6 +2389,13 @@ m_iCreateImprovementType(NO_IMPROVEMENT),
 m_iSpreadReligion(NO_RELIGION),
 m_iChangePopulation(0),
 m_iEffect(NO_EFFECT),
+m_iRange(0),
+m_iDamage(0),
+m_iDamageLimit(100),
+m_iImmobileTurns(0),
+m_bImmuneTeam(false),
+m_bImmuneEnemy(false),
+m_bImmuneFlying(false),
 m_bAdjacentToWaterOnly(false),
 m_bBuffCasterOnly(false),
 m_bSacrificeCaster(false),
@@ -2611,6 +2618,41 @@ const TCHAR* CvSpellInfo::getSound() const
 	return m_szSound;
 }
 
+int CvSpellInfo::getRange() const
+{
+	return m_iRange;
+}
+
+int CvSpellInfo::getDamage() const
+{
+	return m_iDamage;
+}
+
+int CvSpellInfo::getDamageLimit() const
+{
+	return m_iDamageLimit;
+}
+
+int CvSpellInfo::getImmobileTurns() const
+{
+	return m_iImmobileTurns;
+}
+
+bool CvSpellInfo::isImmuneTeam() const
+{
+	return m_bImmuneTeam;
+}
+
+bool CvSpellInfo::isImmuneEnemy() const
+{
+	return m_bImmuneEnemy;
+}
+
+bool CvSpellInfo::isImmuneFlying() const
+{
+	return m_bImmuneFlying;
+}
+
 const TCHAR* CvSpellInfo::getPyRequirement() const
 {
 	return m_szPyRequirement;
@@ -2738,6 +2780,14 @@ bool CvSpellInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bSacrificeCaster, "bSacrificeCaster");
 	pXML->GetChildXmlValByName(&m_bRemoveHasCasted, "bRemoveHasCasted");
 	pXML->GetChildXmlValByName(m_szSound, "Sound");
+
+	pXML->GetChildXmlValByName(&m_iRange, "iRange");
+	pXML->GetChildXmlValByName(&m_iDamage, "iDamage");
+	pXML->GetChildXmlValByName(&m_iDamageLimit, "iDamageLimit", 100);
+	pXML->GetChildXmlValByName(&m_iImmobileTurns, "iImmobileTurns");
+	pXML->GetChildXmlValByName(&m_bImmuneTeam, "bImmuneTeam");
+	pXML->GetChildXmlValByName(&m_bImmuneEnemy, "bImmuneEnemy");
+	pXML->GetChildXmlValByName(&m_bImmuneFlying, "bImmuneFlying");
 
 	pXML->GetChildXmlValByName(m_szPyRequirement, "PyRequirement");
 	pXML->GetChildXmlValByName(m_szPyResult, "PyResult");

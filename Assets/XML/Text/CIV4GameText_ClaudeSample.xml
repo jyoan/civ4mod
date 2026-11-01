@@ -488,7 +488,142 @@
 		<Spanish>[ICON_BULLET]The caster is consumed</Spanish>
 		<Japanese>[ICON_BULLET]&#23455;&#34892;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12399;&#28040;&#12360;&#12427;</Japanese>
 	</TEXT>
-	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH) -->
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_ADD_PROMOTION</Tag>
+		<English>[ICON_BULLET]Units on the same tile gain [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]Units on the same tile gain [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]Units on the same tile gain [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]Units on the same tile gain [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Units on the same tile gain [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#21516;&#12376;&#12479;&#12452;&#12523;&#12398;&#12518;&#12491;&#12483;&#12488;&#12364;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_ADD_PROMOTION_AT_RANGE</Tag>
+		<English>[ICON_BULLET]Units within %d2_Range tiles gain [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]Units within %d2_Range tiles gain [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]Units within %d2_Range tiles gain [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]Units within %d2_Range tiles gain [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Units within %d2_Range tiles gain [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]%d2_Range&#12479;&#12452;&#12523;&#20197;&#20869;&#12398;&#12518;&#12491;&#12483;&#12488;&#12364;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_REMOVE_PROMOTION</Tag>
+		<English>[ICON_BULLET]Units on the same tile lose [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]Units on the same tile lose [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]Units on the same tile lose [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]Units on the same tile lose [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Units on the same tile lose [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#21516;&#12376;&#12479;&#12452;&#12523;&#12398;&#12518;&#12491;&#12483;&#12488;&#12398;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#22806;&#12377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_REMOVE_PROMOTION_AT_RANGE</Tag>
+		<English>[ICON_BULLET]Units within %d2_Range tiles lose [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]Units within %d2_Range tiles lose [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]Units within %d2_Range tiles lose [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]Units within %d2_Range tiles lose [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Units within %d2_Range tiles lose [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]%d2_Range&#12479;&#12452;&#12523;&#20197;&#20869;&#12398;&#12518;&#12491;&#12483;&#12488;&#12398;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#22806;&#12377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_DAMAGE</Tag>
+		<English>[ICON_BULLET]About %d1_Damage%% damage (up to %d2_Limit%%) to units within %d3_Range tiles, except on this tile</English>
+		<French>[ICON_BULLET]About %d1_Damage%% damage (up to %d2_Limit%%) to units within %d3_Range tiles, except on this tile</French>
+		<German>[ICON_BULLET]About %d1_Damage%% damage (up to %d2_Limit%%) to units within %d3_Range tiles, except on this tile</German>
+		<Italian>[ICON_BULLET]About %d1_Damage%% damage (up to %d2_Limit%%) to units within %d3_Range tiles, except on this tile</Italian>
+		<Spanish>[ICON_BULLET]About %d1_Damage%% damage (up to %d2_Limit%%) to units within %d3_Range tiles, except on this tile</Spanish>
+		<Japanese>[ICON_BULLET]&#21608;&#22258;%d3_Range&#12479;&#12452;&#12523;&#65288;&#33258;&#20998;&#12398;&#12479;&#12452;&#12523;&#12434;&#38500;&#12367;&#65289;&#12398;&#12518;&#12491;&#12483;&#12488;&#12395;%d1_Damage%%&#21069;&#24460;&#12398;&#12480;&#12513;&#12540;&#12472;&#65288;%d2_Limit%%&#12414;&#12391;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_DAMAGE_LETHAL</Tag>
+		<English>[ICON_BULLET]About %d1_Damage%% damage (can kill) to units within %d2_Range tiles, except on this tile</English>
+		<French>[ICON_BULLET]About %d1_Damage%% damage (can kill) to units within %d2_Range tiles, except on this tile</French>
+		<German>[ICON_BULLET]About %d1_Damage%% damage (can kill) to units within %d2_Range tiles, except on this tile</German>
+		<Italian>[ICON_BULLET]About %d1_Damage%% damage (can kill) to units within %d2_Range tiles, except on this tile</Italian>
+		<Spanish>[ICON_BULLET]About %d1_Damage%% damage (can kill) to units within %d2_Range tiles, except on this tile</Spanish>
+		<Japanese>[ICON_BULLET]&#21608;&#22258;%d2_Range&#12479;&#12452;&#12523;&#65288;&#33258;&#20998;&#12398;&#12479;&#12452;&#12523;&#12434;&#38500;&#12367;&#65289;&#12398;&#12518;&#12491;&#12483;&#12488;&#12395;%d1_Damage%%&#21069;&#24460;&#12398;&#12480;&#12513;&#12540;&#12472;&#65288;&#20498;&#12377;&#12371;&#12392;&#12418;&#12354;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IMMOBILE_TURNS</Tag>
+		<English>[ICON_BULLET]Units within %d2_Range tiles, except on this tile, cannot move for %d1_Turns turns</English>
+		<French>[ICON_BULLET]Units within %d2_Range tiles, except on this tile, cannot move for %d1_Turns turns</French>
+		<German>[ICON_BULLET]Units within %d2_Range tiles, except on this tile, cannot move for %d1_Turns turns</German>
+		<Italian>[ICON_BULLET]Units within %d2_Range tiles, except on this tile, cannot move for %d1_Turns turns</Italian>
+		<Spanish>[ICON_BULLET]Units within %d2_Range tiles, except on this tile, cannot move for %d1_Turns turns</Spanish>
+		<Japanese>[ICON_BULLET]&#21608;&#22258;%d2_Range&#12479;&#12452;&#12523;&#65288;&#33258;&#20998;&#12398;&#12479;&#12452;&#12523;&#12434;&#38500;&#12367;&#65289;&#12398;&#12518;&#12491;&#12483;&#12488;&#12364;%d1_Turns&#12479;&#12540;&#12531;&#21205;&#12369;&#12394;&#12367;&#12394;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IMMUNE_TEAM</Tag>
+		<English>[ICON_BULLET]Does not affect the units of your team</English>
+		<French>[ICON_BULLET]Does not affect the units of your team</French>
+		<German>[ICON_BULLET]Does not affect the units of your team</German>
+		<Italian>[ICON_BULLET]Does not affect the units of your team</Italian>
+		<Spanish>[ICON_BULLET]Does not affect the units of your team</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#12481;&#12540;&#12512;&#12398;&#12518;&#12491;&#12483;&#12488;&#12395;&#12399;&#21177;&#12363;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IMMUNE_ENEMY</Tag>
+		<English>[ICON_BULLET]Does not affect the units of your enemies</English>
+		<French>[ICON_BULLET]Does not affect the units of your enemies</French>
+		<German>[ICON_BULLET]Does not affect the units of your enemies</German>
+		<Italian>[ICON_BULLET]Does not affect the units of your enemies</Italian>
+		<Spanish>[ICON_BULLET]Does not affect the units of your enemies</Spanish>
+		<Japanese>[ICON_BULLET]&#20132;&#25126;&#20013;&#12398;&#30456;&#25163;&#12398;&#12518;&#12491;&#12483;&#12488;&#12395;&#12399;&#21177;&#12363;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IMMUNE_NEUTRAL</Tag>
+		<English>[ICON_BULLET]Does not affect the units of others you are not at war with</English>
+		<French>[ICON_BULLET]Does not affect the units of others you are not at war with</French>
+		<German>[ICON_BULLET]Does not affect the units of others you are not at war with</German>
+		<Italian>[ICON_BULLET]Does not affect the units of others you are not at war with</Italian>
+		<Spanish>[ICON_BULLET]Does not affect the units of others you are not at war with</Spanish>
+		<Japanese>[ICON_BULLET]&#20132;&#25126;&#20013;&#12391;&#12394;&#12356;&#20182;&#22269;&#12398;&#12518;&#12491;&#12483;&#12488;&#12395;&#12399;&#21177;&#12363;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IMMUNE_FLYING</Tag>
+		<English>[ICON_BULLET]Does not affect air units</English>
+		<French>[ICON_BULLET]Does not affect air units</French>
+		<German>[ICON_BULLET]Does not affect air units</German>
+		<Italian>[ICON_BULLET]Does not affect air units</Italian>
+		<Spanish>[ICON_BULLET]Does not affect air units</Spanish>
+		<Japanese>[ICON_BULLET]&#33322;&#31354;&#12518;&#12491;&#12483;&#12488;&#12395;&#12399;&#21177;&#12363;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MESSAGE_SPELL_DAMAGED</Tag>
+		<English>%s1_Unit took %d2_Damage%% damage from %s3_Spell</English>
+		<French>%s1_Unit took %d2_Damage%% damage from %s3_Spell</French>
+		<German>%s1_Unit took %d2_Damage%% damage from %s3_Spell</German>
+		<Italian>%s1_Unit took %d2_Damage%% damage from %s3_Spell</Italian>
+		<Spanish>%s1_Unit took %d2_Damage%% damage from %s3_Spell</Spanish>
+		<Japanese>%s1_Unit&#12364;%s3_Spell&#12391;%d2_Damage%%&#12398;&#12480;&#12513;&#12540;&#12472;&#12434;&#21463;&#12369;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MESSAGE_SPELL_KILLED</Tag>
+		<English>%s1_Unit was killed by %s2_Spell</English>
+		<French>%s1_Unit was killed by %s2_Spell</French>
+		<German>%s1_Unit was killed by %s2_Spell</German>
+		<Italian>%s1_Unit was killed by %s2_Spell</Italian>
+		<Spanish>%s1_Unit was killed by %s2_Spell</Spanish>
+		<Japanese>%s1_Unit&#12364;%s2_Spell&#12391;&#20498;&#12373;&#12428;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MESSAGE_SPELL_IMMOBILE</Tag>
+		<English>%s1_Unit cannot move because of %s2_Spell</English>
+		<French>%s1_Unit cannot move because of %s2_Spell</French>
+		<German>%s1_Unit cannot move because of %s2_Spell</German>
+		<Italian>%s1_Unit cannot move because of %s2_Spell</Italian>
+		<Spanish>%s1_Unit cannot move because of %s2_Spell</Spanish>
+		<Japanese>%s1_Unit&#12364;%s2_Spell&#12391;&#21205;&#12369;&#12394;&#12367;&#12394;&#12387;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_IMMOBILE</Tag>
+		<English>Immobile</English>
+		<French>Immobile</French>
+		<German>Immobile</German>
+		<Italian>Immobile</Italian>
+		<Spanish>Immobile</Spanish>
+		<Japanese>&#31227;&#21205;&#19981;&#33021;</Japanese>
+	</TEXT>
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
 		<English>Test data for checking the mod's features.</English>
@@ -713,5 +848,32 @@
 		<Italian>Test Spell (Refresh)</Italian>
 		<Spanish>Test Spell (Refresh)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#20877;&#23455;&#34892;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_BLESS</Tag>
+		<English>Test Spell (Bless)</English>
+		<French>Test Spell (Bless)</French>
+		<German>Test Spell (Bless)</German>
+		<Italian>Test Spell (Bless)</Italian>
+		<Spanish>Test Spell (Bless)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#31069;&#31119;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_FIREBALL</Tag>
+		<English>Test Spell (Fireball)</English>
+		<French>Test Spell (Fireball)</French>
+		<German>Test Spell (Fireball)</German>
+		<Italian>Test Spell (Fireball)</Italian>
+		<Spanish>Test Spell (Fireball)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#28779;&#29699;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_SNARE</Tag>
+		<English>Test Spell (Snare)</English>
+		<French>Test Spell (Snare)</French>
+		<German>Test Spell (Snare)</German>
+		<Italian>Test Spell (Snare)</Italian>
+		<Spanish>Test Spell (Snare)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#36275;&#27490;&#12417;&#65289;</Japanese>
 	</TEXT>
 </Civ4GameText>
