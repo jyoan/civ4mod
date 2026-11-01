@@ -821,7 +821,34 @@
 		<Spanish>City radius: %d1_Radius (%d3_Next at %s2_Level culture)</Spanish>
 		<Japanese>&#37117;&#24066;&#22287;&#12398;&#21322;&#24452;: %d1_Radius&#65288;&#25991;&#21270;&#12524;&#12505;&#12523;%s2_Level&#12391;%d3_Next&#65289;</Japanese>
 	</TEXT>
-	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD) -->
+	<TEXT>
+		<Tag>TXT_KEY_NEW_CITY_POPULATION</Tag>
+		<English>[ICON_BULLET]%D1_Pop population in new cities</English>
+		<French>[ICON_BULLET]%D1_Pop population in new cities</French>
+		<German>[ICON_BULLET]%D1_Pop population in new cities</German>
+		<Italian>[ICON_BULLET]%D1_Pop population in new cities</Italian>
+		<Spanish>[ICON_BULLET]%D1_Pop population in new cities</Spanish>
+		<Japanese>[ICON_BULLET]&#26032;&#12375;&#12356;&#37117;&#24066;&#12398;&#20154;&#21475;%D1_Pop</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_NEW_CITY_STATE_RELIGION</Tag>
+		<English>[ICON_BULLET]The state religion spreads to new cities</English>
+		<French>[ICON_BULLET]The state religion spreads to new cities</French>
+		<German>[ICON_BULLET]The state religion spreads to new cities</German>
+		<Italian>[ICON_BULLET]The state religion spreads to new cities</Italian>
+		<Spanish>[ICON_BULLET]The state religion spreads to new cities</Spanish>
+		<Japanese>[ICON_BULLET]&#26032;&#12375;&#12356;&#37117;&#24066;&#12395;&#22269;&#25945;&#12364;&#24195;&#12414;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_OCCUPATION_TIME_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% revolt time in conquered cities</English>
+		<French>[ICON_BULLET]%D1_Percent%% revolt time in conquered cities</French>
+		<German>[ICON_BULLET]%D1_Percent%% revolt time in conquered cities</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% revolt time in conquered cities</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% revolt time in conquered cities</Spanish>
+		<Japanese>[ICON_BULLET]&#21344;&#38936;&#12375;&#12383;&#37117;&#24066;&#12398;&#21453;&#20081;&#26399;&#38291;%D1_Percent%%</Japanese>
+	</TEXT>
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
 		<English>Test data for checking the mod's features.</English>
@@ -1100,5 +1127,14 @@
 		<Italian>Test Spell (World)</Italian>
 		<Spanish>Test Spell (World)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#19990;&#30028;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_CITY</Tag>
+		<English>Test Building (New City)</English>
+		<French>Test Building (New City)</French>
+		<German>Test Building (New City)</German>
+		<Italian>Test Building (New City)</Italian>
+		<Spanish>Test Building (New City)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#26032;&#12375;&#12356;&#37117;&#24066;&#65289;</Japanese>
 	</TEXT>
 </Civ4GameText>

@@ -3463,6 +3463,24 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			}
 		}
 
+		if (GC.getTraitInfo(eTrait).getNewCityPopulation() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_NEW_CITY_POPULATION", GC.getTraitInfo(eTrait).getNewCityPopulation()));
+		}
+
+		if (GC.getTraitInfo(eTrait).isNewCityStateReligion())
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_NEW_CITY_STATE_RELIGION"));
+		}
+
+		if (GC.getTraitInfo(eTrait).getOccupationTimeModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_OCCUPATION_TIME_MODIFIER", GC.getTraitInfo(eTrait).getOccupationTimeModifier()));
+		}
+
 		if (GC.getTraitInfo(eTrait).getSummonDuration() != 0)
 		{
 			szHelpString.append(NEWLINE L"  ");
@@ -8007,6 +8025,25 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 		{
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_PLOT_RADIUS_CULTURE", kBuilding.getPlotRadius(), GC.getCultureLevelInfo((CultureLevelTypes)kBuilding.getPlotRadiusCultureLevel()).getTextKeyWide()));
 		}
+	}
+
+	// New and conquered cities of the owner (added by this mod)
+	if (kBuilding.getNewCityPopulation() != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_NEW_CITY_POPULATION", kBuilding.getNewCityPopulation()));
+	}
+
+	if (kBuilding.isNewCityStateReligion())
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_NEW_CITY_STATE_RELIGION"));
+	}
+
+	if (kBuilding.getOccupationTimeModifier() != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_OCCUPATION_TIME_MODIFIER", kBuilding.getOccupationTimeModifier()));
 	}
 
 	// UpgradeAnywhereUnitCombats (effective while any of the player's cities has the building)

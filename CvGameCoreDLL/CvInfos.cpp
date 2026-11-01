@@ -7331,6 +7331,9 @@ CvBuildingInfo::CvBuildingInfo() :
 m_iBuildingClassType(NO_BUILDINGCLASS),
 m_iPlotRadius(0),
 m_iPlotRadiusCultureLevel(NO_CULTURELEVEL),
+m_iNewCityPopulation(0),
+m_iOccupationTimeModifier(0),
+m_bNewCityStateReligion(false),
 m_iVictoryPrereq(NO_VICTORY),
 m_iFreeStartEra(NO_ERA),
 m_iMaxStartEra(NO_ERA),
@@ -8444,6 +8447,22 @@ int CvBuildingInfo::getPlotRadiusCultureLevel() const
 	return m_iPlotRadiusCultureLevel;
 }
 
+// The same as the trait tags, for a player with the building in any city (added by this mod)
+int CvBuildingInfo::getNewCityPopulation() const
+{
+	return m_iNewCityPopulation;
+}
+
+bool CvBuildingInfo::isNewCityStateReligion() const
+{
+	return m_bNewCityStateReligion;
+}
+
+int CvBuildingInfo::getOccupationTimeModifier() const
+{
+	return m_iOccupationTimeModifier;
+}
+
 int CvBuildingInfo::getProductionTraits(int i) const		
 {
 	FAssertMsg(i < GC.getNumTraitInfos(), "Index out of bounds");
@@ -8932,6 +8951,17 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iPlotRadiusCultureLevel);
 	}
+
+	// uiFlag < 5: cache written before iNewCityPopulation, bNewCityStateReligion and iOccupationTimeModifier existed
+	m_iNewCityPopulation = 0;
+	m_bNewCityStateReligion = false;
+	m_iOccupationTimeModifier = 0;
+	if (uiFlag > 4)
+	{
+		stream->Read(&m_iNewCityPopulation);
+		stream->Read(&m_bNewCityStateReligion);
+		stream->Read(&m_iOccupationTimeModifier);
+	}
 }
 
 //
@@ -8941,7 +8971,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=4;
+	uint uiFlag=5;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -9115,6 +9145,9 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	writePrereqOrTraits(stream, m_aiPrereqOrTraits);
 	stream->Write(m_iPlotRadius);
 	stream->Write(m_iPlotRadiusCultureLevel);
+	stream->Write(m_iNewCityPopulation);
+	stream->Write(m_bNewCityStateReligion);
+	stream->Write(m_iOccupationTimeModifier);
 }
 
 //
@@ -9267,6 +9300,9 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iPlotRadius, "iPlotRadius");
 	pXML->GetChildXmlValByName(szTextVal, "PlotRadiusCultureLevel");
 	m_iPlotRadiusCultureLevel = pXML->FindInInfoClass(szTextVal);
+	pXML->GetChildXmlValByName(&m_iNewCityPopulation, "iNewCityPopulation");
+	pXML->GetChildXmlValByName(&m_bNewCityStateReligion, "bNewCityStateReligion");
+	pXML->GetChildXmlValByName(&m_iOccupationTimeModifier, "iOccupationTimeModifier");
 
 	pXML->SetVariableListTagPair(&m_piProductionTraits, "ProductionTraits", sizeof(GC.getTraitInfo((TraitTypes)0)), GC.getNumTraitInfos());
 
@@ -17078,6 +17114,9 @@ m_iExpInBorderModifier(0),
 m_iCityRadiusChange(0),
 m_iCityRadiusCultureLevel(NO_CULTURELEVEL),
 m_iSummonDuration(0),
+m_iNewCityPopulation(0),
+m_iOccupationTimeModifier(0),
+m_bNewCityStateReligion(false),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
 m_paiCapitalYieldModifier(NULL),
@@ -17243,6 +17282,24 @@ int CvTraitInfo::getCityRadiusCultureLevel() const
 int CvTraitInfo::getSummonDuration() const
 {
 	return m_iSummonDuration;
+}
+
+// Extra population of the cities the player founds (added by this mod)
+int CvTraitInfo::getNewCityPopulation() const
+{
+	return m_iNewCityPopulation;
+}
+
+// The state religion spreads to the cities the player founds (added by this mod)
+bool CvTraitInfo::isNewCityStateReligion() const
+{
+	return m_bNewCityStateReligion;
+}
+
+// Revolt time % of the cities the player conquers (added by this mod)
+int CvTraitInfo::getOccupationTimeModifier() const
+{
+	return m_iOccupationTimeModifier;
 }
 
 const TCHAR* CvTraitInfo::getShortDescription() const
@@ -17573,6 +17630,9 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	// The culture levels are loaded after the traits: readPass3() finds the type
 	pXML->GetChildXmlValByName(m_szCityRadiusCultureLevel, "CityRadiusCultureLevel");
 	pXML->GetChildXmlValByName(&m_iSummonDuration, "iSummonDuration");
+	pXML->GetChildXmlValByName(&m_iNewCityPopulation, "iNewCityPopulation");
+	pXML->GetChildXmlValByName(&m_bNewCityStateReligion, "bNewCityStateReligion");
+	pXML->GetChildXmlValByName(&m_iOccupationTimeModifier, "iOccupationTimeModifier");
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ExtraYieldThresholds"))
 	{

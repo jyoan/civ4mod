@@ -1947,6 +1947,21 @@ int CyPlayer::getSummonDuration()
 	return m_pPlayer ? m_pPlayer->getSummonDuration() : -1;
 }
 
+int CyPlayer::getNewCityPopulation()
+{
+	return m_pPlayer ? m_pPlayer->getNewCityPopulation() : -1;
+}
+
+bool CyPlayer::isNewCityStateReligion()
+{
+	return m_pPlayer ? m_pPlayer->isNewCityStateReligion() : false;
+}
+
+int CyPlayer::getOccupationTimeModifier()
+{
+	return m_pPlayer ? m_pPlayer->getOccupationTimeModifier() : -1;
+}
+
 CyUnit* CyPlayer::getUnit(int iID)
 {
 	return m_pPlayer ? new CyUnit(m_pPlayer->getUnit(iID)) : NULL;

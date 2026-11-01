@@ -344,6 +344,9 @@
 	<ElementType name="iCityRadiusChange" content="textOnly" dt:type="int"/>
 	<ElementType name="CityRadiusCultureLevel" content="textOnly"/>
 	<ElementType name="iSummonDuration" content="textOnly" dt:type="int"/>
+	<ElementType name="iNewCityPopulation" content="textOnly" dt:type="int"/>
+	<ElementType name="bNewCityStateReligion" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iOccupationTimeModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="YieldModifiers" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -451,6 +454,9 @@
 		<element type="iCityRadiusChange" minOccurs="0"/>
 		<element type="CityRadiusCultureLevel" minOccurs="0"/>
 		<element type="iSummonDuration" minOccurs="0"/>
+		<element type="iNewCityPopulation" minOccurs="0"/>
+		<element type="bNewCityStateReligion" minOccurs="0"/>
+		<element type="iOccupationTimeModifier" minOccurs="0"/>
 		<element type="ExtraYieldThresholds"/>
 		<element type="TradeYieldModifiers"/>
 		<element type="CommerceChanges"/>

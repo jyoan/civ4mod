@@ -395,6 +395,9 @@
 	</ElementType>
 	<ElementType name="iPlotRadius" content="textOnly" dt:type="int"/>
 	<ElementType name="PlotRadiusCultureLevel" content="textOnly"/>
+	<ElementType name="iNewCityPopulation" content="textOnly" dt:type="int"/>
+	<ElementType name="bNewCityStateReligion" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iOccupationTimeModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="BuildingInfo" content="eltOnly">
 		<element type="BuildingClass"/>
 		<element type="Type"/>
@@ -561,6 +564,9 @@
 		<element type="UpgradeAnywhereUnitCombats" minOccurs="0"/>
 		<element type="iPlotRadius" minOccurs="0"/>
 		<element type="PlotRadiusCultureLevel" minOccurs="0"/>
+		<element type="iNewCityPopulation" minOccurs="0"/>
+		<element type="bNewCityStateReligion" minOccurs="0"/>
+		<element type="iOccupationTimeModifier" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="BuildingInfos" content="eltOnly">
 		<element type="BuildingInfo" maxOccurs="*"/>

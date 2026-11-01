@@ -203,6 +203,12 @@ public:
 	int getNextCityRadius() const;
 	// Extra turns of the summoned units of this player (added by this mod, traits only, computed on each call)
 	int getSummonDuration() const;																								// Exposed to Python
+	// New and conquered cities (added by this mod): traits, and buildings in any city of this player (not obsolete, each
+	// building type once), computed on each call
+	bool hasActiveBuilding(BuildingTypes eBuilding) const;
+	int getNewCityPopulation() const;				// Exposed to Python
+	bool isNewCityStateReligion() const;				// Exposed to Python
+	int getOccupationTimeModifier() const;				// Exposed to Python
 	int getProductionModifier(BuildingTypes eBuilding) const;
 	int getProductionModifier(ProjectTypes eProject) const;
 

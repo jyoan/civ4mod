@@ -1922,6 +1922,9 @@ public:
 	int getPrereqOrBonuses(int i) const;				// Exposed to Python
 	int getPlotRadius() const;				// Exposed to Python
 	int getPlotRadiusCultureLevel() const;			// Exposed to Python
+	int getNewCityPopulation() const;				// Exposed to Python
+	bool isNewCityStateReligion() const;			// Exposed to Python
+	int getOccupationTimeModifier() const;			// Exposed to Python
 	int getNumPrereqOrTraits() const;				// Exposed to Python
 	int getPrereqOrTraits(int i) const;				// Exposed to Python
 	const std::vector<int>& getPrereqOrTraitsVector() const;
@@ -2081,6 +2084,9 @@ protected:
 	std::vector<int> m_aiPrereqOrTraits;
 	int m_iPlotRadius;
 	int m_iPlotRadiusCultureLevel;
+	int m_iNewCityPopulation;
+	int m_iOccupationTimeModifier;
+	bool m_bNewCityStateReligion;
 	int* m_piProductionTraits;
 	int* m_piHappinessTraits;
 	int* m_piSeaPlotYieldChange;
@@ -4386,6 +4392,9 @@ public:
 	int getCityRadiusChange() const;				// Exposed to Python
 	int getCityRadiusCultureLevel() const;			// Exposed to Python
 	int getSummonDuration() const;				// Exposed to Python
+	int getNewCityPopulation() const;				// Exposed to Python
+	bool isNewCityStateReligion() const;			// Exposed to Python
+	int getOccupationTimeModifier() const;			// Exposed to Python
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -4454,6 +4463,9 @@ protected:
 	int m_iCityRadiusChange;
 	int m_iCityRadiusCultureLevel;
 	int m_iSummonDuration;
+	int m_iNewCityPopulation;
+	int m_iOccupationTimeModifier;
+	bool m_bNewCityStateReligion;
 
 	CvString m_szShortDescription;
 

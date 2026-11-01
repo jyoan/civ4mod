@@ -368,6 +368,9 @@
 			<iCityRadiusChange>1</iCityRadiusChange>
 			<CityRadiusCultureLevel>CULTURELEVEL_FLEDGLING</CityRadiusCultureLevel>
 			<iSummonDuration>1</iSummonDuration>
+			<iNewCityPopulation>1</iNewCityPopulation>
+			<bNewCityStateReligion>1</bNewCityStateReligion>
+			<iOccupationTimeModifier>-50</iOccupationTimeModifier>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

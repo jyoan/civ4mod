@@ -1693,7 +1693,10 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 
 		if (iTeamCulturePercent < GC.getDefineINT("OCCUPATION_CULTURE_PERCENT_THRESHOLD"))
 		{
-			pNewCity->changeOccupationTimer(((GC.getDefineINT("BASE_OCCUPATION_TURNS") + ((pNewCity->getPopulation() * GC.getDefineINT("OCCUPATION_TURNS_POPULATION_PERCENT")) / 100)) * (100 - iTeamCulturePercent)) / 100);
+			// With the iOccupationTimeModifier of the traits and buildings of the conqueror (added by this mod)
+			int iConquestOccupationTime = ((GC.getDefineINT("BASE_OCCUPATION_TURNS") + ((pNewCity->getPopulation() * GC.getDefineINT("OCCUPATION_TURNS_POPULATION_PERCENT")) / 100)) * (100 - iTeamCulturePercent)) / 100;
+			iConquestOccupationTime = (iConquestOccupationTime * std::max(0, 100 + getOccupationTimeModifier())) / 100;
+			pNewCity->changeOccupationTimer(iConquestOccupationTime);
 		}
 
 		GC.getMapINLINE().verifyUnitValidPlot();
@@ -5144,6 +5147,17 @@ void CvPlayer::found(int iX, int iY)
 		}
 	}
 
+	// Traits and buildings for new cities (added by this mod): extra population, and the state religion
+	if (getNewCityPopulation() != 0)
+	{
+		pCity->setPopulation(std::max(1, pCity->getPopulation() + getNewCityPopulation()));
+	}
+
+	if (getStateReligion() != NO_RELIGION && isNewCityStateReligion())
+	{
+		pCity->setHasReligion(getStateReligion(), true, true, true);
+	}
+
 	if (getAdvancedStartPoints() >= 0)
 	{
 		// Free border expansion for Creative
@@ -6025,6 +6039,108 @@ int CvPlayer::getSummonDuration() const
 	}
 
 	return std::max(0, iDuration);
+}
+
+bool CvPlayer::hasActiveBuilding(BuildingTypes eBuilding) const
+{
+	CvCity* pLoopCity;
+	int iLoop;
+
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		if (pLoopCity->getNumActiveBuilding(eBuilding) > 0)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// Extra population of the cities this player founds (CvPlayer::found)
+int CvPlayer::getNewCityPopulation() const
+{
+	int iPopulation = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iPopulation += GC.getTraitInfo((TraitTypes)iI).getNewCityPopulation();
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+	{
+		if (GC.getBuildingInfo((BuildingTypes)iI).getNewCityPopulation() != 0)
+		{
+			if (hasActiveBuilding((BuildingTypes)iI))
+			{
+				iPopulation += GC.getBuildingInfo((BuildingTypes)iI).getNewCityPopulation();
+			}
+		}
+	}
+
+	return iPopulation;
+}
+
+// The state religion spreads to the cities this player founds (CvPlayer::found)
+bool CvPlayer::isNewCityStateReligion() const
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			if (GC.getTraitInfo((TraitTypes)iI).isNewCityStateReligion())
+			{
+				return true;
+			}
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+	{
+		if (GC.getBuildingInfo((BuildingTypes)iI).isNewCityStateReligion())
+		{
+			if (hasActiveBuilding((BuildingTypes)iI))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+// Revolt time % of the cities this player conquers (CvPlayer::acquireCity)
+int CvPlayer::getOccupationTimeModifier() const
+{
+	int iModifier = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iModifier += GC.getTraitInfo((TraitTypes)iI).getOccupationTimeModifier();
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+	{
+		if (GC.getBuildingInfo((BuildingTypes)iI).getOccupationTimeModifier() != 0)
+		{
+			if (hasActiveBuilding((BuildingTypes)iI))
+			{
+				iModifier += GC.getBuildingInfo((BuildingTypes)iI).getOccupationTimeModifier();
+			}
+		}
+	}
+
+	return iModifier;
 }
 
 // True if a trait, current civic or owned building lets eUnitCombat units upgrade outside the team's territory.
@@ -15072,7 +15188,8 @@ int CvPlayer::getAdvancedStartPopCost(bool bAdd, CvCity* pCity) const
 		{
 			--iPopulation;
 
-			if (iPopulation < GC.getDefineINT("INITIAL_CITY_POPULATION") + GC.getEraInfo(GC.getGameINLINE().getStartEra()).getFreePopulation())
+			// The extra population of new cities cannot be sold back either (added by this mod)
+			if (iPopulation < GC.getDefineINT("INITIAL_CITY_POPULATION") + GC.getEraInfo(GC.getGameINLINE().getStartEra()).getFreePopulation() + std::max(0, getNewCityPopulation()))
 			{
 				return -1;
 			}
