@@ -342,6 +342,7 @@
 	<ElementType name="iTradeRoutes" content="textOnly" dt:type="int"/>
 	<ElementType name="iExpInBorderModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iCityRadiusChange" content="textOnly" dt:type="int"/>
+	<ElementType name="CityRadiusCultureLevel" content="textOnly"/>
 	<ElementType name="iSummonDuration" content="textOnly" dt:type="int"/>
 	<ElementType name="YieldModifiers" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
@@ -448,6 +449,7 @@
 		<element type="iTradeRoutes" minOccurs="0"/>
 		<element type="iExpInBorderModifier" minOccurs="0"/>
 		<element type="iCityRadiusChange" minOccurs="0"/>
+		<element type="CityRadiusCultureLevel" minOccurs="0"/>
 		<element type="iSummonDuration" minOccurs="0"/>
 		<element type="ExtraYieldThresholds"/>
 		<element type="TradeYieldModifiers"/>

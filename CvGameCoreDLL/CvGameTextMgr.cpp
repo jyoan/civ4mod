@@ -3453,7 +3453,14 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		if (GC.getTraitInfo(eTrait).getCityRadiusChange() != 0)
 		{
 			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CITY_RADIUS_CHANGE", GC.getTraitInfo(eTrait).getCityRadiusChange(), CITY_PLOTS_MAX_RADIUS));
+			if (GC.getTraitInfo(eTrait).getCityRadiusCultureLevel() == NO_CULTURELEVEL)
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CITY_RADIUS_CHANGE", GC.getTraitInfo(eTrait).getCityRadiusChange(), CITY_PLOTS_MAX_RADIUS));
+			}
+			else
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CITY_RADIUS_CHANGE_CULTURE", GC.getTraitInfo(eTrait).getCityRadiusChange(), CITY_PLOTS_MAX_RADIUS, GC.getCultureLevelInfo((CultureLevelTypes)GC.getTraitInfo(eTrait).getCityRadiusCultureLevel()).getTextKeyWide()));
+			}
 		}
 
 		if (GC.getTraitInfo(eTrait).getSummonDuration() != 0)
@@ -7992,7 +7999,14 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 	if (kBuilding.getPlotRadius() > 0)
 	{
 		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_PLOT_RADIUS", kBuilding.getPlotRadius()));
+		if (kBuilding.getPlotRadiusCultureLevel() == NO_CULTURELEVEL)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_PLOT_RADIUS", kBuilding.getPlotRadius()));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_PLOT_RADIUS_CULTURE", kBuilding.getPlotRadius(), GC.getCultureLevelInfo((CultureLevelTypes)kBuilding.getPlotRadiusCultureLevel()).getTextKeyWide()));
+		}
 	}
 
 	// UpgradeAnywhereUnitCombats (effective while any of the player's cities has the building)

@@ -1921,6 +1921,7 @@ public:
 	int getPrereqAndTechs(int i) const;				// Exposed to Python
 	int getPrereqOrBonuses(int i) const;				// Exposed to Python
 	int getPlotRadius() const;				// Exposed to Python
+	int getPlotRadiusCultureLevel() const;			// Exposed to Python
 	int getNumPrereqOrTraits() const;				// Exposed to Python
 	int getPrereqOrTraits(int i) const;				// Exposed to Python
 	const std::vector<int>& getPrereqOrTraitsVector() const;
@@ -2079,6 +2080,7 @@ protected:
 	int* m_piPrereqOrBonuses;
 	std::vector<int> m_aiPrereqOrTraits;
 	int m_iPlotRadius;
+	int m_iPlotRadiusCultureLevel;
 	int* m_piProductionTraits;
 	int* m_piHappinessTraits;
 	int* m_piSeaPlotYieldChange;
@@ -4382,6 +4384,7 @@ public:
 	int getTradeRoutes() const;				// Exposed to Python
 	int getExpInBorderModifier() const;				// Exposed to Python
 	int getCityRadiusChange() const;				// Exposed to Python
+	int getCityRadiusCultureLevel() const;			// Exposed to Python
 	int getSummonDuration() const;				// Exposed to Python
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
@@ -4449,6 +4452,7 @@ protected:
 	int m_iTradeRoutes;
 	int m_iExpInBorderModifier;
 	int m_iCityRadiusChange;
+	int m_iCityRadiusCultureLevel;
 	int m_iSummonDuration;
 
 	CvString m_szShortDescription;
@@ -4471,6 +4475,7 @@ protected:
 	std::vector< std::vector<int> > m_aaiTerrainYieldChange;		// [terrain][yield], empty when not set
 	std::vector< std::vector<int> > m_aaiFeatureYieldChange;		// [feature][yield], empty when not set
 	std::vector< std::vector<int> > m_aaiImprovementYieldChange;		// [improvement][yield], empty when not set
+	CvString m_szCityRadiusCultureLevel;		// read() keeps the type as a string until readPass3()
 	std::vector<CvString> m_aszImprovementYieldChangeTypes;		// read() keeps the types as strings until readPass3(),
 	std::vector< std::vector<int> > m_aaiImprovementYieldChangeValues;		// because improvements are loaded after traits
 	int* m_paiRiverPlotYieldChange;

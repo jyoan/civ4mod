@@ -51,7 +51,8 @@ public:
 	int getPlotRadius() const;				// Exposed to Python
 	int getNumCityPlots() const;				// Exposed to Python
 	void setPlotRadius(int iNewValue);
-	void updatePlotRadius();				// sets the radius from the owner (traits)
+	int calculatePlotRadius(CultureLevelTypes eCultureLevel) const;	// the radius from the traits and buildings with the culture level
+	void updatePlotRadius();				// sets the radius from the traits, buildings and culture level
 
 	bool canWork(CvPlot* pPlot) const;																			// Exposed to Python
 	void verifyWorkingPlot(int iIndex);
@@ -576,6 +577,7 @@ public:
 	static int getCultureThreshold(CultureLevelTypes eLevel);
 	void setCultureLevel(CultureLevelTypes eNewValue, bool bUpdatePlotGroups);
 	void updateCultureLevel(bool bUpdatePlotGroups);
+	CultureLevelTypes calculateCultureLevel() const;	// added by this mod (out of updateCultureLevel)
 
 	int getSeaPlotYield(YieldTypes eIndex) const;																// Exposed to Python
 	void changeSeaPlotYield(YieldTypes eIndex, int iChange);

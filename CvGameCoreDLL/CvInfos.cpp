@@ -7330,6 +7330,7 @@ bool CvUnitClassInfo::readPass3()
 CvBuildingInfo::CvBuildingInfo() :
 m_iBuildingClassType(NO_BUILDINGCLASS),
 m_iPlotRadius(0),
+m_iPlotRadiusCultureLevel(NO_CULTURELEVEL),
 m_iVictoryPrereq(NO_VICTORY),
 m_iFreeStartEra(NO_ERA),
 m_iMaxStartEra(NO_ERA),
@@ -8437,6 +8438,12 @@ int CvBuildingInfo::getPlotRadius() const
 	return m_iPlotRadius;
 }
 
+// The culture level the city needs for iPlotRadius (added by this mod; NO_CULTURELEVEL: any city)
+int CvBuildingInfo::getPlotRadiusCultureLevel() const
+{
+	return m_iPlotRadiusCultureLevel;
+}
+
 int CvBuildingInfo::getProductionTraits(int i) const		
 {
 	FAssertMsg(i < GC.getNumTraitInfos(), "Index out of bounds");
@@ -8918,6 +8925,13 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iPlotRadius);
 	}
+
+	// uiFlag < 4: cache written before PlotRadiusCultureLevel existed
+	m_iPlotRadiusCultureLevel = NO_CULTURELEVEL;
+	if (uiFlag > 3)
+	{
+		stream->Read(&m_iPlotRadiusCultureLevel);
+	}
 }
 
 //
@@ -8927,7 +8941,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=3;
+	uint uiFlag=4;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -9100,6 +9114,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	stream->Write(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereExcludeEnemy);
 	writePrereqOrTraits(stream, m_aiPrereqOrTraits);
 	stream->Write(m_iPlotRadius);
+	stream->Write(m_iPlotRadiusCultureLevel);
 }
 
 //
@@ -9250,6 +9265,8 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 
 	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
 	pXML->GetChildXmlValByName(&m_iPlotRadius, "iPlotRadius");
+	pXML->GetChildXmlValByName(szTextVal, "PlotRadiusCultureLevel");
+	m_iPlotRadiusCultureLevel = pXML->FindInInfoClass(szTextVal);
 
 	pXML->SetVariableListTagPair(&m_piProductionTraits, "ProductionTraits", sizeof(GC.getTraitInfo((TraitTypes)0)), GC.getNumTraitInfos());
 
@@ -17059,6 +17076,7 @@ m_iFreeSpecialist(0),
 m_iTradeRoutes(0),
 m_iExpInBorderModifier(0),
 m_iCityRadiusChange(0),
+m_iCityRadiusCultureLevel(NO_CULTURELEVEL),
 m_iSummonDuration(0),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
@@ -17214,6 +17232,12 @@ int CvTraitInfo::getExpInBorderModifier() const
 int CvTraitInfo::getCityRadiusChange() const
 {
 	return m_iCityRadiusChange;
+}
+
+// The culture level a city needs for iCityRadiusChange (added by this mod; NO_CULTURELEVEL: any city)
+int CvTraitInfo::getCityRadiusCultureLevel() const
+{
+	return m_iCityRadiusCultureLevel;
 }
 
 int CvTraitInfo::getSummonDuration() const
@@ -17546,6 +17570,8 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iTradeRoutes, "iTradeRoutes");
 	pXML->GetChildXmlValByName(&m_iExpInBorderModifier, "iExpInBorderModifier");
 	pXML->GetChildXmlValByName(&m_iCityRadiusChange, "iCityRadiusChange");
+	// The culture levels are loaded after the traits: readPass3() finds the type
+	pXML->GetChildXmlValByName(m_szCityRadiusCultureLevel, "CityRadiusCultureLevel");
 	pXML->GetChildXmlValByName(&m_iSummonDuration, "iSummonDuration");
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ExtraYieldThresholds"))
@@ -17690,6 +17716,20 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 // Improvements are loaded after traits (CvXMLLoadUtility::LoadPreMenuGlobals calls this after them)
 bool CvTraitInfo::readPass3()
 {
+	char szMessage[1024];
+
+	m_iCityRadiusCultureLevel = NO_CULTURELEVEL;
+	if (!m_szCityRadiusCultureLevel.empty() && m_szCityRadiusCultureLevel != "NONE")
+	{
+		m_iCityRadiusCultureLevel = GC.getInfoTypeForString(m_szCityRadiusCultureLevel.GetCString(), true);
+		if (m_iCityRadiusCultureLevel < 0)
+		{
+			sprintf(szMessage, "Tag: %s in CityRadiusCultureLevel of CIV4TraitInfos.xml was incorrect", m_szCityRadiusCultureLevel.GetCString());
+			gDLL->MessageBox(szMessage, "XML Error");
+			m_iCityRadiusCultureLevel = NO_CULTURELEVEL;
+		}
+	}
+
 	resolveYieldChanges("ImprovementYieldChanges", m_aszImprovementYieldChangeTypes, m_aaiImprovementYieldChangeValues, GC.getNumImprovementInfos(), m_aaiImprovementYieldChange);
 	m_aszImprovementYieldChangeTypes.clear();
 	m_aaiImprovementYieldChangeValues.clear();

@@ -785,6 +785,42 @@
 		<Spanish>[ICON_BULLET]%D1_Turns [NUM1:turn:turns] for summoned units to disappear</Spanish>
 		<Japanese>[ICON_BULLET]&#21484;&#21914;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12364;&#28040;&#12360;&#12427;&#12414;&#12391;&#12398;&#12479;&#12540;&#12531;&#25968;%D1_Turns</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CITY_RADIUS_CHANGE_CULTURE</Tag>
+		<English>[ICON_BULLET]%D1_Change city radius (up to %d2_Max) in cities with %s3_Level culture or more</English>
+		<French>[ICON_BULLET]%D1_Change city radius (up to %d2_Max) in cities with %s3_Level culture or more</French>
+		<German>[ICON_BULLET]%D1_Change city radius (up to %d2_Max) in cities with %s3_Level culture or more</German>
+		<Italian>[ICON_BULLET]%D1_Change city radius (up to %d2_Max) in cities with %s3_Level culture or more</Italian>
+		<Spanish>[ICON_BULLET]%D1_Change city radius (up to %d2_Max) in cities with %s3_Level culture or more</Spanish>
+		<Japanese>[ICON_BULLET]&#25991;&#21270;&#12524;&#12505;&#12523;&#12364;%s3_Level&#20197;&#19978;&#12398;&#37117;&#24066;&#12391;&#37117;&#24066;&#22287;&#12398;&#21322;&#24452;%D1_Change&#65288;&#26368;&#22823;%d2_Max&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PLOT_RADIUS_CULTURE</Tag>
+		<English>[ICON_BULLET]City radius %d1_Radius with %s2_Level culture or more</English>
+		<French>[ICON_BULLET]City radius %d1_Radius with %s2_Level culture or more</French>
+		<German>[ICON_BULLET]City radius %d1_Radius with %s2_Level culture or more</German>
+		<Italian>[ICON_BULLET]City radius %d1_Radius with %s2_Level culture or more</Italian>
+		<Spanish>[ICON_BULLET]City radius %d1_Radius with %s2_Level culture or more</Spanish>
+		<Japanese>[ICON_BULLET]&#25991;&#21270;&#12524;&#12505;&#12523;&#12364;%s2_Level&#20197;&#19978;&#12391;&#37117;&#24066;&#22287;&#12398;&#21322;&#24452;%d1_Radius</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_CITY_RADIUS</Tag>
+		<English>City radius: %d1_Radius</English>
+		<French>City radius: %d1_Radius</French>
+		<German>City radius: %d1_Radius</German>
+		<Italian>City radius: %d1_Radius</Italian>
+		<Spanish>City radius: %d1_Radius</Spanish>
+		<Japanese>&#37117;&#24066;&#22287;&#12398;&#21322;&#24452;: %d1_Radius</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_CITY_RADIUS_CULTURE</Tag>
+		<English>City radius: %d1_Radius (%d3_Next at %s2_Level culture)</English>
+		<French>City radius: %d1_Radius (%d3_Next at %s2_Level culture)</French>
+		<German>City radius: %d1_Radius (%d3_Next at %s2_Level culture)</German>
+		<Italian>City radius: %d1_Radius (%d3_Next at %s2_Level culture)</Italian>
+		<Spanish>City radius: %d1_Radius (%d3_Next at %s2_Level culture)</Spanish>
+		<Japanese>&#37117;&#24066;&#22287;&#12398;&#21322;&#24452;: %d1_Radius&#65288;&#25991;&#21270;&#12524;&#12505;&#12523;%s2_Level&#12391;%d3_Next&#65289;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

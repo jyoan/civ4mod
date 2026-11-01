@@ -197,7 +197,9 @@ public:
 	int getTraitFeatureYieldChange(FeatureTypes eFeature, YieldTypes eYield) const;
 	int getTraitImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield) const;
 	int getTraitRiverPlotYieldChange(YieldTypes eYield) const;
-	// City plot radius of a new city of this player (added by this mod)
+	// City plot radius from the traits of this player for a city with the culture level (added by this mod)
+	int getCityRadius(CultureLevelTypes eCultureLevel) const;
+	// City plot radius the AI plans new cities with: all the traits, as if the city had every culture level (added by this mod)
 	int getNextCityRadius() const;
 	// Extra turns of the summoned units of this player (added by this mod, traits only, computed on each call)
 	int getSummonDuration() const;																								// Exposed to Python

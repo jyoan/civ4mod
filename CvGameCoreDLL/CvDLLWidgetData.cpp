@@ -3780,6 +3780,28 @@ void CvDLLWidgetData::parseCultureHelp(CvWidgetDataStruct &widgetDataStruct, CvW
 		}
 
 
+		// The city plot radius, and the culture level that widens it (added by this mod)
+		int iRadius = pHeadSelectedCity->getPlotRadius();
+		int iNextCultureLevel;
+
+		for (iNextCultureLevel = pHeadSelectedCity->getCultureLevel() + 1; iNextCultureLevel < GC.getNumCultureLevelInfos(); iNextCultureLevel++)
+		{
+			if (pHeadSelectedCity->calculatePlotRadius((CultureLevelTypes)iNextCultureLevel) > iRadius)
+			{
+				break;
+			}
+		}
+
+		szBuffer.append(NEWLINE);
+		if (iNextCultureLevel < GC.getNumCultureLevelInfos())
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_CITY_RADIUS_CULTURE", iRadius, GC.getCultureLevelInfo((CultureLevelTypes)iNextCultureLevel).getTextKeyWide(), pHeadSelectedCity->calculatePlotRadius((CultureLevelTypes)iNextCultureLevel)));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_CITY_RADIUS", iRadius));
+		}
+
 		szBuffer.append(L"\n=======================\n");
 		GAMETEXT.setCommerceHelp(szBuffer, *pHeadSelectedCity, COMMERCE_CULTURE);
 	}

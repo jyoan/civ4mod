@@ -28647,6 +28647,7 @@
 			<bCtrlDown>0</bCtrlDown>
 			<iHotKeyPriority>0</iHotKeyPriority>
 			<iPlotRadius>3</iPlotRadius>
+			<PlotRadiusCultureLevel>CULTURELEVEL_FLEDGLING</PlotRadiusCultureLevel>
 		</BuildingInfo>
 	</BuildingInfos>
 </Civ4BuildingInfos>

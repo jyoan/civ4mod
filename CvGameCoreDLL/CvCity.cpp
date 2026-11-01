@@ -169,8 +169,9 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 	// Init saved data
 	reset(iID, eOwner, pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
-	// The city plot radius of the owner, before setPlotCity counts the plots in the radius (added by this mod)
-	m_iPlotRadius = GET_PLAYER(eOwner).getNextCityRadius();
+	// The city plot radius from the traits of the owner with the culture level of a new city, before setPlotCity counts
+	// the plots in the radius (added by this mod)
+	m_iPlotRadius = GET_PLAYER(eOwner).getCityRadius(calculateCultureLevel());
 
 	//--------------------------------
 	// Init non-saved data
@@ -1365,11 +1366,13 @@ void CvCity::setPlotRadius(int iNewValue)
 }
 
 
-// The radius this city should have: the radius of new cities of its owner (traits), or more with the iPlotRadius
-// of a building in the city (not obsolete)
-void CvCity::updatePlotRadius()
+// The radius this city would have with the culture level: the radius from the traits of its owner, or more with the
+// iPlotRadius of a building in the city (not obsolete). Traits and buildings with a CityRadiusCultureLevel or
+// PlotRadiusCultureLevel count only from that culture level
+int CvCity::calculatePlotRadius(CultureLevelTypes eCultureLevel) const
 {
-	int iRadius = GET_PLAYER(getOwnerINLINE()).getNextCityRadius();
+	int iRadius = GET_PLAYER(getOwnerINLINE()).getCityRadius(eCultureLevel);
+	int iCultureLevel;
 	int iI;
 
 	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
@@ -1378,12 +1381,23 @@ void CvCity::updatePlotRadius()
 		{
 			if (getNumActiveBuilding((BuildingTypes)iI) > 0)
 			{
-				iRadius = GC.getBuildingInfo((BuildingTypes)iI).getPlotRadius();
+				iCultureLevel = GC.getBuildingInfo((BuildingTypes)iI).getPlotRadiusCultureLevel();
+
+				if (iCultureLevel == NO_CULTURELEVEL || eCultureLevel >= iCultureLevel)
+				{
+					iRadius = GC.getBuildingInfo((BuildingTypes)iI).getPlotRadius();
+				}
 			}
 		}
 	}
 
-	setPlotRadius(iRadius);
+	return iRadius;
+}
+
+
+void CvCity::updatePlotRadius()
+{
+	setPlotRadius(calculatePlotRadius(getCultureLevel()));
 }
 
 
@@ -7591,6 +7605,13 @@ void CvCity::setCultureLevel(CultureLevelTypes eNewValue, bool bUpdatePlotGroups
 			}
 		}
 
+		// The city plot radius can depend on the culture level (added by this mod). Not in init before setPlotCity counts
+		// the plots in the radius set there, and not when the city is killed
+		if (eNewValue != NO_CULTURELEVEL && plot()->getPlotCity() == this)
+		{
+			updatePlotRadius();
+		}
+
 		if (GC.getGameINLINE().isFinalInitialized())
 		{
 			if ((getCultureLevel() > eOldValue) && (getCultureLevel() > 1))
@@ -7642,6 +7663,14 @@ void CvCity::updateCultureLevel(bool bUpdatePlotGroups)
 		return;
 	}
 
+	setCultureLevel(calculateCultureLevel(), bUpdatePlotGroups);
+}
+
+
+// The culture level of the culture of the owner, 0 in occupation (moved out of updateCultureLevel by this mod, for the
+// radius of a new city)
+CultureLevelTypes CvCity::calculateCultureLevel() const
+{
 	CultureLevelTypes eCultureLevel = ((CultureLevelTypes)0);
 
 	if (!isOccupation())
@@ -7656,7 +7685,7 @@ void CvCity::updateCultureLevel(bool bUpdatePlotGroups)
 		}
 	}
 
-	setCultureLevel(eCultureLevel, bUpdatePlotGroups);
+	return eCultureLevel;
 }
 
 

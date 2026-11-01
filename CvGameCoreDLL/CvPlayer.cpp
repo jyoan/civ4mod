@@ -5983,20 +5983,32 @@ int CvPlayer::getTraitRiverPlotYieldChange(YieldTypes eYield) const
 	return iChange;
 }
 
-int CvPlayer::getNextCityRadius() const
+// CITY_PLOTS_DEFAULT_RADIUS and the iCityRadiusChange of the traits whose CityRadiusCultureLevel the city has
+int CvPlayer::getCityRadius(CultureLevelTypes eCultureLevel) const
 {
 	int iRadius = CITY_PLOTS_DEFAULT_RADIUS;
+	int iCultureLevel;
 	int iI;
 
 	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
 	{
 		if (hasTrait((TraitTypes)iI))
 		{
-			iRadius += GC.getTraitInfo((TraitTypes)iI).getCityRadiusChange();
+			iCultureLevel = GC.getTraitInfo((TraitTypes)iI).getCityRadiusCultureLevel();
+
+			if (iCultureLevel == NO_CULTURELEVEL || eCultureLevel >= iCultureLevel)
+			{
+				iRadius += GC.getTraitInfo((TraitTypes)iI).getCityRadiusChange();
+			}
 		}
 	}
 
 	return range(iRadius, 1, CITY_PLOTS_MAX_RADIUS);
+}
+
+int CvPlayer::getNextCityRadius() const
+{
+	return getCityRadius((CultureLevelTypes)(GC.getNumCultureLevelInfos() - 1));
 }
 
 int CvPlayer::getSummonDuration() const
