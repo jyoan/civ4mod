@@ -140,7 +140,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - `Assets\Python\` に置いたファイルは本体の同名ファイルを置き換える。`<BTS>\Assets\Python\` から同じ相対パス（`EntryPoints\`、`Screens\` など）でコピーしてから編集する
 - 元の Python はすべて ASCII・CRLF。日本語を書く必要があるなら、ファイル先頭に coding 宣言を入れる
 - DLL の機能を Python に公開するには `Cy*.cpp` と `Cy*Interface*.cpp`（boost::python）に追加する
-- Mod に入れている Python: `Screens\CvPediaMain.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`（BtS(J) のコピーに追記）、`Screens\CvCivicsScreen.py`（無印 Civ4(J) のコピーに追記。BtS(J)・Warlords(J) には無く、無印のものが使われている）、`Screens\CvPediaTrait.py`・`EntryPoints\CvSpellInterface.py`（新規）
+- Mod に入れている Python: `Screens\CvPediaMain.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`（BtS(J) のコピーに追記）、`Screens\CvCivicsScreen.py`（無印 Civ4(J) のコピーに追記。BtS(J)・Warlords(J) には無く、無印のものが使われている）、`Screens\CvPediaTrait.py`・`Screens\CvPediaSpell.py`・`EntryPoints\CvSpellInterface.py`（新規）
 - 社会制度の画面（`CvCivicsScreen.py`）: 元は各区分の枠が 5 行分の固定の高さで、6 行目がはみ出していた。`updateLayout()` で一番行数の多い区分に合わせて上の枠を伸ばし、大きいアイコンと説明の枠を下にずらす（5 行以下なら元と同じ座標）。9 行以上は説明の枠を 170 ピクセル残すため行の間隔を詰める。`isCivicShown()` で、前提の志向（`PrereqOrTraits`）を持たない社会制度は一覧から外す（今採用中のものは表示）
 - 文法チェック: Python 3.14 が入っている（`python -I`）。Python 2.4 そのものではないが、インデントや括弧の誤りは見つかる。BtS のファイルには Python 2 の `print` 文があって途中で止まるので、`print` 行を `pass` に置き換えた複製で、**編集前と編集後の両方**をチェックして比べる
 
@@ -149,7 +149,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - カテゴリ「志向」（`CIVILOPEDIA_PAGE_TRAIT`、テキスト `TXT_KEY_PEDIA_CATEGORY_TRAIT`）。一覧の位置は最後（ヒントの下）。`listCategories` の位置がそのまま `CivilopediaPageTypes` の値として使われるので、途中に挟めない
 - 志向のページ（`CvPediaTrait.py`）: 左に「指導者」「文明」（その志向を持つもの。クリックで移動）、右上に「生産可能」（`PrereqOrTraits` にその志向を書いたユニット・建物・社会制度のボタン）、右下に「特殊能力」（`CyGameTextMgr().parseTraits()` の先頭の名前行を除いたもの）、右端に志向の一覧
 - DLL 側: `WIDGET_PEDIA_JUMP_TO_TRAIT`（クリックで Python の `pediaJumpToTrait`、マウスオーバーで志向の効果）、`CyGameTextMgr.parseTraits(iTrait, iCiv, bDawnOfMan)` を追加。列挙型はどちらも末尾に足した（既存の値は変わらない。`NUM_WIDGET_TYPES` は DLL 側だけの定義）
-- **画面番号の落とし穴**: `CvScreenEnums.py` では `PEDIA_X = CIVILOPEDIA_PAGE_X + 200` だが、`PEDIA_HISTORY = PEDIA_HINTS + 1` が決め打ち。末尾に足したページ種別に + 200 すると `PEDIA_HISTORY` と同じ値になるので、`PEDIA_TRAIT = PEDIA_HISTORY + 1` にしている
+- **画面番号の落とし穴**: `CvScreenEnums.py` では `PEDIA_X = CIVILOPEDIA_PAGE_X + 200` だが、`PEDIA_HISTORY = PEDIA_HINTS + 1` が決め打ち。末尾に足したページ種別に + 200 すると `PEDIA_HISTORY` と同じ値になるので、`PEDIA_TRAIT = PEDIA_HISTORY + 1` にしている（呪文のペディアは `PEDIA_SPELL = PEDIA_TRAIT + 1`）
 - 志向の名前は説明文の中で `<link=literal>` のリンクになっている（`parseTraits` の見出し、文明の説明の志向一覧）。ペディアでクリックすると志向のページへ移動する
 
 ### 都市圏の半径
@@ -177,13 +177,13 @@ BtS は全都市が半径 2（21 タイル）固定。この Mod では都市ご
 
 ### 呪文
 
-FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・関数の名前は FFH2 と同じ。使えるのはユニットだけ。第 1 段階は土台と基本の条件、第 2 段階 a は XML だけで書ける効果のうち、術者自身・今いるタイル・今いる都市へのもの、第 2 段階 b は周りのユニットへのもの、第 2 段階 c は召喚・失敗・世界呪文（1 ゲーム 1 回）・遅延。AI、ペディアはまだない。
+FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・関数の名前は FFH2 と同じ。使えるのはユニットだけ。第 1 段階は土台と基本の条件、第 2 段階 a は XML だけで書ける効果のうち、術者自身・今いるタイル・今いる都市へのもの、第 2 段階 b は周りのユニットへのもの、第 2 段階 c は召喚・失敗・世界呪文（1 ゲーム 1 回）・遅延、第 3 段階は AI、第 4 段階はペディア。
 
 - XML: `Units\CIV4SpellInfos.xml`。Schema は FFH2 と同じく別ファイルの `Units\CIV4SpellSchema.xml`。昇進・ユニット・技術・文明を参照するので、`LoadPreMenuGlobals` で文明の後に読み込む。`CvSpellInfo` はストリーム版の `read` / `write` を持たない（キャッシュを使わない）
 - 行動ボタン: `SetGlobalActionInfo` が呪文ごとに `ACTIONSUBTYPE_SPELL` の行動を作る。コマンドは `COMMAND_CAST`、データは呪文の番号。ボタンを押すと、既存のコマンドのネットメッセージ（`GAMEMESSAGE_DO_COMMAND`）で全マシンの `CvUnit::doCommand` → `cast` が呼ばれる（マルチプレイでも同期する）。選択中のユニットはすべて実行する
 - `COMMAND_CAST` は `CvEnums.h` の `CommandTypes` の末尾（`COMMAND_HOTKEY` の後）と、`CIV4CommandInfos.xml`（無印 Civ4(J) のコピー）の末尾に足した。**XML の並びは列挙型と同じでなければならない**。`<Help/>` は空にしてある（中身があると、全呪文の説明に同じ文が付く）
 - `CvUnit::canCast(iSpell, bTestVisible)` の判定順（FFH2 と同じ）:
-  1. 移動できないタイマー（`getImmobileTimer`）
+  1. 移動できないタイマー（`getImmobileTimer`）。AI のユニットは `bAllowAI` の呪文だけ（FFH2 と同じ）
   2. ユニットの条件: `PromotionPrereq1` / `2`・`UnitClassPrereq`・`UnitPrereq`・`UnitCombatPrereq`
   3. 文明・都市・タイルの条件: `BuildingPrereq`（今いる都市にその建物）・`BuildingClassOwnedPrereq`（自国のどこかにその建物）・`CivilizationPrereq`・`CorporationPrereq`（今いる都市にその企業）・`ImprovementPrereq`（今いるタイルの施設）・`StateReligionPrereq`・`TechPrereq`。`ConvertUnitType` の呪文は、すでにその種類のユニットなら使えない。`bGlobal`（世界呪文をまだ使っていない）。`iCasterMinLevel`。`bCasterNoDuration`（召喚した、いずれ消えるユニットでない）
   4. `PromotionInStackPrereq` / `UnitInStackPrereq`: 同じタイルに、その昇進を持つ・その種類の、自国のほかのユニットがいる（術者自身がその昇進を持つ・その種類だと使えない。FFH2 と同じ）
@@ -224,9 +224,19 @@ FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・�
 - 実行済み（`m_bHasCasted`）はターンの開始時（`CvUnit::doTurn`）に戻り、アップグレードでは引き継ぐ（`CvUnit::convert`）。ユニットの説明に「実行済み」（`TXT_KEY_UNIT_HAS_CASTED`）と出る。セーブは `CvUnit` の `uiFlag=3`（2 以下のセーブは実行済みでない扱い）
 - Python: `EntryPoints\CvSpellInterface.py`（`CvDefines.h` の `PYSpellModule`）。DLL は `canCast([pCaster, eSpell])` / `cast([pCaster, eSpell])` を呼び、それぞれが `PyRequirement` / `PyResult` の文字列を `eval` する（FFH2 0.41 と同じ。インストール済みの FFH2（Denev さんの版）は関数名だけを書く別の方式）。式の中では `pCaster`（CyUnit）と `eSpell` が使えるので、引数つきの共通関数を XML から呼べる（例: `spellGainGold(pCaster, 25)`）。今ある共通関数は `reqNotHasPromotion`・`spellAddPromotion`・`spellGainGold`・`spellDamageCaster`。失敗したときは `miscast([pCaster, eSpell])` が `PyMiscast` を `eval` する
 - `PyRequirement` はボタンを描くたびに各マシンで別々に呼ばれるので、ゲーム状態を変えない。`PyResult` で術者を消すときは遅延（`pCaster.kill(True, -1)`）にする（`cast` の後で `doCommand` がまだユニットを使うため）
-- 説明文（`CvGameTextMgr::parseSpellHelp`。行動ボタンのマウスオーバー）: 世界呪文 → 前提（文明・技術・国教・ユニット・兵科・ユニットクラス・昇進・レベル・建物・企業・地形の特徴・施設・同じタイルのユニット・召喚したユニットでない）→ 効果 → `Help` → 場所の条件 → 実行済みの取り消し・費用・遅延・失敗率・術者が消える。見出しは「実行 (呪文名)」（`TXT_KEY_COMMAND_CAST`）。テキストキーは、FFH2 にあるものは同じ名前（`TXT_KEY_SPELL_*`）。Python の効果は自動では説明されないので、`Help` に書く
-- Python への公開: `gc.getNumSpellInfos()` / `gc.getSpellInfo(i)`（`CvSpellInfo` の getter）、`CyUnit.canCast` / `cast`（`canCast` の判定を通さない）/ `isHasCasted` / `setHasCasted` / `getDuration` / `setDuration` / `changeDuration` / `getDelayedSpell`、`CyPlayer.getSummonDuration`、`FeatTypes.FEAT_GLOBAL_SPELL`、`CommandTypes.COMMAND_CAST`、`ActionSubTypes.ACTIONSUBTYPE_SPELL`、`SpellTypes.NO_SPELL`
-- AI は呪文を使わない（第 3 段階で `bAllowAI` などを入れる予定）
+- 説明文（`CvGameTextMgr::parseSpellHelp`。行動ボタンのマウスオーバーとペディア）: 世界呪文 → 前提（文明・技術・国教・ユニット・兵科・ユニットクラス・昇進・レベル・建物・企業・地形の特徴・施設・同じタイルのユニット・召喚したユニットでない）→ 効果 → `Help` → 場所の条件 → 実行済みの取り消し・費用・遅延・失敗率・術者が消える。見出しは「実行 (呪文名)」（`TXT_KEY_COMMAND_CAST`）。テキストキーは、FFH2 にあるものは同じ名前（`TXT_KEY_SPELL_*`）。Python の効果は自動では説明されないので、`Help` に書く
+- Python への公開: `gc.getNumSpellInfos()` / `gc.getSpellInfo(i)`（`CvSpellInfo` の getter）、`CyUnit.canCast` / `cast`（`canCast` の判定を通さない）/ `isHasCasted` / `setHasCasted` / `getDuration` / `setDuration` / `changeDuration` / `getDelayedSpell`、`CyPlayer.getSummonDuration`、`FeatTypes.FEAT_GLOBAL_SPELL`、`CommandTypes.COMMAND_CAST`、`ActionSubTypes.ACTIONSUBTYPE_SPELL`、`SpellTypes.NO_SPELL`、`CyGameTextMgr.getSpellHelp(iSpell, bCivilopediaText)`、`WidgetTypes.WIDGET_PEDIA_JUMP_TO_SPELL`、`CivilopediaPageTypes.CIVILOPEDIA_PAGE_SPELL`
+- ペディア（第 4 段階）:
+  - カテゴリ「呪文」（`CIVILOPEDIA_PAGE_SPELL`、テキスト `TXT_KEY_PEDIA_CATEGORY_SPELL`。名前は FFH2 と同じ）。一覧の位置は「志向」の下（最後）。一覧は呪文のボタンと名前の表
+  - 呪文のページ（`CvPediaSpell.py`。昇進のページと同じ配置）: 左上に呪文のボタン、右上に「必要条件」（文明・技術・国教・ユニット・兵科・ユニットクラス・昇進・建物・企業・地形の特徴・施設・同じタイルの昇進とユニットのボタン。説明文と同じ順。ユニットクラス・建物クラスは呪文の `CivilizationPrereq` の文明、なければ今のプレイヤーの文明のもの、なければ既定のもの）、その下に「効果」（召喚するユニットとその昇進・与える昇進・変身先のユニット・建物・地形の特徴・施設・宗教のボタン。外す昇進は説明文だけ）、右下に「特殊能力」（行動ボタンと同じ説明文から見出しを除いたもの）、左下に「歴史」（`Civilopedia`）、右端に呪文の一覧
+  - DLL 側: `WIDGET_PEDIA_JUMP_TO_SPELL`（クリックで Python の `pediaJumpToSpell`、マウスオーバーで呪文の名前と説明文。昇進と同じく `iData2` が 0 なら説明を出さない（右端の一覧））、`CvGameTextMgr::setSpellHelp`（`setPromotionHelp` と同じく、ペディア用でなければ名前を先頭に付ける）、`CyGameTextMgr.getSpellHelp`。列挙型はどちらも末尾（志向の後）に足した。説明文の中の `[LINK=literal]` の呪文名もペディアで呪文のページへ移動する（`CvPediaMain.link`）
+  - 召喚したユニットが消えるまでのターン数は、今のプレイヤーの志向で計算する（ゲームのプレイヤーがいないとき（メインメニューから開いたペディア）は 1）
+  - 昇進・ユニットのページから呪文へのリンク（FFH2 の昇進のページの「呪文」）は入れていない（BtS の `CvPediaPromotion.py` などを Mod にコピーする必要がある）
+- AI（第 3 段階）:
+  - AI（蛮族を含む）は `bAllowAI`（省略時 0）の呪文だけを使う（FFH2 と同じ）。ユニットごとに、使える呪文のうち評価値が最大で 0 より大きいものを 1 つ実行する（`CvUnitAI::AI_chooseSpell`）。実行するのは自分のターンの初め（`CvPlayerAI::AI_doTurnUnitsPost` の最後。遅延の呪文・昇進・アップグレードの後）と終わり（`CvGame::updateMoves` で全ユニットが動き終わった後。FFH2 はここだけ）の 2 回（`CvPlayerAI::AI_doSpells`）。ネットメッセージを通さず `cast` を直接呼ぶ（FFH2 と同じ。AI の処理は全マシンで同じように動くので同期する）。世界呪文の確認のポップアップは出ない
+  - 評価値（`CvUnitAI::AI_spellValue`）は FFH2 の `chooseSpell` の係数に `iAIWeight` を足したもの: 召喚は、召喚するユニットの移動力の範囲に見えている敵がいるときだけ「戦闘力 × 100 × 体数」（`bPermanentUnitCreate` でも同じ）。昇進は術者から見た昇進の評価（BtS の `AI_promotionValue`）。ダメージは敵 1 体につき「ダメージ × 10」（`iDamageLimit` に達した敵は 0）、自チーム 1 体につき「ダメージ × -20」。移動不能は動ける敵 1 体につき「ターン数 × 20」（自チームは -20）。変身は新旧のユニットの評価の差（`AI_unitValue`）。建物は都市の建物の評価（`AI_buildingValue`）。地形の特徴・施設は 10。人口 1 につき 50。資金は 1 につき -4（得るなら +4）。術者が消えるなら「レベル × 術者のユニットの評価」を引く。宗教・実行済みの取り消し・遅延・世界呪文・`PyResult` は評価しないので、`iAIWeight` で決める
+  - FFH2 との違い: 昇進と移動不能は範囲の対象の数で数える（FFH2 は昇進が術者 1 体分、移動不能が範囲のタイルの数）。範囲の昇進は、自チームのユニットが得ると +、敵が得ると −（除去は逆）。今いる場所で効かない効果（地形の特徴を作れない、など）は数えない。効果の評価は失敗率の分だけ下げる（失敗すると効果も費用もないため。`iAIWeight` は下げない）。変身と術者が消えるときのユニットの評価は、FFH2 の `UNITAI_ATTACK` の代わりに術者のユニット AI で計る（変身後のユニットは術者のユニット AI を引き継ぐため）
+  - AI のユニットは呪文を使うために移動しない（FFH2 の `UNITAI_MAGE` などは入れていない）。FFH2 の自動化のタグ（`bAllowAutomateTerrain` など）も入れていない
 
 ## Mod の設計方針
 
@@ -264,6 +274,7 @@ FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・�
 | `CIV4PromotionInfos.xml` | `PromotionInfo/bRemovedWhenHealed`、`PromotionCombatApply`、`iPromotionCombatApplyChance`、`iFreeXPPerTurn`、`iFreeXPCap` | 第 2 段階（名前は FFH2 と同じ。`iPromotionCombatApplyChance` / `iFreeXPCap` だけ新規）。ターンの開始時（`doTurnPromotions`、回復の後）に、`iFreeXPPerTurn` の経験値を足し（戦闘の経験値ではないので補正・大将軍ポイントなし。**ユニットの経験値が `iFreeXPCap`（省略時 100）に達したらそれ以上増えない**）、`bRemovedWhenHealed` はダメージ 0 なら消える。`PromotionCombatApply`: 戦闘の後、生き残った相手に `iPromotionCombatApplyChance`%（省略時 100）でその昇進を与える（与える側が倒れていても与える。戦闘で消える昇進を外した後、勝利の効果の前）。`PromotionCombatApply` も `readPass2` で読む |
 | `CIV4PromotionInfos.xml` | `PromotionInfo/iGoldFromCombat`、`iCombatCapturePercent` | 第 3 段階（名前は FFH2 と同じ）。どちらも勝者の（戦闘中に持っていた）昇進の値を**足し算**する。`iGoldFromCombat`: 勝利すると合計が正なら資金を得る（メッセージ `TXT_KEY_MISC_GOLD_FROM_COMBAT`）。`iCombatCapturePercent`: 勝利すると合計 % で、倒したユニットと同じ種類のユニットを勝者のタイルに新しく作る（倒したユニットの昇進・経験値は引き継がない。新しいユニットと同じく志向の昇進の組などは付く。そのターンは動けない。メッセージは BtS の `TXT_KEY_MISC_YOU_CAPTURED_UNIT`）。捕獲しないのは、倒したのが動物（領土に入れないため）、陸と海などドメインが違う、陸のユニットが水上から勝った（船からの上陸攻撃）、勝者が蛮族のとき |
 | `CIV4SpellInfos.xml`（新規） | `SpellInfo` の `PromotionPrereq1` / `PromotionPrereq2`、`UnitPrereq`、`UnitClassPrereq`、`UnitCombatPrereq`、`CivilizationPrereq`、`TechPrereq`、`iCasterMinLevel`、`bInBordersOnly`、`bInCityOnly`、`bHasCasted`、`bIgnoreHasCasted`、`bDisplayWhenDisabled`、`PyRequirement`、`PyResult`（と `Type`・`Description`・`Civilopedia`・`Help`・`Button`・ホットキー） | 呪文（第 1 段階。名前は FFH2 と同じ）。仕組みは「呪文」の節 |
+| `CIV4SpellInfos.xml` | `SpellInfo` の `bAllowAI`、`iAIWeight` | 呪文の第 3 段階（名前は FFH2 と同じ）。AI が使ってよい呪文と、AI の評価値に足す値。仕組みは「呪文」の節 |
 | `CIV4SpellInfos.xml` | `SpellInfo` の `CreateUnitType`、`iCreateUnitNum`、`bPermanentUnitCreate`、`bCopyCastersPromotions`、`CreateUnitPromotion`、`bCasterNoDuration`、`iMiscastChance`、`PyMiscast`、`bGlobal`、`iDelay` | 呪文の第 2 段階 c（名前は FFH2 と同じ）。召喚・失敗・世界呪文・遅延。FFH2 との違いは「呪文」の節 |
 | `CIV4TraitInfos.xml` | `TraitInfo/iSummonDuration` | 呪文で召喚したユニットが消えるまでのターン +○（FFH2 と同じ名前）。そのつど合計（`CvPlayer::getSummonDuration`）。説明文は `TXT_KEY_TRAIT_SUMMON_DURATION` |
 | `CIV4SpellInfos.xml` | `SpellInfo` の `iRange`、`iDamage`、`iDamageLimit`、`iImmobileTurns`、`bImmuneTeam`、`bImmuneEnemy`、`bImmuneFlying`（と、`bBuffCasterOnly=0` の `AddPromotionType1`〜`3` / `RemovePromotionType1`〜`3`） | 呪文の第 2 段階 b（名前は FFH2 と同じ）。周りのユニットへの効果。交戦中でない他国のユニットは常に対象外など、FFH2 との違いは「呪文」の節 |
@@ -306,6 +317,8 @@ BtS 本体の修正:
 | `SPELL_TEST_PERMANENT`（検証用呪文（永続召喚）） | — | 検証用文明の、検証用昇進を持つユニットが、資金 10 で、次のターンの初めに探検家を召喚する（`iDelay` 1。消えない。検証用状態Ⅱが付く。召喚したターンは動けない）。検証用昇進を持つ自国のユニットの数まで。使えないときも無効のボタンで出る。実行済みになる |
 | `SPELL_TEST_WORLD`（検証用呪文（世界）） | — | 検証用文明のユニットが、資金 +100（世界呪文。確認のポップアップ。使うとボタンが出なくなる）。音 `AS2D_GOODY_GOLD`。実行済みになる |
 
+検証用呪文は、検証用呪文（砦）以外すべて `bAllowAI`（AI も使う。確かめるには AI に検証用文明を割り当てる）。Python の効果しかない資金・昇進と、敵がいないと評価が 0 の永続召喚は `iAIWeight` を持つ（資金 100・昇進 50・永続召喚 100）。砦は `bAllowAI` がない（評価は正なので、AI が使わないことで `bAllowAI` を確かめる）。再実行は評価が負（資金 20）なので AI は使わない
+
 検証用文明が `CIVIC_TEST` を採用したあと、白兵戦ユニット（都市で生産）で期待される値: 生産直後の経験値 5（志向 +2、白兵戦 +2、社会制度 +1。その後は毎ターン +1 で 10 まで増える）、ユニット A → B のアップグレード割引 75%（志向 50% + 社会制度 25%）、`PROMOTION_TEST` が付く
 
 ## git
@@ -343,3 +356,5 @@ BtS 本体の修正:
 - 2026-11-01: 呪文の第 2 段階 a（術者自身・今いるタイル・今いる都市への効果と、建物・地形の特徴・施設・同じタイルのユニットなどの前提）をゲーム内で確認（検証用呪文（変身）・（都市）・（森）・（砦）・（再実行））
 - 2026-11-01: 呪文の第 2 段階 b（周りのユニットへの昇進の付与・除去、ダメージ、移動不能と、対象外の条件）をゲーム内で確認（検証用呪文（祝福）・（火球）・（足止め））
 - 2026-11-01: 呪文の第 2 段階 c（召喚・消えるまでのターン・昇進の引き継ぎ、失敗と `PyMiscast`、世界呪文と確認のポップアップ、遅延）をゲーム内で確認（検証用呪文（召喚）・（永続召喚）・（世界））
+- 2026-11-01: 呪文の第 3 段階（AI の `bAllowAI` と評価値。ターンの初めと終わりに呪文を使う）をゲーム内で確認（AI に検証用文明を割り当てたゲーム）
+- 2026-11-01: 呪文の第 4 段階（ペディアのカテゴリ「呪文」、呪文のページ、ボタンとリンク）をゲーム内で確認

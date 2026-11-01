@@ -45,6 +45,8 @@ public:
 
 	int AI_sacrificeValue(const CvPlot* pPlot) const;
 
+	int AI_chooseSpell();
+
 	void read(FDataStreamBase* pStream);
 	void write(FDataStreamBase* pStream);
 
@@ -102,6 +104,8 @@ protected:
 	void AI_cityAutomated();
 
 	int AI_promotionValue(PromotionTypes ePromotion);
+
+	int AI_spellValue(int iSpell);
 
 	bool AI_shadow(UnitAITypes eUnitAI, int iMax = -1, int iMaxRatio = -1, bool bWithCargoOnly = true);
 	bool AI_group(UnitAITypes eUnitAI, int iMaxGroup = -1, int iMaxOwnUnitAI = -1, int iMinUnitAI = -1, bool bIgnoreFaster = false, bool bIgnoreOwnUnitType = false, bool bStackOfDoom = false, int iMaxPath = MAX_INT, bool bAllowRegrouping = false);

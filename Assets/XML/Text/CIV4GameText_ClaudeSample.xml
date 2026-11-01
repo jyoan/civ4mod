@@ -84,6 +84,15 @@
 		<Japanese>&#24535;&#21521;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_PEDIA_CATEGORY_SPELL</Tag>
+		<English>Spells</English>
+		<French>Spells</French>
+		<German>Spells</German>
+		<Italian>Spells</Italian>
+		<Spanish>Spells</Spanish>
+		<Japanese>&#21610;&#25991;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_PROMOTION_EXPIRE_CHANCE</Tag>
 		<English>[ICON_BULLET]%d1_Chance%% chance to wear off each turn</English>
 		<French>[ICON_BULLET]%d1_Chance%% chance to wear off each turn</French>
@@ -373,12 +382,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_SPELL_ADJACENT_TO_WATER_ONLY</Tag>
-		<English>[ICON_BULLET]Can only be cast next to water</English>
-		<French>[ICON_BULLET]Can only be cast next to water</French>
-		<German>[ICON_BULLET]Can only be cast next to water</German>
-		<Italian>[ICON_BULLET]Can only be cast next to water</Italian>
-		<Spanish>[ICON_BULLET]Can only be cast next to water</Spanish>
-		<Japanese>[ICON_BULLET]&#27700;&#12395;&#38563;&#25509;&#12375;&#12383;&#12479;&#12452;&#12523;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+		<English>[ICON_BULLET]Can only be cast next to a sea or lake</English>
+		<French>[ICON_BULLET]Can only be cast next to a sea or lake</French>
+		<German>[ICON_BULLET]Can only be cast next to a sea or lake</German>
+		<Italian>[ICON_BULLET]Can only be cast next to a sea or lake</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast next to a sea or lake</Spanish>
+		<Japanese>[ICON_BULLET]&#28023;&#12363;&#28246;&#12395;&#38563;&#25509;&#12375;&#12383;&#12479;&#12452;&#12523;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_SPELL_ADD_PROMOTION_CASTER</Tag>

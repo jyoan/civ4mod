@@ -4755,7 +4755,8 @@ void CvGameTextMgr::parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell,
 
 	// Effects
 
-	// The turns of a summoned unit are those of the active player (the help is shown for its units)
+	// The turns of a summoned unit are those of the active player (the help is shown for its units; 1 without a player in the game,
+	// as in the Civilopedia opened from the main menu)
 	if (kSpell.getCreateUnitType() != NO_UNIT)
 	{
 		szBuffer.append(pcNewline);
@@ -4777,7 +4778,7 @@ void CvGameTextMgr::parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell,
 		{
 			iSummonDuration = 1;
 
-			if (GC.getGameINLINE().getActivePlayer() != NO_PLAYER)
+			if (GC.getGameINLINE().getActivePlayer() != NO_PLAYER && GET_PLAYER(GC.getGameINLINE().getActivePlayer()).isAlive())
 			{
 				iSummonDuration += GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getSummonDuration();
 			}
@@ -4986,6 +4987,26 @@ void CvGameTextMgr::parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell,
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_SACRIFICE_CASTER"));
 	}
+}
+
+// The help of a spell in the Civilopedia (spell stage 4, added by this mod). As setPromotionHelp, the name comes first
+// except in the Civilopedia text, where the page shows the name
+void CvGameTextMgr::setSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell, bool bCivilopediaText)
+{
+	CvWString szTempBuffer;
+
+	if (NO_SPELL == eSpell)
+	{
+		return;
+	}
+
+	if (!bCivilopediaText)
+	{
+		szTempBuffer.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), GC.getSpellInfo(eSpell).getDescription());
+		szBuffer.append(szTempBuffer);
+	}
+
+	parseSpellHelp(szBuffer, eSpell);
 }
 
 //	Function:			parseCivicInfo()

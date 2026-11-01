@@ -2398,6 +2398,7 @@ m_iCreateUnitNum(1),
 m_iCreateUnitPromotion(NO_PROMOTION),
 m_iDelay(0),
 m_iMiscastChance(0),
+m_iAIWeight(0),
 m_bImmuneTeam(false),
 m_bImmuneEnemy(false),
 m_bImmuneFlying(false),
@@ -2405,6 +2406,7 @@ m_bPermanentUnitCreate(false),
 m_bCopyCastersPromotions(false),
 m_bCasterNoDuration(false),
 m_bGlobal(false),
+m_bAllowAI(false),
 m_bAdjacentToWaterOnly(false),
 m_bBuffCasterOnly(false),
 m_bSacrificeCaster(false),
@@ -2712,6 +2714,16 @@ const TCHAR* CvSpellInfo::getPyMiscast() const
 	return m_szPyMiscast;
 }
 
+int CvSpellInfo::getAIWeight() const
+{
+	return m_iAIWeight;
+}
+
+bool CvSpellInfo::isAllowAI() const
+{
+	return m_bAllowAI;
+}
+
 const TCHAR* CvSpellInfo::getPyRequirement() const
 {
 	return m_szPyRequirement;
@@ -2866,6 +2878,9 @@ bool CvSpellInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_szPyRequirement, "PyRequirement");
 	pXML->GetChildXmlValByName(m_szPyResult, "PyResult");
 	pXML->GetChildXmlValByName(m_szPyMiscast, "PyMiscast");
+
+	pXML->GetChildXmlValByName(&m_bAllowAI, "bAllowAI");
+	pXML->GetChildXmlValByName(&m_iAIWeight, "iAIWeight");
 
 	return true;
 }

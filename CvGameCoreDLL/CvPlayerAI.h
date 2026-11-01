@@ -43,6 +43,7 @@ public:
 	void AI_doTurnPost();
 	void AI_doTurnUnitsPre();
 	void AI_doTurnUnitsPost();
+	void AI_doSpells();
 
 	void AI_doPeace();
 

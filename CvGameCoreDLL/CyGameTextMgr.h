@@ -34,6 +34,7 @@ public:
 	std::wstring getBuildingHelp(int iBuilding, bool bCivilopediaText, bool bStrategyText, bool bTechChooserText, CyCity* pCity);
 	std::wstring getProjectHelp(int iProject, bool bCivilopediaText, CyCity* pCity);
 	std::wstring getPromotionHelp(int iPromotion, bool bCivilopediaText);
+	std::wstring getSpellHelp(int iSpell, bool bCivilopediaText);
 	std::wstring getBonusHelp(int iBonus, bool bCivilopediaText);
 	std::wstring getReligionHelpCity(int iReligion, CyCity* pCity, bool bCityScreen, bool bForceReligion, bool bForceState, bool bNoStateReligion);
 	std::wstring getCorporationHelpCity(int iCorporation, CyCity* pCity, bool bCityScreen, bool bForceCorporation);

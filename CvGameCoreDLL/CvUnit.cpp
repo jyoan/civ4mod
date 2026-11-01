@@ -2354,6 +2354,15 @@ bool CvUnit::canCast(int spell, bool bTestVisible)
 		return false;
 	}
 
+	// The AI casts only the spells with bAllowAI (FFH2)
+	if (!isHuman())
+	{
+		if (!kSpell.isAllowAI())
+		{
+			return false;
+		}
+	}
+
 	if (kSpell.getPromotionPrereq1() != NO_PROMOTION)
 	{
 		if (!isHasPromotion((PromotionTypes)kSpell.getPromotionPrereq1()))

@@ -6542,6 +6542,9 @@ void CvGame::updateMoves()
 
 					if (!(player.hasBusyUnit()))
 					{
+						// AI units cast spells again at the end of the turn, after they have moved (added by this mod, as in FFH2)
+						GET_PLAYER((PlayerTypes)(aiShuffle[iI])).AI_doSpells();
+
 						player.setAutoMoves(false);
 					}
 				}

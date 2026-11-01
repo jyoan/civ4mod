@@ -514,6 +514,10 @@ void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &w
 		parseTraitHelp(widgetDataStruct, szBuffer);
 		break;
 
+	case WIDGET_PEDIA_JUMP_TO_SPELL:
+		parseSpellHelp(widgetDataStruct, szBuffer);
+		break;
+
 	case WIDGET_PEDIA_JUMP_TO_SPECIALIST:
 		if (widgetDataStruct.m_iData1 != NO_SPECIALIST && widgetDataStruct.m_iData2 != 0)
 		{
@@ -797,6 +801,10 @@ bool CvDLLWidgetData::executeAction( CvWidgetDataStruct &widgetDataStruct )
 		doPediaTraitJump(widgetDataStruct);
 		break;
 
+	case WIDGET_PEDIA_JUMP_TO_SPELL:
+		doPediaSpellJump(widgetDataStruct);
+		break;
+
 	case WIDGET_PEDIA_JUMP_TO_SPECIALIST:
 		doPediaSpecialistJump(widgetDataStruct);
 		break;
@@ -1007,6 +1015,7 @@ bool CvDLLWidgetData::isLink(const CvWidgetDataStruct &widgetDataStruct) const
 	case WIDGET_PEDIA_JUMP_TO_CIV:
 	case WIDGET_PEDIA_JUMP_TO_LEADER:
 	case WIDGET_PEDIA_JUMP_TO_TRAIT:
+	case WIDGET_PEDIA_JUMP_TO_SPELL:
 	case WIDGET_PEDIA_JUMP_TO_SPECIALIST:
 	case WIDGET_PEDIA_JUMP_TO_PROJECT:
 	case WIDGET_PEDIA_JUMP_TO_RELIGION:
@@ -1540,6 +1549,13 @@ void CvDLLWidgetData::doPediaTraitJump(CvWidgetDataStruct &widgetDataStruct)
 	CyArgsList argsList;
 	argsList.add(widgetDataStruct.m_iData1);
 	gDLL->getPythonIFace()->callFunction(PYScreensModule, "pediaJumpToTrait", argsList.makeFunctionArgs());
+}
+
+void CvDLLWidgetData::doPediaSpellJump(CvWidgetDataStruct &widgetDataStruct)
+{
+	CyArgsList argsList;
+	argsList.add(widgetDataStruct.m_iData1);
+	gDLL->getPythonIFace()->callFunction(PYScreensModule, "pediaJumpToSpell", argsList.makeFunctionArgs());
 }
 
 void CvDLLWidgetData::doPediaDescription(CvWidgetDataStruct &widgetDataStruct)
@@ -4293,6 +4309,15 @@ void CvDLLWidgetData::parseTraitHelp(CvWidgetDataStruct &widgetDataStruct, CvWSt
 	}
 }
 
+// m_iData1: SpellTypes; m_iData2: 0 for no help (as the promotions, for the list of the Civilopedia page)
+void CvDLLWidgetData::parseSpellHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
+{
+	if (widgetDataStruct.m_iData2 != 0 && widgetDataStruct.m_iData1 > -1 && widgetDataStruct.m_iData1 < GC.getNumSpellInfos())
+	{
+		GAMETEXT.setSpellHelp(szBuffer, (SpellTypes)widgetDataStruct.m_iData1);
+	}
+}
+
 void CvDLLWidgetData::parseCloseScreenHelp(CvWStringBuffer& szBuffer)
 {
 	szBuffer.assign(gDLL->getText("TXT_KEY_MISC_CLOSE_SCREEN"));
@@ -4455,6 +4480,15 @@ void CvDLLWidgetData::parseDescriptionHelp(CvWidgetDataStruct &widgetDataStruct,
 			if (NO_TRAIT != eTrait)
 			{
 				szBuffer.assign(GC.getTraitInfo(eTrait).getDescription());
+			}
+		}
+		break;
+	case CIVILOPEDIA_PAGE_SPELL:
+		{
+			SpellTypes eSpell = (SpellTypes)widgetDataStruct.m_iData2;
+			if (NO_SPELL != eSpell)
+			{
+				szBuffer.assign(bMinimal ? GC.getSpellInfo(eSpell).getDescription() : gDLL->getText("TXT_KEY_MISC_HISTORICAL_INFO", GC.getSpellInfo(eSpell).getTextKeyWide()));
 			}
 		}
 		break;

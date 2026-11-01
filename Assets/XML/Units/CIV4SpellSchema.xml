@@ -58,6 +58,8 @@
 	<ElementType name="PyMiscast" content="textOnly"/>
 	<ElementType name="PyResult" content="textOnly"/>
 	<ElementType name="PyRequirement" content="textOnly"/>
+	<ElementType name="bAllowAI" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iAIWeight" content="textOnly" dt:type="int"/>
 	<ElementType name="AddPromotionType1" content="textOnly"/>
 	<ElementType name="AddPromotionType2" content="textOnly"/>
 	<ElementType name="AddPromotionType3" content="textOnly"/>
@@ -131,6 +133,8 @@
 		<element type="PyMiscast" minOccurs="0"/>
 		<element type="PyResult" minOccurs="0"/>
 		<element type="PyRequirement" minOccurs="0"/>
+		<element type="bAllowAI" minOccurs="0"/>
+		<element type="iAIWeight" minOccurs="0"/>
 		<element type="AddPromotionType1" minOccurs="0"/>
 		<element type="AddPromotionType2" minOccurs="0"/>
 		<element type="AddPromotionType3" minOccurs="0"/>

@@ -6572,6 +6572,241 @@ int CvUnitAI::AI_promotionValue(PromotionTypes ePromotion)
 }
 
 
+// The spells of AI units (spell stage 3, added by this mod): the spell with the best value above 0 among the spells
+// this unit can cast (FFH2: CvUnit::chooseSpell)
+int CvUnitAI::AI_chooseSpell()
+{
+	int iBestSpell;
+	int iBestValue;
+	int iValue;
+	int iI;
+
+	iBestSpell = NO_SPELL;
+	iBestValue = 0;
+
+	for (iI = 0; iI < GC.getNumSpellInfos(); iI++)
+	{
+		if (canCast(iI, false))
+		{
+			iValue = AI_spellValue(iI);
+
+			if (iValue > iBestValue)
+			{
+				iBestValue = iValue;
+				iBestSpell = iI;
+			}
+		}
+	}
+
+	return iBestSpell;
+}
+
+
+// The value of a spell for this unit: the weights of FFH2, plus iAIWeight. Unlike FFH2, the promotions and the
+// immobility count the units in iRange (FFH2: once for the caster, or for each tile in iRange), the effects that cannot
+// apply here count nothing, and the value goes down with iMiscastChance, as a miscast spell has no effects and costs nothing
+int CvUnitAI::AI_spellValue(int iSpell)
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)iSpell);
+	int aiAddPromotions[3] = {kSpell.getAddPromotionType1(), kSpell.getAddPromotionType2(), kSpell.getAddPromotionType3()};
+	int aiRemovePromotions[3] = {kSpell.getRemovePromotionType1(), kSpell.getRemovePromotionType2(), kSpell.getRemovePromotionType3()};
+	std::vector<IDInfo> aTargets;
+	CvUnit* pLoopUnit;
+	CvPlot* pLoopPlot;
+	bool bPromotions;
+	bool bEnemy;
+	int iValue;
+	int iCount;
+	int iRange;
+	int iDX, iDY;
+	int iI;
+	uint iJ;
+
+	iValue = 0;
+
+	// Summons: 100 for each combat strength of the summoned units, only with a visible enemy within the moves of the
+	// summoned unit (FFH2)
+	if (kSpell.getCreateUnitType() != NO_UNIT)
+	{
+		CvUnitInfo& kUnit = GC.getUnitInfo((UnitTypes)kSpell.getCreateUnitType());
+		bEnemy = false;
+		iRange = std::min(kUnit.getMoves(), std::max(GC.getMapINLINE().getGridWidthINLINE(), GC.getMapINLINE().getGridHeightINLINE()));
+
+		for (iDX = -iRange; iDX <= iRange && !bEnemy; iDX++)
+		{
+			for (iDY = -iRange; iDY <= iRange && !bEnemy; iDY++)
+			{
+				pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+
+				if (pLoopPlot != NULL && pLoopPlot->isVisibleEnemyUnit(getOwnerINLINE()))
+				{
+					bEnemy = true;
+				}
+			}
+		}
+
+		if (bEnemy)
+		{
+			iValue += kUnit.getCombat() * 100 * kSpell.getCreateUnitNum();
+		}
+	}
+
+	// Promotions: the value of the promotion for this unit (CvUnitAI::AI_promotionValue, as in FFH2), for each unit of the
+	// team that gains it, and less for each enemy that gains it (the other way around for a removed promotion)
+	if (kSpell.isBuffCasterOnly())
+	{
+		for (iI = 0; iI < 3; iI++)
+		{
+			if (aiAddPromotions[iI] != NO_PROMOTION && !isHasPromotion((PromotionTypes)aiAddPromotions[iI]))
+			{
+				iValue += AI_promotionValue((PromotionTypes)aiAddPromotions[iI]);
+			}
+
+			if (aiRemovePromotions[iI] != NO_PROMOTION && isHasPromotion((PromotionTypes)aiRemovePromotions[iI]))
+			{
+				iValue -= AI_promotionValue((PromotionTypes)aiRemovePromotions[iI]);
+			}
+		}
+	}
+	else
+	{
+		bPromotions = false;
+
+		for (iI = 0; iI < 3; iI++)
+		{
+			if (aiAddPromotions[iI] != NO_PROMOTION || aiRemovePromotions[iI] != NO_PROMOTION)
+			{
+				bPromotions = true;
+			}
+		}
+
+		if (bPromotions)
+		{
+			getSpellTargets(iSpell, true, aTargets);
+
+			for (iI = 0; iI < 3; iI++)
+			{
+				if (aiAddPromotions[iI] != NO_PROMOTION)
+				{
+					iCount = 0;
+
+					for (iJ = 0; iJ < aTargets.size(); iJ++)
+					{
+						pLoopUnit = ::getUnit(aTargets[iJ]);
+
+						if (pLoopUnit->getUnitCombatType() != NO_UNITCOMBAT && !pLoopUnit->isHasPromotion((PromotionTypes)aiAddPromotions[iI]))
+						{
+							iCount += ((pLoopUnit->getTeam() == getTeam()) ? 1 : -1);
+						}
+					}
+
+					if (iCount != 0)
+					{
+						iValue += iCount * AI_promotionValue((PromotionTypes)aiAddPromotions[iI]);
+					}
+				}
+
+				if (aiRemovePromotions[iI] != NO_PROMOTION)
+				{
+					iCount = 0;
+
+					for (iJ = 0; iJ < aTargets.size(); iJ++)
+					{
+						pLoopUnit = ::getUnit(aTargets[iJ]);
+
+						if (pLoopUnit->isHasPromotion((PromotionTypes)aiRemovePromotions[iI]))
+						{
+							iCount += ((pLoopUnit->getTeam() == getTeam()) ? 1 : -1);
+						}
+					}
+
+					if (iCount != 0)
+					{
+						iValue -= iCount * AI_promotionValue((PromotionTypes)aiRemovePromotions[iI]);
+					}
+				}
+			}
+		}
+	}
+
+	// Damage: 10 for each point on each enemy below iDamageLimit, and -20 for each point on each unit of the team (FFH2)
+	if (kSpell.getDamage() > 0)
+	{
+		getSpellTargets(iSpell, false, aTargets);
+
+		for (iJ = 0; iJ < aTargets.size(); iJ++)
+		{
+			pLoopUnit = ::getUnit(aTargets[iJ]);
+
+			if (pLoopUnit->getTeam() == getTeam())
+			{
+				iValue -= kSpell.getDamage() * 20;
+			}
+			else if (pLoopUnit->getDamage() < kSpell.getDamageLimit())
+			{
+				iValue += kSpell.getDamage() * 10;
+			}
+		}
+	}
+
+	// Immobility: 20 for each turn on each enemy that can move, and -20 on each unit of the team (FFH2: 20 on each tile)
+	if (kSpell.getImmobileTurns() > 0)
+	{
+		getSpellTargets(iSpell, false, aTargets);
+
+		for (iJ = 0; iJ < aTargets.size(); iJ++)
+		{
+			pLoopUnit = ::getUnit(aTargets[iJ]);
+
+			if (pLoopUnit->getImmobileTimer() == 0)
+			{
+				iValue += kSpell.getImmobileTurns() * ((pLoopUnit->getTeam() == getTeam()) ? -20 : 20);
+			}
+		}
+	}
+
+	// A new unit type: the difference of the unit values for the unit AI of this unit, which the new unit keeps (FFH2:
+	// for UNITAI_ATTACK)
+	if (kSpell.getConvertUnitType() != NO_UNIT)
+	{
+		iValue += GET_PLAYER(getOwnerINLINE()).AI_unitValue((UnitTypes)kSpell.getConvertUnitType(), AI_getUnitAIType(), area());
+		iValue -= GET_PLAYER(getOwnerINLINE()).AI_unitValue(getUnitType(), AI_getUnitAIType(), area());
+	}
+
+	if (canCreateBuilding(iSpell))
+	{
+		iValue += plot()->getPlotCity()->AI_buildingValue((BuildingTypes)kSpell.getCreateBuildingType());
+	}
+
+	if (canCreateFeature(iSpell))
+	{
+		iValue += 10;
+	}
+
+	if (canCreateImprovement(iSpell))
+	{
+		iValue += 10;
+	}
+
+	iValue += kSpell.getChangePopulation() * 50;
+
+	// 4 for each gold spent, or gained with a negative iCost (FFH2)
+	iValue -= kSpell.getCost() * 4;
+
+	// The unit value for the unit AI of this unit for each level (FFH2: for UNITAI_ATTACK)
+	if (kSpell.isSacrificeCaster())
+	{
+		iValue -= getLevel() * GET_PLAYER(getOwnerINLINE()).AI_unitValue(getUnitType(), AI_getUnitAIType(), area());
+	}
+
+	iValue = (iValue * std::max(0, 100 - kSpell.getMiscastChance())) / 100;
+
+	iValue += kSpell.getAIWeight();
+
+	return iValue;
+}
+
+
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_shadow(UnitAITypes eUnitAI, int iMax, int iMaxRatio, bool bWithCargoOnly)
 {

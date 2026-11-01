@@ -72,6 +72,7 @@ public:
 	void doPediaCivilizationJump(CvWidgetDataStruct &widgetDataStruct);
 	void doPediaLeaderJump(CvWidgetDataStruct &widgetDataStruct);
 	void doPediaTraitJump(CvWidgetDataStruct &widgetDataStruct);
+	void doPediaSpellJump(CvWidgetDataStruct &widgetDataStruct);
 	void doPediaDescription(CvWidgetDataStruct &widgetDataStruct);
 	void doGotoTurnEvent(CvWidgetDataStruct &widgetDataStruct);
 	void doForeignAdvisor(CvWidgetDataStruct &widgetDataStruct);
@@ -194,6 +195,7 @@ public:
 	void parseCivilizationHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer);
 	void parseLeaderHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer);
 	void parseTraitHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer);
+	void parseSpellHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer);
 	void parseDescriptionHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer, bool bMinimal);
 	void parseCloseScreenHelp(CvWStringBuffer &szBuffer);
 	void parseKillDealHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer);

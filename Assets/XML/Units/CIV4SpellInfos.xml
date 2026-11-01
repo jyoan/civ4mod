@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- Sid Meier's Civilization 4 -->
 <!-- Spell Infos (added by this mod; the element names are the same as FFH2) -->
-<!-- PyRequirement and PyResult are Python expressions evaluated in Assets/Python/EntryPoints/CvSpellInterface.py (pCaster is the casting unit) -->
+<!-- PyRequirement, PyResult and PyMiscast are Python expressions evaluated in Assets/Python/EntryPoints/CvSpellInterface.py (pCaster is the casting unit) -->
 <Civ4SpellInfos xmlns="x-schema:CIV4SpellSchema.xml">
 	<SpellInfos>
 		<!-- Dedicated test entries -->
@@ -15,6 +15,8 @@
 			<bInBordersOnly>1</bInBordersOnly>
 			<bHasCasted>1</bHasCasted>
 			<PyResult>spellGainGold(pCaster, 25)</PyResult>
+			<bAllowAI>1</bAllowAI>
+			<iAIWeight>100</iAIWeight>
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Button>Art/Interface/Buttons/Process/ProcessWealth.dds</Button>
 		</SpellInfo>
@@ -28,6 +30,8 @@
 			<bHasCasted>1</bHasCasted>
 			<PyResult>spellAddPromotion(pCaster, 'PROMOTION_TEST_STATE1')</PyResult>
 			<PyRequirement>reqNotHasPromotion(pCaster, 'PROMOTION_TEST_STATE1')</PyRequirement>
+			<bAllowAI>1</bAllowAI>
+			<iAIWeight>50</iAIWeight>
 			<Button>,Art/Interface/Buttons/Promotions/Combat2.dds,Art/Interface/Buttons/Promotions_Atlas.dds,1,6</Button>
 		</SpellInfo>
 		<SpellInfo>
@@ -39,6 +43,7 @@
 			<iCost>10</iCost>
 			<ConvertUnitType>UNIT_TEST_B</ConvertUnitType>
 			<bBuffCasterOnly>1</bBuffCasterOnly>
+			<bAllowAI>1</bAllowAI>
 			<AddPromotionType1>PROMOTION_TEST_STATE2</AddPromotionType1>
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Effect>EFFECT_SETTLERSMOKE</Effect>
@@ -55,6 +60,7 @@
 			<CreateBuildingType>BUILDING_OBELISK</CreateBuildingType>
 			<SpreadReligion>RELIGION_BUDDHISM</SpreadReligion>
 			<iChangePopulation>1</iChangePopulation>
+			<bAllowAI>1</bAllowAI>
 			<Sound>AS2D_GOODY_GOLD</Sound>
 			<Button>,Art/Interface/Buttons/Buildings/Obelisk.dds,Art/Interface/Buttons/Warlords_Atlas_1.dds,6,4</Button>
 		</SpellInfo>
@@ -69,6 +75,7 @@
 			<iCost>5</iCost>
 			<CreateFeatureType>FEATURE_FOREST</CreateFeatureType>
 			<bBuffCasterOnly>1</bBuffCasterOnly>
+			<bAllowAI>1</bAllowAI>
 			<RemovePromotionType1>PROMOTION_TEST_POISON</RemovePromotionType1>
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Button>,Art/Interface/Buttons/TerrainFeatures/Forest.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,3,3</Button>
@@ -95,6 +102,7 @@
 			<bIgnoreHasCasted>1</bIgnoreHasCasted>
 			<iCost>20</iCost>
 			<bRemoveHasCasted>1</bRemoveHasCasted>
+			<bAllowAI>1</bAllowAI>
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Button>Art/Interface/Buttons/Actions/Wake.dds</Button>
 		</SpellInfo>
@@ -106,6 +114,7 @@
 			<bHasCasted>1</bHasCasted>
 			<iRange>1</iRange>
 			<bImmuneEnemy>1</bImmuneEnemy>
+			<bAllowAI>1</bAllowAI>
 			<AddPromotionType1>PROMOTION_TEST_STATE2</AddPromotionType1>
 			<RemovePromotionType1>PROMOTION_TEST_POISON</RemovePromotionType1>
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
@@ -121,6 +130,7 @@
 			<iDamage>40</iDamage>
 			<iRange>1</iRange>
 			<bImmuneTeam>1</bImmuneTeam>
+			<bAllowAI>1</bAllowAI>
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Effect>EFFECT_ARTILLERY_SHELL_EXPLODE</Effect>
 			<Button>,Art/Interface/Buttons/Actions/Bombard.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,2,1</Button>
@@ -137,6 +147,7 @@
 			<iRange>2</iRange>
 			<bImmuneTeam>1</bImmuneTeam>
 			<bImmuneFlying>1</bImmuneFlying>
+			<bAllowAI>1</bAllowAI>
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Button>,Art/Interface/Buttons/Promotions/Ambush.dds,Art/Interface/Buttons/Promotions_Atlas.dds,2,1</Button>
 		</SpellInfo>
@@ -153,6 +164,7 @@
 			<CreateUnitType>UNIT_WARRIOR</CreateUnitType>
 			<bCopyCastersPromotions>1</bCopyCastersPromotions>
 			<PyMiscast>spellDamageCaster(pCaster, 20)</PyMiscast>
+			<bAllowAI>1</bAllowAI>
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Effect>EFFECT_SETTLERSMOKE</Effect>
 			<Button>,Art/Interface/Buttons/Units/Warrior.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,2,1</Button>
@@ -169,6 +181,8 @@
 			<CreateUnitType>UNIT_EXPLORER</CreateUnitType>
 			<CreateUnitPromotion>PROMOTION_TEST_STATE2</CreateUnitPromotion>
 			<bPermanentUnitCreate>1</bPermanentUnitCreate>
+			<bAllowAI>1</bAllowAI>
+			<iAIWeight>100</iAIWeight>
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Effect>EFFECT_SETTLERSMOKE</Effect>
 			<Button>,Art/Interface/Buttons/Units/Explorer.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,3,8</Button>
@@ -181,6 +195,7 @@
 			<bHasCasted>1</bHasCasted>
 			<iCost>-100</iCost>
 			<bGlobal>1</bGlobal>
+			<bAllowAI>1</bAllowAI>
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Sound>AS2D_GOODY_GOLD</Sound>
 			<Button>,Art/Interface/Buttons/Actions/GoldenAge.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,3,4</Button>

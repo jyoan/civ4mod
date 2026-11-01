@@ -687,6 +687,10 @@ public:
 	bool isGlobal() const;							// Exposed to Python
 	const TCHAR* getPyMiscast() const;				// Exposed to Python
 
+	// AI (spell stage 3)
+	int getAIWeight() const;						// Exposed to Python
+	bool isAllowAI() const;							// Exposed to Python
+
 	const TCHAR* getPyRequirement() const;			// Exposed to Python
 	const TCHAR* getPyResult() const;				// Exposed to Python
 
@@ -740,6 +744,7 @@ protected:
 	int m_iCreateUnitPromotion;
 	int m_iDelay;
 	int m_iMiscastChance;
+	int m_iAIWeight;
 
 	bool m_bInCityOnly;
 	bool m_bInBordersOnly;
@@ -757,6 +762,7 @@ protected:
 	bool m_bCopyCastersPromotions;
 	bool m_bCasterNoDuration;
 	bool m_bGlobal;
+	bool m_bAllowAI;
 
 	CvString m_szSound;
 	CvString m_szPyRequirement;

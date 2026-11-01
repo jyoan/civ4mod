@@ -117,6 +117,17 @@ std::wstring CyGameTextMgr::getPromotionHelp(int iPromotion, bool bCivilopediaTe
 	return szBuffer.getCString();
 }
 
+// Added by this mod (spells)
+std::wstring CyGameTextMgr::getSpellHelp(int iSpell, bool bCivilopediaText)
+{
+	CvWStringBuffer szBuffer;
+	if (iSpell > -1 && iSpell < GC.getNumSpellInfos())
+	{
+		GAMETEXT.setSpellHelp(szBuffer, (SpellTypes)iSpell, bCivilopediaText);
+	}
+	return szBuffer.getCString();
+}
+
 std::wstring CyGameTextMgr::getBonusHelp(int iBonus, bool bCivilopediaText)
 {
 	CvWStringBuffer szBuffer;

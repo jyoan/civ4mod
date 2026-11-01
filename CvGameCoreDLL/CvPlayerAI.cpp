@@ -511,9 +511,55 @@ void CvPlayerAI::AI_doTurnUnitsPost()
 		}
 	}
 
+	// Spells at the start of the turn, after the promotions and upgrades (added by this mod)
+	AI_doSpells();
+
 	if (isBarbarian())
 	{
 		return;
+	}
+}
+
+
+// AI units (barbarians too) cast the spell with the best value (CvUnitAI::AI_chooseSpell), at most one spell for each
+// unit each time: at the start of the turn (AI_doTurnUnitsPost) and at the end of the turn, after the units have moved
+// (CvGame::updateMoves; FFH2 casts only there). As in FFH2, cast is called without the command (added by this mod)
+void CvPlayerAI::AI_doSpells()
+{
+	PROFILE_FUNC();
+
+	std::vector<int> aiUnits;
+	CvUnit* pLoopUnit;
+	int iSpell;
+	int iLoop;
+	uint iI;
+
+	if (isHuman() || GC.getNumSpellInfos() == 0)
+	{
+		return;
+	}
+
+	// The units are collected first, as spells create and kill units
+	for (pLoopUnit = firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = nextUnit(&iLoop))
+	{
+		aiUnits.push_back(pLoopUnit->getID());
+	}
+
+	for (iI = 0; iI < aiUnits.size(); iI++)
+	{
+		pLoopUnit = getUnit(aiUnits[iI]);
+
+		if (pLoopUnit == NULL || pLoopUnit->isDelayedDeath())
+		{
+			continue;
+		}
+
+		iSpell = static_cast<CvUnitAI*>(pLoopUnit)->AI_chooseSpell();
+
+		if (iSpell != NO_SPELL)
+		{
+			pLoopUnit->cast(iSpell);
+		}
 	}
 }
 
