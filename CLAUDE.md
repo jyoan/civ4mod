@@ -140,7 +140,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - `Assets\Python\` に置いたファイルは本体の同名ファイルを置き換える。`<BTS>\Assets\Python\` から同じ相対パス（`EntryPoints\`、`Screens\` など）でコピーしてから編集する
 - 元の Python はすべて ASCII・CRLF。日本語を書く必要があるなら、ファイル先頭に coding 宣言を入れる
 - DLL の機能を Python に公開するには `Cy*.cpp` と `Cy*Interface*.cpp`（boost::python）に追加する
-- Mod に入れている Python: `Screens\CvPediaMain.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`（BtS(J) のコピーに追記）、`Screens\CvCivicsScreen.py`（無印 Civ4(J) のコピーに追記。BtS(J)・Warlords(J) には無く、無印のものが使われている）、`Screens\CvPediaTrait.py`（新規）
+- Mod に入れている Python: `Screens\CvPediaMain.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`（BtS(J) のコピーに追記）、`Screens\CvCivicsScreen.py`（無印 Civ4(J) のコピーに追記。BtS(J)・Warlords(J) には無く、無印のものが使われている）、`Screens\CvPediaTrait.py`・`EntryPoints\CvSpellInterface.py`（新規）
 - 社会制度の画面（`CvCivicsScreen.py`）: 元は各区分の枠が 5 行分の固定の高さで、6 行目がはみ出していた。`updateLayout()` で一番行数の多い区分に合わせて上の枠を伸ばし、大きいアイコンと説明の枠を下にずらす（5 行以下なら元と同じ座標）。9 行以上は説明の枠を 170 ピクセル残すため行の間隔を詰める。`isCivicShown()` で、前提の志向（`PrereqOrTraits`）を持たない社会制度は一覧から外す（今採用中のものは表示）
 - 文法チェック: Python 3.14 が入っている（`python -I`）。Python 2.4 そのものではないが、インデントや括弧の誤りは見つかる。BtS のファイルには Python 2 の `print` 文があって途中で止まるので、`print` 行を `pass` に置き換えた複製で、**編集前と編集後の両方**をチェックして比べる
 
@@ -174,6 +174,28 @@ BtS は全都市が半径 2（21 タイル）固定。この Mod では都市ご
 - 3 周目のタイルも、BtS と同じく自分の国境の中でないと働かせられない。国境は文化レベル 3（標準速度で文化 100）で 3 タイルまで広がる
 - 都市画面のカメラ: exe は都市に寄るとき、GlobalDefines の `CAMERA_CITY_ZOOM_IN_DISTANCE`（BtS は 3500。FFH2 / OAC は全都市 4250）を使う。この Mod では、都市を選んだとき（`CvGame::selectCity` と、exe が呼ぶ `CvCity::updateSelectedCity`）に `CvCity::updateCityScreenCamera()` がこの値を書き換える。3 周目に働かせられるタイル（`getWorkingCity() == this`）がある都市は `CAMERA_CITY_ZOOM_IN_DISTANCE_RADIUS_3`（Mod の `GlobalDefinesAlt.xml`、4500）、それ以外は XML の元の値（`LoadPreMenuGlobals` の最後で `CAMERA_CITY_ZOOM_IN_DISTANCE_DEFAULT` に控える）。カメラは各マシンの表示だけなので、マルチプレイの同期には影響しない
 - `GlobalDefinesAlt.xml` は無印 Civ4(J) のもの（ダミーの値 1 つだけ）をコピーした。BtS は `GlobalDefines.xml` の後にこれを読むので、Mod の設定値の追加・上書きはここに書く（大きな `GlobalDefines.xml` をコピーしなくて済む）
+
+### 呪文
+
+FFH2 の呪文（spell）の仕組みを移植した。タグ・ファイル・関数の名前は FFH2 と同じ。使えるのはユニットだけ。第 1 段階は土台と基本の条件だけで、XML だけで書ける効果・AI・ペディアはまだない。
+
+- XML: `Units\CIV4SpellInfos.xml`。Schema は FFH2 と同じく別ファイルの `Units\CIV4SpellSchema.xml`。昇進・ユニット・技術・文明を参照するので、`LoadPreMenuGlobals` で文明の後に読み込む。`CvSpellInfo` はストリーム版の `read` / `write` を持たない（キャッシュを使わない）
+- 行動ボタン: `SetGlobalActionInfo` が呪文ごとに `ACTIONSUBTYPE_SPELL` の行動を作る。コマンドは `COMMAND_CAST`、データは呪文の番号。ボタンを押すと、既存のコマンドのネットメッセージ（`GAMEMESSAGE_DO_COMMAND`）で全マシンの `CvUnit::doCommand` → `cast` が呼ばれる（マルチプレイでも同期する）。選択中のユニットはすべて実行する
+- `COMMAND_CAST` は `CvEnums.h` の `CommandTypes` の末尾（`COMMAND_HOTKEY` の後）と、`CIV4CommandInfos.xml`（無印 Civ4(J) のコピー）の末尾に足した。**XML の並びは列挙型と同じでなければならない**。`<Help/>` は空にしてある（中身があると、全呪文の説明に同じ文が付く）
+- `CvUnit::canCast(iSpell, bTestVisible)` の判定順（FFH2 と同じ）:
+  1. 移動できないタイマー（`getImmobileTimer`）
+  2. `PromotionPrereq1` / `2`・`UnitClassPrereq`・`UnitPrereq`・`UnitCombatPrereq`・`CivilizationPrereq`・`TechPrereq`・`iCasterMinLevel`
+  3. ボタンを出すかの判定（`bTestVisible`）で `bDisplayWhenDisabled` なら、ここで「出す」と決まる。この後の条件を満たさないと無効のボタンになる。`bDisplayWhenDisabled` でない呪文は、使えないときはボタン自体が出ない
+  4. `bHasCasted`: `bIgnoreHasCasted` でなければ、このターンに実行済みのユニットは使えない
+  5. `bInBordersOnly`（自分の領土）・`bInCityOnly`（都市。他国の都市でも可）
+  6. `PyRequirement` があれば、その結果で決まる。なければ `PyResult` がある呪文だけ使える（効果のない呪文は使えない）
+- `CvUnit::cast`: `bHasCasted` の呪文なら実行済みにし、メッセージ（呪文の名前とボタン）を出してから `PyResult` を呼ぶ
+- 実行済み（`m_bHasCasted`）はターンの開始時（`CvUnit::doTurn`）に戻り、アップグレードでは引き継ぐ（`CvUnit::convert`）。ユニットの説明に「実行済み」（`TXT_KEY_UNIT_HAS_CASTED`）と出る。セーブは `CvUnit` の `uiFlag=3`（2 以下のセーブは実行済みでない扱い）
+- Python: `EntryPoints\CvSpellInterface.py`（`CvDefines.h` の `PYSpellModule`）。DLL は `canCast([pCaster, eSpell])` / `cast([pCaster, eSpell])` を呼び、それぞれが `PyRequirement` / `PyResult` の文字列を `eval` する（FFH2 0.41 と同じ。インストール済みの FFH2（Denev さんの版）は関数名だけを書く別の方式）。式の中では `pCaster`（CyUnit）と `eSpell` が使えるので、引数つきの共通関数を XML から呼べる（例: `spellGainGold(pCaster, 25)`）。今ある共通関数は `reqNotHasPromotion`・`spellAddPromotion`・`spellGainGold`
+- `PyRequirement` はボタンを描くたびに各マシンで別々に呼ばれるので、ゲーム状態を変えない。`PyResult` で術者を消すときは遅延（`pCaster.kill(True, -1)`）にする（`cast` の後で `doCommand` がまだユニットを使うため）
+- 説明文（`CvGameTextMgr::parseSpellHelp`。行動ボタンのマウスオーバー）: 前提（文明・技術・ユニット・兵科・ユニットクラス・昇進・レベル）→ `Help` → 場所の条件。見出しは「実行 (呪文名)」（`TXT_KEY_COMMAND_CAST`）。テキストキーは、FFH2 にあるものは同じ名前（`TXT_KEY_SPELL_*`）。Python の効果は自動では説明されないので、`Help` に書く
+- Python への公開: `gc.getNumSpellInfos()` / `gc.getSpellInfo(i)`（`CvSpellInfo` の getter）、`CyUnit.canCast` / `cast`（`canCast` の判定を通さない）/ `isHasCasted` / `setHasCasted`、`CommandTypes.COMMAND_CAST`、`ActionSubTypes.ACTIONSUBTYPE_SPELL`、`SpellTypes.NO_SPELL`
+- AI は呪文を使わない（第 3 段階で `bAllowAI` などを入れる予定）
 
 ## Mod の設計方針
 
@@ -210,6 +232,7 @@ BtS は全都市が半径 2（21 タイル）固定。この Mod では都市ご
 | `CIV4PromotionInfos.xml` | `PromotionInfo/iExpireChance`、`bRemovedByCombat`、`PromotionVictory`、`iPromotionVictoryChance` | 状態の昇進と戦闘結果（第 1 段階。名前は FFH2 と同じ。`PromotionVictory` / `iPromotionVictoryChance` だけ新規）。`iExpireChance`: 自分のターンの開始時に ○% で消える（`CvUnit::doTurnPromotions`）。`bRemovedByCombat`: 戦闘で生き残ると消える。`PromotionVictory`: 戦闘に勝利すると `iPromotionVictoryChance`%（省略時 100）でその昇進を得る。戦闘の処理は `CvUnit::doCombatPromotions`（`updateCombat` の決着時、両ユニットがまだ存在するうちに呼ぶ）で、**戦闘中に持っていた昇進**で判定し、戦闘で消える昇進を外してから勝利の効果を与える（勝利で得た昇進はその戦闘では消えない）。勝利は「相手が倒れて自分が生き残った」とき（自爆ユニットは除く。撤退は勝者なし）。対象は通常の攻撃・防御だけで、空中戦・迎撃・爆撃・付随ダメージ・核は含まない。昇進がその兵科で取れるかはチェックしない。状態用の昇進は `UnitCombats` を空にしてレベルアップで選べないようにする。乱数は `getSorenRandNum`。セーブデータは変わらない。`PromotionVictory` は昇進を参照するので `readPass2` で読む |
 | `CIV4PromotionInfos.xml` | `PromotionInfo/bRemovedWhenHealed`、`PromotionCombatApply`、`iPromotionCombatApplyChance`、`iFreeXPPerTurn`、`iFreeXPCap` | 第 2 段階（名前は FFH2 と同じ。`iPromotionCombatApplyChance` / `iFreeXPCap` だけ新規）。ターンの開始時（`doTurnPromotions`、回復の後）に、`iFreeXPPerTurn` の経験値を足し（戦闘の経験値ではないので補正・大将軍ポイントなし。**ユニットの経験値が `iFreeXPCap`（省略時 100）に達したらそれ以上増えない**）、`bRemovedWhenHealed` はダメージ 0 なら消える。`PromotionCombatApply`: 戦闘の後、生き残った相手に `iPromotionCombatApplyChance`%（省略時 100）でその昇進を与える（与える側が倒れていても与える。戦闘で消える昇進を外した後、勝利の効果の前）。`PromotionCombatApply` も `readPass2` で読む |
 | `CIV4PromotionInfos.xml` | `PromotionInfo/iGoldFromCombat`、`iCombatCapturePercent` | 第 3 段階（名前は FFH2 と同じ）。どちらも勝者の（戦闘中に持っていた）昇進の値を**足し算**する。`iGoldFromCombat`: 勝利すると合計が正なら資金を得る（メッセージ `TXT_KEY_MISC_GOLD_FROM_COMBAT`）。`iCombatCapturePercent`: 勝利すると合計 % で、倒したユニットと同じ種類のユニットを勝者のタイルに新しく作る（倒したユニットの昇進・経験値は引き継がない。新しいユニットと同じく志向の昇進の組などは付く。そのターンは動けない。メッセージは BtS の `TXT_KEY_MISC_YOU_CAPTURED_UNIT`）。捕獲しないのは、倒したのが動物（領土に入れないため）、陸と海などドメインが違う、陸のユニットが水上から勝った（船からの上陸攻撃）、勝者が蛮族のとき |
+| `CIV4SpellInfos.xml`（新規） | `SpellInfo` の `PromotionPrereq1` / `PromotionPrereq2`、`UnitPrereq`、`UnitClassPrereq`、`UnitCombatPrereq`、`CivilizationPrereq`、`TechPrereq`、`iCasterMinLevel`、`bInBordersOnly`、`bInCityOnly`、`bHasCasted`、`bIgnoreHasCasted`、`bDisplayWhenDisabled`、`PyRequirement`、`PyResult`（と `Type`・`Description`・`Civilopedia`・`Help`・`Button`・ホットキー） | 呪文（第 1 段階。名前は FFH2 と同じ）。仕組みは「呪文」の節 |
 
 BtS 本体の修正:
 
@@ -234,6 +257,8 @@ BtS 本体の修正:
 | `PROMOTION_TEST`（検証用昇進） | 戦闘術Ⅰ | 戦闘力 +10%。`UnitCombats` が空なので通常のレベルアップでは誰も選べず、昇進の組でだけ付く。勝利すると `PROMOTION_TEST_STATE1` を得る。生き残った戦闘相手に `PROMOTION_TEST_POISON` を与える。毎ターン経験値 +1（10 まで）。撤退率 +100%（攻撃で負けそうになると必ず撤退するので、相手が生き残って毒を受ける）。勝利すると資金 +5、50% で捕獲 |
 | `PROMOTION_TEST_STATE1` / `STATE2`（検証用状態Ⅰ・Ⅱ） | 検証用昇進 | 状態の昇進（`UnitCombats` は空）。Ⅰ: 戦闘力 +20%、毎ターン 50% で消える、勝利すると 50% でⅡを得る・資金 +3・捕獲 50%（検証用昇進と合わせて資金 +8・捕獲 100%）。Ⅱ: 戦闘力 +10%、戦闘すると消える。ボタンは戦闘術Ⅱ・Ⅲ |
 | `PROMOTION_TEST_POISON`（検証用毒） | 検証用状態Ⅱ | 状態の昇進。戦闘力 -20%、完全に回復すると消える、生き残った戦闘相手に 50% でうつる（毒を受けた敵と戦うと自分も受けることがある）。ボタンは戦闘術Ⅳ |
+| `SPELL_TEST_GOLD`（検証用呪文（資金）） | — | 検証用文明の白兵戦ユニットが、自国の領土で資金 +25（`spellGainGold(pCaster, 25)`。`PyRequirement` なし）。使えないときも無効のボタンで出る（`bDisplayWhenDisabled`）。実行済みになる。ボタンは「富」 |
+| `SPELL_TEST_PROMOTION`（検証用呪文（昇進）） | — | 検証用昇進を持つユニットが、都市で、検証用状態Ⅰを持っていなければ得る（`reqNotHasPromotion` / `spellAddPromotion`）。使えないときはボタンが出ない。実行済みになる。ボタンは戦闘術Ⅱ |
 
 検証用文明が `CIVIC_TEST` を採用したあと、白兵戦ユニット（都市で生産）で期待される値: 生産直後の経験値 5（志向 +2、白兵戦 +2、社会制度 +1。その後は毎ターン +1 で 10 まで増える）、ユニット A → B のアップグレード割引 75%（志向 50% + 社会制度 25%）、`PROMOTION_TEST` が付く
 
@@ -268,3 +293,4 @@ BtS 本体の修正:
 - 2026-10-31: 都市圏の半径の土台（第 1 段階。都市ごとの半径、既定 2）で、既存のセーブの読み込みと、新しいゲームが今までどおり動くことを確認
 - 2026-11-01: 志向の `iCityRadiusChange`（都市圏の半径 第 2 段階）と都市画面のカメラ（3 周目を働かせられる都市だけ引く）をゲーム内で確認。近くの都市の文化で広がった国境のタイルを 3 周目で働かせられる都市も引く（文明単位の国境なので仕様どおり）
 - 2026-11-01: 建物の `iPlotRadius`（都市圏の半径 第 3 段階）をゲーム内で確認（日本で検証用建物（都市圏）を建てた都市だけ 3 周目まで広がり、取り除くと戻る）
+- 2026-11-01: 呪文の第 1 段階（`CIV4SpellInfos.xml`、行動ボタン、基本の条件、`PyRequirement` / `PyResult`、実行済み）をゲーム内で確認（検証用呪文（資金）・検証用呪文（昇進））

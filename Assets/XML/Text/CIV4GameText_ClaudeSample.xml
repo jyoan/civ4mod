@@ -200,7 +200,97 @@
 		<Spanish>[ICON_BULLET]City radius %d1_Radius</Spanish>
 		<Japanese>[ICON_BULLET]&#37117;&#24066;&#22287;&#12398;&#21322;&#24452;%d1_Radius</Japanese>
 	</TEXT>
-	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON) -->
+	<TEXT>
+		<Tag>TXT_KEY_COMMAND_CAST</Tag>
+		<English>Cast</English>
+		<French>Cast</French>
+		<German>Cast</German>
+		<Italian>Cast</Italian>
+		<Spanish>Cast</Spanish>
+		<Japanese>&#23455;&#34892;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_HAS_CASTED</Tag>
+		<English>Has cast this turn</English>
+		<French>Has cast this turn</French>
+		<German>Has cast this turn</German>
+		<Italian>Has cast this turn</Italian>
+		<Spanish>Has cast this turn</Spanish>
+		<Japanese>&#23455;&#34892;&#28168;&#12415;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CIVILIZATION_PREREQ</Tag>
+		<English>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Civ[\LINK]</English>
+		<French>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Civ[\LINK]</French>
+		<German>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Civ[\LINK]</German>
+		<Italian>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Civ[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Civ[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s1_Civ[\LINK]&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TECH_PREREQ</Tag>
+		<English>[ICON_BULLET]Requires [LINK=literal]%s1_Tech[\LINK]</English>
+		<French>[ICON_BULLET]Requires [LINK=literal]%s1_Tech[\LINK]</French>
+		<German>[ICON_BULLET]Requires [LINK=literal]%s1_Tech[\LINK]</German>
+		<Italian>[ICON_BULLET]Requires [LINK=literal]%s1_Tech[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Requires [LINK=literal]%s1_Tech[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#24517;&#35201;&#26465;&#20214;: [LINK=literal]%s1_Tech[\LINK]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_UNIT_PREREQ</Tag>
+		<English>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Unit[\LINK]</English>
+		<French>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Unit[\LINK]</French>
+		<German>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Unit[\LINK]</German>
+		<Italian>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Unit[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Unit[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s1_Unit[\LINK]&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_PROMOTION_PREREQ</Tag>
+		<English>[ICON_BULLET]Requires [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]Requires [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]Requires [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]Requires [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Requires [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#24517;&#35201;&#26465;&#20214;: [LINK=literal]%s1_Promotion[\LINK]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CASTER_MIN_LEVEL</Tag>
+		<English>[ICON_BULLET]Requires level %d1_Level or higher</English>
+		<French>[ICON_BULLET]Requires level %d1_Level or higher</French>
+		<German>[ICON_BULLET]Requires level %d1_Level or higher</German>
+		<Italian>[ICON_BULLET]Requires level %d1_Level or higher</Italian>
+		<Spanish>[ICON_BULLET]Requires level %d1_Level or higher</Spanish>
+		<Japanese>[ICON_BULLET]&#24517;&#35201;&#26465;&#20214;: &#12524;&#12505;&#12523;%d1_Level&#20197;&#19978;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IN_CITY_ONLY</Tag>
+		<English>[ICON_BULLET]Can only be cast in cities</English>
+		<French>[ICON_BULLET]Can only be cast in cities</French>
+		<German>[ICON_BULLET]Can only be cast in cities</German>
+		<Italian>[ICON_BULLET]Can only be cast in cities</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast in cities</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IN_BORDERS_ONLY</Tag>
+		<English>[ICON_BULLET]Can only be cast within your borders</English>
+		<French>[ICON_BULLET]Can only be cast within your borders</French>
+		<German>[ICON_BULLET]Can only be cast within your borders</German>
+		<Italian>[ICON_BULLET]Can only be cast within your borders</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast within your borders</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IN_BORDERS_AND_CITY_ONLY</Tag>
+		<English>[ICON_BULLET]Can only be cast in your cities</English>
+		<French>[ICON_BULLET]Can only be cast in your cities</French>
+		<German>[ICON_BULLET]Can only be cast in your cities</German>
+		<Italian>[ICON_BULLET]Can only be cast in your cities</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast in your cities</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#37117;&#24066;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
 		<English>Test data for checking the mod's features.</English>
@@ -344,5 +434,41 @@
 		<Italian>Test Building (City Radius)</Italian>
 		<Spanish>Test Building (City Radius)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#37117;&#24066;&#22287;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_GOLD</Tag>
+		<English>Test Spell (Gold)</English>
+		<French>Test Spell (Gold)</French>
+		<German>Test Spell (Gold)</German>
+		<Italian>Test Spell (Gold)</Italian>
+		<Spanish>Test Spell (Gold)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#36039;&#37329;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_GOLD_HELP</Tag>
+		<English>[ICON_BULLET]+25[ICON_GOLD]</English>
+		<French>[ICON_BULLET]+25[ICON_GOLD]</French>
+		<German>[ICON_BULLET]+25[ICON_GOLD]</German>
+		<Italian>[ICON_BULLET]+25[ICON_GOLD]</Italian>
+		<Spanish>[ICON_BULLET]+25[ICON_GOLD]</Spanish>
+		<Japanese>[ICON_BULLET]+25[ICON_GOLD]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_PROMOTION</Tag>
+		<English>Test Spell (Promotion)</English>
+		<French>Test Spell (Promotion)</French>
+		<German>Test Spell (Promotion)</German>
+		<Italian>Test Spell (Promotion)</Italian>
+		<Spanish>Test Spell (Promotion)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#26119;&#36914;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_PROMOTION_HELP</Tag>
+		<English>[ICON_BULLET]Gains Test State I (only without it)</English>
+		<French>[ICON_BULLET]Gains Test State I (only without it)</French>
+		<German>[ICON_BULLET]Gains Test State I (only without it)</German>
+		<Italian>[ICON_BULLET]Gains Test State I (only without it)</Italian>
+		<Spanish>[ICON_BULLET]Gains Test State I (only without it)</Spanish>
+		<Japanese>[ICON_BULLET]&#26908;&#35388;&#29992;&#29366;&#24907;&#8544;&#12434;&#24471;&#12427;&#65288;&#25345;&#12387;&#12390;&#12356;&#12394;&#12356;&#12392;&#12365;&#12384;&#12369;&#65289;</Japanese>
 	</TEXT>
 </Civ4GameText>

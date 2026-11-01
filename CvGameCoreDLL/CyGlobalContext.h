@@ -79,6 +79,7 @@ public:
 	CvTechInfo* getTechInfo(int i) const;
 	CvSpecialBuildingInfo* getSpecialBuildingInfo(int i) const;
 	CvPromotionInfo* getPromotionInfo(int i) const;
+	CvSpellInfo* getSpellInfo(int i) const;		// added by this mod
 	CvAnimationPathInfo * getAnimationPathInfo(int i) const;
 	CvEmphasizeInfo * getEmphasizeInfo(int i) const;
 	CvUpkeepInfo * getUpkeepInfo(int i) const;
@@ -181,6 +182,7 @@ public:
 	int getNumMissionInfos() const { return GC.getNumMissionInfos(); }
 	int getNumActionInfos() const { return GC.getNumActionInfos(); }
 	int getNumPromotionInfos() const { return GC.getNumPromotionInfos(); }
+	int getNumSpellInfos() const { return GC.getNumSpellInfos(); }		// added by this mod
 	int getNumTechInfos() const { return GC.getNumTechInfos(); }
 	int getNumReligionInfos() const { return GC.getNumReligionInfos(); }
 	int getNumCorporationInfos() const { return GC.getNumCorporationInfos(); }

@@ -2354,6 +2354,160 @@ bool CvPromotionInfo::readPass2(CvXMLLoadUtility* pXML)
 }
 
 //======================================================================================================
+//					CvSpellInfo (added by this mod; the tag names are the same as FFH2)
+//======================================================================================================
+
+CvSpellInfo::CvSpellInfo() :
+m_iPromotionPrereq1(NO_PROMOTION),
+m_iPromotionPrereq2(NO_PROMOTION),
+m_iUnitPrereq(NO_UNIT),
+m_iUnitClassPrereq(NO_UNITCLASS),
+m_iUnitCombatPrereq(NO_UNITCOMBAT),
+m_iTechPrereq(NO_TECH),
+m_iCivilizationPrereq(NO_CIVILIZATION),
+m_iCasterMinLevel(0),
+m_iCommandType(NO_COMMAND),
+m_bInCityOnly(false),
+m_bInBordersOnly(false),
+m_bHasCasted(false),
+m_bIgnoreHasCasted(false),
+m_bDisplayWhenDisabled(false)
+{
+}
+
+CvSpellInfo::~CvSpellInfo()
+{
+}
+
+int CvSpellInfo::getPromotionPrereq1() const
+{
+	return m_iPromotionPrereq1;
+}
+
+int CvSpellInfo::getPromotionPrereq2() const
+{
+	return m_iPromotionPrereq2;
+}
+
+int CvSpellInfo::getUnitPrereq() const
+{
+	return m_iUnitPrereq;
+}
+
+int CvSpellInfo::getUnitClassPrereq() const
+{
+	return m_iUnitClassPrereq;
+}
+
+int CvSpellInfo::getUnitCombatPrereq() const
+{
+	return m_iUnitCombatPrereq;
+}
+
+int CvSpellInfo::getTechPrereq() const
+{
+	return m_iTechPrereq;
+}
+
+int CvSpellInfo::getCivilizationPrereq() const
+{
+	return m_iCivilizationPrereq;
+}
+
+int CvSpellInfo::getCasterMinLevel() const
+{
+	return m_iCasterMinLevel;
+}
+
+bool CvSpellInfo::isInCityOnly() const
+{
+	return m_bInCityOnly;
+}
+
+bool CvSpellInfo::isInBordersOnly() const
+{
+	return m_bInBordersOnly;
+}
+
+bool CvSpellInfo::isHasCasted() const
+{
+	return m_bHasCasted;
+}
+
+bool CvSpellInfo::isIgnoreHasCasted() const
+{
+	return m_bIgnoreHasCasted;
+}
+
+bool CvSpellInfo::isDisplayWhenDisabled() const
+{
+	return m_bDisplayWhenDisabled;
+}
+
+const TCHAR* CvSpellInfo::getPyRequirement() const
+{
+	return m_szPyRequirement;
+}
+
+const TCHAR* CvSpellInfo::getPyResult() const
+{
+	return m_szPyResult;
+}
+
+int CvSpellInfo::getCommandType() const
+{
+	return m_iCommandType;
+}
+
+void CvSpellInfo::setCommandType(int iNewType)
+{
+	m_iCommandType = iNewType;
+}
+
+bool CvSpellInfo::read(CvXMLLoadUtility* pXML)
+{
+	CvString szTextVal;
+
+	if (!CvHotkeyInfo::read(pXML))
+	{
+		return false;
+	}
+
+	pXML->GetChildXmlValByName(szTextVal, "PromotionPrereq1");
+	m_iPromotionPrereq1 = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "PromotionPrereq2");
+	m_iPromotionPrereq2 = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "UnitPrereq");
+	m_iUnitPrereq = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "UnitClassPrereq");
+	m_iUnitClassPrereq = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "UnitCombatPrereq");
+	m_iUnitCombatPrereq = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "TechPrereq");
+	m_iTechPrereq = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(szTextVal, "CivilizationPrereq");
+	m_iCivilizationPrereq = pXML->FindInInfoClass(szTextVal);
+
+	pXML->GetChildXmlValByName(&m_iCasterMinLevel, "iCasterMinLevel");
+	pXML->GetChildXmlValByName(&m_bInCityOnly, "bInCityOnly");
+	pXML->GetChildXmlValByName(&m_bInBordersOnly, "bInBordersOnly");
+	pXML->GetChildXmlValByName(&m_bHasCasted, "bHasCasted");
+	pXML->GetChildXmlValByName(&m_bIgnoreHasCasted, "bIgnoreHasCasted");
+	pXML->GetChildXmlValByName(&m_bDisplayWhenDisabled, "bDisplayWhenDisabled");
+
+	pXML->GetChildXmlValByName(m_szPyRequirement, "PyRequirement");
+	pXML->GetChildXmlValByName(m_szPyResult, "PyResult");
+
+	return true;
+}
+
+//======================================================================================================
 //					CvMissionInfo
 //======================================================================================================
 
@@ -2688,7 +2842,8 @@ int CvActionInfo::getCommandData() const
 
 	if	(
 				(ACTIONSUBTYPE_PROMOTION == m_eSubType)	||
-				(ACTIONSUBTYPE_UNIT == m_eSubType)
+				(ACTIONSUBTYPE_UNIT == m_eSubType)	||
+				(ACTIONSUBTYPE_SPELL == m_eSubType)
 			)
 	{
 		return m_iOriginalIndex;
@@ -2772,6 +2927,10 @@ int CvActionInfo::getCommandType() const
 	else if (ACTIONSUBTYPE_UNIT == m_eSubType)
 	{
 		return GC.getUnitInfo((UnitTypes)m_iOriginalIndex).getCommandType();
+	}
+	else if (ACTIONSUBTYPE_SPELL == m_eSubType)
+	{
+		return GC.getSpellInfo((SpellTypes)m_iOriginalIndex).getCommandType();
 	}
 	else if (ACTIONSUBTYPE_AUTOMATE == m_eSubType)
 	{
@@ -2890,6 +3049,9 @@ CvHotkeyInfo* CvActionInfo::getHotkeyInfo() const
 			break;
 		case ACTIONSUBTYPE_MISSION:
 			return &GC.getMissionInfo((MissionTypes)getOriginalIndex());
+			break;
+		case ACTIONSUBTYPE_SPELL:
+			return &GC.getSpellInfo((SpellTypes)getOriginalIndex());
 			break;
 	}
 

@@ -175,6 +175,26 @@ void CyInfoPythonInterface1()
 		.def("getUnitCombat", &CvPromotionInfo::getUnitCombat, "bool (int i)")
 		;
 
+	// Spells (added by this mod, same as FFH2)
+	python::class_<CvSpellInfo, python::bases<CvInfoBase> >("CvSpellInfo")
+		.def("getPromotionPrereq1", &CvSpellInfo::getPromotionPrereq1, "int ()")
+		.def("getPromotionPrereq2", &CvSpellInfo::getPromotionPrereq2, "int ()")
+		.def("getUnitPrereq", &CvSpellInfo::getUnitPrereq, "int ()")
+		.def("getUnitClassPrereq", &CvSpellInfo::getUnitClassPrereq, "int ()")
+		.def("getUnitCombatPrereq", &CvSpellInfo::getUnitCombatPrereq, "int ()")
+		.def("getTechPrereq", &CvSpellInfo::getTechPrereq, "int ()")
+		.def("getCivilizationPrereq", &CvSpellInfo::getCivilizationPrereq, "int ()")
+		.def("getCasterMinLevel", &CvSpellInfo::getCasterMinLevel, "int ()")
+		.def("isInCityOnly", &CvSpellInfo::isInCityOnly, "bool ()")
+		.def("isInBordersOnly", &CvSpellInfo::isInBordersOnly, "bool ()")
+		.def("isHasCasted", &CvSpellInfo::isHasCasted, "bool ()")
+		.def("isIgnoreHasCasted", &CvSpellInfo::isIgnoreHasCasted, "bool ()")
+		.def("isDisplayWhenDisabled", &CvSpellInfo::isDisplayWhenDisabled, "bool ()")
+		.def("getPyRequirement", &CvSpellInfo::getPyRequirement, "string ()")
+		.def("getPyResult", &CvSpellInfo::getPyResult, "string ()")
+		.def("getCommandType", &CvSpellInfo::getCommandType, "int ()")
+		;
+
 	python::class_<CvMissionInfo, python::bases<CvInfoBase> >("CvMissionInfo")
 		.def("getTime", &CvMissionInfo::getTime, "int ()")
 

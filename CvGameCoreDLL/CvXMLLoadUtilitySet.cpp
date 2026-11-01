@@ -661,6 +661,9 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 	LoadGlobalClassInfo(GC.getMPOptionInfo(), "CIV4MPOptionInfos", "GameInfo", "Civ4MPOptionInfos/MPOptionInfos/MPOptionInfo", false);
 	LoadGlobalClassInfo(GC.getForceControlInfo(), "CIV4ForceControlInfos", "GameInfo", "Civ4ForceControlInfos/ForceControlInfos/ForceControlInfo", false);
 
+	// Spells (added by this mod, same file as FFH2). They refer to promotions, units, techs and civilizations, so they are loaded after them
+	LoadGlobalClassInfo(GC.getSpellInfo(), "CIV4SpellInfos", "Units", "Civ4SpellInfos/SpellInfos/SpellInfo", false);
+
 	// add types to global var system
 	for (int i = 0; i < GC.getNumCursorInfos(); ++i)
 	{
@@ -958,7 +961,8 @@ void CvXMLLoadUtility::SetGlobalActionInfo()
 		NUM_CONTROL_TYPES +
 		NUM_COMMAND_TYPES +
 		GC.getNumAutomateInfos() +
-		NUM_MISSION_TYPES;
+		NUM_MISSION_TYPES +
+		GC.getNumSpellInfos();
 
 	int* piIndexList = new int[iNumActionInfos];
 	int* piPriorityList = new int[iNumActionInfos];
@@ -1063,6 +1067,15 @@ void CvXMLLoadUtility::SetGlobalActionInfo()
 		iTotalActionInfoCount++;
 	}
 
+	// Spells (added by this mod, same as FFH2)
+	for (i=0;i<GC.getNumSpellInfos();i++)
+	{
+		piIndexList[iTotalActionInfoCount] = i;
+		piPriorityList[iTotalActionInfoCount] = GC.getSpellInfo((SpellTypes)i).getOrderPriority();
+		piActionInfoTypeList[iTotalActionInfoCount] = ACTIONSUBTYPE_SPELL;
+		iTotalActionInfoCount++;
+	}
+
 	SAFE_DELETE_ARRAY(piOrderedIndex);
 	piOrderedIndex = new int[iNumActionInfos];
 
@@ -1132,6 +1145,12 @@ void CvXMLLoadUtility::SetGlobalActionInfo()
 		else if ((ActionSubTypes)piActionInfoTypeList[piOrderedIndex[i]] == ACTIONSUBTYPE_MISSION)
 		{
 			GC.getMissionInfo((MissionTypes)piIndexList[piOrderedIndex[i]]).setActionInfoIndex(i + iNumOrigVals);
+		}
+		else if ((ActionSubTypes)piActionInfoTypeList[piOrderedIndex[i]] == ACTIONSUBTYPE_SPELL)
+		{
+			GC.getSpellInfo((SpellTypes)piIndexList[piOrderedIndex[i]]).setCommandType(FindInInfoClass("COMMAND_CAST"));
+			GC.getSpellInfo((SpellTypes)piIndexList[piOrderedIndex[i]]).setActionInfoIndex(i);
+			GC.getSpellInfo((SpellTypes)piIndexList[piOrderedIndex[i]]).setHotKeyDescription(GC.getSpellInfo((SpellTypes)piIndexList[piOrderedIndex[i]]).getTextKeyWide(), GC.getCommandInfo((CommandTypes)(GC.getSpellInfo((SpellTypes)piIndexList[piOrderedIndex[i]]).getCommandType())).getTextKeyWide(), CreateHotKeyFromDescription(GC.getSpellInfo((SpellTypes)piIndexList[piOrderedIndex[i]]).getHotKey(), GC.getSpellInfo((SpellTypes)piIndexList[piOrderedIndex[i]]).isShiftDown(), GC.getSpellInfo((SpellTypes)piIndexList[piOrderedIndex[i]]).isAltDown(), GC.getSpellInfo((SpellTypes)piIndexList[piOrderedIndex[i]]).isCtrlDown()));
 		}
 
 		GC.getActionInfo().push_back(pActionInfo);

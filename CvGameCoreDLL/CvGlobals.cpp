@@ -2054,6 +2054,23 @@ CvPromotionInfo& CvGlobals::getPromotionInfo(PromotionTypes ePromotionNum)
 	return *(m_paPromotionInfo[ePromotionNum]);
 }
 
+int CvGlobals::getNumSpellInfos()
+{
+	return (int)m_paSpellInfo.size();
+}
+
+std::vector<CvSpellInfo*>& CvGlobals::getSpellInfo()
+{
+	return m_paSpellInfo;
+}
+
+CvSpellInfo& CvGlobals::getSpellInfo(SpellTypes eSpellNum)
+{
+	FAssert(eSpellNum > -1);
+	FAssert(eSpellNum < GC.getNumSpellInfos());
+	return *(m_paSpellInfo[eSpellNum]);
+}
+
 int CvGlobals::getNumTechInfos()
 {
 	return (int)m_paTechInfo.size();
@@ -3434,6 +3451,7 @@ void CvGlobals::deleteInfoArrays()
 	deleteInfoArray(m_paCommandInfo);
 	deleteInfoArray(m_paAutomateInfo);
 	deleteInfoArray(m_paPromotionInfo);
+	deleteInfoArray(m_paSpellInfo);
 
 	deleteInfoArray(m_paConceptInfo);
 	deleteInfoArray(m_paNewConceptInfo);

@@ -69,6 +69,28 @@ void CyUnit::doCommand(CommandTypes eCommand, int iData1, int iData2)
 		return m_pUnit->doCommand(eCommand, iData1, iData2);
 }
 
+bool CyUnit::canCast(int iSpell, bool bTestVisible)
+{
+	return m_pUnit ? m_pUnit->canCast(iSpell, bTestVisible) : false;
+}
+
+void CyUnit::cast(int iSpell)
+{
+	if (m_pUnit)
+		m_pUnit->cast(iSpell);
+}
+
+bool CyUnit::isHasCasted()
+{
+	return m_pUnit ? m_pUnit->isHasCasted() : false;
+}
+
+void CyUnit::setHasCasted(bool bNewValue)
+{
+	if (m_pUnit)
+		m_pUnit->setHasCasted(bNewValue);
+}
+
 CyPlot* CyUnit::getPathEndTurnPlot()
 {
 	return m_pUnit ? new CyPlot(m_pUnit->getPathEndTurnPlot()) : false;

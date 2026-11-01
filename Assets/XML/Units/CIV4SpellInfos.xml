@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!-- Sid Meier's Civilization 4 -->
+<!-- Spell Infos (added by this mod; the element names are the same as FFH2) -->
+<!-- PyRequirement and PyResult are Python expressions evaluated in Assets/Python/EntryPoints/CvSpellInterface.py (pCaster is the casting unit) -->
+<Civ4SpellInfos xmlns="x-schema:CIV4SpellSchema.xml">
+	<SpellInfos>
+		<!-- Dedicated test entries -->
+		<SpellInfo>
+			<Type>SPELL_TEST_GOLD</Type>
+			<Description>TXT_KEY_SPELL_TEST_GOLD</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<Help>TXT_KEY_SPELL_TEST_GOLD_HELP</Help>
+			<UnitCombatPrereq>UNITCOMBAT_MELEE</UnitCombatPrereq>
+			<CivilizationPrereq>CIVILIZATION_TEST</CivilizationPrereq>
+			<bInBordersOnly>1</bInBordersOnly>
+			<bHasCasted>1</bHasCasted>
+			<PyResult>spellGainGold(pCaster, 25)</PyResult>
+			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
+			<Button>Art/Interface/Buttons/Process/ProcessWealth.dds</Button>
+		</SpellInfo>
+		<SpellInfo>
+			<Type>SPELL_TEST_PROMOTION</Type>
+			<Description>TXT_KEY_SPELL_TEST_PROMOTION</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<Help>TXT_KEY_SPELL_TEST_PROMOTION_HELP</Help>
+			<PromotionPrereq1>PROMOTION_TEST</PromotionPrereq1>
+			<bInCityOnly>1</bInCityOnly>
+			<bHasCasted>1</bHasCasted>
+			<PyResult>spellAddPromotion(pCaster, 'PROMOTION_TEST_STATE1')</PyResult>
+			<PyRequirement>reqNotHasPromotion(pCaster, 'PROMOTION_TEST_STATE1')</PyRequirement>
+			<Button>,Art/Interface/Buttons/Promotions/Combat2.dds,Art/Interface/Buttons/Promotions_Atlas.dds,1,6</Button>
+		</SpellInfo>
+	</SpellInfos>
+</Civ4SpellInfos>

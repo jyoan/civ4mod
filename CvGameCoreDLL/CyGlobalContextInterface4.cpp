@@ -34,6 +34,9 @@ void CyGlobalContextPythonInterface4(python::class_<CyGlobalContext>& x)
 		.def("getNumPromotionInfos", &CyGlobalContext::getNumPromotionInfos, "() - Total Promotion Infos XML\\Units\\CIV4PromotionInfos.xml")
 		.def("getPromotionInfo", &CyGlobalContext::getPromotionInfo, python::return_value_policy<python::reference_existing_object>(), "(PromotionID) - CvInfo for PromotionID")
 
+		.def("getNumSpellInfos", &CyGlobalContext::getNumSpellInfos, "() - Total Spell Infos XML\\Units\\CIV4SpellInfos.xml")
+		.def("getSpellInfo", &CyGlobalContext::getSpellInfo, python::return_value_policy<python::reference_existing_object>(), "(SpellID) - CvInfo for SpellID")
+
 		.def("getNumTechInfos", &CyGlobalContext::getNumTechInfos, "() - Total Technology Infos XML\\Technologies\\CIV4TechInfos.xml")
 		.def("getTechInfo", &CyGlobalContext::getTechInfo, python::return_value_policy<python::reference_existing_object>(), "(TechID) - CvInfo for TechID")
 

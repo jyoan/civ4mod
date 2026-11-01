@@ -122,5 +122,6 @@
 #define PYGameModule					"CvGameInterface"
 #define PYEventModule					"CvEventInterface"
 #define PYRandomEventModule					"CvRandomEventInterface"
+#define PYSpellModule					"CvSpellInterface"		// added by this mod (spells, same as FFH2)
 
 #endif	// CVDEFINES_H

@@ -566,6 +566,13 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szString, const CvUnit* pUnit, 
 		szString.append(gDLL->getText("TXT_KEY_UNIT_HELP_IMMOBILE", pUnit->getImmobileTimer()));
 	}
 
+	// Spells (added by this mod)
+	if (pUnit->isHasCasted())
+	{
+		szString.append(L", ");
+		szString.append(gDLL->getText("TXT_KEY_UNIT_HAS_CASTED"));
+	}
+
 	/*if (!bOneLine)
 	{
 		if (pUnit->getUnitCombatType() != NO_UNITCOMBAT)
@@ -4587,6 +4594,87 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(GC.getPromotionInfo(ePromotion).getHelp());
+	}
+}
+
+// Spells (added by this mod; the text keys are the same as FFH2 where FFH2 has them)
+void CvGameTextMgr::parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell, const wchar* pcNewline)
+{
+	if (NO_SPELL == eSpell)
+	{
+		return;
+	}
+
+	CvSpellInfo& kSpell = GC.getSpellInfo(eSpell);
+
+	if (kSpell.getCivilizationPrereq() != NO_CIVILIZATION)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_CIVILIZATION_PREREQ", GC.getCivilizationInfo((CivilizationTypes)kSpell.getCivilizationPrereq()).getTextKeyWide()));
+	}
+
+	if (kSpell.getTechPrereq() != NO_TECH)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_TECH_PREREQ", GC.getTechInfo((TechTypes)kSpell.getTechPrereq()).getTextKeyWide()));
+	}
+
+	if (kSpell.getUnitPrereq() != NO_UNIT)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_UNIT_PREREQ", GC.getUnitInfo((UnitTypes)kSpell.getUnitPrereq()).getTextKeyWide()));
+	}
+
+	if (kSpell.getUnitCombatPrereq() != NO_UNITCOMBAT)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_UNIT_PREREQ", GC.getUnitCombatInfo((UnitCombatTypes)kSpell.getUnitCombatPrereq()).getTextKeyWide()));
+	}
+
+	if (kSpell.getUnitClassPrereq() != NO_UNITCLASS)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_UNIT_PREREQ", GC.getUnitClassInfo((UnitClassTypes)kSpell.getUnitClassPrereq()).getTextKeyWide()));
+	}
+
+	if (kSpell.getPromotionPrereq1() != NO_PROMOTION)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_PROMOTION_PREREQ", GC.getPromotionInfo((PromotionTypes)kSpell.getPromotionPrereq1()).getTextKeyWide()));
+	}
+
+	if (kSpell.getPromotionPrereq2() != NO_PROMOTION)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_PROMOTION_PREREQ", GC.getPromotionInfo((PromotionTypes)kSpell.getPromotionPrereq2()).getTextKeyWide()));
+	}
+
+	if (kSpell.getCasterMinLevel() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_CASTER_MIN_LEVEL", kSpell.getCasterMinLevel()));
+	}
+
+	if (wcslen(kSpell.getHelp()) > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(kSpell.getHelp());
+	}
+
+	if (kSpell.isInBordersOnly() && kSpell.isInCityOnly())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_IN_BORDERS_AND_CITY_ONLY"));
+	}
+	else if (kSpell.isInBordersOnly())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_IN_BORDERS_ONLY"));
+	}
+	else if (kSpell.isInCityOnly())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_SPELL_IN_CITY_ONLY"));
 	}
 }
 

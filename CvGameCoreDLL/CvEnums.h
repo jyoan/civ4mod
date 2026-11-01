@@ -1473,6 +1473,7 @@ enum CommandTypes					// Exposed to Python
 	COMMAND_UNLOAD,
 	COMMAND_UNLOAD_ALL,
 	COMMAND_HOTKEY,
+	COMMAND_CAST,		// added by this mod (spells, same as FFH2)
 
 #ifdef _USRDLL
 	NUM_COMMAND_TYPES
@@ -1555,6 +1556,12 @@ enum ControlTypes					// Exposed to Python
 enum PromotionTypes				// Exposed to Python
 {
 	NO_PROMOTION = -1,
+};
+
+// Added by this mod (spells, same as FFH2)
+enum SpellTypes					// Exposed to Python
+{
+	NO_SPELL = -1,
 };
 
 enum TechTypes						// Exposed to Python
@@ -2486,6 +2493,7 @@ enum ActionSubTypes					// Exposed to Python
 	ACTIONSUBTYPE_CONTROL,
 	ACTIONSUBTYPE_AUTOMATE,
 	ACTIONSUBTYPE_MISSION,
+	ACTIONSUBTYPE_SPELL,		// added by this mod (spells, same as FFH2)
 
 #ifdef _USRDLL
 	NUM_ACTIONSUBTYPES

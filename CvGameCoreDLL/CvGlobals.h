@@ -102,6 +102,7 @@ class CvControlInfo;
 class CvCommandInfo;
 class CvAutomateInfo;
 class CvPromotionInfo;
+class CvSpellInfo;
 class CvTechInfo;
 class CvReligionInfo;
 class CvCorporationInfo;
@@ -531,6 +532,11 @@ public:
 	int getNumPromotionInfos();
 	std::vector<CvPromotionInfo*>& getPromotionInfo();
 	CvPromotionInfo& getPromotionInfo(PromotionTypes ePromotionNum);
+
+	// Spells (added by this mod, same as FFH2)
+	int getNumSpellInfos();
+	std::vector<CvSpellInfo*>& getSpellInfo();
+	CvSpellInfo& getSpellInfo(SpellTypes eSpellNum);
 
 	int getNumTechInfos();
 	std::vector<CvTechInfo*>& getTechInfo();
@@ -1033,6 +1039,7 @@ protected:
 	std::vector<CvCommandInfo*> m_paCommandInfo;
 	std::vector<CvAutomateInfo*> m_paAutomateInfo;
 	std::vector<CvPromotionInfo*> m_paPromotionInfo;
+	std::vector<CvSpellInfo*> m_paSpellInfo;
 	std::vector<CvTechInfo*> m_paTechInfo;
 	std::vector<CvCivicOptionInfo*> m_paCivicOptionInfo;
 	std::vector<CvCivicInfo*> m_paCivicInfo;

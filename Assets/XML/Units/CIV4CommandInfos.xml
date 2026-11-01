@@ -194,5 +194,11 @@
 			<Description>TXT_KEY_COMMAND_HOTKEY</Description>
 			<Help>TXT_KEY_COMMAND_HOTKEY_HELP</Help>
 		</CommandInfo>
+		<!-- Added by this mod (spells, same as FFH2). The order must match CommandTypes in CvEnums.h -->
+		<CommandInfo>
+			<Type>COMMAND_CAST</Type>
+			<Description>TXT_KEY_COMMAND_CAST</Description>
+			<Help/>
+		</CommandInfo>
 	</CommandInfos>
 </Civ4CommandInfos>

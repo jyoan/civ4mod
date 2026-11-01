@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!-- Sid Meier's Civilization 4 -->
+<!-- Spell Schema (added by this mod; the element names and their order are the same as FFH2) -->
+<Schema xmlns="urn:schemas-microsoft-com:xml-data" xmlns:dt="urn:schemas-microsoft-com:datatypes">
+	<ElementType name="Type" content="textOnly"/>
+	<ElementType name="Description" content="textOnly"/>
+	<ElementType name="Civilopedia" content="textOnly"/>
+	<ElementType name="Strategy" content="textOnly"/>
+	<ElementType name="Help" content="textOnly"/>
+	<ElementType name="PromotionPrereq1" content="textOnly"/>
+	<ElementType name="PromotionPrereq2" content="textOnly"/>
+	<ElementType name="UnitCombatPrereq" content="textOnly"/>
+	<ElementType name="UnitClassPrereq" content="textOnly"/>
+	<ElementType name="UnitPrereq" content="textOnly"/>
+	<ElementType name="CivilizationPrereq" content="textOnly"/>
+	<ElementType name="TechPrereq" content="textOnly"/>
+	<ElementType name="iCasterMinLevel" content="textOnly" dt:type="int"/>
+	<ElementType name="bInBordersOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bInCityOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bIgnoreHasCasted" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bHasCasted" content="textOnly" dt:type="boolean"/>
+	<ElementType name="PyResult" content="textOnly"/>
+	<ElementType name="PyRequirement" content="textOnly"/>
+	<ElementType name="bDisplayWhenDisabled" content="textOnly" dt:type="boolean"/>
+	<ElementType name="HotKey" content="textOnly"/>
+	<ElementType name="bAltDown" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bShiftDown" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bCtrlDown" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iHotKeyPriority" content="textOnly" dt:type="int"/>
+	<ElementType name="Button" content="textOnly"/>
+	<ElementType name="iOrderPriority" content="textOnly" dt:type="int"/>
+	<ElementType name="SpellInfo" content="eltOnly">
+		<element type="Type"/>
+		<element type="Description"/>
+		<element type="Civilopedia" minOccurs="0"/>
+		<element type="Strategy" minOccurs="0"/>
+		<element type="Help" minOccurs="0"/>
+		<element type="PromotionPrereq1" minOccurs="0"/>
+		<element type="PromotionPrereq2" minOccurs="0"/>
+		<element type="UnitCombatPrereq" minOccurs="0"/>
+		<element type="UnitClassPrereq" minOccurs="0"/>
+		<element type="UnitPrereq" minOccurs="0"/>
+		<element type="CivilizationPrereq" minOccurs="0"/>
+		<element type="TechPrereq" minOccurs="0"/>
+		<element type="iCasterMinLevel" minOccurs="0"/>
+		<element type="bInBordersOnly" minOccurs="0"/>
+		<element type="bInCityOnly" minOccurs="0"/>
+		<element type="bIgnoreHasCasted" minOccurs="0"/>
+		<element type="bHasCasted" minOccurs="0"/>
+		<element type="PyResult" minOccurs="0"/>
+		<element type="PyRequirement" minOccurs="0"/>
+		<element type="bDisplayWhenDisabled" minOccurs="0"/>
+		<element type="HotKey" minOccurs="0"/>
+		<element type="bAltDown" minOccurs="0"/>
+		<element type="bShiftDown" minOccurs="0"/>
+		<element type="bCtrlDown" minOccurs="0"/>
+		<element type="iHotKeyPriority" minOccurs="0"/>
+		<element type="Button" minOccurs="0"/>
+		<element type="iOrderPriority" minOccurs="0"/>
+	</ElementType>
+	<ElementType name="SpellInfos" content="eltOnly">
+		<element type="SpellInfo" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="Civ4SpellInfos" content="eltOnly">
+		<element type="SpellInfos" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+</Schema>

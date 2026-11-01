@@ -29,6 +29,10 @@ void CyUnitPythonInterface1(python::class_<CyUnit>& x)
 
 		.def("canDoCommand", &CyUnit::canDoCommand, "bool (eCommand, iData1, iData2, bTestVisible = False) - can the unit perform eCommand?")
 		.def("doCommand", &CyUnit::doCommand, "void (eCommand, iData1, iData2) - force the unit to perform eCommand")
+		.def("canCast", &CyUnit::canCast, "bool (int iSpell, bool bTestVisible) - can the unit cast the spell? (added by this mod)")
+		.def("cast", &CyUnit::cast, "void (int iSpell) - cast the spell without checking canCast (added by this mod)")
+		.def("isHasCasted", &CyUnit::isHasCasted, "bool () - has the unit cast a spell with bHasCasted this turn? (added by this mod)")
+		.def("setHasCasted", &CyUnit::setHasCasted, "void (bool bNewValue) (added by this mod)")
 
 		.def("getPathEndTurnPlot", &CyUnit::getPathEndTurnPlot, python::return_value_policy<python::manage_new_object>(), "CyPlot* ()")
 		.def("generatePath", &CyUnit::generatePath, "bool (CyPlot* pToPlot, int iFlags = 0, bool bReuse = false, int* piPathTurns = NULL)")

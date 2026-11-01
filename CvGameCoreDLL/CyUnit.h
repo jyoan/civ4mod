@@ -33,6 +33,11 @@ public:
 
 	bool canDoCommand(CommandTypes eCommand, int iData1, int iData2, bool bTestVisible);
 	void doCommand(CommandTypes eCommand, int iData1, int iData2);
+	// Spells (added by this mod, same as FFH2)
+	bool canCast(int iSpell, bool bTestVisible);
+	void cast(int iSpell);
+	bool isHasCasted();
+	void setHasCasted(bool bNewValue);
 
 	CyPlot* getPathEndTurnPlot();
 	bool generatePath(CyPlot* pToPlot, int iFlags = 0, bool bReuse = false, int* piPathTurns = NULL);

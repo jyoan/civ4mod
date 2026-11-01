@@ -2872,6 +2872,11 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 			{
 				GAMETEXT.parsePromotionHelp(szBuffer, ((PromotionTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getCommandData())));
 			}
+			else if (GC.getActionInfo(widgetDataStruct.m_iData1).getCommandType() == COMMAND_CAST)
+			{
+				// Spells (added by this mod, same as FFH2)
+				GAMETEXT.parseSpellHelp(szBuffer, ((SpellTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getCommandData())));
+			}
 			else if (GC.getActionInfo(widgetDataStruct.m_iData1).getCommandType() == COMMAND_UPGRADE)
 			{
 				GAMETEXT.setBasicUnitHelp(szBuffer, ((UnitTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getCommandData())));

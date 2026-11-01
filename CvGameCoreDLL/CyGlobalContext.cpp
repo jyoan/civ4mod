@@ -260,6 +260,11 @@ CvPromotionInfo* CyGlobalContext::getPromotionInfo(int i) const
 	return (i>=0 && i<GC.getNumPromotionInfos()) ? &GC.getPromotionInfo((PromotionTypes) i) : NULL;
 }
 
+CvSpellInfo* CyGlobalContext::getSpellInfo(int i) const
+{
+	return (i>=0 && i<GC.getNumSpellInfos()) ? &GC.getSpellInfo((SpellTypes) i) : NULL;
+}
+
 
 CvTechInfo* CyGlobalContext::getTechInfo(int i) const
 {

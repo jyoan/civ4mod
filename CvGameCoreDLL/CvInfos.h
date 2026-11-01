@@ -608,6 +608,68 @@ protected:
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //
+//  class : CvSpellInfo
+//
+//  DESC:   An action that units can perform (added by this mod; the tag names are the same as FFH2).
+//          It is shown as a unit action button (ACTIONSUBTYPE_SPELL, COMMAND_CAST) and is cast by CvUnit::cast.
+//
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+class CvSpellInfo :	public CvHotkeyInfo
+{
+//---------------------------------------PUBLIC INTERFACE---------------------------------
+public:
+	CvSpellInfo();
+	virtual ~CvSpellInfo();
+
+	int getPromotionPrereq1() const;				// Exposed to Python
+	int getPromotionPrereq2() const;				// Exposed to Python
+	int getUnitPrereq() const;						// Exposed to Python
+	int getUnitClassPrereq() const;					// Exposed to Python
+	int getUnitCombatPrereq() const;				// Exposed to Python
+	int getTechPrereq() const;						// Exposed to Python
+	int getCivilizationPrereq() const;				// Exposed to Python
+	int getCasterMinLevel() const;					// Exposed to Python
+
+	bool isInCityOnly() const;						// Exposed to Python
+	bool isInBordersOnly() const;					// Exposed to Python
+	bool isHasCasted() const;						// Exposed to Python
+	bool isIgnoreHasCasted() const;					// Exposed to Python
+	bool isDisplayWhenDisabled() const;				// Exposed to Python
+
+	const TCHAR* getPyRequirement() const;			// Exposed to Python
+	const TCHAR* getPyResult() const;				// Exposed to Python
+
+	int getCommandType() const;						// Exposed to Python
+	void setCommandType(int iNewType);
+
+	bool read(CvXMLLoadUtility* pXML);
+
+//---------------------------------------PROTECTED MEMBER VARIABLES---------------------------------
+protected:
+
+	int m_iPromotionPrereq1;
+	int m_iPromotionPrereq2;
+	int m_iUnitPrereq;
+	int m_iUnitClassPrereq;
+	int m_iUnitCombatPrereq;
+	int m_iTechPrereq;
+	int m_iCivilizationPrereq;
+	int m_iCasterMinLevel;
+	int m_iCommandType;
+
+	bool m_bInCityOnly;
+	bool m_bInBordersOnly;
+	bool m_bHasCasted;
+	bool m_bIgnoreHasCasted;
+	bool m_bDisplayWhenDisabled;
+
+	CvString m_szPyRequirement;
+	CvString m_szPyResult;
+
+};
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//
 //  class : CvMissionInfo
 //
 //  DESC:   

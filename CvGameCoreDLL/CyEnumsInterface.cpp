@@ -1071,6 +1071,7 @@ void CyEnumsPythonInterface()
 		.value("COMMAND_UNLOAD", COMMAND_UNLOAD)
 		.value("COMMAND_UNLOAD_ALL", COMMAND_UNLOAD_ALL)
 		.value("COMMAND_HOTKEY", COMMAND_HOTKEY)
+		.value("COMMAND_CAST", COMMAND_CAST)
 		.value("NUM_COMMAND_TYPES", NUM_COMMAND_TYPES)
 		;
 
@@ -1145,6 +1146,10 @@ void CyEnumsPythonInterface()
 
 	python::enum_<PromotionTypes>("PromotionTypes")
 		.value("NO_PROMOTION", NO_PROMOTION)
+		;
+
+	python::enum_<SpellTypes>("SpellTypes")
+		.value("NO_SPELL", NO_SPELL)
 		;
 
 	python::enum_<TechTypes>("TechTypes")
@@ -1728,6 +1733,7 @@ void CyEnumsPythonInterface()
 		.value("ACTIONSUBTYPE_CONTROL", ACTIONSUBTYPE_CONTROL)
 		.value("ACTIONSUBTYPE_AUTOMATE", ACTIONSUBTYPE_AUTOMATE)
 		.value("ACTIONSUBTYPE_MISSION", ACTIONSUBTYPE_MISSION)
+		.value("ACTIONSUBTYPE_SPELL", ACTIONSUBTYPE_SPELL)
 
 		.value("NUM_ACTIONSUBTYPES", NUM_ACTIONSUBTYPES)
 		;

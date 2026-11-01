@@ -345,6 +345,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_bInfoBarDirty = false;
 	m_bBlockading = false;
 	m_bAirCombat = false;
+	m_bHasCasted = false;
 
 	m_eOwner = eOwner;
 	m_eCapturingPlayer = NO_PLAYER;
@@ -439,6 +440,7 @@ void CvUnit::convert(CvUnit* pUnit)
 	setGameTurnCreated(pUnit->getGameTurnCreated());
 	setDamage(pUnit->getDamage());
 	setMoves(pUnit->getMoves());
+	setHasCasted(pUnit->isHasCasted());
 
 	setLevel(pUnit->getLevel());
 	int iOldModifier = std::max(1, 100 + GET_PLAYER(pUnit->getOwnerINLINE()).getLevelExperienceModifier());
@@ -739,6 +741,7 @@ void CvUnit::doTurn()
 
 	setMadeAttack(false);
 	setMadeInterception(false);
+	setHasCasted(false);
 
 	setReconPlot(NULL);
 
@@ -2186,6 +2189,13 @@ bool CvUnit::canDoCommand(CommandTypes eCommand, int iData1, int iData2, bool bT
 		}
 		break;
 
+	case COMMAND_CAST:
+		if (canCast(iData1, bTestVisible))
+		{
+			return true;
+		}
+		break;
+
 	default:
 		FAssert(false);
 		break;
@@ -2276,6 +2286,10 @@ void CvUnit::doCommand(CommandTypes eCommand, int iData1, int iData2)
 			setHotKeyNumber(iData1);
 			break;
 
+		case COMMAND_CAST:
+			cast(iData1);
+			break;
+
 		default:
 			FAssert(false);
 			break;
@@ -2291,6 +2305,183 @@ void CvUnit::doCommand(CommandTypes eCommand, int iData1, int iData2)
 	}
 
 	getGroup()->doDelayedDeath();
+}
+
+
+// Spells (added by this mod, same as FFH2). The checks before bDisplayWhenDisabled decide whether the unit has the
+// spell at all; a spell with bDisplayWhenDisabled is then shown as a disabled button when the later checks fail.
+bool CvUnit::canCast(int spell, bool bTestVisible)
+{
+	if (spell < 0 || spell >= GC.getNumSpellInfos())
+	{
+		return false;
+	}
+
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+	CvPlot* pPlot = plot();
+
+	if (getImmobileTimer() > 0)
+	{
+		return false;
+	}
+
+	if (kSpell.getPromotionPrereq1() != NO_PROMOTION)
+	{
+		if (!isHasPromotion((PromotionTypes)kSpell.getPromotionPrereq1()))
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getPromotionPrereq2() != NO_PROMOTION)
+	{
+		if (!isHasPromotion((PromotionTypes)kSpell.getPromotionPrereq2()))
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getUnitClassPrereq() != NO_UNITCLASS)
+	{
+		if (getUnitClassType() != (UnitClassTypes)kSpell.getUnitClassPrereq())
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getUnitPrereq() != NO_UNIT)
+	{
+		if (getUnitType() != (UnitTypes)kSpell.getUnitPrereq())
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getUnitCombatPrereq() != NO_UNITCOMBAT)
+	{
+		if (getUnitCombatType() != (UnitCombatTypes)kSpell.getUnitCombatPrereq())
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getCivilizationPrereq() != NO_CIVILIZATION)
+	{
+		if (getCivilizationType() != (CivilizationTypes)kSpell.getCivilizationPrereq())
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getTechPrereq() != NO_TECH)
+	{
+		if (!GET_TEAM(getTeam()).isHasTech((TechTypes)kSpell.getTechPrereq()))
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.getCasterMinLevel() != 0)
+	{
+		if (getLevel() < kSpell.getCasterMinLevel())
+		{
+			return false;
+		}
+	}
+
+	if (bTestVisible)
+	{
+		if (kSpell.isDisplayWhenDisabled())
+		{
+			return true;
+		}
+	}
+
+	if (!kSpell.isIgnoreHasCasted())
+	{
+		if (isHasCasted())
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.isInBordersOnly())
+	{
+		if (pPlot->getOwnerINLINE() != getOwnerINLINE())
+		{
+			return false;
+		}
+	}
+
+	if (kSpell.isInCityOnly())
+	{
+		if (!pPlot->isCity())
+		{
+			return false;
+		}
+	}
+
+	// PyRequirement is evaluated by canCast in CvSpellInterface.py and decides the rest
+	if (!CvString(kSpell.getPyRequirement()).empty())
+	{
+		CyUnit* pyUnit = new CyUnit(this);
+		CyArgsList argsList;
+		argsList.add(gDLL->getPythonIFace()->makePythonObject(pyUnit));	// pass in unit class
+		argsList.add(spell);
+		long lResult=0;
+		gDLL->getPythonIFace()->callFunction(PYSpellModule, "canCast", argsList.makeFunctionArgs(), &lResult);
+		delete pyUnit;	// python fxn must not hold on to this pointer
+		return (lResult != 0);
+	}
+
+	// A spell must have some effect. The only effect so far is PyResult
+	if (!CvString(kSpell.getPyResult()).empty())
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
+void CvUnit::cast(int spell)
+{
+	CvSpellInfo& kSpell = GC.getSpellInfo((SpellTypes)spell);
+
+	if (kSpell.isHasCasted())
+	{
+		setHasCasted(true);
+	}
+
+	if (plot()->isVisibleToWatchingHuman())
+	{
+		gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), kSpell.getDescription(), "AS2D_WONDER_UNIT_BUILD", MESSAGE_TYPE_MAJOR_EVENT, kSpell.getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_UNIT_TEXT"), getX_INLINE(), getY_INLINE(), true, true);
+	}
+
+	gDLL->getInterfaceIFace()->setDirty(SelectionButtons_DIRTY_BIT, true);
+
+	// PyResult is evaluated by cast in CvSpellInterface.py. It is called last, as it may kill the caster (with a delay)
+	if (!CvString(kSpell.getPyResult()).empty())
+	{
+		CyUnit* pyUnit = new CyUnit(this);
+		CyArgsList argsList;
+		argsList.add(gDLL->getPythonIFace()->makePythonObject(pyUnit));	// pass in unit class
+		argsList.add(spell);
+		gDLL->getPythonIFace()->callFunction(PYSpellModule, "cast", argsList.makeFunctionArgs());
+		delete pyUnit;	// python fxn must not hold on to this pointer
+	}
+}
+
+
+bool CvUnit::isHasCasted() const
+{
+	return m_bHasCasted;
+}
+
+
+void CvUnit::setHasCasted(bool bNewValue)
+{
+	m_bHasCasted = bNewValue;
 }
 
 
@@ -11542,6 +11733,10 @@ void CvUnit::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(&m_bAirCombat);
 	}
+	if (uiFlag > 2)
+	{
+		pStream->Read(&m_bHasCasted);
+	}
 
 	pStream->Read((int*)&m_eOwner);
 	pStream->Read((int*)&m_eCapturingPlayer);
@@ -11574,7 +11769,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 
 void CvUnit::write(FDataStreamBase* pStream)
 {
-	uint uiFlag=2;
+	uint uiFlag=3;	// 3: m_bHasCasted (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -11643,6 +11838,7 @@ void CvUnit::write(FDataStreamBase* pStream)
 	// m_bInfoBarDirty not saved...
 	pStream->Write(m_bBlockading);
 	pStream->Write(m_bAirCombat);
+	pStream->Write(m_bHasCasted);
 
 	pStream->Write(m_eOwner);
 	pStream->Write(m_eCapturingPlayer);

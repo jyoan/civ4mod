@@ -98,6 +98,12 @@ public:
 	bool canDoCommand(CommandTypes eCommand, int iData1, int iData2, bool bTestVisible = false, bool bTestBusy = true);	// Exposed to Python
 	void doCommand(CommandTypes eCommand, int iData1, int iData2);																// Exposed to Python
 
+	// Spells (added by this mod, same as FFH2)
+	bool canCast(int spell, bool bTestVisible);																	// Exposed to Python
+	void cast(int spell);																						// Exposed to Python
+	bool isHasCasted() const;																					// Exposed to Python
+	void setHasCasted(bool bNewValue);																			// Exposed to Python
+
 	FAStarNode* getPathLastNode() const;
 	CvPlot* getPathEndTurnPlot() const;																																						// Exposed to Python
 	bool generatePath(const CvPlot* pToPlot, int iFlags = 0, bool bReuse = false, int* piPathTurns = NULL) const;	// Exposed to Python
@@ -842,6 +848,7 @@ protected:
 	bool m_bInfoBarDirty;
 	bool m_bBlockading;
 	bool m_bAirCombat;
+	bool m_bHasCasted;		// added by this mod: cast a spell with bHasCasted this turn
 
 	PlayerTypes m_eOwner;
 	PlayerTypes m_eCapturingPlayer;
