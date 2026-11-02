@@ -1928,6 +1928,10 @@ public:
 	int getNumPrereqOrTraits() const;				// Exposed to Python
 	int getPrereqOrTraits(int i) const;				// Exposed to Python
 	const std::vector<int>& getPrereqOrTraitsVector() const;
+	// PrereqAndSettledSpecialists (added by this mod): every entry is needed
+	int getNumPrereqAndSettledSpecialists() const;			// Exposed to Python
+	int getPrereqAndSettledSpecialistType(int i) const;		// Exposed to Python
+	int getPrereqAndSettledSpecialistNum(int i) const;		// Exposed to Python
 	// PrereqOrSettledSpecialists (added by this mod): one of the entries is enough
 	int getNumPrereqOrSettledSpecialists() const;			// Exposed to Python
 	int getPrereqOrSettledSpecialistType(int i) const;		// Exposed to Python
@@ -2086,6 +2090,8 @@ protected:
 	int* m_piPrereqAndTechs;
 	int* m_piPrereqOrBonuses;
 	std::vector<int> m_aiPrereqOrTraits;
+	std::vector<int> m_aiPrereqAndSettledSpecialistType;
+	std::vector<int> m_aiPrereqAndSettledSpecialistNum;
 	std::vector<int> m_aiPrereqOrSettledSpecialistType;
 	std::vector<int> m_aiPrereqOrSettledSpecialistNum;
 	int m_iPlotRadius;

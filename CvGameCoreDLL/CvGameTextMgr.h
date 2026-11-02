@@ -151,7 +151,7 @@ public:
 	DllExport void buildHintsList(CvWStringBuffer& szBuffer);
 	DllExport void buildBuildingRequiresString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bCivilopediaText, bool bTechChooserText, const CvCity* pCity);
 	void buildPrereqOrTraitsString(CvWStringBuffer& szBuffer, const std::vector<int>& aiPrereqOrTraits);
-	void buildPrereqOrSettledSpecialistsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding);	// added by this mod
+	void buildPrereqSettledSpecialistsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bAnd);	// added by this mod
 
 	DllExport void buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvCity* pCity);
 	DllExport void buildCityBillboardCityNameString( CvWStringBuffer& szBuffer, CvCity* pCity);

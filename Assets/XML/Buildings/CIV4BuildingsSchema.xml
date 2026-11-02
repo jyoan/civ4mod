@@ -240,6 +240,13 @@
 	</ElementType>
 	<ElementType name="SpecialistType" content="textOnly"/>
 	<ElementType name="iNumSettled" content="textOnly" dt:type="int"/>
+	<ElementType name="PrereqAndSettledSpecialist" content="eltOnly">
+		<element type="SpecialistType"/>
+		<element type="iNumSettled" minOccurs="0"/>
+	</ElementType>
+	<ElementType name="PrereqAndSettledSpecialists" content="eltOnly">
+		<element type="PrereqAndSettledSpecialist" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="PrereqOrSettledSpecialist" content="eltOnly">
 		<element type="SpecialistType"/>
 		<element type="iNumSettled" minOccurs="0"/>
@@ -435,6 +442,7 @@
 		<element type="Bonus"/>
 		<element type="PrereqBonuses"/>
 		<element type="PrereqOrTraits" minOccurs="0"/>
+		<element type="PrereqAndSettledSpecialists" minOccurs="0"/>
 		<element type="PrereqOrSettledSpecialists" minOccurs="0"/>
 		<element type="ProductionTraits"/>
 		<element type="HappinessTraits"/>

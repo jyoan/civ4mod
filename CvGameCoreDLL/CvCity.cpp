@@ -2189,9 +2189,9 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 			}
 		}
 
-		// PrereqOrSettledSpecialists (added by this mod): also needed while the building is under construction, as the
-		// other prerequisites (bContinue)
-		if (!hasPrereqOrSettledSpecialists(eBuilding))
+		// PrereqAndSettledSpecialists and PrereqOrSettledSpecialists (added by this mod): also needed while the building is
+		// under construction, as the other prerequisites (bContinue)
+		if (!hasPrereqAndSettledSpecialists(eBuilding) || !hasPrereqOrSettledSpecialists(eBuilding))
 		{
 			return false;
 		}
@@ -9743,6 +9743,24 @@ int CvCity::getFreeSpecialistCount(SpecialistTypes eIndex) const
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < GC.getNumSpecialistInfos(), "eIndex expected to be < GC.getNumSpecialistInfos()");
 	return m_paiFreeSpecialistCount[eIndex];
+}
+
+// PrereqAndSettledSpecialists of the building: enough great people of every listed type settled in this city
+// (getAddedFreeSpecialistCount). Added by this mod
+bool CvCity::hasPrereqAndSettledSpecialists(BuildingTypes eBuilding) const
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	int iI;
+
+	for (iI = 0; iI < kBuilding.getNumPrereqAndSettledSpecialists(); iI++)
+	{
+		if (getAddedFreeSpecialistCount((SpecialistTypes)kBuilding.getPrereqAndSettledSpecialistType(iI)) < kBuilding.getPrereqAndSettledSpecialistNum(iI))
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 // PrereqOrSettledSpecialists of the building: an empty list needs nothing, otherwise enough great people of one of the

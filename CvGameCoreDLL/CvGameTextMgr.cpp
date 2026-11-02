@@ -8457,9 +8457,14 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 			buildPrereqOrTraitsString(szBuffer, kBuilding.getPrereqOrTraitsVector());
 		}
 
+		if (bCivilopediaText || pCity == NULL || !pCity->hasPrereqAndSettledSpecialists(eBuilding))
+		{
+			buildPrereqSettledSpecialistsString(szBuffer, eBuilding, true);
+		}
+
 		if (bCivilopediaText || pCity == NULL || !pCity->hasPrereqOrSettledSpecialists(eBuilding))
 		{
-			buildPrereqOrSettledSpecialistsString(szBuffer, eBuilding);
+			buildPrereqSettledSpecialistsString(szBuffer, eBuilding, false);
 		}
 
 		bFirst = true;
@@ -8762,22 +8767,24 @@ void CvGameTextMgr::buildPrereqOrTraitsString(CvWStringBuffer& szBuffer, const s
 	}
 }
 
-// PrereqOrSettledSpecialists of buildings: "Requires 5 settled Great Scientists or 2 settled Great Engineers" (added by
-// this mod). The specialist names link to the specialist pages.
-void CvGameTextMgr::buildPrereqOrSettledSpecialistsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding)
+// PrereqAndSettledSpecialists (bAnd) / PrereqOrSettledSpecialists of buildings: "Requires 2 settled Great Scientists and
+// 1 settled Great Engineer" / "Requires 1 settled Great Scientist or 2 settled Great Engineers" (added by this mod). The
+// specialist names link to the specialist pages.
+void CvGameTextMgr::buildPrereqSettledSpecialistsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bAnd)
 {
 	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
 	CvWString szTempBuffer;
 	CvWString szSpecialist;
 	bool bFirst = true;
+	int iNum = (bAnd ? kBuilding.getNumPrereqAndSettledSpecialists() : kBuilding.getNumPrereqOrSettledSpecialists());
 	int iI;
 
-	for (iI = 0; iI < kBuilding.getNumPrereqOrSettledSpecialists(); iI++)
+	for (iI = 0; iI < iNum; iI++)
 	{
 		szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_REQUIRES").c_str());
-		szSpecialist.Format(L"<link=literal>%s</link>", GC.getSpecialistInfo((SpecialistTypes)kBuilding.getPrereqOrSettledSpecialistType(iI)).getDescription());
-		szSpecialist = gDLL->getText("TXT_KEY_SETTLED_SPECIALIST_NUM", szSpecialist.GetCString(), kBuilding.getPrereqOrSettledSpecialistNum(iI));
-		setListHelp(szBuffer, szTempBuffer, szSpecialist, gDLL->getText("TXT_KEY_OR").c_str(), bFirst);
+		szSpecialist.Format(L"<link=literal>%s</link>", GC.getSpecialistInfo((SpecialistTypes)(bAnd ? kBuilding.getPrereqAndSettledSpecialistType(iI) : kBuilding.getPrereqOrSettledSpecialistType(iI))).getDescription());
+		szSpecialist = gDLL->getText("TXT_KEY_SETTLED_SPECIALIST_NUM", szSpecialist.GetCString(), (bAnd ? kBuilding.getPrereqAndSettledSpecialistNum(iI) : kBuilding.getPrereqOrSettledSpecialistNum(iI)));
+		setListHelp(szBuffer, szTempBuffer, szSpecialist, gDLL->getText(bAnd ? "TXT_KEY_AND" : "TXT_KEY_OR").c_str(), bFirst);
 		bFirst = false;
 	}
 

@@ -28836,6 +28836,16 @@
 			<TechTypes/>
 			<Bonus>NONE</Bonus>
 			<PrereqBonuses/>
+			<PrereqAndSettledSpecialists>
+				<PrereqAndSettledSpecialist>
+					<SpecialistType>SPECIALIST_GREAT_MERCHANT</SpecialistType>
+					<iNumSettled>1</iNumSettled>
+				</PrereqAndSettledSpecialist>
+				<PrereqAndSettledSpecialist>
+					<SpecialistType>SPECIALIST_GREAT_ARTIST</SpecialistType>
+					<iNumSettled>1</iNumSettled>
+				</PrereqAndSettledSpecialist>
+			</PrereqAndSettledSpecialists>
 			<PrereqOrSettledSpecialists>
 				<PrereqOrSettledSpecialist>
 					<SpecialistType>SPECIALIST_GREAT_SCIENTIST</SpecialistType>
