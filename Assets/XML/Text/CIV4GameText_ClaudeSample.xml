@@ -992,6 +992,15 @@
 		<Spanish>An enemy %s1_Unit took %s2_Promotion from your defeated unit</Spanish>
 		<Japanese>&#25973;&#12398;%s1_Unit&#12395;%s2_Promotion&#12434;&#22890;&#12431;&#12428;&#12383;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FEATURE_ROUTES</Tag>
+		<English>[ICON_BULLET]Counts as %s1_Route in our territory (movement and trade network): </English>
+		<French>[ICON_BULLET]Counts as %s1_Route in our territory (movement and trade network): </French>
+		<German>[ICON_BULLET]Counts as %s1_Route in our territory (movement and trade network): </German>
+		<Italian>[ICON_BULLET]Counts as %s1_Route in our territory (movement and trade network): </Italian>
+		<Spanish>[ICON_BULLET]Counts as %s1_Route in our territory (movement and trade network): </Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;%s1_Route&#12392;&#12375;&#12390;&#25201;&#12358;&#65288;&#31227;&#21205;&#12392;&#20132;&#26131;&#32178;&#65289;: </Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

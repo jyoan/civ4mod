@@ -381,6 +381,16 @@
 					<bMaintain>1</bMaintain>
 				</MaintainFeature>
 			</MaintainFeatures>
+			<FeatureRoutes>
+				<FeatureRoute>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<RouteType>ROUTE_ROAD</RouteType>
+				</FeatureRoute>
+				<FeatureRoute>
+					<FeatureType>FEATURE_JUNGLE</FeatureType>
+					<RouteType>ROUTE_ROAD</RouteType>
+				</FeatureRoute>
+			</FeatureRoutes>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

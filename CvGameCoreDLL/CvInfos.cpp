@@ -17423,7 +17423,8 @@ m_paiCommerceChange(NULL),
 m_paiCommerceModifier(NULL),
 m_pabFreePromotionUnitCombat(NULL),
 m_pabFreePromotion(NULL),
-m_pabMaintainFeatures(NULL)
+m_pabMaintainFeatures(NULL),
+m_paiFeatureRoute(NULL)
 {
 }
 
@@ -17453,6 +17454,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabFreePromotionUnitCombat);
 	SAFE_DELETE_ARRAY(m_pabFreePromotion);
 	SAFE_DELETE_ARRAY(m_pabMaintainFeatures);
+	SAFE_DELETE_ARRAY(m_paiFeatureRoute);
 }
 
 int CvTraitInfo::getHealth() const									
@@ -17715,6 +17717,14 @@ bool CvTraitInfo::isMaintainFeatures(int i) const
 	FAssertMsg(i < GC.getNumFeatureInfos(), "Index out of bounds");
 	FAssertMsg(i > -1, "Index out of bounds");
 	return m_pabMaintainFeatures ? m_pabMaintainFeatures[i] : false;
+}
+
+// The route type the feature counts as in the territory of the player (added by this mod; NO_ROUTE: none)
+int CvTraitInfo::getFeatureRouteType(int i) const
+{
+	FAssertMsg(i < GC.getNumFeatureInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiFeatureRoute ? m_paiFeatureRoute[i] : NO_ROUTE;
 }
 
 int CvTraitInfo::isFreePromotion(int i) const
@@ -18025,6 +18035,33 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->SetVariableListTagPair(&m_pabMaintainFeatures, "MaintainFeatures", sizeof(GC.getFeatureInfo((FeatureTypes)0)), GC.getNumFeatureInfos());
 
+	// FeatureRoutes: <FeatureRoute> with a FeatureType and a RouteType. The route types are loaded after the traits, so
+	// readPass3() finds them
+	m_aiFeatureRouteFeatures.clear();
+	m_aszFeatureRouteTypes.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FeatureRoutes"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FeatureRoute"))
+		{
+			do
+			{
+				pXML->GetChildXmlValByName(szTextVal, "FeatureType");
+				int iFeature = pXML->FindInInfoClass(szTextVal);
+				pXML->GetChildXmlValByName(szTextVal, "RouteType");
+				if (iFeature > -1)
+				{
+					m_aiFeatureRouteFeatures.push_back(iFeature);
+					m_aszFeatureRouteTypes.push_back(szTextVal);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "FeatureRoute"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+
 	// FreePromotionSets: any number of <FreePromotions> x <FreePromotionUnitCombats> pairs
 	m_aabFreePromotionSetPromotion.clear();
 	m_aabFreePromotionSetUnitCombat.clear();
@@ -18079,6 +18116,29 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 bool CvTraitInfo::readPass3()
 {
 	char szMessage[1024];
+	int iRoute;
+	int i;
+
+	SAFE_DELETE_ARRAY(m_paiFeatureRoute);
+	if (!m_aiFeatureRouteFeatures.empty())
+	{
+		m_paiFeatureRoute = new int[GC.getNumFeatureInfos()];
+		for (i = 0; i < GC.getNumFeatureInfos(); i++)
+		{
+			m_paiFeatureRoute[i] = NO_ROUTE;
+		}
+
+		for (i = 0; i < (int)m_aiFeatureRouteFeatures.size(); i++)
+		{
+			iRoute = GC.getInfoTypeForString(m_aszFeatureRouteTypes[i].GetCString(), true);
+			if (iRoute < 0 && !m_aszFeatureRouteTypes[i].empty() && m_aszFeatureRouteTypes[i] != "NONE")
+			{
+				sprintf(szMessage, "Tag: %s in FeatureRoutes of CIV4TraitInfos.xml was incorrect", m_aszFeatureRouteTypes[i].GetCString());
+				gDLL->MessageBox(szMessage, "XML Error");
+			}
+			m_paiFeatureRoute[m_aiFeatureRouteFeatures[i]] = std::max(iRoute, (int)NO_ROUTE);
+		}
+	}
 
 	m_iCityRadiusCultureLevel = NO_CULTURELEVEL;
 	if (!m_szCityRadiusCultureLevel.empty() && m_szCityRadiusCultureLevel != "NONE")

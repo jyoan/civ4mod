@@ -2751,12 +2751,16 @@ int CvPlot::movementCost(const CvUnit* pUnit, const CvPlot* pFromPlot) const
 		}
 	}
 
-	if (pFromPlot->isValidRoute(pUnit) && isValidRoute(pUnit) && ((GET_TEAM(pUnit->getTeam()).isBridgeBuilding() || !(pFromPlot->isRiverCrossing(directionXY(pFromPlot, this))))))
+	// The routes of the plots, or the features that count as routes (getUnitRouteType, added by this mod)
+	RouteTypes eFromRoute = pFromPlot->getUnitRouteType(pUnit);
+	RouteTypes eToRoute = getUnitRouteType(pUnit);
+
+	if (eFromRoute != NO_ROUTE && eToRoute != NO_ROUTE && ((GET_TEAM(pUnit->getTeam()).isBridgeBuilding() || !(pFromPlot->isRiverCrossing(directionXY(pFromPlot, this))))))
 	{
-		iRouteCost = std::max((GC.getRouteInfo(pFromPlot->getRouteType()).getMovementCost() + GET_TEAM(pUnit->getTeam()).getRouteChange(pFromPlot->getRouteType())),
-			               (GC.getRouteInfo(getRouteType()).getMovementCost() + GET_TEAM(pUnit->getTeam()).getRouteChange(getRouteType())));
-		iRouteFlatCost = std::max((GC.getRouteInfo(pFromPlot->getRouteType()).getFlatMovementCost() * pUnit->baseMoves()),
-			                   (GC.getRouteInfo(getRouteType()).getFlatMovementCost() * pUnit->baseMoves()));
+		iRouteCost = std::max((GC.getRouteInfo(eFromRoute).getMovementCost() + GET_TEAM(pUnit->getTeam()).getRouteChange(eFromRoute)),
+			               (GC.getRouteInfo(eToRoute).getMovementCost() + GET_TEAM(pUnit->getTeam()).getRouteChange(eToRoute)));
+		iRouteFlatCost = std::max((GC.getRouteInfo(eFromRoute).getFlatMovementCost() * pUnit->baseMoves()),
+			                   (GC.getRouteInfo(eToRoute).getFlatMovementCost() * pUnit->baseMoves()));
 	}
 	else
 	{
@@ -3512,17 +3516,63 @@ bool CvPlot::isRoute() const
 }
 
 
-bool CvPlot::isValidRoute(const CvUnit* pUnit) const
+// The route a feature of this plot counts as, from the traits of the owner (FeatureRoutes, added by this mod)
+RouteTypes CvPlot::getFeatureRouteType() const
 {
+	if (getFeatureType() == NO_FEATURE || !isOwned())
+	{
+		return NO_ROUTE;
+	}
+
+	return GET_PLAYER(getOwnerINLINE()).getFeatureRouteType(getFeatureType());
+}
+
+
+// The route the unit moves along here (added by this mod): the route of the plot unless it is an enemy's (BtS), or the
+// route of the feature for the units of the owner's team (FeatureRoutes), whichever is better
+RouteTypes CvPlot::getUnitRouteType(const CvUnit* pUnit) const
+{
+	RouteTypes eRoute = NO_ROUTE;
+	RouteTypes eFeatureRoute;
+
 	if (isRoute())
 	{
 		if (!pUnit->isEnemy(getTeam(), this) || pUnit->isEnemyRoute())
 		{
-			return true;
+			eRoute = getRouteType();
 		}
 	}
 
-	return false;
+	if (pUnit->getTeam() == getTeam())
+	{
+		eFeatureRoute = getFeatureRouteType();
+
+		if (eFeatureRoute != NO_ROUTE && (eRoute == NO_ROUTE || GC.getRouteInfo(eFeatureRoute).getValue() > GC.getRouteInfo(eRoute).getValue()))
+		{
+			eRoute = eFeatureRoute;
+		}
+	}
+
+	return eRoute;
+}
+
+
+bool CvPlot::isValidRoute(const CvUnit* pUnit) const
+{
+	return (getUnitRouteType(pUnit) != NO_ROUTE);
+}
+
+
+// A route for the trade network of the team: the route of the plot, or a feature that counts as a route in the territory
+// of the team (FeatureRoutes, added by this mod)
+bool CvPlot::isNetworkRoute(TeamTypes eTeam) const
+{
+	if (isRoute())
+	{
+		return true;
+	}
+
+	return (eTeam != NO_TEAM && getTeam() == eTeam && getFeatureRouteType() != NO_ROUTE);
 }
 
 
@@ -3575,7 +3625,8 @@ bool CvPlot::isNetworkTerrain(TeamTypes eTeam) const
 
 bool CvPlot::isBonusNetwork(TeamTypes eTeam) const
 {
-	if (isRoute())
+	// A feature that counts as a route too (FeatureRoutes, added by this mod)
+	if (isNetworkRoute(eTeam))
 	{
 		return true;
 	}
@@ -3647,9 +3698,10 @@ bool CvPlot::isTradeNetworkConnected(const CvPlot* pPlot, TeamTypes eTeam) const
 		}
 	}
 
-	if (isRoute())
+	// Features that count as routes too (FeatureRoutes, added by this mod)
+	if (isNetworkRoute(eTeam))
 	{
-		if (pPlot->isRoute())
+		if (pPlot->isNetworkRoute(eTeam))
 		{
 			return true;
 		}
@@ -5120,8 +5172,23 @@ void CvPlot::setFeatureType(FeatureTypes eNewValue, int iVariety)
 			updateSeeFromSight(false, true);
 		}
 
+		// FeatureRoutes (added by this mod): the trade network changes when the feature starts or stops counting as a route
+		bool bOldFeatureRoute = (getFeatureRouteType() != NO_ROUTE);
+		bool bNewFeatureRoute = (eNewValue != NO_FEATURE && isOwned() && GET_PLAYER(getOwnerINLINE()).getFeatureRouteType(eNewValue) != NO_ROUTE);
+
+		if (bOldFeatureRoute != bNewFeatureRoute)
+		{
+			updatePlotGroupBonus(false);
+		}
+
 		m_eFeatureType = eNewValue;
 		m_iFeatureVariety = iVariety;
+
+		if (bOldFeatureRoute != bNewFeatureRoute)
+		{
+			updatePlotGroupBonus(true);
+			updatePlotGroup();
+		}
 
 		updateYield();
 

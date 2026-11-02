@@ -403,6 +403,14 @@
 	<ElementType name="MaintainFeatures" content="eltOnly">
 		<element type="MaintainFeature" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="RouteType" content="textOnly"/>
+	<ElementType name="FeatureRoute" content="eltOnly">
+		<element type="FeatureType"/>
+		<element type="RouteType"/>
+	</ElementType>
+	<ElementType name="FeatureRoutes" content="eltOnly">
+		<element type="FeatureRoute" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="Yields" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -466,6 +474,7 @@
 		<element type="bNewCityStateReligion" minOccurs="0"/>
 		<element type="iOccupationTimeModifier" minOccurs="0"/>
 		<element type="MaintainFeatures" minOccurs="0"/>
+		<element type="FeatureRoutes" minOccurs="0"/>
 		<element type="ExtraYieldThresholds"/>
 		<element type="TradeYieldModifiers"/>
 		<element type="CommerceChanges"/>

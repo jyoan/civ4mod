@@ -6059,6 +6059,28 @@ bool CvPlayer::isMaintainFeatures(FeatureTypes eFeature) const
 	return false;
 }
 
+RouteTypes CvPlayer::getFeatureRouteType(FeatureTypes eFeature) const
+{
+	RouteTypes eBestRoute = NO_ROUTE;
+	RouteTypes eRoute;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			eRoute = (RouteTypes)GC.getTraitInfo((TraitTypes)iI).getFeatureRouteType(eFeature);
+
+			if (eRoute != NO_ROUTE && (eBestRoute == NO_ROUTE || GC.getRouteInfo(eRoute).getValue() > GC.getRouteInfo(eBestRoute).getValue()))
+			{
+				eBestRoute = eRoute;
+			}
+		}
+	}
+
+	return eBestRoute;
+}
+
 bool CvPlayer::hasActiveBuilding(BuildingTypes eBuilding) const
 {
 	CvCity* pLoopCity;

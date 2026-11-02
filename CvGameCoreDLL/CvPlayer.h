@@ -211,6 +211,8 @@ public:
 	int getOccupationTimeModifier() const;				// Exposed to Python
 	// Builds with an improvement keep the feature on the plots of this player (traits, added by this mod)
 	bool isMaintainFeatures(FeatureTypes eFeature) const;				// Exposed to Python
+	// The route a feature counts as in the territory of this player (traits; the best one, added by this mod)
+	RouteTypes getFeatureRouteType(FeatureTypes eFeature) const;		// Exposed to Python
 	int getProductionModifier(BuildingTypes eBuilding) const;
 	int getProductionModifier(ProjectTypes eProject) const;
 

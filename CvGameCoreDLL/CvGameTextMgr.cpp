@@ -3593,6 +3593,23 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			}
 		}
 
+		// FeatureRoutes: "Counts as Road in our territory (movement and trade network): Forest, Jungle", a line for each
+		// route type
+		for (iJ = 0; iJ < GC.getNumRouteInfos(); ++iJ)
+		{
+			bFirstFeature = true;
+			for (iI = 0; iI < GC.getNumFeatureInfos(); ++iI)
+			{
+				if (GC.getTraitInfo(eTrait).getFeatureRouteType(iI) == iJ)
+				{
+					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_FEATURE_ROUTES", GC.getRouteInfo((RouteTypes)iJ).getTextKeyWide()).c_str());
+					szText.Format(L"<link=literal>%s</link>", GC.getFeatureInfo((FeatureTypes)iI).getDescription());
+					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstFeature);
+					bFirstFeature = false;
+				}
+			}
+		}
+
 		// Wonder Production Effects
 		if ((GC.getTraitInfo(eTrait).getMaxGlobalBuildingProductionModifier() != 0)
 			|| (GC.getTraitInfo(eTrait).getMaxTeamBuildingProductionModifier() != 0)

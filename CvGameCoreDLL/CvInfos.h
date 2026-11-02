@@ -4457,6 +4457,7 @@ public:
 
 	int isFreePromotion(int i) const;				// Exposed to Python
 	bool isMaintainFeatures(int i) const;			// Exposed to Python
+	int getFeatureRouteType(int i) const;			// Exposed to Python
 	int isFreePromotionUnitCombat(int i) const;			
 
 	// FreePromotionSets: each set gives its promotions to its unit combats
@@ -4526,6 +4527,9 @@ protected:
 
 	bool* m_pabFreePromotion;
 	bool* m_pabMaintainFeatures;
+	int* m_paiFeatureRoute;							// FeatureRoutes: the route type of each feature (NO_ROUTE: none)
+	std::vector<int> m_aiFeatureRouteFeatures;		// read() keeps the route types as strings until readPass3()
+	std::vector<CvString> m_aszFeatureRouteTypes;
 	bool* m_pabFreePromotionUnitCombat;
 
 	std::vector< std::vector<bool> > m_aabFreePromotionSetPromotion;		// [set][promotion]

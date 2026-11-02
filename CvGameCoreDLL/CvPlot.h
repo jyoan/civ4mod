@@ -185,6 +185,9 @@ public:
 
 	DllExport bool isRoute() const;																																		// Exposed to Python
 	bool isValidRoute(const CvUnit* pUnit) const;																											// Exposed to Python
+	RouteTypes getFeatureRouteType() const;				// added by this mod (FeatureRoutes of traits)
+	RouteTypes getUnitRouteType(const CvUnit* pUnit) const;	// added by this mod
+	bool isNetworkRoute(TeamTypes eTeam) const;				// added by this mod
 	bool isTradeNetworkImpassable(TeamTypes eTeam) const;																														// Exposed to Python
 	bool isNetworkTerrain(TeamTypes eTeam) const;																											// Exposed to Python
 	bool isBonusNetwork(TeamTypes eTeam) const;																												// Exposed to Python

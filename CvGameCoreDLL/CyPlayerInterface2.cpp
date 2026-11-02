@@ -66,6 +66,7 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("getNewCityPopulation", &CyPlayer::getNewCityPopulation, "int () - extra population of new cities from traits and buildings (added by this mod)")
 		.def("isNewCityStateReligion", &CyPlayer::isNewCityStateReligion, "bool () - the state religion spreads to new cities (added by this mod)")
 		.def("isMaintainFeatures", &CyPlayer::isMaintainFeatures, "bool (int /*FeatureTypes*/ eFeature) - builds with an improvement keep the feature on our plots (added by this mod)")
+		.def("getFeatureRouteType", &CyPlayer::getFeatureRouteType, "int (int /*FeatureTypes*/ eFeature) - the route a feature counts as in our territory (added by this mod)")
 		.def("getOccupationTimeModifier", &CyPlayer::getOccupationTimeModifier, "int () - revolt time % of conquered cities from traits and buildings (added by this mod)")
 		;
 }
