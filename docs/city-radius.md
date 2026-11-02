@@ -1,0 +1,23 @@
+# 都市圏の半径
+
+BtS は全都市が半径 2（21 タイル）固定。この Mod では都市ごとに半径を持つ（既定 2、最大 3）。FFH2 の `bSprawling` と Denev さんの 056Patch12 の実装を参考にした（第 1 段階は土台だけで、半径を変えるタグはまだない）。文化レベルの条件（第 4 段階）は、ex 氏の CivGoldEmpires の「文化レベルで都市圏が広がる」仕組みを参考にした。
+
+- `CvDefines.h`: `NUM_CITY_PLOTS` / `CITY_PLOTS_RADIUS` / `CITY_PLOTS_DIAMETER` は**わざと消した**（使う箇所をすべて見直すため）。代わりに `CITY_PLOTS_DEFAULT_RADIUS`（2）、`CITY_PLOTS_MAX_RADIUS`（3）、`NUM_DEFAULT_CITY_PLOTS`（21）、`NUM_MAX_CITY_PLOTS`（37）、`CITY_PLOTS_MAX_DIAMETER`（7）。タイル数は `calculateNumCityPlots(半径)`（`CvGameCoreUtils.h`。1: 9、2: 21、3: 37）
+- 都市圏のタイル番号は「中心 → 1 周目（1〜8）→ 2 周目（9〜20）→ 3 周目（21〜36）」の順で、最初の 21 個は BtS と同じ。**半径 r の都市は番号 `calculateNumCityPlots(r)` 未満のタイルを使う**。表（`CvGlobals` の `aiCityPlotX` / `Y` / `Priority`、`aaiXYCityPlot` 7×7）は FFH2 と同じ並び
+- `CvCity::getPlotRadius()` / `getNumCityPlots()`（Python にも公開）。`getCityIndexPlot(i)` は半径の外の番号なら NULL、`getCityPlotIndex(pPlot)`（`plotCityXY(pCity, pPlot)`）は半径の外なら -1。`plotCityXY(dx, dy)` と `plotCity(x, y, i)` は最大半径までの位置の変換だけ
+- 新しく足すループの書き分け:
+  - その都市自身のタイル: `for (i = 0; i < pCity->getNumCityPlots(); i++)`
+  - あるタイルを働かせられる都市を探す（`CvPlot::updateWorkingCity`、`calculateCulturalOwner`）: `NUM_MAX_CITY_PLOTS` まで探し、`i < pLoopCity->getNumCityPlots()` を確かめる（番号の周回はタイルから見ても都市から見ても同じ）
+  - まだない都市を評価する（AI の候補地 `AI_foundValue` など）: `CvPlayer::getNextCityRadius()`（その文明の都市が取りうる半径。志向の文化レベルの条件は満たしたものとして数える）
+  - マップ生成・開始位置の調整（`CvGame::normalize*`、`CvPlayer::addFreeUnit` / `startingPlotRange` / `findStartingArea`）: 既定の半径のまま（乱数の引き方が変わるとマップが変わるため）
+- 「どれかの都市が働かせられるか」（`CvPlot::updatePotentialCityWork`。偽ならタイルの産出は 0）は `GC.getMaxCityPlotRadius()`（XML で都市が取りうる最大の半径。半径を広げるタグが無ければ 2）で判定する。文化の広がり（`CvCity::doPlotCulture` の `isPotentialCityWorkForArea`）は文化を広げる都市自身の半径で判定する。最大の半径（3）で判定すると、半径 3 の都市がいなくても国境が海へ広がってしまうため（056 はそうなっている）
+- セーブ: `CvCity`（`uiFlag=1`）は半径と 37 個分の働き先を、`CvCityAI`（`uiFlag=1`）は 37 個分の最善の改善を保存する。`uiFlag=0`（この変更より前のセーブ）は 21 個分を読み、半径は 2
+- exe が使う都市圏の関数は、都市画面のクリック（`CvGame::handleCityScreenPlotPicked` など）だけで、表（`getXYCityPlot` など）や `getNUM_CITY_PLOTS` は使っていない（`link.exe /dump /imports` で確認）。都市圏の表示も DLL が決めるので、変更は DLL だけで済む。BtS の Python も都市圏のタイルを扱っていない
+- 半径の決まり方（第 2 段階）: 新しい都市は `CvCity::init` で持ち主の `CvPlayer::getCityRadius(新しい都市の文化レベル)`（既定 2 + 持っている志向の `iCityRadiusChange` の合計、1〜3。文化レベルの条件は下記）になる（`setPlotCity` が都市圏のタイルを数える前に設定する。新しい都市の文化レベルは `CvCity::calculateCultureLevel()`。BtS の `updateCultureLevel` から計算の部分を取り出したもの）。占領した都市も新しい持ち主の半径になる。既存の都市は `CvCity::doTurn` の最初の `updatePlotRadius()` で持ち主の半径に合わせる（既存のセーブの都市も次のターンから広がる）
+- `CvCity::setPlotRadius()`: 狭まるときは先に外れるタイルの市民を外し、増減した輪のタイルの都市圏の数（`changeCityRadiusCount` / `changePlayerCityRadiusCount`）を直し、都市圏の全タイルで働かせる都市を決め直す（`updateWorkingCity`）。056 は狭まるときのループの上限に半径の値をそのまま使っていて誤り。`CvCity::setWorkingPlot(CvPlot*)` は半径の外のタイル（番号 -1）なら何もしない（狭まった直後に `updateWorkingCity` から呼ばれるため）
+- 建物の `iPlotRadius`（第 3 段階）: 都市の半径は「持ち主の半径」と「その都市の陳腐化していない建物の `iPlotRadius`」の大きい方（`CvCity::updatePlotRadius`）。建物ができた・無くなった・陳腐化したときは `CvCity::processBuilding` の最後で計算し直す（建物の数と陳腐化の状態は更新済み）。FFH2 は「半径がすでに同じか広い都市では建てられない」「建物が無くなると半径 2 に戻す」だが、この Mod では建設を止めず（遺産などほかの効果のため）、半径は毎回計算する
+- 文化レベルの条件（第 4 段階）: 志向の `CityRadiusCultureLevel`・建物の `PlotRadiusCultureLevel`（`CULTURELEVEL_*`。省略時は条件なし）を書くと、その志向の `iCityRadiusChange`・その建物の `iPlotRadius` は、都市の文化レベルがそれ以上のときだけ効く（`CvPlayer::getCityRadius(eCultureLevel)`・`CvCity::calculatePlotRadius(eCultureLevel)`）。文化の量でなく文化レベルで書くのは、文化レベルの閾値がゲーム速度ごとに決まっているため。都市の文化レベルが変わったとき（`CvCity::setCultureLevel`）に計算し直す（`init` で `setPlotCity` の前に呼ばれるときと、都市が消えるときは除く）。占領中（反乱中）の都市は文化レベル 0 なので、条件のある広がりは占領が終わるまで効かない。基本の半径（2）は文化レベルで変わらない（CGE は文化レベルの XML に半径を書き、新しい都市は半径 1 から始まる）。都市画面の文化のバーのマウスオーバーに「都市圏の半径: 2（文化レベル未熟で3）」と出る（`TXT_KEY_MISC_CITY_RADIUS` / `_CULTURE`。次に半径が広がる文化レベル）。志向は文化レベルより先に読み込まれるので、`CityRadiusCultureLevel` は `CvTraitInfo::readPass3()` で番号に変える
+- `GC.getMaxCityPlotRadius()` は `LoadPreMenuGlobals` の最後に、既定 2 + 全志向の正の `iCityRadiusChange` の合計と、全建物の `iPlotRadius` の大きい方（最大 3）で決まる。検証用志向が +1 なので、この Mod では 3（陸から 3 タイル離れた海のタイルにも産出が表示される）
+- 3 周目のタイルも、BtS と同じく自分の国境の中でないと働かせられない。国境は文化レベル 3（標準速度で文化 100）で 3 タイルまで広がる
+- 都市画面のカメラ: exe は都市に寄るとき、GlobalDefines の `CAMERA_CITY_ZOOM_IN_DISTANCE`（BtS は 3500。FFH2 / OAC は全都市 4250）を使う。この Mod では、都市を選んだとき（`CvGame::selectCity` と、exe が呼ぶ `CvCity::updateSelectedCity`）に `CvCity::updateCityScreenCamera()` がこの値を書き換える。3 周目に働かせられるタイル（`getWorkingCity() == this`）がある都市は `CAMERA_CITY_ZOOM_IN_DISTANCE_RADIUS_3`（Mod の `GlobalDefinesAlt.xml`、4500）、それ以外は XML の元の値（`LoadPreMenuGlobals` の最後で `CAMERA_CITY_ZOOM_IN_DISTANCE_DEFAULT` に控える）。カメラは各マシンの表示だけなので、マルチプレイの同期には影響しない
+- `GlobalDefinesAlt.xml` は無印 Civ4(J) のもの（ダミーの値 1 つだけ）をコピーした。BtS は `GlobalDefines.xml` の後にこれを読むので、Mod の設定値の追加・上書きはここに書く（大きな `GlobalDefines.xml` をコピーしなくて済む）
