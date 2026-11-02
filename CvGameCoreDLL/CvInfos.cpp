@@ -1617,6 +1617,12 @@ m_iFreeXPPerTurn(0),
 m_iFreeXPCap(100),
 m_iGoldFromCombat(0),
 m_iCombatCapturePercent(0),
+m_iCombatHealPercent(0),
+m_iEnslavementChance(0),
+m_iEnslavedUnitClass(NO_UNITCLASS),
+m_iCombatGoldStealPercent(0),
+m_iCombatGoldStealMax(0),
+m_iCombatPromotionStealChance(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
 m_bLeader(false),
@@ -1949,6 +1955,76 @@ int CvPromotionInfo::getCombatCapturePercent() const
 	return m_iCombatCapturePercent;
 }
 
+// Damage healed when the unit wins a combat (FFH2)
+int CvPromotionInfo::getCombatHealPercent() const
+{
+	return m_iCombatHealPercent;
+}
+
+// Chance to enslave the defeated unit, as EnslavedUnitClass or as given for its unit class by EnslavementUnitClasses
+int CvPromotionInfo::getEnslavementChance() const
+{
+	return m_iEnslavementChance;
+}
+
+int CvPromotionInfo::getEnslavedUnitClass() const
+{
+	return m_iEnslavedUnitClass;
+}
+
+int CvPromotionInfo::getNumEnslavementUnitClasses() const
+{
+	return (int)m_aiEnslavementUnitClassType.size();
+}
+
+int CvPromotionInfo::getEnslavementUnitClassType(int i) const
+{
+	FAssertMsg(i < getNumEnslavementUnitClasses(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumEnslavementUnitClasses()) ? m_aiEnslavementUnitClassType[i] : NO_UNITCLASS;
+}
+
+int CvPromotionInfo::getEnslavementUnitClassEnslaved(int i) const
+{
+	FAssertMsg(i < getNumEnslavementUnitClasses(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumEnslavementUnitClasses()) ? m_aiEnslavementUnitClassEnslaved[i] : NO_UNITCLASS;
+}
+
+// The unit class a defeated unit of iUnitClass becomes: its entry in EnslavementUnitClasses, or EnslavedUnitClass
+int CvPromotionInfo::getEnslavedUnitClassFor(int iUnitClass) const
+{
+	int iI;
+
+	for (iI = 0; iI < getNumEnslavementUnitClasses(); iI++)
+	{
+		if (m_aiEnslavementUnitClassType[iI] == iUnitClass)
+		{
+			return m_aiEnslavementUnitClassEnslaved[iI];
+		}
+	}
+
+	return m_iEnslavedUnitClass;
+}
+
+// Percent of the treasury of the defeated unit's owner taken when the unit wins a combat, up to iCombatGoldStealMax
+// (0: no limit)
+int CvPromotionInfo::getCombatGoldStealPercent() const
+{
+	return m_iCombatGoldStealPercent;
+}
+
+int CvPromotionInfo::getCombatGoldStealMax() const
+{
+	return m_iCombatGoldStealMax;
+}
+
+// Chance to take one promotion of the defeated unit
+int CvPromotionInfo::getCombatPromotionStealChance() const
+{
+	return m_iCombatPromotionStealChance;
+}
+
 const TCHAR* CvPromotionInfo::getSound() const										
 {
 	return m_szSound;
@@ -2162,13 +2238,47 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 		m_iGoldFromCombat = 0;
 		m_iCombatCapturePercent = 0;
 	}
+
+	// uiFlag < 4: cache written before the combat heal, enslavement and steal tags existed
+	m_aiEnslavementUnitClassType.clear();
+	m_aiEnslavementUnitClassEnslaved.clear();
+	if (uiFlag > 3)
+	{
+		int iCount;
+		int iElement;
+		int i;
+
+		stream->Read(&m_iCombatHealPercent);
+		stream->Read(&m_iEnslavementChance);
+		stream->Read(&m_iEnslavedUnitClass);
+		stream->Read(&iCount);
+		for (i = 0; i < iCount; i++)
+		{
+			stream->Read(&iElement);
+			m_aiEnslavementUnitClassType.push_back(iElement);
+			stream->Read(&iElement);
+			m_aiEnslavementUnitClassEnslaved.push_back(iElement);
+		}
+		stream->Read(&m_iCombatGoldStealPercent);
+		stream->Read(&m_iCombatGoldStealMax);
+		stream->Read(&m_iCombatPromotionStealChance);
+	}
+	else
+	{
+		m_iCombatHealPercent = 0;
+		m_iEnslavementChance = 0;
+		m_iEnslavedUnitClass = NO_UNITCLASS;
+		m_iCombatGoldStealPercent = 0;
+		m_iCombatGoldStealMax = 0;
+		m_iCombatPromotionStealChance = 0;
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 3;
+	uint uiFlag = 4;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2244,6 +2354,19 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 
 	stream->Write(m_iGoldFromCombat);
 	stream->Write(m_iCombatCapturePercent);
+
+	stream->Write(m_iCombatHealPercent);
+	stream->Write(m_iEnslavementChance);
+	stream->Write(m_iEnslavedUnitClass);
+	stream->Write((int)m_aiEnslavementUnitClassType.size());
+	for (int i = 0; i < (int)m_aiEnslavementUnitClassType.size(); i++)
+	{
+		stream->Write(m_aiEnslavementUnitClassType[i]);
+		stream->Write(m_aiEnslavementUnitClassEnslaved[i]);
+	}
+	stream->Write(m_iCombatGoldStealPercent);
+	stream->Write(m_iCombatGoldStealMax);
+	stream->Write(m_iCombatPromotionStealChance);
 }
 
 bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
@@ -2316,6 +2439,42 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iFreeXPCap, "iFreeXPCap", 100);
 	pXML->GetChildXmlValByName(&m_iGoldFromCombat, "iGoldFromCombat");
 	pXML->GetChildXmlValByName(&m_iCombatCapturePercent, "iCombatCapturePercent");
+	pXML->GetChildXmlValByName(&m_iCombatHealPercent, "iCombatHealPercent");
+	pXML->GetChildXmlValByName(&m_iEnslavementChance, "iEnslavementChance");
+	pXML->GetChildXmlValByName(szTextVal, "EnslavedUnitClass");
+	m_iEnslavedUnitClass = pXML->FindInInfoClass(szTextVal);
+
+	// EnslavementUnitClasses: <EnslavementUnitClass> with the loser's UnitClassType and the EnslavedUnitClass it becomes
+	// (NONE: not enslaved)
+	m_aiEnslavementUnitClassType.clear();
+	m_aiEnslavementUnitClassEnslaved.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "EnslavementUnitClasses"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "EnslavementUnitClass"))
+		{
+			do
+			{
+				pXML->GetChildXmlValByName(szTextVal, "UnitClassType");
+				int iLoserUnitClass = pXML->FindInInfoClass(szTextVal);
+				pXML->GetChildXmlValByName(szTextVal, "EnslavedUnitClass");
+				int iEnslavedUnitClass = pXML->FindInInfoClass(szTextVal);
+				if (iLoserUnitClass > -1)
+				{
+					m_aiEnslavementUnitClassType.push_back(iLoserUnitClass);
+					m_aiEnslavementUnitClassEnslaved.push_back(iEnslavedUnitClass);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "EnslavementUnitClass"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+
+	pXML->GetChildXmlValByName(&m_iCombatGoldStealPercent, "iCombatGoldStealPercent");
+	pXML->GetChildXmlValByName(&m_iCombatGoldStealMax, "iCombatGoldStealMax");
+	pXML->GetChildXmlValByName(&m_iCombatPromotionStealChance, "iCombatPromotionStealChance");
 
 	pXML->SetVariableListTagPair(&m_piTerrainAttackPercent, "TerrainAttacks", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());
 	pXML->SetVariableListTagPair(&m_piTerrainDefensePercent, "TerrainDefenses", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());

@@ -808,11 +808,15 @@ void CvUnit::doTurnPromotions()
 	}
 }
 
+// Defined with the summons below (added by this mod)
+static bool canInitUnitOnPlot(UnitTypes eUnit, const CvPlot* pPlot, PlayerTypes ePlayer);
+
 // Promotion effects at the end of a normal combat (added by this mod). this is the attacker; both units still exist.
 // The effects are judged from the promotions the units had in the combat: first the survivors lose their
 // bRemovedByCombat promotions, then a surviving opponent gets the PromotionCombatApply promotions, and then
-// the winner (the survivor whose opponent died) gets its PromotionVictory promotions, iGoldFromCombat and
-// iCombatCapturePercent (both added up over its promotions).
+// the winner (the survivor whose opponent died) gets its PromotionVictory promotions, iGoldFromCombat,
+// iCombatGoldStealPercent, iCombatHealPercent and iCombatCapturePercent (added up over its promotions), the
+// enslavement (each promotion in turn) and iCombatPromotionStealChance (added up).
 void CvUnit::doCombatPromotions(CvUnit* pDefender)
 {
 	CvWString szBuffer;
@@ -824,6 +828,18 @@ void CvUnit::doCombatPromotions(CvUnit* pDefender)
 	int iWinner;
 	int iGold = 0;
 	int iCapturePercent = 0;
+	int iHeal = 0;
+	int iGoldStealPercent = 0;
+	int iGoldStealMax = 0;
+	int iGoldStolen;
+	int iPromotionStealChance = 0;
+	bool bCaptured = false;
+	bool bUnitCombat;
+	std::vector<PromotionTypes> aeStealablePromotions;
+	PromotionTypes eStolenPromotion;
+	UnitClassTypes eEnslavedUnitClass;
+	UnitTypes eEnslavedUnit;
+	int iJ;
 	int iUnit;
 	int iI;
 
@@ -902,6 +918,10 @@ void CvUnit::doCombatPromotions(CvUnit* pDefender)
 
 			iGold += kPromotion.getGoldFromCombat();
 			iCapturePercent += kPromotion.getCombatCapturePercent();
+			iHeal += kPromotion.getCombatHealPercent();
+			iGoldStealPercent += kPromotion.getCombatGoldStealPercent();
+			iGoldStealMax += kPromotion.getCombatGoldStealMax();
+			iPromotionStealChance += kPromotion.getCombatPromotionStealChance();
 		}
 
 		pWinner = apUnits[iWinner];
@@ -913,6 +933,33 @@ void CvUnit::doCombatPromotions(CvUnit* pDefender)
 
 			szBuffer = gDLL->getText("TXT_KEY_MISC_GOLD_FROM_COMBAT", pWinner->getNameKey(), iGold);
 			gDLL->getInterfaceIFace()->addMessage(pWinner->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, pWinner->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pWinner->getX_INLINE(), pWinner->getY_INLINE());
+		}
+
+		// iCombatGoldStealPercent: from the treasury of the loser's owner, up to iCombatGoldStealMax (0: no limit)
+		if (iGoldStealPercent > 0)
+		{
+			iGoldStolen = (std::max(0, GET_PLAYER(pLoser->getOwnerINLINE()).getGold()) * iGoldStealPercent) / 100;
+			if (iGoldStealMax > 0)
+			{
+				iGoldStolen = std::min(iGoldStolen, iGoldStealMax);
+			}
+
+			if (iGoldStolen > 0)
+			{
+				GET_PLAYER(pLoser->getOwnerINLINE()).changeGold(-iGoldStolen);
+				GET_PLAYER(pWinner->getOwnerINLINE()).changeGold(iGoldStolen);
+
+				szBuffer = gDLL->getText("TXT_KEY_MISC_GOLD_STOLEN", pWinner->getNameKey(), iGoldStolen);
+				gDLL->getInterfaceIFace()->addMessage(pWinner->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_GOODY_GOLD", MESSAGE_TYPE_INFO, pWinner->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pWinner->getX_INLINE(), pWinner->getY_INLINE());
+				szBuffer = gDLL->getText("TXT_KEY_MISC_GOLD_STOLEN_BY", GC.getUnitInfo(pWinner->getUnitType()).getTextKeyWide(), iGoldStolen);
+				gDLL->getInterfaceIFace()->addMessage(pLoser->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, pWinner->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pWinner->getX_INLINE(), pWinner->getY_INLINE());
+			}
+		}
+
+		// iCombatHealPercent (FFH2)
+		if (iHeal > 0 && pWinner->getDamage() > 0)
+		{
+			pWinner->changeDamage(-std::min(iHeal, pWinner->getDamage()), NO_PLAYER);
 		}
 
 		// The captured unit is a new unit of the loser's type on the winner's plot. Not from animals (they cannot
@@ -929,11 +976,102 @@ void CvUnit::doCombatPromotions(CvUnit* pDefender)
 
 				if (pCapturedUnit != NULL)
 				{
+					bCaptured = true;
 					pCapturedUnit->setDuration(pWinner->getDuration());
 					pCapturedUnit->finishMoves();
 
 					szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_CAPTURED_UNIT", GC.getUnitInfo(pLoser->getUnitType()).getTextKeyWide());
 					gDLL->getInterfaceIFace()->addMessage(pWinner->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_UNITCAPTURE", MESSAGE_TYPE_INFO, pCapturedUnit->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pWinner->getX_INLINE(), pWinner->getY_INLINE());
+				}
+			}
+		}
+
+		// Enslavement: each promotion of the winner with iEnslavementChance tries in turn, with the unit class it gives
+		// for the loser's unit class (EnslavementUnitClasses, or EnslavedUnitClass). Not after a capture, and with the
+		// limits of the captures; the new unit (of the winner's civilization for the class) has to fit the winner's plot
+		if (!bCaptured && !pLoser->isAnimal() && !GET_PLAYER(pWinner->getOwnerINLINE()).isBarbarian() && (pLoser->getDuration() == 0))
+		{
+			for (iI = 0; iI < (int)aaePromotions[iWinner].size(); iI++)
+			{
+				CvPromotionInfo& kPromotion = GC.getPromotionInfo(aaePromotions[iWinner][iI]);
+
+				if (kPromotion.getEnslavementChance() <= 0)
+				{
+					continue;
+				}
+
+				eEnslavedUnitClass = (UnitClassTypes)kPromotion.getEnslavedUnitClassFor(pLoser->getUnitClassType());
+				if (eEnslavedUnitClass == NO_UNITCLASS)
+				{
+					continue;
+				}
+
+				eEnslavedUnit = (UnitTypes)GC.getCivilizationInfo(GET_PLAYER(pWinner->getOwnerINLINE()).getCivilizationType()).getCivilizationUnits(eEnslavedUnitClass);
+				if (eEnslavedUnit == NO_UNIT || !canInitUnitOnPlot(eEnslavedUnit, pWinner->plot(), pWinner->getOwnerINLINE()))
+				{
+					continue;
+				}
+
+				if (GC.getGameINLINE().getSorenRandNum(100, "Enslavement") < kPromotion.getEnslavementChance())
+				{
+					pCapturedUnit = GET_PLAYER(pWinner->getOwnerINLINE()).initUnit(eEnslavedUnit, pWinner->getX_INLINE(), pWinner->getY_INLINE());
+
+					if (pCapturedUnit != NULL)
+					{
+						pCapturedUnit->setDuration(pWinner->getDuration());
+						pCapturedUnit->finishMoves();
+
+						szBuffer = gDLL->getText("TXT_KEY_MISC_UNIT_ENSLAVED", pWinner->getNameKey(), GC.getUnitInfo(pLoser->getUnitType()).getTextKeyWide(), GC.getUnitInfo(eEnslavedUnit).getTextKeyWide());
+						gDLL->getInterfaceIFace()->addMessage(pWinner->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_UNITCAPTURE", MESSAGE_TYPE_INFO, pCapturedUnit->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pWinner->getX_INLINE(), pWinner->getY_INLINE());
+						szBuffer = gDLL->getText("TXT_KEY_MISC_UNIT_ENSLAVED_BY", GC.getUnitInfo(pWinner->getUnitType()).getTextKeyWide(), pLoser->getNameKey(), GC.getUnitInfo(eEnslavedUnit).getTextKeyWide());
+						gDLL->getInterfaceIFace()->addMessage(pLoser->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, pCapturedUnit->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pWinner->getX_INLINE(), pWinner->getY_INLINE());
+					}
+
+					break;
+				}
+			}
+		}
+
+		// iCombatPromotionStealChance: one promotion the loser had during the combat and the winner does not have, but not
+		// the leader promotions of great generals and not the status promotions (no UnitCombats)
+		if (iPromotionStealChance > 0)
+		{
+			for (iI = 0; iI < (int)aaePromotions[1 - iWinner].size(); iI++)
+			{
+				eStolenPromotion = aaePromotions[1 - iWinner][iI];
+
+				if (pWinner->isHasPromotion(eStolenPromotion) || GC.getPromotionInfo(eStolenPromotion).isLeader())
+				{
+					continue;
+				}
+
+				bUnitCombat = false;
+				for (iJ = 0; iJ < GC.getNumUnitCombatInfos(); iJ++)
+				{
+					if (GC.getPromotionInfo(eStolenPromotion).getUnitCombat(iJ))
+					{
+						bUnitCombat = true;
+						break;
+					}
+				}
+
+				if (bUnitCombat)
+				{
+					aeStealablePromotions.push_back(eStolenPromotion);
+				}
+			}
+
+			if (!aeStealablePromotions.empty())
+			{
+				if (GC.getGameINLINE().getSorenRandNum(100, "Promotion steal") < iPromotionStealChance)
+				{
+					eStolenPromotion = aeStealablePromotions[GC.getGameINLINE().getSorenRandNum((int)aeStealablePromotions.size(), "Stolen promotion")];
+					pWinner->setHasPromotion(eStolenPromotion, true);
+
+					szBuffer = gDLL->getText("TXT_KEY_MISC_PROMOTION_STOLEN", pWinner->getNameKey(), GC.getPromotionInfo(eStolenPromotion).getTextKeyWide());
+					gDLL->getInterfaceIFace()->addMessage(pWinner->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, GC.getPromotionInfo(eStolenPromotion).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pWinner->getX_INLINE(), pWinner->getY_INLINE());
+					szBuffer = gDLL->getText("TXT_KEY_MISC_PROMOTION_STOLEN_BY", GC.getUnitInfo(pWinner->getUnitType()).getTextKeyWide(), GC.getPromotionInfo(eStolenPromotion).getTextKeyWide());
+					gDLL->getInterfaceIFace()->addMessage(pLoser->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, GC.getPromotionInfo(eStolenPromotion).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pWinner->getX_INLINE(), pWinner->getY_INLINE());
 				}
 			}
 		}
@@ -3555,6 +3693,48 @@ void CvUnit::castImmobile(int spell)
 }
 
 
+// Whether a new unit of the type can be made on the plot (added by this mod, for summons and enslavement): a city or fort
+// of the player's team takes any unit, otherwise land units need land and sea units water, and air units are not made.
+// Also not beyond the national, team or world limit of the unit class
+static bool canInitUnitOnPlot(UnitTypes eUnit, const CvPlot* pPlot, PlayerTypes ePlayer)
+{
+	CvUnitInfo& kUnit = GC.getUnitInfo(eUnit);
+	UnitClassTypes eUnitClass = (UnitClassTypes)kUnit.getUnitClassType();
+	TeamTypes eTeam = GET_PLAYER(ePlayer).getTeam();
+
+	if (!pPlot->isCity(true, eTeam) && !kUnit.isCanMoveAllTerrain())
+	{
+		switch (kUnit.getDomainType())
+		{
+		case DOMAIN_SEA:
+			if (!pPlot->isWater())
+			{
+				return false;
+			}
+			break;
+
+		case DOMAIN_LAND:
+		case DOMAIN_IMMOBILE:
+			if (pPlot->isWater())
+			{
+				return false;
+			}
+			break;
+
+		default:
+			return false;
+		}
+	}
+
+	if (GC.getGameINLINE().isUnitClassMaxedOut(eUnitClass) || GET_TEAM(eTeam).isUnitClassMaxedOut(eUnitClass) || GET_PLAYER(ePlayer).isUnitClassMaxedOut(eUnitClass))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+
 // Summons (spell stage 2c, FFH2). Not by a summoned unit of the same type, not on a tile with a visible enemy, only on a
 // tile the unit could stay on, and not beyond the national, team or world limit of the unit class (this mod). With
 // bPermanentUnitCreate, each unit of the owner that meets the unit conditions of the spell (FFH2: the promotions and the
@@ -3586,31 +3766,7 @@ bool CvUnit::canCreateUnit(int spell) const
 		return false;
 	}
 
-	if (!pPlot->isCity(true, getTeam()) && !kUnit.isCanMoveAllTerrain())
-	{
-		switch (kUnit.getDomainType())
-		{
-		case DOMAIN_SEA:
-			if (!pPlot->isWater())
-			{
-				return false;
-			}
-			break;
-
-		case DOMAIN_LAND:
-		case DOMAIN_IMMOBILE:
-			if (pPlot->isWater())
-			{
-				return false;
-			}
-			break;
-
-		default:
-			return false;
-		}
-	}
-
-	if (GC.getGameINLINE().isUnitClassMaxedOut(eUnitClass) || GET_TEAM(getTeam()).isUnitClassMaxedOut(eUnitClass) || GET_PLAYER(getOwnerINLINE()).isUnitClassMaxedOut(eUnitClass))
+	if (!canInitUnitOnPlot(eUnit, pPlot, getOwnerINLINE()))
 	{
 		return false;
 	}

@@ -791,6 +791,19 @@
 	<ElementType name="iFreeXPCap" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldFromCombat" content="textOnly" dt:type="int"/>
 	<ElementType name="iCombatCapturePercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iCombatHealPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iEnslavementChance" content="textOnly" dt:type="int"/>
+	<ElementType name="EnslavedUnitClass" content="textOnly"/>
+	<ElementType name="EnslavementUnitClass" content="eltOnly">
+		<element type="UnitClassType"/>
+		<element type="EnslavedUnitClass"/>
+	</ElementType>
+	<ElementType name="EnslavementUnitClasses" content="eltOnly">
+		<element type="EnslavementUnitClass" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iCombatGoldStealPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iCombatGoldStealMax" content="textOnly" dt:type="int"/>
+	<ElementType name="iCombatPromotionStealChance" content="textOnly" dt:type="int"/>
 	<ElementType name="TechPrereq" content="textOnly"/>
 	<ElementType name="StateReligionPrereq" content="textOnly"/>
 	<ElementType name="bLeader" content="textOnly" dt:type="boolean"/>
@@ -910,6 +923,13 @@
 		<element type="iFreeXPCap" minOccurs="0"/>
 		<element type="iGoldFromCombat" minOccurs="0"/>
 		<element type="iCombatCapturePercent" minOccurs="0"/>
+		<element type="iCombatHealPercent" minOccurs="0"/>
+		<element type="iEnslavementChance" minOccurs="0"/>
+		<element type="EnslavedUnitClass" minOccurs="0"/>
+		<element type="EnslavementUnitClasses" minOccurs="0"/>
+		<element type="iCombatGoldStealPercent" minOccurs="0"/>
+		<element type="iCombatGoldStealMax" minOccurs="0"/>
+		<element type="iCombatPromotionStealChance" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

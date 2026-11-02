@@ -4640,6 +4640,54 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_CAPTURE", GC.getPromotionInfo(ePromotion).getCombatCapturePercent()));
 	}
 
+	// Combat results (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getCombatHealPercent() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_HEAL_PERCENT", GC.getPromotionInfo(ePromotion).getCombatHealPercent()));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getEnslavementChance() > 0)
+	{
+		if (GC.getPromotionInfo(ePromotion).getEnslavedUnitClass() != NO_UNITCLASS)
+		{
+			szBuffer.append(pcNewline);
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ENSLAVEMENT", GC.getPromotionInfo(ePromotion).getEnslavementChance(), GC.getUnitClassInfo((UnitClassTypes)GC.getPromotionInfo(ePromotion).getEnslavedUnitClass()).getTextKeyWide()));
+		}
+
+		for (iI = 0; iI < GC.getPromotionInfo(ePromotion).getNumEnslavementUnitClasses(); iI++)
+		{
+			szBuffer.append(pcNewline);
+			if (GC.getPromotionInfo(ePromotion).getEnslavementUnitClassEnslaved(iI) == NO_UNITCLASS)
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ENSLAVEMENT_NOT", GC.getUnitClassInfo((UnitClassTypes)GC.getPromotionInfo(ePromotion).getEnslavementUnitClassType(iI)).getTextKeyWide()));
+			}
+			else
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ENSLAVEMENT_UNITCLASS", GC.getPromotionInfo(ePromotion).getEnslavementChance(), GC.getUnitClassInfo((UnitClassTypes)GC.getPromotionInfo(ePromotion).getEnslavementUnitClassType(iI)).getTextKeyWide(), GC.getUnitClassInfo((UnitClassTypes)GC.getPromotionInfo(ePromotion).getEnslavementUnitClassEnslaved(iI)).getTextKeyWide()));
+			}
+		}
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getCombatGoldStealPercent() > 0)
+	{
+		szBuffer.append(pcNewline);
+		if (GC.getPromotionInfo(ePromotion).getCombatGoldStealMax() > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_GOLD_STEAL_MAX", GC.getPromotionInfo(ePromotion).getCombatGoldStealPercent(), GC.getPromotionInfo(ePromotion).getCombatGoldStealMax()));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_GOLD_STEAL", GC.getPromotionInfo(ePromotion).getCombatGoldStealPercent()));
+		}
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getCombatPromotionStealChance() > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_PROMOTION_STEAL", GC.getPromotionInfo(ePromotion).getCombatPromotionStealChance()));
+	}
+
 	if (GC.getPromotionInfo(ePromotion).getPromotionVictory() != NO_PROMOTION)
 	{
 		szBuffer.append(pcNewline);

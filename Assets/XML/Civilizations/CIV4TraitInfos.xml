@@ -539,6 +539,20 @@
 						</FreePromotionUnitCombat>
 					</FreePromotionUnitCombats>
 				</FreePromotionSet>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_TEST_COMBAT</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<FreePromotionUnitCombats>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+					</FreePromotionUnitCombats>
+				</FreePromotionSet>
 			</FreePromotionSets>
 		</TraitInfo>
 	</TraitInfos>

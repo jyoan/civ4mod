@@ -875,7 +875,124 @@
 		<Spanish>%d2_Num settled %s1_Specialist</Spanish>
 		<Japanese>&#23450;&#20303;&#12375;&#12383;%s1_Specialist%d2_Num&#20154;</Japanese>
 	</TEXT>
-	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD) -->
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_HEAL_PERCENT</Tag>
+		<English>[ICON_BULLET]Heals %d1_Heal%% when it wins a combat</English>
+		<French>[ICON_BULLET]Heals %d1_Heal%% when it wins a combat</French>
+		<German>[ICON_BULLET]Heals %d1_Heal%% when it wins a combat</German>
+		<Italian>[ICON_BULLET]Heals %d1_Heal%% when it wins a combat</Italian>
+		<Spanish>[ICON_BULLET]Heals %d1_Heal%% when it wins a combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d1_Heal%%&#22238;&#24489;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_ENSLAVEMENT</Tag>
+		<English>[ICON_BULLET]%d1_Chance%% chance to capture a defeated unit as [LINK=literal]%s2_Unit[\LINK]</English>
+		<French>[ICON_BULLET]%d1_Chance%% chance to capture a defeated unit as [LINK=literal]%s2_Unit[\LINK]</French>
+		<German>[ICON_BULLET]%d1_Chance%% chance to capture a defeated unit as [LINK=literal]%s2_Unit[\LINK]</German>
+		<Italian>[ICON_BULLET]%d1_Chance%% chance to capture a defeated unit as [LINK=literal]%s2_Unit[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]%d1_Chance%% chance to capture a defeated unit as [LINK=literal]%s2_Unit[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d1_Chance%%&#12391;&#12289;&#20498;&#12375;&#12383;&#30456;&#25163;&#12434;[LINK=literal]%s2_Unit[\LINK]&#12392;&#12375;&#12390;&#25429;&#12425;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_ENSLAVEMENT_UNITCLASS</Tag>
+		<English>[ICON_BULLET]%d1_Chance%% chance to capture a defeated [LINK=literal]%s2_Loser[\LINK] as [LINK=literal]%s3_Unit[\LINK]</English>
+		<French>[ICON_BULLET]%d1_Chance%% chance to capture a defeated [LINK=literal]%s2_Loser[\LINK] as [LINK=literal]%s3_Unit[\LINK]</French>
+		<German>[ICON_BULLET]%d1_Chance%% chance to capture a defeated [LINK=literal]%s2_Loser[\LINK] as [LINK=literal]%s3_Unit[\LINK]</German>
+		<Italian>[ICON_BULLET]%d1_Chance%% chance to capture a defeated [LINK=literal]%s2_Loser[\LINK] as [LINK=literal]%s3_Unit[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]%d1_Chance%% chance to capture a defeated [LINK=literal]%s2_Loser[\LINK] as [LINK=literal]%s3_Unit[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d1_Chance%%&#12391;&#12289;&#20498;&#12375;&#12383;[LINK=literal]%s2_Loser[\LINK]&#12434;[LINK=literal]%s3_Unit[\LINK]&#12392;&#12375;&#12390;&#25429;&#12425;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_ENSLAVEMENT_NOT</Tag>
+		<English>[ICON_BULLET]Does not capture a defeated [LINK=literal]%s1_Loser[\LINK]</English>
+		<French>[ICON_BULLET]Does not capture a defeated [LINK=literal]%s1_Loser[\LINK]</French>
+		<German>[ICON_BULLET]Does not capture a defeated [LINK=literal]%s1_Loser[\LINK]</German>
+		<Italian>[ICON_BULLET]Does not capture a defeated [LINK=literal]%s1_Loser[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Does not capture a defeated [LINK=literal]%s1_Loser[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#20498;&#12375;&#12383;[LINK=literal]%s1_Loser[\LINK]&#12399;&#25429;&#12425;&#12360;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_GOLD_STEAL</Tag>
+		<English>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat</English>
+		<French>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat</French>
+		<German>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat</German>
+		<Italian>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat</Italian>
+		<Spanish>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;&#12289;&#30456;&#25163;&#12398;&#22269;&#24235;&#12398;%d1_Percent%%&#12434;&#22890;&#12358;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_GOLD_STEAL_MAX</Tag>
+		<English>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat (up to %d2_Max[ICON_GOLD])</English>
+		<French>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat (up to %d2_Max[ICON_GOLD])</French>
+		<German>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat (up to %d2_Max[ICON_GOLD])</German>
+		<Italian>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat (up to %d2_Max[ICON_GOLD])</Italian>
+		<Spanish>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat (up to %d2_Max[ICON_GOLD])</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;&#12289;&#30456;&#25163;&#12398;&#22269;&#24235;&#12398;%d1_Percent%%&#12434;&#22890;&#12358;&#65288;&#26368;&#22823;%d2_Max[ICON_GOLD]&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_PROMOTION_STEAL</Tag>
+		<English>[ICON_BULLET]%d1_Chance%% chance to take a promotion of the defeated unit (not those of great generals or status promotions)</English>
+		<French>[ICON_BULLET]%d1_Chance%% chance to take a promotion of the defeated unit (not those of great generals or status promotions)</French>
+		<German>[ICON_BULLET]%d1_Chance%% chance to take a promotion of the defeated unit (not those of great generals or status promotions)</German>
+		<Italian>[ICON_BULLET]%d1_Chance%% chance to take a promotion of the defeated unit (not those of great generals or status promotions)</Italian>
+		<Spanish>[ICON_BULLET]%d1_Chance%% chance to take a promotion of the defeated unit (not those of great generals or status promotions)</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d1_Chance%%&#12391;&#12289;&#20498;&#12375;&#12383;&#30456;&#25163;&#12398;&#26119;&#36914;&#12434;1&#12388;&#24471;&#12427;&#65288;&#22823;&#23558;&#36557;&#12398;&#26119;&#36914;&#12392;&#29366;&#24907;&#12398;&#26119;&#36914;&#12434;&#38500;&#12367;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_GOLD_STOLEN</Tag>
+		<English>%s1_Unit took %d2_Gold[ICON_GOLD] from the enemy treasury</English>
+		<French>%s1_Unit took %d2_Gold[ICON_GOLD] from the enemy treasury</French>
+		<German>%s1_Unit took %d2_Gold[ICON_GOLD] from the enemy treasury</German>
+		<Italian>%s1_Unit took %d2_Gold[ICON_GOLD] from the enemy treasury</Italian>
+		<Spanish>%s1_Unit took %d2_Gold[ICON_GOLD] from the enemy treasury</Spanish>
+		<Japanese>%s1_Unit&#12364;&#25973;&#12398;&#22269;&#24235;&#12363;&#12425;%d2_Gold[ICON_GOLD]&#12434;&#22890;&#12387;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_GOLD_STOLEN_BY</Tag>
+		<English>An enemy %s1_Unit took %d2_Gold[ICON_GOLD] from your treasury</English>
+		<French>An enemy %s1_Unit took %d2_Gold[ICON_GOLD] from your treasury</French>
+		<German>An enemy %s1_Unit took %d2_Gold[ICON_GOLD] from your treasury</German>
+		<Italian>An enemy %s1_Unit took %d2_Gold[ICON_GOLD] from your treasury</Italian>
+		<Spanish>An enemy %s1_Unit took %d2_Gold[ICON_GOLD] from your treasury</Spanish>
+		<Japanese>&#25973;&#12398;%s1_Unit&#12395;&#22269;&#24235;&#12363;&#12425;%d2_Gold[ICON_GOLD]&#12434;&#22890;&#12431;&#12428;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_UNIT_ENSLAVED</Tag>
+		<English>%s1_Unit captured the defeated %s2_Loser as %s3_NewUnit</English>
+		<French>%s1_Unit captured the defeated %s2_Loser as %s3_NewUnit</French>
+		<German>%s1_Unit captured the defeated %s2_Loser as %s3_NewUnit</German>
+		<Italian>%s1_Unit captured the defeated %s2_Loser as %s3_NewUnit</Italian>
+		<Spanish>%s1_Unit captured the defeated %s2_Loser as %s3_NewUnit</Spanish>
+		<Japanese>%s1_Unit&#12364;&#20498;&#12375;&#12383;%s2_Loser&#12434;%s3_NewUnit&#12392;&#12375;&#12390;&#25429;&#12425;&#12360;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_UNIT_ENSLAVED_BY</Tag>
+		<English>An enemy %s1_Unit captured your %s2_Loser as %s3_NewUnit</English>
+		<French>An enemy %s1_Unit captured your %s2_Loser as %s3_NewUnit</French>
+		<German>An enemy %s1_Unit captured your %s2_Loser as %s3_NewUnit</German>
+		<Italian>An enemy %s1_Unit captured your %s2_Loser as %s3_NewUnit</Italian>
+		<Spanish>An enemy %s1_Unit captured your %s2_Loser as %s3_NewUnit</Spanish>
+		<Japanese>&#25973;&#12398;%s1_Unit&#12395;%s2_Loser&#12364;&#25429;&#12425;&#12360;&#12425;&#12428;&#12289;%s3_NewUnit&#12395;&#12373;&#12428;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_PROMOTION_STOLEN</Tag>
+		<English>%s1_Unit took %s2_Promotion from the defeated unit</English>
+		<French>%s1_Unit took %s2_Promotion from the defeated unit</French>
+		<German>%s1_Unit took %s2_Promotion from the defeated unit</German>
+		<Italian>%s1_Unit took %s2_Promotion from the defeated unit</Italian>
+		<Spanish>%s1_Unit took %s2_Promotion from the defeated unit</Spanish>
+		<Japanese>%s1_Unit&#12364;&#20498;&#12375;&#12383;&#30456;&#25163;&#12363;&#12425;%s2_Promotion&#12434;&#24471;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_PROMOTION_STOLEN_BY</Tag>
+		<English>An enemy %s1_Unit took %s2_Promotion from your defeated unit</English>
+		<French>An enemy %s1_Unit took %s2_Promotion from your defeated unit</French>
+		<German>An enemy %s1_Unit took %s2_Promotion from your defeated unit</German>
+		<Italian>An enemy %s1_Unit took %s2_Promotion from your defeated unit</Italian>
+		<Spanish>An enemy %s1_Unit took %s2_Promotion from your defeated unit</Spanish>
+		<Japanese>&#25973;&#12398;%s1_Unit&#12395;%s2_Promotion&#12434;&#22890;&#12431;&#12428;&#12383;</Japanese>
+	</TEXT>
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
 		<English>Test data for checking the mod's features.</English>
@@ -1172,5 +1289,14 @@
 		<Italian>Test Building (Great People)</Italian>
 		<Spanish>Test Building (Great People)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#20553;&#20154;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_COMBAT</Tag>
+		<English>Test Promotion (Combat Results)</English>
+		<French>Test Promotion (Combat Results)</French>
+		<German>Test Promotion (Combat Results)</German>
+		<Italian>Test Promotion (Combat Results)</Italian>
+		<Spanish>Test Promotion (Combat Results)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#25126;&#38360;&#32080;&#26524;&#65289;</Japanese>
 	</TEXT>
 </Civ4GameText>

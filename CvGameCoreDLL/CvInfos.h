@@ -503,6 +503,17 @@ public:
 	int getFreeXPCap() const;				// Exposed to Python
 	int getGoldFromCombat() const;				// Exposed to Python
 	int getCombatCapturePercent() const;				// Exposed to Python
+	// Combat results (added by this mod)
+	int getCombatHealPercent() const;				// Exposed to Python
+	int getEnslavementChance() const;				// Exposed to Python
+	int getEnslavedUnitClass() const;				// Exposed to Python
+	int getNumEnslavementUnitClasses() const;			// Exposed to Python
+	int getEnslavementUnitClassType(int i) const;		// Exposed to Python
+	int getEnslavementUnitClassEnslaved(int i) const;	// Exposed to Python
+	int getEnslavedUnitClassFor(int iUnitClass) const;	// Exposed to Python
+	int getCombatGoldStealPercent() const;			// Exposed to Python
+	int getCombatGoldStealMax() const;				// Exposed to Python
+	int getCombatPromotionStealChance() const;		// Exposed to Python
 
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
@@ -577,6 +588,14 @@ protected:
 	int m_iFreeXPCap;
 	int m_iGoldFromCombat;
 	int m_iCombatCapturePercent;
+	int m_iCombatHealPercent;
+	int m_iEnslavementChance;
+	int m_iEnslavedUnitClass;
+	int m_iCombatGoldStealPercent;
+	int m_iCombatGoldStealMax;
+	int m_iCombatPromotionStealChance;
+	std::vector<int> m_aiEnslavementUnitClassType;		// EnslavementUnitClasses: the loser's unit class
+	std::vector<int> m_aiEnslavementUnitClassEnslaved;	// and the unit class it becomes (NO_UNITCLASS: not enslaved)
 	bool m_bRemovedByCombat;
 	bool m_bRemovedWhenHealed;
 
