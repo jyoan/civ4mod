@@ -73,5 +73,7 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("getCityCaptureGoldModifier", &CyPlayer::getCityCaptureGoldModifier, "int () - city capture gold % from traits (added by this mod)")
 		.def("getNewCityCultureLevel", &CyPlayer::getNewCityCultureLevel, "int () - the culture level new cities start with (added by this mod)")
 		.def("getOccupationTimeModifier", &CyPlayer::getOccupationTimeModifier, "int () - revolt time % of conquered cities from traits and buildings (added by this mod)")
+		.def("isIgnoreObsoleteBuilding", &CyPlayer::isIgnoreObsoleteBuilding, "bool (int /*BuildingTypes*/ eBuilding) - a trait keeps the building from becoming obsolete (added by this mod)")
+		.def("isObsoleteBuilding", &CyPlayer::isObsoleteBuilding, "bool (int /*BuildingTypes*/ eBuilding) - obsolete for the team and not kept by a trait (added by this mod)")
 		;
 }

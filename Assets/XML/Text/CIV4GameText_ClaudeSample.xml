@@ -1002,6 +1002,24 @@
 		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;%s1_Route&#12392;&#12375;&#12390;&#25201;&#12358;&#65288;&#31227;&#21205;&#12392;&#20132;&#26131;&#32178;&#65289;: </Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_IGNORE_BUILDING_OBSOLESCENCE</Tag>
+		<English>[ICON_BULLET]Buildings never become obsolete</English>
+		<French>[ICON_BULLET]Buildings never become obsolete</French>
+		<German>[ICON_BULLET]Buildings never become obsolete</German>
+		<Italian>[ICON_BULLET]Buildings never become obsolete</Italian>
+		<Spanish>[ICON_BULLET]Buildings never become obsolete</Spanish>
+		<Japanese>[ICON_BULLET]&#24314;&#29289;&#12364;&#38515;&#33104;&#21270;&#12375;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_OBSOLETE_BUILDINGS</Tag>
+		<English>[ICON_BULLET]Never obsolete: </English>
+		<French>[ICON_BULLET]Never obsolete: </French>
+		<German>[ICON_BULLET]Never obsolete: </German>
+		<Italian>[ICON_BULLET]Never obsolete: </Italian>
+		<Spanish>[ICON_BULLET]Never obsolete: </Spanish>
+		<Japanese>[ICON_BULLET]&#38515;&#33104;&#21270;&#12375;&#12394;&#12356;: </Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_GOLDEN_AGE_GREAT_PEOPLE</Tag>
 		<English>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</English>
 		<French>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</French>

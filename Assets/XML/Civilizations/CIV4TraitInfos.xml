@@ -397,6 +397,13 @@
 					<RouteType>ROUTE_ROAD</RouteType>
 				</FeatureRoute>
 			</FeatureRoutes>
+			<NoObsoleteBuildingClasses>
+				<BuildingClassType>BUILDINGCLASS_CASTLE</BuildingClassType>
+				<BuildingClassType>BUILDINGCLASS_GREAT_LIBRARY</BuildingClassType>
+			</NoObsoleteBuildingClasses>
+			<NoObsoleteSpecialBuildings>
+				<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
+			</NoObsoleteSpecialBuildings>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

@@ -5383,7 +5383,7 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 		}
 	}
 
-	if (currentTeam.isObsoleteBuilding(eBuilding))
+	if (isObsoleteBuilding(eBuilding))
 	{
 		return false;
 	}
@@ -5456,7 +5456,7 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 	{
 		BuildingTypes ePrereqBuilding = (BuildingTypes)civilizationInfo.getCivilizationBuildings(iI);
 
-		if (NO_BUILDING != ePrereqBuilding && currentTeam.isObsoleteBuilding(ePrereqBuilding))
+		if (NO_BUILDING != ePrereqBuilding && isObsoleteBuilding(ePrereqBuilding))
 		{
 			if (getBuildingClassCount((BuildingClassTypes)iI) < getBuildingClassPrereqBuilding(eBuilding, (BuildingClassTypes)iI, 0))
 			{
@@ -6072,6 +6072,63 @@ bool CvPlayer::isMaintainFeatures(FeatureTypes eFeature) const
 	}
 
 	return false;
+}
+
+// A trait keeps the building from becoming obsolete for this player (bIgnoreBuildingObsolescence,
+// NoObsoleteBuildingClasses, NoObsoleteSpecialBuildings). Both obsolete techs (the building's and its special
+// building's) are ignored.
+bool CvPlayer::isIgnoreObsoleteBuilding(BuildingTypes eBuilding) const
+{
+	SpecialBuildingTypes eSpecialBuilding;
+	int iBuildingClass;
+	int iI;
+
+	eSpecialBuilding = (SpecialBuildingTypes)GC.getBuildingInfo(eBuilding).getSpecialBuildingType();
+	if (eSpecialBuilding != NO_SPECIALBUILDING && isIgnoreObsoleteSpecialBuilding(eSpecialBuilding))
+	{
+		return true;
+	}
+
+	iBuildingClass = GC.getBuildingInfo(eBuilding).getBuildingClassType();
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			if (GC.getTraitInfo((TraitTypes)iI).isIgnoreBuildingObsolescence() || GC.getTraitInfo((TraitTypes)iI).isNoObsoleteBuildingClass(iBuildingClass))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+// A trait keeps all the buildings of the special building type from becoming obsolete for this player
+bool CvPlayer::isIgnoreObsoleteSpecialBuilding(SpecialBuildingTypes eSpecialBuilding) const
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			if (GC.getTraitInfo((TraitTypes)iI).isIgnoreBuildingObsolescence() || GC.getTraitInfo((TraitTypes)iI).isNoObsoleteSpecialBuilding(eSpecialBuilding))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+// Obsolete for the team (CvTeam::isObsoleteBuilding, from techs) and not kept by a trait of this player. The buildings
+// of the cities use this, so a building can be obsolete in the cities of one team member and active in another's.
+bool CvPlayer::isObsoleteBuilding(BuildingTypes eBuilding) const
+{
+	return (GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding) && !isIgnoreObsoleteBuilding(eBuilding));
 }
 
 RouteTypes CvPlayer::getFeatureRouteType(FeatureTypes eFeature) const

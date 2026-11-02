@@ -417,6 +417,14 @@
 	<ElementType name="FeatureRoutes" content="eltOnly">
 		<element type="FeatureRoute" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="bIgnoreBuildingObsolescence" content="textOnly" dt:type="boolean"/>
+	<ElementType name="NoObsoleteBuildingClasses" content="eltOnly">
+		<element type="BuildingClassType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="SpecialBuildingType" content="textOnly"/>
+	<ElementType name="NoObsoleteSpecialBuildings" content="eltOnly">
+		<element type="SpecialBuildingType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="Yields" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -495,6 +503,9 @@
 		<element type="NewCityCultureLevel" minOccurs="0"/>
 		<element type="MaintainFeatures" minOccurs="0"/>
 		<element type="FeatureRoutes" minOccurs="0"/>
+		<element type="bIgnoreBuildingObsolescence" minOccurs="0"/>
+		<element type="NoObsoleteBuildingClasses" minOccurs="0"/>
+		<element type="NoObsoleteSpecialBuildings" minOccurs="0"/>
 		<element type="ExtraYieldThresholds"/>
 		<element type="TradeYieldModifiers"/>
 		<element type="CommerceChanges"/>

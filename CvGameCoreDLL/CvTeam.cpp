@@ -667,7 +667,8 @@ void CvTeam::shareItems(TeamTypes eTeam)
 					{
 						if (pLoopCity->getNumBuilding((BuildingTypes)iJ) > 0)
 						{
-							if (!isObsoleteBuilding((BuildingTypes)iJ))
+							// A trait of the city owner can keep the building from becoming obsolete (added by this mod)
+							if (!isObsoleteBuilding((BuildingTypes)iJ) || GET_PLAYER((PlayerTypes)iI).isIgnoreObsoleteBuilding((BuildingTypes)iJ))
 							{
 								if (GC.getBuildingInfo((BuildingTypes)iJ).isTeamShare())
 								{
@@ -4306,7 +4307,8 @@ void CvTeam::changeObsoleteBuildingCount(BuildingTypes eIndex, int iChange)
 			{
 				if (GET_PLAYER((PlayerTypes)iI).isAlive())
 				{
-					if (GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
+					// The buildings a trait keeps from becoming obsolete stay active (added by this mod)
+					if (GET_PLAYER((PlayerTypes)iI).getTeam() == getID() && !GET_PLAYER((PlayerTypes)iI).isIgnoreObsoleteBuilding(eIndex))
 					{
 						for (pLoopCity = GET_PLAYER((PlayerTypes)iI).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)iI).nextCity(&iLoop))
 						{

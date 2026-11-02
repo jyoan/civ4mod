@@ -211,6 +211,9 @@ public:
 	int getOccupationTimeModifier() const;				// Exposed to Python
 	// Builds with an improvement keep the feature on the plots of this player (traits, added by this mod)
 	bool isMaintainFeatures(FeatureTypes eFeature) const;				// Exposed to Python
+	bool isIgnoreObsoleteBuilding(BuildingTypes eBuilding) const;		// Exposed to Python
+	bool isIgnoreObsoleteSpecialBuilding(SpecialBuildingTypes eSpecialBuilding) const;	// Exposed to Python
+	bool isObsoleteBuilding(BuildingTypes eBuilding) const;				// Exposed to Python
 	// The route a feature counts as in the territory of this player (traits; the best one, added by this mod)
 	RouteTypes getFeatureRouteType(FeatureTypes eFeature) const;		// Exposed to Python
 	// Civ5 abilities (added by this mod): traits (and buildings in any city for NewCityCultureLevel), on each call

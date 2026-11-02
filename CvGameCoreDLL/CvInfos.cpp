@@ -17463,7 +17463,10 @@ m_paiCommerceModifier(NULL),
 m_pabFreePromotionUnitCombat(NULL),
 m_pabFreePromotion(NULL),
 m_pabMaintainFeatures(NULL),
-m_paiFeatureRoute(NULL)
+m_paiFeatureRoute(NULL),
+m_bIgnoreBuildingObsolescence(false),
+m_pabNoObsoleteBuildingClass(NULL),
+m_pabNoObsoleteSpecialBuilding(NULL)
 {
 }
 
@@ -17494,6 +17497,8 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabFreePromotion);
 	SAFE_DELETE_ARRAY(m_pabMaintainFeatures);
 	SAFE_DELETE_ARRAY(m_paiFeatureRoute);
+	SAFE_DELETE_ARRAY(m_pabNoObsoleteBuildingClass);
+	SAFE_DELETE_ARRAY(m_pabNoObsoleteSpecialBuilding);
 }
 
 int CvTraitInfo::getHealth() const									
@@ -17816,6 +17821,28 @@ int CvTraitInfo::getFeatureRouteType(int i) const
 	return m_paiFeatureRoute ? m_paiFeatureRoute[i] : NO_ROUTE;
 }
 
+// No building of the player becomes obsolete (added by this mod)
+bool CvTraitInfo::isIgnoreBuildingObsolescence() const
+{
+	return m_bIgnoreBuildingObsolescence;
+}
+
+// The buildings of the building class do not become obsolete for the player (added by this mod)
+bool CvTraitInfo::isNoObsoleteBuildingClass(int i) const
+{
+	FAssertMsg(i < GC.getNumBuildingClassInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_pabNoObsoleteBuildingClass ? m_pabNoObsoleteBuildingClass[i] : false;
+}
+
+// The buildings of the special building type (monasteries) do not become obsolete for the player (added by this mod)
+bool CvTraitInfo::isNoObsoleteSpecialBuilding(int i) const
+{
+	FAssertMsg(i < GC.getNumSpecialBuildingInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_pabNoObsoleteSpecialBuilding ? m_pabNoObsoleteSpecialBuilding[i] : false;
+}
+
 int CvTraitInfo::isFreePromotion(int i) const
 {
 	return m_pabFreePromotion ? m_pabFreePromotion[i] : -1; 
@@ -17993,6 +18020,82 @@ static void resolveYieldChanges(const TCHAR* szListTag, const std::vector<CvStri
 	}
 }
 
+// Reads a list of types such as <NoObsoleteBuildingClasses>, which holds any number of type tags (BuildingClassType).
+// The types are kept as strings, because some (building classes) are loaded after traits.
+static void readTypeList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, std::vector<CvString>& aszTypes)
+{
+	CvString szTextVal;
+	int iNumSibs;
+	int j;
+
+	aszTypes.clear();
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szListTag))
+	{
+		if (pXML->SkipToNextVal())
+		{
+			iNumSibs = gDLL->getXMLIFace()->GetNumChildren(pXML->GetXML());
+
+			if (0 < iNumSibs)
+			{
+				if (pXML->GetChildXmlVal(szTextVal))
+				{
+					for (j = 0; j < iNumSibs; j++)
+					{
+						aszTypes.push_back(szTextVal);
+
+						if (!pXML->GetNextXmlVal(szTextVal))
+						{
+							break;
+						}
+					}
+
+					gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+				}
+			}
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
+// Turns the types from readTypeList() into a flag per info (iNumInfos), or NULL when nothing is set. NONE is skipped,
+// and an unknown type (or a type of another info class) shows the same message as FindInInfoClass.
+static void resolveTypeList(const TCHAR* szListTag, const std::vector<CvString>& aszTypes, int iNumInfos, bool** ppabFlags)
+{
+	char szMessage[1024];
+	int iIndex;
+	int i, j;
+
+	SAFE_DELETE_ARRAY(*ppabFlags);
+
+	for (i = 0; i < (int)aszTypes.size(); i++)
+	{
+		if (aszTypes[i].empty() || aszTypes[i] == "NONE")
+		{
+			continue;
+		}
+
+		iIndex = GC.getInfoTypeForString(aszTypes[i].GetCString(), true);
+		if (iIndex < 0 || iIndex >= iNumInfos)
+		{
+			sprintf(szMessage, "Tag: %s in %s of CIV4TraitInfos.xml was incorrect", aszTypes[i].GetCString(), szListTag);
+			gDLL->MessageBox(szMessage, "XML Error");
+			continue;
+		}
+
+		if (*ppabFlags == NULL)
+		{
+			*ppabFlags = new bool[iNumInfos];
+			for (j = 0; j < iNumInfos; j++)
+			{
+				(*ppabFlags)[j] = false;
+			}
+		}
+		(*ppabFlags)[iIndex] = true;
+	}
+}
+
 bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 {
 	CvString szTextVal;
@@ -18158,6 +18261,11 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 
+	// Building obsolescence: building classes are loaded after the traits, so readPass3() finds the types
+	pXML->GetChildXmlValByName(&m_bIgnoreBuildingObsolescence, "bIgnoreBuildingObsolescence");
+	readTypeList(pXML, "NoObsoleteBuildingClasses", m_aszNoObsoleteBuildingClassTypes);
+	readTypeList(pXML, "NoObsoleteSpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes);
+
 	// FreePromotionSets: any number of <FreePromotions> x <FreePromotionUnitCombats> pairs
 	m_aabFreePromotionSetPromotion.clear();
 	m_aabFreePromotionSetUnitCombat.clear();
@@ -18210,7 +18318,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	return true;
 }
 
-// Improvements are loaded after traits (CvXMLLoadUtility::LoadPreMenuGlobals calls this after them)
+// Improvements and building classes are loaded after traits (CvXMLLoadUtility::LoadPreMenuGlobals calls this after them)
 bool CvTraitInfo::readPass3()
 {
 	char szMessage[1024];
@@ -18269,6 +18377,11 @@ bool CvTraitInfo::readPass3()
 			m_iNewCityCultureLevel = NO_CULTURELEVEL;
 		}
 	}
+
+	resolveTypeList("NoObsoleteBuildingClasses", m_aszNoObsoleteBuildingClassTypes, GC.getNumBuildingClassInfos(), &m_pabNoObsoleteBuildingClass);
+	m_aszNoObsoleteBuildingClassTypes.clear();
+	resolveTypeList("NoObsoleteSpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabNoObsoleteSpecialBuilding);
+	m_aszNoObsoleteSpecialBuildingTypes.clear();
 
 	return true;
 }

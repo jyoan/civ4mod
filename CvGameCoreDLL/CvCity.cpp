@@ -3794,7 +3794,7 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 	UnitTypes eGreatPeopleUnit;
 	int iI, iJ;
 
-	if (!(GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding)) || bObsolete)
+	if (!(GET_PLAYER(getOwnerINLINE()).isObsoleteBuilding(eBuilding)) || bObsolete)
 	{
 		if (iChange > 0)
 		{
@@ -5009,7 +5009,7 @@ int CvCity::getNumActiveBuilding(BuildingTypes eIndex) const
 {
 	FAssertMsg(eIndex != NO_BUILDING, "BuildingType eIndex is expected to not be NO_BUILDING");
 
-	if (GET_TEAM(getTeam()).isObsoleteBuilding(eIndex))
+	if (GET_PLAYER(getOwnerINLINE()).isObsoleteBuilding(eIndex))
 	{
 		return 0;
 	}
@@ -5026,7 +5026,7 @@ bool CvCity::hasActiveWorldWonder() const
 	{
 		if (isWorldWonderClass((BuildingClassTypes)(GC.getBuildingInfo((BuildingTypes)iI).getBuildingClassType())))
 		{
-			if (getNumRealBuilding((BuildingTypes)iI) > 0 && !(GET_TEAM(getTeam()).isObsoleteBuilding((BuildingTypes)iI)))
+			if (getNumRealBuilding((BuildingTypes)iI) > 0 && !(GET_PLAYER(getOwnerINLINE()).isObsoleteBuilding((BuildingTypes)iI)))
 			{
 				return true;
 			}

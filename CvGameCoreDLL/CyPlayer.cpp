@@ -1987,6 +1987,16 @@ int CyPlayer::getFeatureRouteType(int /*FeatureTypes*/ eFeature)
 	return m_pPlayer ? m_pPlayer->getFeatureRouteType((FeatureTypes)eFeature) : -1;
 }
 
+bool CyPlayer::isIgnoreObsoleteBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	return m_pPlayer ? m_pPlayer->isIgnoreObsoleteBuilding((BuildingTypes)eBuilding) : false;
+}
+
+bool CyPlayer::isObsoleteBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	return m_pPlayer ? m_pPlayer->isObsoleteBuilding((BuildingTypes)eBuilding) : false;
+}
+
 bool CyPlayer::isMaintainFeatures(int /*FeatureTypes*/ eFeature)
 {
 	return m_pPlayer ? m_pPlayer->isMaintainFeatures((FeatureTypes)eFeature) : false;

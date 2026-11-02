@@ -3658,6 +3658,52 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			}
 		}
 
+		// bIgnoreBuildingObsolescence: "Buildings never become obsolete". Otherwise NoObsoleteBuildingClasses and
+		// NoObsoleteSpecialBuildings: "Never obsolete: Castle, Monastery" (the buildings of the civilization)
+		if (GC.getTraitInfo(eTrait).isIgnoreBuildingObsolescence())
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_IGNORE_BUILDING_OBSOLESCENCE"));
+		}
+		else
+		{
+			bool bFirstBuilding = true;
+			for (iI = 0; iI < GC.getNumBuildingClassInfos(); ++iI)
+			{
+				if (GC.getTraitInfo(eTrait).isNoObsoleteBuildingClass(iI))
+				{
+					BuildingTypes eLoopBuilding = NO_BUILDING;
+					if (eCivilization != NO_CIVILIZATION)
+					{
+						eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(eCivilization).getCivilizationBuildings(iI);
+					}
+					if (eLoopBuilding == NO_BUILDING)
+					{
+						eLoopBuilding = (BuildingTypes)GC.getBuildingClassInfo((BuildingClassTypes)iI).getDefaultBuildingIndex();
+					}
+
+					if (eLoopBuilding != NO_BUILDING)
+					{
+						szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_NO_OBSOLETE_BUILDINGS").c_str());
+						szText.Format(L"<link=literal>%s</link>", GC.getBuildingInfo(eLoopBuilding).getDescription());
+						setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstBuilding);
+						bFirstBuilding = false;
+					}
+				}
+			}
+
+			// Special buildings have no Civilopedia page: no link
+			for (iI = 0; iI < GC.getNumSpecialBuildingInfos(); ++iI)
+			{
+				if (GC.getTraitInfo(eTrait).isNoObsoleteSpecialBuilding(iI))
+				{
+					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_NO_OBSOLETE_BUILDINGS").c_str());
+					setListHelp(szHelpString, szTempBuffer.GetCString(), GC.getSpecialBuildingInfo((SpecialBuildingTypes)iI).getDescription(), L", ", bFirstBuilding);
+					bFirstBuilding = false;
+				}
+			}
+		}
+
 		// Wonder Production Effects
 		if ((GC.getTraitInfo(eTrait).getMaxGlobalBuildingProductionModifier() != 0)
 			|| (GC.getTraitInfo(eTrait).getMaxTeamBuildingProductionModifier() != 0)
@@ -5840,7 +5886,11 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 				//	Obsolete Buildings Check...
 				if (GC.getBuildingInfo(eLoopBuilding).getObsoleteTech() == eTech)
 				{
-					buildObsoleteString(szBuffer, eLoopBuilding, true);
+					// Not for the buildings a trait of the active player keeps (added by this mod; the Civilopedia shows all)
+					if (bCivilopediaText || GC.getGameINLINE().getActivePlayer() == NO_PLAYER || !GET_PLAYER(GC.getGameINLINE().getActivePlayer()).isIgnoreObsoleteBuilding(eLoopBuilding))
+					{
+						buildObsoleteString(szBuffer, eLoopBuilding, true);
+					}
 				}
 			}
 		}
@@ -5859,7 +5909,10 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 	{
 		if (GC.getSpecialBuildingInfo((SpecialBuildingTypes) iI).getObsoleteTech() == eTech)
 		{
-			buildObsoleteSpecialString(szBuffer, iI, true);
+			if (bCivilopediaText || GC.getGameINLINE().getActivePlayer() == NO_PLAYER || !GET_PLAYER(GC.getGameINLINE().getActivePlayer()).isIgnoreObsoleteSpecialBuilding((SpecialBuildingTypes) iI))
+			{
+				buildObsoleteSpecialString(szBuffer, iI, true);
+			}
 		}
 	}
 
@@ -8485,7 +8538,12 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			}
 		}
 
-		if (kBuilding.getObsoleteTech() != NO_TECH)
+		// Not for the buildings a trait of the player keeps from becoming obsolete (added by this mod; the Civilopedia
+		// shows all)
+		PlayerTypes eObsoletePlayer = ((pCity != NULL) ? pCity->getOwnerINLINE() : GC.getGameINLINE().getActivePlayer());
+		bool bShowObsolete = (bCivilopediaText || eObsoletePlayer == NO_PLAYER || !GET_PLAYER(eObsoletePlayer).isIgnoreObsoleteBuilding(eBuilding));
+
+		if (kBuilding.getObsoleteTech() != NO_TECH && bShowObsolete)
 		{
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_OBSOLETE_WITH", GC.getTechInfo((TechTypes) kBuilding.getObsoleteTech()).getTextKeyWide()));
@@ -8496,7 +8554,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			}
 		}
 
-		if (kBuilding.getSpecialBuildingType() != NO_SPECIALBUILDING)
+		if (kBuilding.getSpecialBuildingType() != NO_SPECIALBUILDING && bShowObsolete)
 		{
 			if (GC.getSpecialBuildingInfo((SpecialBuildingTypes) kBuilding.getSpecialBuildingType()).getObsoleteTech() != NO_TECH)
 			{
@@ -12685,7 +12743,7 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
 	{
 		CvBuildingInfo& infoBuilding = GC.getBuildingInfo((BuildingTypes)i);
-		if (city.getNumBuilding((BuildingTypes)i) > 0 && !GET_TEAM(city.getTeam()).isObsoleteBuilding((BuildingTypes)i))
+		if (city.getNumBuilding((BuildingTypes)i) > 0 && !GET_PLAYER(city.getOwnerINLINE()).isObsoleteBuilding((BuildingTypes)i))
 		{
 			for (int iLoop = 0; iLoop < city.getNumBuilding((BuildingTypes)i); iLoop++)
 			{
@@ -12701,7 +12759,7 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 					int iLoop;
 					for (CvCity* pLoopCity = GET_PLAYER((PlayerTypes)j).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)j).nextCity(&iLoop))
 					{
-						if (pLoopCity->getNumBuilding((BuildingTypes)i) > 0 && !GET_TEAM(pLoopCity->getTeam()).isObsoleteBuilding((BuildingTypes)i))
+						if (pLoopCity->getNumBuilding((BuildingTypes)i) > 0 && !GET_PLAYER(pLoopCity->getOwnerINLINE()).isObsoleteBuilding((BuildingTypes)i))
 						{
 							for (int iLoop = 0; iLoop < pLoopCity->getNumBuilding((BuildingTypes)i); iLoop++)
 							{
@@ -12836,7 +12894,7 @@ void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldT
 	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
 	{
 		CvBuildingInfo& infoBuilding = GC.getBuildingInfo((BuildingTypes)i);
-		if (city.getNumBuilding((BuildingTypes)i) > 0 && !GET_TEAM(city.getTeam()).isObsoleteBuilding((BuildingTypes)i))
+		if (city.getNumBuilding((BuildingTypes)i) > 0 && !GET_PLAYER(city.getOwnerINLINE()).isObsoleteBuilding((BuildingTypes)i))
 		{
 			for (int iLoop = 0; iLoop < city.getNumBuilding((BuildingTypes)i); iLoop++)
 			{
@@ -12852,7 +12910,7 @@ void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldT
 					int iLoop;
 					for (CvCity* pLoopCity = GET_PLAYER((PlayerTypes)j).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)j).nextCity(&iLoop))
 					{
-						if (pLoopCity->getNumBuilding((BuildingTypes)i) > 0 && !GET_TEAM(pLoopCity->getTeam()).isObsoleteBuilding((BuildingTypes)i))
+						if (pLoopCity->getNumBuilding((BuildingTypes)i) > 0 && !GET_PLAYER(pLoopCity->getOwnerINLINE()).isObsoleteBuilding((BuildingTypes)i))
 						{
 							for (int iLoop = 0; iLoop < pLoopCity->getNumBuilding((BuildingTypes)i); iLoop++)
 							{
@@ -13100,7 +13158,7 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
 	{
 		CvBuildingInfo& infoBuilding = GC.getBuildingInfo((BuildingTypes)i);
-		if (city.getNumBuilding((BuildingTypes)i) > 0 && !GET_TEAM(city.getTeam()).isObsoleteBuilding((BuildingTypes)i))
+		if (city.getNumBuilding((BuildingTypes)i) > 0 && !GET_PLAYER(city.getOwnerINLINE()).isObsoleteBuilding((BuildingTypes)i))
 		{
 			for (int iLoop = 0; iLoop < city.getNumBuilding((BuildingTypes)i); iLoop++)
 			{
@@ -13116,7 +13174,7 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 					int iLoop;
 					for (CvCity* pLoopCity = GET_PLAYER((PlayerTypes)j).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)j).nextCity(&iLoop))
 					{
-						if (pLoopCity->getNumBuilding((BuildingTypes)i) > 0 && !GET_TEAM(pLoopCity->getTeam()).isObsoleteBuilding((BuildingTypes)i))
+						if (pLoopCity->getNumBuilding((BuildingTypes)i) > 0 && !GET_PLAYER(pLoopCity->getOwnerINLINE()).isObsoleteBuilding((BuildingTypes)i))
 						{
 							for (int iLoop = 0; iLoop < pLoopCity->getNumBuilding((BuildingTypes)i); iLoop++)
 							{
