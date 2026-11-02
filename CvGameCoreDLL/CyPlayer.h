@@ -449,6 +449,11 @@ public:
 	bool isNewCityStateReligion();
 	bool isMaintainFeatures(int /*FeatureTypes*/ eFeature);
 	int getFeatureRouteType(int /*FeatureTypes*/ eFeature);
+	int getGoldenAgeGreatPeopleRateModifier();
+	int getCapitalBuildingProductionModifier();
+	int getPillageGoldModifier();
+	int getCityCaptureGoldModifier();
+	int getNewCityCultureLevel();
 	int getOccupationTimeModifier();
 	CyUnit* getUnit(int iID);
 	python::tuple firstSelectionGroup(bool bRev);	// returns tuple of (CySelectionGroup, iterOut)

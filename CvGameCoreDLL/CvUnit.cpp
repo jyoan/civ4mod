@@ -324,6 +324,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iSameTileHeal = 0;
 	m_iAdjacentTileHeal = 0;
 	m_iExtraCombatPercent = 0;
+	m_iCombatPercentInBorders = 0;
 	m_iExtraCityAttackPercent = 0;
 	m_iExtraCityDefensePercent = 0;
 	m_iExtraHillsAttackPercent = 0;
@@ -6303,6 +6304,9 @@ bool CvUnit::pillage()
 
 			iPillageGold = (int)lPillageGold;
 
+			// iPillageGoldModifier of the traits of the owner (added by this mod)
+			iPillageGold = (iPillageGold * std::max(0, 100 + GET_PLAYER(getOwnerINLINE()).getPillageGoldModifier())) / 100;
+
 			if (iPillageGold > 0)
 			{
 				GET_PLAYER(getOwnerINLINE()).changeGold(iPillageGold);
@@ -11929,8 +11933,14 @@ void CvUnit::changeAdjacentTileHeal(int iChange)
 	FAssert(getAdjacentTileHeal() >= 0);
 }
 
+// With iCombatPercentInBorders of the promotions on the plots of the owner (added by this mod, as FFH2)
 int CvUnit::getExtraCombatPercent() const
 {
+	if (m_iCombatPercentInBorders != 0 && plot()->getOwnerINLINE() == getOwnerINLINE())
+	{
+		return m_iExtraCombatPercent + m_iCombatPercentInBorders;
+	}
+
 	return m_iExtraCombatPercent;
 }
 
@@ -12943,6 +12953,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		changeSameTileHeal(GC.getPromotionInfo(eIndex).getSameTileHealChange() * iChange);
 		changeAdjacentTileHeal(GC.getPromotionInfo(eIndex).getAdjacentTileHealChange() * iChange);
 		changeExtraCombatPercent(GC.getPromotionInfo(eIndex).getCombatPercent() * iChange);
+		m_iCombatPercentInBorders += GC.getPromotionInfo(eIndex).getCombatPercentInBorders() * iChange;
 		changeExtraCityAttackPercent(GC.getPromotionInfo(eIndex).getCityAttackPercent() * iChange);
 		changeExtraCityDefensePercent(GC.getPromotionInfo(eIndex).getCityDefensePercent() * iChange);
 		changeExtraHillsAttackPercent(GC.getPromotionInfo(eIndex).getHillsAttackPercent() * iChange);
@@ -13040,6 +13051,8 @@ bool CvUnit::potentialWarAction(const CvPlot* pPlot) const
 
 void CvUnit::read(FDataStreamBase* pStream)
 {
+	int iI;
+
 	// Init data before load
 	reset();
 
@@ -13153,6 +13166,16 @@ void CvUnit::read(FDataStreamBase* pStream)
 	pStream->ReadString(m_szScriptData);
 
 	pStream->Read(GC.getNumPromotionInfos(), m_pabHasPromotion);
+
+	// Not saved: the sum of iCombatPercentInBorders of the promotions (added by this mod)
+	m_iCombatPercentInBorders = 0;
+	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	{
+		if (m_pabHasPromotion[iI])
+		{
+			m_iCombatPercentInBorders += GC.getPromotionInfo((PromotionTypes)iI).getCombatPercentInBorders();
+		}
+	}
 
 	pStream->Read(GC.getNumTerrainInfos(), m_paiTerrainDoubleMoveCount);
 	pStream->Read(GC.getNumFeatureInfos(), m_paiFeatureDoubleMoveCount);

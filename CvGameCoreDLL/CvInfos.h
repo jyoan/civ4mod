@@ -514,6 +514,7 @@ public:
 	int getCombatGoldStealPercent() const;			// Exposed to Python
 	int getCombatGoldStealMax() const;				// Exposed to Python
 	int getCombatPromotionStealChance() const;		// Exposed to Python
+	int getCombatPercentInBorders() const;			// Exposed to Python
 
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
@@ -594,6 +595,7 @@ protected:
 	int m_iCombatGoldStealPercent;
 	int m_iCombatGoldStealMax;
 	int m_iCombatPromotionStealChance;
+	int m_iCombatPercentInBorders;
 	std::vector<int> m_aiEnslavementUnitClassType;		// EnslavementUnitClasses: the loser's unit class
 	std::vector<int> m_aiEnslavementUnitClassEnslaved;	// and the unit class it becomes (NO_UNITCLASS: not enslaved)
 	bool m_bRemovedByCombat;
@@ -1941,6 +1943,7 @@ public:
 	int getPrereqOrBonuses(int i) const;				// Exposed to Python
 	int getPlotRadius() const;				// Exposed to Python
 	int getPlotRadiusCultureLevel() const;			// Exposed to Python
+	int getNewCityCultureLevel() const;				// Exposed to Python
 	int getNewCityPopulation() const;				// Exposed to Python
 	bool isNewCityStateReligion() const;			// Exposed to Python
 	int getOccupationTimeModifier() const;			// Exposed to Python
@@ -2115,6 +2118,7 @@ protected:
 	std::vector<int> m_aiPrereqOrSettledSpecialistNum;
 	int m_iPlotRadius;
 	int m_iPlotRadiusCultureLevel;
+	int m_iNewCityCultureLevel;
 	int m_iNewCityPopulation;
 	int m_iOccupationTimeModifier;
 	bool m_bNewCityStateReligion;
@@ -4423,6 +4427,14 @@ public:
 	int getCityRadiusChange() const;				// Exposed to Python
 	int getCityRadiusCultureLevel() const;			// Exposed to Python
 	int getSummonDuration() const;				// Exposed to Python
+	// Civ5 abilities (added by this mod)
+	int getGoldenAgeModifier() const;				// Exposed to Python
+	int getGoldenAgeGreatPeopleRateModifier() const;	// Exposed to Python
+	int getBonusYieldChange(int iBonus, int iYield) const;	// Exposed to Python
+	int getCapitalBuildingProductionModifier() const;	// Exposed to Python
+	int getPillageGoldModifier() const;				// Exposed to Python
+	int getCityCaptureGoldModifier() const;			// Exposed to Python
+	int getNewCityCultureLevel() const;				// Exposed to Python
 	int getNewCityPopulation() const;				// Exposed to Python
 	bool isNewCityStateReligion() const;			// Exposed to Python
 	int getOccupationTimeModifier() const;			// Exposed to Python
@@ -4496,6 +4508,16 @@ protected:
 	int m_iCityRadiusChange;
 	int m_iCityRadiusCultureLevel;
 	int m_iSummonDuration;
+	int m_iGoldenAgeModifier;
+	int m_iGoldenAgeGreatPeopleRateModifier;
+	int m_iCapitalBuildingProductionModifier;
+	int m_iPillageGoldModifier;
+	int m_iCityCaptureGoldModifier;
+	int m_iNewCityCultureLevel;
+	CvString m_szNewCityCultureLevel;				// read() keeps the type as a string until readPass3()
+	std::vector< std::vector<int> > m_aaiBonusYieldChange;		// [bonus][yield], empty when not set
+	std::vector<CvString> m_aszBonusYieldChangeTypes;			// read() keeps the types as strings until readPass3(),
+	std::vector< std::vector<int> > m_aaiBonusYieldChangeValues;	// because bonuses are loaded after traits
 	int m_iNewCityPopulation;
 	int m_iOccupationTimeModifier;
 	bool m_bNewCityStateReligion;

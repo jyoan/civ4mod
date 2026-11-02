@@ -850,6 +850,7 @@ protected:
 	int m_iSameTileHeal;
 	int m_iAdjacentTileHeal;
 	int m_iExtraCombatPercent;
+	int m_iCombatPercentInBorders;		// added by this mod: iCombatPercentInBorders of the promotions (not saved)
 	int m_iExtraCityAttackPercent;
 	int m_iExtraCityDefensePercent;
 	int m_iExtraHillsAttackPercent;

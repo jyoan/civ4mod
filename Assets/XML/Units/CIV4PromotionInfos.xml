@@ -4542,6 +4542,7 @@
 			<iFreeXPCap>10</iFreeXPCap>
 			<iGoldFromCombat>5</iGoldFromCombat>
 			<iCombatCapturePercent>50</iCombatCapturePercent>
+			<iCombatPercentInBorders>15</iCombatPercentInBorders>
 			<HotKey/>
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>

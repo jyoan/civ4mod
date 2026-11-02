@@ -804,6 +804,7 @@
 	<ElementType name="iCombatGoldStealPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iCombatGoldStealMax" content="textOnly" dt:type="int"/>
 	<ElementType name="iCombatPromotionStealChance" content="textOnly" dt:type="int"/>
+	<ElementType name="iCombatPercentInBorders" content="textOnly" dt:type="int"/>
 	<ElementType name="TechPrereq" content="textOnly"/>
 	<ElementType name="StateReligionPrereq" content="textOnly"/>
 	<ElementType name="bLeader" content="textOnly" dt:type="boolean"/>
@@ -930,6 +931,7 @@
 		<element type="iCombatGoldStealPercent" minOccurs="0"/>
 		<element type="iCombatGoldStealMax" minOccurs="0"/>
 		<element type="iCombatPromotionStealChance" minOccurs="0"/>
+		<element type="iCombatPercentInBorders" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

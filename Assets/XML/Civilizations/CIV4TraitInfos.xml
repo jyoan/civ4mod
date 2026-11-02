@@ -371,6 +371,12 @@
 			<iNewCityPopulation>1</iNewCityPopulation>
 			<bNewCityStateReligion>1</bNewCityStateReligion>
 			<iOccupationTimeModifier>-50</iOccupationTimeModifier>
+			<iGoldenAgeModifier>50</iGoldenAgeModifier>
+			<iGoldenAgeGreatPeopleRateModifier>50</iGoldenAgeGreatPeopleRateModifier>
+			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>
+			<iPillageGoldModifier>200</iPillageGoldModifier>
+			<iCityCaptureGoldModifier>200</iCityCaptureGoldModifier>
+			<NewCityCultureLevel>CULTURELEVEL_FLEDGLING</NewCityCultureLevel>
 			<MaintainFeatures>
 				<MaintainFeature>
 					<FeatureType>FEATURE_FOREST</FeatureType>
@@ -518,6 +524,32 @@
 				<iYield>0</iYield>
 				<iYield>0</iYield>
 			</RiverPlotYieldChanges>
+			<BonusYieldChanges>
+				<BonusYieldChange>
+					<BonusType>BONUS_STONE</BonusType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</BonusYieldChange>
+				<BonusYieldChange>
+					<BonusType>BONUS_HORSE</BonusType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</BonusYieldChange>
+				<BonusYieldChange>
+					<BonusType>BONUS_IRON</BonusType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</BonusYieldChange>
+			</BonusYieldChanges>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 			<FreePromotionSets>

@@ -413,6 +413,7 @@
 	<ElementType name="iNewCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="bNewCityStateReligion" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iOccupationTimeModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="NewCityCultureLevel" content="textOnly"/>
 	<ElementType name="BuildingInfo" content="eltOnly">
 		<element type="BuildingClass"/>
 		<element type="Type"/>
@@ -584,6 +585,7 @@
 		<element type="iNewCityPopulation" minOccurs="0"/>
 		<element type="bNewCityStateReligion" minOccurs="0"/>
 		<element type="iOccupationTimeModifier" minOccurs="0"/>
+		<element type="NewCityCultureLevel" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="BuildingInfos" content="eltOnly">
 		<element type="BuildingInfo" maxOccurs="*"/>

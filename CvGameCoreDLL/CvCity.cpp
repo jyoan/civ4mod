@@ -3231,7 +3231,24 @@ int CvCity::getProductionModifier(BuildingTypes eBuilding) const
 		}
 	}
 
+	iMultiplier += getCapitalBuildingProductionModifier(eBuilding);
+
 	return std::max(0, iMultiplier);
+}
+
+
+// iCapitalBuildingProductionModifier of the traits of the owner, for a building the capital has, in the other cities
+// (added by this mod)
+int CvCity::getCapitalBuildingProductionModifier(BuildingTypes eBuilding) const
+{
+	CvCity* pCapital = GET_PLAYER(getOwnerINLINE()).getCapitalCity();
+
+	if (pCapital == NULL || pCapital == this || pCapital->getNumBuilding(eBuilding) == 0)
+	{
+		return 0;
+	}
+
+	return GET_PLAYER(getOwnerINLINE()).getCapitalBuildingProductionModifier();
 }
 
 
@@ -5389,6 +5406,8 @@ int CvCity::getTotalGreatPeopleRateModifier() const
 	if (GET_PLAYER(getOwnerINLINE()).isGoldenAge())
 	{
 		iModifier += GC.getDefineINT("GOLDEN_AGE_GREAT_PEOPLE_MODIFIER");
+		// iGoldenAgeGreatPeopleRateModifier of the traits (added by this mod)
+		iModifier += GET_PLAYER(getOwnerINLINE()).getGoldenAgeGreatPeopleRateModifier();
 	}
 
 	return std::max(0, (iModifier + 100));

@@ -1957,6 +1957,31 @@ bool CyPlayer::isNewCityStateReligion()
 	return m_pPlayer ? m_pPlayer->isNewCityStateReligion() : false;
 }
 
+int CyPlayer::getGoldenAgeGreatPeopleRateModifier()
+{
+	return m_pPlayer ? m_pPlayer->getGoldenAgeGreatPeopleRateModifier() : -1;
+}
+
+int CyPlayer::getCapitalBuildingProductionModifier()
+{
+	return m_pPlayer ? m_pPlayer->getCapitalBuildingProductionModifier() : -1;
+}
+
+int CyPlayer::getPillageGoldModifier()
+{
+	return m_pPlayer ? m_pPlayer->getPillageGoldModifier() : -1;
+}
+
+int CyPlayer::getCityCaptureGoldModifier()
+{
+	return m_pPlayer ? m_pPlayer->getCityCaptureGoldModifier() : -1;
+}
+
+int CyPlayer::getNewCityCultureLevel()
+{
+	return m_pPlayer ? m_pPlayer->getNewCityCultureLevel() : -1;
+}
+
 int CyPlayer::getFeatureRouteType(int /*FeatureTypes*/ eFeature)
 {
 	return m_pPlayer ? m_pPlayer->getFeatureRouteType((FeatureTypes)eFeature) : -1;

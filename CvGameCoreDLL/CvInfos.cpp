@@ -1623,6 +1623,7 @@ m_iEnslavedUnitClass(NO_UNITCLASS),
 m_iCombatGoldStealPercent(0),
 m_iCombatGoldStealMax(0),
 m_iCombatPromotionStealChance(0),
+m_iCombatPercentInBorders(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
 m_bLeader(false),
@@ -2025,6 +2026,12 @@ int CvPromotionInfo::getCombatPromotionStealChance() const
 	return m_iCombatPromotionStealChance;
 }
 
+// Strength % of the unit on the plots of its owner (FFH2)
+int CvPromotionInfo::getCombatPercentInBorders() const
+{
+	return m_iCombatPercentInBorders;
+}
+
 const TCHAR* CvPromotionInfo::getSound() const										
 {
 	return m_szSound;
@@ -2272,13 +2279,20 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 		m_iCombatGoldStealMax = 0;
 		m_iCombatPromotionStealChance = 0;
 	}
+
+	// uiFlag < 5: cache written before iCombatPercentInBorders existed
+	m_iCombatPercentInBorders = 0;
+	if (uiFlag > 4)
+	{
+		stream->Read(&m_iCombatPercentInBorders);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 4;
+	uint uiFlag = 5;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2367,6 +2381,7 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iCombatGoldStealPercent);
 	stream->Write(m_iCombatGoldStealMax);
 	stream->Write(m_iCombatPromotionStealChance);
+	stream->Write(m_iCombatPercentInBorders);
 }
 
 bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
@@ -2475,6 +2490,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCombatGoldStealPercent, "iCombatGoldStealPercent");
 	pXML->GetChildXmlValByName(&m_iCombatGoldStealMax, "iCombatGoldStealMax");
 	pXML->GetChildXmlValByName(&m_iCombatPromotionStealChance, "iCombatPromotionStealChance");
+	pXML->GetChildXmlValByName(&m_iCombatPercentInBorders, "iCombatPercentInBorders");
 
 	pXML->SetVariableListTagPair(&m_piTerrainAttackPercent, "TerrainAttacks", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());
 	pXML->SetVariableListTagPair(&m_piTerrainDefensePercent, "TerrainDefenses", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());
@@ -7557,6 +7573,7 @@ CvBuildingInfo::CvBuildingInfo() :
 m_iBuildingClassType(NO_BUILDINGCLASS),
 m_iPlotRadius(0),
 m_iPlotRadiusCultureLevel(NO_CULTURELEVEL),
+m_iNewCityCultureLevel(NO_CULTURELEVEL),
 m_iNewCityPopulation(0),
 m_iOccupationTimeModifier(0),
 m_bNewCityStateReligion(false),
@@ -8727,6 +8744,12 @@ int CvBuildingInfo::getOccupationTimeModifier() const
 	return m_iOccupationTimeModifier;
 }
 
+// The same as the trait tag, for a player with the building in any city (added by this mod)
+int CvBuildingInfo::getNewCityCultureLevel() const
+{
+	return m_iNewCityCultureLevel;
+}
+
 int CvBuildingInfo::getProductionTraits(int i) const		
 {
 	FAssertMsg(i < GC.getNumTraitInfos(), "Index out of bounds");
@@ -9248,6 +9271,13 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 		m_aiPrereqAndSettledSpecialistType.clear();
 		m_aiPrereqAndSettledSpecialistNum.clear();
 	}
+
+	// uiFlag < 8: cache written before NewCityCultureLevel existed
+	m_iNewCityCultureLevel = NO_CULTURELEVEL;
+	if (uiFlag > 7)
+	{
+		stream->Read(&m_iNewCityCultureLevel);
+	}
 }
 
 //
@@ -9257,7 +9287,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=7;
+	uint uiFlag=8;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -9436,6 +9466,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iOccupationTimeModifier);
 	writeSettledSpecialists(stream, m_aiPrereqOrSettledSpecialistType, m_aiPrereqOrSettledSpecialistNum);
 	writeSettledSpecialists(stream, m_aiPrereqAndSettledSpecialistType, m_aiPrereqAndSettledSpecialistNum);
+	stream->Write(m_iNewCityCultureLevel);
 }
 
 //
@@ -9590,6 +9621,8 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iPlotRadius, "iPlotRadius");
 	pXML->GetChildXmlValByName(szTextVal, "PlotRadiusCultureLevel");
 	m_iPlotRadiusCultureLevel = pXML->FindInInfoClass(szTextVal);
+	pXML->GetChildXmlValByName(szTextVal, "NewCityCultureLevel");
+	m_iNewCityCultureLevel = pXML->FindInInfoClass(szTextVal);
 	pXML->GetChildXmlValByName(&m_iNewCityPopulation, "iNewCityPopulation");
 	pXML->GetChildXmlValByName(&m_bNewCityStateReligion, "bNewCityStateReligion");
 	pXML->GetChildXmlValByName(&m_iOccupationTimeModifier, "iOccupationTimeModifier");
@@ -17404,6 +17437,12 @@ m_iExpInBorderModifier(0),
 m_iCityRadiusChange(0),
 m_iCityRadiusCultureLevel(NO_CULTURELEVEL),
 m_iSummonDuration(0),
+m_iGoldenAgeModifier(0),
+m_iGoldenAgeGreatPeopleRateModifier(0),
+m_iCapitalBuildingProductionModifier(0),
+m_iPillageGoldModifier(0),
+m_iCityCaptureGoldModifier(0),
+m_iNewCityCultureLevel(NO_CULTURELEVEL),
 m_iNewCityPopulation(0),
 m_iOccupationTimeModifier(0),
 m_bNewCityStateReligion(false),
@@ -17576,6 +17615,56 @@ int CvTraitInfo::getCityRadiusCultureLevel() const
 int CvTraitInfo::getSummonDuration() const
 {
 	return m_iSummonDuration;
+}
+
+// Golden age length % (the building tag of the same name; applied once in CvPlayer::init)
+int CvTraitInfo::getGoldenAgeModifier() const
+{
+	return m_iGoldenAgeModifier;
+}
+
+// Great people rate % during golden ages
+int CvTraitInfo::getGoldenAgeGreatPeopleRateModifier() const
+{
+	return m_iGoldenAgeGreatPeopleRateModifier;
+}
+
+// Yields of the plots with the bonus in the territory of the player (BonusYieldChanges)
+int CvTraitInfo::getBonusYieldChange(int iBonus, int iYield) const
+{
+	FAssertMsg(iBonus < GC.getNumBonusInfos(), "Index out of bounds");
+	FAssertMsg(iBonus > -1, "Index out of bounds");
+	FAssertMsg(iYield < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(iYield > -1, "Index out of bounds");
+	if ((iBonus < 0) || (iBonus >= (int)m_aaiBonusYieldChange.size()) || (iYield < 0) || (iYield >= NUM_YIELD_TYPES))
+	{
+		return 0;
+	}
+	return m_aaiBonusYieldChange[iBonus][iYield];
+}
+
+// Production % of the buildings the capital has, in the other cities
+int CvTraitInfo::getCapitalBuildingProductionModifier() const
+{
+	return m_iCapitalBuildingProductionModifier;
+}
+
+// Gold % from pillaging improvements
+int CvTraitInfo::getPillageGoldModifier() const
+{
+	return m_iPillageGoldModifier;
+}
+
+// Gold % from conquering cities
+int CvTraitInfo::getCityCaptureGoldModifier() const
+{
+	return m_iCityCaptureGoldModifier;
+}
+
+// The culture level new cities start with (NO_CULTURELEVEL: none)
+int CvTraitInfo::getNewCityCultureLevel() const
+{
+	return m_iNewCityCultureLevel;
 }
 
 // Extra population of the cities the player founds (added by this mod)
@@ -17940,6 +18029,13 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	// The culture levels are loaded after the traits: readPass3() finds the type
 	pXML->GetChildXmlValByName(m_szCityRadiusCultureLevel, "CityRadiusCultureLevel");
 	pXML->GetChildXmlValByName(&m_iSummonDuration, "iSummonDuration");
+	pXML->GetChildXmlValByName(&m_iGoldenAgeModifier, "iGoldenAgeModifier");
+	pXML->GetChildXmlValByName(&m_iGoldenAgeGreatPeopleRateModifier, "iGoldenAgeGreatPeopleRateModifier");
+	pXML->GetChildXmlValByName(&m_iCapitalBuildingProductionModifier, "iCapitalBuildingProductionModifier");
+	pXML->GetChildXmlValByName(&m_iPillageGoldModifier, "iPillageGoldModifier");
+	pXML->GetChildXmlValByName(&m_iCityCaptureGoldModifier, "iCityCaptureGoldModifier");
+	// The culture levels are loaded after the traits: readPass3() finds the type
+	pXML->GetChildXmlValByName(m_szNewCityCultureLevel, "NewCityCultureLevel");
 	pXML->GetChildXmlValByName(&m_iNewCityPopulation, "iNewCityPopulation");
 	pXML->GetChildXmlValByName(&m_bNewCityStateReligion, "bNewCityStateReligion");
 	pXML->GetChildXmlValByName(&m_iOccupationTimeModifier, "iOccupationTimeModifier");
@@ -18098,6 +18194,8 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	resolveYieldChanges("FeatureYieldChanges", aszTypes, aaiYields, GC.getNumFeatureInfos(), m_aaiFeatureYieldChange);
 	// Same format as the civic ImprovementYieldChanges. Resolved in readPass3()
 	readYieldChanges(pXML, "ImprovementYieldChanges", "ImprovementYieldChange", "ImprovementType", "ImprovementYields", m_aszImprovementYieldChangeTypes, m_aaiImprovementYieldChangeValues);
+	// Same format as TerrainYieldChanges. Resolved in readPass3()
+	readYieldChanges(pXML, "BonusYieldChanges", "BonusYieldChange", "BonusType", "Yields", m_aszBonusYieldChangeTypes, m_aaiBonusYieldChangeValues);
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "RiverPlotYieldChanges"))
 	{
@@ -18155,6 +18253,22 @@ bool CvTraitInfo::readPass3()
 	resolveYieldChanges("ImprovementYieldChanges", m_aszImprovementYieldChangeTypes, m_aaiImprovementYieldChangeValues, GC.getNumImprovementInfos(), m_aaiImprovementYieldChange);
 	m_aszImprovementYieldChangeTypes.clear();
 	m_aaiImprovementYieldChangeValues.clear();
+
+	resolveYieldChanges("BonusYieldChanges", m_aszBonusYieldChangeTypes, m_aaiBonusYieldChangeValues, GC.getNumBonusInfos(), m_aaiBonusYieldChange);
+	m_aszBonusYieldChangeTypes.clear();
+	m_aaiBonusYieldChangeValues.clear();
+
+	m_iNewCityCultureLevel = NO_CULTURELEVEL;
+	if (!m_szNewCityCultureLevel.empty() && m_szNewCityCultureLevel != "NONE")
+	{
+		m_iNewCityCultureLevel = GC.getInfoTypeForString(m_szNewCityCultureLevel.GetCString(), true);
+		if (m_iNewCityCultureLevel < 0)
+		{
+			sprintf(szMessage, "Tag: %s in NewCityCultureLevel of CIV4TraitInfos.xml was incorrect", m_szNewCityCultureLevel.GetCString());
+			gDLL->MessageBox(szMessage, "XML Error");
+			m_iNewCityCultureLevel = NO_CULTURELEVEL;
+		}
+	}
 
 	return true;
 }

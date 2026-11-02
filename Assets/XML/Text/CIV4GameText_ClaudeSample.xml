@@ -1001,6 +1001,69 @@
 		<Spanish>[ICON_BULLET]Counts as %s1_Route in our territory (movement and trade network): </Spanish>
 		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;%s1_Route&#12392;&#12375;&#12390;&#25201;&#12358;&#65288;&#31227;&#21205;&#12392;&#20132;&#26131;&#32178;&#65289;: </Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_AGE_GREAT_PEOPLE</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</English>
+		<French>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</French>
+		<German>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</Spanish>
+		<Japanese>[ICON_BULLET]&#40644;&#37329;&#26178;&#20195;&#12395;[ICON_GREATPEOPLE]%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CAPITAL_BUILDING_PRODUCTION</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for buildings the capital has (other cities)</English>
+		<French>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for buildings the capital has (other cities)</French>
+		<German>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for buildings the capital has (other cities)</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for buildings the capital has (other cities)</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for buildings the capital has (other cities)</Spanish>
+		<Japanese>[ICON_BULLET]&#39318;&#37117;&#12395;&#12354;&#12427;&#24314;&#36896;&#29289;&#12434;&#20182;&#12398;&#37117;&#24066;&#12391;&#24314;&#35373;&#12377;&#12427;&#12392;&#12365;[ICON_PRODUCTION]%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_PROD_CAPITAL_BUILDING</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for a building the capital has</English>
+		<French>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for a building the capital has</French>
+		<German>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for a building the capital has</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for a building the capital has</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for a building the capital has</Spanish>
+		<Japanese>[ICON_BULLET]&#39318;&#37117;&#12395;&#12354;&#12427;&#24314;&#36896;&#29289;&#12398;&#24314;&#35373;&#12398;&#12383;&#12417;&#12395;[ICON_PRODUCTION] %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PILLAGE_GOLD</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_GOLD] from pillaging improvements</English>
+		<French>[ICON_BULLET]%D1%%[ICON_GOLD] from pillaging improvements</French>
+		<German>[ICON_BULLET]%D1%%[ICON_GOLD] from pillaging improvements</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_GOLD] from pillaging improvements</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_GOLD] from pillaging improvements</Spanish>
+		<Japanese>[ICON_BULLET]&#26045;&#35373;&#12398;&#30053;&#22890;&#12391;&#24471;&#12427;[ICON_GOLD]%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CITY_CAPTURE_GOLD</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_GOLD] from conquering cities</English>
+		<French>[ICON_BULLET]%D1%%[ICON_GOLD] from conquering cities</French>
+		<German>[ICON_BULLET]%D1%%[ICON_GOLD] from conquering cities</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_GOLD] from conquering cities</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_GOLD] from conquering cities</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12398;&#24449;&#26381;&#12391;&#24471;&#12427;[ICON_GOLD]%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_NEW_CITY_CULTURE_LEVEL</Tag>
+		<English>[ICON_BULLET]New cities start with %s1_Level culture</English>
+		<French>[ICON_BULLET]New cities start with %s1_Level culture</French>
+		<German>[ICON_BULLET]New cities start with %s1_Level culture</German>
+		<Italian>[ICON_BULLET]New cities start with %s1_Level culture</Italian>
+		<Spanish>[ICON_BULLET]New cities start with %s1_Level culture</Spanish>
+		<Japanese>[ICON_BULLET]&#26032;&#12375;&#12356;&#37117;&#24066;&#12399;&#25991;&#21270;&#12524;&#12505;&#12523;%s1_Level&#12363;&#12425;&#22987;&#12414;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_PERCENT_IN_BORDERS</Tag>
+		<English>[ICON_BULLET]%D1_Bonus%% Strength in own territory</English>
+		<French>[ICON_BULLET]%D1_Bonus%% Strength in own territory</French>
+		<German>[ICON_BULLET]%D1_Bonus%% Strength in own territory</German>
+		<Italian>[ICON_BULLET]%D1_Bonus%% Strength in own territory</Italian>
+		<Spanish>[ICON_BULLET]%D1_Bonus%% Strength in own territory</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#25126;&#38360;&#21147;%D1_Bonus%%</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

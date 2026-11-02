@@ -6173,6 +6173,12 @@ int CvPlot::calculateTraitYieldChange(YieldTypes eYield, PlayerTypes ePlayer) co
 		iYield += kPlayer.getTraitRiverPlotYieldChange(eYield);
 	}
 
+	// BonusYieldChanges: a bonus the owner can see (its tech reveals it)
+	if (getBonusType(kPlayer.getTeam()) != NO_BONUS)
+	{
+		iYield += kPlayer.getTraitBonusYieldChange(getBonusType(kPlayer.getTeam()), eYield);
+	}
+
 	return iYield;
 }
 

@@ -347,6 +347,12 @@
 	<ElementType name="iNewCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="bNewCityStateReligion" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iOccupationTimeModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iGoldenAgeModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iGoldenAgeGreatPeopleRateModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iCapitalBuildingProductionModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iPillageGoldModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iCityCaptureGoldModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="NewCityCultureLevel" content="textOnly"/>
 	<ElementType name="YieldModifiers" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -441,6 +447,14 @@
 	<ElementType name="RiverPlotYieldChanges" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="BonusType" content="textOnly"/>
+	<ElementType name="BonusYieldChange" content="eltOnly">
+		<element type="BonusType"/>
+		<element type="Yields"/>
+	</ElementType>
+	<ElementType name="BonusYieldChanges" content="eltOnly">
+		<element type="BonusYieldChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="TraitInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -473,6 +487,12 @@
 		<element type="iNewCityPopulation" minOccurs="0"/>
 		<element type="bNewCityStateReligion" minOccurs="0"/>
 		<element type="iOccupationTimeModifier" minOccurs="0"/>
+		<element type="iGoldenAgeModifier" minOccurs="0"/>
+		<element type="iGoldenAgeGreatPeopleRateModifier" minOccurs="0"/>
+		<element type="iCapitalBuildingProductionModifier" minOccurs="0"/>
+		<element type="iPillageGoldModifier" minOccurs="0"/>
+		<element type="iCityCaptureGoldModifier" minOccurs="0"/>
+		<element type="NewCityCultureLevel" minOccurs="0"/>
 		<element type="MaintainFeatures" minOccurs="0"/>
 		<element type="FeatureRoutes" minOccurs="0"/>
 		<element type="ExtraYieldThresholds"/>
@@ -491,6 +511,7 @@
 		<element type="FeatureYieldChanges" minOccurs="0"/>
 		<element type="ImprovementYieldChanges" minOccurs="0"/>
 		<element type="RiverPlotYieldChanges" minOccurs="0"/>
+		<element type="BonusYieldChanges" minOccurs="0"/>
 		<element type="FreePromotions"/>
 		<element type="FreePromotionUnitCombats"/>
 		<element type="FreePromotionSets" minOccurs="0"/>

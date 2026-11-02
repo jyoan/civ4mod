@@ -238,6 +238,7 @@ void CvPlayer::init(PlayerTypes eID)
 				changeFreeSpecialist(GC.getTraitInfo((TraitTypes)iI).getFreeSpecialist());
 				changeTradeRoutes(GC.getTraitInfo((TraitTypes)iI).getTradeRoutes());
 				changeExpInBorderModifier(GC.getTraitInfo((TraitTypes)iI).getExpInBorderModifier());
+				changeGoldenAgeModifier(GC.getTraitInfo((TraitTypes)iI).getGoldenAgeModifier());
 
 				for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
 				{
@@ -1439,6 +1440,9 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		delete pyOldCity;	// python fxn must not hold on to this pointer 
 
 		iCaptureGold = (int)lCaptureGold;
+
+		// iCityCaptureGoldModifier of the traits of the conqueror (added by this mod)
+		iCaptureGold = (iCaptureGold * std::max(0, 100 + getCityCaptureGoldModifier())) / 100;
 	}
 
 	changeGold(iCaptureGold);
@@ -5158,6 +5162,17 @@ void CvPlayer::found(int iX, int iY)
 		pCity->setHasReligion(getStateReligion(), true, true, true);
 	}
 
+	// NewCityCultureLevel: the culture of the level for the game speed
+	if (getNewCityCultureLevel() != NO_CULTURELEVEL)
+	{
+		int iNewCityCulture = GC.getGameINLINE().getCultureThreshold(getNewCityCultureLevel());
+
+		if (pCity->getCulture(getID()) < iNewCityCulture)
+		{
+			pCity->setCulture(getID(), iNewCityCulture, true, true);
+		}
+	}
+
 	if (getAdvancedStartPoints() >= 0)
 	{
 		// Free border expansion for Creative
@@ -6079,6 +6094,114 @@ RouteTypes CvPlayer::getFeatureRouteType(FeatureTypes eFeature) const
 	}
 
 	return eBestRoute;
+}
+
+int CvPlayer::getGoldenAgeGreatPeopleRateModifier() const
+{
+	int iModifier = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iModifier += GC.getTraitInfo((TraitTypes)iI).getGoldenAgeGreatPeopleRateModifier();
+		}
+	}
+
+	return iModifier;
+}
+
+int CvPlayer::getTraitBonusYieldChange(BonusTypes eBonus, YieldTypes eYield) const
+{
+	int iChange = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iChange += GC.getTraitInfo((TraitTypes)iI).getBonusYieldChange(eBonus, eYield);
+		}
+	}
+
+	return iChange;
+}
+
+int CvPlayer::getCapitalBuildingProductionModifier() const
+{
+	int iModifier = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iModifier += GC.getTraitInfo((TraitTypes)iI).getCapitalBuildingProductionModifier();
+		}
+	}
+
+	return iModifier;
+}
+
+int CvPlayer::getPillageGoldModifier() const
+{
+	int iModifier = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iModifier += GC.getTraitInfo((TraitTypes)iI).getPillageGoldModifier();
+		}
+	}
+
+	return iModifier;
+}
+
+int CvPlayer::getCityCaptureGoldModifier() const
+{
+	int iModifier = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iModifier += GC.getTraitInfo((TraitTypes)iI).getCityCaptureGoldModifier();
+		}
+	}
+
+	return iModifier;
+}
+
+// The highest NewCityCultureLevel of the traits and of the buildings in any city of this player (not obsolete)
+CultureLevelTypes CvPlayer::getNewCityCultureLevel() const
+{
+	int iLevel = NO_CULTURELEVEL;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iLevel = std::max(iLevel, GC.getTraitInfo((TraitTypes)iI).getNewCityCultureLevel());
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+	{
+		if (GC.getBuildingInfo((BuildingTypes)iI).getNewCityCultureLevel() > iLevel)
+		{
+			if (hasActiveBuilding((BuildingTypes)iI))
+			{
+				iLevel = GC.getBuildingInfo((BuildingTypes)iI).getNewCityCultureLevel();
+			}
+		}
+	}
+
+	return (CultureLevelTypes)iLevel;
 }
 
 bool CvPlayer::hasActiveBuilding(BuildingTypes eBuilding) const

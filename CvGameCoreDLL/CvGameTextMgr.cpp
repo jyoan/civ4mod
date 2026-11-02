@@ -3487,6 +3487,43 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_SUMMON_DURATION", GC.getTraitInfo(eTrait).getSummonDuration()));
 		}
 
+		// Civ5 abilities (added by this mod)
+		if (GC.getTraitInfo(eTrait).getGoldenAgeModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_GOLDENAGE_MOD", GC.getTraitInfo(eTrait).getGoldenAgeModifier()));
+		}
+
+		if (GC.getTraitInfo(eTrait).getGoldenAgeGreatPeopleRateModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_GREAT_PEOPLE", GC.getTraitInfo(eTrait).getGoldenAgeGreatPeopleRateModifier()));
+		}
+
+		if (GC.getTraitInfo(eTrait).getCapitalBuildingProductionModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CAPITAL_BUILDING_PRODUCTION", GC.getTraitInfo(eTrait).getCapitalBuildingProductionModifier()));
+		}
+
+		if (GC.getTraitInfo(eTrait).getPillageGoldModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_PILLAGE_GOLD", GC.getTraitInfo(eTrait).getPillageGoldModifier()));
+		}
+
+		if (GC.getTraitInfo(eTrait).getCityCaptureGoldModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CITY_CAPTURE_GOLD", GC.getTraitInfo(eTrait).getCityCaptureGoldModifier()));
+		}
+
+		if (GC.getTraitInfo(eTrait).getNewCityCultureLevel() != NO_CULTURELEVEL)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_NEW_CITY_CULTURE_LEVEL", GC.getCultureLevelInfo((CultureLevelTypes)GC.getTraitInfo(eTrait).getNewCityCultureLevel()).getTextKeyWide()));
+		}
+
 		// UnitCombatFreeExperiences / UnitCombatProductionModifiers (building text keys)
 		for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
 		{
@@ -3569,6 +3606,17 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 					szText.Format(L"<link=literal>%s</link>", GC.getImprovementInfo((ImprovementTypes)iJ).getDescription());
 					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", (GC.getTraitInfo(eTrait).getImprovementYieldChanges(iJ, iI) != iLast));
 					iLast = GC.getTraitInfo(eTrait).getImprovementYieldChanges(iJ, iI);
+				}
+			}
+
+			for (iJ = 0; iJ < GC.getNumBonusInfos(); ++iJ)
+			{
+				if (GC.getTraitInfo(eTrait).getBonusYieldChange(iJ, iI) != 0)
+				{
+					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_YIELD_CHANGE", GC.getTraitInfo(eTrait).getBonusYieldChange(iJ, iI), GC.getYieldInfo((YieldTypes)iI).getChar()).c_str());
+					szText.Format(L"<link=literal>%s</link>", GC.getBonusInfo((BonusTypes)iJ).getDescription());
+					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", (GC.getTraitInfo(eTrait).getBonusYieldChange(iJ, iI) != iLast));
+					iLast = GC.getTraitInfo(eTrait).getBonusYieldChange(iJ, iI);
 				}
 			}
 		}
@@ -4703,6 +4751,12 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_PROMOTION_STEAL", GC.getPromotionInfo(ePromotion).getCombatPromotionStealChance()));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getCombatPercentInBorders() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_PERCENT_IN_BORDERS", GC.getPromotionInfo(ePromotion).getCombatPercentInBorders()));
 	}
 
 	if (GC.getPromotionInfo(ePromotion).getPromotionVictory() != NO_PROMOTION)
@@ -8122,6 +8176,12 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 	{
 		szBuffer.append(NEWLINE);
 		szBuffer.append(gDLL->getText("TXT_KEY_OCCUPATION_TIME_MODIFIER", kBuilding.getOccupationTimeModifier()));
+	}
+
+	if (kBuilding.getNewCityCultureLevel() != NO_CULTURELEVEL)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_NEW_CITY_CULTURE_LEVEL", GC.getCultureLevelInfo((CultureLevelTypes)kBuilding.getNewCityCultureLevel()).getTextKeyWide()));
 	}
 
 	// UpgradeAnywhereUnitCombats (effective while any of the player's cities has the building)
@@ -12282,6 +12342,15 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 			}
 		}
 
+		// Buildings the capital has (iCapitalBuildingProductionModifier of traits, added by this mod)
+		int iCapitalBuildingMod = city.getCapitalBuildingProductionModifier(eBuilding);
+		if (0 != iCapitalBuildingMod)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PROD_CAPITAL_BUILDING", iCapitalBuildingMod));
+			szBuffer.append(NEWLINE);
+			iBaseModifier += iCapitalBuildingMod;
+		}
+
 		// Wonder
 		if (isWorldWonderClass((BuildingClassTypes)(GC.getBuildingInfo(eBuilding).getBuildingClassType())) && NO_PLAYER != city.getOwnerINLINE())
 		{
@@ -13104,7 +13173,8 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 
 	if (owner.isGoldenAge())
 	{
-		int iGoldenAgeMod = GC.getDefineINT("GOLDEN_AGE_GREAT_PEOPLE_MODIFIER");
+		// With iGoldenAgeGreatPeopleRateModifier of the traits (added by this mod)
+		int iGoldenAgeMod = GC.getDefineINT("GOLDEN_AGE_GREAT_PEOPLE_MODIFIER") + owner.getGoldenAgeGreatPeopleRateModifier();
 
 		if (0 != iGoldenAgeMod)
 		{

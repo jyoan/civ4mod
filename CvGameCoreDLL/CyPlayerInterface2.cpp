@@ -67,6 +67,11 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("isNewCityStateReligion", &CyPlayer::isNewCityStateReligion, "bool () - the state religion spreads to new cities (added by this mod)")
 		.def("isMaintainFeatures", &CyPlayer::isMaintainFeatures, "bool (int /*FeatureTypes*/ eFeature) - builds with an improvement keep the feature on our plots (added by this mod)")
 		.def("getFeatureRouteType", &CyPlayer::getFeatureRouteType, "int (int /*FeatureTypes*/ eFeature) - the route a feature counts as in our territory (added by this mod)")
+		.def("getGoldenAgeGreatPeopleRateModifier", &CyPlayer::getGoldenAgeGreatPeopleRateModifier, "int () - great people rate % in golden ages from traits (added by this mod)")
+		.def("getCapitalBuildingProductionModifier", &CyPlayer::getCapitalBuildingProductionModifier, "int () - production % of the buildings the capital has from traits (added by this mod)")
+		.def("getPillageGoldModifier", &CyPlayer::getPillageGoldModifier, "int () - pillage gold % from traits (added by this mod)")
+		.def("getCityCaptureGoldModifier", &CyPlayer::getCityCaptureGoldModifier, "int () - city capture gold % from traits (added by this mod)")
+		.def("getNewCityCultureLevel", &CyPlayer::getNewCityCultureLevel, "int () - the culture level new cities start with (added by this mod)")
 		.def("getOccupationTimeModifier", &CyPlayer::getOccupationTimeModifier, "int () - revolt time % of conquered cities from traits and buildings (added by this mod)")
 		;
 }

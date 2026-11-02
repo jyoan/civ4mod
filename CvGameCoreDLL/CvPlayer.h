@@ -213,6 +213,13 @@ public:
 	bool isMaintainFeatures(FeatureTypes eFeature) const;				// Exposed to Python
 	// The route a feature counts as in the territory of this player (traits; the best one, added by this mod)
 	RouteTypes getFeatureRouteType(FeatureTypes eFeature) const;		// Exposed to Python
+	// Civ5 abilities (added by this mod): traits (and buildings in any city for NewCityCultureLevel), on each call
+	int getGoldenAgeGreatPeopleRateModifier() const;		// Exposed to Python
+	int getTraitBonusYieldChange(BonusTypes eBonus, YieldTypes eYield) const;
+	int getCapitalBuildingProductionModifier() const;		// Exposed to Python
+	int getPillageGoldModifier() const;					// Exposed to Python
+	int getCityCaptureGoldModifier() const;				// Exposed to Python
+	CultureLevelTypes getNewCityCultureLevel() const;		// Exposed to Python
 	int getProductionModifier(BuildingTypes eBuilding) const;
 	int getProductionModifier(ProjectTypes eProject) const;
 

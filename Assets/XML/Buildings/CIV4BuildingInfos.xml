@@ -28808,6 +28808,7 @@
 			<iNewCityPopulation>2</iNewCityPopulation>
 			<bNewCityStateReligion>1</bNewCityStateReligion>
 			<iOccupationTimeModifier>100</iOccupationTimeModifier>
+			<NewCityCultureLevel>CULTURELEVEL_DEVELOPING</NewCityCultureLevel>
 		</BuildingInfo>
 		<BuildingInfo>
 			<BuildingClass>BUILDINGCLASS_TEST_GREAT_PEOPLE</BuildingClass>
