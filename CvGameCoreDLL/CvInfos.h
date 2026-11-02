@@ -1928,6 +1928,10 @@ public:
 	int getNumPrereqOrTraits() const;				// Exposed to Python
 	int getPrereqOrTraits(int i) const;				// Exposed to Python
 	const std::vector<int>& getPrereqOrTraitsVector() const;
+	// PrereqOrSettledSpecialists (added by this mod): one of the entries is enough
+	int getNumPrereqOrSettledSpecialists() const;			// Exposed to Python
+	int getPrereqOrSettledSpecialistType(int i) const;		// Exposed to Python
+	int getPrereqOrSettledSpecialistNum(int i) const;		// Exposed to Python
 	int getProductionTraits(int i) const;				// Exposed to Python
 	int getHappinessTraits(int i) const;				// Exposed to Python
 	int getBuildingHappinessChanges(int i) const;				// Exposed to Python
@@ -2082,6 +2086,8 @@ protected:
 	int* m_piPrereqAndTechs;
 	int* m_piPrereqOrBonuses;
 	std::vector<int> m_aiPrereqOrTraits;
+	std::vector<int> m_aiPrereqOrSettledSpecialistType;
+	std::vector<int> m_aiPrereqOrSettledSpecialistNum;
 	int m_iPlotRadius;
 	int m_iPlotRadiusCultureLevel;
 	int m_iNewCityPopulation;

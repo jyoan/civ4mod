@@ -758,6 +758,7 @@ public:
 	int getFreeSpecialistCount(SpecialistTypes eIndex) const;					// Exposed to Python
 	void setFreeSpecialistCount(SpecialistTypes eIndex, int iNewValue);			// Exposed to Python
 	void changeFreeSpecialistCount(SpecialistTypes eIndex, int iChange);		// Exposed to Python
+	bool hasPrereqOrSettledSpecialists(BuildingTypes eBuilding) const;	// added by this mod
 	int getAddedFreeSpecialistCount(SpecialistTypes eIndex) const;		// Exposed to Python
 
 	int getImprovementFreeSpecialists(ImprovementTypes eIndex) const;			// Exposed to Python

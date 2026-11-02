@@ -866,7 +866,16 @@
 		<Spanish>[COLOR_POSITIVE_TEXT]The %s1_FeatName remains[COLOR_REVERT]</Spanish>
 		<Japanese>[COLOR_POSITIVE_TEXT]%s1_FeatName&#12399;&#27531;&#12426;&#12414;&#12377;[COLOR_REVERT]</Japanese>
 	</TEXT>
-	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD) -->
+	<TEXT>
+		<Tag>TXT_KEY_SETTLED_SPECIALIST_NUM</Tag>
+		<English>%d2_Num settled %s1_Specialist</English>
+		<French>%d2_Num settled %s1_Specialist</French>
+		<German>%d2_Num settled %s1_Specialist</German>
+		<Italian>%d2_Num settled %s1_Specialist</Italian>
+		<Spanish>%d2_Num settled %s1_Specialist</Spanish>
+		<Japanese>&#23450;&#20303;&#12375;&#12383;%s1_Specialist%d2_Num&#20154;</Japanese>
+	</TEXT>
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
 		<English>Test data for checking the mod's features.</English>
@@ -1154,5 +1163,14 @@
 		<Italian>Test Building (New City)</Italian>
 		<Spanish>Test Building (New City)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#26032;&#12375;&#12356;&#37117;&#24066;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_GREAT_PEOPLE</Tag>
+		<English>Test Building (Great People)</English>
+		<French>Test Building (Great People)</French>
+		<German>Test Building (Great People)</German>
+		<Italian>Test Building (Great People)</Italian>
+		<Spanish>Test Building (Great People)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#20553;&#20154;&#65289;</Japanese>
 	</TEXT>
 </Civ4GameText>

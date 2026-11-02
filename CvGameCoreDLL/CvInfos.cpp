@@ -4885,6 +4885,72 @@ static void writePrereqOrTraits(FDataStreamBase* stream, const std::vector<int>&
 	}
 }
 
+// PrereqOrSettledSpecialists of buildings (added by this mod): pairs of a specialist type and a number
+static void readPrereqOrSettledSpecialists(FDataStreamBase* stream, std::vector<int>& aiTypes, std::vector<int>& aiNums)
+{
+	int iCount;
+	int iElement;
+	int i;
+
+	aiTypes.clear();
+	aiNums.clear();
+	stream->Read(&iCount);
+	for (i = 0; i < iCount; i++)
+	{
+		stream->Read(&iElement);
+		aiTypes.push_back(iElement);
+		stream->Read(&iElement);
+		aiNums.push_back(iElement);
+	}
+}
+
+static void writePrereqOrSettledSpecialists(FDataStreamBase* stream, const std::vector<int>& aiTypes, const std::vector<int>& aiNums)
+{
+	int i;
+
+	stream->Write((int)aiTypes.size());
+	for (i = 0; i < (int)aiTypes.size(); i++)
+	{
+		stream->Write(aiTypes[i]);
+		stream->Write(aiNums[i]);
+	}
+}
+
+// Reads <PrereqOrSettledSpecialists>: any number of <PrereqOrSettledSpecialist> with a SpecialistType and iNumSettled
+// (1 if omitted)
+static void readPrereqOrSettledSpecialists(CvXMLLoadUtility* pXML, std::vector<int>& aiTypes, std::vector<int>& aiNums)
+{
+	CvString szTextVal;
+	int iSpecialist;
+	int iNum;
+
+	aiTypes.clear();
+	aiNums.clear();
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "PrereqOrSettledSpecialists"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "PrereqOrSettledSpecialist"))
+		{
+			do
+			{
+				pXML->GetChildXmlValByName(szTextVal, "SpecialistType");
+				iSpecialist = pXML->FindInInfoClass(szTextVal);
+				pXML->GetChildXmlValByName(&iNum, "iNumSettled", 1);
+				if (iSpecialist > -1)
+				{
+					aiTypes.push_back(iSpecialist);
+					aiNums.push_back(iNum);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "PrereqOrSettledSpecialist"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
 // Reads <PrereqOrTraits>, which holds any number of <TraitType>. NONE is skipped.
 static void readPrereqOrTraits(CvXMLLoadUtility* pXML, std::vector<int>& aiPrereqOrTraits)
 {
@@ -8435,6 +8501,25 @@ const std::vector<int>& CvBuildingInfo::getPrereqOrTraitsVector() const
 	return m_aiPrereqOrTraits;
 }
 
+int CvBuildingInfo::getNumPrereqOrSettledSpecialists() const
+{
+	return (int)m_aiPrereqOrSettledSpecialistType.size();
+}
+
+int CvBuildingInfo::getPrereqOrSettledSpecialistType(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrSettledSpecialists(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrSettledSpecialists()) ? m_aiPrereqOrSettledSpecialistType[i] : -1;
+}
+
+int CvBuildingInfo::getPrereqOrSettledSpecialistNum(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrSettledSpecialists(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrSettledSpecialists()) ? m_aiPrereqOrSettledSpecialistNum[i] : 0;
+}
+
 // City plot radius of a city with this building (added by this mod; 0: no change)
 int CvBuildingInfo::getPlotRadius() const
 {
@@ -8962,6 +9047,17 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 		stream->Read(&m_bNewCityStateReligion);
 		stream->Read(&m_iOccupationTimeModifier);
 	}
+
+	// uiFlag < 6: cache written before PrereqOrSettledSpecialists existed
+	if (uiFlag > 5)
+	{
+		readPrereqOrSettledSpecialists(stream, m_aiPrereqOrSettledSpecialistType, m_aiPrereqOrSettledSpecialistNum);
+	}
+	else
+	{
+		m_aiPrereqOrSettledSpecialistType.clear();
+		m_aiPrereqOrSettledSpecialistNum.clear();
+	}
 }
 
 //
@@ -8971,7 +9067,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=5;
+	uint uiFlag=6;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -9148,6 +9244,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iNewCityPopulation);
 	stream->Write(m_bNewCityStateReligion);
 	stream->Write(m_iOccupationTimeModifier);
+	writePrereqOrSettledSpecialists(stream, m_aiPrereqOrSettledSpecialistType, m_aiPrereqOrSettledSpecialistNum);
 }
 
 //
@@ -9297,6 +9394,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
+	readPrereqOrSettledSpecialists(pXML, m_aiPrereqOrSettledSpecialistType, m_aiPrereqOrSettledSpecialistNum);
 	pXML->GetChildXmlValByName(&m_iPlotRadius, "iPlotRadius");
 	pXML->GetChildXmlValByName(szTextVal, "PlotRadiusCultureLevel");
 	m_iPlotRadiusCultureLevel = pXML->FindInInfoClass(szTextVal);

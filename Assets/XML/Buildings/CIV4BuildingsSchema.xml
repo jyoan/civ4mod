@@ -239,6 +239,14 @@
 		<element type="ReligionChange" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="SpecialistType" content="textOnly"/>
+	<ElementType name="iNumSettled" content="textOnly" dt:type="int"/>
+	<ElementType name="PrereqOrSettledSpecialist" content="eltOnly">
+		<element type="SpecialistType"/>
+		<element type="iNumSettled" minOccurs="0"/>
+	</ElementType>
+	<ElementType name="PrereqOrSettledSpecialists" content="eltOnly">
+		<element type="PrereqOrSettledSpecialist" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="iSpecialistCount" content="textOnly" dt:type="int"/>
 	<ElementType name="SpecialistCount" content="eltOnly">
 		<element type="SpecialistType"/>
@@ -427,6 +435,7 @@
 		<element type="Bonus"/>
 		<element type="PrereqBonuses"/>
 		<element type="PrereqOrTraits" minOccurs="0"/>
+		<element type="PrereqOrSettledSpecialists" minOccurs="0"/>
 		<element type="ProductionTraits"/>
 		<element type="HappinessTraits"/>
 		<element type="NoBonus"/>

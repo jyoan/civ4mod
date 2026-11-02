@@ -8457,6 +8457,11 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 			buildPrereqOrTraitsString(szBuffer, kBuilding.getPrereqOrTraitsVector());
 		}
 
+		if (bCivilopediaText || pCity == NULL || !pCity->hasPrereqOrSettledSpecialists(eBuilding))
+		{
+			buildPrereqOrSettledSpecialistsString(szBuffer, eBuilding);
+		}
+
 		bFirst = true;
 
 		if (kBuilding.getSpecialBuildingType() != NO_SPECIALBUILDING)
@@ -8748,6 +8753,31 @@ void CvGameTextMgr::buildPrereqOrTraitsString(CvWStringBuffer& szBuffer, const s
 		szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_REQUIRES").c_str());
 		szTrait.Format(L"<link=literal>%s</link>", GC.getTraitInfo((TraitTypes)aiPrereqOrTraits[iI]).getDescription());
 		setListHelp(szBuffer, szTempBuffer, szTrait, gDLL->getText("TXT_KEY_OR").c_str(), bFirst);
+		bFirst = false;
+	}
+
+	if (!bFirst)
+	{
+		szBuffer.append(ENDCOLR);
+	}
+}
+
+// PrereqOrSettledSpecialists of buildings: "Requires 5 settled Great Scientists or 2 settled Great Engineers" (added by
+// this mod). The specialist names link to the specialist pages.
+void CvGameTextMgr::buildPrereqOrSettledSpecialistsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding)
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	CvWString szTempBuffer;
+	CvWString szSpecialist;
+	bool bFirst = true;
+	int iI;
+
+	for (iI = 0; iI < kBuilding.getNumPrereqOrSettledSpecialists(); iI++)
+	{
+		szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_REQUIRES").c_str());
+		szSpecialist.Format(L"<link=literal>%s</link>", GC.getSpecialistInfo((SpecialistTypes)kBuilding.getPrereqOrSettledSpecialistType(iI)).getDescription());
+		szSpecialist = gDLL->getText("TXT_KEY_SETTLED_SPECIALIST_NUM", szSpecialist.GetCString(), kBuilding.getPrereqOrSettledSpecialistNum(iI));
+		setListHelp(szBuffer, szTempBuffer, szSpecialist, gDLL->getText("TXT_KEY_OR").c_str(), bFirst);
 		bFirst = false;
 	}
 
