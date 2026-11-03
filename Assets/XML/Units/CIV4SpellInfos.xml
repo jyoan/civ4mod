@@ -200,5 +200,14 @@
 			<Sound>AS2D_GOODY_GOLD</Sound>
 			<Button>,Art/Interface/Buttons/Actions/GoldenAge.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,3,4</Button>
 		</SpellInfo>
+		<SpellInfo>
+			<Type>SPELL_TEST_TRAIT</Type>
+			<Description>TXT_KEY_SPELL_TEST_TRAIT</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<Help>TXT_KEY_SPELL_TEST_TRAIT_HELP</Help>
+			<PromotionPrereq1>PROMOTION_TEST</PromotionPrereq1>
+			<PyResult>spellToggleFreeTrait(pCaster, 'TRAIT_TEST')</PyResult>
+			<Button>Art/Interface/Buttons/Process/ProcessResearch.dds</Button>
+		</SpellInfo>
 	</SpellInfos>
 </Civ4SpellInfos>

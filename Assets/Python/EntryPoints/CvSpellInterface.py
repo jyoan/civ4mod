@@ -48,6 +48,15 @@ def spellGainGold(pCaster, iGold):
 	"The owner of the caster gains gold"
 	gc.getPlayer(pCaster.getOwner()).changeGold(iGold)
 
+def spellToggleFreeTrait(pCaster, szTrait):
+	"The owner of the caster is given the trait, or loses it when it was given (not the traits of the leader or civilization)"
+	pPlayer = gc.getPlayer(pCaster.getOwner())
+	eTrait = gc.getInfoTypeForString(szTrait)
+	if pPlayer.getFreeTraitCount(eTrait) > 0:
+		pPlayer.changeFreeTraitCount(eTrait, -1)
+	else:
+		pPlayer.changeFreeTraitCount(eTrait, 1)
+
 def spellDamageCaster(pCaster, iDamage):
 	"The caster takes damage (it dies at 100, with a delay)"
 	pCaster.changeDamage(iDamage, PlayerTypes.NO_PLAYER)

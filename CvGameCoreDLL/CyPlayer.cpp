@@ -1987,6 +1987,24 @@ int CyPlayer::getFeatureRouteType(int /*FeatureTypes*/ eFeature)
 	return m_pPlayer ? m_pPlayer->getFeatureRouteType((FeatureTypes)eFeature) : -1;
 }
 
+bool CyPlayer::hasBaseTrait(int /*TraitTypes*/ eTrait)
+{
+	return m_pPlayer ? m_pPlayer->hasBaseTrait((TraitTypes)eTrait) : false;
+}
+
+int CyPlayer::getFreeTraitCount(int /*TraitTypes*/ eTrait)
+{
+	return m_pPlayer ? m_pPlayer->getFreeTraitCount((TraitTypes)eTrait) : -1;
+}
+
+void CyPlayer::changeFreeTraitCount(int /*TraitTypes*/ eTrait, int iChange)
+{
+	if (m_pPlayer)
+	{
+		m_pPlayer->changeFreeTraitCount((TraitTypes)eTrait, iChange);
+	}
+}
+
 bool CyPlayer::isIgnoreObsoleteBuilding(int /*BuildingTypes*/ eBuilding)
 {
 	return m_pPlayer ? m_pPlayer->isIgnoreObsoleteBuilding((BuildingTypes)eBuilding) : false;

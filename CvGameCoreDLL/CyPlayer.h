@@ -449,6 +449,9 @@ public:
 	bool isNewCityStateReligion();
 	bool isMaintainFeatures(int /*FeatureTypes*/ eFeature);
 	int getFeatureRouteType(int /*FeatureTypes*/ eFeature);
+	bool hasBaseTrait(int /*TraitTypes*/ eTrait);
+	int getFreeTraitCount(int /*TraitTypes*/ eTrait);
+	void changeFreeTraitCount(int /*TraitTypes*/ eTrait, int iChange);
 	bool isIgnoreObsoleteBuilding(int /*BuildingTypes*/ eBuilding);
 	bool isObsoleteBuilding(int /*BuildingTypes*/ eBuilding);
 	int getGoldenAgeGreatPeopleRateModifier();

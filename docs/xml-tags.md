@@ -35,6 +35,8 @@
 | `CIV4SpellInfos.xml` | `SpellInfo` の `iRange`、`iDamage`、`iDamageLimit`、`iImmobileTurns`、`bImmuneTeam`、`bImmuneEnemy`、`bImmuneFlying`（と、`bBuffCasterOnly=0` の `AddPromotionType1`〜`3` / `RemovePromotionType1`〜`3`） | 呪文の第 2 段階 b（名前は FFH2 と同じ）。周りのユニットへの効果。交戦中でない他国のユニットは常に対象外など、FFH2 との違いは `docs/spells.md` |
 | `CIV4SpellInfos.xml` | `SpellInfo` の前提 `UnitInStackPrereq`、`BuildingPrereq`、`BuildingClassOwnedPrereq`、`CorporationPrereq`、`FeatureOrPrereq1` / `2`、`ImprovementPrereq`、`PromotionInStackPrereq`、`StateReligionPrereq`、`bAdjacentToWaterOnly` と、効果 `iCost`、`AddPromotionType1`〜`3`、`RemovePromotionType1`〜`3`、`bBuffCasterOnly`、`ConvertUnitType`、`CreateBuildingType`、`CreateFeatureType`、`CreateImprovementType`、`SpreadReligion`、`iChangePopulation`、`bSacrificeCaster`、`bRemoveHasCasted`、`Effect`、`Sound` | 呪文の第 2 段階 a（名前は FFH2 と同じ）。術者自身・今いるタイル・今いる都市への効果。FFH2 との違い（自分の都市・領土に限るものなど）は「呪文」の節 |
 
+志向の付け外し（タグではなく仕組み）: `CvPlayer::changeFreeTraitCount(eTrait, iChange)` でゲームの途中に志向を与える・取り上げる（Python は `CyPlayer.changeFreeTraitCount` / `getFreeTraitCount` / `hasBaseTrait`）。`CvPlayer::hasTrait()` は「指導者・文明の志向（`hasBaseTrait`）」か「与えられた数（`m_paiFreeTraitCount`。セーブに保存、`CvPlayer` の `uiFlag=3`）が 1 以上」。数を数えるので、2 か所から与えて 1 か所が取り上げても残る。元から持つ志向を与えても二重には効かない。志向を得た・失ったときは、ゲーム開始時に 1 回だけ足していた効果（`CvPlayer::processTrait`。`init()` もこれを使う）を足し引きし、志向で決まる保存された値を計算し直す（`CvPlayer::updateTraitDependents`: 無政府期間の上限、金融志向などの閾値、陳腐化を無視する建物の効果、都市圏の半径、自国の領土のタイルの産出、`FeatureRoutes` があれば交易網）。その他の志向の効果はそのつど合計しているので、すぐに反映される。志向の昇進（`FreePromotions`・`FreePromotionSets`）は生産したユニットだけに付き、今いるユニットには付けない・外さない。ゲーム状態を変えるので、すべてのマシンで同じように呼ぶ（呪文の `PyResult` など。画面の Python からは呼ばない）
+
 BtS 本体の修正:
 
 - `CvUnit::upgradePrice` は、割引の合計が 100% を超えると費用がマイナスになり、アップグレードで金が増えていた。この Mod では費用を 0 未満にしない

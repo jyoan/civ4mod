@@ -58,6 +58,7 @@ CvPlayer::CvPlayer()
 	m_paiBonusExport = NULL;
 	m_paiBonusImport = NULL;
 	m_paiImprovementCount = NULL;
+	m_paiFreeTraitCount = NULL;
 	m_paiFreeBuildingCount = NULL;
 	m_paiExtraBuildingHappiness = NULL;
 	m_paiExtraBuildingHealth = NULL;
@@ -259,6 +260,7 @@ void CvPlayer::uninit()
 	SAFE_DELETE_ARRAY(m_paiBonusExport);
 	SAFE_DELETE_ARRAY(m_paiBonusImport);
 	SAFE_DELETE_ARRAY(m_paiImprovementCount);
+	SAFE_DELETE_ARRAY(m_paiFreeTraitCount);
 	SAFE_DELETE_ARRAY(m_paiFreeBuildingCount);
 	SAFE_DELETE_ARRAY(m_paiExtraBuildingHappiness);
 	SAFE_DELETE_ARRAY(m_paiExtraBuildingHealth);
@@ -535,6 +537,13 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		for (iI = 0; iI < GC.getNumImprovementInfos(); iI++)
 		{
 			m_paiImprovementCount[iI] = 0;
+		}
+
+		FAssertMsg(m_paiFreeTraitCount==NULL, "about to leak memory, CvPlayer::m_paiFreeTraitCount");
+		m_paiFreeTraitCount = new int [GC.getNumTraitInfos()];
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			m_paiFreeTraitCount[iI] = 0;
 		}
 
 		FAssertMsg(m_paiFreeBuildingCount==NULL, "about to leak memory, CvPlayer::m_paiFreeBuildingCount");
@@ -2189,7 +2198,14 @@ CvSelectionGroup* CvPlayer::cycleSelectionGroups(CvUnit* pUnit, bool bForward, b
 }
 
 
+// The traits of the leader and the civilization, and the traits given during the game (added by this mod)
 bool CvPlayer::hasTrait(TraitTypes eTrait) const
+{
+	return (hasBaseTrait(eTrait) || (getFreeTraitCount(eTrait) > 0));
+}
+
+// The traits the player starts with: the leader's, and the civilization's (<Traits> in CIV4CivilizationInfos.xml)
+bool CvPlayer::hasBaseTrait(TraitTypes eTrait) const
 {
 	FAssertMsg((getLeaderType() >= 0), "getLeaderType() is less than zero");
 	FAssertMsg((eTrait >= 0), "eTrait is less than zero");
@@ -2198,8 +2214,132 @@ bool CvPlayer::hasTrait(TraitTypes eTrait) const
 		return true;
 	}
 
-	// Traits can also come from the civilization (<Traits> in CIV4CivilizationInfos.xml)
 	return ((getCivilizationType() != NO_CIVILIZATION) && GC.getCivilizationInfo(getCivilizationType()).hasTrait(eTrait));
+}
+
+// How many times the trait is given during the game (added by this mod). The player has the trait while it is above 0.
+int CvPlayer::getFreeTraitCount(TraitTypes eTrait) const
+{
+	FAssertMsg(eTrait >= 0, "eTrait is expected to be non-negative (invalid Index)");
+	FAssertMsg(eTrait < GC.getNumTraitInfos(), "eTrait is expected to be within maximum bounds (invalid Index)");
+	return ((m_paiFreeTraitCount != NULL) ? m_paiFreeTraitCount[eTrait] : 0);
+}
+
+// Gives (iChange > 0) or takes away (iChange < 0) the trait during the game (added by this mod). When the player gains or
+// loses the trait (it is not one of the base traits), its effects are added or removed: the values of processTrait, and
+// the stored values that depend on the traits (updateTraitDependents). The other trait effects are summed up when used.
+// Must be called on every computer of a multiplayer game (not from the interface code).
+void CvPlayer::changeFreeTraitCount(TraitTypes eTrait, int iChange)
+{
+	std::vector<bool> abOldObsoleteBuilding;
+	bool bOldHasTrait;
+	int iI;
+
+	FAssertMsg(eTrait >= 0, "eTrait is expected to be non-negative (invalid Index)");
+	FAssertMsg(eTrait < GC.getNumTraitInfos(), "eTrait is expected to be within maximum bounds (invalid Index)");
+
+	if (iChange == 0)
+	{
+		return;
+	}
+
+	bOldHasTrait = hasTrait(eTrait);
+	if (bOldHasTrait != (hasBaseTrait(eTrait) || (getFreeTraitCount(eTrait) + iChange > 0)))
+	{
+		// Before the change: which buildings are obsolete in our cities (a trait can keep them from becoming obsolete)
+		for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+		{
+			abOldObsoleteBuilding.push_back(isObsoleteBuilding((BuildingTypes)iI));
+		}
+	}
+
+	m_paiFreeTraitCount[eTrait] += iChange;
+	FAssert(getFreeTraitCount(eTrait) >= 0);
+
+	if (bOldHasTrait != hasTrait(eTrait))
+	{
+		processTrait(eTrait, (hasTrait(eTrait) ? 1 : -1));
+		updateTraitDependents(abOldObsoleteBuilding, eTrait);
+	}
+}
+
+// After the player gains or loses a trait: updates the stored values that depend on the traits
+void CvPlayer::updateTraitDependents(const std::vector<bool>& abOldObsoleteBuilding, TraitTypes eTrait)
+{
+	CvCity* pLoopCity;
+	CvPlot* pLoopPlot;
+	bool bFeatureRoutes;
+	int iLoop;
+	int iI;
+
+	updateMaxAnarchyTurns();
+
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		updateExtraYieldThreshold((YieldTypes)iI);
+	}
+
+	// Buildings a trait keeps from becoming obsolete (as CvTeam::changeObsoleteBuildingCount)
+	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+	{
+		if (iI < (int)abOldObsoleteBuilding.size() && abOldObsoleteBuilding[iI] != isObsoleteBuilding((BuildingTypes)iI))
+		{
+			for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+			{
+				if (pLoopCity->getNumBuilding((BuildingTypes)iI) > 0)
+				{
+					pLoopCity->processBuilding((BuildingTypes)iI, ((isObsoleteBuilding((BuildingTypes)iI)) ? -pLoopCity->getNumBuilding((BuildingTypes)iI) : pLoopCity->getNumBuilding((BuildingTypes)iI)), true);
+				}
+			}
+		}
+	}
+
+	// City radius (iCityRadiusChange)
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		pLoopCity->updatePlotRadius();
+	}
+
+	// Plot yields in our territory (TerrainYieldChanges, FeatureYieldChanges, ImprovementYieldChanges, BonusYieldChanges,
+	// RiverPlotYieldChanges), also of the plots no city works
+	for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
+	{
+		pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
+
+		if (pLoopPlot->getOwnerINLINE() == getID())
+		{
+			pLoopPlot->updateYield();
+		}
+	}
+
+	// Trade network (FeatureRoutes)
+	bFeatureRoutes = false;
+	for (iI = 0; iI < GC.getNumFeatureInfos(); iI++)
+	{
+		if (GC.getTraitInfo(eTrait).getFeatureRouteType(iI) != NO_ROUTE)
+		{
+			bFeatureRoutes = true;
+			break;
+		}
+	}
+
+	if (bFeatureRoutes)
+	{
+		updatePlotGroups();
+	}
+
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		pLoopCity->AI_setAssignWorkDirty(true);
+		pLoopCity->setInfoDirty(true);
+	}
+
+	if (getID() == GC.getGameINLINE().getActivePlayer())
+	{
+		gDLL->getInterfaceIFace()->setDirty(GameData_DIRTY_BIT, true);
+		gDLL->getInterfaceIFace()->setDirty(CityInfo_DIRTY_BIT, true);
+		gDLL->getInterfaceIFace()->setDirty(Score_DIRTY_BIT, true);
+	}
 }
 
 // PrereqOrTraits of units, buildings and civics: an empty list needs no trait, otherwise one of the traits is enough
@@ -16732,6 +16872,12 @@ void CvPlayer::read(FDataStreamBase* pStream)
 
 	pStream->Read(&m_iPopRushHurryCount);
 	pStream->Read(&m_iInflationModifier);
+
+	// Traits given during the game were added by this mod (uiFlag 3)
+	if (uiFlag > 2)
+	{
+		pStream->Read(GC.getNumTraitInfos(), m_paiFreeTraitCount);
+	}
 }
 
 //
@@ -16742,7 +16888,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 2;	// 2: FEAT_GLOBAL_SPELL (added by this mod)
+	uint uiFlag = 3;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -17150,6 +17296,8 @@ void CvPlayer::write(FDataStreamBase* pStream)
 
 	pStream->Write(m_iPopRushHurryCount);
 	pStream->Write(m_iInflationModifier);
+
+	pStream->Write(GC.getNumTraitInfos(), m_paiFreeTraitCount);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

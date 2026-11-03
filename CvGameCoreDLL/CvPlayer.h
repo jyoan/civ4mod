@@ -69,6 +69,9 @@ public:
 
 	bool hasTrait(TraitTypes eTrait) const;																																			// Exposed to Python						
 	bool hasPrereqOrTrait(const std::vector<int>& aiPrereqOrTraits) const;	// PrereqOrTraits: empty, or the player has one of the traits
+	bool hasBaseTrait(TraitTypes eTrait) const;				// Exposed to Python: from the leader or the civilization
+	int getFreeTraitCount(TraitTypes eTrait) const;			// Exposed to Python: traits given during the game
+	void changeFreeTraitCount(TraitTypes eTrait, int iChange);	// Exposed to Python
 	DllExport bool isHuman() const;																																							// Exposed to Python						
 	DllExport void updateHuman();
 	DllExport bool isBarbarian() const;																																					// Exposed to Python						
@@ -1219,6 +1222,7 @@ protected:
 	int* m_paiBonusExport;
 	int* m_paiBonusImport;
 	int* m_paiImprovementCount;
+	int* m_paiFreeTraitCount;				// traits given during the game (added by this mod)
 	int* m_paiFreeBuildingCount;
 	int* m_paiExtraBuildingHappiness;
 	int* m_paiExtraBuildingHealth;
@@ -1301,6 +1305,7 @@ protected:
 
 	void processCivics(CivicTypes eCivic, int iChange);
 	void processTrait(TraitTypes eTrait, int iChange);
+	void updateTraitDependents(const std::vector<bool>& abOldObsoleteBuilding, TraitTypes eTrait);
 
 	// for serialization
 	virtual void read(FDataStreamBase* pStream);
