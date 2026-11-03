@@ -4404,6 +4404,19 @@ protected:
 
 };
 
+// ConditionalFreeTraits of traits (added by this mod): the player has iTrait while all the conditions hold
+struct ConditionalFreeTrait
+{
+	int iTrait;
+	bool bAtWar;				// at war with a team that is not a minor civilization or the barbarians
+	bool bAtPeace;			// not at war (as bAtWar)
+	int iStateReligion;		// NO_RELIGION: any
+	bool bNoStateReligion;
+	int iEraMin;			// NO_ERA: no limit (the current era of the player)
+	int iEraMax;
+	int iPrereqCivic;		// NO_CIVIC: any
+};
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //
 //  class : CvTraitInfo
@@ -4501,6 +4514,9 @@ public:
 	const TCHAR* getPyOnBeginTurn() const;			// Exposed to Python
 	const TCHAR* getPyOnCityFounded() const;		// Exposed to Python
 	const TCHAR* getPyOnCityAcquired() const;		// Exposed to Python
+	int getNumConditionalFreeTraits() const;		// Exposed to Python
+	int getConditionalFreeTraitType(int i) const;	// Exposed to Python
+	const ConditionalFreeTrait& getConditionalFreeTrait(int i) const;
 	int isFreePromotionUnitCombat(int i) const;			
 
 	// FreePromotionSets: each set gives its promotions to its unit combats
@@ -4593,6 +4609,9 @@ protected:
 	std::vector<CvString> m_aszNoObsoleteBuildingClassTypes;	// read() keeps the types as strings until readPass3(),
 	std::vector<CvString> m_aszNoObsoleteSpecialBuildingTypes;	// because building classes are loaded after traits
 	CvString m_aszPythonHook[NUM_TRAIT_PYHOOK_TYPES];
+	std::vector<ConditionalFreeTrait> m_aConditionalFreeTraits;
+	std::vector<CvString> m_aszConditionalFreeTraitTypes;	// read() keeps the types as strings until readPass3() (traits
+														// after this one, civics): 5 per item (trait, state religion, eras, civic)
 	bool* m_pabFreePromotionUnitCombat;
 
 	std::vector< std::vector<bool> > m_aabFreePromotionSetPromotion;		// [set][promotion]

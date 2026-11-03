@@ -2007,6 +2007,19 @@ bool CyPlayer::isMaxCitiesReached()
 	return m_pPlayer ? m_pPlayer->isMaxCitiesReached() : false;
 }
 
+int CyPlayer::getConditionalTraitCount(int /*TraitTypes*/ eTrait)
+{
+	return m_pPlayer ? m_pPlayer->getConditionalTraitCount((TraitTypes)eTrait) : -1;
+}
+
+void CyPlayer::updateConditionalTraits()
+{
+	if (m_pPlayer)
+	{
+		m_pPlayer->updateConditionalTraits();
+	}
+}
+
 bool CyPlayer::hasBaseTrait(int /*TraitTypes*/ eTrait)
 {
 	return m_pPlayer ? m_pPlayer->hasBaseTrait((TraitTypes)eTrait) : false;

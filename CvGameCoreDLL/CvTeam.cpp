@@ -3415,9 +3415,23 @@ bool CvTeam::isAtWar(TeamTypes eIndex) const
 
 void CvTeam::setAtWar(TeamTypes eIndex, bool bNewValue)
 {
+	int iI;
+
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
-	m_abAtWar[eIndex] = bNewValue;
+	if (m_abAtWar[eIndex] != bNewValue)
+	{
+		m_abAtWar[eIndex] = bNewValue;
+
+		// ConditionalFreeTraits (bAtWar, bAtPeace) of the players of the team (added by this mod)
+		for (iI = 0; iI < MAX_PLAYERS; iI++)
+		{
+			if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
+			{
+				GET_PLAYER((PlayerTypes)iI).updateConditionalTraits();
+			}
+		}
+	}
 }
 
 

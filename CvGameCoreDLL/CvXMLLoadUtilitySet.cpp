@@ -622,12 +622,6 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 	LoadGlobalClassInfo(GC.getRouteInfo(), "Civ4RouteInfos", "Misc", "Civ4RouteInfos/RouteInfos/RouteInfo", false);
 	LoadGlobalClassInfo(GC.getImprovementInfo(), "CIV4ImprovementInfos", "Terrain", "Civ4ImprovementInfos/ImprovementInfos/ImprovementInfo", true, &CvDLLUtilityIFaceBase::createImprovementInfoCacheObject);
 	LoadGlobalClassInfo(GC.getBuildingClassInfo(), "CIV4BuildingClassInfos", "Buildings", "Civ4BuildingClassInfos/BuildingClassInfos/BuildingClassInfo", false);
-	for (int i=0; i < GC.getNumTraitInfos(); ++i)
-	{
-		// Trait ImprovementYieldChanges and NoObsoleteBuildingClasses (added by this mod): improvements and building
-		// classes are loaded after traits
-		GC.getTraitInfo((TraitTypes)i).readPass3();
-	}
 	LoadGlobalClassInfo(GC.getBuildingInfo(), "CIV4BuildingInfos", "Buildings", "Civ4BuildingInfos/BuildingInfos/BuildingInfo", false, &CvDLLUtilityIFaceBase::createBuildingInfoCacheObject);
 	for (int i=0; i < GC.getNumBuildingClassInfos(); ++i)
 	{
@@ -636,6 +630,12 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 	LoadGlobalClassInfo(GC.getSpecialUnitInfo(), "CIV4SpecialUnitInfos", "Units", "Civ4SpecialUnitInfos/SpecialUnitInfos/SpecialUnitInfo", false);
 	LoadGlobalClassInfo(GC.getProjectInfo(), "CIV4ProjectInfo", "GameInfo", "Civ4ProjectInfo/ProjectInfos/ProjectInfo", true);
 	LoadGlobalClassInfo(GC.getCivicInfo(), "CIV4CivicInfos", "GameInfo", "Civ4CivicInfos/CivicInfos/CivicInfo", false, &CvDLLUtilityIFaceBase::createCivicInfoCacheObject);
+	for (int i=0; i < GC.getNumTraitInfos(); ++i)
+	{
+		// Trait ImprovementYieldChanges, NoObsoleteBuildingClasses and ConditionalFreeTraits (added by this mod):
+		// improvements, building classes and civics are loaded after traits
+		GC.getTraitInfo((TraitTypes)i).readPass3();
+	}
 	for (int i=0; i < GC.getNumVoteSourceInfos(); ++i)
 	{
 		GC.getVoteSourceInfo((VoteSourceTypes)i).readPass3();

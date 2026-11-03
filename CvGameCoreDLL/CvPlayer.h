@@ -25,6 +25,8 @@ typedef std::vector< std::pair<UnitCombatTypes, PromotionTypes> > UnitCombatProm
 typedef std::vector< std::pair<UnitClassTypes, PromotionTypes> > UnitClassPromotionArray;
 typedef std::vector< std::pair<CivilizationTypes, LeaderHeadTypes> > CivLeaderArray;
 
+struct ConditionalFreeTrait;		// CvInfos.h (added by this mod)
+
 class CvPlayer
 {
 public:
@@ -72,6 +74,9 @@ public:
 	bool hasBaseTrait(TraitTypes eTrait) const;				// Exposed to Python: from the leader or the civilization
 	int getFreeTraitCount(TraitTypes eTrait) const;			// Exposed to Python: traits given during the game
 	void changeFreeTraitCount(TraitTypes eTrait, int iChange);	// Exposed to Python
+	int getConditionalTraitCount(TraitTypes eTrait) const;		// Exposed to Python: given by ConditionalFreeTraits
+	bool isConditionalFreeTraitActive(const ConditionalFreeTrait& kCondition) const;
+	void updateConditionalTraits();								// Exposed to Python
 	void doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity = NULL, PlayerTypes eOldOwner = NO_PLAYER, bool bConquest = false, bool bTrade = false);	// PyOnGameStart etc. of the traits
 	DllExport bool isHuman() const;																																							// Exposed to Python						
 	DllExport void updateHuman();
@@ -1195,6 +1200,7 @@ protected:
 	bool m_bFoundedFirstCity;
 	bool m_bStrike;
 	bool m_bUpdatingTraitDependents;		// CvPlayer::updateTraitDependents is running (not saved; added by this mod)
+	bool m_bUpdatingConditionalTraits;		// CvPlayer::updateConditionalTraits is running (not saved; added by this mod)
 	bool m_bHuman;
 
 	PlayerTypes m_eID;
@@ -1229,6 +1235,7 @@ protected:
 	int* m_paiBonusImport;
 	int* m_paiImprovementCount;
 	int* m_paiFreeTraitCount;				// traits given during the game (added by this mod)
+	int* m_paiConditionalTraitCount;		// the part of m_paiFreeTraitCount given by ConditionalFreeTraits (added by this mod)
 	int* m_paiFreeBuildingCount;
 	int* m_paiExtraBuildingHappiness;
 	int* m_paiExtraBuildingHealth;

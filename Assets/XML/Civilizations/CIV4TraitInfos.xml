@@ -413,6 +413,34 @@
 			<PyOnBeginTurn>isEveryTurns(5) and createUnits(pPlayer, 'UNITCLASS_WARRIOR', 1, capitalPlot(pPlayer))</PyOnBeginTurn>
 			<PyOnCityFounded>addBuilding(pCity, 'BUILDINGCLASS_WALLS')</PyOnCityFounded>
 			<PyOnCityAcquired>addBuilding(pCity, 'BUILDINGCLASS_BARRACKS')</PyOnCityAcquired>
+			<ConditionalFreeTraits>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_AGGRESSIVE</TraitType>
+					<bAtWar>1</bAtWar>
+				</ConditionalFreeTrait>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_PHILOSOPHICAL</TraitType>
+					<bAtPeace>1</bAtPeace>
+				</ConditionalFreeTrait>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_SPIRITUAL</TraitType>
+					<StateReligion>RELIGION_BUDDHISM</StateReligion>
+				</ConditionalFreeTrait>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_CREATIVE</TraitType>
+					<bNoStateReligion>1</bNoStateReligion>
+				</ConditionalFreeTrait>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_EXPANSIVE</TraitType>
+					<EraMin>ERA_CLASSICAL</EraMin>
+					<EraMax>ERA_MEDIEVAL</EraMax>
+				</ConditionalFreeTrait>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_ORGANIZED</TraitType>
+					<bAtPeace>1</bAtPeace>
+					<PrereqCivic>CIVIC_TEST</PrereqCivic>
+				</ConditionalFreeTrait>
+			</ConditionalFreeTraits>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

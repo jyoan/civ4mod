@@ -1065,6 +1065,105 @@
 		<Japanese>[ICON_BULLET]&#27425;&#12398;&#24535;&#21521;&#12434;&#24471;&#12427;: </Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONDITIONAL_FREE_TRAIT</Tag>
+		<English>[ICON_BULLET]Gains %s1_Trait (%s2_Conditions)</English>
+		<French>[ICON_BULLET]Gains %s1_Trait (%s2_Conditions)</French>
+		<German>[ICON_BULLET]Gains %s1_Trait (%s2_Conditions)</German>
+		<Italian>[ICON_BULLET]Gains %s1_Trait (%s2_Conditions)</Italian>
+		<Spanish>[ICON_BULLET]Gains %s1_Trait (%s2_Conditions)</Spanish>
+		<Japanese>[ICON_BULLET]%s1_Trait&#12434;&#24471;&#12427;&#65288;%s2_Conditions&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONDITIONAL_FREE_TRAIT_ALWAYS</Tag>
+		<English>[ICON_BULLET]Gains %s1_Trait</English>
+		<French>[ICON_BULLET]Gains %s1_Trait</French>
+		<German>[ICON_BULLET]Gains %s1_Trait</German>
+		<Italian>[ICON_BULLET]Gains %s1_Trait</Italian>
+		<Spanish>[ICON_BULLET]Gains %s1_Trait</Spanish>
+		<Japanese>[ICON_BULLET]%s1_Trait&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_SEPARATOR</Tag>
+		<English>, </English>
+		<French>, </French>
+		<German>, </German>
+		<Italian>, </Italian>
+		<Spanish>, </Spanish>
+		<Japanese>&#12289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_AT_WAR</Tag>
+		<English>at war</English>
+		<French>at war</French>
+		<German>at war</German>
+		<Italian>at war</Italian>
+		<Spanish>at war</Spanish>
+		<Japanese>&#25126;&#26178;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_AT_PEACE</Tag>
+		<English>at peace</English>
+		<French>at peace</French>
+		<German>at peace</German>
+		<Italian>at peace</Italian>
+		<Spanish>at peace</Spanish>
+		<Japanese>&#24179;&#26178;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_STATE_RELIGION</Tag>
+		<English>%s1_Religion is the state religion</English>
+		<French>%s1_Religion is the state religion</French>
+		<German>%s1_Religion is the state religion</German>
+		<Italian>%s1_Religion is the state religion</Italian>
+		<Spanish>%s1_Religion is the state religion</Spanish>
+		<Japanese>&#22269;&#25945;&#12364;%s1_Religion</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_NO_STATE_RELIGION</Tag>
+		<English>no state religion</English>
+		<French>no state religion</French>
+		<German>no state religion</German>
+		<Italian>no state religion</Italian>
+		<Spanish>no state religion</Spanish>
+		<Japanese>&#22269;&#25945;&#12394;&#12375;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_ERA_RANGE</Tag>
+		<English>%s1_Era to %s2_Era</English>
+		<French>%s1_Era to %s2_Era</French>
+		<German>%s1_Era to %s2_Era</German>
+		<Italian>%s1_Era to %s2_Era</Italian>
+		<Spanish>%s1_Era to %s2_Era</Spanish>
+		<Japanese>%s1_Era&#65374;%s2_Era</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_ERA_MIN</Tag>
+		<English>%s1_Era or later</English>
+		<French>%s1_Era or later</French>
+		<German>%s1_Era or later</German>
+		<Italian>%s1_Era or later</Italian>
+		<Spanish>%s1_Era or later</Spanish>
+		<Japanese>%s1_Era&#20197;&#38477;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_ERA_MAX</Tag>
+		<English>until %s1_Era</English>
+		<French>until %s1_Era</French>
+		<German>until %s1_Era</German>
+		<Italian>until %s1_Era</Italian>
+		<Spanish>until %s1_Era</Spanish>
+		<Japanese>%s1_Era&#12414;&#12391;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_CIVIC</Tag>
+		<English>%s1_Civic adopted</English>
+		<French>%s1_Civic adopted</French>
+		<German>%s1_Civic adopted</German>
+		<Italian>%s1_Civic adopted</Italian>
+		<Spanish>%s1_Civic adopted</Spanish>
+		<Japanese>%s1_Civic&#12434;&#25505;&#29992;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_GOLDEN_AGE_GREAT_PEOPLE</Tag>
 		<English>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</English>
 		<French>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</French>

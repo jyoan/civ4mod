@@ -42,3 +42,4 @@
 - 2026-11-03: 志向の Python フック（`PyOnGameStart`・`PyOnBeginTurn`・`PyOnCityFounded`・`PyOnCityAcquired`）をゲーム内で確認（検証用文明: 開始時の資金、5 ターンごとの戦士、建設した都市の城壁、獲得した都市の兵舎、志向の説明の `Help`）
 - 2026-11-03: 志向の `iMaxCities` / `iMaxCitiesPercent`（都市数の上限。説明文、上限での開拓者の生産と建設の停止、上限を超える占領、都市を失った後の再建設）をゲーム内で確認（検証用文明・標準マップで 3 都市）
 - 2026-11-03: 志向の `iUnitCostModifier` / `iBuildingCostModifier`（説明文、検証用文明で戦士 12・兵舎 25）をゲーム内で確認
+- 2026-11-03: 志向の `ConditionalFreeTraits`（戦時・平時、国教・国教なし、時代の範囲、社会制度との組み合わせ。説明文、宣戦・和平・国教・時代・社会制度の変化での付け外し、セーブと読み込み）をゲーム内で確認（検証用文明）

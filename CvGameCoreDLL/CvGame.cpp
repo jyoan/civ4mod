@@ -277,11 +277,12 @@ void CvGame::setInitialItems()
 	normalizeStartingPlots();
 	initFreeUnits();
 
-	// PyOnGameStart of the traits (added by this mod): after the starting gold and units
+	// PyOnGameStart of the traits (added by this mod): after the starting gold and units. ConditionalFreeTraits first.
 	for (iI = 0; iI < MAX_PLAYERS; iI++)
 	{
 		if (GET_PLAYER((PlayerTypes)iI).isAlive())
 		{
+			GET_PLAYER((PlayerTypes)iI).updateConditionalTraits();
 			GET_PLAYER((PlayerTypes)iI).doTraitPythonHook(TRAIT_PYHOOK_GAME_START);
 		}
 	}

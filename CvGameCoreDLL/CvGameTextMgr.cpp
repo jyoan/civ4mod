@@ -3273,6 +3273,16 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 }
 
 
+// Joins the conditions of ConditionalFreeTraits (added by this mod)
+static void appendConditionText(CvWString& szConditions, const CvWString& szCondition)
+{
+	if (!szConditions.empty())
+	{
+		szConditions += gDLL->getText("TXT_KEY_CONDITION_SEPARATOR");
+	}
+	szConditions += szCondition;
+}
+
 void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait, CivilizationTypes eCivilization, bool bDawnOfMan)
 {
 	PROFILE_FUNC();
@@ -3460,6 +3470,63 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			else
 			{
 				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CITY_RADIUS_CHANGE_CULTURE", GC.getTraitInfo(eTrait).getCityRadiusChange(), CITY_PLOTS_MAX_RADIUS, GC.getCultureLevelInfo((CultureLevelTypes)GC.getTraitInfo(eTrait).getCityRadiusCultureLevel()).getTextKeyWide()));
+			}
+		}
+
+		// ConditionalFreeTraits: "Gains Aggressive (at war, Buddhism is the state religion)" (added by this mod)
+		for (iI = 0; iI < GC.getTraitInfo(eTrait).getNumConditionalFreeTraits(); iI++)
+		{
+			const ConditionalFreeTrait& kCondition = GC.getTraitInfo(eTrait).getConditionalFreeTrait(iI);
+			CvWString szConditions;
+
+			if (kCondition.bAtWar)
+			{
+				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_AT_WAR"));
+			}
+			if (kCondition.bAtPeace)
+			{
+				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_AT_PEACE"));
+			}
+			if (kCondition.iStateReligion != NO_RELIGION)
+			{
+				szText.Format(L"<link=literal>%s</link>", GC.getReligionInfo((ReligionTypes)kCondition.iStateReligion).getDescription());
+				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_STATE_RELIGION", szText.GetCString()));
+			}
+			if (kCondition.bNoStateReligion)
+			{
+				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_NO_STATE_RELIGION"));
+			}
+			if (kCondition.iEraMin != NO_ERA && kCondition.iEraMin == kCondition.iEraMax)
+			{
+				appendConditionText(szConditions, GC.getEraInfo((EraTypes)kCondition.iEraMin).getDescription());
+			}
+			else if (kCondition.iEraMin != NO_ERA && kCondition.iEraMax != NO_ERA)
+			{
+				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_RANGE", GC.getEraInfo((EraTypes)kCondition.iEraMin).getTextKeyWide(), GC.getEraInfo((EraTypes)kCondition.iEraMax).getTextKeyWide()));
+			}
+			else if (kCondition.iEraMin != NO_ERA)
+			{
+				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_MIN", GC.getEraInfo((EraTypes)kCondition.iEraMin).getTextKeyWide()));
+			}
+			else if (kCondition.iEraMax != NO_ERA)
+			{
+				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_MAX", GC.getEraInfo((EraTypes)kCondition.iEraMax).getTextKeyWide()));
+			}
+			if (kCondition.iPrereqCivic != NO_CIVIC)
+			{
+				szText.Format(L"<link=literal>%s</link>", GC.getCivicInfo((CivicTypes)kCondition.iPrereqCivic).getDescription());
+				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_CIVIC", szText.GetCString()));
+			}
+
+			szText.Format(L"<link=literal>%s</link>", GC.getTraitInfo((TraitTypes)kCondition.iTrait).getDescription());
+			szHelpString.append(NEWLINE L"  ");
+			if (szConditions.empty())
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CONDITIONAL_FREE_TRAIT_ALWAYS", szText.GetCString()));
+			}
+			else
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CONDITIONAL_FREE_TRAIT", szText.GetCString(), szConditions.GetCString()));
 			}
 		}
 

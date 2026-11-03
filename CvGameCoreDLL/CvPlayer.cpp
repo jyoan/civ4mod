@@ -60,6 +60,7 @@ CvPlayer::CvPlayer()
 	m_paiBonusImport = NULL;
 	m_paiImprovementCount = NULL;
 	m_paiFreeTraitCount = NULL;
+	m_paiConditionalTraitCount = NULL;
 	m_paiFreeBuildingCount = NULL;
 	m_paiExtraBuildingHappiness = NULL;
 	m_paiExtraBuildingHealth = NULL;
@@ -262,6 +263,7 @@ void CvPlayer::uninit()
 	SAFE_DELETE_ARRAY(m_paiBonusImport);
 	SAFE_DELETE_ARRAY(m_paiImprovementCount);
 	SAFE_DELETE_ARRAY(m_paiFreeTraitCount);
+	SAFE_DELETE_ARRAY(m_paiConditionalTraitCount);
 	SAFE_DELETE_ARRAY(m_paiFreeBuildingCount);
 	SAFE_DELETE_ARRAY(m_paiExtraBuildingHappiness);
 	SAFE_DELETE_ARRAY(m_paiExtraBuildingHealth);
@@ -445,6 +447,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_bFoundedFirstCity = false;
 	m_bStrike = false;
 	m_bUpdatingTraitDependents = false;
+	m_bUpdatingConditionalTraits = false;
 
 	m_eID = eID;
 	updateTeamType();
@@ -546,6 +549,13 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
 		{
 			m_paiFreeTraitCount[iI] = 0;
+		}
+
+		FAssertMsg(m_paiConditionalTraitCount==NULL, "about to leak memory, CvPlayer::m_paiConditionalTraitCount");
+		m_paiConditionalTraitCount = new int [GC.getNumTraitInfos()];
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			m_paiConditionalTraitCount[iI] = 0;
 		}
 
 		FAssertMsg(m_paiFreeBuildingCount==NULL, "about to leak memory, CvPlayer::m_paiFreeBuildingCount");
@@ -2287,7 +2297,113 @@ void CvPlayer::changeFreeTraitCount(TraitTypes eTrait, int iChange)
 		{
 			updateTraitDependents(abOldObsoleteBuilding);
 		}
+
+		// The traits this trait gives while their conditions hold
+		if (GC.getTraitInfo(eTrait).getNumConditionalFreeTraits() > 0)
+		{
+			updateConditionalTraits();
+		}
 	}
+}
+
+// The part of getFreeTraitCount given by the ConditionalFreeTraits of the traits of the player (added by this mod)
+int CvPlayer::getConditionalTraitCount(TraitTypes eTrait) const
+{
+	FAssertMsg(eTrait >= 0, "eTrait is expected to be non-negative (invalid Index)");
+	FAssertMsg(eTrait < GC.getNumTraitInfos(), "eTrait is expected to be within maximum bounds (invalid Index)");
+	return ((m_paiConditionalTraitCount != NULL) ? m_paiConditionalTraitCount[eTrait] : 0);
+}
+
+// All the conditions of an item of ConditionalFreeTraits hold for the player
+bool CvPlayer::isConditionalFreeTraitActive(const ConditionalFreeTrait& kCondition) const
+{
+	bool bAtWar = (GET_TEAM(getTeam()).getAtWarCount(true) > 0);
+
+	if ((kCondition.bAtWar && !bAtWar) || (kCondition.bAtPeace && bAtWar))
+	{
+		return false;
+	}
+
+	if (kCondition.iStateReligion != NO_RELIGION && getStateReligion() != kCondition.iStateReligion)
+	{
+		return false;
+	}
+
+	if (kCondition.bNoStateReligion && getStateReligion() != NO_RELIGION)
+	{
+		return false;
+	}
+
+	if ((kCondition.iEraMin != NO_ERA && getCurrentEra() < kCondition.iEraMin) || (kCondition.iEraMax != NO_ERA && getCurrentEra() > kCondition.iEraMax))
+	{
+		return false;
+	}
+
+	if (kCondition.iPrereqCivic != NO_CIVIC && !isCivic((CivicTypes)kCondition.iPrereqCivic))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+// ConditionalFreeTraits (added by this mod): gives and takes away the traits whose conditions changed. Called where a
+// condition can change (war and peace, the state religion, the era, the civics, a trait with ConditionalFreeTraits
+// gained or lost) and at the start of each turn. A given trait can give traits itself, so this repeats until nothing
+// changes (at most once per trait).
+void CvPlayer::updateConditionalTraits()
+{
+	std::vector<int> aiCount;
+	bool bChanged;
+	int iPass;
+	int iChange;
+	int iI, iJ;
+
+	if (m_bUpdatingConditionalTraits || getLeaderType() == NO_LEADER || m_paiConditionalTraitCount == NULL)
+	{
+		return;
+	}
+
+	m_bUpdatingConditionalTraits = true;
+
+	for (iPass = 0; iPass <= GC.getNumTraitInfos(); iPass++)
+	{
+		aiCount.assign(GC.getNumTraitInfos(), 0);
+
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (hasTrait((TraitTypes)iI))
+			{
+				for (iJ = 0; iJ < GC.getTraitInfo((TraitTypes)iI).getNumConditionalFreeTraits(); iJ++)
+				{
+					if (isConditionalFreeTraitActive(GC.getTraitInfo((TraitTypes)iI).getConditionalFreeTrait(iJ)))
+					{
+						aiCount[GC.getTraitInfo((TraitTypes)iI).getConditionalFreeTraitType(iJ)]++;
+					}
+				}
+			}
+		}
+
+		bChanged = false;
+
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			iChange = aiCount[iI] - m_paiConditionalTraitCount[iI];
+			if (iChange != 0)
+			{
+				m_paiConditionalTraitCount[iI] = aiCount[iI];
+				changeFreeTraitCount((TraitTypes)iI, iChange);
+				bChanged = true;
+			}
+		}
+
+		if (!bChanged)
+		{
+			break;
+		}
+	}
+
+	m_bUpdatingConditionalTraits = false;
 }
 
 // After the player gains or loses traits: updates the stored values that depend on the traits. abObsoleteBuilding holds
@@ -2694,6 +2810,7 @@ void CvPlayer::doTurn()
 	FAssertMsg(!hasBusyUnit() || GC.getGameINLINE().isMPOption(MPOPTION_SIMULTANEOUS_TURNS)  || GC.getGameINLINE().isSimultaneousTeamTurns(), "End of turn with busy units in a sequential-turn game");
 
 	CvEventReporter::getInstance().beginPlayerTurn( GC.getGameINLINE().getGameTurn(),  getID());
+	updateConditionalTraits();	// ConditionalFreeTraits, also for changes the other calls miss (added by this mod)
 	doTraitPythonHook(TRAIT_PYHOOK_BEGIN_TURN);	// PyOnBeginTurn (added by this mod)
 
 	doUpdateCacheOnTurn();
@@ -10950,6 +11067,9 @@ void CvPlayer::setCurrentEra(EraTypes eNewValue)
 		EraTypes eOldEra = m_eCurrentEra;
 		m_eCurrentEra = eNewValue;
 
+		// ConditionalFreeTraits (EraMin, EraMax; added by this mod)
+		updateConditionalTraits();
+
 		if (GC.getGameINLINE().getActiveTeam() != NO_TEAM)
 		{
 			for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
@@ -11032,6 +11152,9 @@ void CvPlayer::setLastStateReligion(ReligionTypes eNewValue)
 
 		eOldReligion = getLastStateReligion();
 		m_eLastStateReligion = eNewValue;
+
+		// ConditionalFreeTraits (StateReligion; added by this mod)
+		updateConditionalTraits();
 
 		// religion visibility now part of espionage
 		//GC.getGameINLINE().updateCitySight(true, true);
@@ -12474,6 +12597,9 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 		{
 			processCivics(getCivics(eIndex), 1);
 		}
+
+		// ConditionalFreeTraits (PrereqCivic, StateReligion; added by this mod)
+		updateConditionalTraits();
 
 		GC.getGameINLINE().updateSecretaryGeneral();
 
@@ -17056,6 +17182,12 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(GC.getNumTraitInfos(), m_paiFreeTraitCount);
 	}
+
+	// ConditionalFreeTraits (uiFlag 4)
+	if (uiFlag > 3)
+	{
+		pStream->Read(GC.getNumTraitInfos(), m_paiConditionalTraitCount);
+	}
 }
 
 //
@@ -17066,7 +17198,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 3;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount (added by this mod)
+	uint uiFlag = 4;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -17476,6 +17608,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(m_iInflationModifier);
 
 	pStream->Write(GC.getNumTraitInfos(), m_paiFreeTraitCount);
+	pStream->Write(GC.getNumTraitInfos(), m_paiConditionalTraitCount);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

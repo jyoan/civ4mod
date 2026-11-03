@@ -454,6 +454,8 @@ public:
 	int getBuildingCostModifier();
 	bool isMaxCitiesReached();
 	bool hasBaseTrait(int /*TraitTypes*/ eTrait);
+	int getConditionalTraitCount(int /*TraitTypes*/ eTrait);
+	void updateConditionalTraits();
 	int getFreeTraitCount(int /*TraitTypes*/ eTrait);
 	void changeFreeTraitCount(int /*TraitTypes*/ eTrait, int iChange);
 	bool isIgnoreObsoleteBuilding(int /*BuildingTypes*/ eBuilding);

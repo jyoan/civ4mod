@@ -18061,6 +18061,24 @@ const TCHAR* CvTraitInfo::getPyOnCityAcquired() const
 	return m_aszPythonHook[TRAIT_PYHOOK_CITY_ACQUIRED];
 }
 
+// ConditionalFreeTraits (added by this mod): the traits the player has while the conditions hold
+int CvTraitInfo::getNumConditionalFreeTraits() const
+{
+	return (int)m_aConditionalFreeTraits.size();
+}
+
+int CvTraitInfo::getConditionalFreeTraitType(int i) const
+{
+	FAssertMsg(i >= 0 && i < getNumConditionalFreeTraits(), "Index out of bounds");
+	return m_aConditionalFreeTraits[i].iTrait;
+}
+
+const ConditionalFreeTrait& CvTraitInfo::getConditionalFreeTrait(int i) const
+{
+	FAssertMsg(i >= 0 && i < getNumConditionalFreeTraits(), "Index out of bounds");
+	return m_aConditionalFreeTraits[i];
+}
+
 int CvTraitInfo::isFreePromotion(int i) const
 {
 	return m_pabFreePromotion ? m_pabFreePromotion[i] : -1; 
@@ -18494,6 +18512,54 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_FOUNDED], "PyOnCityFounded");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_ACQUIRED], "PyOnCityAcquired");
 
+	// ConditionalFreeTraits: <ConditionalFreeTrait> with a TraitType and the conditions. The traits after this one and the
+	// civics are loaded later, so readPass3() finds the types
+	m_aConditionalFreeTraits.clear();
+	m_aszConditionalFreeTraitTypes.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ConditionalFreeTraits"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ConditionalFreeTrait"))
+		{
+			do
+			{
+				ConditionalFreeTrait kCondition;
+				kCondition.iTrait = NO_TRAIT;
+				kCondition.bAtWar = false;
+				kCondition.bAtPeace = false;
+				kCondition.iStateReligion = NO_RELIGION;
+				kCondition.bNoStateReligion = false;
+				kCondition.iEraMin = NO_ERA;
+				kCondition.iEraMax = NO_ERA;
+				kCondition.iPrereqCivic = NO_CIVIC;
+				pXML->GetChildXmlValByName(&kCondition.bAtWar, "bAtWar");
+				pXML->GetChildXmlValByName(&kCondition.bAtPeace, "bAtPeace");
+				pXML->GetChildXmlValByName(&kCondition.bNoStateReligion, "bNoStateReligion");
+				m_aConditionalFreeTraits.push_back(kCondition);
+
+				szTextVal = "";
+				pXML->GetChildXmlValByName(szTextVal, "TraitType");
+				m_aszConditionalFreeTraitTypes.push_back(szTextVal);
+				szTextVal = "";
+				pXML->GetChildXmlValByName(szTextVal, "StateReligion");
+				m_aszConditionalFreeTraitTypes.push_back(szTextVal);
+				szTextVal = "";
+				pXML->GetChildXmlValByName(szTextVal, "EraMin");
+				m_aszConditionalFreeTraitTypes.push_back(szTextVal);
+				szTextVal = "";
+				pXML->GetChildXmlValByName(szTextVal, "EraMax");
+				m_aszConditionalFreeTraitTypes.push_back(szTextVal);
+				szTextVal = "";
+				pXML->GetChildXmlValByName(szTextVal, "PrereqCivic");
+				m_aszConditionalFreeTraitTypes.push_back(szTextVal);
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "ConditionalFreeTrait"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+
 	// FreePromotionSets: any number of <FreePromotions> x <FreePromotionUnitCombats> pairs
 	m_aabFreePromotionSetPromotion.clear();
 	m_aabFreePromotionSetUnitCombat.clear();
@@ -18546,7 +18612,31 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	return true;
 }
 
-// Improvements and building classes are loaded after traits (CvXMLLoadUtility::LoadPreMenuGlobals calls this after them)
+// The index of a type of ConditionalFreeTraits (iNumInfos: the size of its info class), -1 for an empty string or NONE.
+// An unknown type (or a type of another info class) shows the same message as FindInInfoClass.
+static int resolveConditionalType(const CvString& szType, int iNumInfos)
+{
+	char szMessage[1024];
+	int iIndex;
+
+	if (szType.empty() || szType == "NONE")
+	{
+		return -1;
+	}
+
+	iIndex = GC.getInfoTypeForString(szType.GetCString(), true);
+	if (iIndex < 0 || iIndex >= iNumInfos)
+	{
+		sprintf(szMessage, "Tag: %s in ConditionalFreeTraits of CIV4TraitInfos.xml was incorrect", szType.GetCString());
+		gDLL->MessageBox(szMessage, "XML Error");
+		return -1;
+	}
+
+	return iIndex;
+}
+
+// Improvements, building classes and civics are loaded after traits (CvXMLLoadUtility::LoadPreMenuGlobals calls this
+// after them)
 bool CvTraitInfo::readPass3()
 {
 	char szMessage[1024];
@@ -18605,6 +18695,24 @@ bool CvTraitInfo::readPass3()
 			m_iNewCityCultureLevel = NO_CULTURELEVEL;
 		}
 	}
+
+	// ConditionalFreeTraits: items without a valid trait are removed
+	std::vector<ConditionalFreeTrait> aConditions;
+	for (i = 0; i < (int)m_aConditionalFreeTraits.size() && (i * 5 + 4) < (int)m_aszConditionalFreeTraitTypes.size(); i++)
+	{
+		ConditionalFreeTrait kCondition = m_aConditionalFreeTraits[i];
+		kCondition.iTrait = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * 5], GC.getNumTraitInfos());
+		kCondition.iStateReligion = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * 5 + 1], GC.getNumReligionInfos());
+		kCondition.iEraMin = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * 5 + 2], GC.getNumEraInfos());
+		kCondition.iEraMax = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * 5 + 3], GC.getNumEraInfos());
+		kCondition.iPrereqCivic = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * 5 + 4], GC.getNumCivicInfos());
+		if (kCondition.iTrait != NO_TRAIT)
+		{
+			aConditions.push_back(kCondition);
+		}
+	}
+	m_aConditionalFreeTraits = aConditions;
+	m_aszConditionalFreeTraitTypes.clear();
 
 	resolveTypeList("NoObsoleteBuildingClasses", m_aszNoObsoleteBuildingClassTypes, GC.getNumBuildingClassInfos(), &m_pabNoObsoleteBuildingClass);
 	m_aszNoObsoleteBuildingClassTypes.clear();
