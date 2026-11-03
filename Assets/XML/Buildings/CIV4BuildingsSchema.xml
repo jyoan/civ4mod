@@ -190,6 +190,18 @@
 	<ElementType name="RiverPlotYieldChanges" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="WorldWonderYieldChanges" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="WorldWonderCommerceChanges" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="GlobalWorldWonderYieldChanges" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="GlobalWorldWonderCommerceChanges" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="GlobalSeaPlotYieldChanges" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -544,6 +556,10 @@
 		<element type="fVisibilityPriority"/>
 		<element type="SeaPlotYieldChanges"/>
 		<element type="RiverPlotYieldChanges"/>
+		<element type="WorldWonderYieldChanges" minOccurs="0"/>
+		<element type="WorldWonderCommerceChanges" minOccurs="0"/>
+		<element type="GlobalWorldWonderYieldChanges" minOccurs="0"/>
+		<element type="GlobalWorldWonderCommerceChanges" minOccurs="0"/>
 		<element type="GlobalSeaPlotYieldChanges"/>
 		<element type="YieldChanges"/>
 		<element type="YieldModifiers" minOccurs="0"/>

@@ -6227,6 +6227,12 @@ bool CvUnit::canPillage(const CvPlot* pPlot) const
 				return false;
 			}
 		}
+
+		// bNoPillageInBorders of the traits of the plot owner (added by this mod): not by the units of other teams
+		if (pPlot->getTeam() != getTeam() && GET_PLAYER(pPlot->getOwnerINLINE()).isNoPillageInBorders())
+		{
+			return false;
+		}
 	}
 
 	if (!(pPlot->isValidDomainForAction(*this)))

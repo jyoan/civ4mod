@@ -3555,6 +3555,13 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_OCCUPATION_TIME_MODIFIER", GC.getTraitInfo(eTrait).getOccupationTimeModifier()));
 		}
 
+		// bNoPillageInBorders (added by this mod)
+		if (GC.getTraitInfo(eTrait).isNoPillageInBorders())
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_NO_PILLAGE_IN_BORDERS"));
+		}
+
 		// iUnitCostModifier / iBuildingCostModifier: "-20% production cost of units" (added by this mod)
 		if (GC.getTraitInfo(eTrait).getUnitCostModifier() != 0)
 		{
@@ -8310,6 +8317,12 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 
 	// FreeTraits (added by this mod)
 	buildFreeTraitsString(szBuffer, kBuilding.getFreeTraitsVector());
+
+	// Per world wonder in the city / owned (added by this mod)
+	setYieldChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_PER_CITY_WORLD_WONDER").c_str(), L": ", L"", kBuilding.getWorldWonderYieldChangeArray());
+	setCommerceChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_PER_CITY_WORLD_WONDER").c_str(), L": ", L"", kBuilding.getWorldWonderCommerceChangeArray());
+	setYieldChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_PER_WORLD_WONDER").c_str(), L": ", L"", kBuilding.getGlobalWorldWonderYieldChangeArray());
+	setCommerceChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_PER_WORLD_WONDER").c_str(), L": ", L"", kBuilding.getGlobalWorldWonderCommerceChangeArray());
 
 	// iPlotRadius (added by this mod)
 	if (kBuilding.getPlotRadius() > 0)

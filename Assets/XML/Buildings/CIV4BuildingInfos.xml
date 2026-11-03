@@ -28774,6 +28774,23 @@
 			<fVisibilityPriority>1.0</fVisibilityPriority>
 			<SeaPlotYieldChanges/>
 			<RiverPlotYieldChanges/>
+			<WorldWonderYieldChanges>
+				<iYield>0</iYield>
+				<iYield>0</iYield>
+				<iYield>4</iYield>
+			</WorldWonderYieldChanges>
+			<WorldWonderCommerceChanges>
+				<iCommerce>1</iCommerce>
+			</WorldWonderCommerceChanges>
+			<GlobalWorldWonderYieldChanges>
+				<iYield>0</iYield>
+				<iYield>1</iYield>
+			</GlobalWorldWonderYieldChanges>
+			<GlobalWorldWonderCommerceChanges>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>1</iCommerce>
+			</GlobalWorldWonderCommerceChanges>
 			<GlobalSeaPlotYieldChanges/>
 			<YieldChanges/>
 			<CommerceChanges/>

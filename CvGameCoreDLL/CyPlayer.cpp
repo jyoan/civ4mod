@@ -1997,6 +1997,16 @@ int CyPlayer::getBuildingCostModifier()
 	return m_pPlayer ? m_pPlayer->getBuildingCostModifier() : 0;
 }
 
+int CyPlayer::getNumWorldWonders()
+{
+	return m_pPlayer ? m_pPlayer->getNumWorldWonders() : -1;
+}
+
+bool CyPlayer::isNoPillageInBorders()
+{
+	return m_pPlayer ? m_pPlayer->isNoPillageInBorders() : false;
+}
+
 int CyPlayer::getMaxCities()
 {
 	return m_pPlayer ? m_pPlayer->getMaxCities() : -1;

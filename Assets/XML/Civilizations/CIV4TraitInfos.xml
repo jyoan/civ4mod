@@ -381,6 +381,7 @@
 			<iCityCaptureGoldModifier>200</iCityCaptureGoldModifier>
 			<iUnitCostModifier>-20</iUnitCostModifier>
 			<iBuildingCostModifier>-50</iBuildingCostModifier>
+			<bNoPillageInBorders>1</bNoPillageInBorders>
 			<NewCityCultureLevel>CULTURELEVEL_FLEDGLING</NewCityCultureLevel>
 			<MaintainFeatures>
 				<MaintainFeature>

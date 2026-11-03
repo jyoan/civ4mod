@@ -34,6 +34,7 @@ CvCity::CvCity()
 {
 	m_aiSeaPlotYield = new int[NUM_YIELD_TYPES];
 	m_aiRiverPlotYield = new int[NUM_YIELD_TYPES];
+	m_aiWorldWonderYield = new int[NUM_YIELD_TYPES];
 	m_aiBaseYieldRate = new int[NUM_YIELD_TYPES];
 	m_aiYieldRateModifier = new int[NUM_YIELD_TYPES];
 	m_aiPowerYieldRateModifier = new int[NUM_YIELD_TYPES];
@@ -118,6 +119,7 @@ CvCity::~CvCity()
 
 	SAFE_DELETE_ARRAY(m_aiSeaPlotYield);
 	SAFE_DELETE_ARRAY(m_aiRiverPlotYield);
+	SAFE_DELETE_ARRAY(m_aiWorldWonderYield);
 	SAFE_DELETE_ARRAY(m_aiBaseYieldRate);
 	SAFE_DELETE_ARRAY(m_aiYieldRateModifier);
 	SAFE_DELETE_ARRAY(m_aiPowerYieldRateModifier);
@@ -474,6 +476,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	{
 		m_aiSeaPlotYield[iI] = 0;
 		m_aiRiverPlotYield[iI] = 0;
+		m_aiWorldWonderYield[iI] = 0;
 		m_aiBaseYieldRate[iI] = 0;
 		m_aiYieldRateModifier[iI] = 0;
 		m_aiPowerYieldRateModifier[iI] = 0;
@@ -3995,6 +3998,13 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 
 	updateBuildingCommerce();
 
+	// World wonder changes of the building (added by this mod): the building count and obsolescence are already updated
+	// here. The world wonder count is updated after this (changeNumWorldWonders updates again).
+	if (GC.getBuildingInfo(eBuilding).isAnyWorldWonderChange())
+	{
+		GET_PLAYER(getOwnerINLINE()).updateWorldWonderEffects();
+	}
+
 	// Building iPlotRadius (added by this mod): the building count and obsolescence are already updated here
 	if (GC.getBuildingInfo(eBuilding).getPlotRadius() > 0)
 	{
@@ -5462,6 +5472,59 @@ void CvCity::changeNumWorldWonders(int iChange)
 {
 	m_iNumWorldWonders = (m_iNumWorldWonders + iChange);
 	FAssert(getNumWorldWonders() >= 0);
+
+	// The world wonder changes of the buildings of the owner (added by this mod)
+	if (iChange != 0)
+	{
+		GET_PLAYER(getOwnerINLINE()).updateWorldWonderEffects();
+	}
+}
+
+// Yields from the world wonder changes of the buildings (WorldWonderYieldChanges: per world wonder in this city,
+// GlobalWorldWonderYieldChanges: per world wonder of the owner; added by this mod). All the world wonders count (also
+// obsolete ones); the buildings with the changes count while they are not obsolete.
+int CvCity::calculateWorldWonderYield(YieldTypes eIndex) const
+{
+	int iYield = 0;
+	int iPlayerWonders = -1;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+	{
+		if (getNumActiveBuilding((BuildingTypes)iI) > 0)
+		{
+			CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)iI);
+
+			if (kBuilding.getWorldWonderYieldChange(eIndex) != 0 || kBuilding.getGlobalWorldWonderYieldChange(eIndex) != 0)
+			{
+				if (iPlayerWonders < 0)
+				{
+					iPlayerWonders = GET_PLAYER(getOwnerINLINE()).getNumWorldWonders();
+				}
+
+				iYield += (kBuilding.getWorldWonderYieldChange(eIndex) * getNumWorldWonders() + kBuilding.getGlobalWorldWonderYieldChange(eIndex) * iPlayerWonders) * getNumActiveBuilding((BuildingTypes)iI);
+			}
+		}
+	}
+
+	return iYield;
+}
+
+// Changes the base yield rate by the difference of calculateWorldWonderYield (added by this mod)
+void CvCity::updateWorldWonderYields()
+{
+	int iNewYield;
+	int iI;
+
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		iNewYield = calculateWorldWonderYield((YieldTypes)iI);
+		if (iNewYield != m_aiWorldWonderYield[iI])
+		{
+			changeBaseYieldRate((YieldTypes)iI, iNewYield - m_aiWorldWonderYield[iI]);
+			m_aiWorldWonderYield[iI] = iNewYield;
+		}
+	}
 }
 
 
@@ -8297,6 +8360,12 @@ int CvCity::getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eB
 			if (getNumActiveBuilding(eBuilding) > 0)
 			{
 				iCommerce += (GC.getBuildingInfo(eBuilding).getCommerceChange(eIndex) + getBuildingCommerceChange((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType(), eIndex)) * getNumActiveBuilding(eBuilding);
+
+				// Per world wonder in the city / of the owner (added by this mod)
+				if (kBuilding.getWorldWonderCommerceChange(eIndex) != 0 || kBuilding.getGlobalWorldWonderCommerceChange(eIndex) != 0)
+				{
+					iCommerce += (kBuilding.getWorldWonderCommerceChange(eIndex) * getNumWorldWonders() + kBuilding.getGlobalWorldWonderCommerceChange(eIndex) * GET_PLAYER(getOwnerINLINE()).getNumWorldWonders()) * getNumActiveBuilding(eBuilding);
+				}
 
 				if (GC.getBuildingInfo(eBuilding).getReligionType() != NO_RELIGION)
 				{
@@ -12188,13 +12257,19 @@ void CvCity::read(FDataStreamBase* pStream)
 		pStream->Read(&iChange);
 		m_aBuildingHealthChange.push_back(std::make_pair((BuildingClassTypes)iBuildingClass, iChange));
 	}
+
+	// uiFlag < 2: saved before the world wonder changes of buildings existed (added by this mod)
+	if (uiFlag > 1)
+	{
+		pStream->Read(NUM_YIELD_TYPES, m_aiWorldWonderYield);
+	}
 }
 
 void CvCity::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=1;
+	uint uiFlag=2;	// 1: plot radius, 2: m_aiWorldWonderYield (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -12410,6 +12485,8 @@ void CvCity::write(FDataStreamBase* pStream)
 		pStream->Write((*it).first);
 		pStream->Write((*it).second);
 	}
+
+	pStream->Write(NUM_YIELD_TYPES, m_aiWorldWonderYield);
 }
 
 

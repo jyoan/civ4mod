@@ -295,6 +295,8 @@ public:
 	void changeGreatPeopleProgress(int iChange);										// Exposed to Python
 
 	int getNumWorldWonders() const;																				// Exposed to Python
+	int calculateWorldWonderYield(YieldTypes eIndex) const;		// added by this mod
+	void updateWorldWonderYields();								// added by this mod
 	void changeNumWorldWonders(int iChange);
 
 	int getNumTeamWonders() const;																				// Exposed to Python
@@ -1048,6 +1050,7 @@ protected:
 
 	int* m_aiSeaPlotYield;
 	int* m_aiRiverPlotYield;
+	int* m_aiWorldWonderYield;		// the part of m_aiBaseYieldRate from the world wonder changes of buildings (added by this mod)
 	int* m_aiBaseYieldRate;
 	int* m_aiYieldRateModifier;
 	int* m_aiPowerYieldRateModifier;

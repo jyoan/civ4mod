@@ -7806,6 +7806,10 @@ m_piProductionTraits(NULL),
 m_piHappinessTraits(NULL),
 m_piSeaPlotYieldChange(NULL),
 m_piRiverPlotYieldChange(NULL),
+m_piWorldWonderYieldChange(NULL),
+m_piWorldWonderCommerceChange(NULL),
+m_piGlobalWorldWonderYieldChange(NULL),
+m_piGlobalWorldWonderCommerceChange(NULL),
 m_piGlobalSeaPlotYieldChange(NULL),
 m_piYieldChange(NULL),
 m_piYieldModifier(NULL),
@@ -7858,6 +7862,10 @@ CvBuildingInfo::~CvBuildingInfo()
 	SAFE_DELETE_ARRAY(m_piHappinessTraits);
 	SAFE_DELETE_ARRAY(m_piSeaPlotYieldChange);
 	SAFE_DELETE_ARRAY(m_piRiverPlotYieldChange);
+	SAFE_DELETE_ARRAY(m_piWorldWonderYieldChange);
+	SAFE_DELETE_ARRAY(m_piWorldWonderCommerceChange);
+	SAFE_DELETE_ARRAY(m_piGlobalWorldWonderYieldChange);
+	SAFE_DELETE_ARRAY(m_piGlobalWorldWonderCommerceChange);
 	SAFE_DELETE_ARRAY(m_piGlobalSeaPlotYieldChange);
 	SAFE_DELETE_ARRAY(m_piYieldChange);
 	SAFE_DELETE_ARRAY(m_piYieldModifier);
@@ -8584,6 +8592,78 @@ int CvBuildingInfo::getRiverPlotYieldChange(int i) const
 int* CvBuildingInfo::getRiverPlotYieldChangeArray() const
 {
 	return m_piRiverPlotYieldChange;
+}
+
+int CvBuildingInfo::getWorldWonderYieldChange(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piWorldWonderYieldChange ? m_piWorldWonderYieldChange[i] : 0;
+}
+
+int* CvBuildingInfo::getWorldWonderYieldChangeArray() const
+{
+	return m_piWorldWonderYieldChange;
+}
+
+int CvBuildingInfo::getWorldWonderCommerceChange(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piWorldWonderCommerceChange ? m_piWorldWonderCommerceChange[i] : 0;
+}
+
+int* CvBuildingInfo::getWorldWonderCommerceChangeArray() const
+{
+	return m_piWorldWonderCommerceChange;
+}
+
+int CvBuildingInfo::getGlobalWorldWonderYieldChange(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piGlobalWorldWonderYieldChange ? m_piGlobalWorldWonderYieldChange[i] : 0;
+}
+
+int* CvBuildingInfo::getGlobalWorldWonderYieldChangeArray() const
+{
+	return m_piGlobalWorldWonderYieldChange;
+}
+
+int CvBuildingInfo::getGlobalWorldWonderCommerceChange(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piGlobalWorldWonderCommerceChange ? m_piGlobalWorldWonderCommerceChange[i] : 0;
+}
+
+int* CvBuildingInfo::getGlobalWorldWonderCommerceChangeArray() const
+{
+	return m_piGlobalWorldWonderCommerceChange;
+}
+
+// The building has one of the world wonder changes (added by this mod)
+bool CvBuildingInfo::isAnyWorldWonderChange() const
+{
+	int iI;
+
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		if (getWorldWonderYieldChange(iI) != 0 || getGlobalWorldWonderYieldChange(iI) != 0)
+		{
+			return true;
+		}
+	}
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		if (getWorldWonderCommerceChange(iI) != 0 || getGlobalWorldWonderCommerceChange(iI) != 0)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 int CvBuildingInfo::getGlobalSeaPlotYieldChange(int i) const
@@ -9419,6 +9499,60 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 	{
 		m_aiFreeTraits.clear();
 	}
+
+	// uiFlag < 10: cache written before the world wonder changes existed
+	SAFE_DELETE_ARRAY(m_piWorldWonderYieldChange);
+	m_piWorldWonderYieldChange = new int[NUM_YIELD_TYPES];
+	if (uiFlag > 9)
+	{
+		stream->Read(NUM_YIELD_TYPES, m_piWorldWonderYieldChange);
+	}
+	else
+	{
+		for (i = 0; i < NUM_YIELD_TYPES; i++)
+		{
+			m_piWorldWonderYieldChange[i] = 0;
+		}
+	}
+	SAFE_DELETE_ARRAY(m_piWorldWonderCommerceChange);
+	m_piWorldWonderCommerceChange = new int[NUM_COMMERCE_TYPES];
+	if (uiFlag > 9)
+	{
+		stream->Read(NUM_COMMERCE_TYPES, m_piWorldWonderCommerceChange);
+	}
+	else
+	{
+		for (i = 0; i < NUM_COMMERCE_TYPES; i++)
+		{
+			m_piWorldWonderCommerceChange[i] = 0;
+		}
+	}
+	SAFE_DELETE_ARRAY(m_piGlobalWorldWonderYieldChange);
+	m_piGlobalWorldWonderYieldChange = new int[NUM_YIELD_TYPES];
+	if (uiFlag > 9)
+	{
+		stream->Read(NUM_YIELD_TYPES, m_piGlobalWorldWonderYieldChange);
+	}
+	else
+	{
+		for (i = 0; i < NUM_YIELD_TYPES; i++)
+		{
+			m_piGlobalWorldWonderYieldChange[i] = 0;
+		}
+	}
+	SAFE_DELETE_ARRAY(m_piGlobalWorldWonderCommerceChange);
+	m_piGlobalWorldWonderCommerceChange = new int[NUM_COMMERCE_TYPES];
+	if (uiFlag > 9)
+	{
+		stream->Read(NUM_COMMERCE_TYPES, m_piGlobalWorldWonderCommerceChange);
+	}
+	else
+	{
+		for (i = 0; i < NUM_COMMERCE_TYPES; i++)
+		{
+			m_piGlobalWorldWonderCommerceChange[i] = 0;
+		}
+	}
 }
 
 //
@@ -9428,7 +9562,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=9;	// 9: FreeTraits (added by this mod)
+	uint uiFlag=10;	// 9: FreeTraits, 10: world wonder changes (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -9609,6 +9743,10 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	writeSettledSpecialists(stream, m_aiPrereqAndSettledSpecialistType, m_aiPrereqAndSettledSpecialistNum);
 	stream->Write(m_iNewCityCultureLevel);
 	writePrereqOrTraits(stream, m_aiFreeTraits);
+	stream->Write(NUM_YIELD_TYPES, m_piWorldWonderYieldChange);
+	stream->Write(NUM_COMMERCE_TYPES, m_piWorldWonderCommerceChange);
+	stream->Write(NUM_YIELD_TYPES, m_piGlobalWorldWonderYieldChange);
+	stream->Write(NUM_COMMERCE_TYPES, m_piGlobalWorldWonderCommerceChange);
 }
 
 //
@@ -9905,6 +10043,47 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	else
 	{
 		pXML->InitList(&m_piRiverPlotYieldChange, NUM_YIELD_TYPES);
+	}
+
+	// Per world wonder in the city / owned by the player (added by this mod)
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(),"WorldWonderYieldChanges"))
+	{
+		pXML->SetYields(&m_piWorldWonderYieldChange);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_piWorldWonderYieldChange, NUM_YIELD_TYPES);
+	}
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(),"WorldWonderCommerceChanges"))
+	{
+		pXML->SetCommerce(&m_piWorldWonderCommerceChange);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_piWorldWonderCommerceChange, NUM_COMMERCE_TYPES);
+	}
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(),"GlobalWorldWonderYieldChanges"))
+	{
+		pXML->SetYields(&m_piGlobalWorldWonderYieldChange);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_piGlobalWorldWonderYieldChange, NUM_YIELD_TYPES);
+	}
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(),"GlobalWorldWonderCommerceChanges"))
+	{
+		pXML->SetCommerce(&m_piGlobalWorldWonderCommerceChange);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_piGlobalWorldWonderCommerceChange, NUM_COMMERCE_TYPES);
 	}
 
 	// if we can set the current xml node to it's next sibling
@@ -17589,6 +17768,7 @@ m_iPillageGoldModifier(0),
 m_iCityCaptureGoldModifier(0),
 m_iUnitCostModifier(0),
 m_iBuildingCostModifier(0),
+m_bNoPillageInBorders(false),
 m_iNewCityCultureLevel(NO_CULTURELEVEL),
 m_iNewCityPopulation(0),
 m_iOccupationTimeModifier(0),
@@ -17855,6 +18035,12 @@ int CvTraitInfo::getUnitCostModifier() const
 int CvTraitInfo::getBuildingCostModifier() const
 {
 	return m_iBuildingCostModifier;
+}
+
+// The units of other teams cannot pillage in the territory of the player (added by this mod, as in ex's CivGoldEmpires)
+bool CvTraitInfo::isNoPillageInBorders() const
+{
+	return m_bNoPillageInBorders;
 }
 
 // The culture level new cities start with (NO_CULTURELEVEL: none)
@@ -18377,6 +18563,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCityCaptureGoldModifier, "iCityCaptureGoldModifier");
 	pXML->GetChildXmlValByName(&m_iUnitCostModifier, "iUnitCostModifier");
 	pXML->GetChildXmlValByName(&m_iBuildingCostModifier, "iBuildingCostModifier");
+	pXML->GetChildXmlValByName(&m_bNoPillageInBorders, "bNoPillageInBorders");
 	// The culture levels are loaded after the traits: readPass3() finds the type
 	pXML->GetChildXmlValByName(m_szNewCityCultureLevel, "NewCityCultureLevel");
 	pXML->GetChildXmlValByName(&m_iNewCityPopulation, "iNewCityPopulation");

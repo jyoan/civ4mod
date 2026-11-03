@@ -6444,6 +6444,51 @@ bool CvPlayer::isObsoleteBuilding(BuildingTypes eBuilding) const
 
 // The most cities the player can found (added by this mod): the smallest city limit of the traits (iMaxCities,
 // iMaxCitiesPercent) on the map size of the game. -1: no limit.
+// The world wonders in all the cities of the player (added by this mod)
+int CvPlayer::getNumWorldWonders() const
+{
+	CvCity* pLoopCity;
+	int iCount = 0;
+	int iLoop;
+
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		iCount += pLoopCity->getNumWorldWonders();
+	}
+
+	return iCount;
+}
+
+// After a world wonder or a building with the world wonder changes is added or removed (added by this mod): the yields
+// and the building commerce of all the cities
+void CvPlayer::updateWorldWonderEffects()
+{
+	CvCity* pLoopCity;
+	int iLoop;
+
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		pLoopCity->updateWorldWonderYields();
+		pLoopCity->updateBuildingCommerce();
+	}
+}
+
+// bNoPillageInBorders of the traits (added by this mod)
+bool CvPlayer::isNoPillageInBorders() const
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI) && GC.getTraitInfo((TraitTypes)iI).isNoPillageInBorders())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 int CvPlayer::getMaxCities() const
 {
 	int iMaxCities = -1;

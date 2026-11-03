@@ -885,6 +885,33 @@
 		<Japanese>[ICON_BULLET]&#24314;&#36896;&#29289;&#12398;&#29983;&#29987;&#12467;&#12473;&#12488;%D1_Percent%%</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_PILLAGE_IN_BORDERS</Tag>
+		<English>[ICON_BULLET]Other civilizations cannot pillage in our territory</English>
+		<French>[ICON_BULLET]Other civilizations cannot pillage in our territory</French>
+		<German>[ICON_BULLET]Other civilizations cannot pillage in our territory</German>
+		<Italian>[ICON_BULLET]Other civilizations cannot pillage in our territory</Italian>
+		<Spanish>[ICON_BULLET]Other civilizations cannot pillage in our territory</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#12399;&#20182;&#22269;&#12398;&#12518;&#12491;&#12483;&#12488;&#12364;&#30053;&#22890;&#12391;&#12365;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PER_CITY_WORLD_WONDER</Tag>
+		<English>Per World Wonder in the city</English>
+		<French>Per World Wonder in the city</French>
+		<German>Per World Wonder in the city</German>
+		<Italian>Per World Wonder in the city</Italian>
+		<Spanish>Per World Wonder in the city</Spanish>
+		<Japanese>&#12371;&#12398;&#37117;&#24066;&#12398;&#19990;&#30028;&#36986;&#29987;1&#12388;&#12395;&#12388;&#12365;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PER_WORLD_WONDER</Tag>
+		<English>Per World Wonder you own</English>
+		<French>Per World Wonder you own</French>
+		<German>Per World Wonder you own</German>
+		<Italian>Per World Wonder you own</Italian>
+		<Spanish>Per World Wonder you own</Spanish>
+		<Japanese>&#25152;&#26377;&#12377;&#12427;&#19990;&#30028;&#36986;&#29987;1&#12388;&#12395;&#12388;&#12365;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_MAINTAIN_FEATURES</Tag>
 		<English>[ICON_BULLET]Improvements keep: </English>
 		<French>[ICON_BULLET]Improvements keep: </French>
