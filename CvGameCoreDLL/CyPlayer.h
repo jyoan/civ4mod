@@ -449,6 +449,8 @@ public:
 	bool isNewCityStateReligion();
 	bool isMaintainFeatures(int /*FeatureTypes*/ eFeature);
 	int getFeatureRouteType(int /*FeatureTypes*/ eFeature);
+	int getMaxCities();
+	bool isMaxCitiesReached();
 	bool hasBaseTrait(int /*TraitTypes*/ eTrait);
 	int getFreeTraitCount(int /*TraitTypes*/ eTrait);
 	void changeFreeTraitCount(int /*TraitTypes*/ eTrait, int iChange);

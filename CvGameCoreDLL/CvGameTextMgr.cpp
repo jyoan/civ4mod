@@ -3463,6 +3463,13 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			}
 		}
 
+		// iMaxCities / iMaxCitiesPercent: "Can found up to 5 cities" on the map size of the game (added by this mod)
+		if (GC.getTraitInfo(eTrait).getMaxCitiesLimit(GC.getMapINLINE().getWorldSize()) >= 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText(((GC.getTraitInfo(eTrait).getMaxCitiesPercent() != 0) ? "TXT_KEY_TRAIT_MAX_CITIES_MAP" : "TXT_KEY_TRAIT_MAX_CITIES"), GC.getTraitInfo(eTrait).getMaxCitiesLimit(GC.getMapINLINE().getWorldSize())));
+		}
+
 		if (GC.getTraitInfo(eTrait).getNewCityPopulation() != 0)
 		{
 			szHelpString.append(NEWLINE L"  ");

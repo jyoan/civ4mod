@@ -368,6 +368,8 @@
 			<iExpInBorderModifier>50</iExpInBorderModifier>
 			<iCityRadiusChange>1</iCityRadiusChange>
 			<CityRadiusCultureLevel>CULTURELEVEL_FLEDGLING</CityRadiusCultureLevel>
+			<iMaxCities>1</iMaxCities>
+			<iMaxCitiesPercent>40</iMaxCitiesPercent>
 			<iSummonDuration>1</iSummonDuration>
 			<iNewCityPopulation>1</iNewCityPopulation>
 			<bNewCityStateReligion>1</bNewCityStateReligion>

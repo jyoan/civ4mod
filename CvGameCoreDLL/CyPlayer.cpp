@@ -1987,6 +1987,16 @@ int CyPlayer::getFeatureRouteType(int /*FeatureTypes*/ eFeature)
 	return m_pPlayer ? m_pPlayer->getFeatureRouteType((FeatureTypes)eFeature) : -1;
 }
 
+int CyPlayer::getMaxCities()
+{
+	return m_pPlayer ? m_pPlayer->getMaxCities() : -1;
+}
+
+bool CyPlayer::isMaxCitiesReached()
+{
+	return m_pPlayer ? m_pPlayer->isMaxCitiesReached() : false;
+}
+
 bool CyPlayer::hasBaseTrait(int /*TraitTypes*/ eTrait)
 {
 	return m_pPlayer ? m_pPlayer->hasBaseTrait((TraitTypes)eTrait) : false;

@@ -215,6 +215,8 @@ public:
 	int getOccupationTimeModifier() const;				// Exposed to Python
 	// Builds with an improvement keep the feature on the plots of this player (traits, added by this mod)
 	bool isMaintainFeatures(FeatureTypes eFeature) const;				// Exposed to Python
+	int getMaxCities() const;											// Exposed to Python
+	bool isMaxCitiesReached() const;									// Exposed to Python
 	bool isIgnoreObsoleteBuilding(BuildingTypes eBuilding) const;		// Exposed to Python
 	bool isIgnoreObsoleteSpecialBuilding(SpecialBuildingTypes eSpecialBuilding) const;	// Exposed to Python
 	bool isObsoleteBuilding(BuildingTypes eBuilding) const;				// Exposed to Python

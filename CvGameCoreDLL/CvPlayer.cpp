@@ -919,6 +919,15 @@ void CvPlayer::addFreeUnit(UnitTypes eUnit, UnitAITypes eUnitAI)
 		}
 	}
 
+	// No more starting settlers than the city limit of the traits allows (added by this mod)
+	if ((eUnitAI == UNITAI_SETTLE) || (GC.getUnitInfo(eUnit).getDefaultUnitAIType() == UNITAI_SETTLE))
+	{
+		if (getMaxCities() >= 0 && (getNumCities() + AI_getNumAIUnits(UNITAI_SETTLE)) >= getMaxCities())
+		{
+			return;
+		}
+	}
+
 	pStartingPlot = getStartingPlot();
 
 	if (pStartingPlot != NULL)
@@ -4849,6 +4858,12 @@ bool CvPlayer::canReceiveGoody(CvPlot* pPlot, GoodyTypes eGoody, CvUnit* pUnit) 
 				return false;
 			}
 		}
+
+		// City limit of the traits (added by this mod)
+		if (GC.getUnitInfo(eUnit).isFound() && isMaxCitiesReached())
+		{
+			return false;
+		}
 	}
 
 	if (GC.getGoodyInfo(eGoody).getBarbarianUnitClass() != NO_UNITCLASS)
@@ -5151,6 +5166,12 @@ bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 				return false;
 			}
 		}
+
+		// City limit of the traits (added by this mod)
+		if (isMaxCitiesReached())
+		{
+			return false;
+		}
 	}
 
 	if (pPlot->isImpassable())
@@ -5411,6 +5432,12 @@ bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool
 		{
 			return false;
 		}
+	}
+
+	// City limit of the traits (added by this mod)
+	if (GC.getUnitInfo(eUnit).isFound() && isMaxCitiesReached())
+	{
+		return false;
 	}
 
 	if (GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE))
@@ -6288,6 +6315,39 @@ bool CvPlayer::isIgnoreObsoleteSpecialBuilding(SpecialBuildingTypes eSpecialBuil
 bool CvPlayer::isObsoleteBuilding(BuildingTypes eBuilding) const
 {
 	return (GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding) && !isIgnoreObsoleteBuilding(eBuilding));
+}
+
+// The most cities the player can found (added by this mod): the smallest city limit of the traits (iMaxCities,
+// iMaxCitiesPercent) on the map size of the game. -1: no limit.
+int CvPlayer::getMaxCities() const
+{
+	int iMaxCities = -1;
+	int iLimit;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iLimit = GC.getTraitInfo((TraitTypes)iI).getMaxCitiesLimit(GC.getMapINLINE().getWorldSize());
+
+			if (iLimit >= 0 && (iMaxCities < 0 || iLimit < iMaxCities))
+			{
+				iMaxCities = iLimit;
+			}
+		}
+	}
+
+	return iMaxCities;
+}
+
+// The player cannot found more cities (nor train settlers, nor get them from goody huts). Conquered, traded and
+// flipped cities can go over the limit.
+bool CvPlayer::isMaxCitiesReached() const
+{
+	int iMaxCities = getMaxCities();
+
+	return (iMaxCities >= 0 && getNumCities() >= iMaxCities);
 }
 
 RouteTypes CvPlayer::getFeatureRouteType(FeatureTypes eFeature) const

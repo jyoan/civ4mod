@@ -795,6 +795,24 @@
 		<Japanese>[ICON_BULLET]&#25991;&#21270;&#12524;&#12505;&#12523;&#12364;%s3_Level&#20197;&#19978;&#12398;&#37117;&#24066;&#12391;&#37117;&#24066;&#22287;&#12398;&#21322;&#24452;%D1_Change&#65288;&#26368;&#22823;%d2_Max&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MAX_CITIES</Tag>
+		<English>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities]</English>
+		<French>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities]</French>
+		<German>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities]</German>
+		<Italian>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities]</Italian>
+		<Spanish>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities]</Spanish>
+		<Japanese>[ICON_BULLET]&#24314;&#35373;&#12391;&#12365;&#12427;&#37117;&#24066;&#12399; %d1 &#37117;&#24066;&#12414;&#12391;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MAX_CITIES_MAP</Tag>
+		<English>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities] (depends on the map size)</English>
+		<French>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities] (depends on the map size)</French>
+		<German>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities] (depends on the map size)</German>
+		<Italian>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities] (depends on the map size)</Italian>
+		<Spanish>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities] (depends on the map size)</Spanish>
+		<Japanese>[ICON_BULLET]&#24314;&#35373;&#12391;&#12365;&#12427;&#37117;&#24066;&#12399; %d1 &#37117;&#24066;&#12414;&#12391;&#65288;&#12510;&#12483;&#12503;&#12398;&#22823;&#12365;&#12373;&#12391;&#22793;&#12431;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_BUILDING_PLOT_RADIUS_CULTURE</Tag>
 		<English>[ICON_BULLET]City radius %d1_Radius with %s2_Level culture or more</English>
 		<French>[ICON_BULLET]City radius %d1_Radius with %s2_Level culture or more</French>

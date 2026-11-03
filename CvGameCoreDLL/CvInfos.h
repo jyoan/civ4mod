@@ -4444,6 +4444,9 @@ public:
 	int getExpInBorderModifier() const;				// Exposed to Python
 	int getCityRadiusChange() const;				// Exposed to Python
 	int getCityRadiusCultureLevel() const;			// Exposed to Python
+	int getMaxCities() const;					// Exposed to Python
+	int getMaxCitiesPercent() const;			// Exposed to Python
+	int getMaxCitiesLimit(WorldSizeTypes eWorldSize) const;	// Exposed to Python
 	int getSummonDuration() const;				// Exposed to Python
 	// Civ5 abilities (added by this mod)
 	int getGoldenAgeModifier() const;				// Exposed to Python
@@ -4533,6 +4536,8 @@ protected:
 	int m_iExpInBorderModifier;
 	int m_iCityRadiusChange;
 	int m_iCityRadiusCultureLevel;
+	int m_iMaxCities;
+	int m_iMaxCitiesPercent;
 	int m_iSummonDuration;
 	int m_iGoldenAgeModifier;
 	int m_iGoldenAgeGreatPeopleRateModifier;

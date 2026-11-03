@@ -17579,6 +17579,8 @@ m_iTradeRoutes(0),
 m_iExpInBorderModifier(0),
 m_iCityRadiusChange(0),
 m_iCityRadiusCultureLevel(NO_CULTURELEVEL),
+m_iMaxCities(0),
+m_iMaxCitiesPercent(0),
 m_iSummonDuration(0),
 m_iGoldenAgeModifier(0),
 m_iGoldenAgeGreatPeopleRateModifier(0),
@@ -17758,6 +17760,38 @@ int CvTraitInfo::getCityRadiusChange() const
 int CvTraitInfo::getCityRadiusCultureLevel() const
 {
 	return m_iCityRadiusCultureLevel;
+}
+
+// The most cities the player can found (added by this mod). Both 0: no limit
+int CvTraitInfo::getMaxCities() const
+{
+	return m_iMaxCities;
+}
+
+// Percent of iTargetNumCities of the map size (CIV4WorldInfo.xml), added to iMaxCities
+int CvTraitInfo::getMaxCitiesPercent() const
+{
+	return m_iMaxCitiesPercent;
+}
+
+// The city limit of the trait on the map size: iMaxCities + iMaxCitiesPercent of iTargetNumCities, at least 1.
+// -1: the trait has no limit. Without a map size (NO_WORLDSIZE), only iMaxCities.
+int CvTraitInfo::getMaxCitiesLimit(WorldSizeTypes eWorldSize) const
+{
+	int iLimit;
+
+	if (m_iMaxCities == 0 && m_iMaxCitiesPercent == 0)
+	{
+		return -1;
+	}
+
+	iLimit = m_iMaxCities;
+	if (m_iMaxCitiesPercent != 0 && eWorldSize != NO_WORLDSIZE)
+	{
+		iLimit += (m_iMaxCitiesPercent * GC.getWorldInfo(eWorldSize).getTargetNumCities()) / 100;
+	}
+
+	return std::max(1, iLimit);
 }
 
 int CvTraitInfo::getSummonDuration() const
@@ -18301,6 +18335,8 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCityRadiusChange, "iCityRadiusChange");
 	// The culture levels are loaded after the traits: readPass3() finds the type
 	pXML->GetChildXmlValByName(m_szCityRadiusCultureLevel, "CityRadiusCultureLevel");
+	pXML->GetChildXmlValByName(&m_iMaxCities, "iMaxCities");
+	pXML->GetChildXmlValByName(&m_iMaxCitiesPercent, "iMaxCitiesPercent");
 	pXML->GetChildXmlValByName(&m_iSummonDuration, "iSummonDuration");
 	pXML->GetChildXmlValByName(&m_iGoldenAgeModifier, "iGoldenAgeModifier");
 	pXML->GetChildXmlValByName(&m_iGoldenAgeGreatPeopleRateModifier, "iGoldenAgeGreatPeopleRateModifier");
