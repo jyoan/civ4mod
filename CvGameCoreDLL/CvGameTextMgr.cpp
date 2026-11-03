@@ -3488,6 +3488,19 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_OCCUPATION_TIME_MODIFIER", GC.getTraitInfo(eTrait).getOccupationTimeModifier()));
 		}
 
+		// iUnitCostModifier / iBuildingCostModifier: "-20% production cost of units" (added by this mod)
+		if (GC.getTraitInfo(eTrait).getUnitCostModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIT_COST_MODIFIER", GC.getTraitInfo(eTrait).getUnitCostModifier()));
+		}
+
+		if (GC.getTraitInfo(eTrait).getBuildingCostModifier() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_BUILDING_COST_MODIFIER", GC.getTraitInfo(eTrait).getBuildingCostModifier()));
+		}
+
 		if (GC.getTraitInfo(eTrait).getSummonDuration() != 0)
 		{
 			szHelpString.append(NEWLINE L"  ");

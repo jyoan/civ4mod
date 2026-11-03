@@ -1987,6 +1987,16 @@ int CyPlayer::getFeatureRouteType(int /*FeatureTypes*/ eFeature)
 	return m_pPlayer ? m_pPlayer->getFeatureRouteType((FeatureTypes)eFeature) : -1;
 }
 
+int CyPlayer::getUnitCostModifier()
+{
+	return m_pPlayer ? m_pPlayer->getUnitCostModifier() : 0;
+}
+
+int CyPlayer::getBuildingCostModifier()
+{
+	return m_pPlayer ? m_pPlayer->getBuildingCostModifier() : 0;
+}
+
 int CyPlayer::getMaxCities()
 {
 	return m_pPlayer ? m_pPlayer->getMaxCities() : -1;

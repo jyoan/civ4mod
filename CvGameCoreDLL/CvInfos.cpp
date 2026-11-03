@@ -17587,6 +17587,8 @@ m_iGoldenAgeGreatPeopleRateModifier(0),
 m_iCapitalBuildingProductionModifier(0),
 m_iPillageGoldModifier(0),
 m_iCityCaptureGoldModifier(0),
+m_iUnitCostModifier(0),
+m_iBuildingCostModifier(0),
 m_iNewCityCultureLevel(NO_CULTURELEVEL),
 m_iNewCityPopulation(0),
 m_iOccupationTimeModifier(0),
@@ -17841,6 +17843,18 @@ int CvTraitInfo::getPillageGoldModifier() const
 int CvTraitInfo::getCityCaptureGoldModifier() const
 {
 	return m_iCityCaptureGoldModifier;
+}
+
+// Production cost % of all units (added by this mod, as in ex's CivGoldEmpires)
+int CvTraitInfo::getUnitCostModifier() const
+{
+	return m_iUnitCostModifier;
+}
+
+// Production cost % of all buildings (added by this mod, as in ex's CivGoldEmpires)
+int CvTraitInfo::getBuildingCostModifier() const
+{
+	return m_iBuildingCostModifier;
 }
 
 // The culture level new cities start with (NO_CULTURELEVEL: none)
@@ -18343,6 +18357,8 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCapitalBuildingProductionModifier, "iCapitalBuildingProductionModifier");
 	pXML->GetChildXmlValByName(&m_iPillageGoldModifier, "iPillageGoldModifier");
 	pXML->GetChildXmlValByName(&m_iCityCaptureGoldModifier, "iCityCaptureGoldModifier");
+	pXML->GetChildXmlValByName(&m_iUnitCostModifier, "iUnitCostModifier");
+	pXML->GetChildXmlValByName(&m_iBuildingCostModifier, "iBuildingCostModifier");
 	// The culture levels are loaded after the traits: readPass3() finds the type
 	pXML->GetChildXmlValByName(m_szNewCityCultureLevel, "NewCityCultureLevel");
 	pXML->GetChildXmlValByName(&m_iNewCityPopulation, "iNewCityPopulation");

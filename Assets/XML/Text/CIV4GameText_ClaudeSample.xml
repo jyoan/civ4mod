@@ -867,6 +867,24 @@
 		<Japanese>[ICON_BULLET]&#21344;&#38936;&#12375;&#12383;&#37117;&#24066;&#12398;&#21453;&#20081;&#26399;&#38291;%D1_Percent%%</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIT_COST_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% production cost of units</English>
+		<French>[ICON_BULLET]%D1_Percent%% production cost of units</French>
+		<German>[ICON_BULLET]%D1_Percent%% production cost of units</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% production cost of units</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% production cost of units</Spanish>
+		<Japanese>[ICON_BULLET]&#12518;&#12491;&#12483;&#12488;&#12398;&#29983;&#29987;&#12467;&#12473;&#12488;%D1_Percent%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BUILDING_COST_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% production cost of buildings</English>
+		<French>[ICON_BULLET]%D1_Percent%% production cost of buildings</French>
+		<German>[ICON_BULLET]%D1_Percent%% production cost of buildings</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% production cost of buildings</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% production cost of buildings</Spanish>
+		<Japanese>[ICON_BULLET]&#24314;&#36896;&#29289;&#12398;&#29983;&#29987;&#12467;&#12473;&#12488;%D1_Percent%%</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_MAINTAIN_FEATURES</Tag>
 		<English>[ICON_BULLET]Improvements keep: </English>
 		<French>[ICON_BULLET]Improvements keep: </French>

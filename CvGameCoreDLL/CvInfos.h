@@ -4455,6 +4455,8 @@ public:
 	int getCapitalBuildingProductionModifier() const;	// Exposed to Python
 	int getPillageGoldModifier() const;				// Exposed to Python
 	int getCityCaptureGoldModifier() const;			// Exposed to Python
+	int getUnitCostModifier() const;				// Exposed to Python
+	int getBuildingCostModifier() const;			// Exposed to Python
 	int getNewCityCultureLevel() const;				// Exposed to Python
 	int getNewCityPopulation() const;				// Exposed to Python
 	bool isNewCityStateReligion() const;			// Exposed to Python
@@ -4544,6 +4546,8 @@ protected:
 	int m_iCapitalBuildingProductionModifier;
 	int m_iPillageGoldModifier;
 	int m_iCityCaptureGoldModifier;
+	int m_iUnitCostModifier;
+	int m_iBuildingCostModifier;
 	int m_iNewCityCultureLevel;
 	CvString m_szNewCityCultureLevel;				// read() keeps the type as a string until readPass3()
 	std::vector< std::vector<int> > m_aaiBonusYieldChange;		// [bonus][yield], empty when not set

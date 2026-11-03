@@ -228,6 +228,8 @@ public:
 	int getCapitalBuildingProductionModifier() const;		// Exposed to Python
 	int getPillageGoldModifier() const;					// Exposed to Python
 	int getCityCaptureGoldModifier() const;				// Exposed to Python
+	int getUnitCostModifier() const;				// Exposed to Python
+	int getBuildingCostModifier() const;			// Exposed to Python
 	CultureLevelTypes getNewCityCultureLevel() const;		// Exposed to Python
 	int getProductionModifier(BuildingTypes eBuilding) const;
 	int getProductionModifier(ProjectTypes eProject) const;

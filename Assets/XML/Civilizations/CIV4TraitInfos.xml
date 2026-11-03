@@ -379,6 +379,8 @@
 			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>
 			<iPillageGoldModifier>200</iPillageGoldModifier>
 			<iCityCaptureGoldModifier>200</iCityCaptureGoldModifier>
+			<iUnitCostModifier>-20</iUnitCostModifier>
+			<iBuildingCostModifier>-50</iBuildingCostModifier>
 			<NewCityCultureLevel>CULTURELEVEL_FLEDGLING</NewCityCultureLevel>
 			<MaintainFeatures>
 				<MaintainFeature>

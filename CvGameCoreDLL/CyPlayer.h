@@ -450,6 +450,8 @@ public:
 	bool isMaintainFeatures(int /*FeatureTypes*/ eFeature);
 	int getFeatureRouteType(int /*FeatureTypes*/ eFeature);
 	int getMaxCities();
+	int getUnitCostModifier();
+	int getBuildingCostModifier();
 	bool isMaxCitiesReached();
 	bool hasBaseTrait(int /*TraitTypes*/ eTrait);
 	int getFreeTraitCount(int /*TraitTypes*/ eTrait);

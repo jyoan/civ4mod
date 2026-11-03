@@ -5932,6 +5932,10 @@ int CvPlayer::getProductionNeeded(UnitTypes eUnit) const
 
 	iProductionNeeded += getUnitExtraCost(eUnitClass);
 
+	// iUnitCostModifier of the traits (added by this mod)
+	iProductionNeeded *= std::max(0, 100 + getUnitCostModifier());
+	iProductionNeeded /= 100;
+
 	// Python cost modifier
 	if(GC.getUSE_GET_UNIT_COST_MOD_CALLBACK())
 	{
@@ -5983,6 +5987,10 @@ int CvPlayer::getProductionNeeded(BuildingTypes eBuilding) const
 		iProductionNeeded *= std::max(0, ((GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
 		iProductionNeeded /= 100;
 	}
+
+	// iBuildingCostModifier of the traits (added by this mod)
+	iProductionNeeded *= std::max(0, 100 + getBuildingCostModifier());
+	iProductionNeeded /= 100;
 
 	return std::max(1, iProductionNeeded);
 }
@@ -6446,6 +6454,40 @@ int CvPlayer::getCityCaptureGoldModifier() const
 		if (hasTrait((TraitTypes)iI))
 		{
 			iModifier += GC.getTraitInfo((TraitTypes)iI).getCityCaptureGoldModifier();
+		}
+	}
+
+	return iModifier;
+}
+
+// Production cost % of all units, the sum of the traits (iUnitCostModifier; added by this mod)
+int CvPlayer::getUnitCostModifier() const
+{
+	int iModifier = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iModifier += GC.getTraitInfo((TraitTypes)iI).getUnitCostModifier();
+		}
+	}
+
+	return iModifier;
+}
+
+// Production cost % of all buildings, the sum of the traits (iBuildingCostModifier; added by this mod)
+int CvPlayer::getBuildingCostModifier() const
+{
+	int iModifier = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iModifier += GC.getTraitInfo((TraitTypes)iI).getBuildingCostModifier();
 		}
 	}
 
