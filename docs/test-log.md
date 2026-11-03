@@ -44,3 +44,4 @@
 - 2026-11-03: 志向の `iUnitCostModifier` / `iBuildingCostModifier`（説明文、検証用文明で戦士 12・兵舎 25）をゲーム内で確認
 - 2026-11-03: 志向の `ConditionalFreeTraits`（戦時・平時、国教・国教なし、時代の範囲、社会制度との組み合わせ。説明文、宣戦・和平・国教・時代・社会制度の変化での付け外し、セーブと読み込み）をゲーム内で確認（検証用文明）
 - 2026-11-03: 建物の世界遺産の数に比例する効果（`WorldWonderYieldChanges`・`WorldWonderCommerceChanges`・`GlobalWorldWonderYieldChanges`・`GlobalWorldWonderCommerceChanges`。説明文、世界遺産の追加と除去、セーブと読み込み）と、志向の `bNoPillageInBorders`（検証用文明の領土で他国が略奪できない）をゲーム内で確認
+- 2026-11-03: 都市画面の産出の内訳（生産力・商業の説明の小計、人口のバーの食料の小計・消費・余剰。企業の小計を含む）をゲーム内で確認
