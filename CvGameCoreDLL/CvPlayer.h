@@ -1300,6 +1300,7 @@ protected:
 	void verifyGoldCommercePercent();
 
 	void processCivics(CivicTypes eCivic, int iChange);
+	void processTrait(TraitTypes eTrait, int iChange);
 
 	// for serialization
 	virtual void read(FDataStreamBase* pStream);

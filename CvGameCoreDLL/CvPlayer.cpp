@@ -210,58 +210,7 @@ void CvPlayer::init(PlayerTypes eID)
 		{
 			if (hasTrait((TraitTypes)iI))
 			{
-				changeExtraHealth(GC.getTraitInfo((TraitTypes)iI).getHealth());
-				changeExtraHappiness(GC.getTraitInfo((TraitTypes)iI).getHappiness());
-
-				for (iJ = 0; iJ < GC.getNumBuildingInfos(); iJ++)
-				{
-					changeExtraBuildingHappiness((BuildingTypes)iJ, GC.getBuildingInfo((BuildingTypes)iJ).getHappinessTraits(iI));
-				}
-
-				changeUpkeepModifier(GC.getTraitInfo((TraitTypes)iI).getUpkeepModifier());
-				changeLevelExperienceModifier(GC.getTraitInfo((TraitTypes)iI).getLevelExperienceModifier());
-				changeGreatPeopleRateModifier(GC.getTraitInfo((TraitTypes)iI).getGreatPeopleRateModifier());
-				changeGreatGeneralRateModifier(GC.getTraitInfo((TraitTypes)iI).getGreatGeneralRateModifier());
-				changeDomesticGreatGeneralRateModifier(GC.getTraitInfo((TraitTypes)iI).getDomesticGreatGeneralRateModifier());
-
-				changeMaxGlobalBuildingProductionModifier(GC.getTraitInfo((TraitTypes)iI).getMaxGlobalBuildingProductionModifier());
-				changeMaxTeamBuildingProductionModifier(GC.getTraitInfo((TraitTypes)iI).getMaxTeamBuildingProductionModifier());
-				changeMaxPlayerBuildingProductionModifier(GC.getTraitInfo((TraitTypes)iI).getMaxPlayerBuildingProductionModifier());
-
-				changeWorkerSpeedModifier(GC.getTraitInfo((TraitTypes)iI).getWorkerSpeedModifier());
-				changeFreeExperience(GC.getTraitInfo((TraitTypes)iI).getFreeExperience());
-				changeMilitaryProductionModifier(GC.getTraitInfo((TraitTypes)iI).getMilitaryProductionModifier());
-				changeImprovementUpgradeRateModifier(GC.getTraitInfo((TraitTypes)iI).getImprovementUpgradeRateModifier());
-				changeDistanceMaintenanceModifier(GC.getTraitInfo((TraitTypes)iI).getDistanceMaintenanceModifier());
-				changeNumCitiesMaintenanceModifier(GC.getTraitInfo((TraitTypes)iI).getNumCitiesMaintenanceModifier());
-				changeWarWearinessModifier(GC.getTraitInfo((TraitTypes)iI).getWarWearinessModifier());
-				changeFreeSpecialist(GC.getTraitInfo((TraitTypes)iI).getFreeSpecialist());
-				changeTradeRoutes(GC.getTraitInfo((TraitTypes)iI).getTradeRoutes());
-				changeExpInBorderModifier(GC.getTraitInfo((TraitTypes)iI).getExpInBorderModifier());
-				changeGoldenAgeModifier(GC.getTraitInfo((TraitTypes)iI).getGoldenAgeModifier());
-
-				for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
-				{
-					changeTradeYieldModifier(((YieldTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getTradeYieldModifier(iJ));
-					changeYieldRateModifier(((YieldTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getYieldModifier(iJ));
-					changeCapitalYieldRateModifier(((YieldTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getCapitalYieldModifier(iJ));
-				}
-
-				for (iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)
-				{
-					changeFreeCityCommerce(((CommerceTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getCommerceChange(iJ));
-					changeCommerceRateModifier(((CommerceTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getCommerceModifier(iJ));
-					changeCapitalCommerceRateModifier(((CommerceTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getCapitalCommerceModifier(iJ));
-					changeSpecialistExtraCommerce(((CommerceTypes)iJ), GC.getTraitInfo((TraitTypes)iI).getSpecialistExtraCommerce(iJ));
-				}
-
-				for (iJ = 0; iJ < GC.getNumCivicOptionInfos(); iJ++)
-				{
-					if (GC.getCivicOptionInfo((CivicOptionTypes) iJ).getTraitNoUpkeep(iI))
-					{
-						changeNoCivicUpkeepCount(((CivicOptionTypes)iJ), 1);
-					}
-				}
+				processTrait((TraitTypes)iI, 1);
 			}
 		}
 
@@ -16218,6 +16167,68 @@ void CvPlayer::processCivics(CivicTypes eCivic, int iChange)
 		for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
 		{
 			changeImprovementYieldChange(((ImprovementTypes)iI), ((YieldTypes)iJ), (GC.getCivicInfo(eCivic).getImprovementYieldChanges(iI, iJ) * iChange));
+		}
+	}
+}
+
+// The effects of a trait that are added to the player (iChange 1) or removed (-1). CvPlayer::init applies them for the
+// traits of the leader and the civilization. The other trait effects are summed up when used (CvPlayer::hasTrait).
+void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
+{
+	int iJ;
+
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+
+	changeExtraHealth(kTrait.getHealth() * iChange);
+	changeExtraHappiness(kTrait.getHappiness() * iChange);
+
+	for (iJ = 0; iJ < GC.getNumBuildingInfos(); iJ++)
+	{
+		changeExtraBuildingHappiness((BuildingTypes)iJ, GC.getBuildingInfo((BuildingTypes)iJ).getHappinessTraits(eTrait) * iChange);
+	}
+
+	changeUpkeepModifier(kTrait.getUpkeepModifier() * iChange);
+	changeLevelExperienceModifier(kTrait.getLevelExperienceModifier() * iChange);
+	changeGreatPeopleRateModifier(kTrait.getGreatPeopleRateModifier() * iChange);
+	changeGreatGeneralRateModifier(kTrait.getGreatGeneralRateModifier() * iChange);
+	changeDomesticGreatGeneralRateModifier(kTrait.getDomesticGreatGeneralRateModifier() * iChange);
+
+	changeMaxGlobalBuildingProductionModifier(kTrait.getMaxGlobalBuildingProductionModifier() * iChange);
+	changeMaxTeamBuildingProductionModifier(kTrait.getMaxTeamBuildingProductionModifier() * iChange);
+	changeMaxPlayerBuildingProductionModifier(kTrait.getMaxPlayerBuildingProductionModifier() * iChange);
+
+	changeWorkerSpeedModifier(kTrait.getWorkerSpeedModifier() * iChange);
+	changeFreeExperience(kTrait.getFreeExperience() * iChange);
+	changeMilitaryProductionModifier(kTrait.getMilitaryProductionModifier() * iChange);
+	changeImprovementUpgradeRateModifier(kTrait.getImprovementUpgradeRateModifier() * iChange);
+	changeDistanceMaintenanceModifier(kTrait.getDistanceMaintenanceModifier() * iChange);
+	changeNumCitiesMaintenanceModifier(kTrait.getNumCitiesMaintenanceModifier() * iChange);
+	changeWarWearinessModifier(kTrait.getWarWearinessModifier() * iChange);
+	changeFreeSpecialist(kTrait.getFreeSpecialist() * iChange);
+	changeTradeRoutes(kTrait.getTradeRoutes() * iChange);
+	changeExpInBorderModifier(kTrait.getExpInBorderModifier() * iChange);
+	changeGoldenAgeModifier(kTrait.getGoldenAgeModifier() * iChange);
+
+	for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
+	{
+		changeTradeYieldModifier(((YieldTypes)iJ), kTrait.getTradeYieldModifier(iJ) * iChange);
+		changeYieldRateModifier(((YieldTypes)iJ), kTrait.getYieldModifier(iJ) * iChange);
+		changeCapitalYieldRateModifier(((YieldTypes)iJ), kTrait.getCapitalYieldModifier(iJ) * iChange);
+	}
+
+	for (iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)
+	{
+		changeFreeCityCommerce(((CommerceTypes)iJ), kTrait.getCommerceChange(iJ) * iChange);
+		changeCommerceRateModifier(((CommerceTypes)iJ), kTrait.getCommerceModifier(iJ) * iChange);
+		changeCapitalCommerceRateModifier(((CommerceTypes)iJ), kTrait.getCapitalCommerceModifier(iJ) * iChange);
+		changeSpecialistExtraCommerce(((CommerceTypes)iJ), kTrait.getSpecialistExtraCommerce(iJ) * iChange);
+	}
+
+	for (iJ = 0; iJ < GC.getNumCivicOptionInfos(); iJ++)
+	{
+		if (GC.getCivicOptionInfo((CivicOptionTypes) iJ).getTraitNoUpkeep(eTrait))
+		{
+			changeNoCivicUpkeepCount(((CivicOptionTypes)iJ), iChange);
 		}
 	}
 }

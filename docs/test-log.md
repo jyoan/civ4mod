@@ -36,3 +36,4 @@
 - 2026-11-02: 志向の `FeatureRoutes`（領土の森・ジャングルを道路として扱う。移動、都市と資源のつながり、伐採でつながりが切れる、他国のユニットは使えない）をゲーム内で確認（検証用文明）
 - 2026-11-03: Civ5 の文明の能力の志向・建物・昇進のタグ（`iGoldenAgeModifier`・`iGoldenAgeGreatPeopleRateModifier`・`BonusYieldChanges`・`iCapitalBuildingProductionModifier`・`iPillageGoldModifier`・`iCityCaptureGoldModifier`・`NewCityCultureLevel`・`iCombatPercentInBorders`）をゲーム内で確認（検証用文明・日本で検証用建物（新しい都市））
 - 2026-11-03: 志向の `NoObsoleteBuildingClasses` / `NoObsoleteSpecialBuildings`（城・大図書館・僧院が陳腐化しない。経済学・科学的手法の後も効果が残り、建設でき、建物・技術の説明に陳腐化が出ない。一覧に無い城壁はライフリングで陳腐化する）をゲーム内で確認（検証用文明）
+- 2026-11-03: 志向の効果をゲーム開始時に足す処理を `CvPlayer::processTrait` に移した後も、検証用文明と BtS の志向の値が今までどおりであることを確認
