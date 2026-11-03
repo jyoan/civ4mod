@@ -894,6 +894,51 @@
 		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#12399;&#20182;&#22269;&#12398;&#12518;&#12491;&#12483;&#12488;&#12364;&#30053;&#22890;&#12391;&#12365;&#12394;&#12356;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLD_INTEREST</Tag>
+		<English>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn</English>
+		<French>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn</French>
+		<German>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn</German>
+		<Italian>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn</Italian>
+		<Spanish>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn</Spanish>
+		<Japanese>[ICON_BULLET]&#27598;&#12479;&#12540;&#12531;&#22269;&#24235;&#12398;%d1_Percent%%&#12398;[ICON_GOLD]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLD_INTEREST_MAX</Tag>
+		<English>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn (at most %d2)</English>
+		<French>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn (at most %d2)</French>
+		<German>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn (at most %d2)</German>
+		<Italian>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn (at most %d2)</Italian>
+		<Spanish>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn (at most %d2)</Spanish>
+		<Japanese>[ICON_BULLET]&#27598;&#12479;&#12540;&#12531;&#22269;&#24235;&#12398;%d1_Percent%%&#12398;[ICON_GOLD]&#12434;&#24471;&#12427;&#65288;&#26368;&#22823;%d2&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FORBIDDEN_CIVICS</Tag>
+		<English>[ICON_BULLET]Cannot adopt: </English>
+		<French>[ICON_BULLET]Cannot adopt: </French>
+		<German>[ICON_BULLET]Cannot adopt: </German>
+		<Italian>[ICON_BULLET]Cannot adopt: </Italian>
+		<Spanish>[ICON_BULLET]Cannot adopt: </Spanish>
+		<Japanese>[ICON_BULLET]&#25505;&#29992;&#12391;&#12365;&#12394;&#12356;&#31038;&#20250;&#21046;&#24230;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIVIC_FORBIDDEN_TRAITS</Tag>
+		<English>[ICON_BULLET]Cannot be adopted with: </English>
+		<French>[ICON_BULLET]Cannot be adopted with: </French>
+		<German>[ICON_BULLET]Cannot be adopted with: </German>
+		<Italian>[ICON_BULLET]Cannot be adopted with: </Italian>
+		<Spanish>[ICON_BULLET]Cannot be adopted with: </Spanish>
+		<Japanese>[ICON_BULLET]&#27425;&#12398;&#24535;&#21521;&#12434;&#25345;&#12388;&#12392;&#25505;&#29992;&#12391;&#12365;&#12394;&#12356;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_FINANCIAL_ADVISOR_INTEREST</Tag>
+		<English>Interest</English>
+		<French>Interest</French>
+		<German>Interest</German>
+		<Italian>Interest</Italian>
+		<Spanish>Interest</Spanish>
+		<Japanese>&#21033;&#23376;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_BUILDING_PER_CITY_WORLD_WONDER</Tag>
 		<English>Per World Wonder in the city</English>
 		<French>Per World Wonder in the city</French>

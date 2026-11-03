@@ -17769,6 +17769,8 @@ m_iCityCaptureGoldModifier(0),
 m_iUnitCostModifier(0),
 m_iBuildingCostModifier(0),
 m_bNoPillageInBorders(false),
+m_iGoldInterestPercent(0),
+m_iGoldInterestMax(0),
 m_iNewCityCultureLevel(NO_CULTURELEVEL),
 m_iNewCityPopulation(0),
 m_iOccupationTimeModifier(0),
@@ -17793,7 +17795,8 @@ m_pabMaintainFeatures(NULL),
 m_paiFeatureRoute(NULL),
 m_bIgnoreBuildingObsolescence(false),
 m_pabNoObsoleteBuildingClass(NULL),
-m_pabNoObsoleteSpecialBuilding(NULL)
+m_pabNoObsoleteSpecialBuilding(NULL),
+m_pabForbiddenCivic(NULL)
 {
 }
 
@@ -17826,6 +17829,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_paiFeatureRoute);
 	SAFE_DELETE_ARRAY(m_pabNoObsoleteBuildingClass);
 	SAFE_DELETE_ARRAY(m_pabNoObsoleteSpecialBuilding);
+	SAFE_DELETE_ARRAY(m_pabForbiddenCivic);
 }
 
 int CvTraitInfo::getHealth() const									
@@ -18041,6 +18045,26 @@ int CvTraitInfo::getBuildingCostModifier() const
 bool CvTraitInfo::isNoPillageInBorders() const
 {
 	return m_bNoPillageInBorders;
+}
+
+// Gold every turn: this % of the treasury, at most iGoldInterestMax (0: no limit; added by this mod, as in ex's
+// CivGoldEmpires)
+int CvTraitInfo::getGoldInterestPercent() const
+{
+	return m_iGoldInterestPercent;
+}
+
+int CvTraitInfo::getGoldInterestMax() const
+{
+	return m_iGoldInterestMax;
+}
+
+// The player cannot adopt the civic (added by this mod)
+bool CvTraitInfo::isForbiddenCivic(int i) const
+{
+	FAssertMsg(i < GC.getNumCivicInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_pabForbiddenCivic ? m_pabForbiddenCivic[i] : false;
 }
 
 // The culture level new cities start with (NO_CULTURELEVEL: none)
@@ -18564,6 +18588,10 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iUnitCostModifier, "iUnitCostModifier");
 	pXML->GetChildXmlValByName(&m_iBuildingCostModifier, "iBuildingCostModifier");
 	pXML->GetChildXmlValByName(&m_bNoPillageInBorders, "bNoPillageInBorders");
+	pXML->GetChildXmlValByName(&m_iGoldInterestPercent, "iGoldInterestPercent");
+	pXML->GetChildXmlValByName(&m_iGoldInterestMax, "iGoldInterestMax");
+	// Civics are loaded after the traits: readPass3() finds the types
+	readTypeList(pXML, "ForbiddenCivics", m_aszForbiddenCivicTypes);
 	// The culture levels are loaded after the traits: readPass3() finds the type
 	pXML->GetChildXmlValByName(m_szNewCityCultureLevel, "NewCityCultureLevel");
 	pXML->GetChildXmlValByName(&m_iNewCityPopulation, "iNewCityPopulation");
@@ -18901,6 +18929,8 @@ bool CvTraitInfo::readPass3()
 	m_aConditionalFreeTraits = aConditions;
 	m_aszConditionalFreeTraitTypes.clear();
 
+	resolveTypeList("ForbiddenCivics", m_aszForbiddenCivicTypes, GC.getNumCivicInfos(), &m_pabForbiddenCivic);
+	m_aszForbiddenCivicTypes.clear();
 	resolveTypeList("NoObsoleteBuildingClasses", m_aszNoObsoleteBuildingClassTypes, GC.getNumBuildingClassInfos(), &m_pabNoObsoleteBuildingClass);
 	m_aszNoObsoleteBuildingClassTypes.clear();
 	resolveTypeList("NoObsoleteSpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabNoObsoleteSpecialBuilding);

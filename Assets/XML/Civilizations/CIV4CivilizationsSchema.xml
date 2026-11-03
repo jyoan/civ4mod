@@ -346,6 +346,11 @@
 	<ElementType name="iUnitCostModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iBuildingCostModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="bNoPillageInBorders" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iGoldInterestPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iGoldInterestMax" content="textOnly" dt:type="int"/>
+	<ElementType name="ForbiddenCivics" content="eltOnly">
+		<element type="CivicType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="iMaxCities" content="textOnly" dt:type="int"/>
 	<ElementType name="iMaxCitiesPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iSummonDuration" content="textOnly" dt:type="int"/>
@@ -534,6 +539,9 @@
 		<element type="iUnitCostModifier" minOccurs="0"/>
 		<element type="iBuildingCostModifier" minOccurs="0"/>
 		<element type="bNoPillageInBorders" minOccurs="0"/>
+		<element type="iGoldInterestPercent" minOccurs="0"/>
+		<element type="iGoldInterestMax" minOccurs="0"/>
+		<element type="ForbiddenCivics" minOccurs="0"/>
 		<element type="NewCityCultureLevel" minOccurs="0"/>
 		<element type="MaintainFeatures" minOccurs="0"/>
 		<element type="FeatureRoutes" minOccurs="0"/>

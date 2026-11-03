@@ -4485,6 +4485,9 @@ public:
 	int getUnitCostModifier() const;				// Exposed to Python
 	int getBuildingCostModifier() const;			// Exposed to Python
 	bool isNoPillageInBorders() const;				// Exposed to Python
+	int getGoldInterestPercent() const;				// Exposed to Python
+	int getGoldInterestMax() const;					// Exposed to Python
+	bool isForbiddenCivic(int i) const;				// Exposed to Python
 	int getNewCityCultureLevel() const;				// Exposed to Python
 	int getNewCityPopulation() const;				// Exposed to Python
 	bool isNewCityStateReligion() const;			// Exposed to Python
@@ -4580,6 +4583,10 @@ protected:
 	int m_iUnitCostModifier;
 	int m_iBuildingCostModifier;
 	bool m_bNoPillageInBorders;
+	int m_iGoldInterestPercent;
+	int m_iGoldInterestMax;
+	bool* m_pabForbiddenCivic;					// NULL when not set
+	std::vector<CvString> m_aszForbiddenCivicTypes;	// read() keeps the types as strings until readPass3() (civics are loaded later)
 	int m_iNewCityCultureLevel;
 	CvString m_szNewCityCultureLevel;				// read() keeps the type as a string until readPass3()
 	std::vector< std::vector<int> > m_aaiBonusYieldChange;		// [bonus][yield], empty when not set

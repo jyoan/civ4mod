@@ -382,6 +382,11 @@
 			<iUnitCostModifier>-20</iUnitCostModifier>
 			<iBuildingCostModifier>-50</iBuildingCostModifier>
 			<bNoPillageInBorders>1</bNoPillageInBorders>
+			<iGoldInterestPercent>3</iGoldInterestPercent>
+			<iGoldInterestMax>25</iGoldInterestMax>
+			<ForbiddenCivics>
+				<CivicType>CIVIC_SLAVERY</CivicType>
+			</ForbiddenCivics>
 			<NewCityCultureLevel>CULTURELEVEL_FLEDGLING</NewCityCultureLevel>
 			<MaintainFeatures>
 				<MaintainFeature>

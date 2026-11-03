@@ -141,7 +141,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - `Assets\Python\` に置いたファイルは本体の同名ファイルを置き換える。`<BTS>\Assets\Python\` から同じ相対パス（`EntryPoints\`、`Screens\` など）でコピーしてから編集する
 - 元の Python はすべて ASCII・CRLF。日本語を書く必要があるなら、ファイル先頭に coding 宣言を入れる
 - DLL の機能を Python に公開するには `Cy*.cpp` と `Cy*Interface*.cpp`（boost::python）に追加する
-- Mod に入れている Python: `Screens\CvPediaMain.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`・`Screens\CvVictoryScreen.py`（BtS(J) のコピーに追記）、`Screens\CvCivicsScreen.py`（無印 Civ4(J) のコピーに追記。BtS(J)・Warlords(J) には無く、無印のものが使われている）、`Screens\CvPediaTrait.py`・`Screens\CvPediaSpell.py`・`EntryPoints\CvSpellInterface.py`・`EntryPoints\CvTraitInterface.py`（新規）
+- Mod に入れている Python: `Screens\CvPediaMain.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`・`Screens\CvVictoryScreen.py`（BtS(J) のコピーに追記）、`Screens\CvCivicsScreen.py`（無印 Civ4(J) のコピーに追記。BtS(J)・Warlords(J) には無く、無印のものが使われている）、`Screens\CvFinanceAdvisor.py`（Warlords(J) のコピーに追記。BtS(J) には無い）、`Screens\CvPediaTrait.py`・`Screens\CvPediaSpell.py`・`EntryPoints\CvSpellInterface.py`・`EntryPoints\CvTraitInterface.py`（新規）
 - 文法チェック: Python 3.14 が入っている（`python -I`）。Python 2.4 そのものではないが、インデントや括弧の誤りは見つかる。BtS のファイルには Python 2 の `print` 文があって途中で止まるので、`print` 行を `pass` に置き換えた複製で、**編集前と編集後の両方**をチェックして比べる
 
 ## Mod の設計方針

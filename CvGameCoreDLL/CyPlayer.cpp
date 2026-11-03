@@ -2002,6 +2002,16 @@ int CyPlayer::getNumWorldWonders()
 	return m_pPlayer ? m_pPlayer->getNumWorldWonders() : -1;
 }
 
+int CyPlayer::getGoldInterest()
+{
+	return m_pPlayer ? m_pPlayer->getGoldInterest() : 0;
+}
+
+bool CyPlayer::isForbiddenCivic(int /*CivicTypes*/ eCivic)
+{
+	return m_pPlayer ? m_pPlayer->isForbiddenCivic((CivicTypes)eCivic) : false;
+}
+
 bool CyPlayer::isNoPillageInBorders()
 {
 	return m_pPlayer ? m_pPlayer->isNoPillageInBorders() : false;

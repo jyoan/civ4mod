@@ -224,6 +224,8 @@ public:
 	int getNumWorldWonders() const;									// Exposed to Python: in all the cities (added by this mod)
 	void updateWorldWonderEffects();									// added by this mod
 	bool isNoPillageInBorders() const;								// Exposed to Python
+	int getGoldInterest() const;									// Exposed to Python: gold of this turn from the traits
+	bool isForbiddenCivic(CivicTypes eCivic) const;					// Exposed to Python: ForbiddenCivics of the traits
 	bool isMaxCitiesReached() const;									// Exposed to Python
 	bool isIgnoreObsoleteBuilding(BuildingTypes eBuilding) const;		// Exposed to Python
 	bool isIgnoreObsoleteSpecialBuilding(SpecialBuildingTypes eSpecialBuilding) const;	// Exposed to Python

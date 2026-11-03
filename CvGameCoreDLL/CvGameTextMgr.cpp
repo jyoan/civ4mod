@@ -3562,6 +3562,33 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_NO_PILLAGE_IN_BORDERS"));
 		}
 
+		// iGoldInterestPercent / iGoldInterestMax: "3% of the treasury as gold every turn (at most 25)" (added by this mod)
+		if (GC.getTraitInfo(eTrait).getGoldInterestPercent() > 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			if (GC.getTraitInfo(eTrait).getGoldInterestMax() > 0)
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_GOLD_INTEREST_MAX", GC.getTraitInfo(eTrait).getGoldInterestPercent(), GC.getTraitInfo(eTrait).getGoldInterestMax()));
+			}
+			else
+			{
+				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_GOLD_INTEREST", GC.getTraitInfo(eTrait).getGoldInterestPercent()));
+			}
+		}
+
+		// ForbiddenCivics: "Cannot adopt: Slavery, Serfdom" (added by this mod)
+		bool bFirstCivic = true;
+		for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
+		{
+			if (GC.getTraitInfo(eTrait).isForbiddenCivic(iI))
+			{
+				szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_FORBIDDEN_CIVICS").c_str());
+				szText.Format(L"<link=literal>%s</link>", GC.getCivicInfo((CivicTypes)iI).getDescription());
+				setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstCivic);
+				bFirstCivic = false;
+			}
+		}
+
 		// iUnitCostModifier / iBuildingCostModifier: "-20% production cost of units" (added by this mod)
 		if (GC.getTraitInfo(eTrait).getUnitCostModifier() != 0)
 		{
@@ -5374,6 +5401,24 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	}
 
 	buildFreeTraitsString(szHelpText, GC.getCivicInfo(eCivic).getFreeTraitsVector());
+
+	// The traits that forbid the civic (ForbiddenCivics; added by this mod): in the game, those of the active player
+	bool bFirstForbiddingTrait = true;
+	for (iI = 0; iI < GC.getNumTraitInfos(); ++iI)
+	{
+		if (GC.getTraitInfo((TraitTypes)iI).isForbiddenCivic(eCivic))
+		{
+			if (bCivilopediaText || !bPlayerContext || GC.getGameINLINE().getActivePlayer() == NO_PLAYER || GET_PLAYER(GC.getGameINLINE().getActivePlayer()).hasTrait((TraitTypes)iI))
+			{
+				CvWString szForbiddenStart;
+				CvWString szForbiddenTrait;
+				szForbiddenStart.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_FORBIDDEN_TRAITS").c_str());
+				szForbiddenTrait.Format(L"<link=literal>%s</link>", GC.getTraitInfo((TraitTypes)iI).getDescription());
+				setListHelp(szHelpText, szForbiddenStart, szForbiddenTrait, L", ", bFirstForbiddingTrait);
+				bFirstForbiddingTrait = false;
+			}
+		}
+	}
 
 	// Special Building Not Required...
 	for (iI = 0; iI < GC.getNumSpecialBuildingInfos(); ++iI)

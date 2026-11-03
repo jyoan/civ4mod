@@ -452,6 +452,8 @@ public:
 	int getMaxCities();
 	int getNumWorldWonders();
 	bool isNoPillageInBorders();
+	int getGoldInterest();
+	bool isForbiddenCivic(int /*CivicTypes*/ eCivic);
 	int getUnitCostModifier();
 	int getBuildingCostModifier();
 	bool isMaxCitiesReached();

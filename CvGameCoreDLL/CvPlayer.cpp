@@ -6489,6 +6489,52 @@ bool CvPlayer::isNoPillageInBorders() const
 	return false;
 }
 
+// Gold this turn from iGoldInterestPercent / iGoldInterestMax of the traits (added by this mod): each trait gives its %
+// of the treasury, at most its maximum. Part of calculateGoldRate, so doGold gives it and the interface shows it.
+int CvPlayer::getGoldInterest() const
+{
+	int iInterest = 0;
+	int iTraitInterest;
+	int iI;
+
+	if (getGold() <= 0)
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI) && GC.getTraitInfo((TraitTypes)iI).getGoldInterestPercent() > 0)
+		{
+			iTraitInterest = (getGold() * GC.getTraitInfo((TraitTypes)iI).getGoldInterestPercent()) / 100;
+			if (GC.getTraitInfo((TraitTypes)iI).getGoldInterestMax() > 0)
+			{
+				iTraitInterest = std::min(iTraitInterest, GC.getTraitInfo((TraitTypes)iI).getGoldInterestMax());
+			}
+			iInterest += iTraitInterest;
+		}
+	}
+
+	return iInterest;
+}
+
+// ForbiddenCivics of the traits (added by this mod): canDoCivics is false, and verifyCivics changes the civic at the start
+// of the turn when the player gains such a trait
+bool CvPlayer::isForbiddenCivic(CivicTypes eCivic) const
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI) && GC.getTraitInfo((TraitTypes)iI).isForbiddenCivic(eCivic))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 int CvPlayer::getMaxCities() const
 {
 	int iMaxCities = -1;
@@ -7550,6 +7596,9 @@ int CvPlayer::calculateGoldRate() const
 		iRate = std::min(0, (calculateBaseNetResearch() + calculateBaseNetGold()));
 	}
 
+	// Interest of the traits (added by this mod)
+	iRate += getGoldInterest();
+
 	return iRate;
 }
 
@@ -7884,6 +7933,12 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 		return false;
 	}
 
+	// ForbiddenCivics of the traits (added by this mod)
+	if (isForbiddenCivic(eCivic))
+	{
+		return false;
+	}
+
 	if(GC.getUSE_CANNOT_DO_CIVIC_CALLBACK())
 	{
 		CyArgsList argsList2; // XXX
@@ -7931,6 +7986,18 @@ bool CvPlayer::canRevolution(CivicTypes* paeNewCivics) const
 	}
 	else
 	{
+		// A new civic the player cannot adopt (PrereqOrTraits, ForbiddenCivics of the traits; added by this mod). BtS
+		// relies on the civics screen and the popups to offer only valid civics, but the popup for a new tech offers the
+		// civics of the tech without checking canDoCivics: the revolution set the civic, gave anarchy, and verifyCivics
+		// took the civic back at the start of the turn. This also keeps that popup from appearing.
+		for (iI = 0; iI < GC.getNumCivicOptionInfos(); ++iI)
+		{
+			if (paeNewCivics[iI] != NO_CIVIC && getCivics((CivicOptionTypes)iI) != paeNewCivics[iI] && !canDoCivics(paeNewCivics[iI]))
+			{
+				return false;
+			}
+		}
+
 		for (iI = 0; iI < GC.getNumCivicOptionInfos(); ++iI)
 		{
 			if (GC.getGameINLINE().isForceCivicOption((CivicOptionTypes)iI))
