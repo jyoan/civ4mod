@@ -1189,6 +1189,7 @@ protected:
 	bool m_bExtendedGame;
 	bool m_bFoundedFirstCity;
 	bool m_bStrike;
+	bool m_bUpdatingTraitDependents;		// CvPlayer::updateTraitDependents is running (not saved; added by this mod)
 	bool m_bHuman;
 
 	PlayerTypes m_eID;
@@ -1305,7 +1306,7 @@ protected:
 
 	void processCivics(CivicTypes eCivic, int iChange);
 	void processTrait(TraitTypes eTrait, int iChange);
-	void updateTraitDependents(const std::vector<bool>& abOldObsoleteBuilding, TraitTypes eTrait);
+	void updateTraitDependents(std::vector<bool>& abObsoleteBuilding);
 
 	// for serialization
 	virtual void read(FDataStreamBase* pStream);

@@ -358,12 +358,17 @@ public:
 
 	bool isCommerceFlexible(int i) const;	// Exposed to Python
 	bool isTerrainTrade(int i) const;			// Exposed to Python
+	// FreeTraits (added by this mod): the players of the team have the traits while the team has the tech
+	int getNumFreeTraits() const;				// Exposed to Python
+	int getFreeTraits(int i) const;				// Exposed to Python
+	const std::vector<int>& getFreeTraitsVector() const;
 
 	void read(FDataStreamBase* );
 	void write(FDataStreamBase* );
 
 	bool read(CvXMLLoadUtility* pXML);
 	bool readPass2(CvXMLLoadUtility* pXML);
+	bool readPass3();
 
 	//---------------------------------------PROTECTED MEMBER VARIABLES---------------------------------
 
@@ -424,6 +429,9 @@ protected:
 	bool* m_pbCommerceFlexible;
 	bool* m_pbTerrainTrade;
 
+	std::vector<int> m_aiFreeTraits;
+	std::vector<CvString> m_aszFreeTraitTypes;		// read() keeps the types as strings until readPass3(), because traits
+													// are loaded after techs (also in the cache, written before that)
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1586,6 +1594,10 @@ public:
 	int getNumPrereqOrTraits() const;				// Exposed to Python
 	int getPrereqOrTraits(int i) const;				// Exposed to Python
 	const std::vector<int>& getPrereqOrTraitsVector() const;
+	// FreeTraits (added by this mod): the player has the traits while the civic is adopted
+	int getNumFreeTraits() const;				// Exposed to Python
+	int getFreeTraits(int i) const;				// Exposed to Python
+	const std::vector<int>& getFreeTraitsVector() const;
 	int getBuildingHappinessChanges(int i) const;				// Exposed to Python
 	int getBuildingHealthChanges(int i) const;				// Exposed to Python
 	int getFeatureHappinessChanges(int i) const;				// Exposed to Python
@@ -1666,6 +1678,7 @@ protected:
 	bool* m_pabUpgradeAnywhereUnitCombat;
 	bool* m_pabUpgradeAnywhereExcludeEnemy;
 	std::vector<int> m_aiPrereqOrTraits;
+	std::vector<int> m_aiFreeTraits;
 	int* m_paiBuildingHappinessChanges;
 	int* m_paiBuildingHealthChanges;
 	int* m_paiFeatureHappinessChanges;
@@ -1950,6 +1963,10 @@ public:
 	int getNumPrereqOrTraits() const;				// Exposed to Python
 	int getPrereqOrTraits(int i) const;				// Exposed to Python
 	const std::vector<int>& getPrereqOrTraitsVector() const;
+	// FreeTraits (added by this mod): the owner has the traits while the building (not obsolete) is in one of its cities
+	int getNumFreeTraits() const;				// Exposed to Python
+	int getFreeTraits(int i) const;				// Exposed to Python
+	const std::vector<int>& getFreeTraitsVector() const;
 	// PrereqAndSettledSpecialists (added by this mod): every entry is needed
 	int getNumPrereqAndSettledSpecialists() const;			// Exposed to Python
 	int getPrereqAndSettledSpecialistType(int i) const;		// Exposed to Python
@@ -2112,6 +2129,7 @@ protected:
 	int* m_piPrereqAndTechs;
 	int* m_piPrereqOrBonuses;
 	std::vector<int> m_aiPrereqOrTraits;
+	std::vector<int> m_aiFreeTraits;
 	std::vector<int> m_aiPrereqAndSettledSpecialistType;
 	std::vector<int> m_aiPrereqAndSettledSpecialistNum;
 	std::vector<int> m_aiPrereqOrSettledSpecialistType;

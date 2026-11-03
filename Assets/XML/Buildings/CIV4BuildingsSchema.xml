@@ -71,6 +71,9 @@
 	<ElementType name="PrereqOrTraits" content="eltOnly">
 		<element type="TraitType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="FreeTraits" content="eltOnly">
+		<element type="TraitType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="ProductionTraitType" content="textOnly"/>
 	<ElementType name="iProductionTrait" content="textOnly" dt:type="int"/>
 	<ElementType name="ProductionTrait" content="eltOnly">
@@ -443,6 +446,7 @@
 		<element type="Bonus"/>
 		<element type="PrereqBonuses"/>
 		<element type="PrereqOrTraits" minOccurs="0"/>
+		<element type="FreeTraits" minOccurs="0"/>
 		<element type="PrereqAndSettledSpecialists" minOccurs="0"/>
 		<element type="PrereqOrSettledSpecialists" minOccurs="0"/>
 		<element type="ProductionTraits"/>

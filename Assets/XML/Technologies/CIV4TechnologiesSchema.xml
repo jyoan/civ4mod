@@ -94,6 +94,10 @@
 	<ElementType name="Sound" content="textOnly"/>
 	<ElementType name="SoundMP" content="textOnly"/>
 	<ElementType name="Button" content="textOnly"/>
+	<ElementType name="TraitType" content="textOnly"/>
+	<ElementType name="FreeTraits" content="eltOnly">
+		<element type="TraitType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="TechInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -147,6 +151,7 @@
 		<element type="Sound"/>
 		<element type="SoundMP"/>
 		<element type="Button"/>
+		<element type="FreeTraits" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="TechInfos" content="eltOnly">
 		<element type="TechInfo" maxOccurs="*"/>

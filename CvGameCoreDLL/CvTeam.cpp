@@ -5491,6 +5491,12 @@ void CvTeam::processTech(TechTypes eTech, int iChange)
 			GET_PLAYER((PlayerTypes)iI).changeAssets(GC.getTechInfo(eTech).getAssetValue() * iChange);
 			GET_PLAYER((PlayerTypes)iI).changePower(GC.getTechInfo(eTech).getPowerValue() * iChange);
 			GET_PLAYER((PlayerTypes)iI).changeTechScore(getTechScore(eTech) * iChange);
+
+			// FreeTraits (added by this mod). changeFreeTraitCount skips the effects for the unused player slots.
+			for (iJ = 0; iJ < GC.getTechInfo(eTech).getNumFreeTraits(); iJ++)
+			{
+				GET_PLAYER((PlayerTypes)iI).changeFreeTraitCount((TraitTypes)GC.getTechInfo(eTech).getFreeTraits(iJ), iChange);
+			}
 		}
 	}
 

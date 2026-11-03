@@ -1284,6 +1284,26 @@ bool CvTechInfo::isTerrainTrade(int i) const
 	return m_pbTerrainTrade ? m_pbTerrainTrade[i] : false;
 }
 
+// FreeTraits (added by this mod): the players of the team have the traits while the team has the tech
+int CvTechInfo::getNumFreeTraits() const
+{
+	return (int)m_aiFreeTraits.size();
+}
+
+int CvTechInfo::getFreeTraits(int i) const
+{
+	FAssertMsg(i < getNumFreeTraits(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumFreeTraits()) ? m_aiFreeTraits[i] : -1;
+}
+
+const std::vector<int>& CvTechInfo::getFreeTraitsVector() const
+{
+	return m_aiFreeTraits;
+}
+
+static void readTypeList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, std::vector<CvString>& aszTypes);
+
 void CvTechInfo::read(FDataStreamBase* stream)
 {
 	CvInfoBase::read(stream);
@@ -1356,13 +1376,32 @@ void CvTechInfo::read(FDataStreamBase* stream)
 	stream->ReadString(m_szQuoteKey);
 	stream->ReadString(m_szSound);
 	stream->ReadString(m_szSoundMP);
+
+	// uiFlag 0: cache written before FreeTraits existed. The types are strings: readPass3() finds them after the traits load
+	m_aszFreeTraitTypes.clear();
+	m_aiFreeTraits.clear();
+	if (uiFlag > 0)
+	{
+		int iNumTypes;
+		int iType;
+		CvString szType;
+
+		stream->Read(&iNumTypes);
+		for (iType = 0; iType < iNumTypes; iType++)
+		{
+			stream->ReadString(szType);
+			m_aszFreeTraitTypes.push_back(szType);
+		}
+	}
 }
 
 void CvTechInfo::write(FDataStreamBase* stream)
 {
+	int iType;
+
 	CvInfoBase::write(stream);
 
-	uint uiFlag=0;
+	uint uiFlag=1;	// 1: FreeTraits (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAdvisorType);
@@ -1413,6 +1452,12 @@ void CvTechInfo::write(FDataStreamBase* stream)
 	stream->WriteString(m_szQuoteKey);
 	stream->WriteString(m_szSound);
 	stream->WriteString(m_szSoundMP);
+
+	stream->Write((int)m_aszFreeTraitTypes.size());
+	for (iType = 0; iType < (int)m_aszFreeTraitTypes.size(); iType++)
+	{
+		stream->WriteString(m_aszFreeTraitTypes[iType]);
+	}
 }
 
 bool CvTechInfo::read(CvXMLLoadUtility* pXML)
@@ -1491,6 +1536,9 @@ bool CvTechInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(szTextVal, "SoundMP");
 	setSoundMP(szTextVal);
 
+	// Traits are loaded after techs: readPass3() finds the types
+	readTypeList(pXML, "FreeTraits", m_aszFreeTraitTypes);
+
 	return true;
 }
 
@@ -1556,6 +1604,37 @@ bool CvTechInfo::readPass2(CvXMLLoadUtility* pXML)
 		}
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+
+	return true;
+}
+
+// Traits are loaded after techs (CvXMLLoadUtility::LoadPreMenuGlobals calls this after them, also when the techs come
+// from the cache)
+bool CvTechInfo::readPass3()
+{
+	char szMessage[1024];
+	int iTrait;
+	int i;
+
+	m_aiFreeTraits.clear();
+
+	for (i = 0; i < (int)m_aszFreeTraitTypes.size(); i++)
+	{
+		if (m_aszFreeTraitTypes[i].empty() || m_aszFreeTraitTypes[i] == "NONE")
+		{
+			continue;
+		}
+
+		iTrait = GC.getInfoTypeForString(m_aszFreeTraitTypes[i].GetCString(), true);
+		if (iTrait < 0 || iTrait >= GC.getNumTraitInfos())
+		{
+			sprintf(szMessage, "Tag: %s in FreeTraits of CIV4TechInfos.xml was incorrect", m_aszFreeTraitTypes[i].GetCString());
+			gDLL->MessageBox(szMessage, "XML Error");
+			continue;
+		}
+
+		m_aiFreeTraits.push_back(iTrait);
 	}
 
 	return true;
@@ -5032,7 +5111,8 @@ const CvArtInfoUnit* CvUnitInfo::getArtInfo(int i, EraTypes eEra, UnitArtStyleTy
 	}
 }
 
-// PrereqOrTraits (units, buildings and civics): the player needs at least one of the traits.
+// PrereqOrTraits (units, buildings and civics): the player needs at least one of the traits. The same functions read and
+// write the other lists of trait types (FreeTraits).
 // An empty list means no trait is needed.
 static void readPrereqOrTraits(FDataStreamBase* stream, std::vector<int>& aiPrereqOrTraits)
 {
@@ -5127,8 +5207,8 @@ static void readSettledSpecialists(CvXMLLoadUtility* pXML, const TCHAR* szListTa
 	}
 }
 
-// Reads <PrereqOrTraits>, which holds any number of <TraitType>. NONE is skipped.
-static void readPrereqOrTraits(CvXMLLoadUtility* pXML, std::vector<int>& aiPrereqOrTraits)
+// Reads a list of traits such as <PrereqOrTraits> or <FreeTraits>, which holds any number of <TraitType>. NONE is skipped.
+static void readTraitList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, std::vector<int>& aiPrereqOrTraits)
 {
 	CvString szTextVal;
 	int iNumSibs;
@@ -5137,7 +5217,7 @@ static void readPrereqOrTraits(CvXMLLoadUtility* pXML, std::vector<int>& aiPrere
 
 	aiPrereqOrTraits.clear();
 
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "PrereqOrTraits"))
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szListTag))
 	{
 		if (pXML->SkipToNextVal())
 		{
@@ -5168,6 +5248,11 @@ static void readPrereqOrTraits(CvXMLLoadUtility* pXML, std::vector<int>& aiPrere
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+}
+
+static void readPrereqOrTraits(CvXMLLoadUtility* pXML, std::vector<int>& aiPrereqOrTraits)
+{
+	readTraitList(pXML, "PrereqOrTraits", aiPrereqOrTraits);
 }
 
 void CvUnitInfo::read(FDataStreamBase* stream)
@@ -6744,6 +6829,23 @@ const std::vector<int>& CvCivicInfo::getPrereqOrTraitsVector() const
 	return m_aiPrereqOrTraits;
 }
 
+int CvCivicInfo::getNumFreeTraits() const
+{
+	return (int)m_aiFreeTraits.size();
+}
+
+int CvCivicInfo::getFreeTraits(int i) const
+{
+	FAssertMsg(i < getNumFreeTraits(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumFreeTraits()) ? m_aiFreeTraits[i] : -1;
+}
+
+const std::vector<int>& CvCivicInfo::getFreeTraitsVector() const
+{
+	return m_aiFreeTraits;
+}
+
 int CvCivicInfo::getBuildingHappinessChanges(int i) const
 {
 	FAssertMsg(i < GC.getNumBuildingClassInfos(), "Index out of bounds");
@@ -6978,13 +7080,23 @@ void CvCivicInfo::read(FDataStreamBase* stream)
 	{
 		m_aiPrereqOrTraits.clear();
 	}
+
+	// uiFlag < 5: cache written before FreeTraits existed
+	if (uiFlag > 4)
+	{
+		readPrereqOrTraits(stream, m_aiFreeTraits);
+	}
+	else
+	{
+		m_aiFreeTraits.clear();
+	}
 }
 
 void CvCivicInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=4;
+	uint uiFlag=5;	// 5: FreeTraits (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iCivicOptionType);
@@ -7061,6 +7173,7 @@ void CvCivicInfo::write(FDataStreamBase* stream)
 	stream->Write(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereUnitCombat);
 	stream->Write(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereExcludeEnemy);
 	writePrereqOrTraits(stream, m_aiPrereqOrTraits);
+	writePrereqOrTraits(stream, m_aiFreeTraits);
 }
 
 // Reads <UpgradeAnywhereUnitCombats> (used by traits, civics and buildings). Each <UpgradeAnywhereUnitCombat>
@@ -7228,6 +7341,7 @@ bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_piUnitCombatUpgradeDiscount, "UnitCombatUpgradeDiscounts", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
 	readUpgradeAnywhereUnitCombats(pXML, &m_pabUpgradeAnywhereUnitCombat, &m_pabUpgradeAnywhereExcludeEnemy);
 	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
+	readTraitList(pXML, "FreeTraits", m_aiFreeTraits);
 
 	pXML->SetVariableListTagPair(&m_pabHurry, "Hurrys", sizeof(GC.getHurryInfo((HurryTypes)0)), GC.getNumHurryInfos());
 	pXML->SetVariableListTagPair(&m_pabSpecialBuildingNotRequired, "SpecialBuildingNotRequireds", sizeof(GC.getSpecialBuildingInfo((SpecialBuildingTypes)0)), GC.getNumSpecialBuildingInfos());
@@ -8678,6 +8792,23 @@ const std::vector<int>& CvBuildingInfo::getPrereqOrTraitsVector() const
 	return m_aiPrereqOrTraits;
 }
 
+int CvBuildingInfo::getNumFreeTraits() const
+{
+	return (int)m_aiFreeTraits.size();
+}
+
+int CvBuildingInfo::getFreeTraits(int i) const
+{
+	FAssertMsg(i < getNumFreeTraits(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumFreeTraits()) ? m_aiFreeTraits[i] : -1;
+}
+
+const std::vector<int>& CvBuildingInfo::getFreeTraitsVector() const
+{
+	return m_aiFreeTraits;
+}
+
 int CvBuildingInfo::getNumPrereqAndSettledSpecialists() const
 {
 	return (int)m_aiPrereqAndSettledSpecialistType.size();
@@ -9278,6 +9409,16 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iNewCityCultureLevel);
 	}
+
+	// uiFlag < 9: cache written before FreeTraits existed
+	if (uiFlag > 8)
+	{
+		readPrereqOrTraits(stream, m_aiFreeTraits);
+	}
+	else
+	{
+		m_aiFreeTraits.clear();
+	}
 }
 
 //
@@ -9287,7 +9428,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=8;
+	uint uiFlag=9;	// 9: FreeTraits (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -9467,6 +9608,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	writeSettledSpecialists(stream, m_aiPrereqOrSettledSpecialistType, m_aiPrereqOrSettledSpecialistNum);
 	writeSettledSpecialists(stream, m_aiPrereqAndSettledSpecialistType, m_aiPrereqAndSettledSpecialistNum);
 	stream->Write(m_iNewCityCultureLevel);
+	writePrereqOrTraits(stream, m_aiFreeTraits);
 }
 
 //
@@ -9616,6 +9758,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
+	readTraitList(pXML, "FreeTraits", m_aiFreeTraits);
 	readSettledSpecialists(pXML, "PrereqAndSettledSpecialists", "PrereqAndSettledSpecialist", m_aiPrereqAndSettledSpecialistType, m_aiPrereqAndSettledSpecialistNum);
 	readSettledSpecialists(pXML, "PrereqOrSettledSpecialists", "PrereqOrSettledSpecialist", m_aiPrereqOrSettledSpecialistType, m_aiPrereqOrSettledSpecialistNum);
 	pXML->GetChildXmlValByName(&m_iPlotRadius, "iPlotRadius");

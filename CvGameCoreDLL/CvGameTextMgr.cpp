@@ -3986,6 +3986,24 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 //
 void CvGameTextMgr::parseLeaderTraits(CvWStringBuffer &szHelpString, LeaderHeadTypes eLeader, CivilizationTypes eCivilization, bool bDawnOfMan, bool bCivilopediaText)
 {
+	buildLeaderTraitsString(szHelpString, eLeader, eCivilization, NO_PLAYER, bDawnOfMan, bCivilopediaText);
+}
+
+// The traits the player has now (added by this mod): also the traits given during the game (FreeTraits)
+void CvGameTextMgr::parsePlayerLeaderTraits(CvWStringBuffer &szHelpString, PlayerTypes ePlayer, bool bDawnOfMan)
+{
+	if (ePlayer == NO_PLAYER)
+	{
+		return;
+	}
+
+	buildLeaderTraitsString(szHelpString, GET_PLAYER(ePlayer).getLeaderType(), GET_PLAYER(ePlayer).getCivilizationType(), ePlayer, bDawnOfMan, false);
+}
+
+// parseLeaderTraits: the traits of the leader and the civilization. With ePlayer (added by this mod): the traits the player
+// has now (CvPlayer::hasTrait)
+void CvGameTextMgr::buildLeaderTraitsString(CvWStringBuffer &szHelpString, LeaderHeadTypes eLeader, CivilizationTypes eCivilization, PlayerTypes ePlayer, bool bDawnOfMan, bool bCivilopediaText)
+{
 	PROFILE_FUNC();
 
 	CvWString szTempBuffer;	// Formatting
@@ -4009,7 +4027,7 @@ void CvGameTextMgr::parseLeaderTraits(CvWStringBuffer &szHelpString, LeaderHeadT
 		bool bFirst = true;
 		for (iI = 0; iI < GC.getNumTraitInfos(); ++iI)
 		{
-			if (GC.getLeaderHeadInfo(eLeader).hasTrait(iI) || (bCivTraits && GC.getCivilizationInfo(eCivilization).hasTrait(iI)))
+			if ((ePlayer != NO_PLAYER) ? GET_PLAYER(ePlayer).hasTrait((TraitTypes)iI) : (GC.getLeaderHeadInfo(eLeader).hasTrait(iI) || (bCivTraits && GC.getCivilizationInfo(eCivilization).hasTrait(iI))))
 			{
 				if (!bFirst)
 				{
@@ -5261,6 +5279,8 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		buildPrereqOrTraitsString(szHelpText, GC.getCivicInfo(eCivic).getPrereqOrTraitsVector());
 	}
 
+	buildFreeTraitsString(szHelpText, GC.getCivicInfo(eCivic).getFreeTraitsVector());
+
 	// Special Building Not Required...
 	for (iI = 0; iI < GC.getNumSpecialBuildingInfos(); ++iI)
 	{
@@ -5921,6 +5941,9 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 
 	//	Creates a free unit...
 	buildFreeUnitString(szBuffer, eTech, true, bPlayerContext);
+
+	//	FreeTraits (added by this mod)
+	buildFreeTraitsString(szBuffer, GC.getTechInfo(eTech).getFreeTraitsVector());
 
 	//	Increases feature production...
 	buildFeatureProductionString(szBuffer, eTech, true, bPlayerContext);
@@ -8198,6 +8221,9 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 		}
 	}
 
+	// FreeTraits (added by this mod)
+	buildFreeTraitsString(szBuffer, kBuilding.getFreeTraitsVector());
+
 	// iPlotRadius (added by this mod)
 	if (kBuilding.getPlotRadius() > 0)
 	{
@@ -8947,6 +8973,24 @@ void CvGameTextMgr::buildPrereqOrTraitsString(CvWStringBuffer& szBuffer, const s
 	if (!bFirst)
 	{
 		szBuffer.append(ENDCOLR);
+	}
+}
+
+// FreeTraits of civics, buildings and techs: "Gives Trait A, Trait B" (added by this mod). The trait names link to the
+// trait pages.
+void CvGameTextMgr::buildFreeTraitsString(CvWStringBuffer& szBuffer, const std::vector<int>& aiFreeTraits)
+{
+	CvWString szTempBuffer;
+	CvWString szTrait;
+	bool bFirst = true;
+	int iI;
+
+	for (iI = 0; iI < (int)aiFreeTraits.size(); iI++)
+	{
+		szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_FREE_TRAITS").c_str());
+		szTrait.Format(L"<link=literal>%s</link>", GC.getTraitInfo((TraitTypes)aiFreeTraits[iI]).getDescription());
+		setListHelp(szBuffer, szTempBuffer, szTrait, L", ", bFirst);
+		bFirst = false;
 	}
 }
 

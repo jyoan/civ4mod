@@ -46,6 +46,7 @@ public:
 	std::wstring parseCorporationInfo(int /*CorporationTypes*/ iCorporationType, bool bCivilopediaText);
 	std::wstring parseCivInfos(int /*CivilizationTypes*/ iCivilization, bool bDawnOfMan);
 	std::wstring parseLeaderTraits(int /*LeaderHeadTypes*/ iLeader, int /*CivilizationTypes*/ iCivilization, bool bDawnOfMan, bool bCivilopediaText);
+	std::wstring parsePlayerLeaderTraits(int /*PlayerTypes*/ iPlayer, bool bDawnOfMan);
 	std::wstring parseTraits(int /*TraitTypes*/ iTrait, int /*CivilizationTypes*/ iCivilization, bool bDawnOfMan);
 	std::wstring getTradeString(TradeData* pTradeData, int iPlayer1, int iPlayer2);
 	std::wstring getSpecialistHelp(int iSpecialist, bool bCivilopediaText);

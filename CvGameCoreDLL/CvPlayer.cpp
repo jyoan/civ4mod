@@ -443,6 +443,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_bExtendedGame = false;
 	m_bFoundedFirstCity = false;
 	m_bStrike = false;
+	m_bUpdatingTraitDependents = false;
 
 	m_eID = eID;
 	updateTeamType();
@@ -2233,6 +2234,7 @@ void CvPlayer::changeFreeTraitCount(TraitTypes eTrait, int iChange)
 {
 	std::vector<bool> abOldObsoleteBuilding;
 	bool bOldHasTrait;
+	bool bUpdate;
 	int iI;
 
 	FAssertMsg(eTrait >= 0, "eTrait is expected to be non-negative (invalid Index)");
@@ -2243,8 +2245,18 @@ void CvPlayer::changeFreeTraitCount(TraitTypes eTrait, int iChange)
 		return;
 	}
 
+	// Unused player slots (CvTeam::processTech goes through them): only the count. CvPlayer::init resets it.
+	if (getLeaderType() == NO_LEADER)
+	{
+		m_paiFreeTraitCount[eTrait] += iChange;
+		return;
+	}
+
 	bOldHasTrait = hasTrait(eTrait);
-	if (bOldHasTrait != (hasBaseTrait(eTrait) || (getFreeTraitCount(eTrait) + iChange > 0)))
+
+	// While updateTraitDependents runs (a building it processes gives or takes away a trait), it also handles this change
+	bUpdate = (!m_bUpdatingTraitDependents && (bOldHasTrait != (hasBaseTrait(eTrait) || (getFreeTraitCount(eTrait) + iChange > 0))));
+	if (bUpdate)
 	{
 		// Before the change: which buildings are obsolete in our cities (a trait can keep them from becoming obsolete)
 		for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
@@ -2259,39 +2271,62 @@ void CvPlayer::changeFreeTraitCount(TraitTypes eTrait, int iChange)
 	if (bOldHasTrait != hasTrait(eTrait))
 	{
 		processTrait(eTrait, (hasTrait(eTrait) ? 1 : -1));
-		updateTraitDependents(abOldObsoleteBuilding, eTrait);
+
+		if (bUpdate)
+		{
+			updateTraitDependents(abOldObsoleteBuilding);
+		}
 	}
 }
 
-// After the player gains or loses a trait: updates the stored values that depend on the traits
-void CvPlayer::updateTraitDependents(const std::vector<bool>& abOldObsoleteBuilding, TraitTypes eTrait)
+// After the player gains or loses traits: updates the stored values that depend on the traits. abObsoleteBuilding holds
+// which buildings were obsolete in our cities (their effects removed) before the change.
+void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 {
 	CvCity* pLoopCity;
 	CvPlot* pLoopPlot;
-	bool bFeatureRoutes;
+	bool bObsolete;
+	bool bChanged;
 	int iLoop;
 	int iI;
+
+	m_bUpdatingTraitDependents = true;
+
+	// Buildings a trait keeps from becoming obsolete (as CvTeam::changeObsoleteBuildingCount). A building processed here
+	// can give or take away traits (FreeTraits), which can change other buildings: repeat until nothing changes.
+	// abObsoleteBuilding follows what the cities have processed, so no building is processed twice.
+	do
+	{
+		bChanged = false;
+
+		for (iI = 0; iI < GC.getNumBuildingInfos() && iI < (int)abObsoleteBuilding.size(); iI++)
+		{
+			bObsolete = isObsoleteBuilding((BuildingTypes)iI);
+
+			if (abObsoleteBuilding[iI] != bObsolete)
+			{
+				abObsoleteBuilding[iI] = bObsolete;
+				bChanged = true;
+
+				for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+				{
+					if (pLoopCity->getNumBuilding((BuildingTypes)iI) > 0)
+					{
+						pLoopCity->processBuilding((BuildingTypes)iI, (bObsolete ? -pLoopCity->getNumBuilding((BuildingTypes)iI) : pLoopCity->getNumBuilding((BuildingTypes)iI)), true);
+					}
+				}
+			}
+		}
+	}
+	while (bChanged);
+
+	m_bUpdatingTraitDependents = false;
 
 	updateMaxAnarchyTurns();
 
 	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
 	{
 		updateExtraYieldThreshold((YieldTypes)iI);
-	}
-
-	// Buildings a trait keeps from becoming obsolete (as CvTeam::changeObsoleteBuildingCount)
-	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
-	{
-		if (iI < (int)abOldObsoleteBuilding.size() && abOldObsoleteBuilding[iI] != isObsoleteBuilding((BuildingTypes)iI))
-		{
-			for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
-			{
-				if (pLoopCity->getNumBuilding((BuildingTypes)iI) > 0)
-				{
-					pLoopCity->processBuilding((BuildingTypes)iI, ((isObsoleteBuilding((BuildingTypes)iI)) ? -pLoopCity->getNumBuilding((BuildingTypes)iI) : pLoopCity->getNumBuilding((BuildingTypes)iI)), true);
-				}
-			}
-		}
 	}
 
 	// City radius (iCityRadiusChange)
@@ -2312,21 +2347,8 @@ void CvPlayer::updateTraitDependents(const std::vector<bool>& abOldObsoleteBuild
 		}
 	}
 
-	// Trade network (FeatureRoutes)
-	bFeatureRoutes = false;
-	for (iI = 0; iI < GC.getNumFeatureInfos(); iI++)
-	{
-		if (GC.getTraitInfo(eTrait).getFeatureRouteType(iI) != NO_ROUTE)
-		{
-			bFeatureRoutes = true;
-			break;
-		}
-	}
-
-	if (bFeatureRoutes)
-	{
-		updatePlotGroups();
-	}
+	// Trade network (FeatureRoutes). Traits rarely change, so this is not limited to the traits with FeatureRoutes.
+	updatePlotGroups();
 
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
@@ -16308,6 +16330,12 @@ void CvPlayer::processCivics(CivicTypes eCivic, int iChange)
 		{
 			changeImprovementYieldChange(((ImprovementTypes)iI), ((YieldTypes)iJ), (GC.getCivicInfo(eCivic).getImprovementYieldChanges(iI, iJ) * iChange));
 		}
+	}
+
+	// FreeTraits (added by this mod): the player has the traits while the civic is adopted
+	for (iI = 0; iI < GC.getCivicInfo(eCivic).getNumFreeTraits(); iI++)
+	{
+		changeFreeTraitCount((TraitTypes)GC.getCivicInfo(eCivic).getFreeTraits(iI), iChange);
 	}
 }
 

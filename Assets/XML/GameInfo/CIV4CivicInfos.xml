@@ -1766,6 +1766,9 @@
 			<PrereqOrTraits>
 				<TraitType>TRAIT_TEST</TraitType>
 			</PrereqOrTraits>
+			<FreeTraits>
+				<TraitType>TRAIT_FINANCIAL</TraitType>
+			</FreeTraits>
 			<iAnarchyLength>0</iAnarchyLength>
 			<Upkeep>NONE</Upkeep>
 			<iAIWeight>-10000</iAIWeight>

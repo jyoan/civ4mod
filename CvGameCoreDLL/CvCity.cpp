@@ -3962,6 +3962,12 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 		GET_TEAM(getTeam()).processBuilding(eBuilding, iChange);
 
 		GC.getGameINLINE().processBuilding(eBuilding, iChange);
+
+		// FreeTraits (added by this mod): the owner has the traits while one of its cities has the building (not obsolete)
+		for (iI = 0; iI < GC.getBuildingInfo(eBuilding).getNumFreeTraits(); iI++)
+		{
+			GET_PLAYER(getOwnerINLINE()).changeFreeTraitCount((TraitTypes)GC.getBuildingInfo(eBuilding).getFreeTraits(iI), iChange);
+		}
 	}
 
 	if (!bObsolete)

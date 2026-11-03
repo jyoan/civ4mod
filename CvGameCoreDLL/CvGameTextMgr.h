@@ -63,6 +63,8 @@ public:
 
 	DllExport void parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait, CivilizationTypes eCivilization = NO_CIVILIZATION, bool bDawnOfMan = false);
 	DllExport void parseLeaderTraits(CvWStringBuffer &szInfoText, LeaderHeadTypes eLeader = NO_LEADER, CivilizationTypes eCivilization = NO_CIVILIZATION, bool bDawnOfMan = false, bool bCivilopediaText = false);
+	void parsePlayerLeaderTraits(CvWStringBuffer &szInfoText, PlayerTypes ePlayer, bool bDawnOfMan = false);
+	void buildLeaderTraitsString(CvWStringBuffer &szInfoText, LeaderHeadTypes eLeader, CivilizationTypes eCivilization, PlayerTypes ePlayer, bool bDawnOfMan, bool bCivilopediaText);
 	DllExport void parseLeaderShortTraits(CvWStringBuffer &szInfoText, LeaderHeadTypes eLeader);
 	DllExport void parseCivInfos(CvWStringBuffer &szHelpString, CivilizationTypes eCivilization, bool bDawnOfMan = false, bool bLinks = true);
 	DllExport void parseSpecialistHelp(CvWStringBuffer &szHelpString, SpecialistTypes eSpecialist, CvCity* pCity, bool bCivilopediaText = false);
@@ -151,6 +153,7 @@ public:
 	DllExport void buildHintsList(CvWStringBuffer& szBuffer);
 	DllExport void buildBuildingRequiresString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bCivilopediaText, bool bTechChooserText, const CvCity* pCity);
 	void buildPrereqOrTraitsString(CvWStringBuffer& szBuffer, const std::vector<int>& aiPrereqOrTraits);
+	void buildFreeTraitsString(CvWStringBuffer& szBuffer, const std::vector<int>& aiFreeTraits);
 	void buildPrereqSettledSpecialistsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bAnd);	// added by this mod
 
 	DllExport void buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvCity* pCity);

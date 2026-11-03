@@ -3565,7 +3565,8 @@ void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStr
 	szBuffer.append(szTempBuffer);
 	szBuffer.append(NEWLINE);
 
-	GAMETEXT.parseLeaderTraits(szBuffer, GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getLeaderType(), GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCivilizationType());
+	// The traits the player has now, also the traits given during the game (added by this mod)
+	GAMETEXT.parsePlayerLeaderTraits(szBuffer, GC.getGameINLINE().getActivePlayer());
 }
 
 

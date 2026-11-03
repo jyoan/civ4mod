@@ -28676,6 +28676,9 @@
 			<TechTypes/>
 			<Bonus>NONE</Bonus>
 			<PrereqBonuses/>
+			<FreeTraits>
+				<TraitType>TRAIT_CHARISMATIC</TraitType>
+			</FreeTraits>
 			<ProductionTraits/>
 			<HappinessTraits/>
 			<NoBonus>NONE</NoBonus>
