@@ -17986,6 +17986,33 @@ bool CvTraitInfo::isNoObsoleteSpecialBuilding(int i) const
 	return m_pabNoObsoleteSpecialBuilding ? m_pabNoObsoleteSpecialBuilding[i] : false;
 }
 
+// Python hooks (added by this mod): the expression evaluated in CvTraitInterface.py, or an empty string
+const TCHAR* CvTraitInfo::getPythonHook(TraitPythonHookTypes eHook) const
+{
+	FAssertMsg(eHook >= 0 && eHook < NUM_TRAIT_PYHOOK_TYPES, "Index out of bounds");
+	return m_aszPythonHook[eHook];
+}
+
+const TCHAR* CvTraitInfo::getPyOnGameStart() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_GAME_START];
+}
+
+const TCHAR* CvTraitInfo::getPyOnBeginTurn() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_BEGIN_TURN];
+}
+
+const TCHAR* CvTraitInfo::getPyOnCityFounded() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_CITY_FOUNDED];
+}
+
+const TCHAR* CvTraitInfo::getPyOnCityAcquired() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_CITY_ACQUIRED];
+}
+
 int CvTraitInfo::isFreePromotion(int i) const
 {
 	return m_pabFreePromotion ? m_pabFreePromotion[i] : -1; 
@@ -18408,6 +18435,12 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bIgnoreBuildingObsolescence, "bIgnoreBuildingObsolescence");
 	readTypeList(pXML, "NoObsoleteBuildingClasses", m_aszNoObsoleteBuildingClassTypes);
 	readTypeList(pXML, "NoObsoleteSpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes);
+
+	// Python hooks: expressions evaluated in CvTraitInterface.py
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_GAME_START], "PyOnGameStart");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_BEGIN_TURN], "PyOnBeginTurn");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_FOUNDED], "PyOnCityFounded");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_ACQUIRED], "PyOnCityAcquired");
 
 	// FreePromotionSets: any number of <FreePromotions> x <FreePromotionUnitCombats> pairs
 	m_aabFreePromotionSetPromotion.clear();

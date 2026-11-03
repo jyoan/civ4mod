@@ -1156,6 +1156,15 @@
 		<Japanese>&#26908;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#38283;&#22987;&#26178;&#12398;&#36039;&#37329; +100&#65288;&#38283;&#22987;&#26178;&#20195;&#12364; 1 &#12388;&#24460;&#12395;&#12394;&#12427;&#12372;&#12392;&#12395; +50&#12290;&#12466;&#12540;&#12512;&#36895;&#24230;&#12391;&#22793;&#12431;&#12427;&#65289;[NEWLINE][SPACE][SPACE][ICON_BULLET]5 &#12479;&#12540;&#12531;&#12372;&#12392;&#12395;&#39318;&#37117;&#12395;&#25126;&#22763;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#24314;&#35373;&#12375;&#12383;&#37117;&#24066;&#12395;&#22478;&#22721;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#29554;&#24471;&#12375;&#12383;&#37117;&#24066;&#12395;&#20853;&#33294;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_CIVIC_TEST</Tag>
 		<English>Test Civic</English>
 		<French>Test Civic</French>

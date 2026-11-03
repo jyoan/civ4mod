@@ -425,6 +425,10 @@
 	<ElementType name="NoObsoleteSpecialBuildings" content="eltOnly">
 		<element type="SpecialBuildingType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="PyOnGameStart" content="textOnly"/>
+	<ElementType name="PyOnBeginTurn" content="textOnly"/>
+	<ElementType name="PyOnCityFounded" content="textOnly"/>
+	<ElementType name="PyOnCityAcquired" content="textOnly"/>
 	<ElementType name="Yields" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -506,6 +510,10 @@
 		<element type="bIgnoreBuildingObsolescence" minOccurs="0"/>
 		<element type="NoObsoleteBuildingClasses" minOccurs="0"/>
 		<element type="NoObsoleteSpecialBuildings" minOccurs="0"/>
+		<element type="PyOnGameStart" minOccurs="0"/>
+		<element type="PyOnBeginTurn" minOccurs="0"/>
+		<element type="PyOnCityFounded" minOccurs="0"/>
+		<element type="PyOnCityAcquired" minOccurs="0"/>
 		<element type="ExtraYieldThresholds"/>
 		<element type="TradeYieldModifiers"/>
 		<element type="CommerceChanges"/>

@@ -72,6 +72,7 @@ public:
 	bool hasBaseTrait(TraitTypes eTrait) const;				// Exposed to Python: from the leader or the civilization
 	int getFreeTraitCount(TraitTypes eTrait) const;			// Exposed to Python: traits given during the game
 	void changeFreeTraitCount(TraitTypes eTrait, int iChange);	// Exposed to Python
+	void doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity = NULL, PlayerTypes eOldOwner = NO_PLAYER, bool bConquest = false, bool bTrade = false);	// PyOnGameStart etc. of the traits
 	DllExport bool isHuman() const;																																							// Exposed to Python						
 	DllExport void updateHuman();
 	DllExport bool isBarbarian() const;																																					// Exposed to Python						

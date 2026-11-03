@@ -270,10 +270,21 @@ void CvGame::setInitialItems()
 {
 	PROFILE_FUNC();
 
+	int iI;
+
 	initFreeState();
 	assignStartingPlots();
 	normalizeStartingPlots();
 	initFreeUnits();
+
+	// PyOnGameStart of the traits (added by this mod): after the starting gold and units
+	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		{
+			GET_PLAYER((PlayerTypes)iI).doTraitPythonHook(TRAIT_PYHOOK_GAME_START);
+		}
+	}
 
 	for (int i = 0; i < MAX_PLAYERS; ++i)
 	{

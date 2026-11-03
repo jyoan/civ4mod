@@ -123,5 +123,6 @@
 #define PYEventModule					"CvEventInterface"
 #define PYRandomEventModule					"CvRandomEventInterface"
 #define PYSpellModule					"CvSpellInterface"		// added by this mod (spells, same as FFH2)
+#define PYTraitModule					"CvTraitInterface"		// added by this mod (Python hooks of traits)
 
 #endif	// CVDEFINES_H

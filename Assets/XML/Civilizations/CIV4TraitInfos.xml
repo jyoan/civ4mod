@@ -344,6 +344,7 @@
 			<Type>TRAIT_TEST</Type>
 			<Description>TXT_KEY_TRAIT_TEST</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_TEST_HELP</Help>
 			<iHealth>0</iHealth>
 			<iHappiness>0</iHappiness>
 			<iMaxAnarchy>-1</iMaxAnarchy>
@@ -404,6 +405,10 @@
 			<NoObsoleteSpecialBuildings>
 				<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
 			</NoObsoleteSpecialBuildings>
+			<PyOnGameStart>gainGold(pPlayer, scaleBySpeed(100 + 50 * startEra(), 'Train'))</PyOnGameStart>
+			<PyOnBeginTurn>isEveryTurns(5) and createUnits(pPlayer, 'UNITCLASS_WARRIOR', 1, capitalPlot(pPlayer))</PyOnBeginTurn>
+			<PyOnCityFounded>addBuilding(pCity, 'BUILDINGCLASS_WALLS')</PyOnCityFounded>
+			<PyOnCityAcquired>addBuilding(pCity, 'BUILDINGCLASS_BARRACKS')</PyOnCityAcquired>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

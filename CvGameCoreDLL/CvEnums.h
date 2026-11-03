@@ -2768,4 +2768,15 @@ enum CivilopediaWidgetShowTypes
 	CIVILOPEDIA_WIDGET_SHOW_WATER,
 };
 
+// Python hooks of traits (added by this mod): Python expressions of CIV4TraitInfos.xml, evaluated in CvTraitInterface.py
+enum TraitPythonHookTypes
+{
+	TRAIT_PYHOOK_GAME_START,		// PyOnGameStart
+	TRAIT_PYHOOK_BEGIN_TURN,		// PyOnBeginTurn
+	TRAIT_PYHOOK_CITY_FOUNDED,		// PyOnCityFounded
+	TRAIT_PYHOOK_CITY_ACQUIRED,		// PyOnCityAcquired
+
+	NUM_TRAIT_PYHOOK_TYPES
+};
+
 #endif	// CVENUMS_h

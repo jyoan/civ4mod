@@ -4491,6 +4491,11 @@ public:
 	bool isIgnoreBuildingObsolescence() const;		// Exposed to Python
 	bool isNoObsoleteBuildingClass(int i) const;	// Exposed to Python
 	bool isNoObsoleteSpecialBuilding(int i) const;	// Exposed to Python
+	const TCHAR* getPythonHook(TraitPythonHookTypes eHook) const;
+	const TCHAR* getPyOnGameStart() const;			// Exposed to Python
+	const TCHAR* getPyOnBeginTurn() const;			// Exposed to Python
+	const TCHAR* getPyOnCityFounded() const;		// Exposed to Python
+	const TCHAR* getPyOnCityAcquired() const;		// Exposed to Python
 	int isFreePromotionUnitCombat(int i) const;			
 
 	// FreePromotionSets: each set gives its promotions to its unit combats
@@ -4578,6 +4583,7 @@ protected:
 	bool* m_pabNoObsoleteSpecialBuilding;			// NULL when not set
 	std::vector<CvString> m_aszNoObsoleteBuildingClassTypes;	// read() keeps the types as strings until readPass3(),
 	std::vector<CvString> m_aszNoObsoleteSpecialBuildingTypes;	// because building classes are loaded after traits
+	CvString m_aszPythonHook[NUM_TRAIT_PYHOOK_TYPES];
 	bool* m_pabFreePromotionUnitCombat;
 
 	std::vector< std::vector<bool> > m_aabFreePromotionSetPromotion;		// [set][promotion]

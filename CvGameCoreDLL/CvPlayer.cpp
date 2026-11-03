@@ -24,6 +24,7 @@
 #include "CyCity.h"
 #include "CyPlot.h"
 #include "CyUnit.h"
+#include "CyPlayer.h"
 #include "CvEventReporter.h"
 
 #include "CvDLLInterfaceIFaceBase.h"
@@ -1675,6 +1676,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	}
 
 	CvEventReporter::getInstance().cityAcquired(eOldOwner, getID(), pNewCity, bConquest, bTrade);
+	doTraitPythonHook(TRAIT_PYHOOK_CITY_ACQUIRED, pNewCity, eOldOwner, bConquest, bTrade);	// PyOnCityAcquired (added by this mod)
 
 	SAFE_DELETE_ARRAY(pabHasReligion);
 	SAFE_DELETE_ARRAY(pabHolyCity);
@@ -2364,6 +2366,50 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 	}
 }
 
+// Python hooks of the traits (added by this mod): for each trait of the player with the expression of the hook
+// (PyOnGameStart etc.), calls the function of CvTraitInterface.py that evaluates it. The arguments are the player and the
+// trait, then the city (PyOnCityFounded, PyOnCityAcquired), then the old owner, bConquest and bTrade (PyOnCityAcquired).
+// Called where CvEventReporter reports the Python events, which happens the same way on every computer.
+void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, PlayerTypes eOldOwner, bool bConquest, bool bTrade)
+{
+	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired" };
+	CyPlayer* pyPlayer;
+	CyCity* pyCity;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI) && !CvString(GC.getTraitInfo((TraitTypes)iI).getPythonHook(eHook)).empty())
+		{
+			CyArgsList argsList;
+
+			pyPlayer = new CyPlayer(this);
+			argsList.add(gDLL->getPythonIFace()->makePythonObject(pyPlayer));
+			argsList.add(iI);
+
+			pyCity = NULL;
+			if (pCity != NULL)
+			{
+				pyCity = new CyCity(pCity);
+				argsList.add(gDLL->getPythonIFace()->makePythonObject(pyCity));
+			}
+
+			if (eHook == TRAIT_PYHOOK_CITY_ACQUIRED)
+			{
+				argsList.add((int)eOldOwner);
+				argsList.add(bConquest ? 1 : 0);
+				argsList.add(bTrade ? 1 : 0);
+			}
+
+			gDLL->getPythonIFace()->callFunction(PYTraitModule, aszFunctions[eHook], argsList.makeFunctionArgs());
+
+			// The python functions must not hold on to these pointers
+			delete pyPlayer;
+			SAFE_DELETE(pyCity);
+		}
+	}
+}
+
 // PrereqOrTraits of units, buildings and civics: an empty list needs no trait, otherwise one of the traits is enough
 bool CvPlayer::hasPrereqOrTrait(const std::vector<int>& aiPrereqOrTraits) const
 {
@@ -2639,6 +2685,7 @@ void CvPlayer::doTurn()
 	FAssertMsg(!hasBusyUnit() || GC.getGameINLINE().isMPOption(MPOPTION_SIMULTANEOUS_TURNS)  || GC.getGameINLINE().isSimultaneousTeamTurns(), "End of turn with busy units in a sequential-turn game");
 
 	CvEventReporter::getInstance().beginPlayerTurn( GC.getGameINLINE().getGameTurn(),  getID());
+	doTraitPythonHook(TRAIT_PYHOOK_BEGIN_TURN);	// PyOnBeginTurn (added by this mod)
 
 	doUpdateCacheOnTurn();
 
@@ -5325,6 +5372,7 @@ void CvPlayer::found(int iX, int iY)
 	}
 
 	CvEventReporter::getInstance().cityBuilt(pCity);
+	doTraitPythonHook(TRAIT_PYHOOK_CITY_FOUNDED, pCity);	// PyOnCityFounded (added by this mod)
 }
 
 
