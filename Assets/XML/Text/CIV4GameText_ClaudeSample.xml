@@ -912,6 +912,96 @@
 		<Japanese>&#25152;&#26377;&#12377;&#12427;&#19990;&#30028;&#36986;&#29987;1&#12388;&#12395;&#12388;&#12365;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_PLOTS</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Tiles: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Tiles: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Tiles: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Tiles: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Tiles: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#12479;&#12452;&#12523;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_SPECIALISTS</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Specialists: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Specialists: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Specialists: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Specialists: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Specialists: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#23554;&#38272;&#23478;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_BUILDINGS</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Buildings: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Buildings: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Buildings: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Buildings: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Buildings: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#24314;&#36896;&#29289;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_TRADE_ROUTES</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Trade Routes: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Trade Routes: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Trade Routes: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Trade Routes: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Trade Routes: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#20132;&#26131;&#36335;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_CORPORATIONS</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Corporations: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Corporations: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Corporations: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Corporations: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Corporations: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#20225;&#26989;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_OTHER</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Other: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Other: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Other: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Other: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Other: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#12381;&#12398;&#20182;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_FOOD_TOTAL</Tag>
+		<English>Food with the modifiers: %d1%F2</English>
+		<French>Food with the modifiers: %d1%F2</French>
+		<German>Food with the modifiers: %d1%F2</German>
+		<Italian>Food with the modifiers: %d1%F2</Italian>
+		<Spanish>Food with the modifiers: %d1%F2</Spanish>
+		<Japanese>&#35036;&#27491;&#24460;&#12398;&#39135;&#26009;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_FOOD_EATEN_POPULATION</Tag>
+		<English>Eaten by the population: -%d1%F2</English>
+		<French>Eaten by the population: -%d1%F2</French>
+		<German>Eaten by the population: -%d1%F2</German>
+		<Italian>Eaten by the population: -%d1%F2</Italian>
+		<Spanish>Eaten by the population: -%d1%F2</Spanish>
+		<Japanese>&#20154;&#21475;&#12395;&#12424;&#12427;&#28040;&#36027;: %F2-%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_FOOD_EATEN_UNHEALTHY</Tag>
+		<English>Eaten because of unhealthiness: -%d1%F2</English>
+		<French>Eaten because of unhealthiness: -%d1%F2</French>
+		<German>Eaten because of unhealthiness: -%d1%F2</German>
+		<Italian>Eaten because of unhealthiness: -%d1%F2</Italian>
+		<Spanish>Eaten because of unhealthiness: -%d1%F2</Spanish>
+		<Japanese>&#19981;&#34907;&#29983;&#12395;&#12424;&#12427;&#28040;&#36027;: %F2-%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_FOOD_SURPLUS</Tag>
+		<English>Surplus: %D1%F2</English>
+		<French>Surplus: %D1%F2</French>
+		<German>Surplus: %D1%F2</German>
+		<Italian>Surplus: %D1%F2</Italian>
+		<Spanish>Surplus: %D1%F2</Spanish>
+		<Japanese>&#20313;&#21104;: %F2%D1</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_MAINTAIN_FEATURES</Tag>
 		<English>[ICON_BULLET]Improvements keep: </English>
 		<French>[ICON_BULLET]Improvements keep: </French>

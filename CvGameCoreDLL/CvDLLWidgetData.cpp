@@ -3731,6 +3731,10 @@ void CvDLLWidgetData::parsePopulationHelp(CvWidgetDataStruct &widgetDataStruct, 
 	if (pHeadSelectedCity != NULL)
 	{
 		szBuffer.assign(gDLL->getText("TXT_KEY_MISC_FOOD_THRESHOLD", pHeadSelectedCity->getFood(), pHeadSelectedCity->growthThreshold()));
+
+		// The breakdown of the food (added by this mod)
+		szBuffer.append(NEWLINE);
+		GAMETEXT.setFoodHelp(szBuffer, *pHeadSelectedCity);
 	}
 }
 

@@ -13011,6 +13011,113 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 	szBuffer.append(NEWLINE);
 }
 
+// Where the base yield of the city comes from (added by this mod): worked plots, specialists, buildings, trade routes,
+// corporations, and the rest (Python, etc.) if any. These are what CvCity adds to the base yield rate.
+void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldTypes eYieldType)
+{
+	CvYieldInfo& info = GC.getYieldInfo(eYieldType);
+	CvPlot* pLoopPlot;
+	int iPlots = 0;
+	int iSpecialists = 0;
+	int iBuildings = 0;
+	int iTradeRoutes = 0;
+	int iCorporations = 0;
+	int iOther;
+	int iI;
+
+	for (iI = 0; iI < city.getNumCityPlots(); iI++)
+	{
+		if (city.isWorkingPlot(iI))
+		{
+			pLoopPlot = city.getCityIndexPlot(iI);
+			if (pLoopPlot != NULL)
+			{
+				iPlots += pLoopPlot->getYield(eYieldType);
+			}
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
+	{
+		iSpecialists += (city.getSpecialistCount((SpecialistTypes)iI) + city.getFreeSpecialistCount((SpecialistTypes)iI)) * GC.getSpecialistInfo((SpecialistTypes)iI).getYieldChange(eYieldType);
+	}
+	iSpecialists += city.getExtraSpecialistYield(eYieldType);
+
+	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+	{
+		if (city.getNumActiveBuilding((BuildingTypes)iI) > 0)
+		{
+			iBuildings += (GC.getBuildingInfo((BuildingTypes)iI).getYieldChange(eYieldType) + city.getBuildingYieldChange((BuildingClassTypes)GC.getBuildingInfo((BuildingTypes)iI).getBuildingClassType(), eYieldType)) * city.getNumActiveBuilding((BuildingTypes)iI);
+		}
+	}
+	iBuildings += city.getWorldWonderYield(eYieldType);
+
+	iTradeRoutes = city.getTradeYield(eYieldType);
+	iCorporations = city.getCorporationYield(eYieldType);
+	iOther = city.getBaseYieldRate(eYieldType) - iPlots - iSpecialists - iBuildings - iTradeRoutes - iCorporations;
+
+	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_PLOTS", iPlots, info.getChar()));
+	szBuffer.append(NEWLINE);
+
+	if (iSpecialists != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_SPECIALISTS", iSpecialists, info.getChar()));
+		szBuffer.append(NEWLINE);
+	}
+
+	if (iBuildings != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_BUILDINGS", iBuildings, info.getChar()));
+		szBuffer.append(NEWLINE);
+	}
+
+	if (iTradeRoutes != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_TRADE_ROUTES", iTradeRoutes, info.getChar()));
+		szBuffer.append(NEWLINE);
+	}
+
+	if (iCorporations != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_CORPORATIONS", iCorporations, info.getChar()));
+		szBuffer.append(NEWLINE);
+	}
+
+	if (iOther != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_OTHER", iOther, info.getChar()));
+		szBuffer.append(NEWLINE);
+	}
+}
+
+// The food of the city screen (the population bar; added by this mod): the base food and its breakdown, the modifiers,
+// the food the population and the unhealthiness eat, and the surplus (CvCity::foodDifference)
+void CvGameTextMgr::setFoodHelp(CvWStringBuffer &szBuffer, CvCity& city)
+{
+	CvYieldInfo& info = GC.getYieldInfo(YIELD_FOOD);
+	int iEatenUnhealthy;
+
+	setYieldHelp(szBuffer, city, YIELD_FOOD);
+
+	if (city.getBaseYieldRateModifier(YIELD_FOOD) != 100)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_FOOD_TOTAL", city.getYieldRate(YIELD_FOOD), info.getChar()));
+		szBuffer.append(NEWLINE);
+	}
+
+	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_FOOD_EATEN_POPULATION", city.getPopulation() * GC.getFOOD_CONSUMPTION_PER_POPULATION(), info.getChar()));
+
+	iEatenUnhealthy = std::max(0, -city.healthRate());
+	if (iEatenUnhealthy > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_FOOD_EATEN_UNHEALTHY", iEatenUnhealthy, info.getChar()));
+	}
+
+	szBuffer.append(NEWLINE);
+	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_FOOD_SURPLUS", city.foodDifference(), info.getChar()));
+}
+
 void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldTypes eYieldType)
 {
 	FAssertMsg(NO_PLAYER != city.getOwnerINLINE(), "City must have an owner");
@@ -13030,6 +13137,7 @@ void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldT
 	int iBaseProduction = city.getBaseYieldRate(eYieldType);
 	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BASE_YIELD", info.getTextKeyWide(), iBaseProduction, info.getChar()));
 	szBuffer.append(NEWLINE);
+	setBaseYieldBreakdownHelp(szBuffer, city, eYieldType);	// added by this mod
 
 	int iBaseModifier = 100;
 

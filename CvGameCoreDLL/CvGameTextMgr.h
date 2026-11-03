@@ -154,6 +154,8 @@ public:
 	DllExport void buildBuildingRequiresString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bCivilopediaText, bool bTechChooserText, const CvCity* pCity);
 	void buildPrereqOrTraitsString(CvWStringBuffer& szBuffer, const std::vector<int>& aiPrereqOrTraits);
 	void buildFreeTraitsString(CvWStringBuffer& szBuffer, const std::vector<int>& aiFreeTraits);
+	void setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldTypes eYieldType);
+	void setFoodHelp(CvWStringBuffer &szBuffer, CvCity& city);
 	void buildPrereqSettledSpecialistsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bAnd);	// added by this mod
 
 	DllExport void buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvCity* pCity);

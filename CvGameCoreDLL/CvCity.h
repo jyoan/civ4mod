@@ -296,6 +296,7 @@ public:
 
 	int getNumWorldWonders() const;																				// Exposed to Python
 	int calculateWorldWonderYield(YieldTypes eIndex) const;		// added by this mod
+	int getWorldWonderYield(YieldTypes eIndex) const;			// added by this mod: the part of the base yield rate
 	void updateWorldWonderYields();								// added by this mod
 	void changeNumWorldWonders(int iChange);
 

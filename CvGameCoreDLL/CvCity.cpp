@@ -5510,6 +5510,12 @@ int CvCity::calculateWorldWonderYield(YieldTypes eIndex) const
 	return iYield;
 }
 
+// The part of the base yield rate from the world wonder changes of buildings (added by this mod)
+int CvCity::getWorldWonderYield(YieldTypes eIndex) const
+{
+	return m_aiWorldWonderYield[eIndex];
+}
+
 // Changes the base yield rate by the difference of calculateWorldWonderYield (added by this mod)
 void CvCity::updateWorldWonderYields()
 {
