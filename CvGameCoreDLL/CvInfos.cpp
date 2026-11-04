@@ -2106,6 +2106,26 @@ int CvPromotionInfo::getCombatPromotionStealChance() const
 }
 
 // Strength % of the unit on the plots of its owner (FFH2)
+int CvPromotionInfo::getNumImpassablePlotPassages() const
+{
+	return (int)m_aiImpassablePlotPassageDamage.size();
+}
+
+int CvPromotionInfo::getImpassablePlotPassageTerrain(int i) const
+{
+	return (i > -1 && i < getNumImpassablePlotPassages()) ? m_aiImpassablePlotPassageTerrain[i] : -1;
+}
+
+int CvPromotionInfo::getImpassablePlotPassageFeature(int i) const
+{
+	return (i > -1 && i < getNumImpassablePlotPassages()) ? m_aiImpassablePlotPassageFeature[i] : -1;
+}
+
+int CvPromotionInfo::getImpassablePlotPassageDamage(int i) const
+{
+	return (i > -1 && i < getNumImpassablePlotPassages()) ? m_aiImpassablePlotPassageDamage[i] : 0;
+}
+
 int CvPromotionInfo::getCombatPercentInBorders() const
 {
 	return m_iCombatPercentInBorders;
@@ -2365,13 +2385,35 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iCombatPercentInBorders);
 	}
+
+	// uiFlag < 6: cache written before ImpassablePlotPassages existed
+	m_aiImpassablePlotPassageTerrain.clear();
+	m_aiImpassablePlotPassageFeature.clear();
+	m_aiImpassablePlotPassageDamage.clear();
+	if (uiFlag > 5)
+	{
+		int iNumPassages;
+		int iValue;
+		int iPassage;
+
+		stream->Read(&iNumPassages);
+		for (iPassage = 0; iPassage < iNumPassages; iPassage++)
+		{
+			stream->Read(&iValue);
+			m_aiImpassablePlotPassageTerrain.push_back(iValue);
+			stream->Read(&iValue);
+			m_aiImpassablePlotPassageFeature.push_back(iValue);
+			stream->Read(&iValue);
+			m_aiImpassablePlotPassageDamage.push_back(iValue);
+		}
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 5;
+	uint uiFlag = 6;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2461,6 +2503,15 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iCombatGoldStealMax);
 	stream->Write(m_iCombatPromotionStealChance);
 	stream->Write(m_iCombatPercentInBorders);
+
+	int iPassage;
+	stream->Write(getNumImpassablePlotPassages());
+	for (iPassage = 0; iPassage < getNumImpassablePlotPassages(); iPassage++)
+	{
+		stream->Write(m_aiImpassablePlotPassageTerrain[iPassage]);
+		stream->Write(m_aiImpassablePlotPassageFeature[iPassage]);
+		stream->Write(m_aiImpassablePlotPassageDamage[iPassage]);
+	}
 }
 
 bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
@@ -2570,6 +2621,41 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCombatGoldStealMax, "iCombatGoldStealMax");
 	pXML->GetChildXmlValByName(&m_iCombatPromotionStealChance, "iCombatPromotionStealChance");
 	pXML->GetChildXmlValByName(&m_iCombatPercentInBorders, "iCombatPercentInBorders");
+
+	// ImpassablePlotPassages: terrains and features are loaded before promotions
+	m_aiImpassablePlotPassageTerrain.clear();
+	m_aiImpassablePlotPassageFeature.clear();
+	m_aiImpassablePlotPassageDamage.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ImpassablePlotPassages"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ImpassablePlotPassage"))
+		{
+			do
+			{
+				int iTerrain;
+				int iFeature;
+				int iDamage;
+
+				pXML->GetChildXmlValByName(szTextVal, "TerrainType");
+				iTerrain = pXML->FindInInfoClass(szTextVal);
+				pXML->GetChildXmlValByName(szTextVal, "FeatureType");
+				iFeature = pXML->FindInInfoClass(szTextVal);
+				pXML->GetChildXmlValByName(&iDamage, "iDamagePercent");
+
+				if (iTerrain > -1 || iFeature > -1)
+				{
+					m_aiImpassablePlotPassageTerrain.push_back(iTerrain);
+					m_aiImpassablePlotPassageFeature.push_back(iFeature);
+					m_aiImpassablePlotPassageDamage.push_back(std::max(0, iDamage));
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "ImpassablePlotPassage"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 
 	pXML->SetVariableListTagPair(&m_piTerrainAttackPercent, "TerrainAttacks", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());
 	pXML->SetVariableListTagPair(&m_piTerrainDefensePercent, "TerrainDefenses", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());

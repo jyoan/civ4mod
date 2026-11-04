@@ -401,6 +401,8 @@ public:
 	bool immuneToFirstStrikes() const;																			// Exposed to Python
 	bool noDefensiveBonus() const;																					// Exposed to Python
 	bool ignoreBuildingDefense() const;																								// Exposed to Python
+	int getImpassablePlotPassageDamage(const CvPlot* pPlot) const;	// added by this mod: -1 if no promotion lets the unit enter the plot
+	bool canEnterImpassablePlot(const CvPlot* pPlot) const;	// added by this mod
 	bool canMoveImpassable() const;																										// Exposed to Python
 	bool canMoveAllTerrain() const;																										// Exposed to Python
 	bool flatMovementCost() const;																										// Exposed to Python

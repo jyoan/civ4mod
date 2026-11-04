@@ -805,6 +805,15 @@
 	<ElementType name="iCombatGoldStealMax" content="textOnly" dt:type="int"/>
 	<ElementType name="iCombatPromotionStealChance" content="textOnly" dt:type="int"/>
 	<ElementType name="iCombatPercentInBorders" content="textOnly" dt:type="int"/>
+	<ElementType name="iDamagePercent" content="textOnly" dt:type="int"/>
+	<ElementType name="ImpassablePlotPassage" content="eltOnly">
+		<element type="TerrainType" minOccurs="0"/>
+		<element type="FeatureType" minOccurs="0"/>
+		<element type="iDamagePercent"/>
+	</ElementType>
+	<ElementType name="ImpassablePlotPassages" content="eltOnly">
+		<element type="ImpassablePlotPassage" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="TechPrereq" content="textOnly"/>
 	<ElementType name="StateReligionPrereq" content="textOnly"/>
 	<ElementType name="bLeader" content="textOnly" dt:type="boolean"/>
@@ -932,6 +941,7 @@
 		<element type="iCombatGoldStealMax" minOccurs="0"/>
 		<element type="iCombatPromotionStealChance" minOccurs="0"/>
 		<element type="iCombatPercentInBorders" minOccurs="0"/>
+		<element type="ImpassablePlotPassages" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

@@ -733,6 +733,12 @@ void CvUnit::doTurn()
 		}
 	}
 
+	// ImpassablePlotPassages (added by this mod): a percent of the maximum hit points, it can kill the unit
+	if (!isCargo() && getImpassablePlotPassageDamage(plot()) > 0)
+	{
+		changeDamage(maxHitPoints() * getImpassablePlotPassageDamage(plot()) / 100, NO_PLAYER);
+	}
+
 	if (hasMoved())
 	{
 		if (isAlwaysHeal())
@@ -4031,7 +4037,7 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 
 	if (pPlot->isImpassable())
 	{
-		if (!canMoveImpassable())
+		if (!canMoveImpassable() && !canEnterImpassablePlot(pPlot))
 		{
 			return false;
 		}
@@ -4134,7 +4140,8 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 		break;
 
 	case DOMAIN_LAND:
-		if (pPlot->isWater() && !canMoveAllTerrain())
+		// ImpassablePlotPassages (added by this mod) let land units walk on ice. Sea units stay off land: their rule is above.
+		if (pPlot->isWater() && !canMoveAllTerrain() && !canEnterImpassablePlot(pPlot))
 		{
 			if (!pPlot->isCity() || 0 == GC.getDefineINT("LAND_UNITS_CAN_ATTACK_WATER_CITIES"))
 			{
@@ -4872,7 +4879,7 @@ bool CvUnit::shouldLoadOnMove(const CvPlot* pPlot) const
 	switch (getDomainType())
 	{
 	case DOMAIN_LAND:
-		if (pPlot->isWater())
+		if (pPlot->isWater() && !canEnterImpassablePlot(pPlot))
 		{
 			return true;
 		}
@@ -9605,7 +9612,7 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 
 		if (!(pAttacker->isAmphib()))
 		{
-			if (!(pAttackedPlot->isWater()) && pAttacker->plot()->isWater())
+			if (!(pAttackedPlot->isWater()) && pAttacker->plot()->isWater() && !pAttacker->canEnterImpassablePlot(pAttacker->plot()))
 			{
 				iExtraModifier = -GC.getAMPHIB_ATTACK_MODIFIER();
 				iTempModifier += iExtraModifier;
@@ -9734,7 +9741,7 @@ bool CvUnit::canAttack(const CvUnit& defender) const
 	}
 
 	// Artillery can't amphibious attack
-	if (plot()->isWater() && !defender.plot()->isWater())
+	if (plot()->isWater() && !defender.plot()->isWater() && !canEnterImpassablePlot(plot()))
 	{
 		if (combatLimit() < 100)
 		{
@@ -10207,6 +10214,61 @@ bool CvUnit::ignoreBuildingDefense() const
 }
 
 
+// ImpassablePlotPassages of the unit's promotions (added by this mod): the lowest damage percent of the promotions that let
+// it enter the impassable pPlot, -1 if none does. TERRAIN_PEAK stands for peak plots. Checked in the order of
+// CvPlot::isImpassable: the peak, the feature, the terrain.
+int CvUnit::getImpassablePlotPassageDamage(const CvPlot* pPlot) const
+{
+	TerrainTypes ePeakTerrain;
+	int iBestDamage = -1;
+	int iI, iJ;
+
+	if (!pPlot->isImpassable())
+	{
+		return -1;
+	}
+
+	ePeakTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_PEAK", true);
+
+	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	{
+		CvPromotionInfo& kPromotion = GC.getPromotionInfo((PromotionTypes)iI);
+
+		if (kPromotion.getNumImpassablePlotPassages() > 0 && isHasPromotion((PromotionTypes)iI))
+		{
+			for (iJ = 0; iJ < kPromotion.getNumImpassablePlotPassages(); iJ++)
+			{
+				bool bMatch;
+
+				if (pPlot->isPeak())
+				{
+					bMatch = (kPromotion.getImpassablePlotPassageTerrain(iJ) == ePeakTerrain);
+				}
+				else if (pPlot->getFeatureType() != NO_FEATURE)
+				{
+					bMatch = (kPromotion.getImpassablePlotPassageFeature(iJ) == pPlot->getFeatureType());
+				}
+				else
+				{
+					bMatch = (kPromotion.getImpassablePlotPassageTerrain(iJ) == pPlot->getTerrainType());
+				}
+
+				if (bMatch && (iBestDamage == -1 || kPromotion.getImpassablePlotPassageDamage(iJ) < iBestDamage))
+				{
+					iBestDamage = kPromotion.getImpassablePlotPassageDamage(iJ);
+				}
+			}
+		}
+	}
+
+	return iBestDamage;
+}
+
+bool CvUnit::canEnterImpassablePlot(const CvPlot* pPlot) const
+{
+	return (getImpassablePlotPassageDamage(pPlot) >= 0);
+}
+
 bool CvUnit::canMoveImpassable() const
 {
 	return m_pUnitInfo->isCanMoveImpassable();
@@ -10299,7 +10361,7 @@ int CvUnit::evasionProbability() const
 
 int CvUnit::withdrawalProbability() const
 {
-	if (getDomainType() == DOMAIN_LAND && plot()->isWater())
+	if (getDomainType() == DOMAIN_LAND && plot()->isWater() && !canEnterImpassablePlot(plot()))
 	{
 		return 0;
 	}

@@ -171,6 +171,10 @@ void CyInfoPythonInterface1()
 		.def("getCombatGoldStealMax", &CvPromotionInfo::getCombatGoldStealMax, "int ()")
 		.def("getCombatPromotionStealChance", &CvPromotionInfo::getCombatPromotionStealChance, "int ()")
 		.def("getCombatPercentInBorders", &CvPromotionInfo::getCombatPercentInBorders, "int ()")
+		.def("getNumImpassablePlotPassages", &CvPromotionInfo::getNumImpassablePlotPassages, "int ()")
+		.def("getImpassablePlotPassageTerrain", &CvPromotionInfo::getImpassablePlotPassageTerrain, "int (int i)")
+		.def("getImpassablePlotPassageFeature", &CvPromotionInfo::getImpassablePlotPassageFeature, "int (int i)")
+		.def("getImpassablePlotPassageDamage", &CvPromotionInfo::getImpassablePlotPassageDamage, "int (int i)")
 
 		.def("getSound", &CvPromotionInfo::getSound, "string ()")
 

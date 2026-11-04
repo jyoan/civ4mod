@@ -523,6 +523,12 @@ public:
 	int getCombatGoldStealMax() const;				// Exposed to Python
 	int getCombatPromotionStealChance() const;		// Exposed to Python
 	int getCombatPercentInBorders() const;			// Exposed to Python
+	// ImpassablePlotPassages (added by this mod): the impassable terrain or feature the unit can enter (the other is -1) and
+	// the damage percent at the start of its turn there
+	int getNumImpassablePlotPassages() const;		// Exposed to Python
+	int getImpassablePlotPassageTerrain(int i) const;	// Exposed to Python
+	int getImpassablePlotPassageFeature(int i) const;	// Exposed to Python
+	int getImpassablePlotPassageDamage(int i) const;	// Exposed to Python
 
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
@@ -604,6 +610,9 @@ protected:
 	int m_iCombatGoldStealMax;
 	int m_iCombatPromotionStealChance;
 	int m_iCombatPercentInBorders;
+	std::vector<int> m_aiImpassablePlotPassageTerrain;
+	std::vector<int> m_aiImpassablePlotPassageFeature;
+	std::vector<int> m_aiImpassablePlotPassageDamage;
 	std::vector<int> m_aiEnslavementUnitClassType;		// EnslavementUnitClasses: the loser's unit class
 	std::vector<int> m_aiEnslavementUnitClassEnslaved;	// and the unit class it becomes (NO_UNITCLASS: not enslaved)
 	bool m_bRemovedByCombat;

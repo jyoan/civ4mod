@@ -1959,7 +1959,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 
 			if (!(pAttacker->isAmphib()))
 			{
-				if (!(pPlot->isWater()) && pAttacker->plot()->isWater())
+				if (!(pPlot->isWater()) && pAttacker->plot()->isWater() && !pAttacker->canEnterImpassablePlot(pAttacker->plot()))
 				{
 					iModifier = GC.getAMPHIB_ATTACK_MODIFIER();
 
@@ -4936,6 +4936,25 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_PROMOTION_STEAL", GC.getPromotionInfo(ePromotion).getCombatPromotionStealChance()));
+	}
+
+	// ImpassablePlotPassages (added by this mod)
+	for (iI = 0; iI < GC.getPromotionInfo(ePromotion).getNumImpassablePlotPassages(); ++iI)
+	{
+		int iPassageTerrain = GC.getPromotionInfo(ePromotion).getImpassablePlotPassageTerrain(iI);
+		int iPassageFeature = GC.getPromotionInfo(ePromotion).getImpassablePlotPassageFeature(iI);
+		int iPassageDamage = GC.getPromotionInfo(ePromotion).getImpassablePlotPassageDamage(iI);
+		CvWString szPassage = (iPassageFeature != NO_FEATURE) ? GC.getFeatureInfo((FeatureTypes)iPassageFeature).getDescription() : GC.getTerrainInfo((TerrainTypes)iPassageTerrain).getDescription();
+
+		szBuffer.append(pcNewline);
+		if (iPassageDamage > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_DAMAGE", szPassage.GetCString(), iPassageDamage));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE", szPassage.GetCString()));
+		}
 	}
 
 	if (GC.getPromotionInfo(ePromotion).getCombatPercentInBorders() != 0)

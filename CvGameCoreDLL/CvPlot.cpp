@@ -3784,7 +3784,7 @@ bool CvPlot::isValidDomainForAction(const CvUnit& unit) const
 
 	case DOMAIN_LAND:
 	case DOMAIN_IMMOBILE:
-		return (!isWater() || unit.canMoveAllTerrain());
+		return (!isWater() || unit.canMoveAllTerrain() || unit.canEnterImpassablePlot(this));	// ImpassablePlotPassages: land units on ice (added by this mod)
 		break;
 
 	default:

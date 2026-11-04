@@ -1893,4 +1893,31 @@
 		<Spanish>Test Building (Global Commerce)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#20840;&#37117;&#24066;&#12398;&#21830;&#26989;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE</Tag>
+		<English>[ICON_BULLET]Can enter %s1_Plot</English>
+		<French>[ICON_BULLET]Can enter %s1_Plot</French>
+		<German>[ICON_BULLET]Can enter %s1_Plot</German>
+		<Italian>[ICON_BULLET]Can enter %s1_Plot</Italian>
+		<Spanish>[ICON_BULLET]Can enter %s1_Plot</Spanish>
+		<Japanese>[ICON_BULLET]&#36890;&#34892;&#12391;&#12365;&#12427;: %s1_Plot</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_DAMAGE</Tag>
+		<English>[ICON_BULLET]Can enter %s1_Plot (%d2_Damage%% damage each turn there)</English>
+		<French>[ICON_BULLET]Can enter %s1_Plot (%d2_Damage%% damage each turn there)</French>
+		<German>[ICON_BULLET]Can enter %s1_Plot (%d2_Damage%% damage each turn there)</German>
+		<Italian>[ICON_BULLET]Can enter %s1_Plot (%d2_Damage%% damage each turn there)</Italian>
+		<Spanish>[ICON_BULLET]Can enter %s1_Plot (%d2_Damage%% damage each turn there)</Spanish>
+		<Japanese>[ICON_BULLET]&#36890;&#34892;&#12391;&#12365;&#12427;: %s1_Plot&#65288;&#12381;&#12371;&#12391;&#12479;&#12540;&#12531;&#12434;&#36814;&#12360;&#12427;&#12392;&#26368;&#22823;HP&#12398;%d2_Damage%%&#12398;&#12480;&#12513;&#12540;&#12472;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_PASSAGE</Tag>
+		<English>Test Promotion (Impassable Plots)</English>
+		<French>Test Promotion (Impassable Plots)</French>
+		<German>Test Promotion (Impassable Plots)</German>
+		<Italian>Test Promotion (Impassable Plots)</Italian>
+		<Spanish>Test Promotion (Impassable Plots)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#36890;&#34892;&#19981;&#21487;&#12479;&#12452;&#12523;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

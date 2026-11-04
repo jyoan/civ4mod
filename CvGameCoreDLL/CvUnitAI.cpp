@@ -92,7 +92,7 @@ bool CvUnitAI::AI_update()
 
 	if (getDomainType() == DOMAIN_LAND)
 	{
-		if (plot()->isWater() && !canMoveAllTerrain())
+		if (plot()->isWater() && !canMoveAllTerrain() && !canEnterImpassablePlot(plot()))
 		{
 			getGroup()->pushMission(MISSION_SKIP);
 			return false;
