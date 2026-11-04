@@ -46,3 +46,6 @@
 - 2026-11-03: 建物の世界遺産の数に比例する効果（`WorldWonderYieldChanges`・`WorldWonderCommerceChanges`・`GlobalWorldWonderYieldChanges`・`GlobalWorldWonderCommerceChanges`。説明文、世界遺産の追加と除去、セーブと読み込み）と、志向の `bNoPillageInBorders`（検証用文明の領土で他国が略奪できない）をゲーム内で確認
 - 2026-11-03: 都市画面の産出の内訳（生産力・商業の説明の小計、人口のバーの食料の小計・消費・余剰。企業の小計を含む）をゲーム内で確認
 - 2026-11-03: 志向の `ForbiddenCivics`（奴隷制を採用できない。技術を得たときの採用のポップアップで無政府状態になる問題を `canRevolution` の修正で解消）と、国庫の利子（`iGoldInterestPercent` / `iGoldInterestMax`。財務アドバイザーの利子の行）をゲーム内で確認（検証用文明）
+- 2026-11-04: 建物の前提の第 1 段階（`PrereqOrBuildingClasses`・`PrereqNotInCityBuildingClasses`・`iPrereqPopulation`・`PrereqCultureLevel`。灰色の表示、説明文、生産の列から外れる動作、建築中に人口が減っても外れないこと、ペディア）をゲーム内で確認
+- 2026-11-04: 建物の前提の第 2 段階（`PrereqOrTerrains`・`PrereqOrFeatures`・`PrereqRawVicinityBonuses`・`PrereqVicinityBonuses`・`PrereqOrImprovements`。一覧に出ない・灰色の表示、未公開の資源、説明文、都市圏の半径）をゲーム内で確認
+- 2026-11-04: 建物の前提の第 3 段階（`PrereqAndCivics`・`PrereqOrCivics`。灰色の表示、説明文、生産の列から外れる動作、建っている建物が消えないこと、ペディア）をゲーム内で確認

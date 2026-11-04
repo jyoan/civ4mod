@@ -1731,4 +1731,76 @@
 		<Spanish>Test Promotion (Combat Results)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#25126;&#38360;&#32080;&#26524;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_NOT_IN_CITY</Tag>
+		<English>[COLOR_WARNING_TEXT]Cannot be built in a city with[SPACE]</English>
+		<French>[COLOR_WARNING_TEXT]Cannot be built in a city with[SPACE]</French>
+		<German>[COLOR_WARNING_TEXT]Cannot be built in a city with[SPACE]</German>
+		<Italian>[COLOR_WARNING_TEXT]Cannot be built in a city with[SPACE]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]Cannot be built in a city with[SPACE]</Spanish>
+		<Japanese>[COLOR_WARNING_TEXT]&#21516;&#12376;&#37117;&#24066;&#12395;&#24314;&#12390;&#12425;&#12428;&#12394;&#12356;: [SPACE]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PREREQ_POPULATION</Tag>
+		<English>[COLOR_WARNING_TEXT]Requires a city population of %d1_Pop or more[COLOR_REVERT]</English>
+		<French>[COLOR_WARNING_TEXT]Requires a city population of %d1_Pop or more[COLOR_REVERT]</French>
+		<German>[COLOR_WARNING_TEXT]Requires a city population of %d1_Pop or more[COLOR_REVERT]</German>
+		<Italian>[COLOR_WARNING_TEXT]Requires a city population of %d1_Pop or more[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]Requires a city population of %d1_Pop or more[COLOR_REVERT]</Spanish>
+		<Japanese>[COLOR_WARNING_TEXT]&#24517;&#35201;&#26465;&#20214;: &#20154;&#21475;%d1_Pop&#20197;&#19978;[COLOR_REVERT]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PREREQ_CULTURE_LEVEL</Tag>
+		<English>[COLOR_WARNING_TEXT]Requires %s1_Level culture or more[COLOR_REVERT]</English>
+		<French>[COLOR_WARNING_TEXT]Requires %s1_Level culture or more[COLOR_REVERT]</French>
+		<German>[COLOR_WARNING_TEXT]Requires %s1_Level culture or more[COLOR_REVERT]</German>
+		<Italian>[COLOR_WARNING_TEXT]Requires %s1_Level culture or more[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]Requires %s1_Level culture or more[COLOR_REVERT]</Spanish>
+		<Japanese>[COLOR_WARNING_TEXT]&#24517;&#35201;&#26465;&#20214;: &#25991;&#21270;&#12524;&#12505;&#12523;%s1_Level&#20197;&#19978;[COLOR_REVERT]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_PREREQ</Tag>
+		<English>Test Building (Prerequisites)</English>
+		<French>Test Building (Prerequisites)</French>
+		<German>Test Building (Prerequisites)</German>
+		<Italian>Test Building (Prerequisites)</Italian>
+		<Spanish>Test Building (Prerequisites)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#21069;&#25552;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PREREQ_VICINITY</Tag>
+		<English>[COLOR_WARNING_TEXT]Requires in the city radius:[SPACE]</English>
+		<French>[COLOR_WARNING_TEXT]Requires in the city radius:[SPACE]</French>
+		<German>[COLOR_WARNING_TEXT]Requires in the city radius:[SPACE]</German>
+		<Italian>[COLOR_WARNING_TEXT]Requires in the city radius:[SPACE]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]Requires in the city radius:[SPACE]</Spanish>
+		<Japanese>[COLOR_WARNING_TEXT]&#24517;&#35201;&#26465;&#20214;: &#37117;&#24066;&#22287;&#12395; [SPACE]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PREREQ_VICINITY_DEVELOPED</Tag>
+		<English>[COLOR_WARNING_TEXT]Requires developed in the city radius:[SPACE]</English>
+		<French>[COLOR_WARNING_TEXT]Requires developed in the city radius:[SPACE]</French>
+		<German>[COLOR_WARNING_TEXT]Requires developed in the city radius:[SPACE]</German>
+		<Italian>[COLOR_WARNING_TEXT]Requires developed in the city radius:[SPACE]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]Requires developed in the city radius:[SPACE]</Spanish>
+		<Japanese>[COLOR_WARNING_TEXT]&#24517;&#35201;&#26465;&#20214;: &#37117;&#24066;&#22287;&#12395;&#38283;&#30330;&#28168;&#12415;&#12398; [SPACE]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_PREREQ_PLOT</Tag>
+		<English>Test Building (City Radius Prerequisites)</English>
+		<French>Test Building (City Radius Prerequisites)</French>
+		<German>Test Building (City Radius Prerequisites)</German>
+		<Italian>Test Building (City Radius Prerequisites)</Italian>
+		<Spanish>Test Building (City Radius Prerequisites)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#37117;&#24066;&#22287;&#12398;&#21069;&#25552;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_PREREQ_CIVIC</Tag>
+		<English>Test Building (Civic Prerequisites)</English>
+		<French>Test Building (Civic Prerequisites)</French>
+		<German>Test Building (Civic Prerequisites)</German>
+		<Italian>Test Building (Civic Prerequisites)</Italian>
+		<Spanish>Test Building (Civic Prerequisites)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#31038;&#20250;&#21046;&#24230;&#12398;&#21069;&#25552;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

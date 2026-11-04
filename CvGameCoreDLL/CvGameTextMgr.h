@@ -157,6 +157,10 @@ public:
 	void setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldTypes eYieldType);
 	void setFoodHelp(CvWStringBuffer &szBuffer, CvCity& city);
 	void buildPrereqSettledSpecialistsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bAnd);	// added by this mod
+	void buildPrereqBuildingClassesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, PlayerTypes ePlayer, bool bOr);	// added by this mod
+	void buildPrereqVicinityString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bCivilopediaText, const CvCity* pCity);	// added by this mod
+	void buildPrereqCivicsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bAnd);	// added by this mod
+	void appendPrereqVicinityItem(CvWStringBuffer& szBuffer, const char* szKey, const CvInfoBase& kInfo, bool& bFirst);	// added by this mod
 
 	DllExport void buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvCity* pCity);
 	DllExport void buildCityBillboardCityNameString( CvWStringBuffer& szBuffer, CvCity* pCity);

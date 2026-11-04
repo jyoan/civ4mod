@@ -2046,6 +2046,13 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 		return false;
 	}
 
+	// City radius prerequisites a city can do little about (added by this mod): checked before bTestVisible, as bRiver, so
+	// the building is not listed. Not part of isValidBuildingLocation, which also decides what survives a conquest.
+	if (!hasPrereqOrTerrains(eBuilding) || !hasPrereqOrFeatures(eBuilding) || !hasPrereqRawVicinityBonuses(eBuilding))
+	{
+		return false;
+	}
+
 	if (GC.getBuildingInfo(eBuilding).isGovernmentCenter())
 	{
 		if (isGovernmentCenter())
@@ -2197,6 +2204,31 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 		if (!hasPrereqAndSettledSpecialists(eBuilding) || !hasPrereqOrSettledSpecialists(eBuilding))
 		{
 			return false;
+		}
+
+		// City prerequisites (added by this mod)
+		if (!hasPrereqOrBuildingClasses(eBuilding) || !hasPrereqNotInCityBuildingClasses(eBuilding))
+		{
+			return false;
+		}
+
+		if (!hasPrereqOrImprovements(eBuilding) || !hasPrereqVicinityBonuses(eBuilding))
+		{
+			return false;
+		}
+
+		if (getCultureLevel() < GC.getBuildingInfo(eBuilding).getPrereqCultureLevel())
+		{
+			return false;
+		}
+
+		// Only checked when the building is started: losing population to starvation or a hurry does not cancel it
+		if (!bContinue)
+		{
+			if (getPopulation() < GC.getBuildingInfo(eBuilding).getPrereqPopulation())
+			{
+				return false;
+			}
 		}
 	}
 
@@ -9843,6 +9875,246 @@ int CvCity::getFreeSpecialistCount(SpecialistTypes eIndex) const
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < GC.getNumSpecialistInfos(), "eIndex expected to be < GC.getNumSpecialistInfos()");
 	return m_paiFreeSpecialistCount[eIndex];
+}
+
+// PrereqOrBuildingClasses of the building: this city has one of the classes. Obsolete buildings count, as for
+// BuildingClassNeededs. A class this civilization has no building for is ignored, also as for BuildingClassNeededs, so a
+// list with no usable class needs nothing.
+bool CvCity::hasPrereqOrBuildingClasses(BuildingTypes eBuilding) const
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	bool bRequires = false;
+	int iI;
+
+	for (iI = 0; iI < kBuilding.getNumPrereqOrBuildingClasses(); iI++)
+	{
+		BuildingTypes ePrereqBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(kBuilding.getPrereqOrBuildingClass(iI));
+
+		if (ePrereqBuilding != NO_BUILDING)
+		{
+			if (getNumBuilding(ePrereqBuilding) > 0)
+			{
+				return true;
+			}
+
+			bRequires = true;
+		}
+	}
+
+	return !bRequires;
+}
+
+// PrereqNotInCityBuildingClasses of the building: this city has none of the classes
+bool CvCity::hasPrereqNotInCityBuildingClasses(BuildingTypes eBuilding) const
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	int iI;
+
+	for (iI = 0; iI < kBuilding.getNumPrereqNotInCityBuildingClasses(); iI++)
+	{
+		BuildingTypes eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(kBuilding.getPrereqNotInCityBuildingClass(iI));
+
+		if (eLoopBuilding != NO_BUILDING)
+		{
+			if (getNumBuilding(eLoopBuilding) > 0)
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+// PrereqOrTerrains of the building: a plot of this team in the city radius has one of the terrains. TERRAIN_HILL and
+// TERRAIN_PEAK stand for hill and peak plots, as for the trait TerrainYieldChanges. A hill plot has both its terrain and
+// TERRAIN_HILL, a peak plot only TERRAIN_PEAK.
+bool CvCity::hasPrereqOrTerrains(BuildingTypes eBuilding) const
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	CvPlot* pLoopPlot;
+	TerrainTypes eHillTerrain;
+	TerrainTypes ePeakTerrain;
+	int iI;
+	int iJ;
+
+	if (kBuilding.getNumPrereqOrTerrains() == 0)
+	{
+		return true;
+	}
+
+	eHillTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_HILL", true);
+	ePeakTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_PEAK", true);
+
+	for (iI = 0; iI < getNumCityPlots(); iI++)
+	{
+		pLoopPlot = getCityIndexPlot(iI);
+
+		if ((pLoopPlot != NULL) && (pLoopPlot->getTeam() == getTeam()))
+		{
+			for (iJ = 0; iJ < kBuilding.getNumPrereqOrTerrains(); iJ++)
+			{
+				TerrainTypes eTerrain = (TerrainTypes)kBuilding.getPrereqOrTerrain(iJ);
+
+				if (pLoopPlot->isPeak())
+				{
+					if (eTerrain == ePeakTerrain)
+					{
+						return true;
+					}
+				}
+				else if ((pLoopPlot->getTerrainType() == eTerrain) || ((eTerrain == eHillTerrain) && pLoopPlot->isHills()))
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+// PrereqOrFeatures of the building: a plot of this team in the city radius has one of the features
+bool CvCity::hasPrereqOrFeatures(BuildingTypes eBuilding) const
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	CvPlot* pLoopPlot;
+	int iI;
+	int iJ;
+
+	if (kBuilding.getNumPrereqOrFeatures() == 0)
+	{
+		return true;
+	}
+
+	for (iI = 0; iI < getNumCityPlots(); iI++)
+	{
+		pLoopPlot = getCityIndexPlot(iI);
+
+		if ((pLoopPlot != NULL) && (pLoopPlot->getTeam() == getTeam()))
+		{
+			for (iJ = 0; iJ < kBuilding.getNumPrereqOrFeatures(); iJ++)
+			{
+				if (pLoopPlot->getFeatureType() == kBuilding.getPrereqOrFeature(iJ))
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+// PrereqOrImprovements of the building: a plot of this team in the city radius has one of the improvements
+bool CvCity::hasPrereqOrImprovements(BuildingTypes eBuilding) const
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	CvPlot* pLoopPlot;
+	int iI;
+	int iJ;
+
+	if (kBuilding.getNumPrereqOrImprovements() == 0)
+	{
+		return true;
+	}
+
+	for (iI = 0; iI < getNumCityPlots(); iI++)
+	{
+		pLoopPlot = getCityIndexPlot(iI);
+
+		if ((pLoopPlot != NULL) && (pLoopPlot->getTeam() == getTeam()))
+		{
+			for (iJ = 0; iJ < kBuilding.getNumPrereqOrImprovements(); iJ++)
+			{
+				if (pLoopPlot->getImprovementType() == kBuilding.getPrereqOrImprovement(iJ))
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+// PrereqRawVicinityBonuses of the building: a plot of this team in the city radius has one of the resources, improved or
+// not. Only resources this team can see count, so the building list does not give away hidden resources.
+bool CvCity::hasPrereqRawVicinityBonuses(BuildingTypes eBuilding) const
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	CvPlot* pLoopPlot;
+	int iI;
+	int iJ;
+
+	if (kBuilding.getNumPrereqRawVicinityBonuses() == 0)
+	{
+		return true;
+	}
+
+	for (iI = 0; iI < getNumCityPlots(); iI++)
+	{
+		pLoopPlot = getCityIndexPlot(iI);
+
+		if ((pLoopPlot != NULL) && (pLoopPlot->getTeam() == getTeam()))
+		{
+			for (iJ = 0; iJ < kBuilding.getNumPrereqRawVicinityBonuses(); iJ++)
+			{
+				if (pLoopPlot->getBonusType(getTeam()) == kBuilding.getPrereqRawVicinityBonus(iJ))
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+// PrereqVicinityBonuses of the building: a plot of this team in the city radius has one of the resources developed. Those
+// are the tech and improvement conditions of CvPlot::updatePlotGroupBonus, without the connection to a trade network.
+bool CvCity::hasPrereqVicinityBonuses(BuildingTypes eBuilding) const
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	CvPlot* pLoopPlot;
+	BonusTypes eBonus;
+	int iI;
+	int iJ;
+
+	if (kBuilding.getNumPrereqVicinityBonuses() == 0)
+	{
+		return true;
+	}
+
+	for (iI = 0; iI < getNumCityPlots(); iI++)
+	{
+		pLoopPlot = getCityIndexPlot(iI);
+
+		if ((pLoopPlot != NULL) && (pLoopPlot->getTeam() == getTeam()))
+		{
+			eBonus = pLoopPlot->getNonObsoleteBonusType(getTeam());
+
+			if (eBonus != NO_BONUS)
+			{
+				for (iJ = 0; iJ < kBuilding.getNumPrereqVicinityBonuses(); iJ++)
+				{
+					if (eBonus == kBuilding.getPrereqVicinityBonus(iJ))
+					{
+						if (GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getBonusInfo(eBonus).getTechCityTrade())))
+						{
+							if (pLoopPlot->isCity(true, getTeam()) ||
+								((pLoopPlot->getImprovementType() != NO_IMPROVEMENT) && GC.getImprovementInfo(pLoopPlot->getImprovementType()).isImprovementBonusTrade(eBonus)))
+							{
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return false;
 }
 
 // PrereqAndSettledSpecialists of the building: enough great people of every listed type settled in this city

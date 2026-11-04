@@ -1985,6 +1985,31 @@ public:
 	int getNumPrereqOrSettledSpecialists() const;			// Exposed to Python
 	int getPrereqOrSettledSpecialistType(int i) const;		// Exposed to Python
 	int getPrereqOrSettledSpecialistNum(int i) const;		// Exposed to Python
+	// PrereqOrBuildingClasses (added by this mod): the city needs one of the building classes
+	int getNumPrereqOrBuildingClasses() const;			// Exposed to Python
+	int getPrereqOrBuildingClass(int i) const;			// Exposed to Python
+	// PrereqNotInCityBuildingClasses (added by this mod): the city must have none of the building classes
+	int getNumPrereqNotInCityBuildingClasses() const;		// Exposed to Python
+	int getPrereqNotInCityBuildingClass(int i) const;		// Exposed to Python
+	int getPrereqPopulation() const;				// Exposed to Python
+	int getPrereqCultureLevel() const;				// Exposed to Python
+	// PrereqOrTerrains, PrereqOrFeatures, PrereqOrImprovements, PrereqRawVicinityBonuses and PrereqVicinityBonuses (added by
+	// this mod): the city radius needs one of the entries of each list
+	int getNumPrereqOrTerrains() const;				// Exposed to Python
+	int getPrereqOrTerrain(int i) const;				// Exposed to Python
+	int getNumPrereqOrFeatures() const;				// Exposed to Python
+	int getPrereqOrFeature(int i) const;				// Exposed to Python
+	int getNumPrereqOrImprovements() const;				// Exposed to Python
+	int getPrereqOrImprovement(int i) const;			// Exposed to Python
+	int getNumPrereqRawVicinityBonuses() const;			// Exposed to Python
+	int getPrereqRawVicinityBonus(int i) const;			// Exposed to Python
+	int getNumPrereqVicinityBonuses() const;			// Exposed to Python
+	int getPrereqVicinityBonus(int i) const;			// Exposed to Python
+	// PrereqAndCivics and PrereqOrCivics (added by this mod): the player needs every civic / one of the civics
+	int getNumPrereqAndCivics() const;				// Exposed to Python
+	int getPrereqAndCivic(int i) const;				// Exposed to Python
+	int getNumPrereqOrCivics() const;				// Exposed to Python
+	int getPrereqOrCivic(int i) const;				// Exposed to Python
 	int getProductionTraits(int i) const;				// Exposed to Python
 	int getHappinessTraits(int i) const;				// Exposed to Python
 	int getBuildingHappinessChanges(int i) const;				// Exposed to Python
@@ -2013,6 +2038,7 @@ public:
 	void read(FDataStreamBase*);
 	void write(FDataStreamBase*);
 	bool read(CvXMLLoadUtility* pXML);
+	bool readPass3();
 
 	//---------------------------------------PUBLIC MEMBER VARIABLES---------------------------------
 protected:
@@ -2144,6 +2170,19 @@ protected:
 	std::vector<int> m_aiPrereqAndSettledSpecialistNum;
 	std::vector<int> m_aiPrereqOrSettledSpecialistType;
 	std::vector<int> m_aiPrereqOrSettledSpecialistNum;
+	std::vector<int> m_aiPrereqOrBuildingClasses;
+	std::vector<int> m_aiPrereqNotInCityBuildingClasses;
+	std::vector<int> m_aiPrereqOrTerrains;
+	std::vector<int> m_aiPrereqOrFeatures;
+	std::vector<int> m_aiPrereqOrImprovements;
+	std::vector<int> m_aiPrereqRawVicinityBonuses;
+	std::vector<int> m_aiPrereqVicinityBonuses;
+	std::vector<int> m_aiPrereqAndCivics;
+	std::vector<int> m_aiPrereqOrCivics;
+	std::vector<CvString> m_aszPrereqAndCivicTypes;	// read() keeps the types as strings until readPass3() (civics are loaded later)
+	std::vector<CvString> m_aszPrereqOrCivicTypes;
+	int m_iPrereqPopulation;
+	int m_iPrereqCultureLevel;
 	int m_iPlotRadius;
 	int m_iPlotRadiusCultureLevel;
 	int m_iNewCityCultureLevel;

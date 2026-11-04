@@ -5112,7 +5112,7 @@ const CvArtInfoUnit* CvUnitInfo::getArtInfo(int i, EraTypes eEra, UnitArtStyleTy
 }
 
 // PrereqOrTraits (units, buildings and civics): the player needs at least one of the traits. The same functions read and
-// write the other lists of trait types (FreeTraits).
+// write the other lists of info types (FreeTraits, the city prerequisites of buildings).
 // An empty list means no trait is needed.
 static void readPrereqOrTraits(FDataStreamBase* stream, std::vector<int>& aiPrereqOrTraits)
 {
@@ -5207,15 +5207,16 @@ static void readSettledSpecialists(CvXMLLoadUtility* pXML, const TCHAR* szListTa
 	}
 }
 
-// Reads a list of traits such as <PrereqOrTraits> or <FreeTraits>, which holds any number of <TraitType>. NONE is skipped.
-static void readTraitList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, std::vector<int>& aiPrereqOrTraits)
+// Reads a list of info types such as <PrereqOrTraits> (any number of <TraitType>) or <PrereqOrBuildingClasses> (any number
+// of <BuildingClassType>). The info class must already be loaded. NONE is skipped.
+static void readTypeList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, std::vector<int>& aiTypes)
 {
 	CvString szTextVal;
 	int iNumSibs;
-	int iTrait;
+	int iType;
 	int j;
 
-	aiPrereqOrTraits.clear();
+	aiTypes.clear();
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szListTag))
 	{
@@ -5229,10 +5230,10 @@ static void readTraitList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, std::v
 				{
 					for (j = 0; j < iNumSibs; j++)
 					{
-						iTrait = pXML->FindInInfoClass(szTextVal);
-						if (iTrait > -1)
+						iType = pXML->FindInInfoClass(szTextVal);
+						if (iType > -1)
 						{
-							aiPrereqOrTraits.push_back(iTrait);
+							aiTypes.push_back(iType);
 						}
 
 						if (!pXML->GetNextXmlVal(szTextVal))
@@ -5252,7 +5253,7 @@ static void readTraitList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, std::v
 
 static void readPrereqOrTraits(CvXMLLoadUtility* pXML, std::vector<int>& aiPrereqOrTraits)
 {
-	readTraitList(pXML, "PrereqOrTraits", aiPrereqOrTraits);
+	readTypeList(pXML,"PrereqOrTraits", aiPrereqOrTraits);
 }
 
 void CvUnitInfo::read(FDataStreamBase* stream)
@@ -7341,7 +7342,7 @@ bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_piUnitCombatUpgradeDiscount, "UnitCombatUpgradeDiscounts", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
 	readUpgradeAnywhereUnitCombats(pXML, &m_pabUpgradeAnywhereUnitCombat, &m_pabUpgradeAnywhereExcludeEnemy);
 	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
-	readTraitList(pXML, "FreeTraits", m_aiFreeTraits);
+	readTypeList(pXML,"FreeTraits", m_aiFreeTraits);
 
 	pXML->SetVariableListTagPair(&m_pabHurry, "Hurrys", sizeof(GC.getHurryInfo((HurryTypes)0)), GC.getNumHurryInfos());
 	pXML->SetVariableListTagPair(&m_pabSpecialBuildingNotRequired, "SpecialBuildingNotRequireds", sizeof(GC.getSpecialBuildingInfo((SpecialBuildingTypes)0)), GC.getNumSpecialBuildingInfos());
@@ -7685,6 +7686,8 @@ bool CvUnitClassInfo::readPass3()
 //------------------------------------------------------------------------------------------------------
 CvBuildingInfo::CvBuildingInfo() :
 m_iBuildingClassType(NO_BUILDINGCLASS),
+m_iPrereqPopulation(0),
+m_iPrereqCultureLevel(NO_CULTURELEVEL),
 m_iPlotRadius(0),
 m_iPlotRadiusCultureLevel(NO_CULTURELEVEL),
 m_iNewCityCultureLevel(NO_CULTURELEVEL),
@@ -8927,6 +8930,126 @@ int CvBuildingInfo::getPrereqOrSettledSpecialistNum(int i) const
 	return (i > -1 && i < getNumPrereqOrSettledSpecialists()) ? m_aiPrereqOrSettledSpecialistNum[i] : 0;
 }
 
+int CvBuildingInfo::getNumPrereqOrBuildingClasses() const
+{
+	return (int)m_aiPrereqOrBuildingClasses.size();
+}
+
+int CvBuildingInfo::getPrereqOrBuildingClass(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrBuildingClasses(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrBuildingClasses()) ? m_aiPrereqOrBuildingClasses[i] : -1;
+}
+
+int CvBuildingInfo::getNumPrereqNotInCityBuildingClasses() const
+{
+	return (int)m_aiPrereqNotInCityBuildingClasses.size();
+}
+
+int CvBuildingInfo::getPrereqNotInCityBuildingClass(int i) const
+{
+	FAssertMsg(i < getNumPrereqNotInCityBuildingClasses(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqNotInCityBuildingClasses()) ? m_aiPrereqNotInCityBuildingClasses[i] : -1;
+}
+
+int CvBuildingInfo::getNumPrereqOrTerrains() const
+{
+	return (int)m_aiPrereqOrTerrains.size();
+}
+
+int CvBuildingInfo::getPrereqOrTerrain(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrTerrains(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrTerrains()) ? m_aiPrereqOrTerrains[i] : -1;
+}
+
+int CvBuildingInfo::getNumPrereqOrFeatures() const
+{
+	return (int)m_aiPrereqOrFeatures.size();
+}
+
+int CvBuildingInfo::getPrereqOrFeature(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrFeatures(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrFeatures()) ? m_aiPrereqOrFeatures[i] : -1;
+}
+
+int CvBuildingInfo::getNumPrereqOrImprovements() const
+{
+	return (int)m_aiPrereqOrImprovements.size();
+}
+
+int CvBuildingInfo::getPrereqOrImprovement(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrImprovements(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrImprovements()) ? m_aiPrereqOrImprovements[i] : -1;
+}
+
+int CvBuildingInfo::getNumPrereqRawVicinityBonuses() const
+{
+	return (int)m_aiPrereqRawVicinityBonuses.size();
+}
+
+int CvBuildingInfo::getPrereqRawVicinityBonus(int i) const
+{
+	FAssertMsg(i < getNumPrereqRawVicinityBonuses(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqRawVicinityBonuses()) ? m_aiPrereqRawVicinityBonuses[i] : -1;
+}
+
+int CvBuildingInfo::getNumPrereqVicinityBonuses() const
+{
+	return (int)m_aiPrereqVicinityBonuses.size();
+}
+
+int CvBuildingInfo::getPrereqVicinityBonus(int i) const
+{
+	FAssertMsg(i < getNumPrereqVicinityBonuses(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqVicinityBonuses()) ? m_aiPrereqVicinityBonuses[i] : -1;
+}
+
+int CvBuildingInfo::getNumPrereqAndCivics() const
+{
+	return (int)m_aiPrereqAndCivics.size();
+}
+
+int CvBuildingInfo::getPrereqAndCivic(int i) const
+{
+	FAssertMsg(i < getNumPrereqAndCivics(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqAndCivics()) ? m_aiPrereqAndCivics[i] : -1;
+}
+
+int CvBuildingInfo::getNumPrereqOrCivics() const
+{
+	return (int)m_aiPrereqOrCivics.size();
+}
+
+int CvBuildingInfo::getPrereqOrCivic(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrCivics(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrCivics()) ? m_aiPrereqOrCivics[i] : -1;
+}
+
+// The population the city needs to start the building (added by this mod; 0: any city)
+int CvBuildingInfo::getPrereqPopulation() const
+{
+	return m_iPrereqPopulation;
+}
+
+// The culture level the city needs (added by this mod; NO_CULTURELEVEL: any city)
+int CvBuildingInfo::getPrereqCultureLevel() const
+{
+	return m_iPrereqCultureLevel;
+}
+
 // City plot radius of a city with this building (added by this mod; 0: no change)
 int CvBuildingInfo::getPlotRadius() const
 {
@@ -9553,6 +9676,68 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 			m_piGlobalWorldWonderCommerceChange[i] = 0;
 		}
 	}
+
+	// uiFlag < 11: cache written before PrereqOrBuildingClasses, PrereqNotInCityBuildingClasses, iPrereqPopulation and
+	// PrereqCultureLevel existed
+	m_iPrereqPopulation = 0;
+	m_iPrereqCultureLevel = NO_CULTURELEVEL;
+	if (uiFlag > 10)
+	{
+		readPrereqOrTraits(stream, m_aiPrereqOrBuildingClasses);
+		readPrereqOrTraits(stream, m_aiPrereqNotInCityBuildingClasses);
+		stream->Read(&m_iPrereqPopulation);
+		stream->Read(&m_iPrereqCultureLevel);
+	}
+	else
+	{
+		m_aiPrereqOrBuildingClasses.clear();
+		m_aiPrereqNotInCityBuildingClasses.clear();
+	}
+
+	// uiFlag < 12: cache written before the prerequisites in the city radius existed
+	if (uiFlag > 11)
+	{
+		readPrereqOrTraits(stream, m_aiPrereqOrTerrains);
+		readPrereqOrTraits(stream, m_aiPrereqOrFeatures);
+		readPrereqOrTraits(stream, m_aiPrereqOrImprovements);
+		readPrereqOrTraits(stream, m_aiPrereqRawVicinityBonuses);
+		readPrereqOrTraits(stream, m_aiPrereqVicinityBonuses);
+	}
+	else
+	{
+		m_aiPrereqOrTerrains.clear();
+		m_aiPrereqOrFeatures.clear();
+		m_aiPrereqOrImprovements.clear();
+		m_aiPrereqRawVicinityBonuses.clear();
+		m_aiPrereqVicinityBonuses.clear();
+	}
+
+	// uiFlag < 13: cache written before PrereqAndCivics and PrereqOrCivics existed. The types are strings: readPass3() finds
+	// them after the civics load
+	m_aszPrereqAndCivicTypes.clear();
+	m_aszPrereqOrCivicTypes.clear();
+	m_aiPrereqAndCivics.clear();
+	m_aiPrereqOrCivics.clear();
+	if (uiFlag > 12)
+	{
+		int iNumTypes;
+		int iType;
+		CvString szType;
+
+		stream->Read(&iNumTypes);
+		for (iType = 0; iType < iNumTypes; iType++)
+		{
+			stream->ReadString(szType);
+			m_aszPrereqAndCivicTypes.push_back(szType);
+		}
+
+		stream->Read(&iNumTypes);
+		for (iType = 0; iType < iNumTypes; iType++)
+		{
+			stream->ReadString(szType);
+			m_aszPrereqOrCivicTypes.push_back(szType);
+		}
+	}
 }
 
 //
@@ -9562,7 +9747,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=10;	// 9: FreeTraits, 10: world wonder changes (added by this mod)
+	uint uiFlag=13;	// 9: FreeTraits, 10: world wonder changes, 11: city prerequisites, 12: city radius prerequisites, 13: civic prerequisites (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -9747,6 +9932,64 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	stream->Write(NUM_COMMERCE_TYPES, m_piWorldWonderCommerceChange);
 	stream->Write(NUM_YIELD_TYPES, m_piGlobalWorldWonderYieldChange);
 	stream->Write(NUM_COMMERCE_TYPES, m_piGlobalWorldWonderCommerceChange);
+	writePrereqOrTraits(stream, m_aiPrereqOrBuildingClasses);
+	writePrereqOrTraits(stream, m_aiPrereqNotInCityBuildingClasses);
+	stream->Write(m_iPrereqPopulation);
+	stream->Write(m_iPrereqCultureLevel);
+	writePrereqOrTraits(stream, m_aiPrereqOrTerrains);
+	writePrereqOrTraits(stream, m_aiPrereqOrFeatures);
+	writePrereqOrTraits(stream, m_aiPrereqOrImprovements);
+	writePrereqOrTraits(stream, m_aiPrereqRawVicinityBonuses);
+	writePrereqOrTraits(stream, m_aiPrereqVicinityBonuses);
+
+	int iType;
+	stream->Write((int)m_aszPrereqAndCivicTypes.size());
+	for (iType = 0; iType < (int)m_aszPrereqAndCivicTypes.size(); iType++)
+	{
+		stream->WriteString(m_aszPrereqAndCivicTypes[iType]);
+	}
+	stream->Write((int)m_aszPrereqOrCivicTypes.size());
+	for (iType = 0; iType < (int)m_aszPrereqOrCivicTypes.size(); iType++)
+	{
+		stream->WriteString(m_aszPrereqOrCivicTypes[iType]);
+	}
+}
+
+// Turns the civic types of a building list into numbers. A wrong name shows an XML Error message.
+static void resolveBuildingCivicTypes(const std::vector<CvString>& aszTypes, std::vector<int>& aiCivics, const char* szListTag)
+{
+	char szMessage[1024];
+	int iCivic;
+	int i;
+
+	aiCivics.clear();
+
+	for (i = 0; i < (int)aszTypes.size(); i++)
+	{
+		if (aszTypes[i].empty() || aszTypes[i] == "NONE")
+		{
+			continue;
+		}
+
+		iCivic = GC.getInfoTypeForString(aszTypes[i].GetCString(), true);
+		if (iCivic < 0 || iCivic >= GC.getNumCivicInfos())
+		{
+			sprintf(szMessage, "Tag: %s in %s of CIV4BuildingInfos.xml was incorrect", aszTypes[i].GetCString(), szListTag);
+			gDLL->MessageBox(szMessage, "XML Error");
+			continue;
+		}
+
+		aiCivics.push_back(iCivic);
+	}
+}
+
+// PrereqAndCivics and PrereqOrCivics (added by this mod): civics are loaded after buildings
+bool CvBuildingInfo::readPass3()
+{
+	resolveBuildingCivicTypes(m_aszPrereqAndCivicTypes, m_aiPrereqAndCivics, "PrereqAndCivics");
+	resolveBuildingCivicTypes(m_aszPrereqOrCivicTypes, m_aiPrereqOrCivics, "PrereqOrCivics");
+
+	return true;
 }
 
 //
@@ -9896,9 +10139,22 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
-	readTraitList(pXML, "FreeTraits", m_aiFreeTraits);
+	readTypeList(pXML,"FreeTraits", m_aiFreeTraits);
 	readSettledSpecialists(pXML, "PrereqAndSettledSpecialists", "PrereqAndSettledSpecialist", m_aiPrereqAndSettledSpecialistType, m_aiPrereqAndSettledSpecialistNum);
 	readSettledSpecialists(pXML, "PrereqOrSettledSpecialists", "PrereqOrSettledSpecialist", m_aiPrereqOrSettledSpecialistType, m_aiPrereqOrSettledSpecialistNum);
+	readTypeList(pXML, "PrereqOrBuildingClasses", m_aiPrereqOrBuildingClasses);
+	readTypeList(pXML, "PrereqNotInCityBuildingClasses", m_aiPrereqNotInCityBuildingClasses);
+	readTypeList(pXML, "PrereqOrTerrains", m_aiPrereqOrTerrains);
+	readTypeList(pXML, "PrereqOrFeatures", m_aiPrereqOrFeatures);
+	readTypeList(pXML, "PrereqOrImprovements", m_aiPrereqOrImprovements);
+	readTypeList(pXML, "PrereqRawVicinityBonuses", m_aiPrereqRawVicinityBonuses);
+	readTypeList(pXML, "PrereqVicinityBonuses", m_aiPrereqVicinityBonuses);
+	// Civics are loaded after buildings: readPass3() finds the types
+	readTypeList(pXML, "PrereqAndCivics", m_aszPrereqAndCivicTypes);
+	readTypeList(pXML, "PrereqOrCivics", m_aszPrereqOrCivicTypes);
+	pXML->GetChildXmlValByName(&m_iPrereqPopulation, "iPrereqPopulation");
+	pXML->GetChildXmlValByName(szTextVal, "PrereqCultureLevel");
+	m_iPrereqCultureLevel = pXML->FindInInfoClass(szTextVal);
 	pXML->GetChildXmlValByName(&m_iPlotRadius, "iPlotRadius");
 	pXML->GetChildXmlValByName(szTextVal, "PlotRadiusCultureLevel");
 	m_iPlotRadiusCultureLevel = pXML->FindInInfoClass(szTextVal);

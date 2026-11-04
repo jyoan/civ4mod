@@ -8821,6 +8821,46 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 			buildPrereqSettledSpecialistsString(szBuffer, eBuilding, false);
 		}
 
+		if (bCivilopediaText || pCity == NULL || !pCity->hasPrereqOrBuildingClasses(eBuilding))
+		{
+			buildPrereqBuildingClassesString(szBuffer, eBuilding, ePlayer, true);
+		}
+
+		if (bCivilopediaText || pCity == NULL || !pCity->hasPrereqNotInCityBuildingClasses(eBuilding))
+		{
+			buildPrereqBuildingClassesString(szBuffer, eBuilding, ePlayer, false);
+		}
+
+		buildPrereqVicinityString(szBuffer, eBuilding, bCivilopediaText, pCity);
+
+		if (bCivilopediaText || ePlayer == NO_PLAYER || !GET_PLAYER(ePlayer).hasPrereqAndCivics(eBuilding))
+		{
+			buildPrereqCivicsString(szBuffer, eBuilding, true);
+		}
+
+		if (bCivilopediaText || ePlayer == NO_PLAYER || !GET_PLAYER(ePlayer).hasPrereqOrCivics(eBuilding))
+		{
+			buildPrereqCivicsString(szBuffer, eBuilding, false);
+		}
+
+		if (kBuilding.getPrereqPopulation() > 0)
+		{
+			if (bCivilopediaText || pCity == NULL || pCity->getPopulation() < kBuilding.getPrereqPopulation())
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_PREREQ_POPULATION", kBuilding.getPrereqPopulation()));
+			}
+		}
+
+		if (kBuilding.getPrereqCultureLevel() != NO_CULTURELEVEL)
+		{
+			if (bCivilopediaText || pCity == NULL || pCity->getCultureLevel() < kBuilding.getPrereqCultureLevel())
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_PREREQ_CULTURE_LEVEL", GC.getCultureLevelInfo((CultureLevelTypes)kBuilding.getPrereqCultureLevel()).getTextKeyWide()));
+			}
+		}
+
 		bFirst = true;
 
 		if (kBuilding.getSpecialBuildingType() != NO_SPECIALBUILDING)
@@ -9158,6 +9198,165 @@ void CvGameTextMgr::buildPrereqSettledSpecialistsString(CvWStringBuffer& szBuffe
 		szSpecialist = gDLL->getText("TXT_KEY_SETTLED_SPECIALIST_NUM", szSpecialist.GetCString(), (bAnd ? kBuilding.getPrereqAndSettledSpecialistNum(iI) : kBuilding.getPrereqOrSettledSpecialistNum(iI)));
 		setListHelp(szBuffer, szTempBuffer, szSpecialist, gDLL->getText(bAnd ? "TXT_KEY_AND" : "TXT_KEY_OR").c_str(), bFirst);
 		bFirst = false;
+	}
+
+	if (!bFirst)
+	{
+		szBuffer.append(ENDCOLR);
+	}
+}
+
+// PrereqAndCivics (bAnd) / PrereqOrCivics of buildings: "Requires Slavery and Paganism" / "Requires Slavery or Serfdom"
+// (added by this mod). The civic names link to the civic pages.
+void CvGameTextMgr::buildPrereqCivicsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bAnd)
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	CvWString szTempBuffer;
+	CvWString szCivic;
+	bool bFirst = true;
+	int iNum = (bAnd ? kBuilding.getNumPrereqAndCivics() : kBuilding.getNumPrereqOrCivics());
+	int iI;
+
+	for (iI = 0; iI < iNum; iI++)
+	{
+		szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_REQUIRES").c_str());
+		szCivic.Format(L"<link=literal>%s</link>", GC.getCivicInfo((CivicTypes)(bAnd ? kBuilding.getPrereqAndCivic(iI) : kBuilding.getPrereqOrCivic(iI))).getDescription());
+		setListHelp(szBuffer, szTempBuffer, szCivic, gDLL->getText(bAnd ? "TXT_KEY_AND" : "TXT_KEY_OR").c_str(), bFirst);
+		bFirst = false;
+	}
+
+	if (!bFirst)
+	{
+		szBuffer.append(ENDCOLR);
+	}
+}
+
+// One entry of a city radius prerequisite list of a building. The names link to their pages.
+void CvGameTextMgr::appendPrereqVicinityItem(CvWStringBuffer& szBuffer, const char* szKey, const CvInfoBase& kInfo, bool& bFirst)
+{
+	CvWString szTempBuffer;
+	CvWString szItem;
+
+	szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText(szKey).c_str());
+	szItem.Format(L"<link=literal>%s</link>", kInfo.getDescription());
+	setListHelp(szBuffer, szTempBuffer, szItem, gDLL->getText("TXT_KEY_OR").c_str(), bFirst);
+	bFirst = false;
+}
+
+// City radius prerequisites of buildings: one line per list, "Requires in the city radius: Forest or Jungle" (added by this
+// mod). All of them in the Civilopedia, only the ones the city does not meet in the game.
+void CvGameTextMgr::buildPrereqVicinityString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bCivilopediaText, const CvCity* pCity)
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	bool bFirst;
+	int iI;
+
+	if (bCivilopediaText || pCity == NULL || !pCity->hasPrereqOrTerrains(eBuilding))
+	{
+		bFirst = true;
+		for (iI = 0; iI < kBuilding.getNumPrereqOrTerrains(); iI++)
+		{
+			appendPrereqVicinityItem(szBuffer, "TXT_KEY_BUILDING_PREREQ_VICINITY", GC.getTerrainInfo((TerrainTypes)kBuilding.getPrereqOrTerrain(iI)), bFirst);
+		}
+		if (!bFirst)
+		{
+			szBuffer.append(ENDCOLR);
+		}
+	}
+
+	if (bCivilopediaText || pCity == NULL || !pCity->hasPrereqOrFeatures(eBuilding))
+	{
+		bFirst = true;
+		for (iI = 0; iI < kBuilding.getNumPrereqOrFeatures(); iI++)
+		{
+			appendPrereqVicinityItem(szBuffer, "TXT_KEY_BUILDING_PREREQ_VICINITY", GC.getFeatureInfo((FeatureTypes)kBuilding.getPrereqOrFeature(iI)), bFirst);
+		}
+		if (!bFirst)
+		{
+			szBuffer.append(ENDCOLR);
+		}
+	}
+
+	if (bCivilopediaText || pCity == NULL || !pCity->hasPrereqRawVicinityBonuses(eBuilding))
+	{
+		bFirst = true;
+		for (iI = 0; iI < kBuilding.getNumPrereqRawVicinityBonuses(); iI++)
+		{
+			appendPrereqVicinityItem(szBuffer, "TXT_KEY_BUILDING_PREREQ_VICINITY", GC.getBonusInfo((BonusTypes)kBuilding.getPrereqRawVicinityBonus(iI)), bFirst);
+		}
+		if (!bFirst)
+		{
+			szBuffer.append(ENDCOLR);
+		}
+	}
+
+	if (bCivilopediaText || pCity == NULL || !pCity->hasPrereqVicinityBonuses(eBuilding))
+	{
+		bFirst = true;
+		for (iI = 0; iI < kBuilding.getNumPrereqVicinityBonuses(); iI++)
+		{
+			appendPrereqVicinityItem(szBuffer, "TXT_KEY_BUILDING_PREREQ_VICINITY_DEVELOPED", GC.getBonusInfo((BonusTypes)kBuilding.getPrereqVicinityBonus(iI)), bFirst);
+		}
+		if (!bFirst)
+		{
+			szBuffer.append(ENDCOLR);
+		}
+	}
+
+	if (bCivilopediaText || pCity == NULL || !pCity->hasPrereqOrImprovements(eBuilding))
+	{
+		bFirst = true;
+		for (iI = 0; iI < kBuilding.getNumPrereqOrImprovements(); iI++)
+		{
+			appendPrereqVicinityItem(szBuffer, "TXT_KEY_BUILDING_PREREQ_VICINITY", GC.getImprovementInfo((ImprovementTypes)kBuilding.getPrereqOrImprovement(iI)), bFirst);
+		}
+		if (!bFirst)
+		{
+			szBuffer.append(ENDCOLR);
+		}
+	}
+}
+
+// PrereqOrBuildingClasses (bOr) / PrereqNotInCityBuildingClasses of buildings: "Requires Barracks or Granary" / "Cannot be
+// built in a city with Barracks, Granary" (added by this mod). The building names are those of the player's civilization
+// and link to the building pages.
+void CvGameTextMgr::buildPrereqBuildingClassesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, PlayerTypes ePlayer, bool bOr)
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	CvWString szTempBuffer;
+	CvWString szBuilding;
+	bool bFirst = true;
+	int iNum = (bOr ? kBuilding.getNumPrereqOrBuildingClasses() : kBuilding.getNumPrereqNotInCityBuildingClasses());
+	int iI;
+
+	for (iI = 0; iI < iNum; iI++)
+	{
+		int iClass = (bOr ? kBuilding.getPrereqOrBuildingClass(iI) : kBuilding.getPrereqNotInCityBuildingClass(iI));
+		BuildingTypes eLoopBuilding;
+
+		if (NO_PLAYER != ePlayer)
+		{
+			eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(GET_PLAYER(ePlayer).getCivilizationType()).getCivilizationBuildings(iClass);
+		}
+		else
+		{
+			eLoopBuilding = (BuildingTypes)GC.getBuildingClassInfo((BuildingClassTypes)iClass).getDefaultBuildingIndex();
+		}
+
+		if (eLoopBuilding != NO_BUILDING)
+		{
+			szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText(bOr ? "TXT_KEY_REQUIRES" : "TXT_KEY_BUILDING_NOT_IN_CITY").c_str());
+			szBuilding.Format(L"<link=literal>%s</link>", GC.getBuildingInfo(eLoopBuilding).getDescription());
+			if (bOr)
+			{
+				setListHelp(szBuffer, szTempBuffer, szBuilding, gDLL->getText("TXT_KEY_OR").c_str(), bFirst);
+			}
+			else
+			{
+				setListHelp(szBuffer, szTempBuffer, szBuilding, L", ", bFirst);
+			}
+			bFirst = false;
+		}
 	}
 
 	if (!bFirst)

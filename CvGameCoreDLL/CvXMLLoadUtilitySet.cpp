@@ -636,6 +636,11 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 		// improvements, building classes and civics are loaded after traits
 		GC.getTraitInfo((TraitTypes)i).readPass3();
 	}
+	for (int i=0; i < GC.getNumBuildingInfos(); ++i)
+	{
+		// Building PrereqAndCivics and PrereqOrCivics (added by this mod): civics are loaded after buildings
+		GC.getBuildingInfo((BuildingTypes)i).readPass3();
+	}
 	for (int i=0; i < GC.getNumVoteSourceInfos(); ++i)
 	{
 		GC.getVoteSourceInfo((VoteSourceTypes)i).readPass3();

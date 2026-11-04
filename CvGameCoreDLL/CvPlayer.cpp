@@ -2535,6 +2535,43 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 	}
 }
 
+bool CvPlayer::hasPrereqAndCivics(BuildingTypes eBuilding) const
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	int iI;
+
+	for (iI = 0; iI < kBuilding.getNumPrereqAndCivics(); iI++)
+	{
+		if (!isCivic((CivicTypes)kBuilding.getPrereqAndCivic(iI)))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool CvPlayer::hasPrereqOrCivics(BuildingTypes eBuilding) const
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	int iI;
+
+	if (kBuilding.getNumPrereqOrCivics() == 0)
+	{
+		return true;
+	}
+
+	for (iI = 0; iI < kBuilding.getNumPrereqOrCivics(); iI++)
+	{
+		if (isCivic((CivicTypes)kBuilding.getPrereqOrCivic(iI)))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 // PrereqOrTraits of units, buildings and civics: an empty list needs no trait, otherwise one of the traits is enough
 bool CvPlayer::hasPrereqOrTrait(const std::vector<int>& aiPrereqOrTraits) const
 {
@@ -5781,6 +5818,12 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 		}
 
 		if (isBuildingClassMaxedOut(eBuildingClass, (getBuildingClassMaking(eBuildingClass) + ((bContinue) ? -1 : 0))))
+		{
+			return false;
+		}
+
+		// PrereqAndCivics and PrereqOrCivics (added by this mod)
+		if (!hasPrereqAndCivics(eBuilding) || !hasPrereqOrCivics(eBuilding))
 		{
 			return false;
 		}

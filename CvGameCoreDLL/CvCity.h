@@ -764,6 +764,13 @@ public:
 	void changeFreeSpecialistCount(SpecialistTypes eIndex, int iChange);		// Exposed to Python
 	bool hasPrereqAndSettledSpecialists(BuildingTypes eBuilding) const;	// added by this mod
 	bool hasPrereqOrSettledSpecialists(BuildingTypes eBuilding) const;	// added by this mod
+	bool hasPrereqOrBuildingClasses(BuildingTypes eBuilding) const;	// added by this mod
+	bool hasPrereqNotInCityBuildingClasses(BuildingTypes eBuilding) const;	// added by this mod
+	bool hasPrereqOrTerrains(BuildingTypes eBuilding) const;	// added by this mod
+	bool hasPrereqOrFeatures(BuildingTypes eBuilding) const;	// added by this mod
+	bool hasPrereqOrImprovements(BuildingTypes eBuilding) const;	// added by this mod
+	bool hasPrereqRawVicinityBonuses(BuildingTypes eBuilding) const;	// added by this mod
+	bool hasPrereqVicinityBonuses(BuildingTypes eBuilding) const;	// added by this mod
 	int getAddedFreeSpecialistCount(SpecialistTypes eIndex) const;		// Exposed to Python
 
 	int getImprovementFreeSpecialists(ImprovementTypes eIndex) const;			// Exposed to Python

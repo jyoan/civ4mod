@@ -368,6 +368,14 @@
 	<ElementType name="BuildingClassNeededs" content="eltOnly">
 		<element type="BuildingClassNeeded" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="PrereqOrBuildingClasses" content="eltOnly">
+		<element type="BuildingClassType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="PrereqNotInCityBuildingClasses" content="eltOnly">
+		<element type="BuildingClassType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iPrereqPopulation" content="textOnly" dt:type="int"/>
+	<ElementType name="PrereqCultureLevel" content="textOnly"/>
 	<ElementType name="SpecialistYieldChange" content="eltOnly">
 		<element type="SpecialistType"/>
 		<element type="YieldChanges"/>
@@ -423,6 +431,30 @@
 	<ElementType name="UpgradeAnywhereUnitCombats" content="eltOnly">
 		<element type="UpgradeAnywhereUnitCombat" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="TerrainType" content="textOnly"/>
+	<ElementType name="FeatureType" content="textOnly"/>
+	<ElementType name="PrereqOrTerrains" content="eltOnly">
+		<element type="TerrainType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="PrereqOrFeatures" content="eltOnly">
+		<element type="FeatureType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="PrereqOrImprovements" content="eltOnly">
+		<element type="ImprovementType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="PrereqRawVicinityBonuses" content="eltOnly">
+		<element type="BonusType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="PrereqVicinityBonuses" content="eltOnly">
+		<element type="BonusType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="CivicType" content="textOnly"/>
+	<ElementType name="PrereqAndCivics" content="eltOnly">
+		<element type="CivicType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="PrereqOrCivics" content="eltOnly">
+		<element type="CivicType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="iPlotRadius" content="textOnly" dt:type="int"/>
 	<ElementType name="PlotRadiusCultureLevel" content="textOnly"/>
 	<ElementType name="iNewCityPopulation" content="textOnly" dt:type="int"/>
@@ -461,6 +493,17 @@
 		<element type="FreeTraits" minOccurs="0"/>
 		<element type="PrereqAndSettledSpecialists" minOccurs="0"/>
 		<element type="PrereqOrSettledSpecialists" minOccurs="0"/>
+		<element type="PrereqOrBuildingClasses" minOccurs="0"/>
+		<element type="PrereqNotInCityBuildingClasses" minOccurs="0"/>
+		<element type="iPrereqPopulation" minOccurs="0"/>
+		<element type="PrereqCultureLevel" minOccurs="0"/>
+		<element type="PrereqOrTerrains" minOccurs="0"/>
+		<element type="PrereqOrFeatures" minOccurs="0"/>
+		<element type="PrereqRawVicinityBonuses" minOccurs="0"/>
+		<element type="PrereqVicinityBonuses" minOccurs="0"/>
+		<element type="PrereqOrImprovements" minOccurs="0"/>
+		<element type="PrereqAndCivics" minOccurs="0"/>
+		<element type="PrereqOrCivics" minOccurs="0"/>
 		<element type="ProductionTraits"/>
 		<element type="HappinessTraits"/>
 		<element type="NoBonus"/>

@@ -71,6 +71,8 @@ public:
 
 	bool hasTrait(TraitTypes eTrait) const;																																			// Exposed to Python						
 	bool hasPrereqOrTrait(const std::vector<int>& aiPrereqOrTraits) const;	// PrereqOrTraits: empty, or the player has one of the traits
+	bool hasPrereqAndCivics(BuildingTypes eBuilding) const;	// PrereqAndCivics of the building: the player runs every civic
+	bool hasPrereqOrCivics(BuildingTypes eBuilding) const;	// PrereqOrCivics of the building: empty, or the player runs one of the civics
 	bool hasBaseTrait(TraitTypes eTrait) const;				// Exposed to Python: from the leader or the civilization
 	int getFreeTraitCount(TraitTypes eTrait) const;			// Exposed to Python: traits given during the game
 	void changeFreeTraitCount(TraitTypes eTrait, int iChange);	// Exposed to Python
