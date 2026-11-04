@@ -295,9 +295,16 @@ public:
 	void changeGreatPeopleProgress(int iChange);										// Exposed to Python
 
 	int getNumWorldWonders() const;																				// Exposed to Python
-	int calculateWorldWonderYield(YieldTypes eIndex) const;		// added by this mod
-	int getWorldWonderYield(YieldTypes eIndex) const;			// added by this mod: the part of the base yield rate
-	void updateWorldWonderYields();								// added by this mod
+	int calculateDynamicBuildingYield(YieldTypes eIndex) const;		// added by this mod
+	int getDynamicBuildingYieldByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const;	// added by this mod
+	int getDynamicBuildingYield(YieldTypes eIndex) const;			// added by this mod: the part of the base yield rate
+	void updateDynamicBuildingYields();								// added by this mod
+	bool isBuildingChangeActive(int iSourceType, int iSource) const;	// added by this mod
+	int getBuildingChangeTotal(BuildingTypes eBuilding, int iEffect, int iIndex) const;	// added by this mod: for one building
+	void updateBuildingChangeSpecialists();							// added by this mod
+	void updateBuildingChangesForBonus(BonusTypes eBonus);			// added by this mod
+	int getBuildingPopulationHappiness(BuildingTypes eBuilding) const;	// added by this mod: for one building
+	int getBuildingPopulationHealth(BuildingTypes eBuilding) const;		// added by this mod: for one building
 	void changeNumWorldWonders(int iChange);
 
 	int getNumTeamWonders() const;																				// Exposed to Python
@@ -771,6 +778,7 @@ public:
 	bool hasPrereqOrImprovements(BuildingTypes eBuilding) const;	// added by this mod
 	bool hasPrereqRawVicinityBonuses(BuildingTypes eBuilding) const;	// added by this mod
 	bool hasPrereqVicinityBonuses(BuildingTypes eBuilding) const;	// added by this mod
+	bool hasVicinityBonus(BonusTypes eBonus) const;	// added by this mod
 	int getAddedFreeSpecialistCount(SpecialistTypes eIndex) const;		// Exposed to Python
 
 	int getImprovementFreeSpecialists(ImprovementTypes eIndex) const;			// Exposed to Python
@@ -1058,7 +1066,7 @@ protected:
 
 	int* m_aiSeaPlotYield;
 	int* m_aiRiverPlotYield;
-	int* m_aiWorldWonderYield;		// the part of m_aiBaseYieldRate from the world wonder changes of buildings (added by this mod)
+	int* m_aiDynamicBuildingYield;	// the part of m_aiBaseYieldRate from the world wonder and tech changes of buildings (added by this mod)
 	int* m_aiBaseYieldRate;
 	int* m_aiYieldRateModifier;
 	int* m_aiPowerYieldRateModifier;
@@ -1102,6 +1110,7 @@ protected:
 	int* m_paiGreatPeopleUnitProgress;
 	int* m_paiSpecialistCount;
 	int* m_paiMaxSpecialistCount;
+	int* m_paiBuildingChangeSpecialist;	// the part of m_paiMaxSpecialistCount from the tech changes of buildings (added by this mod)
 	int* m_paiForceSpecialistCount;
 	int* m_paiFreeSpecialistCount;
 	int* m_paiImprovementFreeSpecialists;

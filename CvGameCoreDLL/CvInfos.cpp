@@ -5172,6 +5172,123 @@ static void writeSettledSpecialists(FDataStreamBase* stream, const std::vector<i
 	}
 }
 
+// The changes of a building that depend on something its owner has (added by this mod)
+static void readBuildingChanges(FDataStreamBase* stream, std::vector<BuildingChange>& aChanges)
+{
+	BuildingChange kChange;
+	int iCount;
+	int i;
+
+	aChanges.clear();
+	stream->Read(&iCount);
+	for (i = 0; i < iCount; i++)
+	{
+		stream->Read(&kChange.iSourceType);
+		stream->Read(&kChange.iSource);
+		stream->Read(&kChange.iEffect);
+		stream->Read(&kChange.iIndex);
+		stream->Read(&kChange.iChange);
+		aChanges.push_back(kChange);
+	}
+}
+
+static void writeBuildingChanges(FDataStreamBase* stream, const std::vector<BuildingChange>& aChanges)
+{
+	int i;
+
+	stream->Write((int)aChanges.size());
+	for (i = 0; i < (int)aChanges.size(); i++)
+	{
+		stream->Write(aChanges[i].iSourceType);
+		stream->Write(aChanges[i].iSource);
+		stream->Write(aChanges[i].iEffect);
+		stream->Write(aChanges[i].iIndex);
+		stream->Write(aChanges[i].iChange);
+	}
+}
+
+// Reads a list like <TechCommerceChanges> (szListTag): any number of szItemTag with a szSourceTag (loaded before buildings)
+// and szValueTag: a <CommerceChanges> or <YieldChanges> array, or a number. A specialist change also has a <SpecialistType>.
+static void readBuildingChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szSourceTag, const TCHAR* szValueTag, int iSourceType, int iEffect, std::vector<BuildingChange>& aChanges)
+{
+	BuildingChange kChange;
+	CvString szTextVal;
+	int* piValues;
+	int iNumValues;
+	int i;
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szListTag))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szItemTag))
+		{
+			do
+			{
+				pXML->GetChildXmlValByName(szTextVal, szSourceTag);
+				kChange.iSourceType = iSourceType;
+				kChange.iSource = pXML->FindInInfoClass(szTextVal);
+				kChange.iEffect = iEffect;
+				kChange.iIndex = 0;
+				kChange.iChange = 0;
+
+				if (kChange.iSource > -1)
+				{
+					if (iEffect == BUILDINGCHANGE_EFFECT_COMMERCE || iEffect == BUILDINGCHANGE_EFFECT_YIELD)
+					{
+						piValues = NULL;
+						iNumValues = (iEffect == BUILDINGCHANGE_EFFECT_COMMERCE) ? NUM_COMMERCE_TYPES : NUM_YIELD_TYPES;
+
+						if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szValueTag))
+						{
+							if (iEffect == BUILDINGCHANGE_EFFECT_COMMERCE)
+							{
+								pXML->SetCommerce(&piValues);
+							}
+							else
+							{
+								pXML->SetYields(&piValues);
+							}
+							gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+						}
+
+						if (piValues != NULL)
+						{
+							for (i = 0; i < iNumValues; i++)
+							{
+								if (piValues[i] != 0)
+								{
+									kChange.iIndex = i;
+									kChange.iChange = piValues[i];
+									aChanges.push_back(kChange);
+								}
+							}
+							SAFE_DELETE_ARRAY(piValues);
+						}
+					}
+					else
+					{
+						if (iEffect == BUILDINGCHANGE_EFFECT_SPECIALIST)
+						{
+							pXML->GetChildXmlValByName(szTextVal, "SpecialistType");
+							kChange.iIndex = pXML->FindInInfoClass(szTextVal);
+						}
+						pXML->GetChildXmlValByName(&kChange.iChange, szValueTag);
+
+						if (kChange.iIndex > -1 && kChange.iChange != 0)
+						{
+							aChanges.push_back(kChange);
+						}
+					}
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), const_cast<TCHAR*>(szItemTag)));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
 // Reads <PrereqAndSettledSpecialists> / <PrereqOrSettledSpecialists> (szListTag): any number of szItemTag with a
 // SpecialistType and iNumSettled (1 if omitted)
 static void readSettledSpecialists(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, std::vector<int>& aiTypes, std::vector<int>& aiNums)
@@ -7688,6 +7805,8 @@ CvBuildingInfo::CvBuildingInfo() :
 m_iBuildingClassType(NO_BUILDINGCLASS),
 m_iPrereqPopulation(0),
 m_iPrereqCultureLevel(NO_CULTURELEVEL),
+m_iHappinessPercentPerPopulation(0),
+m_iHealthPercentPerPopulation(0),
 m_iPlotRadius(0),
 m_iPlotRadiusCultureLevel(NO_CULTURELEVEL),
 m_iNewCityCultureLevel(NO_CULTURELEVEL),
@@ -9038,6 +9157,81 @@ int CvBuildingInfo::getPrereqOrCivic(int i) const
 	return (i > -1 && i < getNumPrereqOrCivics()) ? m_aiPrereqOrCivics[i] : -1;
 }
 
+int CvBuildingInfo::getNumBuildingChanges() const
+{
+	return (int)m_aBuildingChanges.size();
+}
+
+const BuildingChange& CvBuildingInfo::getBuildingChange(int i) const
+{
+	FAssertMsg(i < getNumBuildingChanges(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_aBuildingChanges[i];
+}
+
+int CvBuildingInfo::getBuildingChangeSourceType(int i) const
+{
+	return (i > -1 && i < getNumBuildingChanges()) ? m_aBuildingChanges[i].iSourceType : -1;
+}
+
+int CvBuildingInfo::getBuildingChangeSource(int i) const
+{
+	return (i > -1 && i < getNumBuildingChanges()) ? m_aBuildingChanges[i].iSource : -1;
+}
+
+int CvBuildingInfo::getBuildingChangeEffect(int i) const
+{
+	return (i > -1 && i < getNumBuildingChanges()) ? m_aBuildingChanges[i].iEffect : -1;
+}
+
+int CvBuildingInfo::getBuildingChangeIndex(int i) const
+{
+	return (i > -1 && i < getNumBuildingChanges()) ? m_aBuildingChanges[i].iIndex : -1;
+}
+
+int CvBuildingInfo::getBuildingChangeValue(int i) const
+{
+	return (i > -1 && i < getNumBuildingChanges()) ? m_aBuildingChanges[i].iChange : 0;
+}
+
+// Happiness and health per 100 population of the city, rounded towards 0 (added by this mod)
+int CvBuildingInfo::getHappinessPercentPerPopulation() const
+{
+	return m_iHappinessPercentPerPopulation;
+}
+
+int CvBuildingInfo::getHealthPercentPerPopulation() const
+{
+	return m_iHealthPercentPerPopulation;
+}
+
+int CvBuildingInfo::getNumGlobalBuildingExtraCommerces() const
+{
+	return (int)m_aGlobalBuildingExtraCommerces.size();
+}
+
+const BuildingChange& CvBuildingInfo::getGlobalBuildingExtraCommerce(int i) const
+{
+	FAssertMsg(i < getNumGlobalBuildingExtraCommerces(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_aGlobalBuildingExtraCommerces[i];
+}
+
+int CvBuildingInfo::getGlobalBuildingExtraCommerceClass(int i) const
+{
+	return (i > -1 && i < getNumGlobalBuildingExtraCommerces()) ? m_aGlobalBuildingExtraCommerces[i].iSource : -1;
+}
+
+int CvBuildingInfo::getGlobalBuildingExtraCommerceType(int i) const
+{
+	return (i > -1 && i < getNumGlobalBuildingExtraCommerces()) ? m_aGlobalBuildingExtraCommerces[i].iIndex : -1;
+}
+
+int CvBuildingInfo::getGlobalBuildingExtraCommerceValue(int i) const
+{
+	return (i > -1 && i < getNumGlobalBuildingExtraCommerces()) ? m_aGlobalBuildingExtraCommerces[i].iChange : 0;
+}
+
 // The population the city needs to start the building (added by this mod; 0: any city)
 int CvBuildingInfo::getPrereqPopulation() const
 {
@@ -9738,6 +9932,35 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 			m_aszPrereqOrCivicTypes.push_back(szType);
 		}
 	}
+
+	// uiFlag < 14: cache written before the building changes existed
+	if (uiFlag > 13)
+	{
+		readBuildingChanges(stream, m_aBuildingChanges);
+	}
+	else
+	{
+		m_aBuildingChanges.clear();
+	}
+
+	// uiFlag < 15: cache written before the changes per population existed
+	m_iHappinessPercentPerPopulation = 0;
+	m_iHealthPercentPerPopulation = 0;
+	if (uiFlag > 14)
+	{
+		stream->Read(&m_iHappinessPercentPerPopulation);
+		stream->Read(&m_iHealthPercentPerPopulation);
+	}
+
+	// uiFlag < 16: cache written before GlobalBuildingExtraCommerces existed
+	if (uiFlag > 15)
+	{
+		readBuildingChanges(stream, m_aGlobalBuildingExtraCommerces);
+	}
+	else
+	{
+		m_aGlobalBuildingExtraCommerces.clear();
+	}
 }
 
 //
@@ -9747,7 +9970,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=13;	// 9: FreeTraits, 10: world wonder changes, 11: city prerequisites, 12: city radius prerequisites, 13: civic prerequisites (added by this mod)
+	uint uiFlag=16;	// 9: FreeTraits, 10: world wonder changes, 11: city prerequisites, 12: city radius prerequisites, 13: civic prerequisites, 14: building changes, 15: changes per population, 16: GlobalBuildingExtraCommerces (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -9953,6 +10176,10 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	{
 		stream->WriteString(m_aszPrereqOrCivicTypes[iType]);
 	}
+	writeBuildingChanges(stream, m_aBuildingChanges);
+	stream->Write(m_iHappinessPercentPerPopulation);
+	stream->Write(m_iHealthPercentPerPopulation);
+	writeBuildingChanges(stream, m_aGlobalBuildingExtraCommerces);
 }
 
 // Turns the civic types of a building list into numbers. A wrong name shows an XML Error message.
@@ -10152,6 +10379,19 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	// Civics are loaded after buildings: readPass3() finds the types
 	readTypeList(pXML, "PrereqAndCivics", m_aszPrereqAndCivicTypes);
 	readTypeList(pXML, "PrereqOrCivics", m_aszPrereqOrCivicTypes);
+	m_aBuildingChanges.clear();
+	readBuildingChanges(pXML, "TechCommerceChanges", "TechCommerceChange", "TechType", "CommerceChanges", BUILDINGCHANGE_SOURCE_TECH, BUILDINGCHANGE_EFFECT_COMMERCE, m_aBuildingChanges);
+	readBuildingChanges(pXML, "TechYieldChanges", "TechYieldChange", "TechType", "YieldChanges", BUILDINGCHANGE_SOURCE_TECH, BUILDINGCHANGE_EFFECT_YIELD, m_aBuildingChanges);
+	readBuildingChanges(pXML, "TechHappinessChanges", "TechHappinessChange", "TechType", "iHappiness", BUILDINGCHANGE_SOURCE_TECH, BUILDINGCHANGE_EFFECT_HAPPINESS, m_aBuildingChanges);
+	readBuildingChanges(pXML, "TechHealthChanges", "TechHealthChange", "TechType", "iHealth", BUILDINGCHANGE_SOURCE_TECH, BUILDINGCHANGE_EFFECT_HEALTH, m_aBuildingChanges);
+	readBuildingChanges(pXML, "TechSpecialistChanges", "TechSpecialistChange", "TechType", "iSpecialistCount", BUILDINGCHANGE_SOURCE_TECH, BUILDINGCHANGE_EFFECT_SPECIALIST, m_aBuildingChanges);
+	readBuildingChanges(pXML, "BonusCommerceChanges", "BonusCommerceChange", "BonusType", "CommerceChanges", BUILDINGCHANGE_SOURCE_BONUS, BUILDINGCHANGE_EFFECT_COMMERCE, m_aBuildingChanges);
+	readBuildingChanges(pXML, "BonusYieldChanges", "BonusYieldChange", "BonusType", "YieldChanges", BUILDINGCHANGE_SOURCE_BONUS, BUILDINGCHANGE_EFFECT_YIELD, m_aBuildingChanges);
+	readBuildingChanges(pXML, "VicinityBonusYieldChanges", "VicinityBonusYieldChange", "BonusType", "YieldChanges", BUILDINGCHANGE_SOURCE_VICINITY_BONUS, BUILDINGCHANGE_EFFECT_YIELD, m_aBuildingChanges);
+	pXML->GetChildXmlValByName(&m_iHappinessPercentPerPopulation, "iHappinessPercentPerPopulation");
+	pXML->GetChildXmlValByName(&m_iHealthPercentPerPopulation, "iHealthPercentPerPopulation");
+	m_aGlobalBuildingExtraCommerces.clear();
+	readBuildingChanges(pXML, "GlobalBuildingExtraCommerces", "GlobalBuildingExtraCommerce", "BuildingClassType", "CommerceChanges", BUILDINGCHANGE_SOURCE_TECH, BUILDINGCHANGE_EFFECT_COMMERCE, m_aGlobalBuildingExtraCommerces);
 	pXML->GetChildXmlValByName(&m_iPrereqPopulation, "iPrereqPopulation");
 	pXML->GetChildXmlValByName(szTextVal, "PrereqCultureLevel");
 	m_iPrereqCultureLevel = pXML->FindInInfoClass(szTextVal);

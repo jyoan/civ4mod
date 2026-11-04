@@ -1778,6 +1778,32 @@ protected:
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 class CvArtInfoBuilding;
 class CvArtInfoMovie;
+// An effect of a building that depends on something its owner has (added by this mod): TechCommerceChanges etc.
+enum BuildingChangeSourceTypes
+{
+	BUILDINGCHANGE_SOURCE_TECH,
+	BUILDINGCHANGE_SOURCE_BONUS,
+	BUILDINGCHANGE_SOURCE_VICINITY_BONUS,
+};
+
+enum BuildingChangeEffectTypes
+{
+	BUILDINGCHANGE_EFFECT_COMMERCE,		// iIndex: the commerce
+	BUILDINGCHANGE_EFFECT_YIELD,		// iIndex: the yield
+	BUILDINGCHANGE_EFFECT_HAPPINESS,
+	BUILDINGCHANGE_EFFECT_HEALTH,
+	BUILDINGCHANGE_EFFECT_SPECIALIST,	// iIndex: the specialist
+};
+
+struct BuildingChange
+{
+	int iSourceType;	// BuildingChangeSourceTypes
+	int iSource;		// the tech or the resource
+	int iEffect;		// BuildingChangeEffectTypes
+	int iIndex;
+	int iChange;
+};
+
 class CvBuildingInfo : public CvHotkeyInfo
 {
 	//---------------------------------------PUBLIC INTERFACE---------------------------------
@@ -2010,6 +2036,23 @@ public:
 	int getPrereqAndCivic(int i) const;				// Exposed to Python
 	int getNumPrereqOrCivics() const;				// Exposed to Python
 	int getPrereqOrCivic(int i) const;				// Exposed to Python
+	// TechCommerceChanges, TechYieldChanges, TechHappinessChanges, TechHealthChanges, TechSpecialistChanges,
+	// BonusCommerceChanges, BonusYieldChanges and VicinityBonusYieldChanges (added by this mod)
+	int getNumBuildingChanges() const;				// Exposed to Python
+	const BuildingChange& getBuildingChange(int i) const;
+	int getBuildingChangeSourceType(int i) const;	// Exposed to Python
+	int getBuildingChangeSource(int i) const;		// Exposed to Python
+	int getBuildingChangeEffect(int i) const;		// Exposed to Python
+	int getBuildingChangeIndex(int i) const;		// Exposed to Python
+	int getBuildingChangeValue(int i) const;		// Exposed to Python
+	int getHappinessPercentPerPopulation() const;	// Exposed to Python
+	int getHealthPercentPerPopulation() const;		// Exposed to Python
+	// GlobalBuildingExtraCommerces (added by this mod): iSource is the building class, iIndex the commerce
+	int getNumGlobalBuildingExtraCommerces() const;				// Exposed to Python
+	const BuildingChange& getGlobalBuildingExtraCommerce(int i) const;
+	int getGlobalBuildingExtraCommerceClass(int i) const;		// Exposed to Python
+	int getGlobalBuildingExtraCommerceType(int i) const;		// Exposed to Python
+	int getGlobalBuildingExtraCommerceValue(int i) const;		// Exposed to Python
 	int getProductionTraits(int i) const;				// Exposed to Python
 	int getHappinessTraits(int i) const;				// Exposed to Python
 	int getBuildingHappinessChanges(int i) const;				// Exposed to Python
@@ -2181,6 +2224,10 @@ protected:
 	std::vector<int> m_aiPrereqOrCivics;
 	std::vector<CvString> m_aszPrereqAndCivicTypes;	// read() keeps the types as strings until readPass3() (civics are loaded later)
 	std::vector<CvString> m_aszPrereqOrCivicTypes;
+	std::vector<BuildingChange> m_aBuildingChanges;
+	int m_iHappinessPercentPerPopulation;
+	int m_iHealthPercentPerPopulation;
+	std::vector<BuildingChange> m_aGlobalBuildingExtraCommerces;
 	int m_iPrereqPopulation;
 	int m_iPrereqCultureLevel;
 	int m_iPlotRadius;

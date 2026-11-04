@@ -61,6 +61,7 @@ CvPlayer::CvPlayer()
 	m_paiImprovementCount = NULL;
 	m_paiFreeTraitCount = NULL;
 	m_paiConditionalTraitCount = NULL;
+	m_paiBuildingClassExtraCommerce = NULL;
 	m_paiFreeBuildingCount = NULL;
 	m_paiExtraBuildingHappiness = NULL;
 	m_paiExtraBuildingHealth = NULL;
@@ -264,6 +265,7 @@ void CvPlayer::uninit()
 	SAFE_DELETE_ARRAY(m_paiImprovementCount);
 	SAFE_DELETE_ARRAY(m_paiFreeTraitCount);
 	SAFE_DELETE_ARRAY(m_paiConditionalTraitCount);
+	SAFE_DELETE_ARRAY(m_paiBuildingClassExtraCommerce);
 	SAFE_DELETE_ARRAY(m_paiFreeBuildingCount);
 	SAFE_DELETE_ARRAY(m_paiExtraBuildingHappiness);
 	SAFE_DELETE_ARRAY(m_paiExtraBuildingHealth);
@@ -556,6 +558,13 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
 		{
 			m_paiConditionalTraitCount[iI] = 0;
+		}
+
+		FAssertMsg(m_paiBuildingClassExtraCommerce==NULL, "about to leak memory, CvPlayer::m_paiBuildingClassExtraCommerce");
+		m_paiBuildingClassExtraCommerce = new int [GC.getNumBuildingClassInfos() * NUM_COMMERCE_TYPES];
+		for (iI = 0; iI < GC.getNumBuildingClassInfos() * NUM_COMMERCE_TYPES; iI++)
+		{
+			m_paiBuildingClassExtraCommerce[iI] = 0;
 		}
 
 		FAssertMsg(m_paiFreeBuildingCount==NULL, "about to leak memory, CvPlayer::m_paiFreeBuildingCount");
@@ -6504,6 +6513,44 @@ int CvPlayer::getNumWorldWonders() const
 
 // After a world wonder or a building with the world wonder changes is added or removed (added by this mod): the yields
 // and the building commerce of all the cities
+// What GlobalBuildingExtraCommerces of the player's buildings add to one building of the class (added by this mod)
+int CvPlayer::getBuildingClassExtraCommerce(BuildingClassTypes eBuildingClass, CommerceTypes eCommerce) const
+{
+	return ((m_paiBuildingClassExtraCommerce != NULL) ? m_paiBuildingClassExtraCommerce[eBuildingClass * NUM_COMMERCE_TYPES + eCommerce] : 0);
+}
+
+void CvPlayer::changeBuildingClassExtraCommerce(BuildingClassTypes eBuildingClass, CommerceTypes eCommerce, int iChange)
+{
+	CvCity* pLoopCity;
+	int iLoop;
+
+	if (iChange != 0 && m_paiBuildingClassExtraCommerce != NULL)
+	{
+		m_paiBuildingClassExtraCommerce[eBuildingClass * NUM_COMMERCE_TYPES + eCommerce] += iChange;
+
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			pLoopCity->updateBuildingCommerce();
+		}
+	}
+}
+
+// Recalculates the tech changes of buildings in all the cities (added by this mod)
+void CvPlayer::updateBuildingChangeEffects()
+{
+	CvCity* pLoopCity;
+	int iLoop;
+
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		pLoopCity->updateBuildingCommerce();
+		pLoopCity->updateDynamicBuildingYields();
+		pLoopCity->updateExtraBuildingHappiness();
+		pLoopCity->updateExtraBuildingHealth();
+		pLoopCity->updateBuildingChangeSpecialists();
+	}
+}
+
 void CvPlayer::updateWorldWonderEffects()
 {
 	CvCity* pLoopCity;
@@ -6511,7 +6558,7 @@ void CvPlayer::updateWorldWonderEffects()
 
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
-		pLoopCity->updateWorldWonderYields();
+		pLoopCity->updateDynamicBuildingYields();
 		pLoopCity->updateBuildingCommerce();
 	}
 }
@@ -17343,6 +17390,12 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(GC.getNumTraitInfos(), m_paiConditionalTraitCount);
 	}
+
+	// GlobalBuildingExtraCommerces (uiFlag 5)
+	if (uiFlag > 4)
+	{
+		pStream->Read(GC.getNumBuildingClassInfos() * NUM_COMMERCE_TYPES, m_paiBuildingClassExtraCommerce);
+	}
 }
 
 //
@@ -17353,7 +17406,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 4;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount (added by this mod)
+	uint uiFlag = 5;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -17764,6 +17817,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 
 	pStream->Write(GC.getNumTraitInfos(), m_paiFreeTraitCount);
 	pStream->Write(GC.getNumTraitInfos(), m_paiConditionalTraitCount);
+	pStream->Write(GC.getNumBuildingClassInfos() * NUM_COMMERCE_TYPES, m_paiBuildingClassExtraCommerce);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

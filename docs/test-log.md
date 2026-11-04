@@ -49,3 +49,7 @@
 - 2026-11-04: 建物の前提の第 1 段階（`PrereqOrBuildingClasses`・`PrereqNotInCityBuildingClasses`・`iPrereqPopulation`・`PrereqCultureLevel`。灰色の表示、説明文、生産の列から外れる動作、建築中に人口が減っても外れないこと、ペディア）をゲーム内で確認
 - 2026-11-04: 建物の前提の第 2 段階（`PrereqOrTerrains`・`PrereqOrFeatures`・`PrereqRawVicinityBonuses`・`PrereqVicinityBonuses`・`PrereqOrImprovements`。一覧に出ない・灰色の表示、未公開の資源、説明文、都市圏の半径）をゲーム内で確認
 - 2026-11-04: 建物の前提の第 3 段階（`PrereqAndCivics`・`PrereqOrCivics`。灰色の表示、説明文、生産の列から外れる動作、建っている建物が消えないこと、ペディア）をゲーム内で確認
+- 2026-11-04: 建物の成長の第 1 段階（`TechCommerceChanges`・`TechYieldChanges`・`TechHappinessChanges`・`TechHealthChanges`・`TechSpecialistChanges`。説明文、都市画面の建物の一覧の産出・幸福・衛生、専門家の枠、セーブと読み込み）をゲーム内で確認
+- 2026-11-04: 建物の成長の第 2 段階（`BonusCommerceChanges`・`BonusYieldChanges`・`VicinityBonusYieldChanges`。説明文、道路の有無と都市圏の内外での違い、鉱山を消したときの変化、セーブと読み込み）をゲーム内で確認
+- 2026-11-04: 建物の成長の第 3 段階（`iHappinessPercentPerPopulation`・`iHealthPercentPerPopulation`。人口の変化での増減、切り捨て、説明文、セーブと読み込み）をゲーム内で確認
+- 2026-11-04: 建物の成長の第 4 段階（`GlobalBuildingExtraCommerces`。全都市への効果、複数持ったときの足し算、陳腐化、説明文、セーブと読み込み）をゲーム内で確認

@@ -161,6 +161,9 @@ public:
 	void buildPrereqVicinityString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bCivilopediaText, const CvCity* pCity);	// added by this mod
 	void buildPrereqCivicsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bAnd);	// added by this mod
 	void appendPrereqVicinityItem(CvWStringBuffer& szBuffer, const char* szKey, const CvInfoBase& kInfo, bool& bFirst);	// added by this mod
+	void buildBuildingChangesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding);	// added by this mod
+	void buildPerPopulationString(CvWStringBuffer& szBuffer, int iPercent, int iGoodSymbol, int iBadSymbol);	// added by this mod
+	void buildGlobalBuildingExtraCommercesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding);	// added by this mod
 
 	DllExport void buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvCity* pCity);
 	DllExport void buildCityBillboardCityNameString( CvWStringBuffer& szBuffer, CvCity* pCity);

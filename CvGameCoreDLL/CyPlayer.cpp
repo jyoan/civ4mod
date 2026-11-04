@@ -2027,6 +2027,11 @@ bool CyPlayer::isMaxCitiesReached()
 	return m_pPlayer ? m_pPlayer->isMaxCitiesReached() : false;
 }
 
+int CyPlayer::getBuildingClassExtraCommerce(int /*BuildingClassTypes*/ eBuildingClass, int /*CommerceTypes*/ eCommerce)
+{
+	return m_pPlayer ? m_pPlayer->getBuildingClassExtraCommerce((BuildingClassTypes)eBuildingClass, (CommerceTypes)eCommerce) : 0;
+}
+
 int CyPlayer::getConditionalTraitCount(int /*TraitTypes*/ eTrait)
 {
 	return m_pPlayer ? m_pPlayer->getConditionalTraitCount((TraitTypes)eTrait) : -1;

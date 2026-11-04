@@ -34,7 +34,7 @@ CvCity::CvCity()
 {
 	m_aiSeaPlotYield = new int[NUM_YIELD_TYPES];
 	m_aiRiverPlotYield = new int[NUM_YIELD_TYPES];
-	m_aiWorldWonderYield = new int[NUM_YIELD_TYPES];
+	m_aiDynamicBuildingYield = new int[NUM_YIELD_TYPES];
 	m_aiBaseYieldRate = new int[NUM_YIELD_TYPES];
 	m_aiYieldRateModifier = new int[NUM_YIELD_TYPES];
 	m_aiPowerYieldRateModifier = new int[NUM_YIELD_TYPES];
@@ -75,6 +75,7 @@ CvCity::CvCity()
 	m_paiGreatPeopleUnitProgress = NULL;
 	m_paiSpecialistCount = NULL;
 	m_paiMaxSpecialistCount = NULL;
+	m_paiBuildingChangeSpecialist = NULL;
 	m_paiForceSpecialistCount = NULL;
 	m_paiFreeSpecialistCount = NULL;
 	m_paiImprovementFreeSpecialists = NULL;
@@ -119,7 +120,7 @@ CvCity::~CvCity()
 
 	SAFE_DELETE_ARRAY(m_aiSeaPlotYield);
 	SAFE_DELETE_ARRAY(m_aiRiverPlotYield);
-	SAFE_DELETE_ARRAY(m_aiWorldWonderYield);
+	SAFE_DELETE_ARRAY(m_aiDynamicBuildingYield);
 	SAFE_DELETE_ARRAY(m_aiBaseYieldRate);
 	SAFE_DELETE_ARRAY(m_aiYieldRateModifier);
 	SAFE_DELETE_ARRAY(m_aiPowerYieldRateModifier);
@@ -337,6 +338,7 @@ void CvCity::uninit()
 	SAFE_DELETE_ARRAY(m_paiGreatPeopleUnitProgress);
 	SAFE_DELETE_ARRAY(m_paiSpecialistCount);
 	SAFE_DELETE_ARRAY(m_paiMaxSpecialistCount);
+	SAFE_DELETE_ARRAY(m_paiBuildingChangeSpecialist);
 	SAFE_DELETE_ARRAY(m_paiForceSpecialistCount);
 	SAFE_DELETE_ARRAY(m_paiFreeSpecialistCount);
 	SAFE_DELETE_ARRAY(m_paiImprovementFreeSpecialists);
@@ -476,7 +478,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	{
 		m_aiSeaPlotYield[iI] = 0;
 		m_aiRiverPlotYield[iI] = 0;
-		m_aiWorldWonderYield[iI] = 0;
+		m_aiDynamicBuildingYield[iI] = 0;
 		m_aiBaseYieldRate[iI] = 0;
 		m_aiYieldRateModifier[iI] = 0;
 		m_aiPowerYieldRateModifier[iI] = 0;
@@ -602,12 +604,14 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 		FAssertMsg((0 < GC.getNumSpecialistInfos()),  "GC.getNumSpecialistInfos() is not greater than zero but an array is being allocated in CvCity::reset");
 		m_paiSpecialistCount = new int[GC.getNumSpecialistInfos()];
 		m_paiMaxSpecialistCount = new int[GC.getNumSpecialistInfos()];
+		m_paiBuildingChangeSpecialist = new int[GC.getNumSpecialistInfos()];
 		m_paiForceSpecialistCount = new int[GC.getNumSpecialistInfos()];
 		m_paiFreeSpecialistCount = new int[GC.getNumSpecialistInfos()];
 		for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
 		{
 			m_paiSpecialistCount[iI] = 0;
 			m_paiMaxSpecialistCount[iI] = 0;
+			m_paiBuildingChangeSpecialist[iI] = 0;
 			m_paiForceSpecialistCount[iI] = 0;
 			m_paiFreeSpecialistCount[iI] = 0;
 		}
@@ -875,6 +879,9 @@ void CvCity::doTurn()
 
 	// Existing cities follow the radius of the owner, e.g. in a game saved before the radius changed (added by this mod)
 	updatePlotRadius();
+
+	// VicinityBonusYieldChanges of buildings (added by this mod): the plots of the city radius may have changed
+	updateDynamicBuildingYields();
 
 	AI_doTurn();
 
@@ -3855,6 +3862,13 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 			changeFreePromotionCount(((PromotionTypes)(GC.getBuildingInfo(eBuilding).getFreePromotion())), iChange);
 		}
 
+		// GlobalBuildingExtraCommerces (added by this mod): in the block of the effects that end with the building's obsolescence
+		for (iI = 0; iI < GC.getBuildingInfo(eBuilding).getNumGlobalBuildingExtraCommerces(); iI++)
+		{
+			const BuildingChange& kExtra = GC.getBuildingInfo(eBuilding).getGlobalBuildingExtraCommerce(iI);
+			GET_PLAYER(getOwnerINLINE()).changeBuildingClassExtraCommerce((BuildingClassTypes)kExtra.iSource, (CommerceTypes)kExtra.iIndex, kExtra.iChange * iChange);
+		}
+
 		changeEspionageDefenseModifier(GC.getBuildingInfo(eBuilding).getEspionageDefenseModifier() * iChange);
 		changeGreatPeopleRateModifier(GC.getBuildingInfo(eBuilding).getGreatPeopleRateModifier() * iChange);
 		changeFreeExperience(GC.getBuildingInfo(eBuilding).getFreeExperience() * iChange);
@@ -4029,6 +4043,13 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 	}
 
 	updateBuildingCommerce();
+
+	// Tech changes of the building (added by this mod): the building count and obsolescence are already updated here
+	if (GC.getBuildingInfo(eBuilding).getNumBuildingChanges() > 0)
+	{
+		updateDynamicBuildingYields();
+		updateBuildingChangeSpecialists();
+	}
 
 	// World wonder changes of the building (added by this mod): the building count and obsolescence are already updated
 	// here. The world wonder count is updated after this (changeNumWorldWonders updates again).
@@ -5290,6 +5311,10 @@ void CvCity::setPopulation(int iNewValue)
 
 		FAssert(getPopulation() >= 0);
 
+		// Happiness and health per population of buildings (added by this mod)
+		updateExtraBuildingHappiness();
+		updateExtraBuildingHealth();
+
 		GET_PLAYER(getOwnerINLINE()).invalidatePopulationRankCache();
 
 		if (getPopulation() > getHighestPopulation())
@@ -5515,52 +5540,164 @@ void CvCity::changeNumWorldWonders(int iChange)
 // Yields from the world wonder changes of the buildings (WorldWonderYieldChanges: per world wonder in this city,
 // GlobalWorldWonderYieldChanges: per world wonder of the owner; added by this mod). All the world wonders count (also
 // obsolete ones); the buildings with the changes count while they are not obsolete.
-int CvCity::calculateWorldWonderYield(YieldTypes eIndex) const
+int CvCity::calculateDynamicBuildingYield(YieldTypes eIndex) const
 {
 	int iYield = 0;
-	int iPlayerWonders = -1;
 	int iI;
 
 	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
 	{
-		if (getNumActiveBuilding((BuildingTypes)iI) > 0)
+		iYield += getDynamicBuildingYieldByBuilding(eIndex, (BuildingTypes)iI);
+	}
+
+	return iYield;
+}
+
+// The part of calculateDynamicBuildingYield from one type of building (added by this mod)
+int CvCity::getDynamicBuildingYieldByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	int iYield = 0;
+
+	if (getNumActiveBuilding(eBuilding) > 0)
+	{
+		if (kBuilding.getWorldWonderYieldChange(eIndex) != 0 || kBuilding.getGlobalWorldWonderYieldChange(eIndex) != 0)
 		{
-			CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)iI);
+			iYield += (kBuilding.getWorldWonderYieldChange(eIndex) * getNumWorldWonders() + kBuilding.getGlobalWorldWonderYieldChange(eIndex) * GET_PLAYER(getOwnerINLINE()).getNumWorldWonders()) * getNumActiveBuilding(eBuilding);
+		}
 
-			if (kBuilding.getWorldWonderYieldChange(eIndex) != 0 || kBuilding.getGlobalWorldWonderYieldChange(eIndex) != 0)
-			{
-				if (iPlayerWonders < 0)
-				{
-					iPlayerWonders = GET_PLAYER(getOwnerINLINE()).getNumWorldWonders();
-				}
-
-				iYield += (kBuilding.getWorldWonderYieldChange(eIndex) * getNumWorldWonders() + kBuilding.getGlobalWorldWonderYieldChange(eIndex) * iPlayerWonders) * getNumActiveBuilding((BuildingTypes)iI);
-			}
+		if (kBuilding.getNumBuildingChanges() > 0)
+		{
+			iYield += getBuildingChangeTotal(eBuilding, BUILDINGCHANGE_EFFECT_YIELD, eIndex) * getNumActiveBuilding(eBuilding);
 		}
 	}
 
 	return iYield;
 }
 
-// The part of the base yield rate from the world wonder changes of buildings (added by this mod)
-int CvCity::getWorldWonderYield(YieldTypes eIndex) const
+// The part of the base yield rate from the world wonder and tech changes of buildings (added by this mod)
+int CvCity::getDynamicBuildingYield(YieldTypes eIndex) const
 {
-	return m_aiWorldWonderYield[eIndex];
+	return m_aiDynamicBuildingYield[eIndex];
 }
 
-// Changes the base yield rate by the difference of calculateWorldWonderYield (added by this mod)
-void CvCity::updateWorldWonderYields()
+// Changes the base yield rate by the difference of calculateDynamicBuildingYield (added by this mod)
+void CvCity::updateDynamicBuildingYields()
 {
 	int iNewYield;
 	int iI;
 
 	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
 	{
-		iNewYield = calculateWorldWonderYield((YieldTypes)iI);
-		if (iNewYield != m_aiWorldWonderYield[iI])
+		iNewYield = calculateDynamicBuildingYield((YieldTypes)iI);
+		if (iNewYield != m_aiDynamicBuildingYield[iI])
 		{
-			changeBaseYieldRate((YieldTypes)iI, iNewYield - m_aiWorldWonderYield[iI]);
-			m_aiWorldWonderYield[iI] = iNewYield;
+			changeBaseYieldRate((YieldTypes)iI, iNewYield - m_aiDynamicBuildingYield[iI]);
+			m_aiDynamicBuildingYield[iI] = iNewYield;
+		}
+	}
+}
+
+// Whether the owner has what a building change depends on (added by this mod)
+bool CvCity::isBuildingChangeActive(int iSourceType, int iSource) const
+{
+	switch (iSourceType)
+	{
+	case BUILDINGCHANGE_SOURCE_TECH:
+		return GET_TEAM(getTeam()).isHasTech((TechTypes)iSource);
+	case BUILDINGCHANGE_SOURCE_BONUS:
+		return hasBonus((BonusTypes)iSource);
+	case BUILDINGCHANGE_SOURCE_VICINITY_BONUS:
+		return hasVicinityBonus((BonusTypes)iSource);
+	}
+
+	return false;
+}
+
+// The sum of the changes of one eBuilding that apply now (added by this mod). iIndex: the commerce, yield or specialist.
+int CvCity::getBuildingChangeTotal(BuildingTypes eBuilding, int iEffect, int iIndex) const
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	int iTotal = 0;
+	int iI;
+
+	for (iI = 0; iI < kBuilding.getNumBuildingChanges(); iI++)
+	{
+		const BuildingChange& kChange = kBuilding.getBuildingChange(iI);
+
+		if (kChange.iEffect == iEffect && kChange.iIndex == iIndex)
+		{
+			if (isBuildingChangeActive(kChange.iSourceType, kChange.iSource))
+			{
+				iTotal += kChange.iChange;
+			}
+		}
+	}
+
+	return iTotal;
+}
+
+// Recalculates after the city gained or lost eBonus, if one of its buildings depends on it (added by this mod). Not part of
+// processBonus: changeNoBonusCount calls that before the resource is really lost. VicinityBonusYieldChanges do not depend on
+// the access to the resource, they are updated at the start of the turn.
+void CvCity::updateBuildingChangesForBonus(BonusTypes eBonus)
+{
+	int iI, iJ;
+
+	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+	{
+		CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)iI);
+
+		if (kBuilding.getNumBuildingChanges() > 0 && getNumBuilding((BuildingTypes)iI) > 0)
+		{
+			for (iJ = 0; iJ < kBuilding.getNumBuildingChanges(); iJ++)
+			{
+				const BuildingChange& kChange = kBuilding.getBuildingChange(iJ);
+
+				if (kChange.iSourceType == BUILDINGCHANGE_SOURCE_BONUS && kChange.iSource == eBonus)
+				{
+					updateBuildingCommerce();
+					updateDynamicBuildingYields();
+					return;
+				}
+			}
+		}
+	}
+}
+
+// iHappinessPercentPerPopulation / iHealthPercentPerPopulation of one building (added by this mod)
+int CvCity::getBuildingPopulationHappiness(BuildingTypes eBuilding) const
+{
+	return GC.getBuildingInfo(eBuilding).getHappinessPercentPerPopulation() * getPopulation() / 100;
+}
+
+int CvCity::getBuildingPopulationHealth(BuildingTypes eBuilding) const
+{
+	return GC.getBuildingInfo(eBuilding).getHealthPercentPerPopulation() * getPopulation() / 100;
+}
+
+// Changes the specialist slots by the difference of the building changes (added by this mod)
+void CvCity::updateBuildingChangeSpecialists()
+{
+	int iNewCount;
+	int iI, iJ;
+
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
+	{
+		iNewCount = 0;
+
+		for (iJ = 0; iJ < GC.getNumBuildingInfos(); iJ++)
+		{
+			if (GC.getBuildingInfo((BuildingTypes)iJ).getNumBuildingChanges() > 0 && getNumActiveBuilding((BuildingTypes)iJ) > 0)
+			{
+				iNewCount += getBuildingChangeTotal((BuildingTypes)iJ, BUILDINGCHANGE_EFFECT_SPECIALIST, iI) * getNumActiveBuilding((BuildingTypes)iJ);
+			}
+		}
+
+		if (iNewCount != m_paiBuildingChangeSpecialist[iI])
+		{
+			changeMaxSpecialistCount((SpecialistTypes)iI, iNewCount - m_paiBuildingChangeSpecialist[iI]);
+			m_paiBuildingChangeSpecialist[iI] = iNewCount;
 		}
 	}
 }
@@ -6116,6 +6253,8 @@ int CvCity::getBuildingGoodHealth(BuildingTypes eBuilding) const
 	int iHealth = std::max(0, GC.getBuildingInfo(eBuilding).getHealth());
 	iHealth += std::max(0, getBuildingHealthChange((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType()));
 	iHealth += std::max(0, GET_PLAYER(getOwnerINLINE()).getExtraBuildingHealth(eBuilding));
+	iHealth += std::max(0, getBuildingChangeTotal(eBuilding, BUILDINGCHANGE_EFFECT_HEALTH, 0));
+	iHealth += std::max(0, getBuildingPopulationHealth(eBuilding));
 
 	return iHealth;
 }
@@ -6130,6 +6269,8 @@ int CvCity::getBuildingBadHealth(BuildingTypes eBuilding) const
 	int iHealth = std::min(0, GC.getBuildingInfo(eBuilding).getHealth());
 	iHealth += std::min(0, getBuildingHealthChange((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType()));
 	iHealth += std::min(0, GET_PLAYER(getOwnerINLINE()).getExtraBuildingHealth(eBuilding));
+	iHealth += std::min(0, getBuildingChangeTotal(eBuilding, BUILDINGCHANGE_EFFECT_HEALTH, 0));
+	iHealth += std::min(0, getBuildingPopulationHealth(eBuilding));
 
 	return iHealth;
 }
@@ -6341,6 +6482,9 @@ int CvCity::getBuildingHappiness(BuildingTypes eBuilding) const
 
 	iHappiness += getBuildingHappyChange((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType());
 
+	iHappiness += getBuildingChangeTotal(eBuilding, BUILDINGCHANGE_EFFECT_HAPPINESS, 0);
+	iHappiness += getBuildingPopulationHappiness(eBuilding);
+
 	return iHappiness;
 }
 
@@ -6393,7 +6537,7 @@ void CvCity::updateExtraBuildingHappiness()
 
 	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
 	{
-		iChange = getNumActiveBuilding((BuildingTypes)iI) * GET_PLAYER(getOwnerINLINE()).getExtraBuildingHappiness((BuildingTypes)iI);
+		iChange = getNumActiveBuilding((BuildingTypes)iI) * (GET_PLAYER(getOwnerINLINE()).getExtraBuildingHappiness((BuildingTypes)iI) + getBuildingChangeTotal((BuildingTypes)iI, BUILDINGCHANGE_EFFECT_HAPPINESS, 0) + getBuildingPopulationHappiness((BuildingTypes)iI));
 
 		if (iChange > 0)
 		{
@@ -6444,7 +6588,7 @@ void CvCity::updateExtraBuildingHealth()
 
 	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
 	{
-		iChange = getNumActiveBuilding((BuildingTypes)iI) * GET_PLAYER(getOwnerINLINE()).getExtraBuildingHealth((BuildingTypes)iI);
+		iChange = getNumActiveBuilding((BuildingTypes)iI) * (GET_PLAYER(getOwnerINLINE()).getExtraBuildingHealth((BuildingTypes)iI) + getBuildingChangeTotal((BuildingTypes)iI, BUILDINGCHANGE_EFFECT_HEALTH, 0) + getBuildingPopulationHealth((BuildingTypes)iI));
 
 		if (iChange > 0)
 		{
@@ -8405,6 +8549,12 @@ int CvCity::getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eB
 					iCommerce += (kBuilding.getWorldWonderCommerceChange(eIndex) * getNumWorldWonders() + kBuilding.getGlobalWorldWonderCommerceChange(eIndex) * GET_PLAYER(getOwnerINLINE()).getNumWorldWonders()) * getNumActiveBuilding(eBuilding);
 				}
 
+				// Tech changes (added by this mod)
+				iCommerce += getBuildingChangeTotal(eBuilding, BUILDINGCHANGE_EFFECT_COMMERCE, eIndex) * getNumActiveBuilding(eBuilding);
+
+				// GlobalBuildingExtraCommerces of the owner's buildings (added by this mod)
+				iCommerce += GET_PLAYER(getOwnerINLINE()).getBuildingClassExtraCommerce((BuildingClassTypes)kBuilding.getBuildingClassType(), eIndex) * getNumActiveBuilding(eBuilding);
+
 				if (GC.getBuildingInfo(eBuilding).getReligionType() != NO_RELIGION)
 				{
 					if (GC.getBuildingInfo(eBuilding).getReligionType() == GET_PLAYER(getOwnerINLINE()).getStateReligion())
@@ -8773,6 +8923,8 @@ void CvCity::updateCorporationBonus()
 			{
 				processBonus((BonusTypes)iI, -1);
 			}
+
+			updateBuildingChangesForBonus((BonusTypes)iI);	// added by this mod
 		}
 	}			
 }
@@ -9296,6 +9448,8 @@ void CvCity::changeNoBonusCount(BonusTypes eIndex, int iChange)
 			processBonus(eIndex, 1);
 		}
 
+		updateBuildingChangesForBonus(eIndex);	// added by this mod
+
 		updateCorporation();
 
 		AI_setAssignWorkDirty(true);
@@ -9368,6 +9522,8 @@ void CvCity::changeNumBonuses(BonusTypes eIndex, int iChange)
 			{
 				processBonus(eIndex, -1);
 			}
+
+			updateBuildingChangesForBonus(eIndex);	// added by this mod
 		}
 
 		if (isCorporationBonus(eIndex))
@@ -10071,19 +10227,38 @@ bool CvCity::hasPrereqRawVicinityBonuses(BuildingTypes eBuilding) const
 	return false;
 }
 
-// PrereqVicinityBonuses of the building: a plot of this team in the city radius has one of the resources developed. Those
-// are the tech and improvement conditions of CvPlot::updatePlotGroupBonus, without the connection to a trade network.
+// PrereqVicinityBonuses of the building: one of the resources is developed in the city radius
 bool CvCity::hasPrereqVicinityBonuses(BuildingTypes eBuilding) const
 {
 	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
-	CvPlot* pLoopPlot;
-	BonusTypes eBonus;
 	int iI;
-	int iJ;
 
 	if (kBuilding.getNumPrereqVicinityBonuses() == 0)
 	{
 		return true;
+	}
+
+	for (iI = 0; iI < kBuilding.getNumPrereqVicinityBonuses(); iI++)
+	{
+		if (hasVicinityBonus((BonusTypes)kBuilding.getPrereqVicinityBonus(iI)))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// A plot of this team in the city radius has the resource developed (added by this mod). Those are the tech and improvement
+// conditions of CvPlot::updatePlotGroupBonus, without the connection to a trade network.
+bool CvCity::hasVicinityBonus(BonusTypes eBonus) const
+{
+	CvPlot* pLoopPlot;
+	int iI;
+
+	if (!GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getBonusInfo(eBonus).getTechCityTrade())))
+	{
+		return false;
 	}
 
 	for (iI = 0; iI < getNumCityPlots(); iI++)
@@ -10092,23 +10267,12 @@ bool CvCity::hasPrereqVicinityBonuses(BuildingTypes eBuilding) const
 
 		if ((pLoopPlot != NULL) && (pLoopPlot->getTeam() == getTeam()))
 		{
-			eBonus = pLoopPlot->getNonObsoleteBonusType(getTeam());
-
-			if (eBonus != NO_BONUS)
+			if (pLoopPlot->getNonObsoleteBonusType(getTeam()) == eBonus)
 			{
-				for (iJ = 0; iJ < kBuilding.getNumPrereqVicinityBonuses(); iJ++)
+				if (pLoopPlot->isCity(true, getTeam()) ||
+					((pLoopPlot->getImprovementType() != NO_IMPROVEMENT) && GC.getImprovementInfo(pLoopPlot->getImprovementType()).isImprovementBonusTrade(eBonus)))
 				{
-					if (eBonus == kBuilding.getPrereqVicinityBonus(iJ))
-					{
-						if (GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getBonusInfo(eBonus).getTechCityTrade())))
-						{
-							if (pLoopPlot->isCity(true, getTeam()) ||
-								((pLoopPlot->getImprovementType() != NO_IMPROVEMENT) && GC.getImprovementInfo(pLoopPlot->getImprovementType()).isImprovementBonusTrade(eBonus)))
-							{
-								return true;
-							}
-						}
-					}
+					return true;
 				}
 			}
 		}
@@ -12539,7 +12703,13 @@ void CvCity::read(FDataStreamBase* pStream)
 	// uiFlag < 2: saved before the world wonder changes of buildings existed (added by this mod)
 	if (uiFlag > 1)
 	{
-		pStream->Read(NUM_YIELD_TYPES, m_aiWorldWonderYield);
+		pStream->Read(NUM_YIELD_TYPES, m_aiDynamicBuildingYield);
+	}
+
+	// uiFlag < 3: saved before the tech changes of buildings existed (added by this mod)
+	if (uiFlag > 2)
+	{
+		pStream->Read(GC.getNumSpecialistInfos(), m_paiBuildingChangeSpecialist);
 	}
 }
 
@@ -12547,7 +12717,7 @@ void CvCity::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=2;	// 1: plot radius, 2: m_aiWorldWonderYield (added by this mod)
+	uint uiFlag=3;	// 1: plot radius, 2: m_aiDynamicBuildingYield, 3: m_paiBuildingChangeSpecialist (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -12764,7 +12934,8 @@ void CvCity::write(FDataStreamBase* pStream)
 		pStream->Write((*it).second);
 	}
 
-	pStream->Write(NUM_YIELD_TYPES, m_aiWorldWonderYield);
+	pStream->Write(NUM_YIELD_TYPES, m_aiDynamicBuildingYield);
+	pStream->Write(GC.getNumSpecialistInfos(), m_paiBuildingChangeSpecialist);
 }
 
 

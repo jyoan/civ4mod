@@ -459,6 +459,7 @@ public:
 	bool isMaxCitiesReached();
 	bool hasBaseTrait(int /*TraitTypes*/ eTrait);
 	int getConditionalTraitCount(int /*TraitTypes*/ eTrait);
+	int getBuildingClassExtraCommerce(int /*BuildingClassTypes*/ eBuildingClass, int /*CommerceTypes*/ eCommerce);
 	void updateConditionalTraits();
 	int getFreeTraitCount(int /*TraitTypes*/ eTrait);
 	void changeFreeTraitCount(int /*TraitTypes*/ eTrait, int iChange);

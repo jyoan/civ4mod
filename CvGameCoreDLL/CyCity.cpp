@@ -1606,6 +1606,11 @@ int CyCity::getBuildingCommerce(int /*CommerceTypes*/ eIndex)
 	return m_pCity ? m_pCity->getBuildingCommerce((CommerceTypes)eIndex) : -1;
 }
 
+int CyCity::getDynamicBuildingYieldByBuilding(int /*YieldTypes*/ eIndex, int /*BuildingTypes*/ iBuilding)
+{
+	return m_pCity ? m_pCity->getDynamicBuildingYieldByBuilding((YieldTypes)eIndex, (BuildingTypes)iBuilding) : 0;
+}
+
 int CyCity::getBuildingCommerceByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding)
 {
 	return m_pCity ? m_pCity->getBuildingCommerceByBuilding((CommerceTypes)eIndex, (BuildingTypes) iBuilding) : -1;

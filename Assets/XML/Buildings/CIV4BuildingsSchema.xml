@@ -455,6 +455,73 @@
 	<ElementType name="PrereqOrCivics" content="eltOnly">
 		<element type="CivicType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="TechType" content="textOnly"/>
+	<ElementType name="TechCommerceChange" content="eltOnly">
+		<element type="TechType"/>
+		<element type="CommerceChanges"/>
+	</ElementType>
+	<ElementType name="TechCommerceChanges" content="eltOnly">
+		<element type="TechCommerceChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="TechYieldChange" content="eltOnly">
+		<element type="TechType"/>
+		<element type="YieldChanges"/>
+	</ElementType>
+	<ElementType name="TechYieldChanges" content="eltOnly">
+		<element type="TechYieldChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="TechHappinessChange" content="eltOnly">
+		<element type="TechType"/>
+		<element type="iHappiness"/>
+	</ElementType>
+	<ElementType name="TechHappinessChanges" content="eltOnly">
+		<element type="TechHappinessChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="TechHealthChange" content="eltOnly">
+		<element type="TechType"/>
+		<element type="iHealth"/>
+	</ElementType>
+	<ElementType name="TechHealthChanges" content="eltOnly">
+		<element type="TechHealthChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="TechSpecialistChange" content="eltOnly">
+		<element type="TechType"/>
+		<element type="SpecialistType"/>
+		<element type="iSpecialistCount"/>
+	</ElementType>
+	<ElementType name="TechSpecialistChanges" content="eltOnly">
+		<element type="TechSpecialistChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="BonusCommerceChange" content="eltOnly">
+		<element type="BonusType"/>
+		<element type="CommerceChanges"/>
+	</ElementType>
+	<ElementType name="BonusCommerceChanges" content="eltOnly">
+		<element type="BonusCommerceChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="BonusYieldChange" content="eltOnly">
+		<element type="BonusType"/>
+		<element type="YieldChanges"/>
+	</ElementType>
+	<ElementType name="BonusYieldChanges" content="eltOnly">
+		<element type="BonusYieldChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="VicinityBonusYieldChange" content="eltOnly">
+		<element type="BonusType"/>
+		<element type="YieldChanges"/>
+	</ElementType>
+	<ElementType name="VicinityBonusYieldChanges" content="eltOnly">
+		<element type="VicinityBonusYieldChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iHappinessPercentPerPopulation" content="textOnly" dt:type="int"/>
+	<ElementType name="iHealthPercentPerPopulation" content="textOnly" dt:type="int"/>
+	<ElementType name="GlobalBuildingExtraCommerce" content="eltOnly">
+		<element type="BuildingClassType"/>
+		<element type="CommerceChanges"/>
+	</ElementType>
+	<ElementType name="GlobalBuildingExtraCommerces" content="eltOnly">
+		<element type="GlobalBuildingExtraCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="iPlotRadius" content="textOnly" dt:type="int"/>
 	<ElementType name="PlotRadiusCultureLevel" content="textOnly"/>
 	<ElementType name="iNewCityPopulation" content="textOnly" dt:type="int"/>
@@ -649,6 +716,17 @@
 		<element type="bNewCityStateReligion" minOccurs="0"/>
 		<element type="iOccupationTimeModifier" minOccurs="0"/>
 		<element type="NewCityCultureLevel" minOccurs="0"/>
+		<element type="TechCommerceChanges" minOccurs="0"/>
+		<element type="TechYieldChanges" minOccurs="0"/>
+		<element type="TechHappinessChanges" minOccurs="0"/>
+		<element type="TechHealthChanges" minOccurs="0"/>
+		<element type="TechSpecialistChanges" minOccurs="0"/>
+		<element type="BonusCommerceChanges" minOccurs="0"/>
+		<element type="BonusYieldChanges" minOccurs="0"/>
+		<element type="VicinityBonusYieldChanges" minOccurs="0"/>
+		<element type="iHappinessPercentPerPopulation" minOccurs="0"/>
+		<element type="iHealthPercentPerPopulation" minOccurs="0"/>
+		<element type="GlobalBuildingExtraCommerces" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="BuildingInfos" content="eltOnly">
 		<element type="BuildingInfo" maxOccurs="*"/>

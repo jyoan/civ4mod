@@ -2155,6 +2155,7 @@ class CvMainInterface:
 
 								for j in range( YieldTypes.NUM_YIELD_TYPES):
 									iYield = gc.getBuildingInfo(i).getYieldChange(j) + pHeadSelectedCity.getNumBuilding(i) * pHeadSelectedCity.getBuildingYieldChange(gc.getBuildingInfo(i).getBuildingClassType(), j)
+									iYield += pHeadSelectedCity.getDynamicBuildingYieldByBuilding(j, i) / pHeadSelectedCity.getNumBuilding(i)	# world wonder and tech changes of buildings (added by this mod)
 
 									if (iYield != 0):
 										if ( bFirst == False ):

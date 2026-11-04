@@ -5559,6 +5559,7 @@ void CvTeam::processTech(TechTypes eTech, int iChange)
 		if (GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
 		{
 			GET_PLAYER((PlayerTypes)iI).updateCorporation();
+			GET_PLAYER((PlayerTypes)iI).updateBuildingChangeEffects();	// Tech changes of buildings (added by this mod)
 		}
 	}
 }

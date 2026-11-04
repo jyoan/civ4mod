@@ -8369,6 +8369,16 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 	setYieldChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_PER_WORLD_WONDER").c_str(), L": ", L"", kBuilding.getGlobalWorldWonderYieldChangeArray());
 	setCommerceChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_PER_WORLD_WONDER").c_str(), L": ", L"", kBuilding.getGlobalWorldWonderCommerceChangeArray());
 
+	// Tech changes (added by this mod)
+	buildBuildingChangesString(szBuffer, eBuilding);
+
+	// Changes per population (added by this mod)
+	buildPerPopulationString(szBuffer, kBuilding.getHappinessPercentPerPopulation(), HAPPY_CHAR, UNHAPPY_CHAR);
+	buildPerPopulationString(szBuffer, kBuilding.getHealthPercentPerPopulation(), HEALTHY_CHAR, UNHEALTHY_CHAR);
+
+	// GlobalBuildingExtraCommerces (added by this mod)
+	buildGlobalBuildingExtraCommercesString(szBuffer, eBuilding);
+
 	// iPlotRadius (added by this mod)
 	if (kBuilding.getPlotRadius() > 0)
 	{
@@ -9228,6 +9238,181 @@ void CvGameTextMgr::buildPrereqCivicsString(CvWStringBuffer& szBuffer, BuildingT
 	if (!bFirst)
 	{
 		szBuffer.append(ENDCOLR);
+	}
+}
+
+// The changes of a building that depend on something its owner has, one group per tech or resource: "With Pottery: +2 gold", "With
+// Mysticism: +2 happy", "With Writing: Scientist slots +1" (added by this mod). Always all of them, like the other effects
+// of the building: the player can see what is still to come.
+void CvGameTextMgr::buildBuildingChangesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding)
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	std::vector<int> aiDone;
+	CvWString szSource;
+	CvWString szTempBuffer;
+	int aiYields[NUM_YIELD_TYPES];
+	int aiCommerces[NUM_COMMERCE_TYPES];
+	int iHappiness;
+	int iHealth;
+	int iI, iJ;
+
+	for (iI = 0; iI < kBuilding.getNumBuildingChanges(); iI++)
+	{
+		const BuildingChange& kFirst = kBuilding.getBuildingChange(iI);
+
+		// The changes are in the order of the XML lists, so the same tech or resource can appear in several places
+		if (std::find(aiDone.begin(), aiDone.end(), kFirst.iSourceType * GC.getNumTechInfos() * GC.getNumBonusInfos() + kFirst.iSource) != aiDone.end())
+		{
+			continue;
+		}
+		aiDone.push_back(kFirst.iSourceType * GC.getNumTechInfos() * GC.getNumBonusInfos() + kFirst.iSource);
+
+		switch (kFirst.iSourceType)
+		{
+		case BUILDINGCHANGE_SOURCE_BONUS:
+			szSource = gDLL->getText("TXT_KEY_BUILDING_CHANGE_BONUS", GC.getBonusInfo((BonusTypes)kFirst.iSource).getTextKeyWide());
+			break;
+		case BUILDINGCHANGE_SOURCE_VICINITY_BONUS:
+			szSource = gDLL->getText("TXT_KEY_BUILDING_CHANGE_VICINITY_BONUS", GC.getBonusInfo((BonusTypes)kFirst.iSource).getTextKeyWide());
+			break;
+		default:
+			szSource = gDLL->getText("TXT_KEY_BUILDING_CHANGE_TECH", GC.getTechInfo((TechTypes)kFirst.iSource).getTextKeyWide());
+			break;
+		}
+
+		for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
+		{
+			aiYields[iJ] = 0;
+		}
+		for (iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)
+		{
+			aiCommerces[iJ] = 0;
+		}
+		iHappiness = 0;
+		iHealth = 0;
+
+		for (iJ = 0; iJ < kBuilding.getNumBuildingChanges(); iJ++)
+		{
+			const BuildingChange& kChange = kBuilding.getBuildingChange(iJ);
+
+			if (kChange.iSourceType == kFirst.iSourceType && kChange.iSource == kFirst.iSource)
+			{
+				switch (kChange.iEffect)
+				{
+				case BUILDINGCHANGE_EFFECT_YIELD:
+					aiYields[kChange.iIndex] += kChange.iChange;
+					break;
+				case BUILDINGCHANGE_EFFECT_COMMERCE:
+					aiCommerces[kChange.iIndex] += kChange.iChange;
+					break;
+				case BUILDINGCHANGE_EFFECT_HAPPINESS:
+					iHappiness += kChange.iChange;
+					break;
+				case BUILDINGCHANGE_EFFECT_HEALTH:
+					iHealth += kChange.iChange;
+					break;
+				}
+			}
+		}
+
+		setYieldChangeHelp(szBuffer, szSource, L": ", L"", aiYields);
+		setCommerceChangeHelp(szBuffer, szSource, L": ", L"", aiCommerces);
+
+		if (iHappiness != 0)
+		{
+			szTempBuffer.Format(L"%s%c%s: +%d%c", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), szSource.GetCString(), abs(iHappiness), gDLL->getSymbolID((iHappiness > 0) ? HAPPY_CHAR : UNHAPPY_CHAR));
+			szBuffer.append(szTempBuffer);
+		}
+
+		if (iHealth != 0)
+		{
+			szTempBuffer.Format(L"%s%c%s: +%d%c", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), szSource.GetCString(), abs(iHealth), gDLL->getSymbolID((iHealth > 0) ? HEALTHY_CHAR : UNHEALTHY_CHAR));
+			szBuffer.append(szTempBuffer);
+		}
+
+		for (iJ = 0; iJ < kBuilding.getNumBuildingChanges(); iJ++)
+		{
+			const BuildingChange& kChange = kBuilding.getBuildingChange(iJ);
+
+			if (kChange.iSourceType == kFirst.iSourceType && kChange.iSource == kFirst.iSource && kChange.iEffect == BUILDINGCHANGE_EFFECT_SPECIALIST)
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_CHANGE_SPECIALIST", szSource.GetCString(), GC.getSpecialistInfo((SpecialistTypes)kChange.iIndex).getTextKeyWide(), kChange.iChange));
+			}
+		}
+	}
+}
+
+// iHappinessPercentPerPopulation / iHealthPercentPerPopulation of buildings: "Per 2 population: +1 happy" (added by this
+// mod). A percent that does not divide 100 stays per 100 population: "Per 100 population: +30 happy".
+void CvGameTextMgr::buildPerPopulationString(CvWStringBuffer& szBuffer, int iPercent, int iGoodSymbol, int iBadSymbol)
+{
+	CvWString szEffect;
+	int iAbsPercent = abs(iPercent);
+
+	if (iAbsPercent == 0)
+	{
+		return;
+	}
+
+	bool bDivides = (100 % iAbsPercent == 0);
+	szEffect.Format(L"+%d%c", bDivides ? 1 : iAbsPercent, gDLL->getSymbolID((iPercent > 0) ? iGoodSymbol : iBadSymbol));
+
+	szBuffer.append(NEWLINE);
+	szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_PER_POPULATION", bDivides ? (100 / iAbsPercent) : 100, szEffect.GetCString()));
+}
+
+// GlobalBuildingExtraCommerces of buildings: "All Libraries: +1 research" (added by this mod). The building names are those of
+// the active player's civilization and link to the building pages.
+void CvGameTextMgr::buildGlobalBuildingExtraCommercesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding)
+{
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	PlayerTypes eActivePlayer = GC.getGameINLINE().getActivePlayer();
+	std::vector<int> aiDone;
+	int aiCommerces[NUM_COMMERCE_TYPES];
+	BuildingTypes eLoopBuilding;
+	int iI, iJ;
+
+	for (iI = 0; iI < kBuilding.getNumGlobalBuildingExtraCommerces(); iI++)
+	{
+		int iClass = kBuilding.getGlobalBuildingExtraCommerce(iI).iSource;
+
+		if (std::find(aiDone.begin(), aiDone.end(), iClass) != aiDone.end())
+		{
+			continue;
+		}
+		aiDone.push_back(iClass);
+
+		if (eActivePlayer != NO_PLAYER)
+		{
+			eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(GET_PLAYER(eActivePlayer).getCivilizationType()).getCivilizationBuildings(iClass);
+		}
+		else
+		{
+			eLoopBuilding = (BuildingTypes)GC.getBuildingClassInfo((BuildingClassTypes)iClass).getDefaultBuildingIndex();
+		}
+
+		if (eLoopBuilding == NO_BUILDING)
+		{
+			continue;
+		}
+
+		for (iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)
+		{
+			aiCommerces[iJ] = 0;
+		}
+
+		for (iJ = 0; iJ < kBuilding.getNumGlobalBuildingExtraCommerces(); iJ++)
+		{
+			const BuildingChange& kExtra = kBuilding.getGlobalBuildingExtraCommerce(iJ);
+
+			if (kExtra.iSource == iClass)
+			{
+				aiCommerces[kExtra.iIndex] += kExtra.iChange;
+			}
+		}
+
+		setCommerceChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_GLOBAL_EXTRA_COMMERCE", GC.getBuildingInfo(eLoopBuilding).getTextKeyWide()), L": ", L"", aiCommerces);
 	}
 }
 
@@ -13294,7 +13479,7 @@ void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity&
 			iBuildings += (GC.getBuildingInfo((BuildingTypes)iI).getYieldChange(eYieldType) + city.getBuildingYieldChange((BuildingClassTypes)GC.getBuildingInfo((BuildingTypes)iI).getBuildingClassType(), eYieldType)) * city.getNumActiveBuilding((BuildingTypes)iI);
 		}
 	}
-	iBuildings += city.getWorldWonderYield(eYieldType);
+	iBuildings += city.getDynamicBuildingYield(eYieldType);
 
 	iTradeRoutes = city.getTradeYield(eYieldType);
 	iCorporations = city.getCorporationYield(eYieldType);

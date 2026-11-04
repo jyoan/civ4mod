@@ -225,6 +225,9 @@ public:
 	int getMaxCities() const;											// Exposed to Python
 	int getNumWorldWonders() const;									// Exposed to Python: in all the cities (added by this mod)
 	void updateWorldWonderEffects();									// added by this mod
+	void updateBuildingChangeEffects();									// added by this mod
+	int getBuildingClassExtraCommerce(BuildingClassTypes eBuildingClass, CommerceTypes eCommerce) const;	// added by this mod
+	void changeBuildingClassExtraCommerce(BuildingClassTypes eBuildingClass, CommerceTypes eCommerce, int iChange);	// added by this mod
 	bool isNoPillageInBorders() const;								// Exposed to Python
 	int getGoldInterest() const;									// Exposed to Python: gold of this turn from the traits
 	bool isForbiddenCivic(CivicTypes eCivic) const;					// Exposed to Python: ForbiddenCivics of the traits
@@ -1242,6 +1245,7 @@ protected:
 	int* m_paiBonusImport;
 	int* m_paiImprovementCount;
 	int* m_paiFreeTraitCount;				// traits given during the game (added by this mod)
+	int* m_paiBuildingClassExtraCommerce;	// GlobalBuildingExtraCommerces of the buildings the player has, per building class and commerce (added by this mod)
 	int* m_paiConditionalTraitCount;		// the part of m_paiFreeTraitCount given by ConditionalFreeTraits (added by this mod)
 	int* m_paiFreeBuildingCount;
 	int* m_paiExtraBuildingHappiness;

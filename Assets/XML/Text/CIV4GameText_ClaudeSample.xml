@@ -1803,4 +1803,94 @@
 		<Spanish>Test Building (Civic Prerequisites)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#31038;&#20250;&#21046;&#24230;&#12398;&#21069;&#25552;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_CHANGE_TECH</Tag>
+		<English>With [LINK=literal]%s1_Tech[\LINK]</English>
+		<French>With [LINK=literal]%s1_Tech[\LINK]</French>
+		<German>With [LINK=literal]%s1_Tech[\LINK]</German>
+		<Italian>With [LINK=literal]%s1_Tech[\LINK]</Italian>
+		<Spanish>With [LINK=literal]%s1_Tech[\LINK]</Spanish>
+		<Japanese>&#25216;&#34899;&#12300;[LINK=literal]%s1_Tech[\LINK]&#12301;&#12391;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_CHANGE_SPECIALIST</Tag>
+		<English>[ICON_BULLET]%s1_Source: [LINK=literal]%s2_Specialist[\LINK] slots %D3_Count</English>
+		<French>[ICON_BULLET]%s1_Source: [LINK=literal]%s2_Specialist[\LINK] slots %D3_Count</French>
+		<German>[ICON_BULLET]%s1_Source: [LINK=literal]%s2_Specialist[\LINK] slots %D3_Count</German>
+		<Italian>[ICON_BULLET]%s1_Source: [LINK=literal]%s2_Specialist[\LINK] slots %D3_Count</Italian>
+		<Spanish>[ICON_BULLET]%s1_Source: [LINK=literal]%s2_Specialist[\LINK] slots %D3_Count</Spanish>
+		<Japanese>[ICON_BULLET]%s1_Source: [LINK=literal]%s2_Specialist[\LINK]&#12398;&#26528;%D3_Count</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_GROWTH</Tag>
+		<English>Test Building (Growth)</English>
+		<French>Test Building (Growth)</French>
+		<German>Test Building (Growth)</German>
+		<Italian>Test Building (Growth)</Italian>
+		<Spanish>Test Building (Growth)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#25104;&#38263;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_CHANGE_BONUS</Tag>
+		<English>With [LINK=literal]%s1_Bonus[\LINK]</English>
+		<French>With [LINK=literal]%s1_Bonus[\LINK]</French>
+		<German>With [LINK=literal]%s1_Bonus[\LINK]</German>
+		<Italian>With [LINK=literal]%s1_Bonus[\LINK]</Italian>
+		<Spanish>With [LINK=literal]%s1_Bonus[\LINK]</Spanish>
+		<Japanese>&#36039;&#28304;&#12300;[LINK=literal]%s1_Bonus[\LINK]&#12301;&#12391;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_CHANGE_VICINITY_BONUS</Tag>
+		<English>With [LINK=literal]%s1_Bonus[\LINK] developed in the city radius</English>
+		<French>With [LINK=literal]%s1_Bonus[\LINK] developed in the city radius</French>
+		<German>With [LINK=literal]%s1_Bonus[\LINK] developed in the city radius</German>
+		<Italian>With [LINK=literal]%s1_Bonus[\LINK] developed in the city radius</Italian>
+		<Spanish>With [LINK=literal]%s1_Bonus[\LINK] developed in the city radius</Spanish>
+		<Japanese>&#37117;&#24066;&#22287;&#12395;&#38283;&#30330;&#28168;&#12415;&#12398;&#36039;&#28304;&#12300;[LINK=literal]%s1_Bonus[\LINK]&#12301;&#12391;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_GROWTH_BONUS</Tag>
+		<English>Test Building (Growth by Resources)</English>
+		<French>Test Building (Growth by Resources)</French>
+		<German>Test Building (Growth by Resources)</German>
+		<Italian>Test Building (Growth by Resources)</Italian>
+		<Spanish>Test Building (Growth by Resources)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#36039;&#28304;&#12391;&#25104;&#38263;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PER_POPULATION</Tag>
+		<English>[ICON_BULLET]Per %d1_Pop population: %s2_Effect</English>
+		<French>[ICON_BULLET]Per %d1_Pop population: %s2_Effect</French>
+		<German>[ICON_BULLET]Per %d1_Pop population: %s2_Effect</German>
+		<Italian>[ICON_BULLET]Per %d1_Pop population: %s2_Effect</Italian>
+		<Spanish>[ICON_BULLET]Per %d1_Pop population: %s2_Effect</Spanish>
+		<Japanese>[ICON_BULLET]&#20154;&#21475;%d1_Pop&#12395;&#12388;&#12365;: %s2_Effect</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_GROWTH_POP</Tag>
+		<English>Test Building (Growth by Population)</English>
+		<French>Test Building (Growth by Population)</French>
+		<German>Test Building (Growth by Population)</German>
+		<Italian>Test Building (Growth by Population)</Italian>
+		<Spanish>Test Building (Growth by Population)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#20154;&#21475;&#12391;&#25104;&#38263;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_GLOBAL_EXTRA_COMMERCE</Tag>
+		<English>[LINK=literal]%s1_Building[\LINK] in all cities</English>
+		<French>[LINK=literal]%s1_Building[\LINK] in all cities</French>
+		<German>[LINK=literal]%s1_Building[\LINK] in all cities</German>
+		<Italian>[LINK=literal]%s1_Building[\LINK] in all cities</Italian>
+		<Spanish>[LINK=literal]%s1_Building[\LINK] in all cities</Spanish>
+		<Japanese>&#20840;&#37117;&#24066;&#12398;[LINK=literal]%s1_Building[\LINK]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_GROWTH_GLOBAL</Tag>
+		<English>Test Building (Global Commerce)</English>
+		<French>Test Building (Global Commerce)</French>
+		<German>Test Building (Global Commerce)</German>
+		<Italian>Test Building (Global Commerce)</Italian>
+		<Spanish>Test Building (Global Commerce)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#20840;&#37117;&#24066;&#12398;&#21830;&#26989;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>
