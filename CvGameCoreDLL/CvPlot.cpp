@@ -2751,6 +2751,17 @@ int CvPlot::movementCost(const CvUnit* pUnit, const CvPlot* pFromPlot) const
 		}
 	}
 
+	// RIVER_CROSSING_MOVE_COST (GlobalDefinesAlt.xml, added by this mod): extra moves for a land unit to cross a river, at
+	// most all its moves. Not for the units that ignore river penalties (isRiver: Amphibious) or terrain costs. Roads with
+	// Bridge Building are below, so they still avoid this.
+	if (GC.getRIVER_CROSSING_MOVE_COST() > 0 && pUnit->getDomainType() == DOMAIN_LAND && !(pUnit->isRiver()) && !(pUnit->ignoreTerrainCost()))
+	{
+		if (pFromPlot->isRiverCrossing(directionXY(pFromPlot, this)))
+		{
+			iRegularCost = std::min(iRegularCost + (GC.getRIVER_CROSSING_MOVE_COST() * GC.getMOVE_DENOMINATOR()), (pUnit->baseMoves() * GC.getMOVE_DENOMINATOR()));
+		}
+	}
+
 	// The routes of the plots, or the features that count as routes (getUnitRouteType, added by this mod)
 	RouteTypes eFromRoute = pFromPlot->getUnitRouteType(pUnit);
 	RouteTypes eToRoute = getUnitRouteType(pUnit);
@@ -5907,6 +5918,26 @@ int CvPlot::calculateTotalBestNatureYield(TeamTypes eTeam) const
 }
 
 
+// The adjacent plots that are peaks (added by this mod)
+int CvPlot::getNumAdjacentPeaks() const
+{
+	CvPlot* pAdjacentPlot;
+	int iCount = 0;
+	int iI;
+
+	for (iI = 0; iI < NUM_DIRECTION_TYPES; iI++)
+	{
+		pAdjacentPlot = plotDirection(getX_INLINE(), getY_INLINE(), ((DirectionTypes)iI));
+
+		if (pAdjacentPlot != NULL && pAdjacentPlot->isPeak())
+		{
+			iCount++;
+		}
+	}
+
+	return iCount;
+}
+
 int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield, PlayerTypes ePlayer, bool bOptimal) const
 {
 	PROFILE_FUNC();
@@ -5926,6 +5957,12 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 	if (isHills())
 	{
 		iYield += GC.getImprovementInfo(eImprovement).getHillsYieldChange(eYield);
+	}
+
+	// AdjacentPeakYieldChanges (added by this mod)
+	if (GC.getImprovementInfo(eImprovement).getAdjacentPeakYieldChange(eYield) != 0)
+	{
+		iYield += GC.getImprovementInfo(eImprovement).getAdjacentPeakYieldChange(eYield) * getNumAdjacentPeaks();
 	}
 
 	if ((bOptimal) ? true : isIrrigationAvailable())
@@ -6171,6 +6208,11 @@ int CvPlot::calculateTraitYieldChange(YieldTypes eYield, PlayerTypes ePlayer) co
 	if (isRiver() && !isImpassable())
 	{
 		iYield += kPlayer.getTraitRiverPlotYieldChange(eYield);
+	}
+
+	if (isLake())
+	{
+		iYield += kPlayer.getTraitLakePlotYieldChange(eYield);
 	}
 
 	// BonusYieldChanges: a bonus the owner can see (its tech reveals it)

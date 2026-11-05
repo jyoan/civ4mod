@@ -354,6 +354,9 @@
 	<ElementType name="TechYieldChanges" content="eltOnly">
 		<element type="TechYieldChange" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="AdjacentPeakYieldChanges" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="RiverSideYieldChange" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -424,6 +427,7 @@
 		<element type="RiverSideYieldChange" minOccurs="0"/>
 		<element type="HillsYieldChange" minOccurs="0"/>
 		<element type="IrrigatedYieldChange" minOccurs="0"/>
+		<element type="AdjacentPeakYieldChanges" minOccurs="0"/>
 		<element type="bActsAsCity"/>
 		<element type="bHillsMakesValid"/>
 		<element type="bFreshWaterMakesValid"/>

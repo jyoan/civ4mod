@@ -6375,6 +6375,22 @@ int CvPlayer::getTraitRiverPlotYieldChange(YieldTypes eYield) const
 	return iChange;
 }
 
+int CvPlayer::getTraitLakePlotYieldChange(YieldTypes eYield) const
+{
+	int iChange = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iChange += GC.getTraitInfo((TraitTypes)iI).getLakePlotYieldChange(eYield);
+		}
+	}
+
+	return iChange;
+}
+
 // CITY_PLOTS_DEFAULT_RADIUS and the iCityRadiusChange of the traits whose CityRadiusCultureLevel the city has
 int CvPlayer::getCityRadius(CultureLevelTypes eCultureLevel) const
 {

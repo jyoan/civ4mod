@@ -3242,6 +3242,8 @@ public:
 	int* getPrereqNatureYieldArray();			
 	int getYieldChange(int i) const;				// Exposed to Python
 	int* getYieldChangeArray();			
+	int getAdjacentPeakYieldChange(int i) const;			// Exposed to Python: per adjacent peak (added by this mod)
+	int* getAdjacentPeakYieldChangeArray();
 	int getRiverSideYieldChange(int i) const;				// Exposed to Python
 	int* getRiverSideYieldChangeArray();			
 	int getHillsYieldChange(int i) const;				// Exposed to Python
@@ -3319,6 +3321,7 @@ protected:
 	int* m_piPrereqNatureYield;
 	int* m_piYieldChange;
 	int* m_piRiverSideYieldChange;
+	int* m_piAdjacentPeakYieldChange;
 	int* m_piHillsYieldChange;
 	int* m_piIrrigatedChange;
 
@@ -4615,6 +4618,8 @@ public:
 	int getImprovementYieldChanges(int iImprovement, int iYield) const;				// Exposed to Python
 	int getRiverPlotYieldChange(int i) const;				// Exposed to Python
 	int* getRiverPlotYieldChangeArray() const;
+	int getLakePlotYieldChange(int i) const;				// Exposed to Python
+	int* getLakePlotYieldChangeArray() const;
 
 	int isFreePromotion(int i) const;				// Exposed to Python
 	bool isMaintainFeatures(int i) const;			// Exposed to Python
@@ -4715,6 +4720,7 @@ protected:
 	std::vector<CvString> m_aszImprovementYieldChangeTypes;		// read() keeps the types as strings until readPass3(),
 	std::vector< std::vector<int> > m_aaiImprovementYieldChangeValues;		// because improvements are loaded after traits
 	int* m_paiRiverPlotYieldChange;
+	int* m_paiLakePlotYieldChange;
 
 	bool* m_pabFreePromotion;
 	bool* m_pabMaintainFeatures;

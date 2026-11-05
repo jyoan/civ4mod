@@ -54,3 +54,4 @@
 - 2026-11-04: 建物の成長の第 3 段階（`iHappinessPercentPerPopulation`・`iHealthPercentPerPopulation`。人口の変化での増減、切り捨て、説明文、セーブと読み込み）をゲーム内で確認
 - 2026-11-04: 建物の成長の第 4 段階（`GlobalBuildingExtraCommerces`。全都市への効果、複数持ったときの足し算、陳腐化、説明文、セーブと読み込み）をゲーム内で確認
 - 2026-11-05: 昇進の `ImpassablePlotPassages`（山岳・氷河への移動、陸上ユニットの氷河と船の山岳、ターン開始時のダメージと死亡、グループ、氷河からの攻撃、昇進のないユニットからの攻撃、説明文、セーブと読み込み）をゲーム内で確認
+- 2026-11-05: 志向の `LakePlotYieldChanges`、施設の `AdjacentPeakYieldChanges`（検証用施設（棚田））、ゲームルールの `RIVER_CROSSING_MOVE_COST`（1 にして確認。コミットは 0）をゲーム内で確認

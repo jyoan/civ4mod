@@ -695,6 +695,7 @@ public:
 	DllExport void setDefineSTRING( const char * szName, const char * szValue );
 
 	int getMOVE_DENOMINATOR();
+	int getRIVER_CROSSING_MOVE_COST();		// added by this mod
 	int getNUM_UNIT_PREREQ_OR_BONUSES();
 	int getNUM_BUILDING_PREREQ_OR_BONUSES();
 	int getFOOD_CONSUMPTION_PER_POPULATION();
@@ -1119,6 +1120,7 @@ protected:
 	FVariableSystem* m_VarSystem;
 
 	int m_iMOVE_DENOMINATOR;
+	int m_iRIVER_CROSSING_MOVE_COST;
 	int m_iMaxCityPlotRadius;
 	int m_iNUM_UNIT_PREREQ_OR_BONUSES;
 	int m_iNUM_BUILDING_PREREQ_OR_BONUSES;

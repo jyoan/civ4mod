@@ -3749,6 +3749,13 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", GC.getTraitInfo(eTrait).getRiverPlotYieldChangeArray(), false, false);
 		}
 
+		// LakePlotYieldChanges: "Lake Tiles: +1 production" (added by this mod)
+		if (GC.getTraitInfo(eTrait).getLakePlotYieldChangeArray() != NULL)
+		{
+			szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_LAKE_PLOTS").c_str());
+			setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", GC.getTraitInfo(eTrait).getLakePlotYieldChangeArray(), false, false);
+		}
+
 		// MaintainFeatures: "Improvements keep: Forest, Jungle"
 		bool bFirstFeature = true;
 		for (iI = 0; iI < GC.getNumFeatureInfos(); ++iI)
@@ -12026,6 +12033,7 @@ void CvGameTextMgr::setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTyp
 		setYieldChangeHelp(szBuffer, L"", L"", gDLL->getText("TXT_KEY_MISC_WITH_IRRIGATION").c_str(), info.getIrrigatedYieldChangeArray());
 		setYieldChangeHelp(szBuffer, L"", L"", gDLL->getText("TXT_KEY_MISC_ON_HILLS").c_str(), info.getHillsYieldChangeArray());
 		setYieldChangeHelp(szBuffer, L"", L"", gDLL->getText("TXT_KEY_MISC_ALONG_RIVER").c_str(), info.getRiverSideYieldChangeArray());
+		setYieldChangeHelp(szBuffer, L"", L"", gDLL->getText("TXT_KEY_MISC_PER_ADJACENT_PEAK").c_str(), info.getAdjacentPeakYieldChangeArray());
 
 		for (int iTech = 0; iTech < GC.getNumTechInfos(); iTech++)
 		{

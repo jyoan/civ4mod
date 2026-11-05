@@ -13720,6 +13720,7 @@ m_iWorldSoundscapeScriptId(0),
 m_piPrereqNatureYield(NULL),
 m_piYieldChange(NULL),
 m_piRiverSideYieldChange(NULL),
+m_piAdjacentPeakYieldChange(NULL),
 m_piHillsYieldChange(NULL),
 m_piIrrigatedChange(NULL),
 m_pbTerrainMakesValid(NULL),
@@ -13744,6 +13745,7 @@ CvImprovementInfo::~CvImprovementInfo()
 	SAFE_DELETE_ARRAY(m_piPrereqNatureYield);
 	SAFE_DELETE_ARRAY(m_piYieldChange);
 	SAFE_DELETE_ARRAY(m_piRiverSideYieldChange);
+	SAFE_DELETE_ARRAY(m_piAdjacentPeakYieldChange);
 	SAFE_DELETE_ARRAY(m_piHillsYieldChange);
 	SAFE_DELETE_ARRAY(m_piIrrigatedChange);
 	SAFE_DELETE_ARRAY(m_pbTerrainMakesValid);
@@ -13964,6 +13966,19 @@ int CvImprovementInfo::getRiverSideYieldChange(int i) const
 int* CvImprovementInfo::getRiverSideYieldChangeArray()
 {
 	return m_piRiverSideYieldChange;
+}
+
+// Yields per adjacent peak (added by this mod, as the terrace farm of Civ5)
+int CvImprovementInfo::getAdjacentPeakYieldChange(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piAdjacentPeakYieldChange ? m_piAdjacentPeakYieldChange[i] : 0;
+}
+
+int* CvImprovementInfo::getAdjacentPeakYieldChangeArray()
+{
+	return m_piAdjacentPeakYieldChange;
 }
 
 int CvImprovementInfo::getHillsYieldChange(int i) const
@@ -14196,13 +14211,28 @@ void CvImprovementInfo::read(FDataStreamBase* stream)
 		m_ppiRouteYieldChanges[i]  = new int[NUM_YIELD_TYPES];
 		stream->Read(NUM_YIELD_TYPES, m_ppiRouteYieldChanges[i]);
 	}
+
+	// uiFlag 0: cache written before AdjacentPeakYieldChanges existed
+	SAFE_DELETE_ARRAY(m_piAdjacentPeakYieldChange);
+	m_piAdjacentPeakYieldChange = new int[NUM_YIELD_TYPES];
+	if (uiFlag > 0)
+	{
+		stream->Read(NUM_YIELD_TYPES, m_piAdjacentPeakYieldChange);
+	}
+	else
+	{
+		for (i = 0; i < NUM_YIELD_TYPES; i++)
+		{
+			m_piAdjacentPeakYieldChange[i] = 0;
+		}
+	}
 }
 
 void CvImprovementInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=0;
+	uint uiFlag=1;	// 1: AdjacentPeakYieldChanges (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAdvancedStartCost);
@@ -14263,6 +14293,8 @@ void CvImprovementInfo::write(FDataStreamBase* stream)
 	{
 		stream->Write(NUM_YIELD_TYPES, m_ppiRouteYieldChanges[i]);
 	}
+
+	stream->Write(NUM_YIELD_TYPES, m_piAdjacentPeakYieldChange);
 }
 bool CvImprovementInfo::read(CvXMLLoadUtility* pXML)
 {
@@ -14308,6 +14340,16 @@ bool CvImprovementInfo::read(CvXMLLoadUtility* pXML)
 	else
 	{
 		pXML->InitList(&m_piRiverSideYieldChange, NUM_YIELD_TYPES);
+	}
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(),"AdjacentPeakYieldChanges"))
+	{
+		pXML->SetYields(&m_piAdjacentPeakYieldChange);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_piAdjacentPeakYieldChange, NUM_YIELD_TYPES);
 	}
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(),"HillsYieldChange"))
@@ -18368,6 +18410,7 @@ m_paiUnitCombatUpgradeDiscount(NULL),
 m_pabUpgradeAnywhereUnitCombat(NULL),
 m_pabUpgradeAnywhereExcludeEnemy(NULL),
 m_paiRiverPlotYieldChange(NULL),
+m_paiLakePlotYieldChange(NULL),
 m_paiTradeYieldModifier(NULL),
 m_paiCommerceChange(NULL),
 m_paiCommerceModifier(NULL),
@@ -18405,6 +18448,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabUpgradeAnywhereUnitCombat);
 	SAFE_DELETE_ARRAY(m_pabUpgradeAnywhereExcludeEnemy);
 	SAFE_DELETE_ARRAY(m_paiRiverPlotYieldChange);
+	SAFE_DELETE_ARRAY(m_paiLakePlotYieldChange);
 	SAFE_DELETE_ARRAY(m_pabFreePromotionUnitCombat);
 	SAFE_DELETE_ARRAY(m_pabFreePromotion);
 	SAFE_DELETE_ARRAY(m_pabMaintainFeatures);
@@ -18976,6 +19020,19 @@ int* CvTraitInfo::getRiverPlotYieldChangeArray() const
 	return m_paiRiverPlotYieldChange;
 }
 
+// Yields of the lake plots in the territory of the player (added by this mod, from the Touhou Epic mod)
+int CvTraitInfo::getLakePlotYieldChange(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiLakePlotYieldChange ? m_paiLakePlotYieldChange[i] : 0;
+}
+
+int* CvTraitInfo::getLakePlotYieldChangeArray() const
+{
+	return m_paiLakePlotYieldChange;
+}
+
 // Reads a list of yield changes such as <TerrainYieldChanges>: each item has the type tag (TerrainType) and
 // the yields tag (Yields). The types are kept as strings, because some (improvements) are loaded after traits.
 static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, const TCHAR* szYieldsTag, std::vector<CvString>& aszTypes, std::vector< std::vector<int> >& aaiYields)
@@ -19404,6 +19461,16 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	else
 	{
 		pXML->InitList(&m_paiRiverPlotYieldChange, NUM_YIELD_TYPES);
+	}
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "LakePlotYieldChanges"))
+	{
+		pXML->SetYields(&m_paiLakePlotYieldChange);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_paiLakePlotYieldChange, NUM_YIELD_TYPES);
 	}
 
 	return true;

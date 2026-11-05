@@ -489,6 +489,9 @@
 	<ElementType name="RiverPlotYieldChanges" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="LakePlotYieldChanges" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="BonusType" content="textOnly"/>
 	<ElementType name="BonusYieldChange" content="eltOnly">
 		<element type="BonusType"/>
@@ -569,6 +572,7 @@
 		<element type="FeatureYieldChanges" minOccurs="0"/>
 		<element type="ImprovementYieldChanges" minOccurs="0"/>
 		<element type="RiverPlotYieldChanges" minOccurs="0"/>
+		<element type="LakePlotYieldChanges" minOccurs="0"/>
 		<element type="BonusYieldChanges" minOccurs="0"/>
 		<element type="FreePromotions"/>
 		<element type="FreePromotionUnitCombats"/>

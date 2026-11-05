@@ -15,4 +15,10 @@
 		<DefineName>CAMERA_CITY_ZOOM_IN_DISTANCE_RADIUS_3</DefineName>
 		<fDefineFloatVal>4500</fDefineFloatVal>
 	</Define>
+	<!-- Added by this mod: extra moves for a land unit to cross a river (0: as BtS). A unit never pays more than all its moves,
+		so a large value ends the move. Units with Amphibious (bRiver) and roads with Bridge Building do not pay. -->
+	<Define>
+		<DefineName>RIVER_CROSSING_MOVE_COST</DefineName>
+		<iDefineIntVal>0</iDefineIntVal>
+	</Define>
 </Civ4Defines>

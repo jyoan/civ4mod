@@ -894,6 +894,33 @@
 		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#12399;&#20182;&#22269;&#12398;&#12518;&#12491;&#12483;&#12488;&#12364;&#30053;&#22890;&#12391;&#12365;&#12394;&#12356;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LAKE_PLOTS</Tag>
+		<English>Lake Tiles</English>
+		<French>Lake Tiles</French>
+		<German>Lake Tiles</German>
+		<Italian>Lake Tiles</Italian>
+		<Spanish>Lake Tiles</Spanish>
+		<Japanese>&#28246;&#12473;&#12463;&#12456;&#12450;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_PER_ADJACENT_PEAK</Tag>
+		<English>[SPACE]per adjacent Peak</English>
+		<French>[SPACE]per adjacent Peak</French>
+		<German>[SPACE]per adjacent Peak</German>
+		<Italian>[SPACE]per adjacent Peak</Italian>
+		<Spanish>[SPACE]per adjacent Peak</Spanish>
+		<Japanese>[SPACE](&#38563;&#25509;&#12377;&#12427;&#23665;&#23731;1&#12388;&#12395;&#12388;&#12365;)</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_TERRACE</Tag>
+		<English>Test Improvement (Terrace)</English>
+		<French>Test Improvement (Terrace)</French>
+		<German>Test Improvement (Terrace)</German>
+		<Italian>Test Improvement (Terrace)</Italian>
+		<Spanish>Test Improvement (Terrace)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#26842;&#30000;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_GOLD_INTEREST</Tag>
 		<English>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn</English>
 		<French>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn</French>
@@ -1388,7 +1415,7 @@
 		<Spanish>[ICON_BULLET]%D1_Bonus%% Strength in own territory</Spanish>
 		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#25126;&#38360;&#21147;%D1_Bonus%%</Japanese>
 	</TEXT>
-	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST) -->
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
 		<English>Test data for checking the mod's features.</English>

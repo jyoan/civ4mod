@@ -140,6 +140,7 @@ m_aeTurnRightDirection(NULL),
 m_Profiler(NULL),
 m_VarSystem(NULL),
 m_iMOVE_DENOMINATOR(0),
+m_iRIVER_CROSSING_MOVE_COST(0),
 m_iMaxCityPlotRadius(CITY_PLOTS_DEFAULT_RADIUS),
 m_iNUM_UNIT_PREREQ_OR_BONUSES(0),
 m_iNUM_BUILDING_PREREQ_OR_BONUSES(0),
@@ -2607,6 +2608,7 @@ FVariableSystem* CvGlobals::getDefinesVarSystem()
 void CvGlobals::cacheGlobals()
 {
 	m_iMOVE_DENOMINATOR = getDefineINT("MOVE_DENOMINATOR");
+	m_iRIVER_CROSSING_MOVE_COST = getDefineINT("RIVER_CROSSING_MOVE_COST");
 	m_iNUM_UNIT_PREREQ_OR_BONUSES = getDefineINT("NUM_UNIT_PREREQ_OR_BONUSES");
 	m_iNUM_BUILDING_PREREQ_OR_BONUSES = getDefineINT("NUM_BUILDING_PREREQ_OR_BONUSES");
 	m_iFOOD_CONSUMPTION_PER_POPULATION = getDefineINT("FOOD_CONSUMPTION_PER_POPULATION");
@@ -2726,6 +2728,11 @@ void CvGlobals::setDefineSTRING( const char * szName, const char * szValue )
 int CvGlobals::getMOVE_DENOMINATOR()
 {
 	return m_iMOVE_DENOMINATOR;
+}
+
+int CvGlobals::getRIVER_CROSSING_MOVE_COST()
+{
+	return m_iRIVER_CROSSING_MOVE_COST;
 }
 
 int CvGlobals::getNUM_UNIT_PREREQ_OR_BONUSES()

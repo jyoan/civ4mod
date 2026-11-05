@@ -574,6 +574,11 @@
 				<iYield>0</iYield>
 				<iYield>0</iYield>
 			</RiverPlotYieldChanges>
+			<LakePlotYieldChanges>
+				<iYield>0</iYield>
+				<iYield>1</iYield>
+				<iYield>0</iYield>
+			</LakePlotYieldChanges>
 			<BonusYieldChanges>
 				<BonusYieldChange>
 					<BonusType>BONUS_STONE</BonusType>

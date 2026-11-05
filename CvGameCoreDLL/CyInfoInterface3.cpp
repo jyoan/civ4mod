@@ -333,6 +333,7 @@ void CyInfoPythonInterface3()
 		.def("getFeatureYieldChange", &CvTraitInfo::getFeatureYieldChange, "int (int iFeature, int iYield)")
 		.def("getImprovementYieldChanges", &CvTraitInfo::getImprovementYieldChanges, "int (int iImprovement, int iYield)")
 		.def("getRiverPlotYieldChange", &CvTraitInfo::getRiverPlotYieldChange, "int (int i)")
+		.def("getLakePlotYieldChange", &CvTraitInfo::getLakePlotYieldChange, "int (int i)")
 
 		.def("getShortDescription", &CvTraitInfo::getShortDescription, "int (int i)")
 		.def("getExtraYieldThreshold", &CvTraitInfo::getExtraYieldThreshold, "int (int i)")
