@@ -806,10 +806,15 @@
 	<ElementType name="iCombatPromotionStealChance" content="textOnly" dt:type="int"/>
 	<ElementType name="iCombatPercentInBorders" content="textOnly" dt:type="int"/>
 	<ElementType name="iDamagePercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iExtraMoveCost" content="textOnly" dt:type="int"/>
+	<ElementType name="bRemoveFeature" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iRiverCrossingDamagePercent" content="textOnly" dt:type="int"/>
 	<ElementType name="ImpassablePlotPassage" content="eltOnly">
 		<element type="TerrainType" minOccurs="0"/>
 		<element type="FeatureType" minOccurs="0"/>
 		<element type="iDamagePercent"/>
+		<element type="iExtraMoveCost" minOccurs="0"/>
+		<element type="bRemoveFeature" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="ImpassablePlotPassages" content="eltOnly">
 		<element type="ImpassablePlotPassage" minOccurs="0" maxOccurs="*"/>
@@ -942,6 +947,7 @@
 		<element type="iCombatPromotionStealChance" minOccurs="0"/>
 		<element type="iCombatPercentInBorders" minOccurs="0"/>
 		<element type="ImpassablePlotPassages" minOccurs="0"/>
+		<element type="iRiverCrossingDamagePercent" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

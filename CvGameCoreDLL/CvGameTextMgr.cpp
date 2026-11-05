@@ -4962,6 +4962,23 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 		{
 			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE", szPassage.GetCString()));
 		}
+
+		if (GC.getPromotionInfo(ePromotion).getImpassablePlotPassageMoveCost(iI) > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_MOVE_COST", GC.getPromotionInfo(ePromotion).getImpassablePlotPassageMoveCost(iI)));
+		}
+
+		if (GC.getPromotionInfo(ePromotion).isImpassablePlotPassageRemoveFeature(iI))
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_REMOVE"));
+		}
+	}
+
+	// iRiverCrossingDamagePercent (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getRiverCrossingDamagePercent() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_RIVER_CROSSING_DAMAGE", GC.getPromotionInfo(ePromotion).getRiverCrossingDamagePercent()));
 	}
 
 	if (GC.getPromotionInfo(ePromotion).getCombatPercentInBorders() != 0)

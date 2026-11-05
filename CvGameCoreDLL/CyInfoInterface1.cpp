@@ -175,6 +175,9 @@ void CyInfoPythonInterface1()
 		.def("getImpassablePlotPassageTerrain", &CvPromotionInfo::getImpassablePlotPassageTerrain, "int (int i)")
 		.def("getImpassablePlotPassageFeature", &CvPromotionInfo::getImpassablePlotPassageFeature, "int (int i)")
 		.def("getImpassablePlotPassageDamage", &CvPromotionInfo::getImpassablePlotPassageDamage, "int (int i)")
+		.def("getImpassablePlotPassageMoveCost", &CvPromotionInfo::getImpassablePlotPassageMoveCost, "int (int i)")
+		.def("isImpassablePlotPassageRemoveFeature", &CvPromotionInfo::isImpassablePlotPassageRemoveFeature, "bool (int i)")
+		.def("getRiverCrossingDamagePercent", &CvPromotionInfo::getRiverCrossingDamagePercent, "int ()")
 
 		.def("getSound", &CvPromotionInfo::getSound, "string ()")
 

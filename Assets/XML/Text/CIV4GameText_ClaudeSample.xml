@@ -1415,7 +1415,7 @@
 		<Spanish>[ICON_BULLET]%D1_Bonus%% Strength in own territory</Spanish>
 		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#25126;&#38360;&#21147;%D1_Bonus%%</Japanese>
 	</TEXT>
-	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE) -->
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
 		<English>Test data for checking the mod's features.</English>
@@ -1928,6 +1928,42 @@
 		<Italian>[ICON_BULLET]Can enter %s1_Plot</Italian>
 		<Spanish>[ICON_BULLET]Can enter %s1_Plot</Spanish>
 		<Japanese>[ICON_BULLET]&#36890;&#34892;&#12391;&#12365;&#12427;: %s1_Plot</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_MOVE_COST</Tag>
+		<English> (+%d1 [NUM1:move:moves] to enter)</English>
+		<French> (+%d1 [NUM1:move:moves] to enter)</French>
+		<German> (+%d1 [NUM1:move:moves] to enter)</German>
+		<Italian> (+%d1 [NUM1:move:moves] to enter)</Italian>
+		<Spanish> (+%d1 [NUM1:move:moves] to enter)</Spanish>
+		<Japanese>&#65288;&#31227;&#21205;&#12467;&#12473;&#12488;+%d1&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_REMOVE</Tag>
+		<English> (removed when entered)</English>
+		<French> (removed when entered)</French>
+		<German> (removed when entered)</German>
+		<Italian> (removed when entered)</Italian>
+		<Spanish> (removed when entered)</Spanish>
+		<Japanese>&#65288;&#20837;&#12427;&#12392;&#28040;&#12360;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_RIVER_CROSSING_DAMAGE</Tag>
+		<English>[ICON_BULLET]%d1_Percent%% damage each time it crosses a river (does not die)</English>
+		<French>[ICON_BULLET]%d1_Percent%% damage each time it crosses a river (does not die)</French>
+		<German>[ICON_BULLET]%d1_Percent%% damage each time it crosses a river (does not die)</German>
+		<Italian>[ICON_BULLET]%d1_Percent%% damage each time it crosses a river (does not die)</Italian>
+		<Spanish>[ICON_BULLET]%d1_Percent%% damage each time it crosses a river (does not die)</Spanish>
+		<Japanese>[ICON_BULLET]&#24029;&#12434;&#28193;&#12427;&#12383;&#12403;&#12395;&#26368;&#22823;HP&#12398;%d1_Percent%%&#12398;&#12480;&#12513;&#12540;&#12472;&#65288;&#27515;&#12394;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_ICEBREAKER</Tag>
+		<English>Test Promotion (Icebreaker)</English>
+		<French>Test Promotion (Icebreaker)</French>
+		<German>Test Promotion (Icebreaker)</German>
+		<Italian>Test Promotion (Icebreaker)</Italian>
+		<Spanish>Test Promotion (Icebreaker)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#30741;&#27703;&#33337;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_DAMAGE</Tag>

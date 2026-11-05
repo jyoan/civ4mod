@@ -2751,6 +2751,17 @@ int CvPlot::movementCost(const CvUnit* pUnit, const CvPlot* pFromPlot) const
 		}
 	}
 
+	// iExtraMoveCost of ImpassablePlotPassages (added by this mod): at most all the moves of the unit
+	if (isImpassable())
+	{
+		int iPassageMoveCost = pUnit->getImpassablePlotPassageMoveCost(this);
+
+		if (iPassageMoveCost > 0)
+		{
+			iRegularCost = std::min(iRegularCost + (iPassageMoveCost * GC.getMOVE_DENOMINATOR()), (pUnit->baseMoves() * GC.getMOVE_DENOMINATOR()));
+		}
+	}
+
 	// RIVER_CROSSING_MOVE_COST (GlobalDefinesAlt.xml, added by this mod): extra moves for a land unit to cross a river, at
 	// most all its moves. Not for the units that ignore river penalties (isRiver: Amphibious) or terrain costs. Roads with
 	// Bridge Building are below, so they still avoid this.

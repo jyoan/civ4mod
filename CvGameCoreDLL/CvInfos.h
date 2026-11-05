@@ -529,6 +529,9 @@ public:
 	int getImpassablePlotPassageTerrain(int i) const;	// Exposed to Python
 	int getImpassablePlotPassageFeature(int i) const;	// Exposed to Python
 	int getImpassablePlotPassageDamage(int i) const;	// Exposed to Python
+	int getImpassablePlotPassageMoveCost(int i) const;	// Exposed to Python
+	bool isImpassablePlotPassageRemoveFeature(int i) const;	// Exposed to Python
+	int getRiverCrossingDamagePercent() const;		// Exposed to Python
 
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
@@ -613,6 +616,9 @@ protected:
 	std::vector<int> m_aiImpassablePlotPassageTerrain;
 	std::vector<int> m_aiImpassablePlotPassageFeature;
 	std::vector<int> m_aiImpassablePlotPassageDamage;
+	std::vector<int> m_aiImpassablePlotPassageMoveCost;
+	std::vector<int> m_aiImpassablePlotPassageRemoveFeature;	// 0 or 1
+	int m_iRiverCrossingDamagePercent;
 	std::vector<int> m_aiEnslavementUnitClassType;		// EnslavementUnitClasses: the loser's unit class
 	std::vector<int> m_aiEnslavementUnitClassEnslaved;	// and the unit class it becomes (NO_UNITCLASS: not enslaved)
 	bool m_bRemovedByCombat;

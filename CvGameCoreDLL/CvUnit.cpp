@@ -4079,7 +4079,9 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 				}
 			}
 		}
-		else
+		// ImpassablePlotPassages (added by this mod): a passable feature is no way around the terrain below it, an icebreaking
+		// galley stays off the ocean
+		if (pPlot->getFeatureType() == NO_FEATURE || canEnterImpassablePlot(pPlot))
 		{
 			if (m_pUnitInfo->getTerrainImpassable(pPlot->getTerrainType()))
 			{
@@ -4492,6 +4494,27 @@ void CvUnit::move(CvPlot* pPlot, bool bShow)
 	changeMoves(pPlot->movementCost(this, plot()));
 
 	setXY(pPlot->getX_INLINE(), pPlot->getY_INLINE(), true, true, bShow && pPlot->isVisibleToWatchingHuman(), bShow);
+
+	// iRiverCrossingDamagePercent of the promotions (added by this mod). The unit does not die: it is in the middle of a
+	// group move here.
+	if (pOldPlot->isRiverCrossing(directionXY(pOldPlot, pPlot)))
+	{
+		int iRiverDamage = (maxHitPoints() * getRiverCrossingDamagePercent()) / 100;
+
+		iRiverDamage = std::min(iRiverDamage, maxHitPoints() - 1 - getDamage());
+		if (iRiverDamage > 0)
+		{
+			changeDamage(iRiverDamage, NO_PLAYER);
+		}
+	}
+
+	// bRemoveFeature of ImpassablePlotPassages (added by this mod): as an icebreaker. Other units on the feature may have
+	// to leave (land units on the ice).
+	if (isImpassablePlotPassageRemoveFeature(pPlot))
+	{
+		pPlot->setFeatureType(NO_FEATURE);
+		pPlot->verifyUnitValidPlot();
+	}
 
 	//change feature
 	FeatureTypes featureType = pPlot->getFeatureType();
@@ -10214,6 +10237,23 @@ bool CvUnit::ignoreBuildingDefense() const
 }
 
 
+// The passage iPassage of the promotion is for the impassable pPlot. Checked in the order of CvPlot::isImpassable: the peak,
+// the feature, the terrain.
+static bool isImpassablePlotPassageMatch(const CvPromotionInfo& kPromotion, int iPassage, const CvPlot* pPlot, TerrainTypes ePeakTerrain)
+{
+	if (pPlot->isPeak())
+	{
+		return (kPromotion.getImpassablePlotPassageTerrain(iPassage) == ePeakTerrain);
+	}
+
+	if (pPlot->getFeatureType() != NO_FEATURE)
+	{
+		return (kPromotion.getImpassablePlotPassageFeature(iPassage) == pPlot->getFeatureType());
+	}
+
+	return (kPromotion.getImpassablePlotPassageTerrain(iPassage) == pPlot->getTerrainType());
+}
+
 // ImpassablePlotPassages of the unit's promotions (added by this mod): the lowest damage percent of the promotions that let
 // it enter the impassable pPlot, -1 if none does. TERRAIN_PEAK stands for peak plots. Checked in the order of
 // CvPlot::isImpassable: the peak, the feature, the terrain.
@@ -10238,22 +10278,7 @@ int CvUnit::getImpassablePlotPassageDamage(const CvPlot* pPlot) const
 		{
 			for (iJ = 0; iJ < kPromotion.getNumImpassablePlotPassages(); iJ++)
 			{
-				bool bMatch;
-
-				if (pPlot->isPeak())
-				{
-					bMatch = (kPromotion.getImpassablePlotPassageTerrain(iJ) == ePeakTerrain);
-				}
-				else if (pPlot->getFeatureType() != NO_FEATURE)
-				{
-					bMatch = (kPromotion.getImpassablePlotPassageFeature(iJ) == pPlot->getFeatureType());
-				}
-				else
-				{
-					bMatch = (kPromotion.getImpassablePlotPassageTerrain(iJ) == pPlot->getTerrainType());
-				}
-
-				if (bMatch && (iBestDamage == -1 || kPromotion.getImpassablePlotPassageDamage(iJ) < iBestDamage))
+				if (isImpassablePlotPassageMatch(kPromotion, iJ, pPlot, ePeakTerrain) && (iBestDamage == -1 || kPromotion.getImpassablePlotPassageDamage(iJ) < iBestDamage))
 				{
 					iBestDamage = kPromotion.getImpassablePlotPassageDamage(iJ);
 				}
@@ -10262,6 +10287,91 @@ int CvUnit::getImpassablePlotPassageDamage(const CvPlot* pPlot) const
 	}
 
 	return iBestDamage;
+}
+
+// iExtraMoveCost of ImpassablePlotPassages (added by this mod): the lowest of the passages of the plot, 0 if there is none
+int CvUnit::getImpassablePlotPassageMoveCost(const CvPlot* pPlot) const
+{
+	TerrainTypes ePeakTerrain;
+	int iBestCost = -1;
+	int iI, iJ;
+
+	if (!pPlot->isImpassable())
+	{
+		return 0;
+	}
+
+	ePeakTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_PEAK", true);
+
+	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	{
+		CvPromotionInfo& kPromotion = GC.getPromotionInfo((PromotionTypes)iI);
+
+		if (kPromotion.getNumImpassablePlotPassages() > 0 && isHasPromotion((PromotionTypes)iI))
+		{
+			for (iJ = 0; iJ < kPromotion.getNumImpassablePlotPassages(); iJ++)
+			{
+				if (isImpassablePlotPassageMatch(kPromotion, iJ, pPlot, ePeakTerrain) && (iBestCost == -1 || kPromotion.getImpassablePlotPassageMoveCost(iJ) < iBestCost))
+				{
+					iBestCost = kPromotion.getImpassablePlotPassageMoveCost(iJ);
+				}
+			}
+		}
+	}
+
+	return std::max(0, iBestCost);
+}
+
+// bRemoveFeature of ImpassablePlotPassages (added by this mod): a passage of one of the promotions removes the feature. A
+// feature on water is only removed by a ship: a land unit would stand on the water.
+bool CvUnit::isImpassablePlotPassageRemoveFeature(const CvPlot* pPlot) const
+{
+	int iI, iJ;
+
+	if (pPlot->getFeatureType() == NO_FEATURE || pPlot->isPeak() || !pPlot->isImpassable())
+	{
+		return false;
+	}
+
+	if (pPlot->isWater() && getDomainType() != DOMAIN_SEA)
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	{
+		CvPromotionInfo& kPromotion = GC.getPromotionInfo((PromotionTypes)iI);
+
+		if (kPromotion.getNumImpassablePlotPassages() > 0 && isHasPromotion((PromotionTypes)iI))
+		{
+			for (iJ = 0; iJ < kPromotion.getNumImpassablePlotPassages(); iJ++)
+			{
+				if (kPromotion.isImpassablePlotPassageRemoveFeature(iJ) && kPromotion.getImpassablePlotPassageFeature(iJ) == pPlot->getFeatureType())
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+// iRiverCrossingDamagePercent of the promotions, the sum (added by this mod)
+int CvUnit::getRiverCrossingDamagePercent() const
+{
+	int iPercent = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	{
+		if (isHasPromotion((PromotionTypes)iI))
+		{
+			iPercent += GC.getPromotionInfo((PromotionTypes)iI).getRiverCrossingDamagePercent();
+		}
+	}
+
+	return iPercent;
 }
 
 bool CvUnit::canEnterImpassablePlot(const CvPlot* pPlot) const

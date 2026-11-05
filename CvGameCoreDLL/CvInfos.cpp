@@ -1703,6 +1703,7 @@ m_iCombatGoldStealPercent(0),
 m_iCombatGoldStealMax(0),
 m_iCombatPromotionStealChance(0),
 m_iCombatPercentInBorders(0),
+m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
 m_bLeader(false),
@@ -2126,6 +2127,24 @@ int CvPromotionInfo::getImpassablePlotPassageDamage(int i) const
 	return (i > -1 && i < getNumImpassablePlotPassages()) ? m_aiImpassablePlotPassageDamage[i] : 0;
 }
 
+// Extra moves to enter the plot (added by this mod)
+int CvPromotionInfo::getImpassablePlotPassageMoveCost(int i) const
+{
+	return (i > -1 && i < getNumImpassablePlotPassages()) ? m_aiImpassablePlotPassageMoveCost[i] : 0;
+}
+
+// The unit removes the feature when it enters the plot, as an icebreaker (added by this mod)
+bool CvPromotionInfo::isImpassablePlotPassageRemoveFeature(int i) const
+{
+	return (i > -1 && i < getNumImpassablePlotPassages()) ? (m_aiImpassablePlotPassageRemoveFeature[i] != 0) : false;
+}
+
+// Damage (% of the maximum hit points) each time the unit crosses a river (added by this mod)
+int CvPromotionInfo::getRiverCrossingDamagePercent() const
+{
+	return m_iRiverCrossingDamagePercent;
+}
+
 int CvPromotionInfo::getCombatPercentInBorders() const
 {
 	return m_iCombatPercentInBorders;
@@ -2390,6 +2409,8 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	m_aiImpassablePlotPassageTerrain.clear();
 	m_aiImpassablePlotPassageFeature.clear();
 	m_aiImpassablePlotPassageDamage.clear();
+	m_aiImpassablePlotPassageMoveCost.clear();
+	m_aiImpassablePlotPassageRemoveFeature.clear();
 	if (uiFlag > 5)
 	{
 		int iNumPassages;
@@ -2405,7 +2426,28 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 			m_aiImpassablePlotPassageFeature.push_back(iValue);
 			stream->Read(&iValue);
 			m_aiImpassablePlotPassageDamage.push_back(iValue);
+
+			// uiFlag < 7: cache written before iExtraMoveCost and bRemoveFeature existed
+			iValue = 0;
+			if (uiFlag > 6)
+			{
+				stream->Read(&iValue);
+			}
+			m_aiImpassablePlotPassageMoveCost.push_back(iValue);
+			iValue = 0;
+			if (uiFlag > 6)
+			{
+				stream->Read(&iValue);
+			}
+			m_aiImpassablePlotPassageRemoveFeature.push_back(iValue);
 		}
+	}
+
+	// uiFlag < 7: cache written before iRiverCrossingDamagePercent existed
+	m_iRiverCrossingDamagePercent = 0;
+	if (uiFlag > 6)
+	{
+		stream->Read(&m_iRiverCrossingDamagePercent);
 	}
 }
 
@@ -2413,7 +2455,7 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 6;
+	uint uiFlag = 7;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2511,7 +2553,11 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 		stream->Write(m_aiImpassablePlotPassageTerrain[iPassage]);
 		stream->Write(m_aiImpassablePlotPassageFeature[iPassage]);
 		stream->Write(m_aiImpassablePlotPassageDamage[iPassage]);
+		stream->Write(m_aiImpassablePlotPassageMoveCost[iPassage]);
+		stream->Write(m_aiImpassablePlotPassageRemoveFeature[iPassage]);
 	}
+
+	stream->Write(m_iRiverCrossingDamagePercent);
 }
 
 bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
@@ -2622,10 +2668,14 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCombatPromotionStealChance, "iCombatPromotionStealChance");
 	pXML->GetChildXmlValByName(&m_iCombatPercentInBorders, "iCombatPercentInBorders");
 
+	pXML->GetChildXmlValByName(&m_iRiverCrossingDamagePercent, "iRiverCrossingDamagePercent");
+
 	// ImpassablePlotPassages: terrains and features are loaded before promotions
 	m_aiImpassablePlotPassageTerrain.clear();
 	m_aiImpassablePlotPassageFeature.clear();
 	m_aiImpassablePlotPassageDamage.clear();
+	m_aiImpassablePlotPassageMoveCost.clear();
+	m_aiImpassablePlotPassageRemoveFeature.clear();
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ImpassablePlotPassages"))
 	{
 		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ImpassablePlotPassage"))
@@ -2635,18 +2685,24 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 				int iTerrain;
 				int iFeature;
 				int iDamage;
+				int iMoveCost = 0;
+				bool bRemoveFeature = false;
 
 				pXML->GetChildXmlValByName(szTextVal, "TerrainType");
 				iTerrain = pXML->FindInInfoClass(szTextVal);
 				pXML->GetChildXmlValByName(szTextVal, "FeatureType");
 				iFeature = pXML->FindInInfoClass(szTextVal);
 				pXML->GetChildXmlValByName(&iDamage, "iDamagePercent");
+				pXML->GetChildXmlValByName(&iMoveCost, "iExtraMoveCost");
+				pXML->GetChildXmlValByName(&bRemoveFeature, "bRemoveFeature");
 
 				if (iTerrain > -1 || iFeature > -1)
 				{
 					m_aiImpassablePlotPassageTerrain.push_back(iTerrain);
 					m_aiImpassablePlotPassageFeature.push_back(iFeature);
 					m_aiImpassablePlotPassageDamage.push_back(std::max(0, iDamage));
+					m_aiImpassablePlotPassageMoveCost.push_back(std::max(0, iMoveCost));
+					m_aiImpassablePlotPassageRemoveFeature.push_back(bRemoveFeature ? 1 : 0);
 				}
 			}
 			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "ImpassablePlotPassage"));

@@ -402,6 +402,9 @@ public:
 	bool noDefensiveBonus() const;																					// Exposed to Python
 	bool ignoreBuildingDefense() const;																								// Exposed to Python
 	int getImpassablePlotPassageDamage(const CvPlot* pPlot) const;	// added by this mod: -1 if no promotion lets the unit enter the plot
+	int getImpassablePlotPassageMoveCost(const CvPlot* pPlot) const;	// added by this mod: extra moves to enter the plot
+	bool isImpassablePlotPassageRemoveFeature(const CvPlot* pPlot) const;	// added by this mod
+	int getRiverCrossingDamagePercent() const;	// added by this mod
 	bool canEnterImpassablePlot(const CvPlot* pPlot) const;	// added by this mod
 	bool canMoveImpassable() const;																										// Exposed to Python
 	bool canMoveAllTerrain() const;																										// Exposed to Python
