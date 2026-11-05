@@ -7178,11 +7178,38 @@ void CvPlayer::processBuilding(BuildingTypes eBuilding, int iChange, CvArea* pAr
 }
 
 
+// PrereqOrTraits and ReplacedBuild of the builds (added by this mod): the player has a trait of the build, and no build of the
+// player's traits takes its place. A replacing build without traits takes its place for all the players.
+bool CvPlayer::canBuildByTraits(BuildTypes eBuild) const
+{
+	int iI;
+
+	if (!hasPrereqOrTrait(GC.getBuildInfo(eBuild).getPrereqOrTraitsVector()))
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < GC.getNumBuildInfos(); iI++)
+	{
+		if (GC.getBuildInfo((BuildTypes)iI).getReplacedBuild() == eBuild && hasPrereqOrTrait(GC.getBuildInfo((BuildTypes)iI).getPrereqOrTraitsVector()))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 bool CvPlayer::canBuild(const CvPlot* pPlot, BuildTypes eBuild, bool bTestEra, bool bTestVisible) const
 {
 	PROFILE_FUNC();
 
 	if (!(pPlot->canBuild(eBuild, getID(), bTestVisible)))
+	{
+		return false;
+	}
+
+	if (!canBuildByTraits(eBuild))
 	{
 		return false;
 	}
@@ -7253,7 +7280,7 @@ RouteTypes CvPlayer::getBestRoute(CvPlot* pPlot) const
 
 		if (eRoute != NO_ROUTE)
 		{
-			if ((pPlot != NULL) ? ((pPlot->getRouteType() == eRoute) || canBuild(pPlot, ((BuildTypes)iI))) : GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getBuildInfo((BuildTypes)iI).getTechPrereq())))
+			if ((pPlot != NULL) ? ((pPlot->getRouteType() == eRoute) || canBuild(pPlot, ((BuildTypes)iI))) : (canBuildByTraits((BuildTypes)iI) && GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getBuildInfo((BuildTypes)iI).getTechPrereq()))))
 			{
 				iValue = GC.getRouteInfo(eRoute).getValue();
 
@@ -20289,6 +20316,12 @@ int CvPlayer::getEventTriggerWeight(EventTriggerTypes eTrigger) const
 	}
 
 	if (!GC.getGameINLINE().isEventActive(eTrigger))
+	{
+		return 0;
+	}
+
+	// PrereqOrTraits (added by this mod)
+	if (!hasPrereqOrTrait(kTrigger.getPrereqOrTraitsVector()))
 	{
 		return 0;
 	}

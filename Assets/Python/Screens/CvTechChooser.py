@@ -493,7 +493,7 @@ class CvTechChooser:
 					if (gc.getBuildInfo(j).getTechPrereq() == i):
 						bTechFound = 1
 
-				if (bTechFound == 1):
+				if (bTechFound == 1 and gc.getPlayer(self.iCivSelected).canBuildByTraits(j)):
 					szImprovementButton = "Improvement" + str( ( i * 1000 ) + j )
 					screen.addDDSGFCAt( szImprovementButton, szTechRecord, gc.getBuildInfo(j).getButton(), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_HELP_IMPROVEMENT, i, j, False )
 					fX += X_INCREMENT

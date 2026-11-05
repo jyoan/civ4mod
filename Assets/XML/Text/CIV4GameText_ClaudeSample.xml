@@ -1983,4 +1983,76 @@
 		<Spanish>Test Promotion (Impassable Plots)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#36890;&#34892;&#19981;&#21487;&#12479;&#12452;&#12523;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT</Tag>
+		<English>Unique improvement: %s1_Name</English>
+		<French>Unique improvement: %s1_Name</French>
+		<German>Unique improvement: %s1_Name</German>
+		<Italian>Unique improvement: %s1_Name</Italian>
+		<Spanish>Unique improvement: %s1_Name</Spanish>
+		<Japanese>&#22266;&#26377;&#12398;&#26045;&#35373;: %s1_Name</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT_REPLACES</Tag>
+		<English>Unique improvement: %s1_Name (replaces %s2_Old)</English>
+		<French>Unique improvement: %s1_Name (replaces %s2_Old)</French>
+		<German>Unique improvement: %s1_Name (replaces %s2_Old)</German>
+		<Italian>Unique improvement: %s1_Name (replaces %s2_Old)</Italian>
+		<Spanish>Unique improvement: %s1_Name (replaces %s2_Old)</Spanish>
+		<Japanese>&#22266;&#26377;&#12398;&#26045;&#35373;: %s1_Name&#65288;%s2_Old &#12398;&#20195;&#12431;&#12426;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_REPLACES</Tag>
+		<English>Replaces %s1_Old</English>
+		<French>Replaces %s1_Old</French>
+		<German>Replaces %s1_Old</German>
+		<Italian>Replaces %s1_Old</Italian>
+		<Spanish>Replaces %s1_Old</Spanish>
+		<Japanese>%s1_Old &#12398;&#20195;&#12431;&#12426;&#12395;&#20316;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_FARM</Tag>
+		<English>Test Improvement (Strong Farm)</English>
+		<French>Test Improvement (Strong Farm)</French>
+		<German>Test Improvement (Strong Farm)</German>
+		<Italian>Test Improvement (Strong Farm)</Italian>
+		<Spanish>Test Improvement (Strong Farm)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#24375;&#21270;&#36786;&#22580;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_FARM</Tag>
+		<English>Build [LINK=IMPROVEMENT_TEST_FARM]Test Improvement (Strong Farm)[\LINK]</English>
+		<French>Build [LINK=IMPROVEMENT_TEST_FARM]Test Improvement (Strong Farm)[\LINK]</French>
+		<German>Build [LINK=IMPROVEMENT_TEST_FARM]Test Improvement (Strong Farm)[\LINK]</German>
+		<Italian>Build [LINK=IMPROVEMENT_TEST_FARM]Test Improvement (Strong Farm)[\LINK]</Italian>
+		<Spanish>Build [LINK=IMPROVEMENT_TEST_FARM]Test Improvement (Strong Farm)[\LINK]</Spanish>
+		<Japanese>[LINK=IMPROVEMENT_TEST_FARM]&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#24375;&#21270;&#36786;&#22580;&#65289;[\LINK]&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_TERRACE</Tag>
+		<English>Build [LINK=IMPROVEMENT_TEST_TERRACE]Test Improvement (Terrace)[\LINK]</English>
+		<French>Build [LINK=IMPROVEMENT_TEST_TERRACE]Test Improvement (Terrace)[\LINK]</French>
+		<German>Build [LINK=IMPROVEMENT_TEST_TERRACE]Test Improvement (Terrace)[\LINK]</German>
+		<Italian>Build [LINK=IMPROVEMENT_TEST_TERRACE]Test Improvement (Terrace)[\LINK]</Italian>
+		<Spanish>Build [LINK=IMPROVEMENT_TEST_TERRACE]Test Improvement (Terrace)[\LINK]</Spanish>
+		<Japanese>[LINK=IMPROVEMENT_TEST_TERRACE]&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#26842;&#30000;&#65289;[\LINK]&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_EVENT_TRIGGER_TEST_TRAIT</Tag>
+		<English>A test event of the test trait.</English>
+		<French>A test event of the test trait.</French>
+		<German>A test event of the test trait.</German>
+		<Italian>A test event of the test trait.</Italian>
+		<Spanish>A test event of the test trait.</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#12398;&#22266;&#26377;&#12452;&#12505;&#12531;&#12488;&#12391;&#12377;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_EVENT_TEST_TRAIT</Tag>
+		<English>Take the gold.</English>
+		<French>Take the gold.</French>
+		<German>Take the gold.</German>
+		<Italian>Take the gold.</Italian>
+		<Spanish>Take the gold.</Spanish>
+		<Japanese>&#36039;&#37329;&#12434;&#21463;&#12369;&#21462;&#12427;&#12290;</Japanese>
+	</TEXT>
 </Civ4GameText>

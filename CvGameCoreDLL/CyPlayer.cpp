@@ -2012,6 +2012,11 @@ bool CyPlayer::isForbiddenCivic(int /*CivicTypes*/ eCivic)
 	return m_pPlayer ? m_pPlayer->isForbiddenCivic((CivicTypes)eCivic) : false;
 }
 
+bool CyPlayer::canBuildByTraits(int /*BuildTypes*/ eBuild)
+{
+	return m_pPlayer ? m_pPlayer->canBuildByTraits((BuildTypes)eBuild) : false;
+}
+
 bool CyPlayer::isNoPillageInBorders()
 {
 	return m_pPlayer ? m_pPlayer->isNoPillageInBorders() : false;

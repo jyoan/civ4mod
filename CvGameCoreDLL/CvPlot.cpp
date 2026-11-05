@@ -5382,6 +5382,17 @@ void CvPlot::setBonusType(BonusTypes eNewValue)
 }
 
 
+// The plot has the improvement, or one that replaces it (ReplacedImprovement; added by this mod)
+bool CvPlot::isImprovementOrReplacing(ImprovementTypes eImprovement) const
+{
+	if (getImprovementType() == NO_IMPROVEMENT)
+	{
+		return false;
+	}
+
+	return (getImprovementType() == eImprovement || GC.getImprovementInfo(getImprovementType()).getReplacedImprovement() == eImprovement);
+}
+
 ImprovementTypes CvPlot::getImprovementType() const
 {
 	return (ImprovementTypes)m_eImprovementType;
@@ -5958,6 +5969,10 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 	int iYield;
 	int iI;
 
+	// ReplacedImprovement (added by this mod): what civics and traits give the replaced improvement. The numbers of the
+	// improvement itself are not inherited, techs included (TechYieldChanges is on the improvement).
+	ImprovementTypes eReplaced = (ImprovementTypes)GC.getImprovementInfo(eImprovement).getReplacedImprovement();
+
 	iYield = GC.getImprovementInfo(eImprovement).getYieldChange(eYield);
 
 	if (isRiverSide())
@@ -6010,12 +6025,20 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 		for (iI = 0; iI < GC.getNumCivicInfos(); ++iI)
 		{
 			iYield += GC.getCivicInfo((CivicTypes) iI).getImprovementYieldChanges(eImprovement, eYield);
+			if (eReplaced != NO_IMPROVEMENT)
+			{
+				iYield += GC.getCivicInfo((CivicTypes) iI).getImprovementYieldChanges(eReplaced, eYield);
+			}
 		}
 	}
 	else
 	{
 		iYield += GET_PLAYER(ePlayer).getImprovementYieldChange(eImprovement, eYield);
 		iYield += GET_TEAM(GET_PLAYER(ePlayer).getTeam()).getImprovementYieldChange(eImprovement, eYield);
+		if (eReplaced != NO_IMPROVEMENT)
+		{
+			iYield += GET_PLAYER(ePlayer).getImprovementYieldChange(eReplaced, eYield);
+		}
 	}
 
 	if (ePlayer != NO_PLAYER)
@@ -6029,6 +6052,10 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 
 		// Trait ImprovementYieldChanges (added by this mod)
 		iYield += GET_PLAYER(ePlayer).getTraitImprovementYieldChange(eImprovement, eYield);
+		if (eReplaced != NO_IMPROVEMENT)
+		{
+			iYield += GET_PLAYER(ePlayer).getTraitImprovementYieldChange(eReplaced, eYield);
+		}
 	}
 
 	return iYield;
@@ -9457,7 +9484,7 @@ bool CvPlot::canTrigger(EventTriggerTypes eTrigger, PlayerTypes ePlayer) const
 
 		for (int i = 0; i < kTrigger.getNumImprovementsRequired(); ++i)
 		{
-			if (kTrigger.getImprovementRequired(i) == getImprovementType())
+			if (isImprovementOrReplacing((ImprovementTypes)kTrigger.getImprovementRequired(i)))
 			{
 				bFoundValid = true;
 				break;

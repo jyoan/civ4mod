@@ -2995,6 +2995,13 @@ public:
 
 	bool isKill() const;				// Exposed to Python
 
+	// PrereqOrTraits, ReplacedBuild and UnitsFromBuild (added by this mod)
+	int getNumPrereqOrTraits() const;				// Exposed to Python
+	int getPrereqOrTraits(int i) const;				// Exposed to Python
+	const std::vector<int>& getPrereqOrTraitsVector() const;
+	int getReplacedBuild() const;				// Exposed to Python
+	int getUnitsFromBuild() const;				// Exposed to Python
+
 	// Arrays
 
 	int getFeatureTech(int i) const;				// Exposed to Python
@@ -3018,6 +3025,10 @@ protected:
 	int m_iMissionType;
 
 	bool m_bKill;
+
+	int m_iReplacedBuild;
+	int m_iUnitsFromBuild;
+	std::vector<int> m_aiPrereqOrTraits;
 
 	// Arrays
 
@@ -3220,6 +3231,7 @@ public:
 	int getImprovementPillage() const;				// Exposed to Python
 	void setImprovementPillage(int i);
 	int getImprovementUpgrade() const;				// Exposed to Python
+	int getReplacedImprovement() const;				// Exposed to Python: ReplacedImprovement (added by this mod)
 	void setImprovementUpgrade(int i);
 
 	bool isActsAsCity() const;				// Exposed to Python
@@ -3301,6 +3313,7 @@ protected:
 	int m_iPillageGold;
 	int m_iImprovementPillage;
 	int m_iImprovementUpgrade;
+	int m_iReplacedImprovement;
 
 	bool m_bActsAsCity;				
 	bool m_bHillsMakesValid;				
@@ -6398,6 +6411,9 @@ public:
 	int getNumUnitsRequired() const;			// Exposed to Python
 	int getPrereqOrTechs(int i) const;		// Exposed to Python
 	int getNumPrereqOrTechs() const;			// Exposed to Python
+	int getNumPrereqOrTraits() const;			// Exposed to Python: PrereqOrTraits (added by this mod)
+	int getPrereqOrTraits(int i) const;		// Exposed to Python
+	const std::vector<int>& getPrereqOrTraitsVector() const;
 	int getPrereqAndTechs(int i) const;		// Exposed to Python
 	int getNumPrereqAndTechs() const;			// Exposed to Python
 	int getObsoleteTech(int i) const;				// Exposed to Python
@@ -6491,6 +6507,7 @@ private:
 	std::vector<int> m_aiUnitsRequired;
 	std::vector<int> m_aiBuildingsRequired;
 	std::vector<int> m_aiPrereqOrTechs;
+	std::vector<int> m_aiPrereqOrTraits;
 	std::vector<int> m_aiPrereqAndTechs;
 	std::vector<int> m_aiObsoleteTechs;
 	std::vector<int> m_aiEvents;

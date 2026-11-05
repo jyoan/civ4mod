@@ -56,3 +56,4 @@
 - 2026-11-05: 昇進の `ImpassablePlotPassages`（山岳・氷河への移動、陸上ユニットの氷河と船の山岳、ターン開始時のダメージと死亡、グループ、氷河からの攻撃、昇進のないユニットからの攻撃、説明文、セーブと読み込み）をゲーム内で確認
 - 2026-11-05: 志向の `LakePlotYieldChanges`、施設の `AdjacentPeakYieldChanges`（検証用施設（棚田））、ゲームルールの `RIVER_CROSSING_MOVE_COST`（1 にして確認。コミットは 0）をゲーム内で確認
 - 2026-11-05: 昇進の `ImpassablePlotPassage` の `iExtraMoveCost`・`bRemoveFeature`（検証用昇進（砕氷船）。移動コスト、氷河が消える、氷河の上の陸上ユニットの移動、外洋に入れない船は文化圏の外の外洋の氷河に入れない）、`iRiverCrossingDamagePercent`（渡河のダメージ、HP 1 で止まる）をゲーム内で確認
+- 2026-11-05: 作業の `PrereqOrTraits`・`ReplacedBuild`・`UnitsFromBuild`、施設の `ReplacedImprovement`（検証用施設（棚田）・検証用施設（強化農場）。新規と置換、農場の上書き、産出の引き継ぎ、説明文と技術ツリー、志向を後から得たときの切り替え）、イベントの `PrereqOrTraits`（検証用イベント）をゲーム内で確認

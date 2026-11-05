@@ -39,6 +39,31 @@ int shortenID(int iId)
 // For displaying Asserts and error messages
 static char* szErrorMsg;
 
+// PrereqOrTraits and ReplacedBuild of the builds (added by this mod): the help lists the builds of the active player. Without
+// one (the pedia from the main menu) it lists them all.
+static bool isBuildForActivePlayer(BuildTypes eBuild)
+{
+	PlayerTypes ePlayer = GC.getGameINLINE().getActivePlayer();
+
+	return (ePlayer == NO_PLAYER || GET_PLAYER(ePlayer).canBuildByTraits(eBuild));
+}
+
+// What the build makes: the improvement, the route, or the build itself
+static const wchar* getBuildResultDescription(const CvBuildInfo& kBuild)
+{
+	if (kBuild.getImprovement() != NO_IMPROVEMENT)
+	{
+		return GC.getImprovementInfo((ImprovementTypes)kBuild.getImprovement()).getDescription();
+	}
+
+	if (kBuild.getRoute() != NO_ROUTE)
+	{
+		return GC.getRouteInfo((RouteTypes)kBuild.getRoute()).getDescription();
+	}
+
+	return kBuild.getDescription();
+}
+
 //----------------------------------------------------------------------------
 //
 //	FUNCTION:	GetInstance()
@@ -2979,7 +3004,7 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 				{
 					for (iI = 0; iI < GC.getNumBuildInfos(); ++iI)
 					{
-						if (GC.getBuildInfo((BuildTypes) iI).getImprovement() != NO_IMPROVEMENT)
+						if (GC.getBuildInfo((BuildTypes) iI).getImprovement() != NO_IMPROVEMENT && isBuildForActivePlayer((BuildTypes) iI))
 						{
 							CvImprovementInfo& kImprovementInfo = GC.getImprovementInfo((ImprovementTypes) GC.getBuildInfo((BuildTypes) iI).getImprovement());
 							if (kImprovementInfo.isImprovementBonusTrade(eBonus))
@@ -3754,6 +3779,33 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		{
 			szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_LAKE_PLOTS").c_str());
 			setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", GC.getTraitInfo(eTrait).getLakePlotYieldChangeArray(), false, false);
+		}
+
+		// PrereqOrTraits of the builds: "Unique improvement: Terrace", "Unique improvement: Terrace (replaces Farm)" (added by
+		// this mod)
+		for (iI = 0; iI < GC.getNumBuildInfos(); ++iI)
+		{
+			CvBuildInfo& kBuild = GC.getBuildInfo((BuildTypes)iI);
+
+			for (iJ = 0; iJ < kBuild.getNumPrereqOrTraits(); ++iJ)
+			{
+				if (kBuild.getPrereqOrTraits(iJ) == eTrait)
+				{
+					szText.Format(L"<link=literal>%s</link>", getBuildResultDescription(kBuild));
+					if (kBuild.getReplacedBuild() != NO_BUILD)
+					{
+						CvWString szReplaced;
+						szReplaced.Format(L"<link=literal>%s</link>", getBuildResultDescription(GC.getBuildInfo((BuildTypes)kBuild.getReplacedBuild())));
+						szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT_REPLACES", szText.GetCString(), szReplaced.GetCString()).c_str());
+					}
+					else
+					{
+						szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT", szText.GetCString()).c_str());
+					}
+					szHelpString.append(szTempBuffer);
+					break;
+				}
+			}
 		}
 
 		// MaintainFeatures: "Improvements keep: Forest, Jungle"
@@ -6752,7 +6804,7 @@ void CvGameTextMgr::setBasicUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit,
 
 	for (iI = 0; iI < GC.getNumBuildInfos(); ++iI)
 	{
-		if (GC.getUnitInfo(eUnit).getBuilds(iI))
+		if (GC.getUnitInfo(eUnit).getBuilds(iI) && isBuildForActivePlayer((BuildTypes) iI))
 		{
 			iCount++;
 		}
@@ -6769,7 +6821,7 @@ void CvGameTextMgr::setBasicUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit,
 
 		for (iI = 0; iI < GC.getNumBuildInfos(); ++iI)
 		{
-			if (GC.getUnitInfo(eUnit).getBuilds(iI))
+			if (GC.getUnitInfo(eUnit).getBuilds(iI) && isBuildForActivePlayer((BuildTypes) iI))
 			{
 				szTempBuffer.Format(L"%s%s ", NEWLINE, gDLL->getText("TXT_KEY_UNIT_CAN").c_str());
 				setListHelp(szBuffer, szTempBuffer, GC.getBuildInfo((BuildTypes) iI).getDescription(), L", ", bFirst);
@@ -11626,7 +11678,7 @@ void CvGameTextMgr::buildImprovementString(CvWStringBuffer &szBuffer, TechTypes 
 		}
 	}
 
-	if (bTechFound)
+	if (bTechFound && isBuildForActivePlayer((BuildTypes) iImprovement))
 	{
 		if (bList)
 		{
@@ -12070,6 +12122,10 @@ void CvGameTextMgr::setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTyp
 			for (int iCivic = 0; iCivic < GC.getNumCivicInfos(); iCivic++)
 			{
 				int iChange = GC.getCivicInfo((CivicTypes)iCivic).getImprovementYieldChanges(eImprovement, iYield);
+				if (info.getReplacedImprovement() != NO_IMPROVEMENT)
+				{
+					iChange += GC.getCivicInfo((CivicTypes)iCivic).getImprovementYieldChanges(info.getReplacedImprovement(), iYield);
+				}
 				if (0 != iChange)
 				{
 					szTempBuffer.Format( SETCOLR L"%s" ENDCOLR , TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), GC.getCivicInfo((CivicTypes)iCivic).getDescription());
@@ -12078,6 +12134,22 @@ void CvGameTextMgr::setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTyp
 					szBuffer.append(szTempBuffer);
 				}
 			}
+		}
+	}
+
+	// ReplacedImprovement and the PrereqOrTraits of its build (added by this mod)
+	if (info.getReplacedImprovement() != NO_IMPROVEMENT)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_REPLACES", GC.getImprovementInfo((ImprovementTypes)info.getReplacedImprovement()).getTextKeyWide()));
+	}
+
+	for (int iBuild = 0; iBuild < GC.getNumBuildInfos(); iBuild++)
+	{
+		if (GC.getBuildInfo((BuildTypes)iBuild).getImprovement() == eImprovement && GC.getBuildInfo((BuildTypes)iBuild).getNumPrereqOrTraits() > 0)
+		{
+			buildPrereqOrTraitsString(szBuffer, GC.getBuildInfo((BuildTypes)iBuild).getPrereqOrTraitsVector());
+			break;
 		}
 	}
 

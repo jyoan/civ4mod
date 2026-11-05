@@ -10183,7 +10183,7 @@ bool CvCity::hasPrereqOrImprovements(BuildingTypes eBuilding) const
 		{
 			for (iJ = 0; iJ < kBuilding.getNumPrereqOrImprovements(); iJ++)
 			{
-				if (pLoopPlot->getImprovementType() == kBuilding.getPrereqOrImprovement(iJ))
+				if (pLoopPlot->isImprovementOrReplacing((ImprovementTypes)kBuilding.getPrereqOrImprovement(iJ)))
 				{
 					return true;
 				}
@@ -10372,6 +10372,14 @@ int CvCity::getImprovementFreeSpecialists(ImprovementTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < GC.getNumImprovementInfos(), "eIndex expected to be < GC.getNumImprovementInfos()");
+
+	// ReplacedImprovement (added by this mod): also those of the replaced improvement
+	ImprovementTypes eReplaced = (ImprovementTypes)GC.getImprovementInfo(eIndex).getReplacedImprovement();
+	if (eReplaced != NO_IMPROVEMENT)
+	{
+		return m_paiImprovementFreeSpecialists[eIndex] + m_paiImprovementFreeSpecialists[eReplaced];
+	}
+
 	return m_paiImprovementFreeSpecialists[eIndex];
 }
 

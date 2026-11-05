@@ -310,6 +310,7 @@ public:
 	BonusTypes getNonObsoleteBonusType(TeamTypes eTeam = NO_TEAM) const;																	// Exposed to Python
 	void setBonusType(BonusTypes eNewValue);																															// Exposed to Python
 
+	bool isImprovementOrReplacing(ImprovementTypes eImprovement) const;		// ReplacedImprovement (added by this mod)
 	DllExport ImprovementTypes getImprovementType() const;																													// Exposed to Python
 	DllExport void setImprovementType(ImprovementTypes eNewValue);																									// Exposed to Python
 

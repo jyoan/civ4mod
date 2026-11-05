@@ -269,6 +269,10 @@
 		<element type="EventChance" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="bPrereqEventPlot" content="textOnly" dt:type="boolean"/>
+	<ElementType name="TraitType" content="textOnly"/>
+	<ElementType name="PrereqOrTraits" content="eltOnly">
+		<element type="TraitType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="EventTriggerInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="WorldNewsTexts"/>
@@ -339,6 +343,7 @@
 		<element type="PythonCanDoCity"/>
 		<element type="PythonCanDoUnit"/>
 		<element type="PythonCallback"/>
+		<element type="PrereqOrTraits" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="EventTriggerInfos" content="eltOnly">
 		<element type="EventTriggerInfo" minOccurs="0" maxOccurs="*"/>

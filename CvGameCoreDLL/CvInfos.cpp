@@ -6104,6 +6104,22 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->SetVariableListTagPair(&m_pbBuilds, "Builds", sizeof(GC.getBuildInfo((BuildTypes)0)), GC.getNumBuildInfos());
 
+	// ReplacedBuild and UnitsFromBuild of the builds (added by this mod): a unit that can do that build can also do this one.
+	// A build can only name an earlier one, so going up also follows chains.
+	{
+		int iBuild;
+
+		for (iBuild = 0; iBuild < GC.getNumBuildInfos(); iBuild++)
+		{
+			CvBuildInfo& kBuild = GC.getBuildInfo((BuildTypes)iBuild);
+
+			if ((kBuild.getReplacedBuild() != NO_BUILD && m_pbBuilds[kBuild.getReplacedBuild()]) || (kBuild.getUnitsFromBuild() != NO_BUILD && m_pbBuilds[kBuild.getUnitsFromBuild()]))
+			{
+				m_pbBuilds[iBuild] = true;
+			}
+		}
+	}
+
 	pXML->SetVariableListTagPair(&m_piReligionSpreads, "ReligionSpreads", sizeof(GC.getReligionInfo((ReligionTypes)0)), GC.getNumReligionInfos());
 	pXML->SetVariableListTagPair(&m_piCorporationSpreads, "CorporationSpreads", sizeof(GC.getCorporationInfo((CorporationTypes)0)), GC.getNumCorporationInfos());
 
@@ -13205,6 +13221,8 @@ m_iRoute(NO_ROUTE),
 m_iEntityEvent(ENTITY_EVENT_NONE),
 m_iMissionType(NO_MISSION),
 m_bKill(false),
+m_iReplacedBuild(NO_BUILD),
+m_iUnitsFromBuild(NO_BUILD),
 m_paiFeatureTech(NULL),
 m_paiFeatureTime(NULL),
 m_paiFeatureProduction(NULL),
@@ -13272,6 +13290,33 @@ bool CvBuildInfo::isKill() const
 	return m_bKill;
 }
 
+int CvBuildInfo::getNumPrereqOrTraits() const
+{
+	return (int)m_aiPrereqOrTraits.size();
+}
+
+int CvBuildInfo::getPrereqOrTraits(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrTraits(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrTraits()) ? m_aiPrereqOrTraits[i] : -1;
+}
+
+const std::vector<int>& CvBuildInfo::getPrereqOrTraitsVector() const
+{
+	return m_aiPrereqOrTraits;
+}
+
+int CvBuildInfo::getReplacedBuild() const
+{
+	return m_iReplacedBuild;
+}
+
+int CvBuildInfo::getUnitsFromBuild() const
+{
+	return m_iUnitsFromBuild;
+}
+
 // Arrays
 
 int CvBuildInfo::getFeatureTech(int i) const
@@ -13323,6 +13368,13 @@ bool CvBuildInfo::read(CvXMLLoadUtility* pXML)
 	m_iRoute = pXML->FindInInfoClass(szTextVal);
 	pXML->GetChildXmlValByName(szTextVal, "EntityEvent");
 	m_iEntityEvent = pXML->FindInInfoClass(szTextVal);
+
+	// PrereqOrTraits, ReplacedBuild and UnitsFromBuild (added by this mod). A build can only name an earlier one.
+	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
+	pXML->GetChildXmlValByName(szTextVal, "ReplacedBuild");
+	m_iReplacedBuild = pXML->FindInInfoClass(szTextVal);
+	pXML->GetChildXmlValByName(szTextVal, "UnitsFromBuild");
+	m_iUnitsFromBuild = pXML->FindInInfoClass(szTextVal);
 
 	pXML->SetFeatureStruct(&m_paiFeatureTech, &m_paiFeatureTime, &m_paiFeatureProduction, &m_pabFeatureRemove);
 
@@ -13758,6 +13810,7 @@ m_iHappiness(0),
 m_iPillageGold(0),
 m_iImprovementPillage(NO_IMPROVEMENT),
 m_iImprovementUpgrade(NO_IMPROVEMENT),
+m_iReplacedImprovement(NO_IMPROVEMENT),
 m_bActsAsCity(true),				
 m_bHillsMakesValid(false),				
 m_bFreshWaterMakesValid(false),	
@@ -13894,6 +13947,11 @@ int CvImprovementInfo::getImprovementPillage() const
 void CvImprovementInfo::setImprovementPillage(int i)
 {
 	m_iImprovementPillage = i; 
+}
+
+int CvImprovementInfo::getReplacedImprovement() const
+{
+	return m_iReplacedImprovement;
 }
 
 int CvImprovementInfo::getImprovementUpgrade() const			
@@ -14282,13 +14340,20 @@ void CvImprovementInfo::read(FDataStreamBase* stream)
 			m_piAdjacentPeakYieldChange[i] = 0;
 		}
 	}
+
+	// uiFlag < 2: cache written before ReplacedImprovement existed
+	m_iReplacedImprovement = NO_IMPROVEMENT;
+	if (uiFlag > 1)
+	{
+		stream->Read(&m_iReplacedImprovement);
+	}
 }
 
 void CvImprovementInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=1;	// 1: AdjacentPeakYieldChanges (added by this mod)
+	uint uiFlag=2;	// 1: AdjacentPeakYieldChanges, 2: ReplacedImprovement (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAdvancedStartCost);
@@ -14351,6 +14416,7 @@ void CvImprovementInfo::write(FDataStreamBase* stream)
 	}
 
 	stream->Write(NUM_YIELD_TYPES, m_piAdjacentPeakYieldChange);
+	stream->Write(m_iReplacedImprovement);
 }
 bool CvImprovementInfo::read(CvXMLLoadUtility* pXML)
 {
@@ -14585,6 +14651,10 @@ bool CvImprovementInfo::readPass2(CvXMLLoadUtility* pXML)
 
 	pXML->GetChildXmlValByName(szTextVal, "ImprovementUpgrade");
 	m_iImprovementUpgrade = GC.getInfoTypeForString(szTextVal);
+
+	// ReplacedImprovement (added by this mod)
+	pXML->GetChildXmlValByName(szTextVal, "ReplacedImprovement");
+	m_iReplacedImprovement = pXML->FindInInfoClass(szTextVal);
 
 	return true;
 }
@@ -23463,6 +23533,23 @@ int CvEventTriggerInfo::getNumPrereqOrTechs() const
 	return (int)m_aiPrereqOrTechs.size();
 }
 
+int CvEventTriggerInfo::getNumPrereqOrTraits() const
+{
+	return (int)m_aiPrereqOrTraits.size();
+}
+
+int CvEventTriggerInfo::getPrereqOrTraits(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrTraits(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrTraits()) ? m_aiPrereqOrTraits[i] : -1;
+}
+
+const std::vector<int>& CvEventTriggerInfo::getPrereqOrTraitsVector() const
+{
+	return m_aiPrereqOrTraits;
+}
+
 int CvEventTriggerInfo::getPrereqAndTechs(int i) const
 {
 	return m_aiPrereqAndTechs[i];
@@ -23917,13 +24004,23 @@ void CvEventTriggerInfo::read(FDataStreamBase* stream)
 	stream->ReadString(m_szPythonCanDo);
 	stream->ReadString(m_szPythonCanDoCity);
 	stream->ReadString(m_szPythonCanDoUnit);
+
+	// uiFlag 0: cache written before PrereqOrTraits existed
+	if (uiFlag > 0)
+	{
+		readPrereqOrTraits(stream, m_aiPrereqOrTraits);
+	}
+	else
+	{
+		m_aiPrereqOrTraits.clear();
+	}
 }
 
 void CvEventTriggerInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=0;
+	uint uiFlag=1;	// 1: PrereqOrTraits (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iPercentGamesActive);
@@ -24067,6 +24164,7 @@ void CvEventTriggerInfo::write(FDataStreamBase* stream)
 	stream->WriteString(m_szPythonCanDo);
 	stream->WriteString(m_szPythonCanDoCity);
 	stream->WriteString(m_szPythonCanDoUnit);
+	writePrereqOrTraits(stream, m_aiPrereqOrTraits);
 }
 
 bool CvEventTriggerInfo::read(CvXMLLoadUtility* pXML)
@@ -24192,6 +24290,9 @@ bool CvEventTriggerInfo::read(CvXMLLoadUtility* pXML)
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+
+	// PrereqOrTraits (added by this mod)
+	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(),"AndPreReqs"))
 	{
