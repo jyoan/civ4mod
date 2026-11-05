@@ -3433,6 +3433,9 @@ public:
 	int getChar() const;								// Exposed to Python
 	void setChar(int i);								// Exposed to Python
 	int getTechReveal() const;					// Exposed to Python
+	int getNumPrereqOrTraits() const;			// Exposed to Python: PrereqOrTraits (added by this mod)
+	int getPrereqOrTraits(int i) const;			// Exposed to Python
+	const std::vector<int>& getPrereqOrTraitsVector() const;
 	int getTechCityTrade() const;				// Exposed to Python
 	int getTechObsolete() const;				// Exposed to Python
 	int getAITradeModifier() const;			// Exposed to Python
@@ -3491,6 +3494,7 @@ protected:
 	int m_iBonusClassType;
 	int m_iChar;
 	int m_iTechReveal;
+	std::vector<int> m_aiPrereqOrTraits;
 	int m_iTechCityTrade;
 	int m_iTechObsolete;
 	int m_iAITradeModifier;

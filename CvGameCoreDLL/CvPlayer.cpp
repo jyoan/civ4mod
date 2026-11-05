@@ -2296,11 +2296,19 @@ void CvPlayer::changeFreeTraitCount(TraitTypes eTrait, int iChange)
 		}
 	}
 
+	// PrereqOrTraits of the bonuses (added by this mod)
+	if (bOldHasTrait != (hasBaseTrait(eTrait) || (getFreeTraitCount(eTrait) + iChange > 0)))
+	{
+		updateTraitBonusPlots(eTrait, false);
+	}
+
 	m_paiFreeTraitCount[eTrait] += iChange;
 	FAssert(getFreeTraitCount(eTrait) >= 0);
 
 	if (bOldHasTrait != hasTrait(eTrait))
 	{
+		updateTraitBonusPlots(eTrait, true);
+
 		processTrait(eTrait, (hasTrait(eTrait) ? 1 : -1));
 
 		if (bUpdate)
@@ -6651,6 +6659,50 @@ int CvPlayer::getGoldInterest() const
 	}
 
 	return iInterest;
+}
+
+// PrereqOrTraits of the bonuses (added by this mod): the plots with the bonuses of the trait count for the team only while a
+// player of the team has it. bAdd false before the trait changes, true after it
+void CvPlayer::updateTraitBonusPlots(TraitTypes eTrait, bool bAdd)
+{
+	std::vector<int> aiBonuses;
+	int iI, iJ;
+
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		for (iJ = 0; iJ < GC.getBonusInfo((BonusTypes)iI).getNumPrereqOrTraits(); iJ++)
+		{
+			if (GC.getBonusInfo((BonusTypes)iI).getPrereqOrTraits(iJ) == eTrait)
+			{
+				aiBonuses.push_back(iI);
+				break;
+			}
+		}
+	}
+
+	if (aiBonuses.empty())
+	{
+		return;
+	}
+
+	for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
+	{
+		CvPlot* pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
+
+		if (pLoopPlot->getBonusType() != NO_BONUS && std::find(aiBonuses.begin(), aiBonuses.end(), (int)pLoopPlot->getBonusType()) != aiBonuses.end())
+		{
+			if (pLoopPlot->getTeam() == getTeam())
+			{
+				pLoopPlot->updatePlotGroupBonus(bAdd);
+			}
+
+			if (bAdd)
+			{
+				pLoopPlot->updateYield();
+				pLoopPlot->setLayoutDirty(true);
+			}
+		}
+	}
 }
 
 // The active player in the AI observe mode (added by this mod): alive with nothing, and out of the game for everyone else

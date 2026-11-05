@@ -3819,6 +3819,22 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_BUILDING", szUnique.GetCString(), szDefault.GetCString()));
 		}
 
+		// Bonuses that need this trait (PrereqOrTraits): "Unique resource: X" (added by this mod)
+		for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+		{
+			const CvBonusInfo& kBonus = GC.getBonusInfo((BonusTypes)iI);
+			for (int iBonusTrait = 0; iBonusTrait < kBonus.getNumPrereqOrTraits(); iBonusTrait++)
+			{
+				if (kBonus.getPrereqOrTraits(iBonusTrait) == eTrait)
+				{
+					CvWString szBonus;
+					szBonus.Format(L"<link=literal>%s</link>", kBonus.getDescription());
+					szHelpString.append(NEWLINE L"  ");
+					szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_BONUS", szBonus.GetCString()));
+				}
+			}
+		}
+
 		// Civics that need this trait (PrereqOrTraits, ReplacedCivic): "Unique civic: X (instead of Y)" (added by this mod)
 		for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
 		{
@@ -10815,6 +10831,8 @@ void CvGameTextMgr::setBonusHelp(CvWStringBuffer &szBuffer, BonusTypes eBonus, b
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_BONUS_REVEALED_BY", GC.getTechInfo((TechTypes)GC.getBonusInfo(eBonus).getTechReveal()).getTextKeyWide()));
 		}
+
+		buildPrereqOrTraitsString(szBuffer, GC.getBonusInfo(eBonus).getPrereqOrTraitsVector());	// added by this mod
 	}
 
 	ImprovementTypes eImprovement = NO_IMPROVEMENT;

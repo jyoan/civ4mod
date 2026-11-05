@@ -237,6 +237,10 @@
 		<element type="FeatureTerrainBoolean" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="bUseLSystem" content="textOnly" dt:type="boolean"/>
+	<ElementType name="TraitType" content="textOnly"/>
+	<ElementType name="PrereqOrTraits" content="eltOnly">
+		<element type="TraitType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="BonusInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -273,6 +277,7 @@
 		<element type="FeatureBooleans"/>
 		<element type="FeatureTerrainBooleans"/>
 		<element type="bUseLSystem" minOccurs="0"/>
+		<element type="PrereqOrTraits" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="BonusInfos" content="eltOnly">
 		<element type="BonusInfo" maxOccurs="*"/>

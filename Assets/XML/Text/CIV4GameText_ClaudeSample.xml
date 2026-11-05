@@ -2343,4 +2343,22 @@
 		<Spanish>Test Hereditary Rule</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#19990;&#35186;&#32113;&#27835;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_BONUS</Tag>
+		<English>[ICON_BULLET]Unique resource: %s1_Name</English>
+		<French>[ICON_BULLET]Unique resource: %s1_Name</French>
+		<German>[ICON_BULLET]Unique resource: %s1_Name</German>
+		<Italian>[ICON_BULLET]Unique resource: %s1_Name</Italian>
+		<Spanish>[ICON_BULLET]Unique resource: %s1_Name</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#36039;&#28304;: %s1_Name</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_TEST</Tag>
+		<English>Test Resource</English>
+		<French>Test Resource</French>
+		<German>Test Resource</German>
+		<Italian>Test Resource</Italian>
+		<Spanish>Test Resource</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#36039;&#28304;</Japanese>
+	</TEXT>
 </Civ4GameText>

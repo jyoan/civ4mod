@@ -15026,6 +15026,23 @@ int CvBonusInfo::getTechReveal() const
 	return m_iTechReveal; 
 }
 
+// Only teams with a player with one of these traits have the bonus on their plots, and it is only placed on the map for them
+// (added by this mod): see CvPlot::getBonusType() and CvGame::isTraitBonusInGame()
+int CvBonusInfo::getNumPrereqOrTraits() const
+{
+	return (int)m_aiPrereqOrTraits.size();
+}
+
+int CvBonusInfo::getPrereqOrTraits(int i) const
+{
+	return m_aiPrereqOrTraits[i];
+}
+
+const std::vector<int>& CvBonusInfo::getPrereqOrTraitsVector() const
+{
+	return m_aiPrereqOrTraits;
+}
+
 int CvBonusInfo::getTechCityTrade() const
 {
 	return m_iTechCityTrade; 
@@ -15283,13 +15300,23 @@ void CvBonusInfo::read(FDataStreamBase* stream)
 	SAFE_DELETE_ARRAY(m_pbFeatureTerrain);
 	m_pbFeatureTerrain = new bool[GC.getNumTerrainInfos()];
 	stream->Read(GC.getNumTerrainInfos(), m_pbFeatureTerrain);
+
+	// uiFlag 0: cache written before PrereqOrTraits existed
+	if (uiFlag > 0)
+	{
+		readPrereqOrTraits(stream, m_aiPrereqOrTraits);
+	}
+	else
+	{
+		m_aiPrereqOrTraits.clear();
+	}
 }
 
 void CvBonusInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=0;
+	uint uiFlag=1;	// 1: PrereqOrTraits (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBonusClassType);
@@ -15332,6 +15359,7 @@ void CvBonusInfo::write(FDataStreamBase* stream)
 	stream->Write(GC.getNumTerrainInfos(), m_pbTerrain);
 	stream->Write(GC.getNumFeatureInfos(), m_pbFeature);
 	stream->Write(GC.getNumTerrainInfos(), m_pbFeatureTerrain);
+	writePrereqOrTraits(stream, m_aiPrereqOrTraits);
 }
 
 bool CvBonusInfo::read(CvXMLLoadUtility* pXML)
@@ -15347,6 +15375,9 @@ bool CvBonusInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->GetChildXmlValByName( szTextVal, "ArtDefineTag");
 	setArtDefineTag(szTextVal);
+
+	// PrereqOrTraits (added by this mod): the traits are loaded before the bonuses
+	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
 
 	pXML->GetChildXmlValByName( szTextVal, "TechReveal");
 	m_iTechReveal = pXML->FindInInfoClass(szTextVal);

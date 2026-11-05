@@ -688,7 +688,8 @@ void CvMapGenerator::addBonuses()
 		for (int iI = 0; iI < GC.getNumBonusInfos(); iI++)
 		{
 			gDLL->callUpdater();
-			if (GC.getBonusInfo((BonusTypes)iI).getPlacementOrder() == iOrder)
+			// isTraitBonusInGame: bonuses of traits that no one in this game has stay off the map (added by this mod)
+			if (GC.getBonusInfo((BonusTypes)iI).getPlacementOrder() == iOrder && GC.getGameINLINE().isTraitBonusInGame((BonusTypes)iI))
 			{
 				CyArgsList argsList;
 				argsList.add(iI);

@@ -3239,6 +3239,83 @@ TeamTypes CvGame::getActiveTeam() const
 }
 
 
+// A bonus with PrereqOrTraits goes on the map only if a civilization or leader in the game has one of the traits (added by this
+// mod). The map is made before the players are, so this asks the slots; a slot with a random civilization or leader counts
+bool CvGame::isTraitBonusInGame(BonusTypes eBonus) const
+{
+	const CvBonusInfo& kBonus = GC.getBonusInfo(eBonus);
+	int iI, iJ;
+
+	if (kBonus.getNumPrereqOrTraits() == 0)
+	{
+		return true;
+	}
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		SlotStatus eStatus = GC.getInitCore().getSlotStatus((PlayerTypes)iI);
+
+		if (eStatus == SS_TAKEN || eStatus == SS_COMPUTER)
+		{
+			CivilizationTypes eCiv = GC.getInitCore().getCiv((PlayerTypes)iI);
+			LeaderHeadTypes eLeader = GC.getInitCore().getLeader((PlayerTypes)iI);
+
+			if (eCiv == NO_CIVILIZATION || eLeader == NO_LEADER)
+			{
+				return true;
+			}
+
+			for (iJ = 0; iJ < kBonus.getNumPrereqOrTraits(); iJ++)
+			{
+				if (GC.getCivilizationInfo(eCiv).hasTrait((TraitTypes)kBonus.getPrereqOrTraits(iJ)) || GC.getLeaderHeadInfo(eLeader).hasTrait((TraitTypes)kBonus.getPrereqOrTraits(iJ)))
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+
+// Places the bonuses with PrereqOrTraits that are not on the map yet when a player gets one of the traits later: a new
+// player of a split empire or a trait from FreeTraits (added by this mod). Not on the maps of scenarios
+void CvGame::updateTraitBonuses()
+{
+	int iI, iJ;
+
+	if (GC.getInitCore().getWBMapScript())
+	{
+		return;
+	}
+
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		const CvBonusInfo& kBonus = GC.getBonusInfo((BonusTypes)iI);
+
+		if (kBonus.getNumPrereqOrTraits() > 0 && kBonus.getPlacementOrder() >= 0 && GC.getMapINLINE().getNumBonuses((BonusTypes)iI) == 0)
+		{
+			for (iJ = 0; iJ < MAX_CIV_PLAYERS; iJ++)
+			{
+				if (GET_PLAYER((PlayerTypes)iJ).isAlive() && GET_PLAYER((PlayerTypes)iJ).hasPrereqOrTrait(kBonus.getPrereqOrTraitsVector()))
+				{
+					if (kBonus.isOneArea())
+					{
+						CvMapGenerator::GetInstance().addUniqueBonusType((BonusTypes)iI);
+					}
+					else
+					{
+						CvMapGenerator::GetInstance().addNonUniqueBonusType((BonusTypes)iI);
+					}
+					break;
+				}
+			}
+		}
+	}
+}
+
+
 // The unit of the class for the active player, as for the active civilization without an active player (added by this mod)
 int CvGame::getActiveCivilizationUnit(int iUnitClass) const
 {
@@ -5721,6 +5798,8 @@ void CvGame::doTurn()
 	doHeadquarters();
 
 	doDiploVote();
+
+	updateTraitBonuses();	// added by this mod
 
 	gDLL->getInterfaceIFace()->setEndTurnMessage(false);
 	gDLL->getInterfaceIFace()->setHasMovedUnit(false);

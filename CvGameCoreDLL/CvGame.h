@@ -133,6 +133,8 @@ public:
 	DllExport EraTypes getCurrentEra() const;											// Exposed to Python
 
 	DllExport TeamTypes getActiveTeam() const;																		// Exposed to Python
+	bool isTraitBonusInGame(BonusTypes eBonus) const;				// added by this mod: PrereqOrTraits of the bonus
+	void updateTraitBonuses();										// added by this mod
 	int getActiveCivilizationUnit(int iUnitClass) const;			// added by this mod: with UniqueUnits of the traits
 	int getActiveCivilizationBuilding(int iBuildingClass) const;	// added by this mod: with UniqueBuildings of the traits
 	DllExport CivilizationTypes getActiveCivilizationType() const;								// Exposed to Python

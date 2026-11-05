@@ -332,6 +332,8 @@ void CyInfoPythonInterface2()
 
 		.def("getChar", &CvBonusInfo::getChar, "int ()")
 		.def("getTechReveal", &CvBonusInfo::getTechReveal, "int ()")
+		.def("getNumPrereqOrTraits", &CvBonusInfo::getNumPrereqOrTraits, "int ()")
+		.def("getPrereqOrTraits", &CvBonusInfo::getPrereqOrTraits, "int (int i)")
 		.def("getTechCityTrade", &CvBonusInfo::getTechCityTrade, "int ()")
 		.def("getTechObsolete", &CvBonusInfo::getTechObsolete, "int ()")
 		.def("getAITradeModifier", &CvBonusInfo::getAITradeModifier, "int ()")

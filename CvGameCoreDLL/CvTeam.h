@@ -319,6 +319,7 @@ public:
 	void verifySpyUnitsValidPlot();
 
 	void setForceRevealedBonus(BonusTypes eBonus, bool bRevealed);
+	bool hasBonusTraits(BonusTypes eBonus) const;	// PrereqOrTraits of the bonus (added by this mod)
 	bool isForceRevealedBonus(BonusTypes eBonus) const;
 
 	DllExport int countNumHumanGameTurnActive() const;

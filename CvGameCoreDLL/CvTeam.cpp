@@ -5841,6 +5841,30 @@ void CvTeam::setForceRevealedBonus(BonusTypes eBonus, bool bRevealed)
 	}
 }
 
+// A player of this team has one of the traits the bonus needs (added by this mod)
+bool CvTeam::hasBonusTraits(BonusTypes eBonus) const
+{
+	int iI;
+
+	if (GC.getBonusInfo(eBonus).getNumPrereqOrTraits() == 0)
+	{
+		return true;
+	}
+
+	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		if (GET_PLAYER((PlayerTypes)iI).getTeam() == getID() && GET_PLAYER((PlayerTypes)iI).isAlive())
+		{
+			if (GET_PLAYER((PlayerTypes)iI).hasPrereqOrTrait(GC.getBonusInfo(eBonus).getPrereqOrTraitsVector()))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 bool CvTeam::isForceRevealedBonus(BonusTypes eBonus) const
 {
 	std::vector<BonusTypes>::const_iterator it;

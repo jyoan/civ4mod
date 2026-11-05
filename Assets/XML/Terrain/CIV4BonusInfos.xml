@@ -1952,5 +1952,61 @@
 			<FeatureBooleans/>
 			<FeatureTerrainBooleans/>
 		</BonusInfo>
+		<BonusInfo>
+			<Type>BONUS_TEST</Type>
+			<Description>TXT_KEY_BONUS_TEST</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<BonusClassType>BONUSCLASS_GENERAL</BonusClassType>
+			<ArtDefineTag>ART_DEF_BONUS_SILVER</ArtDefineTag>
+			<TechReveal>NONE</TechReveal>
+			<TechCityTrade>NONE</TechCityTrade>
+			<TechObsolete>NONE</TechObsolete>
+			<YieldChanges>
+				<iYieldChange>0</iYieldChange>
+				<iYieldChange>0</iYieldChange>
+				<iYieldChange>1</iYieldChange>
+			</YieldChanges>
+			<iAITradeModifier>0</iAITradeModifier>
+			<iAIObjective>0</iAIObjective>
+			<iHealth>0</iHealth>
+			<iHappiness>1</iHappiness>
+			<iPlacementOrder>7</iPlacementOrder>
+			<iConstAppearance>100</iConstAppearance>
+			<iMinAreaSize>3</iMinAreaSize>
+			<iMinLatitude>0</iMinLatitude>
+			<iMaxLatitude>90</iMaxLatitude>
+			<Rands>
+				<iRandApp1>0</iRandApp1>
+				<iRandApp2>0</iRandApp2>
+				<iRandApp3>0</iRandApp3>
+				<iRandApp4>0</iRandApp4>
+			</Rands>
+			<iPlayer>0</iPlayer>
+			<iTilesPer>16</iTilesPer>
+			<iMinLandPercent>0</iMinLandPercent>
+			<iUnique>0</iUnique>
+			<iGroupRange>0</iGroupRange>
+			<iGroupRand>0</iGroupRand>
+			<bArea>0</bArea>
+			<bHills>0</bHills>
+			<bFlatlands>1</bFlatlands>
+			<bNoRiverSide>0</bNoRiverSide>
+			<bNormalize>0</bNormalize>
+			<TerrainBooleans>
+				<TerrainBoolean>
+					<TerrainType>TERRAIN_GRASS</TerrainType>
+					<bTerrain>1</bTerrain>
+				</TerrainBoolean>
+				<TerrainBoolean>
+					<TerrainType>TERRAIN_PLAINS</TerrainType>
+					<bTerrain>1</bTerrain>
+				</TerrainBoolean>
+			</TerrainBooleans>
+			<FeatureBooleans/>
+			<FeatureTerrainBooleans/>
+			<PrereqOrTraits>
+				<TraitType>TRAIT_TEST</TraitType>
+			</PrereqOrTraits>
+		</BonusInfo>
 	</BonusInfos>
 </Civ4BonusInfos>
