@@ -546,6 +546,28 @@ void CyGame::setAIAutoPlay(int iNewValue)
 		m_pGame->setAIAutoPlay(iNewValue);
 }
 
+bool CyGame::isObserveMode() const
+{
+	return m_pGame ? m_pGame->isObserveMode() : false;
+}
+
+void CyGame::startObserveMode()
+{
+	if (m_pGame)
+		m_pGame->startObserveMode();
+}
+
+bool CyGame::isObserveContinuous() const
+{
+	return m_pGame ? m_pGame->isObserveContinuous() : false;
+}
+
+void CyGame::setObserveContinuous(bool bNewValue)
+{
+	if (m_pGame)
+		m_pGame->setObserveContinuous(bNewValue);
+}
+
 bool CyGame::isScoreDirty() const
 {
 	return m_pGame ? m_pGame->isScoreDirty() : false;

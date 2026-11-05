@@ -624,6 +624,14 @@ class CvMainInterface:
 				#screen.modifyLabel( "EndTurnText", acOutput, CvUtil.FONT_CENTER_JUSTIFY )
 				screen.setEndTurnState( "EndTurnText", acOutput )
 				bShow = True
+			elif (gc.getGame().isObserveMode() and (gc.getGame().isObserveContinuous() or gc.getActivePlayer().isTurnActive())):
+				# AI observe mode: the keys (added by this mod)
+				if (gc.getGame().isObserveContinuous()):
+					acOutput = localText.getText("TXT_KEY_OBSERVE_RUNNING", ())
+				else:
+					acOutput = localText.getText("TXT_KEY_OBSERVE_WAITING", ())
+				screen.setEndTurnState( "EndTurnText", acOutput )
+				bShow = True
 			elif (messageControl.GetFirstBadConnection() != -1):
 				# Waiting on a bad connection to resolve
 				if (messageControl.GetConnState(messageControl.GetFirstBadConnection()) == 1):

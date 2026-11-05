@@ -238,6 +238,12 @@ public:
 	DllExport void setAIAutoPlay(int iNewValue);																// Exposed to Python
 	void changeAIAutoPlay(int iChange);
 
+	// AI observe mode (added by this mod)
+	bool isObserveMode() const;																// Exposed to Python
+	void startObserveMode();																// Exposed to Python
+	bool isObserveContinuous() const;													// Exposed to Python
+	void setObserveContinuous(bool bNewValue);											// Exposed to Python
+
 	DllExport unsigned int getInitialTime();
 	DllExport void setInitialTime(unsigned int uiNewValue);
 
@@ -565,6 +571,8 @@ protected:
 	int m_iInitTech;
 	int m_iInitWonders;
 	int m_iAIAutoPlay;
+	bool m_bObserveMode;
+	bool m_bObserveContinuous;
 
 	unsigned int m_uiInitialTime;
 

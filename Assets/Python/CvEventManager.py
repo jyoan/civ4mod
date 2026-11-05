@@ -23,6 +23,10 @@ import CvTechChooser
 
 gc = CyGlobalContext()
 localText = CyTranslator()
+
+# Popup of the AI observe mode (added by this mod). CvUtil numbers its events from 5000 up
+EVENT_OBSERVE = 5900
+CvUtil.SilentEvents.append(EVENT_OBSERVE)
 PyPlayer = PyHelpers.PyPlayer
 PyInfo = PyHelpers.PyInfo
 
@@ -171,6 +175,7 @@ class CvEventManager:
 			CvUtil.EventWBScriptPopup : ('WBScriptPopup', self.__eventWBScriptPopupApply, self.__eventWBScriptPopupBegin),
 			CvUtil.EventWBStartYearPopup : ('WBStartYearPopup', self.__eventWBStartYearPopupApply, self.__eventWBStartYearPopupBegin),
 			CvUtil.EventShowWonder: ('ShowWonder', self.__eventShowWonderApply, self.__eventShowWonderBegin),
+			EVENT_OBSERVE: ('Observe', self.__eventObserveApply, self.__eventObserveBegin),
 		}	
 #################### EVENT STARTERS ######################
 	def handleEvent(self, argsList):
@@ -215,6 +220,33 @@ class CvEventManager:
 		return 0
 		
 #################### ON EVENTS ######################
+	def observeKey(self, theKey):
+		'AI observe mode keys - returns True if the key was used (added by this mod)'
+		game = gc.getGame()
+		if (game.isGameMultiPlayer()):
+			return False
+		if (game.isObserveMode()):
+			if (theKey == int(InputTypes.KB_SPACE)):
+				game.setObserveContinuous(not game.isObserveContinuous())
+				return True
+		elif (theKey == int(InputTypes.KB_O) and self.bCtrl and self.bShift):
+			self.beginEvent(EVENT_OBSERVE)
+			return True
+		return False
+
+	def __eventObserveBegin(self, argsList):
+		'Asks before starting the AI observe mode: the active player loses everything (added by this mod)'
+		popup = PyPopup.PyPopup(EVENT_OBSERVE, EventContextTypes.EVENTCONTEXT_SELF)
+		popup.setHeaderString(localText.getText("TXT_KEY_OBSERVE_TITLE", ()))
+		popup.setBodyString(localText.getText("TXT_KEY_OBSERVE_CONFIRM", ()))
+		popup.addButton(localText.getText("TXT_KEY_POPUP_YES", ()))
+		popup.addButton(localText.getText("TXT_KEY_POPUP_NO", ()))
+		popup.launch(False)
+
+	def __eventObserveApply(self, playerID, userData, popupReturn):
+		if (popupReturn.getButtonClicked() == 0):
+			gc.getGame().startObserveMode()
+
 	def onKbdEvent(self, argsList):
 		'keypress handler - return 1 if the event was consumed'
 
@@ -231,6 +263,10 @@ class CvEventManager:
 			theKey=int(key)
 			
 			CvCameraControls.g_CameraControls.handleInput( theKey )
+			
+			# AI observe mode (added by this mod)
+			if (self.observeKey(theKey)):
+				return 1
 						
 			if (self.bAllowCheats):
 				# Shift - T (Debug - No MP)
@@ -355,7 +391,9 @@ class CvEventManager:
 	def onBeginGameTurn(self, argsList):
 		'Called at the beginning of the end of each turn'
 		iGameTurn = argsList[0]
-		CvTopCivs.CvTopCivs().turnChecker(iGameTurn)
+		# Not in the AI observe mode, it would interrupt the watching (added by this mod)
+		if (not gc.getGame().isObserveMode()):
+			CvTopCivs.CvTopCivs().turnChecker(iGameTurn)
 
 	def onEndGameTurn(self, argsList):
 		'Called at the end of the end of each turn'

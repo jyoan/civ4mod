@@ -1027,6 +1027,12 @@ bool CvTeam::canDeclareWar(TeamTypes eTeam) const
 		return false;
 	}
 
+	// The player watching in the AI observe mode is out of the game (added by this mod)
+	if (GC.getGameINLINE().isObserveMode() && (eTeam == GC.getGameINLINE().getActiveTeam() || getID() == GC.getGameINLINE().getActiveTeam()))
+	{
+		return false;
+	}
+
 	if (!(isAlive()) || !(GET_TEAM(eTeam).isAlive()))
 	{
 		return false;

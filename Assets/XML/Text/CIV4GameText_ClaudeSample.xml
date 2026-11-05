@@ -2145,4 +2145,40 @@
 		<Spanish>[ICON_BULLET]%D1_Change culture range of all cities</Spanish>
 		<Japanese>[ICON_BULLET]&#20840;&#37117;&#24066;&#12398;&#25991;&#21270;&#22287;&#12398;&#24195;&#12364;&#12426;%D1_Change</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_OBSERVE_TITLE</Tag>
+		<English>AI Observe Mode</English>
+		<French>AI Observe Mode</French>
+		<German>AI Observe Mode</German>
+		<Italian>AI Observe Mode</Italian>
+		<Spanish>AI Observe Mode</Spanish>
+		<Japanese>AI &#35251;&#25126;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_OBSERVE_CONFIRM</Tag>
+		<English>Start watching the AI players? Your civilization will lose all its cities and units, and you cannot go back.</English>
+		<French>Start watching the AI players? Your civilization will lose all its cities and units, and you cannot go back.</French>
+		<German>Start watching the AI players? Your civilization will lose all its cities and units, and you cannot go back.</German>
+		<Italian>Start watching the AI players? Your civilization will lose all its cities and units, and you cannot go back.</Italian>
+		<Spanish>Start watching the AI players? Your civilization will lose all its cities and units, and you cannot go back.</Spanish>
+		<Japanese>AI &#21516;&#22763;&#12398;&#25126;&#12356;&#12398;&#35251;&#25126;&#12434;&#22987;&#12417;&#12414;&#12377;&#12363;&#65311; &#12354;&#12394;&#12383;&#12398;&#25991;&#26126;&#12399;&#37117;&#24066;&#12392;&#12518;&#12491;&#12483;&#12488;&#12434;&#12377;&#12409;&#12390;&#22833;&#12356;&#12289;&#20803;&#12395;&#12399;&#25147;&#12379;&#12414;&#12379;&#12435;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_OBSERVE_WAITING</Tag>
+		<English>AI Observe Mode: Enter plays one turn, Space plays continuously</English>
+		<French>AI Observe Mode: Enter plays one turn, Space plays continuously</French>
+		<German>AI Observe Mode: Enter plays one turn, Space plays continuously</German>
+		<Italian>AI Observe Mode: Enter plays one turn, Space plays continuously</Italian>
+		<Spanish>AI Observe Mode: Enter plays one turn, Space plays continuously</Spanish>
+		<Japanese>AI &#35251;&#25126;&#20013;: Enter &#12391; 1 &#12479;&#12540;&#12531;&#36914;&#12416; / Space &#12391;&#36899;&#32154;&#20877;&#29983;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_OBSERVE_RUNNING</Tag>
+		<English>AI Observe Mode: playing continuously, Space stops</English>
+		<French>AI Observe Mode: playing continuously, Space stops</French>
+		<German>AI Observe Mode: playing continuously, Space stops</German>
+		<Italian>AI Observe Mode: playing continuously, Space stops</Italian>
+		<Spanish>AI Observe Mode: playing continuously, Space stops</Spanish>
+		<Japanese>AI &#35251;&#25126;&#20013;: &#36899;&#32154;&#20877;&#29983;&#20013; / Space &#12391;&#27490;&#12417;&#12427;</Japanese>
+	</TEXT>
 </Civ4GameText>

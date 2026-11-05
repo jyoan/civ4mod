@@ -447,6 +447,8 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	m_iInitTech = 0;
 	m_iInitWonders = 0;
 	m_iAIAutoPlay = 0;
+	m_bObserveMode = false;
+	m_bObserveContinuous = false;
 
 	m_uiInitialTime = 0;
 
@@ -2060,6 +2062,21 @@ void CvGame::update()
 
 	if (!gDLL->GetWorldBuilderMode() || isInAdvancedStart())
 	{
+		// AI observe mode (added by this mod)
+		if (isObserveMode())
+		{
+			// It shows the whole map. The debug mode is not saved, so this also restores it after loading a game
+			if (!m_bDebugMode)
+			{
+				toggleDebugMode();
+			}
+
+			if (isObserveContinuous() && GET_PLAYER(getActivePlayer()).isTurnActive() && !GET_PLAYER(getActivePlayer()).isEndTurn())
+			{
+				GET_PLAYER(getActivePlayer()).setEndTurn(true);
+			}
+		}
+
 		sendPlayerOptions();
 
 		// sample generic event
@@ -3907,6 +3924,71 @@ void CvGame::changeAIAutoPlay(int iChange)
 }
 
 
+// AI observe mode (added by this mod). The active player loses everything but stays alive (CvPlayer::isObserver): the exe
+// takes no mouse input on the map while the active player is dead, as in the AI autoplay of BtS. The turn of the player with
+// nothing left waits for the end turn key by itself. Single player only
+bool CvGame::isObserveMode() const
+{
+	return m_bObserveMode;
+}
+
+
+void CvGame::startObserveMode()
+{
+	if (!isObserveMode() && !isGameMultiPlayer())
+	{
+		CvPlayer& kPlayer = GET_PLAYER(getActivePlayer());
+		CvTeam& kTeam = GET_TEAM(getActiveTeam());
+		int iI;
+
+		m_bObserveMode = true;
+		m_bObserveContinuous = false;
+
+		kPlayer.killAllDeals();
+		kPlayer.killUnits();
+		kPlayer.killCities();
+		kPlayer.clearResearchQueue();
+		kPlayer.setFoundedFirstCity(false);	// no research, so no popup to choose it
+
+		for (iI = 0; iI < MAX_CIV_TEAMS; iI++)
+		{
+			if (iI != getActiveTeam())
+			{
+				if (kTeam.isAtWar((TeamTypes)iI))
+				{
+					kTeam.makePeace((TeamTypes)iI, false);
+				}
+
+				if (kTeam.isVassal((TeamTypes)iI))
+				{
+					kTeam.setVassal((TeamTypes)iI, false, false);
+				}
+
+				if (GET_TEAM((TeamTypes)iI).isVassal(getActiveTeam()))
+				{
+					GET_TEAM((TeamTypes)iI).setVassal(getActiveTeam(), false, false);
+				}
+			}
+		}
+	}
+}
+
+
+bool CvGame::isObserveContinuous() const
+{
+	return m_bObserveContinuous;
+}
+
+
+void CvGame::setObserveContinuous(bool bNewValue)
+{
+	if (isObserveMode())
+	{
+		m_bObserveContinuous = bNewValue;
+	}
+}
+
+
 unsigned int CvGame::getInitialTime()
 {
 	return m_uiInitialTime;
@@ -4350,7 +4432,7 @@ void CvGame::toggleDebugMode()
 
 void CvGame::updateDebugModeCache()
 {
-	if ((gDLL->getChtLvl() > 0) || (gDLL->GetWorldBuilderMode()))
+	if ((gDLL->getChtLvl() > 0) || (gDLL->GetWorldBuilderMode()) || isObserveMode())	// isObserveMode added by this mod
 	{
 		m_bDebugModeCache = m_bDebugMode;
 	}
@@ -4657,6 +4739,8 @@ void CvGame::setWinner(TeamTypes eNewWinner, VictoryTypes eNewVictory)
 				szBuffer = gDLL->getText("TXT_KEY_GAME_WON", GET_TEAM(getWinner()).getName().GetCString(), GC.getVictoryInfo(getVictory()).getTextKeyWide());
 				addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, GET_TEAM(getWinner()).getLeaderID(), szBuffer, -1, -1, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
 			}
+
+			m_bObserveContinuous = false;	// the AI observe mode stops at the victory (added by this mod)
 
 			if ((getAIAutoPlay() > 0) || gDLL->GetAutorun())
 			{
@@ -7029,6 +7113,8 @@ void CvGame::testVictory()
 			{
 				if (!bEndScore)
 				{
+					m_bObserveContinuous = false;	// added by this mod
+
 					if ((getAIAutoPlay() > 0) || gDLL->GetAutorun())
 					{
 						setGameState(GAMESTATE_EXTENDED);
@@ -7734,6 +7820,12 @@ void CvGame::read(FDataStreamBase* pStream)
 	pStream->Read(GC.getNumBuildingInfos(), m_aiShrineReligion);
 	pStream->Read(&m_iNumCultureVictoryCities);
 	pStream->Read(&m_eCultureVictoryCultureLevel);
+
+	// uiFlag < 2: saved before the AI observe mode existed. m_bObserveContinuous is not saved (added by this mod)
+	if (uiFlag > 1)
+	{
+		pStream->Read(&m_bObserveMode);
+	}
 }
 
 
@@ -7741,7 +7833,7 @@ void CvGame::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=1;
+	uint uiFlag=2;	// 2: m_bObserveMode (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iElapsedGameTurns);
@@ -7890,6 +7982,7 @@ void CvGame::write(FDataStreamBase* pStream)
 	pStream->Write(GC.getNumBuildingInfos(), m_aiShrineReligion);
 	pStream->Write(m_iNumCultureVictoryCities);
 	pStream->Write(m_eCultureVictoryCultureLevel);
+	pStream->Write(m_bObserveMode);
 }
 
 void CvGame::writeReplay(FDataStreamBase& stream, PlayerTypes ePlayer)

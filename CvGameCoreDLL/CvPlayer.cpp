@@ -2508,6 +2508,12 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 // Called where CvEventReporter reports the Python events, which happens the same way on every computer.
 void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, PlayerTypes eOldOwner, bool bConquest, bool bTrade)
 {
+	// Not for the player watching in the AI observe mode, who has nothing to act on
+	if (isObserver())
+	{
+		return;
+	}
+
 	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired" };
 	CyPlayer* pyPlayer;
 	CyCity* pyCity;
@@ -3862,6 +3868,12 @@ int CvPlayer::countPotentialForeignTradeCitiesConnected() const
 bool CvPlayer::canContact(PlayerTypes ePlayer) const
 {
 	if (ePlayer == getID())
+	{
+		return false;
+	}
+
+	// added by this mod
+	if (isObserver() || GET_PLAYER(ePlayer).isObserver())
 	{
 		return false;
 	}
@@ -6625,6 +6637,12 @@ int CvPlayer::getGoldInterest() const
 	}
 
 	return iInterest;
+}
+
+// The active player in the AI observe mode (added by this mod): alive with nothing, and out of the game for everyone else
+bool CvPlayer::isObserver() const
+{
+	return (GC.getGameINLINE().isObserveMode() && getID() == GC.getGameINLINE().getActivePlayer());
 }
 
 // iCultureRangeChange of the traits (added by this mod)
@@ -10953,6 +10971,12 @@ void CvPlayer::setAlive(bool bNewValue)
 void CvPlayer::verifyAlive()
 {
 	bool bKill;
+
+	// added by this mod
+	if (isObserver())
+	{
+		return;
+	}
 
 	if (isAlive())
 	{
@@ -19943,6 +19967,12 @@ int CvPlayer::getEventCost(EventTypes eEvent, PlayerTypes eOtherPlayer, bool bRa
 void CvPlayer::doEvents()
 {
 	if (GC.getGameINLINE().isOption(GAMEOPTION_NO_EVENTS))
+	{
+		return;
+	}
+
+	// added by this mod
+	if (isObserver())
 	{
 		return;
 	}

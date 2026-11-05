@@ -140,6 +140,10 @@ public:
 
 	int getAIAutoPlay() const;
 	void setAIAutoPlay(int iNewValue);
+	bool isObserveMode() const;				// added by this mod
+	void startObserveMode();				// added by this mod
+	bool isObserveContinuous() const;		// added by this mod
+	void setObserveContinuous(bool bNewValue);	// added by this mod
 
 	bool isScoreDirty() const;
 	void setScoreDirty(bool bNewValue);

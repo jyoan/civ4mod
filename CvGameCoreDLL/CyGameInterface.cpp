@@ -129,6 +129,10 @@ void CyGamePythonInterface()
 
 		.def("getAIAutoPlay", &CyGame::getAIAutoPlay)
 		.def("setAIAutoPlay", &CyGame::setAIAutoPlay)
+		.def("isObserveMode", &CyGame::isObserveMode, "bool () - AI observe mode (added by this mod)")
+		.def("startObserveMode", &CyGame::startObserveMode, "void () - takes everything from the active player and starts the AI observe mode (added by this mod)")
+		.def("isObserveContinuous", &CyGame::isObserveContinuous, "bool () (added by this mod)")
+		.def("setObserveContinuous", &CyGame::setObserveContinuous, "void (bool bNewValue) (added by this mod)")
 
 		.def("isScoreDirty", &CyGame::isScoreDirty, "bool ()")
 		.def("setScoreDirty", &CyGame::setScoreDirty)
