@@ -2181,4 +2181,31 @@
 		<Spanish>AI Observe Mode: playing continuously, Space stops</Spanish>
 		<Japanese>AI &#35251;&#25126;&#20013;: &#36899;&#32154;&#20877;&#29983;&#20013; / Space &#12391;&#27490;&#12417;&#12427;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_GAME_OPTION_MULTIPLE_PRODUCTION</Tag>
+		<English>Multiple Production</English>
+		<French>Multiple Production</French>
+		<German>Multiple Production</German>
+		<Italian>Multiple Production</Italian>
+		<Spanish>Multiple Production</Spanish>
+		<Japanese>&#12510;&#12523;&#12481;&#12503;&#12523;&#12503;&#12525;&#12480;&#12463;&#12471;&#12519;&#12531;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_GAME_OPTION_MULTIPLE_PRODUCTION_HELP</Tag>
+		<English>When the production of a city is enough to finish more than one item of its queue, it finishes them in the same turn. Wonders, projects and units that use food are not included.</English>
+		<French>When the production of a city is enough to finish more than one item of its queue, it finishes them in the same turn. Wonders, projects and units that use food are not included.</French>
+		<German>When the production of a city is enough to finish more than one item of its queue, it finishes them in the same turn. Wonders, projects and units that use food are not included.</German>
+		<Italian>When the production of a city is enough to finish more than one item of its queue, it finishes them in the same turn. Wonders, projects and units that use food are not included.</Italian>
+		<Spanish>When the production of a city is enough to finish more than one item of its queue, it finishes them in the same turn. Wonders, projects and units that use food are not included.</Spanish>
+		<Japanese>&#29983;&#29987;&#21147;&#12364;&#36275;&#12426;&#12428;&#12400;&#12289;&#12461;&#12517;&#12540;&#12398;&#27425;&#12398;&#38917;&#30446;&#12418;&#21516;&#12376;&#12479;&#12540;&#12531;&#12395;&#23436;&#25104;&#12375;&#12414;&#12377;&#12290;&#36986;&#29987;&#12289;&#12503;&#12525;&#12472;&#12455;&#12463;&#12488;&#12289;&#39135;&#26009;&#12434;&#20351;&#12358;&#12518;&#12491;&#12483;&#12488;&#12399;&#23550;&#35937;&#22806;&#12391;&#12377;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_LOST_PROD_CONVERTED</Tag>
+		<English>%s1_CityName cannot carry over more [ICON_PRODUCTION]. The lost %d2_NumProduction[ICON_PRODUCTION] was converted into %d3_NumGold[ICON_GOLD]!</English>
+		<French>%s1_CityName cannot carry over more [ICON_PRODUCTION]. The lost %d2_NumProduction[ICON_PRODUCTION] was converted into %d3_NumGold[ICON_GOLD]!</French>
+		<German>%s1_CityName cannot carry over more [ICON_PRODUCTION]. The lost %d2_NumProduction[ICON_PRODUCTION] was converted into %d3_NumGold[ICON_GOLD]!</German>
+		<Italian>%s1_CityName cannot carry over more [ICON_PRODUCTION]. The lost %d2_NumProduction[ICON_PRODUCTION] was converted into %d3_NumGold[ICON_GOLD]!</Italian>
+		<Spanish>%s1_CityName cannot carry over more [ICON_PRODUCTION]. The lost %d2_NumProduction[ICON_PRODUCTION] was converted into %d3_NumGold[ICON_GOLD]!</Spanish>
+		<Japanese>%s1_CityName &#12399;&#20313;&#12387;&#12383;[ICON_PRODUCTION]&#12434;&#12371;&#12428;&#20197;&#19978;&#32368;&#12426;&#36234;&#12379;&#12414;&#12379;&#12435;&#12290;&#22833;&#12431;&#12428;&#12383;%d2_NumProduction[ICON_PRODUCTION]&#12399;%d3_NumGold[ICON_GOLD]&#12395;&#22793;&#12431;&#12426;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
 </Civ4GameText>

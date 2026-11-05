@@ -11686,6 +11686,7 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			iOverflow = getUnitProduction(eTrainUnit) - iProductionNeeded;
 			int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
 			int iMaxOverflowForGold = std::max(iProductionNeeded, getProductionDifference(getProductionNeeded(), getProduction(), 0, isFoodProduction(), false));
+			int iLostOverflow = std::max(0, iOverflow - iMaxOverflow);
 			iOverflow = std::min(iMaxOverflow, iOverflow);
 			if (iOverflow > 0)
 			{
@@ -11693,7 +11694,7 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			}
 			setUnitProduction(eTrainUnit, 0);
 
-			int iProductionGold = std::max(0, iOverflow - iMaxOverflowForGold) * GC.getDefineINT("MAXED_UNIT_GOLD_PERCENT") / 100;
+			int iProductionGold = doOverflowGold(iLostOverflow, std::max(0, iOverflow - iMaxOverflowForGold), GC.getDefineINT("MAXED_UNIT_GOLD_PERCENT"));
 			if (iProductionGold > 0)
 			{
 				GET_PLAYER(getOwnerINLINE()).changeGold(iProductionGold);
@@ -11758,6 +11759,7 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			int iOverflow = getBuildingProduction(eConstructBuilding) - iProductionNeeded;
 			int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
 			int iMaxOverflowForGold = std::max(iProductionNeeded, getProductionDifference(getProductionNeeded(), getProduction(), 0, isFoodProduction(), false));
+			int iLostOverflow = std::max(0, iOverflow - iMaxOverflow);
 			iOverflow = std::min(iMaxOverflow, iOverflow);
 			if (iOverflow > 0)
 			{
@@ -11765,7 +11767,7 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			}
 			setBuildingProduction(eConstructBuilding, 0);
 
-			int iProductionGold = std::max(0, iOverflow - iMaxOverflowForGold) * GC.getDefineINT("MAXED_BUILDING_GOLD_PERCENT") / 100;
+			int iProductionGold = doOverflowGold(iLostOverflow, std::max(0, iOverflow - iMaxOverflowForGold), GC.getDefineINT("MAXED_BUILDING_GOLD_PERCENT"));
 			if (iProductionGold > 0)
 			{
 				GET_PLAYER(getOwnerINLINE()).changeGold(iProductionGold);
@@ -11844,6 +11846,7 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			iOverflow = getProjectProduction(eCreateProject) - iProductionNeeded;
 			int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
 			int iMaxOverflowForGold = std::max(iProductionNeeded, getProductionDifference(getProductionNeeded(), getProduction(), 0, isFoodProduction(), false));
+			int iLostOverflow = std::max(0, iOverflow - iMaxOverflow);
 			iOverflow = std::min(iMaxOverflow, iOverflow);
 			if (iOverflow > 0)
 			{
@@ -11851,7 +11854,7 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			}
 			setProjectProduction(eCreateProject, 0);
 
-			int iProductionGold = std::max(0, iOverflow - iMaxOverflowForGold) * GC.getDefineINT("MAXED_PROJECT_GOLD_PERCENT") / 100;
+			int iProductionGold = doOverflowGold(iLostOverflow, std::max(0, iOverflow - iMaxOverflowForGold), GC.getDefineINT("MAXED_PROJECT_GOLD_PERCENT"));
 			if (iProductionGold > 0)
 			{
 				GET_PLAYER(getOwnerINLINE()).changeGold(iProductionGold);
@@ -12342,6 +12345,75 @@ bool CvCity::doCheckProduction()
 }
 
 
+// GAMEOPTION_MULTIPLE_PRODUCTION (added by this mod, with the rules of the Multiple Production mod of denev): the overflow of
+// the item finished this turn also finishes the next items of the queue. Not wonders and projects, to keep them from being
+// prebuilt, and not units that use food, which would stop the growth of the city, unless the first item was one of them
+void CvCity::doMultipleProduction(bool bWasFoodProduction)
+{
+	int iOverflowProduction;
+
+	while (getOverflowProduction() > 0)
+	{
+		if (!isHuman() || isProductionAutomated())
+		{
+			if (!isProduction() || isProductionProcess() || AI_isChooseProductionDirty())
+			{
+				AI_chooseProduction();
+			}
+		}
+
+		if (!isProduction() || isProductionProcess() || isProductionProject())
+		{
+			return;
+		}
+
+		if (isProductionBuilding() && isLimitedWonderClass((BuildingClassTypes)(GC.getBuildingInfo(getProductionBuilding()).getBuildingClassType())))
+		{
+			return;
+		}
+
+		if (isFoodProduction() && !bWasFoodProduction)
+		{
+			return;
+		}
+
+		iOverflowProduction = (getOverflowProduction() * getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier())) / 100;
+
+		if (getProduction() + iOverflowProduction < getProductionNeeded())
+		{
+			return;
+		}
+
+		changeProduction(iOverflowProduction);
+		setOverflowProduction(0);
+		popOrder(0, true, true);
+	}
+}
+
+
+// The gold from the production that cannot be carried over. BtS takes it from iOverflowOverGoldLimit, after the limit, so
+// that it comes to little. GAMEOPTION_MULTIPLE_PRODUCTION takes all that is over the limit and says so (added by this mod)
+int CvCity::doOverflowGold(int iLostOverflow, int iOverflowOverGoldLimit, int iGoldPercent)
+{
+	int iGold;
+
+	if (!GC.getGameINLINE().isOption(GAMEOPTION_MULTIPLE_PRODUCTION))
+	{
+		return ((iOverflowOverGoldLimit * iGoldPercent) / 100);
+	}
+
+	iGold = (iLostOverflow * iGoldPercent) / 100;
+
+	if (iGold > 0)
+	{
+		CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_LOST_PROD_CONVERTED", getNameKey(), iLostOverflow, iGold);
+		gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_MINOR_EVENT);
+	}
+
+	return iGold;
+}
+
+
 void CvCity::doProduction(bool bAllowNoProduction)
 {
 	CyCity* pyCity = new CyCity(this);
@@ -12386,7 +12458,14 @@ void CvCity::doProduction(bool bAllowNoProduction)
 
 		if (getProduction() >= getProductionNeeded())
 		{
+			bool bWasFoodProduction = isFoodProduction();
+
 			popOrder(0, true, true);
+
+			if (GC.getGameINLINE().isOption(GAMEOPTION_MULTIPLE_PRODUCTION))
+			{
+				doMultipleProduction(bWasFoodProduction);
+			}
 		}
 	}
 	else

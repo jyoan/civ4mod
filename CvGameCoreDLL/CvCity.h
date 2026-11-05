@@ -458,6 +458,8 @@ public:
 	void changeMaxFoodKeptPercent(int iChange);
 
 	int getOverflowProduction() const;																		// Exposed to Python
+	void doMultipleProduction(bool bWasFoodProduction);					// added by this mod
+	int doOverflowGold(int iLostOverflow, int iOverflowOverGoldLimit, int iGoldPercent);	// added by this mod
 	void setOverflowProduction(int iNewValue);											// Exposed to Python
 	void changeOverflowProduction(int iChange, int iProductionModifier);
 
