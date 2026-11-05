@@ -487,6 +487,10 @@ class CvEventManager:
 	def onImprovementBuilt(self, argsList):
 		'Improvement Built'
 		iImprovement, iX, iY = argsList
+		# The name of a landmark on the map (iUniqueChance, added by this mod, as FfH). addSign and not addLandmark, which breaks
+		# Japanese text
+		if (gc.getImprovementInfo(iImprovement).getUniqueChance() > 0):
+			CyEngine().addSign(CyMap().plot(iX, iY), PlayerTypes.NO_PLAYER, gc.getImprovementInfo(iImprovement).getDescription())
 		if (not self.__LOG_IMPROVEMENT):
 			return
 		CvUtil.pyPrint('Improvement %s was built at %d, %d'

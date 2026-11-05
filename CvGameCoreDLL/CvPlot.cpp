@@ -2098,8 +2098,8 @@ bool CvPlot::canHaveImprovement(ImprovementTypes eImprovement, TeamTypes eTeam, 
 		return false;
 	}
 
-	// bMakesPassable is for such plots (changed by this mod)
-	if (isImpassable() && !GC.getImprovementInfo(eImprovement).isMakesPassable())
+	// bMakesPassable is for such plots, and iUniqueChance can place a landmark on them (changed by this mod)
+	if (isImpassable() && !GC.getImprovementInfo(eImprovement).isMakesPassable() && GC.getImprovementInfo(eImprovement).getUniqueChance() == 0)
 	{
 		return false;
 	}
@@ -3833,6 +3833,12 @@ bool CvPlot::isImprovementPassable() const
 bool CvPlot::isImpassable() const
 {
 	if (isPeak())
+	{
+		return true;
+	}
+
+	// bImpassable of the improvement (added by this mod)
+	if (getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(getImprovementType()).isImpassable())
 	{
 		return true;
 	}

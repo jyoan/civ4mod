@@ -253,6 +253,8 @@ void CvMapGenerator::addGameElements()
 	addGoodies();
 	gDLL->logMemState("CvMapGen after add goodies");
 
+	addUniqueImprovements();	// added by this mod
+
 	// Call for Python to make map modifications after it's been generated
 	afterGeneration();
 }
@@ -933,6 +935,66 @@ void CvMapGenerator::addGoodies()
 	}
 
 	SAFE_DELETE_ARRAY(piShuffle);
+}
+
+
+// iUniqueChance of the improvements (added by this mod, after addUniqueImprovements of FfH): at most one of each in the world, on
+// a random plot without a bonus, an improvement or an improvement next to it
+void CvMapGenerator::addUniqueImprovements()
+{
+	CvPlot* pPlot;
+	CvPlot* pAdjacentPlot;
+	CvPlot* pBestPlot;
+	bool bValid;
+	int iBestValue;
+	int iValue;
+	int iI, iJ, iK;
+
+	gDLL->NiTextOut("Adding Unique Improvements...");
+
+	for (iI = 0; iI < GC.getNumImprovementInfos(); iI++)
+	{
+		if (GC.getImprovementInfo((ImprovementTypes)iI).getUniqueChance() > GC.getGameINLINE().getMapRand().get(100, "Unique Improvement Chance"))
+		{
+			pBestPlot = NULL;
+			iBestValue = -1;
+
+			for (iJ = 0; iJ < GC.getMapINLINE().numPlotsINLINE(); iJ++)
+			{
+				gDLL->callUpdater();
+				pPlot = GC.getMapINLINE().plotByIndexINLINE(iJ);
+
+				bValid = (pPlot->getBonusType() == NO_BONUS && pPlot->getImprovementType() == NO_IMPROVEMENT && pPlot->canHaveImprovement((ImprovementTypes)iI));
+
+				for (iK = 0; bValid && iK < NUM_DIRECTION_TYPES; iK++)
+				{
+					pAdjacentPlot = plotDirection(pPlot->getX_INLINE(), pPlot->getY_INLINE(), (DirectionTypes)iK);
+
+					if (pAdjacentPlot != NULL && pAdjacentPlot->getImprovementType() != NO_IMPROVEMENT)
+					{
+						bValid = false;
+					}
+				}
+
+				if (bValid)
+				{
+					iValue = GC.getGameINLINE().getMapRand().get(10000, "Unique Improvement Plot");
+
+					if (iValue > iBestValue)
+					{
+						iBestValue = iValue;
+						pBestPlot = pPlot;
+					}
+				}
+			}
+
+			if (pBestPlot != NULL)
+			{
+				pBestPlot->setFeatureType(NO_FEATURE);
+				pBestPlot->setImprovementType((ImprovementTypes)iI);
+			}
+		}
+	}
 }
 
 

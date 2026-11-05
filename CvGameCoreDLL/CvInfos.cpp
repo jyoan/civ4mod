@@ -14025,6 +14025,8 @@ m_iImprovementUpgrade(NO_IMPROVEMENT),
 m_iReplacedImprovement(NO_IMPROVEMENT),
 m_bMakesPassable(false),
 m_iPassageMoveCost(0),
+m_iUniqueChance(0),
+m_bImpassable(false),
 m_bActsAsCity(true),				
 m_bHillsMakesValid(false),				
 m_bFreshWaterMakesValid(false),	
@@ -14177,6 +14179,19 @@ bool CvImprovementInfo::isMakesPassable() const
 int CvImprovementInfo::getPassageMoveCost() const
 {
 	return m_iPassageMoveCost;
+}
+
+// The chance in % that one such improvement is placed in the world when the map is made (added by this mod): see
+// CvMapGenerator::addUniqueImprovements()
+int CvImprovementInfo::getUniqueChance() const
+{
+	return m_iUniqueChance;
+}
+
+// The plot is impassable while it has this improvement (added by this mod): see CvPlot::isImpassable()
+bool CvImprovementInfo::isImpassable() const
+{
+	return m_bImpassable;
 }
 
 int CvImprovementInfo::getImprovementUpgrade() const			
@@ -14581,13 +14596,22 @@ void CvImprovementInfo::read(FDataStreamBase* stream)
 		stream->Read(&m_bMakesPassable);
 		stream->Read(&m_iPassageMoveCost);
 	}
+
+	// uiFlag < 4: cache written before iUniqueChance and bImpassable existed
+	m_iUniqueChance = 0;
+	m_bImpassable = false;
+	if (uiFlag > 3)
+	{
+		stream->Read(&m_iUniqueChance);
+		stream->Read(&m_bImpassable);
+	}
 }
 
 void CvImprovementInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=3;	// 1: AdjacentPeakYieldChanges, 2: ReplacedImprovement, 3: bMakesPassable, iPassageMoveCost (added by this mod)
+	uint uiFlag=4;	// 1: AdjacentPeakYieldChanges, 2: ReplacedImprovement, 3: bMakesPassable, iPassageMoveCost, 4: iUniqueChance, bImpassable (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAdvancedStartCost);
@@ -14653,6 +14677,8 @@ void CvImprovementInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iReplacedImprovement);
 	stream->Write(m_bMakesPassable);
 	stream->Write(m_iPassageMoveCost);
+	stream->Write(m_iUniqueChance);
+	stream->Write(m_bImpassable);
 }
 bool CvImprovementInfo::read(CvXMLLoadUtility* pXML)
 {
@@ -14893,6 +14919,8 @@ bool CvImprovementInfo::readPass2(CvXMLLoadUtility* pXML)
 	m_iReplacedImprovement = pXML->FindInInfoClass(szTextVal);
 	pXML->GetChildXmlValByName(&m_bMakesPassable, "bMakesPassable");
 	pXML->GetChildXmlValByName(&m_iPassageMoveCost, "iPassageMoveCost");
+	pXML->GetChildXmlValByName(&m_iUniqueChance, "iUniqueChance");
+	pXML->GetChildXmlValByName(&m_bImpassable, "bImpassable");
 
 	return true;
 }

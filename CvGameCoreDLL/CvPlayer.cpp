@@ -5380,6 +5380,12 @@ bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 		return false;
 	}
 
+	// A city would remove a landmark (iUniqueChance, added by this mod)
+	if (pPlot->getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(pPlot->getImprovementType()).getUniqueChance() > 0)
+	{
+		return false;
+	}
+
 	if (pPlot->getFeatureType() != NO_FEATURE)
 	{
 		if (GC.getFeatureInfo(pPlot->getFeatureType()).isNoCity())

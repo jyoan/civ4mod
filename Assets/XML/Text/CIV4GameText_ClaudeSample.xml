@@ -2361,4 +2361,49 @@
 		<Spanish>Test Resource</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#36039;&#28304;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_UNIQUE</Tag>
+		<English>[ICON_BULLET]Only one in the world</English>
+		<French>[ICON_BULLET]Only one in the world</French>
+		<German>[ICON_BULLET]Only one in the world</German>
+		<Italian>[ICON_BULLET]Only one in the world</Italian>
+		<Spanish>[ICON_BULLET]Only one in the world</Spanish>
+		<Japanese>[ICON_BULLET]&#19990;&#30028;&#12395; 1 &#12388;&#12384;&#12369;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_IMPASSABLE</Tag>
+		<English>[ICON_BULLET]Units cannot enter this tile</English>
+		<French>[ICON_BULLET]Units cannot enter this tile</French>
+		<German>[ICON_BULLET]Units cannot enter this tile</German>
+		<Italian>[ICON_BULLET]Units cannot enter this tile</Italian>
+		<Spanish>[ICON_BULLET]Units cannot enter this tile</Spanish>
+		<Japanese>[ICON_BULLET]&#12518;&#12491;&#12483;&#12488;&#12399;&#12371;&#12398;&#12479;&#12452;&#12523;&#12395;&#20837;&#12428;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_LANDMARK</Tag>
+		<English>Test Landmark</English>
+		<French>Test Landmark</French>
+		<German>Test Landmark</German>
+		<Italian>Test Landmark</Italian>
+		<Spanish>Test Landmark</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21517;&#25152;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_WONDER</Tag>
+		<English>Test Natural Wonder</English>
+		<French>Test Natural Wonder</French>
+		<German>Test Natural Wonder</German>
+		<Italian>Test Natural Wonder</Italian>
+		<Spanish>Test Natural Wonder</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#33258;&#28982;&#36986;&#29987;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_PEAK_WONDER</Tag>
+		<English>Test Peak Wonder</English>
+		<French>Test Peak Wonder</French>
+		<German>Test Peak Wonder</German>
+		<Italian>Test Peak Wonder</Italian>
+		<Spanish>Test Peak Wonder</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21517;&#23792;</Japanese>
+	</TEXT>
 </Civ4GameText>

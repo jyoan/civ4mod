@@ -12294,6 +12294,19 @@ void CvGameTextMgr::setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTyp
 	}
 
 	// ReplacedImprovement and the PrereqOrTraits of its build (added by this mod)
+	// iUniqueChance, bImpassable (added by this mod)
+	if (info.getUniqueChance() > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_UNIQUE"));
+	}
+
+	if (info.isImpassable())
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_IMPASSABLE"));
+	}
+
 	// bMakesPassable, iPassageMoveCost (added by this mod)
 	if (info.isMakesPassable())
 	{

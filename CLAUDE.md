@@ -113,6 +113,8 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 4. その Info クラスに `read(FDataStreamBase*)` / `write(FDataStreamBase*)` もある場合（Unit, Building, Tech, Promotion, Civic, Bonus など）は、そちらにも追加
 5. Python から使うなら `CyInfoInterface*.cpp` で公開する
 
+- XML や Schema を変えたら、起動の前に `tools\check_xml.ps1` を実行する（`powershell -ExecutionPolicy Bypass -File tools\check_xml.ps1`）。ゲームと同じ MSXML で検証するので、Schema の二重宣言や必須要素の抜けなど、起動時の XML エラーを先に見つけられる。ただし検証するのは形式だけで、名前の参照の誤りは見つからない
+- ゲームのログは `%USERPROFILE%\Documents\My Games\Beyond the Sword(J)\Logs`（`xml.log`・`PythonErr.log` など）
 - XML 内のタグの順序は Schema の順序に合わせる。新しいタグは Schema で `minOccurs="0"` にして、既存の項目には書かなくて済むようにする
 - 「なし」を表す値は型名ではなく **`NONE`** と書く（例: 維持費なしの社会制度は `<Upkeep>NONE</Upkeep>`。`UPKEEP_NONE` は存在せず、起動時に「Tag: UPKEEP_NONE in Info class was incorrect」になった）。既存の値を書き換えるときは、元の XML でその要素がどう書かれているかを先に確かめる
 - 書いた名前が実在するかは、本体（`<BTS>` / `<WL>` / `<CIV4>`）と Mod の XML の `<Type>` 一覧と照合して確かめられる。ただし `ARTSTYLE_` / `CONTACT_` / `FLAVOR_` / `FORMATION_` などは別の一覧で定義されているので、`<Type>` には出てこない
@@ -127,7 +129,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 ### XML キャッシュ
 
 - `CvCivilizationInfo` などストリーム版 `read` / `write` を持つ Info クラスは、exe が XML キャッシュ（`%LOCALAPPDATA%\My Games\Beyond the Sword(J)\cache`）経由でも読み込む。exe は `CvGlobals::read/write*InfoArray` を呼び、そこから各 Info の `read` / `write` が使われる
-- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする（現在 `CvCivilizationInfo` は `uiFlag=1`、`CvCivicInfo` は `uiFlag=7`、`CvBuildingInfo` は `uiFlag=17`、`CvUnitInfo` は `uiFlag=1`、`CvPromotionInfo` は `uiFlag=7`、`CvTechInfo` は `uiFlag=1`、`CvImprovementInfo` は `uiFlag=3`、`CvEventTriggerInfo` は `uiFlag=1`）
+- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする（現在 `CvCivilizationInfo` は `uiFlag=1`、`CvCivicInfo` は `uiFlag=7`、`CvBuildingInfo` は `uiFlag=17`、`CvUnitInfo` は `uiFlag=1`、`CvPromotionInfo` は `uiFlag=7`、`CvTechInfo` は `uiFlag=1`、`CvImprovementInfo` は `uiFlag=4`、`CvEventTriggerInfo` は `uiFlag=1`）
 - **Info の数が変わる変更（志向・昇進・技術・ユニットなどの追加や削除）をしたら、必ずキャッシュを消す**。ユニット・建物・指導者・文明などのキャッシュは「志向の数」などの数だけ配列を読むため、XML を変えていないファイルの古いキャッシュがずれて読まれ、データ破損や強制終了の原因になる
 - キャッシュを消すときは、Civ4 が起動していないことを確認してから、上記の cache フォルダ内の `*.dat` だけを消す（フォルダは残す。次回起動時に作り直される。BtS 本体や他の Mod も次回の起動が少し遅くなるだけ）
 - キャッシュが原因と思われる不具合が出たときも、同じ手順で消す
