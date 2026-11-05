@@ -11,6 +11,7 @@ void CyCityPythonInterface2(python::class_<CyCity>& x)
 	OutputDebugString("Python Extension Module - CyCityPythonInterface2\n");
 
 	x
+		.def("getCultureRange", &CyCity::getCultureRange, "int () - how far the borders reach, with iCultureRangeChange of the traits (added by this mod)")
 		.def("getMiseryYieldByBuilding", &CyCity::getMiseryYieldByBuilding, "int (int /*YieldTypes*/ eIndex, int /*BuildingTypes*/ iBuilding) - the changes per angry citizen and per unhealthiness of the building (added by this mod)")
 		.def("getMiseryCommerceByBuilding", &CyCity::getMiseryCommerceByBuilding, "int (int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding) - the changes per angry citizen and per unhealthiness of the building (added by this mod)")
 		;

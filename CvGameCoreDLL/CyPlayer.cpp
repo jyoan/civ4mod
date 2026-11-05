@@ -2012,6 +2012,11 @@ int CyPlayer::getPeaceAngerPercentAnger()
 	return m_pPlayer ? m_pPlayer->getPeaceAngerPercentAnger() : 0;
 }
 
+int CyPlayer::getCultureRangeChange()
+{
+	return m_pPlayer ? m_pPlayer->getCultureRangeChange() : 0;
+}
+
 bool CyPlayer::isForbiddenCivic(int /*CivicTypes*/ eCivic)
 {
 	return m_pPlayer ? m_pPlayer->isForbiddenCivic((CivicTypes)eCivic) : false;

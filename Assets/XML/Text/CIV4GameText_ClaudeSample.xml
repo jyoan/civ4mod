@@ -2057,12 +2057,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_PEACE_ANGER</Tag>
-		<English>Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</English>
-		<French>Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</French>
-		<German>Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</German>
-		<Italian>Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</Italian>
-		<Spanish>Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</Spanish>
-		<Japanese>&#24179;&#21644;&#12364;&#32154;&#12367;&#12392;&#37117;&#24066;&#12364;&#19981;&#28288;&#12395;&#12394;&#12427;: &#27598;&#12479;&#12540;&#12531;&#20154;&#21475;&#12398; %s1%%&#65288;&#36890;&#24120;&#36895;&#24230;&#12290;&#19978;&#38480; %s2%%&#12290;&#25126;&#20105;&#20013;&#12399;&#27598;&#12479;&#12540;&#12531; %s3%% &#28187;&#12427;&#65289;</Japanese>
+		<English>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</English>
+		<French>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</French>
+		<German>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</German>
+		<Italian>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</Italian>
+		<Spanish>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</Spanish>
+		<Japanese>[ICON_BULLET]&#24179;&#21644;&#12364;&#32154;&#12367;&#12392;&#37117;&#24066;&#12364;&#19981;&#28288;&#12395;&#12394;&#12427;: &#27598;&#12479;&#12540;&#12531;&#20154;&#21475;&#12398; %s1%%&#65288;&#36890;&#24120;&#36895;&#24230;&#12290;&#19978;&#38480; %s2%%&#12290;&#25126;&#20105;&#20013;&#12399;&#27598;&#12479;&#12540;&#12531; %s3%% &#28187;&#12427;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_ANGER_PEACE</Tag>
@@ -2135,5 +2135,14 @@
 		<Italian>Test Building (Misery)</Italian>
 		<Spanish>Test Building (Misery)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#24594;&#12426;&#12398;&#24681;&#24693;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CULTURE_RANGE_CHANGE</Tag>
+		<English>[ICON_BULLET]%D1_Change culture range of all cities</English>
+		<French>[ICON_BULLET]%D1_Change culture range of all cities</French>
+		<German>[ICON_BULLET]%D1_Change culture range of all cities</German>
+		<Italian>[ICON_BULLET]%D1_Change culture range of all cities</Italian>
+		<Spanish>[ICON_BULLET]%D1_Change culture range of all cities</Spanish>
+		<Japanese>[ICON_BULLET]&#20840;&#37117;&#24066;&#12398;&#25991;&#21270;&#22287;&#12398;&#24195;&#12364;&#12426;%D1_Change</Japanese>
 	</TEXT>
 </Civ4GameText>

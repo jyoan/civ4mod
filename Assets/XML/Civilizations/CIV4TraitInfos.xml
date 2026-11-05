@@ -387,6 +387,7 @@
 			<iPeaceAngerPerTurn>50</iPeaceAngerPerTurn>
 			<iPeaceAngerDecayPerTurn>100</iPeaceAngerDecayPerTurn>
 			<iPeaceAngerMax>200</iPeaceAngerMax>
+			<iCultureRangeChange>1</iCultureRangeChange>
 			<ForbiddenCivics>
 				<CivicType>CIVIC_SLAVERY</CivicType>
 			</ForbiddenCivics>

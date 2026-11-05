@@ -351,6 +351,7 @@
 	<ElementType name="iPeaceAngerPerTurn" content="textOnly" dt:type="int"/>
 	<ElementType name="iPeaceAngerDecayPerTurn" content="textOnly" dt:type="int"/>
 	<ElementType name="iPeaceAngerMax" content="textOnly" dt:type="int"/>
+	<ElementType name="iCultureRangeChange" content="textOnly" dt:type="int"/>
 	<ElementType name="ForbiddenCivics" content="eltOnly">
 		<element type="CivicType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -562,6 +563,7 @@
 		<element type="iPeaceAngerPerTurn" minOccurs="0"/>
 		<element type="iPeaceAngerDecayPerTurn" minOccurs="0"/>
 		<element type="iPeaceAngerMax" minOccurs="0"/>
+		<element type="iCultureRangeChange" minOccurs="0"/>
 		<element type="ForbiddenCivics" minOccurs="0"/>
 		<element type="NewCityCultureLevel" minOccurs="0"/>
 		<element type="MaintainFeatures" minOccurs="0"/>

@@ -591,6 +591,8 @@ public:
 	void setOriginalOwner(PlayerTypes eNewValue);
 
 	CultureLevelTypes getCultureLevel() const;														// Exposed to Python
+	int getCultureRange() const;																// Exposed to Python: how far the borders reach (added by this mod)
+	void updateCultureRange(bool bUpdatePlotGroups);										// added by this mod
 	int getCultureThreshold() const;																	// Exposed to Python
 	static int getCultureThreshold(CultureLevelTypes eLevel);
 	void setCultureLevel(CultureLevelTypes eNewValue, bool bUpdatePlotGroups);
@@ -1070,6 +1072,7 @@ protected:
 	PlayerTypes m_ePreviousOwner;
 	PlayerTypes m_eOriginalOwner;
 	CultureLevelTypes m_eCultureLevel;
+	int m_iCultureRange;	// the culture level with iCultureRangeChange of the owner, as counted in the plots (added by this mod)
 
 	int* m_aiSeaPlotYield;
 	int* m_aiRiverPlotYield;

@@ -3607,6 +3607,13 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			}
 		}
 
+		// iCultureRangeChange: "+1 culture range of all cities" (added by this mod)
+		if (GC.getTraitInfo(eTrait).getCultureRangeChange() != 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CULTURE_RANGE_CHANGE", GC.getTraitInfo(eTrait).getCultureRangeChange()));
+		}
+
 		// iPeaceAngerPerTurn: "Cities grow angry in peace" (added by this mod)
 		if (GC.getTraitInfo(eTrait).getPeaceAngerPerTurn() > 0 && GC.getTraitInfo(eTrait).getPeaceAngerMax() > 0)
 		{

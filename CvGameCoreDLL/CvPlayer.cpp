@@ -1331,7 +1331,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 
 	if (bConquest)
 	{
-		iRange = pOldCity->getCultureLevel();
+		iRange = pOldCity->getCultureRange();	// with iCultureRangeChange (changed by this mod)
 
 		for (iDX = -(iRange); iDX <= iRange; iDX++)
 		{
@@ -2466,10 +2466,11 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 		updateExtraYieldThreshold((YieldTypes)iI);
 	}
 
-	// City radius (iCityRadiusChange)
+	// City radius (iCityRadiusChange) and borders (iCultureRangeChange)
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
 		pLoopCity->updatePlotRadius();
+		pLoopCity->updateCultureRange(true);
 	}
 
 	// Plot yields in our territory (TerrainYieldChanges, FeatureYieldChanges, ImprovementYieldChanges, BonusYieldChanges,
@@ -6624,6 +6625,23 @@ int CvPlayer::getGoldInterest() const
 	}
 
 	return iInterest;
+}
+
+// iCultureRangeChange of the traits (added by this mod)
+int CvPlayer::getCultureRangeChange() const
+{
+	int iChange = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iChange += GC.getTraitInfo((TraitTypes)iI).getCultureRangeChange();
+		}
+	}
+
+	return iChange;
 }
 
 // The anger of the traits, in 1/10 % of the population (added by this mod)

@@ -59,3 +59,4 @@
 - 2026-11-05: 作業の `PrereqOrTraits`・`ReplacedBuild`・`UnitsFromBuild`、施設の `ReplacedImprovement`（検証用施設（棚田）・検証用施設（強化農場）。新規と置換、農場の上書き、産出の引き継ぎ、説明文と技術ツリー、志向を後から得たときの切り替え）、イベントの `PrereqOrTraits`（検証用イベント）をゲーム内で確認
 - 2026-11-05: 志向の `iPeaceAngerPerTurn`・`iPeaceAngerDecayPerTurn`・`iPeaceAngerMax`（説明文、平和での増加と上限、宣戦での減少、和平後の再増加、蛮族は戦争に数えない、セーブと読み込み、ほかの文明に影響なし）をゲーム内で確認
 - 2026-11-05: 建物・志向・社会制度の `AngryYieldChanges`・`AngryCommerceChanges`・`UnhealthyYieldChanges`・`UnhealthyCommerceChanges`（説明文、効く範囲、人口を変えるとすぐ反映、都市画面の内訳が怒りと不衛生で別の行、建物の一覧の数値、セーブと読み込み）をゲーム内で確認
+- 2026-11-05: 志向の `iCultureRangeChange`（検証用志向で +1。説明文、同じ文化レベルでの広がりの比較、文化レベルの上昇、伝説、占領と破壊、志向を後から得る、セーブと読み込み）をゲーム内で確認。マイナスの値は未確認

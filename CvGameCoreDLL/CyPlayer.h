@@ -454,6 +454,7 @@ public:
 	bool isNoPillageInBorders();
 	int getGoldInterest();
 	int getPeaceAngerPercentAnger();
+	int getCultureRangeChange();
 	bool isForbiddenCivic(int /*CivicTypes*/ eCivic);
 	bool canBuildByTraits(int /*BuildTypes*/ eBuild);
 	int getUnitCostModifier();

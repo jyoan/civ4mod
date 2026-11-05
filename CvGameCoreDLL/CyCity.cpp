@@ -1611,6 +1611,11 @@ int CyCity::getDynamicBuildingYieldByBuilding(int /*YieldTypes*/ eIndex, int /*B
 	return m_pCity ? m_pCity->getDynamicBuildingYieldByBuilding((YieldTypes)eIndex, (BuildingTypes)iBuilding) : 0;
 }
 
+int CyCity::getCultureRange()
+{
+	return m_pCity ? m_pCity->getCultureRange() : -1;
+}
+
 int CyCity::getMiseryYieldByBuilding(int /*YieldTypes*/ eIndex, int /*BuildingTypes*/ iBuilding)
 {
 	return m_pCity ? m_pCity->getMiseryYieldByBuilding((YieldTypes)eIndex, (BuildingTypes)iBuilding) : 0;

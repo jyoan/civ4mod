@@ -4631,6 +4631,7 @@ public:
 	int getPeaceAngerPerTurn() const;				// Exposed to Python
 	int getPeaceAngerDecayPerTurn() const;			// Exposed to Python
 	int getPeaceAngerMax() const;					// Exposed to Python
+	int getCultureRangeChange() const;				// Exposed to Python
 	bool isForbiddenCivic(int i) const;				// Exposed to Python
 	int getNewCityCultureLevel() const;				// Exposed to Python
 	int getNewCityPopulation() const;				// Exposed to Python
@@ -4742,6 +4743,7 @@ protected:
 	int m_iPeaceAngerPerTurn;
 	int m_iPeaceAngerDecayPerTurn;
 	int m_iPeaceAngerMax;
+	int m_iCultureRangeChange;
 	bool* m_pabForbiddenCivic;					// NULL when not set
 	std::vector<CvString> m_aszForbiddenCivicTypes;	// read() keeps the types as strings until readPass3() (civics are loaded later)
 	int m_iNewCityCultureLevel;

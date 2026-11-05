@@ -18710,6 +18710,7 @@ m_iGoldInterestMax(0),
 m_iPeaceAngerPerTurn(0),
 m_iPeaceAngerDecayPerTurn(0),
 m_iPeaceAngerMax(0),
+m_iCultureRangeChange(0),
 m_iNewCityCultureLevel(NO_CULTURELEVEL),
 m_iNewCityPopulation(0),
 m_iOccupationTimeModifier(0),
@@ -19022,6 +19023,12 @@ int CvTraitInfo::getPeaceAngerDecayPerTurn() const
 int CvTraitInfo::getPeaceAngerMax() const
 {
 	return m_iPeaceAngerMax;
+}
+
+// The borders of all cities reach this much further than the culture level says (added by this mod)
+int CvTraitInfo::getCultureRangeChange() const
+{
+	return m_iCultureRangeChange;
 }
 
 // The player cannot adopt the civic (added by this mod)
@@ -19619,6 +19626,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iPeaceAngerPerTurn, "iPeaceAngerPerTurn");
 	pXML->GetChildXmlValByName(&m_iPeaceAngerDecayPerTurn, "iPeaceAngerDecayPerTurn");
 	pXML->GetChildXmlValByName(&m_iPeaceAngerMax, "iPeaceAngerMax");
+	pXML->GetChildXmlValByName(&m_iCultureRangeChange, "iCultureRangeChange");
 	// Civics are loaded after the traits: readPass3() finds the types
 	readTypeList(pXML, "ForbiddenCivics", m_aszForbiddenCivicTypes);
 	// The culture levels are loaded after the traits: readPass3() finds the type

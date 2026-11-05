@@ -358,6 +358,7 @@ public:
 	int getDynamicBuildingYieldByBuilding(int /*YieldTypes*/ eIndex, int /*BuildingTypes*/ iBuilding);	// added by this mod
 	int getMiseryYieldByBuilding(int /*YieldTypes*/ eIndex, int /*BuildingTypes*/ iBuilding);	// added by this mod
 	int getMiseryCommerceByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding);	// added by this mod
+	int getCultureRange();	// added by this mod
 	int getBuildingCommerceByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding);	
 	int getSpecialistCommerce(int /*CommerceTypes*/ eIndex);
 	void changeSpecialistCommerce(int /*CommerceTypes*/ eIndex, int iChange);

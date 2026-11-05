@@ -481,6 +481,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_ePreviousOwner = NO_PLAYER;
 	m_eOriginalOwner = eOwner;
 	m_eCultureLevel = NO_CULTURELEVEL;
+	m_iCultureRange = NO_CULTURELEVEL;
 
 	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
 	{
@@ -891,6 +892,7 @@ void CvCity::doTurn()
 
 	// Existing cities follow the radius of the owner, e.g. in a game saved before the radius changed (added by this mod)
 	updatePlotRadius();
+	updateCultureRange(true);
 
 	// VicinityBonusYieldChanges of buildings (added by this mod): the plots of the city radius may have changed
 	updateDynamicBuildingYields();
@@ -7965,13 +7967,77 @@ int CvCity::getCultureThreshold(CultureLevelTypes eLevel)
 }
 
 
-void CvCity::setCultureLevel(CultureLevelTypes eNewValue, bool bUpdatePlotGroups)
+int CvCity::getCultureRange() const
+{
+	return m_iCultureRange;
+}
+
+
+// Moved out of setCultureLevel by this mod, for iCultureRangeChange of the traits: the borders reach as far as the culture
+// level plus that change, but a city with culture always keeps the plots next to it. The plots count the cities by the
+// range only to know if there are any, so ranges beyond the last culture level can share its index
+void CvCity::updateCultureRange(bool bUpdatePlotGroups)
 {
 	CvPlot* pLoopPlot;
-	CvWString szBuffer;
-	CultureLevelTypes eOldValue;
+	int iOldRange = m_iCultureRange;
+	int iNewRange = getCultureLevel();
 	int iCultureRange;
 	int iDX, iDY;
+
+	if (iNewRange != NO_CULTURELEVEL)
+	{
+		iNewRange = std::max(std::min(1, iNewRange), iNewRange + GET_PLAYER(getOwnerINLINE()).getCultureRangeChange());
+	}
+
+	if (iNewRange == iOldRange)
+	{
+		return;
+	}
+
+	m_iCultureRange = iNewRange;
+
+	for (iDX = -iOldRange; iDX <= iOldRange; iDX++)
+	{
+		for (iDY = -iOldRange; iDY <= iOldRange; iDY++)
+		{
+			iCultureRange = cultureDistance(iDX, iDY);
+
+			if (iCultureRange > iNewRange && iCultureRange <= iOldRange)
+			{
+				pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+
+				if (pLoopPlot != NULL)
+				{
+					pLoopPlot->changeCultureRangeCities(getOwnerINLINE(), std::min(iCultureRange, GC.getNumCultureLevelInfos() - 1), -1, bUpdatePlotGroups);
+				}
+			}
+		}
+	}
+
+	for (iDX = -iNewRange; iDX <= iNewRange; iDX++)
+	{
+		for (iDY = -iNewRange; iDY <= iNewRange; iDY++)
+		{
+			iCultureRange = cultureDistance(iDX, iDY);
+
+			if (iCultureRange > iOldRange && iCultureRange <= iNewRange)
+			{
+				pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+
+				if (pLoopPlot != NULL)
+				{
+					pLoopPlot->changeCultureRangeCities(getOwnerINLINE(), std::min(iCultureRange, GC.getNumCultureLevelInfos() - 1), 1, bUpdatePlotGroups);
+				}
+			}
+		}
+	}
+}
+
+
+void CvCity::setCultureLevel(CultureLevelTypes eNewValue, bool bUpdatePlotGroups)
+{
+	CvWString szBuffer;
+	CultureLevelTypes eOldValue;
 	int iI;
 
 	eOldValue = getCultureLevel();
@@ -7980,57 +8046,7 @@ void CvCity::setCultureLevel(CultureLevelTypes eNewValue, bool bUpdatePlotGroups
 	{
 		m_eCultureLevel = eNewValue;
 
-		if (eOldValue != NO_CULTURELEVEL)
-		{
-			for (iDX = -eOldValue; iDX <= eOldValue; iDX++)
-			{
-				for (iDY = -eOldValue; iDY <= eOldValue; iDY++)
-				{
-					iCultureRange = cultureDistance(iDX, iDY);
-
-					if (iCultureRange > getCultureLevel())
-					{
-						if (iCultureRange <= eOldValue)
-						{
-							FAssert(iCultureRange <= GC.getNumCultureLevelInfos());
-
-							pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
-
-							if (pLoopPlot != NULL)
-							{
-								pLoopPlot->changeCultureRangeCities(getOwnerINLINE(), iCultureRange, -1, bUpdatePlotGroups);
-							}
-						}
-					}
-				}
-			}
-		}
-
-		if (getCultureLevel() != NO_CULTURELEVEL)
-		{
-			for (iDX = -getCultureLevel(); iDX <= getCultureLevel(); iDX++)
-			{
-				for (iDY = -getCultureLevel(); iDY <= getCultureLevel(); iDY++)
-				{
-					iCultureRange = cultureDistance(iDX, iDY);
-
-					if (iCultureRange > eOldValue)
-					{
-						if (iCultureRange <= getCultureLevel())
-						{
-							FAssert(iCultureRange <= GC.getNumCultureLevelInfos());
-
-							pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
-
-							if (pLoopPlot != NULL)
-							{
-								pLoopPlot->changeCultureRangeCities(getOwnerINLINE(), iCultureRange, 1, bUpdatePlotGroups);
-							}
-						}
-					}
-				}
-			}
-		}
+		updateCultureRange(bUpdatePlotGroups);
 
 		// The city plot radius can depend on the culture level (added by this mod). Not in init before setPlotCity counts
 		// the plots in the radius set there, and not when the city is killed
@@ -12155,18 +12171,21 @@ void CvCity::doPlotCulture(bool bUpdate, PlayerTypes ePlayer, int iCultureRate)
 		}
 	}
 
+	// With iCultureRangeChange of the owner, not for the culture of other players (added by this mod)
+	int iRange = (getOwnerINLINE() == ePlayer) ? getCultureRange() : (int)eCultureLevel;
+
 	int iFreeCultureRate = GC.getDefineINT("CITY_FREE_CULTURE_GROWTH_FACTOR");
 	if (getCultureTimes100(ePlayer) > 0)
 	{
 		if (eCultureLevel != NO_CULTURELEVEL)
 		{
-			for (iDX = -eCultureLevel; iDX <= eCultureLevel; iDX++)
+			for (iDX = -iRange; iDX <= iRange; iDX++)
 			{
-				for (iDY = -eCultureLevel; iDY <= eCultureLevel; iDY++)
+				for (iDY = -iRange; iDY <= iRange; iDY++)
 				{
 					iCultureRange = cultureDistance(iDX, iDY);
 
-					if (iCultureRange <= eCultureLevel)
+					if (iCultureRange <= iRange)
 					{
 						pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
 
@@ -12174,7 +12193,7 @@ void CvCity::doPlotCulture(bool bUpdate, PlayerTypes ePlayer, int iCultureRate)
 						{
 							if (pLoopPlot->isPotentialCityWorkForArea(area(), getPlotRadius())) // with the radius of this city (changed by this mod)
 							{
-								pLoopPlot->changeCulture(ePlayer, (((eCultureLevel - iCultureRange) * iFreeCultureRate) + iCultureRate + 1), (bUpdate || !(pLoopPlot->isOwned())));
+								pLoopPlot->changeCulture(ePlayer, (((iRange - iCultureRange) * iFreeCultureRate) + iCultureRate + 1), (bUpdate || !(pLoopPlot->isOwned())));
 							}
 						}
 					}
@@ -12879,13 +12898,23 @@ void CvCity::read(FDataStreamBase* pStream)
 		pStream->Read(NUM_COMMERCE_TYPES, m_aiAngryCommerce);
 		pStream->Read(NUM_COMMERCE_TYPES, m_aiUnhealthyCommerce);
 	}
+
+	// uiFlag < 5: saved before iCultureRangeChange existed, the plots count the culture level (added by this mod)
+	if (uiFlag > 4)
+	{
+		pStream->Read(&m_iCultureRange);
+	}
+	else
+	{
+		m_iCultureRange = getCultureLevel();
+	}
 }
 
 void CvCity::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=4;	// 1: plot radius, 2: m_aiDynamicBuildingYield, 3: m_paiBuildingChangeSpecialist, 4: m_aiAngryYield, m_aiUnhealthyYield, m_aiAngryCommerce, m_aiUnhealthyCommerce (added by this mod)
+	uint uiFlag=5;	// 1: plot radius, 2: m_aiDynamicBuildingYield, 3: m_paiBuildingChangeSpecialist, 4: m_aiAngryYield, m_aiUnhealthyYield, m_aiAngryCommerce, m_aiUnhealthyCommerce, 5: m_iCultureRange (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -13108,6 +13137,7 @@ void CvCity::write(FDataStreamBase* pStream)
 	pStream->Write(NUM_YIELD_TYPES, m_aiUnhealthyYield);
 	pStream->Write(NUM_COMMERCE_TYPES, m_aiAngryCommerce);
 	pStream->Write(NUM_COMMERCE_TYPES, m_aiUnhealthyCommerce);
+	pStream->Write(m_iCultureRange);
 }
 
 
