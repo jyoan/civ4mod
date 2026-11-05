@@ -384,6 +384,9 @@
 			<bNoPillageInBorders>1</bNoPillageInBorders>
 			<iGoldInterestPercent>3</iGoldInterestPercent>
 			<iGoldInterestMax>25</iGoldInterestMax>
+			<iPeaceAngerPerTurn>50</iPeaceAngerPerTurn>
+			<iPeaceAngerDecayPerTurn>100</iPeaceAngerDecayPerTurn>
+			<iPeaceAngerMax>200</iPeaceAngerMax>
 			<ForbiddenCivics>
 				<CivicType>CIVIC_SLAVERY</CivicType>
 			</ForbiddenCivics>

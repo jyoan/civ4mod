@@ -4486,6 +4486,7 @@ int CvCity::unhappyLevel(int iExtra) const
 		iAngerPercent += getConscriptPercentAnger(iExtra);
 		iAngerPercent += getDefyResolutionPercentAnger(iExtra);
 		iAngerPercent += getWarWearinessPercentAnger();
+		iAngerPercent += GET_PLAYER(getOwnerINLINE()).getPeaceAngerPercentAnger();	// added by this mod
 
 		for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
 		{

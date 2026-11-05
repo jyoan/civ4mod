@@ -453,6 +453,7 @@ public:
 	int getNumWorldWonders();
 	bool isNoPillageInBorders();
 	int getGoldInterest();
+	int getPeaceAngerPercentAnger();
 	bool isForbiddenCivic(int /*CivicTypes*/ eCivic);
 	bool canBuildByTraits(int /*BuildTypes*/ eBuild);
 	int getUnitCostModifier();

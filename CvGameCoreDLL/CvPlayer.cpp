@@ -409,6 +409,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_iBuildingHappiness = 0;
 	m_iLargestCityHappiness = 0;
 	m_iWarWearinessPercentAnger = 0;
+	m_iPeaceAngerTimes100 = 0;
 	m_iWarWearinessModifier = 0;
 	m_iFreeSpecialist = 0;
 	m_iNoForeignTradeCount = 0;
@@ -2912,6 +2913,7 @@ void CvPlayer::doTurn()
 	updateTradeRoutes();
 
 	updateWarWearinessPercentAnger();
+	doPeaceAnger();	// added by this mod
 
 	doEvents();
 
@@ -6622,6 +6624,54 @@ int CvPlayer::getGoldInterest() const
 	}
 
 	return iInterest;
+}
+
+// The anger of the traits, in 1/10 % of the population (added by this mod)
+int CvPlayer::getPeaceAngerPercentAnger() const
+{
+	return m_iPeaceAngerTimes100 / 100;
+}
+
+// iPeaceAngerPerTurn / iPeaceAngerDecayPerTurn / iPeaceAngerMax of the traits (added by this mod): the anger grows in the
+// turns without a war against a full civilization and falls during such a war. The rates follow the game speed like the
+// other things counted in turns, so the anger is kept x100 to keep small rates from rounding to 0 at slow speeds
+void CvPlayer::doPeaceAnger()
+{
+	int iOldAnger = getPeaceAngerPercentAnger();
+	int iPerTurn = 0;
+	int iDecay = 0;
+	int iMax = 0;
+	int iGrowthPercent;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iPerTurn += GC.getTraitInfo((TraitTypes)iI).getPeaceAngerPerTurn();
+			iDecay += GC.getTraitInfo((TraitTypes)iI).getPeaceAngerDecayPerTurn();
+			iMax += GC.getTraitInfo((TraitTypes)iI).getPeaceAngerMax();
+		}
+	}
+
+	iGrowthPercent = std::max(1, GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getGrowthPercent());
+
+	if (GET_TEAM(getTeam()).getAtWarCount(true) > 0)
+	{
+		m_iPeaceAngerTimes100 -= (iDecay * 10000) / iGrowthPercent;
+	}
+	else
+	{
+		m_iPeaceAngerTimes100 += (iPerTurn * 10000) / iGrowthPercent;
+	}
+
+	// Also drops the anger of a trait the player has lost
+	m_iPeaceAngerTimes100 = range(m_iPeaceAngerTimes100, 0, iMax * 100);
+
+	if (getPeaceAngerPercentAnger() != iOldAnger)
+	{
+		AI_makeAssignWorkDirty();
+	}
 }
 
 // ForbiddenCivics of the traits (added by this mod): canDoCivics is false, and verifyCivics changes the civic at the start
@@ -17439,6 +17489,12 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(GC.getNumBuildingClassInfos() * NUM_COMMERCE_TYPES, m_paiBuildingClassExtraCommerce);
 	}
+
+	// iPeaceAngerPerTurn of the traits (uiFlag 6)
+	if (uiFlag > 5)
+	{
+		pStream->Read(&m_iPeaceAngerTimes100);
+	}
 }
 
 //
@@ -17449,7 +17505,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 5;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce (added by this mod)
+	uint uiFlag = 6;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100 (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -17861,6 +17917,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(GC.getNumTraitInfos(), m_paiFreeTraitCount);
 	pStream->Write(GC.getNumTraitInfos(), m_paiConditionalTraitCount);
 	pStream->Write(GC.getNumBuildingClassInfos() * NUM_COMMERCE_TYPES, m_paiBuildingClassExtraCommerce);
+	pStream->Write(m_iPeaceAngerTimes100);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

@@ -18521,6 +18521,9 @@ m_iBuildingCostModifier(0),
 m_bNoPillageInBorders(false),
 m_iGoldInterestPercent(0),
 m_iGoldInterestMax(0),
+m_iPeaceAngerPerTurn(0),
+m_iPeaceAngerDecayPerTurn(0),
+m_iPeaceAngerMax(0),
 m_iNewCityCultureLevel(NO_CULTURELEVEL),
 m_iNewCityPopulation(0),
 m_iOccupationTimeModifier(0),
@@ -18809,6 +18812,22 @@ int CvTraitInfo::getGoldInterestPercent() const
 int CvTraitInfo::getGoldInterestMax() const
 {
 	return m_iGoldInterestMax;
+}
+
+// Anger from peace, in 1/10 % of the population like iCivicPercentAnger (added by this mod): see CvPlayer::doPeaceAnger()
+int CvTraitInfo::getPeaceAngerPerTurn() const
+{
+	return m_iPeaceAngerPerTurn;
+}
+
+int CvTraitInfo::getPeaceAngerDecayPerTurn() const
+{
+	return m_iPeaceAngerDecayPerTurn;
+}
+
+int CvTraitInfo::getPeaceAngerMax() const
+{
+	return m_iPeaceAngerMax;
 }
 
 // The player cannot adopt the civic (added by this mod)
@@ -19355,6 +19374,9 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bNoPillageInBorders, "bNoPillageInBorders");
 	pXML->GetChildXmlValByName(&m_iGoldInterestPercent, "iGoldInterestPercent");
 	pXML->GetChildXmlValByName(&m_iGoldInterestMax, "iGoldInterestMax");
+	pXML->GetChildXmlValByName(&m_iPeaceAngerPerTurn, "iPeaceAngerPerTurn");
+	pXML->GetChildXmlValByName(&m_iPeaceAngerDecayPerTurn, "iPeaceAngerDecayPerTurn");
+	pXML->GetChildXmlValByName(&m_iPeaceAngerMax, "iPeaceAngerMax");
 	// Civics are loaded after the traits: readPass3() finds the types
 	readTypeList(pXML, "ForbiddenCivics", m_aszForbiddenCivicTypes);
 	// The culture levels are loaded after the traits: readPass3() finds the type

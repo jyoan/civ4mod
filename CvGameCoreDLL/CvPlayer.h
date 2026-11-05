@@ -231,6 +231,8 @@ public:
 	void changeBuildingClassExtraCommerce(BuildingClassTypes eBuildingClass, CommerceTypes eCommerce, int iChange);	// added by this mod
 	bool isNoPillageInBorders() const;								// Exposed to Python
 	int getGoldInterest() const;									// Exposed to Python: gold of this turn from the traits
+	int getPeaceAngerPercentAnger() const;						// Exposed to Python: anger from iPeaceAngerPerTurn of the traits
+	void doPeaceAnger();										// added by this mod
 	bool isForbiddenCivic(CivicTypes eCivic) const;					// Exposed to Python: ForbiddenCivics of the traits
 	bool isMaxCitiesReached() const;									// Exposed to Python
 	bool isIgnoreObsoleteBuilding(BuildingTypes eBuilding) const;		// Exposed to Python
@@ -1171,6 +1173,7 @@ protected:
 	int m_iBuildingHappiness;
 	int m_iLargestCityHappiness;
 	int m_iWarWearinessPercentAnger;
+	int m_iPeaceAngerTimes100;
 	int m_iWarWearinessModifier;
 	int m_iFreeSpecialist;
 	int m_iNoForeignTradeCount;

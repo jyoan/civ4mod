@@ -3299,6 +3299,12 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 
 
 // Joins the conditions of ConditionalFreeTraits (added by this mod)
+// 1/10 % as text: 5 -> "0.5", 200 -> "20" (added by this mod)
+static CvWString getPerMilleText(int iValue)
+{
+	return ((iValue % 10) == 0) ? CvWString::format(L"%d", iValue / 10) : CvWString::format(L"%d.%d", iValue / 10, iValue % 10);
+}
+
 static void appendConditionText(CvWString& szConditions, const CvWString& szCondition)
 {
 	if (!szConditions.empty())
@@ -3599,6 +3605,13 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			{
 				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_GOLD_INTEREST", GC.getTraitInfo(eTrait).getGoldInterestPercent()));
 			}
+		}
+
+		// iPeaceAngerPerTurn: "Cities grow angry in peace" (added by this mod)
+		if (GC.getTraitInfo(eTrait).getPeaceAngerPerTurn() > 0 && GC.getTraitInfo(eTrait).getPeaceAngerMax() > 0)
+		{
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_PEACE_ANGER", getPerMilleText(GC.getTraitInfo(eTrait).getPeaceAngerPerTurn()).GetCString(), getPerMilleText(GC.getTraitInfo(eTrait).getPeaceAngerMax()).GetCString(), getPerMilleText(GC.getTraitInfo(eTrait).getPeaceAngerDecayPerTurn()).GetCString()));
 		}
 
 		// ForbiddenCivics: "Cannot adopt: Slavery, Serfdom" (added by this mod)
@@ -10253,6 +10266,18 @@ void CvGameTextMgr::setAngerHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		if (iAnger > 0)
 		{
 			szBuffer.append(gDLL->getText("TXT_KEY_ANGER_WAR_WEAR", iAnger));
+			szBuffer.append(NEWLINE);
+		}
+		iOldAngerPercent = iNewAngerPercent;
+		iOldAnger = iNewAnger;
+
+		// iPeaceAngerPerTurn of the traits (added by this mod)
+		iNewAngerPercent += GET_PLAYER(city.getOwnerINLINE()).getPeaceAngerPercentAnger();
+		iNewAnger += (((iNewAngerPercent * city.getPopulation()) / GC.getPERCENT_ANGER_DIVISOR()) - ((iOldAngerPercent * city.getPopulation()) / GC.getDefineINT("PERCENT_ANGER_DIVISOR")));
+		iAnger = ((iNewAnger - iOldAnger) + std::min(0, iOldAnger));
+		if (iAnger > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_ANGER_PEACE", iAnger));
 			szBuffer.append(NEWLINE);
 		}
 		iOldAngerPercent = iNewAngerPercent;

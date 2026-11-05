@@ -2055,4 +2055,22 @@
 		<Spanish>Take the gold.</Spanish>
 		<Japanese>&#36039;&#37329;&#12434;&#21463;&#12369;&#21462;&#12427;&#12290;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PEACE_ANGER</Tag>
+		<English>Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</English>
+		<French>Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</French>
+		<German>Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</German>
+		<Italian>Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</Italian>
+		<Spanish>Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</Spanish>
+		<Japanese>&#24179;&#21644;&#12364;&#32154;&#12367;&#12392;&#37117;&#24066;&#12364;&#19981;&#28288;&#12395;&#12394;&#12427;: &#27598;&#12479;&#12540;&#12531;&#20154;&#21475;&#12398; %s1%%&#65288;&#36890;&#24120;&#36895;&#24230;&#12290;&#19978;&#38480; %s2%%&#12290;&#25126;&#20105;&#20013;&#12399;&#27598;&#12479;&#12540;&#12531; %s3%% &#28187;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ANGER_PEACE</Tag>
+		<English>+%d1_Change[ICON_UNHAPPY]: &quot;Too long without a war!&quot;</English>
+		<French>+%d1_Change[ICON_UNHAPPY]: &quot;Too long without a war!&quot;</French>
+		<German>+%d1_Change[ICON_UNHAPPY]: &quot;Too long without a war!&quot;</German>
+		<Italian>+%d1_Change[ICON_UNHAPPY]: &quot;Too long without a war!&quot;</Italian>
+		<Spanish>+%d1_Change[ICON_UNHAPPY]: &quot;Too long without a war!&quot;</Spanish>
+		<Japanese>[ICON_UNHAPPY]+%d1_Change:&#12300;&#25126;&#12399;&#12414;&#12384;&#12363;&#65281;&#12301;</Japanese>
+	</TEXT>
 </Civ4GameText>
