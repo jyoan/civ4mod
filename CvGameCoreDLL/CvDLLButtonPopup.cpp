@@ -1121,7 +1121,7 @@ bool CvDLLButtonPopup::launchProductionPopup(CvPopup* pPopup, CvPopupInfo &info)
 
 	for (int iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 	{
-		UnitTypes eLoopUnit = (UnitTypes)GC.getCivilizationInfo(pCity->getCivilizationType()).getCivilizationUnits(iI);
+		UnitTypes eLoopUnit = (UnitTypes)GET_PLAYER(pCity->getOwnerINLINE()).getCivilizationUnit(iI);
 
 		if (eLoopUnit != NO_UNIT)
 		{
@@ -1139,7 +1139,7 @@ bool CvDLLButtonPopup::launchProductionPopup(CvPopup* pPopup, CvPopupInfo &info)
 	}
 	for (int iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
 	{
-		BuildingTypes eLoopBuilding = ((BuildingTypes)(GC.getCivilizationInfo(pCity->getCivilizationType()).getCivilizationBuildings(iI)));
+		BuildingTypes eLoopBuilding = ((BuildingTypes)(GET_PLAYER(pCity->getOwnerINLINE()).getCivilizationBuilding(iI)));
 
 		if (eLoopBuilding != NO_BUILDING)
 		{

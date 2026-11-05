@@ -4669,6 +4669,14 @@ public:
 	int getImprovementYieldChanges(int iImprovement, int iYield) const;				// Exposed to Python
 	int getRiverPlotYieldChange(int i) const;				// Exposed to Python
 	int* getRiverPlotYieldChangeArray() const;
+	int getNumUniqueUnits() const;					// Exposed to Python
+	int getUniqueUnitClass(int i) const;				// Exposed to Python
+	int getUniqueUnit(int i) const;					// Exposed to Python
+	int getUniqueUnitForClass(int iUnitClass) const;	// Exposed to Python: NO_UNIT if the trait has none
+	int getNumUniqueBuildings() const;					// Exposed to Python
+	int getUniqueBuildingClass(int i) const;				// Exposed to Python
+	int getUniqueBuilding(int i) const;					// Exposed to Python
+	int getUniqueBuildingForClass(int iBuildingClass) const;	// Exposed to Python: NO_BUILDING if the trait has none
 	int getLakePlotYieldChange(int i) const;				// Exposed to Python
 	int* getLakePlotYieldChangeArray() const;
 	int getAngryYieldChange(int i) const;				// Exposed to Python
@@ -4704,6 +4712,7 @@ public:
 
 	bool read(CvXMLLoadUtility* pXML);
 	bool readPass3();
+	void readUniqueUnits();							// added by this mod: after the units are loaded
 
 	//---------------------------------------PROTECTED MEMBER VARIABLES---------------------------------
 protected:
@@ -4784,6 +4793,14 @@ protected:
 	std::vector< std::vector<int> > m_aaiImprovementYieldChangeValues;		// because improvements are loaded after traits
 	int* m_paiRiverPlotYieldChange;
 	int* m_paiLakePlotYieldChange;
+	std::vector<CvString> m_aszUniqueUnitClassTypes;		// read(), the classes and units are loaded after the traits
+	std::vector<CvString> m_aszUniqueUnitTypes;
+	std::vector<CvString> m_aszUniqueBuildingClassTypes;
+	std::vector<CvString> m_aszUniqueBuildingTypes;
+	std::vector<int> m_aiUniqueUnitClasses;					// readPass3()
+	std::vector<int> m_aiUniqueUnits;
+	std::vector<int> m_aiUniqueBuildingClasses;
+	std::vector<int> m_aiUniqueBuildings;
 	int* m_paiAngryYieldChange;
 	int* m_paiAngryCommerceChange;
 	int* m_paiUnhealthyYieldChange;

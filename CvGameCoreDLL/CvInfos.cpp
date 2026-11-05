@@ -19405,6 +19405,68 @@ int* CvTraitInfo::getLakePlotYieldChangeArray() const
 	return m_paiLakePlotYieldChange;
 }
 
+// UniqueUnits and UniqueBuildings: for the players with this trait, instead of what the civilization has (added by this mod).
+// See CvPlayer::getCivilizationUnit()
+int CvTraitInfo::getNumUniqueUnits() const
+{
+	return (int)m_aiUniqueUnits.size();
+}
+
+int CvTraitInfo::getUniqueUnitClass(int i) const
+{
+	return m_aiUniqueUnitClasses[i];
+}
+
+int CvTraitInfo::getUniqueUnit(int i) const
+{
+	return m_aiUniqueUnits[i];
+}
+
+int CvTraitInfo::getUniqueUnitForClass(int iUnitClass) const
+{
+	int iI;
+
+	for (iI = 0; iI < (int)m_aiUniqueUnits.size(); iI++)
+	{
+		if (m_aiUniqueUnitClasses[iI] == iUnitClass)
+		{
+			return m_aiUniqueUnits[iI];
+		}
+	}
+
+	return NO_UNIT;
+}
+
+int CvTraitInfo::getNumUniqueBuildings() const
+{
+	return (int)m_aiUniqueBuildings.size();
+}
+
+int CvTraitInfo::getUniqueBuildingClass(int i) const
+{
+	return m_aiUniqueBuildingClasses[i];
+}
+
+int CvTraitInfo::getUniqueBuilding(int i) const
+{
+	return m_aiUniqueBuildings[i];
+}
+
+int CvTraitInfo::getUniqueBuildingForClass(int iBuildingClass) const
+{
+	int iI;
+
+	for (iI = 0; iI < (int)m_aiUniqueBuildings.size(); iI++)
+	{
+		if (m_aiUniqueBuildingClasses[iI] == iBuildingClass)
+		{
+			return m_aiUniqueBuildings[iI];
+		}
+	}
+
+	return NO_BUILDING;
+}
+
 int CvTraitInfo::getAngryYieldChange(int i) const
 {
 	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
@@ -19601,6 +19663,35 @@ static void resolveTypeList(const TCHAR* szListTag, const std::vector<CvString>&
 	}
 }
 
+// UniqueUnits and UniqueBuildings of the traits: pairs of a class and what the trait has for it (added by this mod)
+static void readUniqueTypes(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szClassTag, const TCHAR* szTypeTag, std::vector<CvString>& aszClasses, std::vector<CvString>& aszTypes)
+{
+	CvString szClass;
+	CvString szType;
+
+	aszClasses.clear();
+	aszTypes.clear();
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szListTag))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szItemTag))
+		{
+			do
+			{
+				pXML->GetChildXmlValByName(szClass, szClassTag);
+				pXML->GetChildXmlValByName(szType, szTypeTag);
+				aszClasses.push_back(szClass);
+				aszTypes.push_back(szType);
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), const_cast<TCHAR*>(szItemTag)));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
 bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 {
 	CvString szTextVal;
@@ -19756,6 +19847,9 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	// readPass3() finds them
 	m_aiFeatureRouteFeatures.clear();
 	m_aszFeatureRouteTypes.clear();
+	readUniqueTypes(pXML, "UniqueUnits", "UniqueUnit", "UnitClassType", "UnitType", m_aszUniqueUnitClassTypes, m_aszUniqueUnitTypes);
+	readUniqueTypes(pXML, "UniqueBuildings", "UniqueBuilding", "BuildingClassType", "BuildingType", m_aszUniqueBuildingClassTypes, m_aszUniqueBuildingTypes);
+
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FeatureRoutes"))
 	{
 		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FeatureRoute"))
@@ -19930,11 +20024,55 @@ static int resolveConditionalType(const CvString& szType, int iNumInfos)
 
 // Improvements, building classes and civics are loaded after traits (CvXMLLoadUtility::LoadPreMenuGlobals calls this
 // after them)
+// UniqueUnits: the unit must be of the class, as in the civilizations (added by this mod). Units are loaded after readPass3()
+void CvTraitInfo::readUniqueUnits()
+{
+	char szMessage[1024];
+	int i;
+
+	m_aiUniqueUnitClasses.clear();
+	m_aiUniqueUnits.clear();
+	for (i = 0; i < (int)m_aszUniqueUnitTypes.size(); i++)
+	{
+		int iClass = GC.getInfoTypeForString(m_aszUniqueUnitClassTypes[i].GetCString(), true);
+		int iUnit = GC.getInfoTypeForString(m_aszUniqueUnitTypes[i].GetCString(), true);
+		if (iClass < 0 || iUnit < 0 || GC.getUnitInfo((UnitTypes)iUnit).getUnitClassType() != iClass)
+		{
+			sprintf(szMessage, "UniqueUnits of CIV4TraitInfos.xml: %s is not of %s", m_aszUniqueUnitTypes[i].GetCString(), m_aszUniqueUnitClassTypes[i].GetCString());
+			gDLL->MessageBox(szMessage, "XML Error");
+		}
+		else
+		{
+			m_aiUniqueUnitClasses.push_back(iClass);
+			m_aiUniqueUnits.push_back(iUnit);
+		}
+	}
+}
+
 bool CvTraitInfo::readPass3()
 {
 	char szMessage[1024];
 	int iRoute;
 	int i;
+
+	// UniqueBuildings: the building must be of the class, as in the civilizations (added by this mod)
+	m_aiUniqueBuildingClasses.clear();
+	m_aiUniqueBuildings.clear();
+	for (i = 0; i < (int)m_aszUniqueBuildingTypes.size(); i++)
+	{
+		int iClass = GC.getInfoTypeForString(m_aszUniqueBuildingClassTypes[i].GetCString(), true);
+		int iBuilding = GC.getInfoTypeForString(m_aszUniqueBuildingTypes[i].GetCString(), true);
+		if (iClass < 0 || iBuilding < 0 || GC.getBuildingInfo((BuildingTypes)iBuilding).getBuildingClassType() != iClass)
+		{
+			sprintf(szMessage, "UniqueBuildings of CIV4TraitInfos.xml: %s is not of %s", m_aszUniqueBuildingTypes[i].GetCString(), m_aszUniqueBuildingClassTypes[i].GetCString());
+			gDLL->MessageBox(szMessage, "XML Error");
+		}
+		else
+		{
+			m_aiUniqueBuildingClasses.push_back(iClass);
+			m_aiUniqueBuildings.push_back(iBuilding);
+		}
+	}
 
 	SAFE_DELETE_ARRAY(m_paiFeatureRoute);
 	if (!m_aiFeatureRouteFeatures.empty())

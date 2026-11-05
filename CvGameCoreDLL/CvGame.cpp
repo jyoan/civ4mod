@@ -3179,7 +3179,7 @@ bool CvGame::canTrainNukes() const
 		{
 			for (int iJ = 0; iJ < GC.getNumUnitClassInfos(); iJ++)
 			{
-				UnitTypes eUnit = (UnitTypes)GC.getCivilizationInfo(kPlayer.getCivilizationType()).getCivilizationUnits((UnitClassTypes)iJ);
+				UnitTypes eUnit = (UnitTypes)kPlayer.getCivilizationUnit((UnitClassTypes)iJ);
 
 				if (NO_UNIT != eUnit)
 				{
@@ -3236,6 +3236,29 @@ TeamTypes CvGame::getActiveTeam() const
 	{
 		return (TeamTypes)GET_PLAYER(getActivePlayer()).getTeam();
 	}
+}
+
+
+// The unit of the class for the active player, as for the active civilization without an active player (added by this mod)
+int CvGame::getActiveCivilizationUnit(int iUnitClass) const
+{
+	if (getActivePlayer() == NO_PLAYER)
+	{
+		return GC.getCivilizationInfo(getActiveCivilizationType()).getCivilizationUnits(iUnitClass);
+	}
+
+	return GET_PLAYER(getActivePlayer()).getCivilizationUnit(iUnitClass);
+}
+
+
+int CvGame::getActiveCivilizationBuilding(int iBuildingClass) const
+{
+	if (getActivePlayer() == NO_PLAYER)
+	{
+		return GC.getCivilizationInfo(getActiveCivilizationType()).getCivilizationBuildings(iBuildingClass);
+	}
+
+	return GET_PLAYER(getActivePlayer()).getCivilizationBuilding(iBuildingClass);
 }
 
 
@@ -6364,7 +6387,7 @@ void CvGame::createBarbarianUnits()
 							for (iJ = 0; iJ < GC.getNumUnitClassInfos(); iJ++)
 							{
 								bool bValid = false;
-								eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(GET_PLAYER(BARBARIAN_PLAYER).getCivilizationType()).getCivilizationUnits(iJ)));
+								eLoopUnit = ((UnitTypes)(GET_PLAYER(BARBARIAN_PLAYER).getCivilizationUnit(iJ)));
 
 								if (eLoopUnit != NO_UNIT)
 								{
@@ -6524,7 +6547,7 @@ void CvGame::createAnimals()
 
 						for (iJ = 0; iJ < GC.getNumUnitClassInfos(); iJ++)
 						{
-							eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(GET_PLAYER(BARBARIAN_PLAYER).getCivilizationType()).getCivilizationUnits(iJ)));
+							eLoopUnit = ((UnitTypes)(GET_PLAYER(BARBARIAN_PLAYER).getCivilizationUnit(iJ)));
 
 							if (eLoopUnit != NO_UNIT)
 							{

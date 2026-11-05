@@ -1013,7 +1013,7 @@ void CvUnit::doCombatPromotions(CvUnit* pDefender)
 					continue;
 				}
 
-				eEnslavedUnit = (UnitTypes)GC.getCivilizationInfo(GET_PLAYER(pWinner->getOwnerINLINE()).getCivilizationType()).getCivilizationUnits(eEnslavedUnitClass);
+				eEnslavedUnit = (UnitTypes)GET_PLAYER(pWinner->getOwnerINLINE()).getCivilizationUnit(eEnslavedUnitClass);
 				if (eEnslavedUnit == NO_UNIT || !canInitUnitOnPlot(eEnslavedUnit, pWinner->plot(), pWinner->getOwnerINLINE()))
 				{
 					continue;
@@ -8512,7 +8512,7 @@ bool CvUnit::upgradeAvailable(UnitTypes eFromUnit, UnitClassTypes eToUnitClass, 
 	{
 		if (fromUnitInfo.getUpgradeUnitClass(iI))
 		{
-			eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+			eLoopUnit = ((UnitTypes)(GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(iI)));
 
 			if (eLoopUnit != NO_UNIT)
 			{
@@ -8664,7 +8664,7 @@ CvCity* CvUnit::getUpgradeCity(UnitTypes eUnit, bool bSearch, int* iSearchValue)
 	CvPlayerAI& kPlayer = GET_PLAYER(getOwnerINLINE());
 	CvUnitInfo& kUnitInfo = GC.getUnitInfo(eUnit);
 
-	if (GC.getCivilizationInfo(kPlayer.getCivilizationType()).getCivilizationUnits(kUnitInfo.getUnitClassType()) != eUnit)
+	if (kPlayer.getCivilizationUnit(kUnitInfo.getUnitClassType()) != eUnit)
 	{
 		return false;
 	}

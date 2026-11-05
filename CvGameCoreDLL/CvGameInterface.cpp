@@ -1922,7 +1922,7 @@ void CvGame::startFlyoutMenu(const CvPlot* pPlot, std::vector<CvFlyoutMenuData>&
 			aFlyoutItems.push_back(CvFlyoutMenuData(NO_FLYOUT, -1, -1, -1, szBuffer));
 			for (int iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 			{
-				UnitTypes eLoopUnit = (UnitTypes) GC.getCivilizationInfo(pCity->getCivilizationType()).getCivilizationUnits(iI);
+				UnitTypes eLoopUnit = (UnitTypes) GET_PLAYER(pCity->getOwnerINLINE()).getCivilizationUnit(iI);
 				if (eLoopUnit != NO_UNIT)
 				{
 					if (pCity->canTrain(eLoopUnit))
@@ -1935,7 +1935,7 @@ void CvGame::startFlyoutMenu(const CvPlot* pPlot, std::vector<CvFlyoutMenuData>&
 
 			for (int iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
 			{
-				BuildingTypes eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(pCity->getCivilizationType()).getCivilizationBuildings(iI);
+				BuildingTypes eLoopBuilding = (BuildingTypes)GET_PLAYER(pCity->getOwnerINLINE()).getCivilizationBuilding(iI);
 				if (eLoopBuilding != NO_BUILDING)
 				{
 					if (pCity->canConstruct(eLoopBuilding))
@@ -2288,7 +2288,7 @@ void CvGame::loadBuildQueue(const CvString& strItem) const
 
 		if (NO_UNITCLASS != eUnitClass)
 		{
-			eUnit = (UnitTypes)GC.getCivilizationInfo(getActiveCivilizationType()).getCivilizationUnits(eUnitClass);
+			eUnit = (UnitTypes)getActiveCivilizationUnit(eUnitClass);
 
 			if (NO_UNIT != eUnit && strItem == GC.getUnitInfo(eUnit).getType())
 			{
@@ -2305,7 +2305,7 @@ void CvGame::loadBuildQueue(const CvString& strItem) const
 
 		if (NO_BUILDINGCLASS != eBuildingClass)
 		{
-			eBuilding = (BuildingTypes)GC.getCivilizationInfo(getActiveCivilizationType()).getCivilizationBuildings(eBuildingClass);
+			eBuilding = (BuildingTypes)getActiveCivilizationBuilding(eBuildingClass);
 
 			if (NO_BUILDING != eBuilding && strItem == GC.getBuildingInfo(eBuilding).getType())
 			{

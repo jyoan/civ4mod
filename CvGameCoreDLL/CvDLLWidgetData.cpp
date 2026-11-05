@@ -1135,7 +1135,7 @@ void CvDLLWidgetData::doTrain(CvWidgetDataStruct &widgetDataStruct)
 {
 	UnitTypes eUnit;
 
-	eUnit = ((UnitTypes)(GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getCivilizationUnits(widgetDataStruct.m_iData1)));
+	eUnit = ((UnitTypes)(GC.getGameINLINE().getActiveCivilizationUnit(widgetDataStruct.m_iData1)));
 
 	if (widgetDataStruct.m_iData2 != FFreeList::INVALID_INDEX)
 	{
@@ -1154,7 +1154,7 @@ void CvDLLWidgetData::doConstruct(CvWidgetDataStruct &widgetDataStruct)
 {
 	BuildingTypes eBuilding;
 
-	eBuilding = ((BuildingTypes)(GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getCivilizationBuildings(widgetDataStruct.m_iData1)));
+	eBuilding = ((BuildingTypes)(GC.getGameINLINE().getActiveCivilizationBuilding(widgetDataStruct.m_iData1)));
 
 	if (widgetDataStruct.m_iData2 != FFreeList::INVALID_INDEX)
 	{
@@ -1442,7 +1442,7 @@ void CvDLLWidgetData::doPediaFeatureJump(CvWidgetDataStruct &widgetDataStruct)
 void CvDLLWidgetData::doPediaTrainJump(CvWidgetDataStruct &widgetDataStruct)
 {
 	CyArgsList argsList;
-	argsList.add(GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getCivilizationUnits(widgetDataStruct.m_iData1));
+	argsList.add(GC.getGameINLINE().getActiveCivilizationUnit(widgetDataStruct.m_iData1));
 	
 	gDLL->getPythonIFace()->callFunction(PYScreensModule, "pediaJumpToUnit", argsList.makeFunctionArgs());
 }
@@ -1451,7 +1451,7 @@ void CvDLLWidgetData::doPediaTrainJump(CvWidgetDataStruct &widgetDataStruct)
 void CvDLLWidgetData::doPediaConstructJump(CvWidgetDataStruct &widgetDataStruct)
 {
 	CyArgsList argsList;
-	argsList.add(GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getCivilizationBuildings(widgetDataStruct.m_iData1));
+	argsList.add(GC.getGameINLINE().getActiveCivilizationBuilding(widgetDataStruct.m_iData1));
 
 	gDLL->getPythonIFace()->callFunction(PYScreensModule, "pediaJumpToBuilding", argsList.makeFunctionArgs());
 }
@@ -1720,7 +1720,7 @@ void CvDLLWidgetData::parseTrainHelp(CvWidgetDataStruct &widgetDataStruct, CvWSt
 
 	if (pHeadSelectedCity != NULL)
 	{
-		eUnit = (UnitTypes)GC.getCivilizationInfo(pHeadSelectedCity->getCivilizationType()).getCivilizationUnits(widgetDataStruct.m_iData1);
+		eUnit = (UnitTypes)GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getCivilizationUnit(widgetDataStruct.m_iData1);
 
 		GAMETEXT.setUnitHelp(szBuffer, eUnit, false, widgetDataStruct.m_bOption, false, pHeadSelectedCity);
 	}
@@ -1743,7 +1743,7 @@ void CvDLLWidgetData::parseConstructHelp(CvWidgetDataStruct &widgetDataStruct, C
 
 	if (pHeadSelectedCity != NULL)
 	{
-		eBuilding = (BuildingTypes)GC.getCivilizationInfo(pHeadSelectedCity->getCivilizationType()).getCivilizationBuildings(widgetDataStruct.m_iData1);
+		eBuilding = (BuildingTypes)GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getCivilizationBuilding(widgetDataStruct.m_iData1);
 
 		GAMETEXT.setBuildingHelp(szBuffer, eBuilding, false, widgetDataStruct.m_bOption, false, pHeadSelectedCity);
 	}
@@ -3080,7 +3080,7 @@ void CvDLLWidgetData::parseDisabledCitizenHelp(CvWidgetDataStruct &widgetDataStr
 
 				for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
 				{
-					eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getCivilizationBuildings(iI);
+					eLoopBuilding = (BuildingTypes)GC.getGameINLINE().getActiveCivilizationBuilding(iI);
 
 					if (eLoopBuilding != NO_BUILDING)
 					{

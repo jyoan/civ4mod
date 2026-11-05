@@ -9448,7 +9448,7 @@ bool CvUnitAI::AI_construct(int iMaxCount, int iMaxSingleBuildingCount, int iThr
 					{
 						for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
 						{
-							BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI);
+							BuildingTypes eBuilding = (BuildingTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(iI);
 
 							if (NO_BUILDING != eBuilding)
 						{
@@ -9533,7 +9533,7 @@ bool CvUnitAI::AI_switchHurry()
 	{
 		if (isWorldWonderClass((BuildingClassTypes)iI))
 		{
-			BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI);
+			BuildingTypes eBuilding = (BuildingTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(iI);
 
 			if (NO_BUILDING != eBuilding)
 		{

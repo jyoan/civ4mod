@@ -235,6 +235,8 @@ public:
 	void doPeaceAnger();										// added by this mod
 	int getCultureRangeChange() const;							// Exposed to Python: iCultureRangeChange of the traits
 	bool isObserver() const;										// added by this mod: the player watching in the AI observe mode
+	int getCivilizationUnit(int iUnitClass) const;				// Exposed to Python: with UniqueUnits of the traits
+	int getCivilizationBuilding(int iBuildingClass) const;		// Exposed to Python: with UniqueBuildings of the traits
 	bool isForbiddenCivic(CivicTypes eCivic) const;					// Exposed to Python: ForbiddenCivics of the traits
 	bool isMaxCitiesReached() const;									// Exposed to Python
 	bool isIgnoreObsoleteBuilding(BuildingTypes eBuilding) const;		// Exposed to Python

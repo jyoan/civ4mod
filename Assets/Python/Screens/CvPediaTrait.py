@@ -134,14 +134,14 @@ class CvPediaTrait:
 		screen.attachLabel(panelName, "", "  ")
 
 		for iUnit in range(gc.getNumUnitInfos()):
-			if self.isPrereqTrait(gc.getUnitInfo(iUnit)):
+			if self.isPrereqTrait(gc.getUnitInfo(iUnit)) or gc.getTraitInfo(self.iTrait).getUniqueUnitForClass(gc.getUnitInfo(iUnit).getUnitClassType()) == iUnit:
 				szButton = gc.getUnitInfo(iUnit).getButton()
 				if self.top.iActivePlayer != -1:
 					szButton = gc.getPlayer(self.top.iActivePlayer).getUnitButton(iUnit)
 				screen.attachImageButton( panelName, "", szButton, GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, False )
 
 		for iBuilding in range(gc.getNumBuildingInfos()):
-			if self.isPrereqTrait(gc.getBuildingInfo(iBuilding)):
+			if self.isPrereqTrait(gc.getBuildingInfo(iBuilding)) or gc.getTraitInfo(self.iTrait).getUniqueBuildingForClass(gc.getBuildingInfo(iBuilding).getBuildingClassType()) == iBuilding:
 				screen.attachImageButton( panelName, "", gc.getBuildingInfo(iBuilding).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iBuilding, 1, False )
 
 		for iCivic in range(gc.getNumCivicInfos()):

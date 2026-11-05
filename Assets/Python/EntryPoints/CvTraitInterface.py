@@ -65,7 +65,7 @@ def gainGold(pPlayer, iGold):
 
 def createUnits(pPlayer, szUnitClass, iNum, pPlot):
 	"Creates iNum units of the unit class (the unit of the player's civilization) on the plot. Nothing without a plot."
-	eUnit = gc.getCivilizationInfo(pPlayer.getCivilizationType()).getCivilizationUnits(gc.getInfoTypeForString(szUnitClass))
+	eUnit = pPlayer.getCivilizationUnit(gc.getInfoTypeForString(szUnitClass))
 	if eUnit == -1 or pPlot is None or pPlot.isNone():
 		return
 	for i in range(iNum):
@@ -74,6 +74,6 @@ def createUnits(pPlayer, szUnitClass, iNum, pPlot):
 def addBuilding(pCity, szBuildingClass):
 	"The city gets the building of the building class (the building of the owner's civilization)"
 	pOwner = gc.getPlayer(pCity.getOwner())
-	eBuilding = gc.getCivilizationInfo(pOwner.getCivilizationType()).getCivilizationBuildings(gc.getInfoTypeForString(szBuildingClass))
+	eBuilding = pOwner.getCivilizationBuilding(gc.getInfoTypeForString(szBuildingClass))
 	if eBuilding != -1:
 		pCity.setNumRealBuilding(eBuilding, 1)

@@ -2017,6 +2017,16 @@ int CyPlayer::getCultureRangeChange()
 	return m_pPlayer ? m_pPlayer->getCultureRangeChange() : 0;
 }
 
+int CyPlayer::getCivilizationUnit(int iUnitClass)
+{
+	return m_pPlayer ? m_pPlayer->getCivilizationUnit(iUnitClass) : -1;
+}
+
+int CyPlayer::getCivilizationBuilding(int iBuildingClass)
+{
+	return m_pPlayer ? m_pPlayer->getCivilizationBuilding(iBuildingClass) : -1;
+}
+
 bool CyPlayer::isForbiddenCivic(int /*CivicTypes*/ eCivic)
 {
 	return m_pPlayer ? m_pPlayer->isForbiddenCivic((CivicTypes)eCivic) : false;

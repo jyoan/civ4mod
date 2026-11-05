@@ -242,7 +242,7 @@ void CvPlayer::init(PlayerTypes eID)
 
 		for (iI = 0; iI < GC.getNumUnitClassInfos(); ++iI)
 		{
-			UnitTypes eUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+			UnitTypes eUnit = ((UnitTypes)(getCivilizationUnit(iI)));
 
 			if (NO_UNIT != eUnit)
 			{
@@ -804,7 +804,7 @@ void CvPlayer::initFreeUnits()
 	{
 		for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 		{
-			eLoopUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI);
+			eLoopUnit = (UnitTypes)getCivilizationUnit(iI);
 
 			if (eLoopUnit != NO_UNIT)
 			{
@@ -875,7 +875,7 @@ void CvPlayer::addFreeUnitAI(UnitAITypes eUnitAI, int iCount)
 
 	for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 	{
-		eLoopUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI);
+		eLoopUnit = (UnitTypes)getCivilizationUnit(iI);
 
 		if (eLoopUnit != NO_UNIT)
 		{
@@ -1590,7 +1590,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 			}
 			else
 			{
-				eBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(eBuildingClass);
+				eBuilding = (BuildingTypes)getCivilizationBuilding(eBuildingClass);
 			}
 
 			if (eBuilding != NO_BUILDING)
@@ -4767,7 +4767,7 @@ void CvPlayer::findNewCapital()
 	int iBestValue;
 	int iLoop;
 
-	eCapitalBuilding = ((BuildingTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(GC.getDefineINT("CAPITAL_BUILDINGCLASS"))));
+	eCapitalBuilding = ((BuildingTypes)(getCivilizationBuilding(GC.getDefineINT("CAPITAL_BUILDINGCLASS"))));
 
 	if (eCapitalBuilding == NO_BUILDING)
 	{
@@ -5014,7 +5014,7 @@ bool CvPlayer::canReceiveGoody(CvPlot* pPlot, GoodyTypes eGoody, CvUnit* pUnit) 
 
 	if (GC.getGoodyInfo(eGoody).getUnitClassType() != NO_UNITCLASS)
 	{
-		eUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(GC.getGoodyInfo(eGoody).getUnitClassType())));
+		eUnit = ((UnitTypes)(getCivilizationUnit(GC.getGoodyInfo(eGoody).getUnitClassType())));
 
 		if (eUnit == NO_UNIT)
 		{
@@ -5212,7 +5212,7 @@ void CvPlayer::receiveGoody(CvPlot* pPlot, GoodyTypes eGoody, CvUnit* pUnit)
 
 	if (GC.getGoodyInfo(eGoody).getUnitClassType() != NO_UNITCLASS)
 	{
-		eUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(GC.getGoodyInfo(eGoody).getUnitClassType());
+		eUnit = (UnitTypes)getCivilizationUnit(GC.getGoodyInfo(eGoody).getUnitClassType());
 
 		if (eUnit != NO_UNIT)
 		{
@@ -5224,7 +5224,7 @@ void CvPlayer::receiveGoody(CvPlot* pPlot, GoodyTypes eGoody, CvUnit* pUnit)
 	{
 		iBarbCount = 0;
 
-		eUnit = (UnitTypes)GC.getCivilizationInfo(GET_PLAYER(BARBARIAN_PLAYER).getCivilizationType()).getCivilizationUnits(GC.getGoodyInfo(eGoody).getBarbarianUnitClass());
+		eUnit = (UnitTypes)GET_PLAYER(BARBARIAN_PLAYER).getCivilizationUnit(GC.getGoodyInfo(eGoody).getBarbarianUnitClass());
 
 		if (eUnit != NO_UNIT)
 		{
@@ -5491,7 +5491,7 @@ void CvPlayer::found(int iX, int iY)
 
 	for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
 	{
-		eLoopBuilding = ((BuildingTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI)));
+		eLoopBuilding = ((BuildingTypes)(getCivilizationBuilding(iI)));
 
 		if (eLoopBuilding != NO_BUILDING)
 		{
@@ -5584,8 +5584,8 @@ bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool
 
 	eUnitClass = ((UnitClassTypes)(GC.getUnitInfo(eUnit).getUnitClassType()));
 
-	FAssert(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(eUnitClass) == eUnit);
-	if (GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(eUnitClass) != eUnit)
+	FAssert(getCivilizationUnit(eUnitClass) == eUnit);
+	if (getCivilizationUnit(eUnitClass) != eUnit)
 	{
 		return false;
 	}
@@ -5711,8 +5711,8 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 
 	eBuildingClass = ((BuildingClassTypes)(GC.getBuildingInfo(eBuilding).getBuildingClassType()));
 
-	FAssert(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(eBuildingClass) == eBuilding);
-	if (GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(eBuildingClass) != eBuilding)
+	FAssert(getCivilizationBuilding(eBuildingClass) == eBuilding);
+	if (getCivilizationBuilding(eBuildingClass) != eBuilding)
 	{
 		return false;
 	}
@@ -5814,11 +5814,10 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 		return false;
 	}
 
-	CvCivilizationInfo &civilizationInfo = GC.getCivilizationInfo(getCivilizationType());
 	int numBuildingClassInfos = GC.getNumBuildingClassInfos();
 	for (iI = 0; iI < numBuildingClassInfos; iI++)
 	{
-		BuildingTypes ePrereqBuilding = (BuildingTypes)civilizationInfo.getCivilizationBuildings(iI);
+		BuildingTypes ePrereqBuilding = (BuildingTypes)getCivilizationBuilding(iI);
 
 		if (NO_BUILDING != ePrereqBuilding && isObsoleteBuilding(ePrereqBuilding))
 		{
@@ -6645,6 +6644,55 @@ bool CvPlayer::isObserver() const
 	return (GC.getGameINLINE().isObserveMode() && getID() == GC.getGameINLINE().getActivePlayer());
 }
 
+// The unit of the unit class for this player (added by this mod): UniqueUnits of the traits, before the civilization. The
+// first trait in the order of the XML wins
+int CvPlayer::getCivilizationUnit(int iUnitClass) const
+{
+	int iUnit;
+	int iI;
+
+	if (getLeaderType() != NO_LEADER)
+	{
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (GC.getTraitInfo((TraitTypes)iI).getNumUniqueUnits() > 0 && hasTrait((TraitTypes)iI))
+			{
+				iUnit = GC.getTraitInfo((TraitTypes)iI).getUniqueUnitForClass(iUnitClass);
+				if (iUnit != NO_UNIT)
+				{
+					return iUnit;
+				}
+			}
+		}
+	}
+
+	return GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iUnitClass);
+}
+
+// The same for UniqueBuildings (added by this mod)
+int CvPlayer::getCivilizationBuilding(int iBuildingClass) const
+{
+	int iBuilding;
+	int iI;
+
+	if (getLeaderType() != NO_LEADER)
+	{
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (GC.getTraitInfo((TraitTypes)iI).getNumUniqueBuildings() > 0 && hasTrait((TraitTypes)iI))
+			{
+				iBuilding = GC.getTraitInfo((TraitTypes)iI).getUniqueBuildingForClass(iBuildingClass);
+				if (iBuilding != NO_BUILDING)
+				{
+					return iBuilding;
+				}
+			}
+		}
+	}
+
+	return GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iBuildingClass);
+}
+
 // iCultureRangeChange of the traits (added by this mod)
 int CvPlayer::getCultureRangeChange() const
 {
@@ -7162,7 +7210,7 @@ void CvPlayer::removeBuildingClass(BuildingClassTypes eBuildingClass)
 	BuildingTypes eBuilding;
 	int iLoop;
 
-	eBuilding = ((BuildingTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(eBuildingClass)));
+	eBuilding = ((BuildingTypes)(getCivilizationBuilding(eBuildingClass)));
 
 	if (eBuilding != NO_BUILDING)
 	{
@@ -7185,7 +7233,7 @@ void CvPlayer::processBuilding(BuildingTypes eBuilding, int iChange, CvArea* pAr
 
 	if (GC.getBuildingInfo(eBuilding).getFreeBuildingClass() != NO_BUILDINGCLASS)
 	{
-		BuildingTypes eFreeBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(GC.getBuildingInfo(eBuilding).getFreeBuildingClass());
+		BuildingTypes eFreeBuilding = (BuildingTypes)getCivilizationBuilding(GC.getBuildingInfo(eBuilding).getFreeBuildingClass());
 		changeFreeBuildingCount(eFreeBuilding, iChange);
 	}
 
@@ -7247,7 +7295,7 @@ void CvPlayer::processBuilding(BuildingTypes eBuilding, int iChange, CvArea* pAr
 
 	for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
 	{
-		BuildingTypes eOurBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI);
+		BuildingTypes eOurBuilding = (BuildingTypes)getCivilizationBuilding(iI);
 		if (NO_BUILDING != eOurBuilding)
 		{
 			changeExtraBuildingHappiness(eOurBuilding, (GC.getBuildingInfo(eBuilding).getBuildingHappinessChanges(iI) * iChange));
@@ -8514,7 +8562,7 @@ void CvPlayer::foundReligion(ReligionTypes eReligion, ReligionTypes eSlotReligio
 		{
 			if (GC.getReligionInfo(eSlotReligion).getNumFreeUnits() > 0)
 			{
-				eFreeUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(GC.getReligionInfo(eReligion).getFreeUnitClass())));
+				eFreeUnit = ((UnitTypes)(getCivilizationUnit(GC.getReligionInfo(eReligion).getFreeUnitClass())));
 
 				if (eFreeUnit != NO_UNIT)
 				{
@@ -10789,6 +10837,14 @@ void CvPlayer::setCombatExperience(int iExperience)
 						UnitTypes eLoopUnit = (UnitTypes)((iI + iRandOffset) % GC.getNumUnitInfos());
 						if (GC.getUnitInfo(eLoopUnit).getLeaderExperience() > 0 || GC.getUnitInfo(eLoopUnit).getLeaderPromotion() != NO_PROMOTION)
 						{
+							// The unit of the class for this player (added by this mod): BtS took any leader unit, also the unique ones of
+							// others
+							eLoopUnit = (UnitTypes)getCivilizationUnit(GC.getUnitInfo(eLoopUnit).getUnitClassType());
+							if (eLoopUnit == NO_UNIT)
+							{
+								continue;
+							}
+
 							pBestCity->createGreatPeople(eLoopUnit, false, true);
 							setCombatExperience(getCombatExperience() - iExperienceThreshold);
 							break;
@@ -16293,7 +16349,7 @@ int CvPlayer::getAdvancedStartBuildingCost(BuildingTypes eBuilding, bool bAdd, C
 					{
 						if (GC.getBuildingInfo(eBuildingLoop).isBuildingClassNeededInCity(iBuildingClassPrereqLoop))
 						{
-							if ((BuildingTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iBuildingClassPrereqLoop)) == eBuilding)
+							if ((BuildingTypes)(getCivilizationBuilding(iBuildingClassPrereqLoop)) == eBuilding)
 							{
 								return -1;
 							}
@@ -16909,7 +16965,7 @@ void CvPlayer::processCivics(CivicTypes eCivic, int iChange)
 
 	for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
 	{
-		BuildingTypes eOurBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI);
+		BuildingTypes eOurBuilding = (BuildingTypes)getCivilizationBuilding(iI);
 		if (NO_BUILDING != eOurBuilding)
 		{
 			changeExtraBuildingHappiness(eOurBuilding, (GC.getCivicInfo(eCivic).getBuildingHappinessChanges(iI) * iChange));
@@ -18523,7 +18579,7 @@ EventTriggeredData* CvPlayer::initTriggeredData(EventTriggerTypes eEventTrigger,
 			{
 				if (kTrigger.getBuildingRequired(i) != NO_BUILDINGCLASS)
 				{
-					BuildingTypes eTestBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(kTrigger.getBuildingRequired(i));
+					BuildingTypes eTestBuilding = (BuildingTypes)getCivilizationBuilding(kTrigger.getBuildingRequired(i));
 					if (NO_BUILDING != eTestBuilding && pCity->getNumRealBuilding(eTestBuilding) > 0)
 					{
 						aeBuildings.push_back(eTestBuilding);
@@ -18886,7 +18942,7 @@ bool CvPlayer::canDoEvent(EventTypes eEvent, const EventTriggeredData& kTriggere
 
 	if (kEvent.getUnitClass() != NO_UNITCLASS)
 	{
-		UnitTypes eUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(kEvent.getUnitClass());
+		UnitTypes eUnit = (UnitTypes)getCivilizationUnit(kEvent.getUnitClass());
 		if (eUnit == NO_UNIT)
 		{
 			return false;
@@ -19320,7 +19376,7 @@ void CvPlayer::applyEvent(EventTypes eEvent, int iEventTriggeredId, bool bUpdate
 			{
 				if (0 != kEvent.getBuildingHappyChange(i))
 				{
-					BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(i);
+					BuildingTypes eBuilding = (BuildingTypes)getCivilizationBuilding(i);
 					if (NO_BUILDING != eBuilding)
 					{
 						changeExtraBuildingHappiness(eBuilding, kEvent.getBuildingHappyChange(i));
@@ -19335,7 +19391,7 @@ void CvPlayer::applyEvent(EventTypes eEvent, int iEventTriggeredId, bool bUpdate
 			{
 				if (0 != kEvent.getBuildingHealthChange(i))
 				{
-					BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(i);
+					BuildingTypes eBuilding = (BuildingTypes)getCivilizationBuilding(i);
 					if (NO_BUILDING != eBuilding)
 					{
 						changeExtraBuildingHealth(eBuilding, kEvent.getBuildingHealthChange(i));
@@ -19446,7 +19502,7 @@ void CvPlayer::applyEvent(EventTypes eEvent, int iEventTriggeredId, bool bUpdate
 
 		if (kEvent.getUnitClass() != NO_UNITCLASS)
 		{
-			UnitTypes eUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(kEvent.getUnitClass());
+			UnitTypes eUnit = (UnitTypes)getCivilizationUnit(kEvent.getUnitClass());
 			if (eUnit != NO_UNIT)
 			{
 				CvCity* pUnitCity = pCity;
@@ -21937,7 +21993,7 @@ int CvPlayer::getNewCityProductionValue() const
 	int iValue = 0;
 	for (int iJ = 0; iJ < GC.getNumBuildingClassInfos(); iJ++)
 	{
-		BuildingTypes eBuilding = ((BuildingTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iJ)));
+		BuildingTypes eBuilding = ((BuildingTypes)(getCivilizationBuilding(iJ)));
 
 		if (NO_BUILDING != eBuilding)
 		{
@@ -22006,7 +22062,7 @@ UnitTypes CvPlayer::getTechFreeUnit(TechTypes eTech) const
 		return NO_UNIT;
 	}
 
-	UnitTypes eUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(eUnitClass)));
+	UnitTypes eUnit = ((UnitTypes)(getCivilizationUnit(eUnitClass)));
 	if (eUnit == NO_UNIT)
 	{
 		return NO_UNIT;

@@ -2244,4 +2244,58 @@
 		<Spanish>Build Test Improvement (Tunnel)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#12488;&#12531;&#12493;&#12523;&#65289;&#12398;&#24314;&#35373;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_UNIT</Tag>
+		<English>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</English>
+		<French>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</French>
+		<German>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</German>
+		<Italian>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</Italian>
+		<Spanish>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#12518;&#12491;&#12483;&#12488;: %s1_Name&#65288;%s2_Name &#12398;&#20195;&#12431;&#12426;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_BUILDING</Tag>
+		<English>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</English>
+		<French>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</French>
+		<German>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</German>
+		<Italian>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</Italian>
+		<Spanish>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#24314;&#36896;&#29289;: %s1_Name&#65288;%s2_Name &#12398;&#20195;&#12431;&#12426;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_WARRIOR</Tag>
+		<English>Test Warrior</English>
+		<French>Test Warrior</French>
+		<German>Test Warrior</German>
+		<Italian>Test Warrior</Italian>
+		<Spanish>Test Warrior</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#25126;&#22763;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_GENERAL</Tag>
+		<English>Test Great General</English>
+		<French>Test Great General</French>
+		<German>Test Great General</German>
+		<Italian>Test Great General</Italian>
+		<Spanish>Test Great General</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#22823;&#23558;&#36557;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_SCIENTIST</Tag>
+		<English>Test Great Scientist</English>
+		<French>Test Great Scientist</French>
+		<German>Test Great Scientist</German>
+		<Italian>Test Great Scientist</Italian>
+		<Spanish>Test Great Scientist</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#22823;&#31185;&#23398;&#32773;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_GRANARY</Tag>
+		<English>Test Granary</English>
+		<French>Test Granary</French>
+		<German>Test Granary</German>
+		<Italian>Test Granary</Italian>
+		<Spanish>Test Granary</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#31296;&#29289;&#24235;</Japanese>
+	</TEXT>
 </Civ4GameText>

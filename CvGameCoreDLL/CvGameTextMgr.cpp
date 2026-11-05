@@ -3794,6 +3794,31 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", GC.getTraitInfo(eTrait).getRiverPlotYieldChangeArray(), false, false);
 		}
 
+		// UniqueUnits and UniqueBuildings: "Unique unit: X (instead of Y)" (added by this mod)
+		for (iI = 0; iI < GC.getTraitInfo(eTrait).getNumUniqueUnits(); iI++)
+		{
+			CvUnitInfo& kUnique = GC.getUnitInfo((UnitTypes)GC.getTraitInfo(eTrait).getUniqueUnit(iI));
+			int iDefault = GC.getUnitClassInfo((UnitClassTypes)GC.getTraitInfo(eTrait).getUniqueUnitClass(iI)).getDefaultUnitIndex();
+			CvWString szUnique;
+			CvWString szDefault;
+			szUnique.Format(L"<link=literal>%s</link>", kUnique.getDescription());
+			szDefault.Format(L"<link=literal>%s</link>", (iDefault != NO_UNIT) ? GC.getUnitInfo((UnitTypes)iDefault).getDescription() : L"");
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_UNIT", szUnique.GetCString(), szDefault.GetCString()));
+		}
+
+		for (iI = 0; iI < GC.getTraitInfo(eTrait).getNumUniqueBuildings(); iI++)
+		{
+			CvBuildingInfo& kUnique = GC.getBuildingInfo((BuildingTypes)GC.getTraitInfo(eTrait).getUniqueBuilding(iI));
+			int iDefault = GC.getBuildingClassInfo((BuildingClassTypes)GC.getTraitInfo(eTrait).getUniqueBuildingClass(iI)).getDefaultBuildingIndex();
+			CvWString szUnique;
+			CvWString szDefault;
+			szUnique.Format(L"<link=literal>%s</link>", kUnique.getDescription());
+			szDefault.Format(L"<link=literal>%s</link>", (iDefault != NO_BUILDING) ? GC.getBuildingInfo((BuildingTypes)iDefault).getDescription() : L"");
+			szHelpString.append(NEWLINE L"  ");
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_BUILDING", szUnique.GetCString(), szDefault.GetCString()));
+		}
+
 		// AngryYieldChanges and the like (added by this mod)
 		buildMiseryChangesString(szHelpString, GC.getTraitInfo(eTrait).getAngryYieldChangeArray(), GC.getTraitInfo(eTrait).getAngryCommerceChangeArray(), GC.getTraitInfo(eTrait).getUnhealthyYieldChangeArray(), GC.getTraitInfo(eTrait).getUnhealthyCommerceChangeArray(), true);
 
@@ -6010,7 +6035,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		{
 			if (bPlayerContext && NO_PLAYER != GC.getGameINLINE().getActivePlayer())
 			{
-				BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getCivilizationBuildings(iI);
+				BuildingTypes eBuilding = (BuildingTypes)GC.getGameINLINE().getActiveCivilizationBuilding(iI);
 				if (NO_BUILDING != eBuilding)
 				{
 					szHelpText.append(NEWLINE);
@@ -6028,7 +6053,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		{
 			if (bPlayerContext && NO_PLAYER != GC.getGameINLINE().getActivePlayer())
 			{
-				BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getCivilizationBuildings(iI);
+				BuildingTypes eBuilding = (BuildingTypes)GC.getGameINLINE().getActiveCivilizationBuilding(iI);
 				if (NO_BUILDING != eBuilding)
 				{
 					szHelpText.append(NEWLINE);
@@ -6154,7 +6179,7 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 		{
 			if (GC.getGameINLINE().getActivePlayer() != NO_PLAYER)
 			{
-				eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getCivilizationBuildings(iI);
+				eLoopBuilding = (BuildingTypes)GC.getGameINLINE().getActiveCivilizationBuilding(iI);
 			}
 			else
 			{
@@ -6327,7 +6352,7 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 			{
 				if (GC.getGameINLINE().getActivePlayer() != NO_PLAYER)
 				{
-					eLoopUnit = (UnitTypes)GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getCivilizationUnits(iI);
+					eLoopUnit = (UnitTypes)GC.getGameINLINE().getActiveCivilizationUnit(iI);
 				}
 				else
 				{
@@ -6372,7 +6397,7 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 			{
 				if (GC.getGameINLINE().getActivePlayer() != NO_PLAYER)
 				{
-					eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getCivilizationBuildings(iI);
+					eLoopBuilding = (BuildingTypes)GC.getGameINLINE().getActiveCivilizationBuilding(iI);
 				}
 				else
 				{
@@ -7321,6 +7346,16 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool
 			}
 		}
 
+		// UniqueUnits of the traits (added by this mod)
+		for (iI = 0; iI < GC.getNumTraitInfos(); ++iI)
+		{
+			if (GC.getTraitInfo((TraitTypes)iI).getUniqueUnitForClass((int)eUnitClass) == eUnit)
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(gDLL->getText("TXT_KEY_UNIQUE_UNIT", GC.getTraitInfo((TraitTypes)iI).getTextKeyWide()));
+			}
+		}
+
 		szBuffer.append(NEWLINE);
 		szBuffer.append(gDLL->getText("TXT_KEY_REPLACES_UNIT", GC.getUnitInfo(eDefaultUnit).getTextKeyWide()));
 	}
@@ -7721,7 +7756,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			iHealth = kBuilding.getHealth();
 			if (ePlayer != NO_PLAYER)
 			{
-				if (eBuilding == GC.getCivilizationInfo(GET_PLAYER(ePlayer).getCivilizationType()).getCivilizationBuildings(kBuilding.getBuildingClassType()))
+				if (eBuilding == GET_PLAYER(ePlayer).getCivilizationBuilding(kBuilding.getBuildingClassType()))
 				{
 					iHealth += GET_PLAYER(ePlayer).getExtraBuildingHealth(eBuilding);
 				}
@@ -7783,7 +7818,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			{
 				if (ePlayer != NO_PLAYER)
 				{
-					eGreatPeopleUnit = ((UnitTypes)(GC.getCivilizationInfo(GET_PLAYER(ePlayer).getCivilizationType()).getCivilizationUnits(kBuilding.getGreatPeopleUnitClass())));
+					eGreatPeopleUnit = ((UnitTypes)(GET_PLAYER(ePlayer).getCivilizationUnit(kBuilding.getGreatPeopleUnitClass())));
 				}
 				else
 				{
@@ -7812,6 +7847,16 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			{
 				szBuffer.append(NEWLINE);
 				szBuffer.append(gDLL->getText("TXT_KEY_UNIQUE_BUILDING", GC.getCivilizationInfo((CivilizationTypes)iI).getTextKeyWide()));
+			}
+		}
+
+		// UniqueBuildings of the traits (added by this mod)
+		for (iI = 0; iI < GC.getNumTraitInfos(); ++iI)
+		{
+			if (GC.getTraitInfo((TraitTypes)iI).getUniqueBuildingForClass((int)eBuildingClass) == eBuilding)
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(gDLL->getText("TXT_KEY_UNIQUE_BUILDING", GC.getTraitInfo((TraitTypes)iI).getTextKeyWide()));
 			}
 		}
 
@@ -7918,7 +7963,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 		BuildingTypes eFreeBuilding;
 		if (ePlayer != NO_PLAYER)
 		{
-			eFreeBuilding = ((BuildingTypes)(GC.getCivilizationInfo(GET_PLAYER(ePlayer).getCivilizationType()).getCivilizationBuildings(kBuilding.getFreeBuildingClass())));
+			eFreeBuilding = ((BuildingTypes)(GET_PLAYER(ePlayer).getCivilizationBuilding(kBuilding.getFreeBuildingClass())));
 		}
 		else
 		{
@@ -8607,7 +8652,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			CvWString szBuilding;
 			if (NO_PLAYER != ePlayer)
 			{
-				BuildingTypes ePlayerBuilding = ((BuildingTypes)(GC.getCivilizationInfo(GET_PLAYER(ePlayer).getCivilizationType()).getCivilizationBuildings(iI)));
+				BuildingTypes ePlayerBuilding = ((BuildingTypes)(GET_PLAYER(ePlayer).getCivilizationBuilding(iI)));
 				if (NO_BUILDING != ePlayerBuilding)
 				{
 					szBuilding.Format(L"<link=literal>%s</link>", GC.getBuildingClassInfo((BuildingClassTypes)iI).getDescription());
@@ -8640,7 +8685,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 	{
 		if (ePlayer != NO_PLAYER)
 		{
-			eLoopBuilding = ((BuildingTypes)(GC.getCivilizationInfo(GET_PLAYER(ePlayer).getCivilizationType()).getCivilizationBuildings(iI)));
+			eLoopBuilding = ((BuildingTypes)(GET_PLAYER(ePlayer).getCivilizationBuilding(iI)));
 		}
 		else
 		{
@@ -8698,7 +8743,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 		{
 			if (ePlayer != NO_PLAYER)
 			{
-				eGreatPeopleUnit = ((UnitTypes)(GC.getCivilizationInfo(GET_PLAYER(ePlayer).getCivilizationType()).getCivilizationUnits(kBuilding.getGreatPeopleUnitClass())));
+				eGreatPeopleUnit = ((UnitTypes)(GET_PLAYER(ePlayer).getCivilizationUnit(kBuilding.getGreatPeopleUnitClass())));
 			}
 			else
 			{
@@ -9046,7 +9091,7 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 			{
 				if ((pCity == NULL) || (GET_PLAYER(ePlayer).getBuildingClassCount((BuildingClassTypes)iI) < GET_PLAYER(ePlayer).getBuildingClassPrereqBuilding(eBuilding, ((BuildingClassTypes)iI))))
 				{
-					eLoopBuilding = ((BuildingTypes)(GC.getCivilizationInfo(GET_PLAYER(ePlayer).getCivilizationType()).getCivilizationBuildings(iI)));
+					eLoopBuilding = ((BuildingTypes)(GET_PLAYER(ePlayer).getCivilizationBuilding(iI)));
 
 					if (eLoopBuilding != NO_BUILDING)
 					{
@@ -9067,7 +9112,7 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 			{
 				if (NO_PLAYER != ePlayer)
 				{
-					eLoopBuilding = ((BuildingTypes)(GC.getCivilizationInfo(GET_PLAYER(ePlayer).getCivilizationType()).getCivilizationBuildings(iI)));
+					eLoopBuilding = ((BuildingTypes)(GET_PLAYER(ePlayer).getCivilizationBuilding(iI)));
 				}
 				else
 				{
@@ -9528,7 +9573,7 @@ void CvGameTextMgr::buildGlobalBuildingExtraCommercesString(CvWStringBuffer& szB
 
 		if (eActivePlayer != NO_PLAYER)
 		{
-			eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(GET_PLAYER(eActivePlayer).getCivilizationType()).getCivilizationBuildings(iClass);
+			eLoopBuilding = (BuildingTypes)GET_PLAYER(eActivePlayer).getCivilizationBuilding(iClass);
 		}
 		else
 		{
@@ -9664,7 +9709,7 @@ void CvGameTextMgr::buildPrereqBuildingClassesString(CvWStringBuffer& szBuffer, 
 
 		if (NO_PLAYER != ePlayer)
 		{
-			eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(GET_PLAYER(ePlayer).getCivilizationType()).getCivilizationBuildings(iClass);
+			eLoopBuilding = (BuildingTypes)GET_PLAYER(ePlayer).getCivilizationBuilding(iClass);
 		}
 		else
 		{
@@ -10877,7 +10922,7 @@ void CvGameTextMgr::setReligionHelp(CvWStringBuffer &szBuffer, ReligionTypes eRe
 	{
 		if (GC.getGameINLINE().getActivePlayer() != NO_PLAYER)
 		{
-			eFreeUnit = ((UnitTypes)(GC.getCivilizationInfo(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCivilizationType()).getCivilizationUnits(religion.getFreeUnitClass())));
+			eFreeUnit = ((UnitTypes)(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCivilizationUnit(religion.getFreeUnitClass())));
 		}
 		else
 		{
@@ -11166,7 +11211,7 @@ void CvGameTextMgr::setCorporationHelp(CvWStringBuffer &szBuffer, CorporationTyp
 	{
 		if (GC.getGameINLINE().getActivePlayer() != NO_PLAYER)
 		{
-			eFreeUnit = ((UnitTypes)(GC.getCivilizationInfo(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCivilizationType()).getCivilizationUnits(kCorporation.getFreeUnitClass())));
+			eFreeUnit = ((UnitTypes)(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCivilizationUnit(kCorporation.getFreeUnitClass())));
 		}
 		else
 		{
@@ -14952,7 +14997,7 @@ void CvGameTextMgr::setEventHelp(CvWStringBuffer& szBuffer, EventTypes eEvent, i
 	{
 		if (NO_PROMOTION != kEvent.getUnitClassPromotion(i))
 		{
-			UnitTypes ePromotedUnit = ((UnitTypes)(GC.getCivilizationInfo(kActivePlayer.getCivilizationType()).getCivilizationUnits(i)));
+			UnitTypes ePromotedUnit = ((UnitTypes)(kActivePlayer.getCivilizationUnit(i)));
 			if (NO_UNIT != ePromotedUnit)
 			{
 				szBuffer.append(NEWLINE);
@@ -16313,7 +16358,7 @@ void CvGameTextMgr::getCityDataForAS(std::vector<CvWBData>& mapCityList, std::ve
 	CvWStringBuffer szBuffer;
 	for(int i = 0; i < GC.getNumBuildingClassInfos(); i++)
 	{
-		BuildingTypes eBuilding = (BuildingTypes) GC.getCivilizationInfo(kActivePlayer.getCivilizationType()).getCivilizationBuildings(i);
+		BuildingTypes eBuilding = (BuildingTypes) kActivePlayer.getCivilizationBuilding(i);
 
 		if (eBuilding != NO_BUILDING)
 		{
@@ -16342,7 +16387,7 @@ void CvGameTextMgr::getUnitDataForAS(std::vector<CvWBData>& mapUnitList)
 	CvWStringBuffer szBuffer;
 	for(int i = 0; i < GC.getNumUnitClassInfos(); i++)
 	{
-		UnitTypes eUnit = (UnitTypes) GC.getCivilizationInfo(kActivePlayer.getCivilizationType()).getCivilizationUnits(i);
+		UnitTypes eUnit = (UnitTypes) kActivePlayer.getCivilizationUnit(i);
 		if (eUnit != NO_UNIT)
 		{
 			// Unit cost -1 denotes unit which may not be purchased

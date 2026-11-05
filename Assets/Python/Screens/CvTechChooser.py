@@ -198,7 +198,7 @@ class CvTechChooser:
 
 			# Unlockable units...
 			for j in range( gc.getNumUnitClassInfos() ):
-				eLoopUnit = gc.getCivilizationInfo(gc.getGame().getActiveCivilizationType()).getCivilizationUnits(j)
+				eLoopUnit = gc.getActivePlayer().getCivilizationUnit(j)
 				if (eLoopUnit != -1):
 					if (gc.getUnitInfo(eLoopUnit).getPrereqAndTech() == i):
 						szUnitButton = "Unit" + str(j)
@@ -211,7 +211,7 @@ class CvTechChooser:
 			# Unlockable Buildings...
 			for j in range(gc.getNumBuildingClassInfos()):
 				bTechFound = 0
-				eLoopBuilding = gc.getCivilizationInfo(gc.getGame().getActiveCivilizationType()).getCivilizationBuildings(j)
+				eLoopBuilding = gc.getActivePlayer().getCivilizationBuilding(j)
 
 				if (eLoopBuilding != -1):
 					if (gc.getBuildingInfo(eLoopBuilding).getPrereqAndTech() == i):
@@ -224,7 +224,7 @@ class CvTechChooser:
 
 			# Obsolete Buildings...
 			for j in range(gc.getNumBuildingClassInfos()):
-				eLoopBuilding = gc.getCivilizationInfo(gc.getPlayer(self.iCivSelected).getCivilizationType()).getCivilizationBuildings(j)
+				eLoopBuilding = gc.getPlayer(self.iCivSelected).getCivilizationBuilding(j)
 
 				if (eLoopBuilding != -1):
 					if (gc.getBuildingInfo(eLoopBuilding).getObsoleteTech() == i):
@@ -288,7 +288,7 @@ class CvTechChooser:
 			if ( gc.getTechInfo(i).getFirstFreeUnitClass() != UnitClassTypes.NO_UNITCLASS ):
 				szFreeUnitButton = "FreeUnit" + str(i)
 
-				eLoopUnit = gc.getCivilizationInfo(gc.getGame().getActiveCivilizationType()).getCivilizationUnits(gc.getTechInfo(i).getFirstFreeUnitClass())
+				eLoopUnit = gc.getActivePlayer().getCivilizationUnit(gc.getTechInfo(i).getFirstFreeUnitClass())
 				if (eLoopUnit != -1):
 # >>> CYBERFRONT // Espionage
 #					if (gc.getUnitInfo(eLoopUnit).getEspionagePoints() == 0 or not gc.getGame().isOption(GameOptionTypes.GAMEOPTION_NO_ESPIONAGE)):				

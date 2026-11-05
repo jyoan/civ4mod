@@ -302,7 +302,7 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 			{
 				if (GC.getCivilizationInfo(getCivilizationType()).isCivilizationFreeBuildingClass(iI))
 				{
-					eLoopBuilding = ((BuildingTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI)));
+					eLoopBuilding = ((BuildingTypes)(GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(iI)));
 
 					if (eLoopBuilding != NO_BUILDING)
 					{
@@ -1755,7 +1755,7 @@ UnitTypes CvCity::allUpgradesAvailable(UnitTypes eUnit, int iUpgradeCount) const
 	{
 		if (GC.getUnitInfo(eUnit).getUpgradeUnitClass(iI))
 		{
-			eLoopUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI);
+			eLoopUnit = (UnitTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(iI);
 
 			if (eLoopUnit != NO_UNIT)
 			{
@@ -1952,7 +1952,7 @@ bool CvCity::canTrain(UnitCombatTypes eUnitCombat) const
 {
 	for (int i = 0; i < GC.getNumUnitClassInfos(); i++)
 	{
-		UnitTypes eUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(i);
+		UnitTypes eUnit = (UnitTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(i);
 
 		if (NO_UNIT != eUnit)
 		{
@@ -2211,7 +2211,7 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 		{
 			if (GC.getBuildingInfo(eBuilding).isBuildingClassNeededInCity(iI))
 			{
-				ePrereqBuilding = ((BuildingTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI)));
+				ePrereqBuilding = ((BuildingTypes)(GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(iI)));
 
 				if (ePrereqBuilding != NO_BUILDING)
 				{
@@ -3526,7 +3526,7 @@ UnitTypes CvCity::getConscriptUnit() const
 
 	for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 	{
-		eLoopUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI);
+		eLoopUnit = (UnitTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(iI);
 
 		if (eLoopUnit != NO_UNIT)
 		{
@@ -4045,7 +4045,7 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 
 		if (GC.getBuildingInfo(eBuilding).getGreatPeopleUnitClass() != NO_UNITCLASS)
 		{
-			eGreatPeopleUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(GC.getBuildingInfo(eBuilding).getGreatPeopleUnitClass())));
+			eGreatPeopleUnit = ((UnitTypes)(GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(GC.getBuildingInfo(eBuilding).getGreatPeopleUnitClass())));
 
 			if (eGreatPeopleUnit != NO_UNIT)
 			{
@@ -4103,7 +4103,7 @@ void CvCity::processSpecialist(SpecialistTypes eSpecialist, int iChange)
 
 	if (GC.getSpecialistInfo(eSpecialist).getGreatPeopleUnitClass() != NO_UNITCLASS)
 	{
-		eGreatPeopleUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(GC.getSpecialistInfo(eSpecialist).getGreatPeopleUnitClass())));
+		eGreatPeopleUnit = ((UnitTypes)(GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(GC.getSpecialistInfo(eSpecialist).getGreatPeopleUnitClass())));
 
 		if (eGreatPeopleUnit != NO_UNIT)
 		{
@@ -4243,7 +4243,7 @@ void CvCity::setHeadquarters(CorporationTypes eIndex)
 
 	if (GC.getCorporationInfo(eIndex).getFreeUnitClass() != NO_UNITCLASS)
 	{
-		UnitTypes eFreeUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(GC.getCorporationInfo(eIndex).getFreeUnitClass())));
+		UnitTypes eFreeUnit = ((UnitTypes)(GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(GC.getCorporationInfo(eIndex).getFreeUnitClass())));
 
 		if (eFreeUnit != NO_UNIT)
 		{
@@ -10211,7 +10211,7 @@ bool CvCity::hasPrereqOrBuildingClasses(BuildingTypes eBuilding) const
 
 	for (iI = 0; iI < kBuilding.getNumPrereqOrBuildingClasses(); iI++)
 	{
-		BuildingTypes ePrereqBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(kBuilding.getPrereqOrBuildingClass(iI));
+		BuildingTypes ePrereqBuilding = (BuildingTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(kBuilding.getPrereqOrBuildingClass(iI));
 
 		if (ePrereqBuilding != NO_BUILDING)
 		{
@@ -10235,7 +10235,7 @@ bool CvCity::hasPrereqNotInCityBuildingClasses(BuildingTypes eBuilding) const
 
 	for (iI = 0; iI < kBuilding.getNumPrereqNotInCityBuildingClasses(); iI++)
 	{
-		BuildingTypes eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(kBuilding.getPrereqNotInCityBuildingClass(iI));
+		BuildingTypes eLoopBuilding = (BuildingTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(kBuilding.getPrereqNotInCityBuildingClass(iI));
 
 		if (eLoopBuilding != NO_BUILDING)
 		{
@@ -13580,7 +13580,7 @@ int CvCity::getTriggerValue(EventTriggerTypes eTrigger) const
 		{
 			if (kTrigger.getBuildingRequired(i) != NO_BUILDINGCLASS)
 			{
-				BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(kTrigger.getBuildingRequired(i));
+				BuildingTypes eBuilding = (BuildingTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(kTrigger.getBuildingRequired(i));
 				if (NO_BUILDING != eBuilding)
 				{
 					if (getNumRealBuilding(eBuilding) > 0)
@@ -13768,7 +13768,7 @@ bool CvCity::canApplyEvent(EventTypes eEvent, const EventTriggeredData& kTrigger
 
 	if (kEvent.getBuildingClass() != NO_BUILDINGCLASS)
 	{
-		BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(kEvent.getBuildingClass());
+		BuildingTypes eBuilding = (BuildingTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(kEvent.getBuildingClass());
 		if (eBuilding == NO_BUILDING)
 		{
 			return false;
@@ -13936,7 +13936,7 @@ void CvCity::applyEvent(EventTypes eEvent, const EventTriggeredData& kTriggeredD
 
 	if (kEvent.getUnitClass() != NO_UNITCLASS)
 	{
-		UnitTypes eUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(kEvent.getUnitClass());
+		UnitTypes eUnit = (UnitTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(kEvent.getUnitClass());
 		if (eUnit != NO_UNIT)
 		{
 			for (int i = 0; i < kEvent.getNumUnits(); ++i)
@@ -13948,7 +13948,7 @@ void CvCity::applyEvent(EventTypes eEvent, const EventTriggeredData& kTriggeredD
 
 	if (kEvent.getBuildingClass() != NO_BUILDINGCLASS)
 	{
-		BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(kEvent.getBuildingClass());
+		BuildingTypes eBuilding = (BuildingTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(kEvent.getBuildingClass());
 		if (eBuilding != NO_BUILDING)
 		{
 			if (0 != kEvent.getBuildingChange())
@@ -14133,7 +14133,7 @@ void CvCity::setBuildingYieldChange(BuildingClassTypes eBuildingClass, YieldType
 					(*it).iChange = iChange;
 				}
 
-				BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(eBuildingClass);
+				BuildingTypes eBuilding = (BuildingTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(eBuildingClass);
 				if (NO_BUILDING != eBuilding)
 				{
 					if (getNumActiveBuilding(eBuilding) > 0)
@@ -14155,7 +14155,7 @@ void CvCity::setBuildingYieldChange(BuildingClassTypes eBuildingClass, YieldType
 		kChange.iChange = iChange;
 		m_aBuildingYieldChange.push_back(kChange);
 
-		BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(eBuildingClass);
+		BuildingTypes eBuilding = (BuildingTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(eBuildingClass);
 		if (NO_BUILDING != eBuilding)
 		{
 			if (getNumActiveBuilding(eBuilding) > 0)

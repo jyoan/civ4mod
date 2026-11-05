@@ -3616,7 +3616,7 @@ TechTypes CvPlayerAI::AI_bestTech(int iMaxPathLength, bool bIgnoreCost, bool bAs
 								bool bEnablesUnitWonder = false;
 								for (iJ = 0; iJ < GC.getNumUnitClassInfos(); iJ++)
 								{
-									eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iJ)));
+									eLoopUnit = ((UnitTypes)(getCivilizationUnit(iJ)));
 
 									if (eLoopUnit != NO_UNIT)
 									{
@@ -3627,7 +3627,7 @@ TechTypes CvPlayerAI::AI_bestTech(int iMaxPathLength, bool bIgnoreCost, bool bAs
 											int iUnitValue = 0;
 											int iNavalValue = 0;
 											
-											if ((GC.getUnitClassInfo((UnitClassTypes)iJ).getDefaultUnitIndex()) != (GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iJ)))
+											if ((GC.getUnitClassInfo((UnitClassTypes)iJ).getDefaultUnitIndex()) != (getCivilizationUnit(iJ)))
                                             {
                                                 //UU
                                                 iUnitValue += 600;
@@ -4010,7 +4010,7 @@ TechTypes CvPlayerAI::AI_bestTech(int iMaxPathLength, bool bIgnoreCost, bool bAs
 								bool bIsCultureBuilding = false;
 								for (iJ = 0; iJ < GC.getNumBuildingClassInfos(); iJ++)
 								{
-									eLoopBuilding = ((BuildingTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iJ)));
+									eLoopBuilding = ((BuildingTypes)(getCivilizationBuilding(iJ)));
 
 									if (eLoopBuilding != NO_BUILDING)
 									{
@@ -4056,7 +4056,7 @@ TechTypes CvPlayerAI::AI_bestTech(int iMaxPathLength, bool bIgnoreCost, bool bAs
 
 											iBuildingValue += 100;
 
-                                            if ((GC.getBuildingClassInfo((BuildingClassTypes)iJ).getDefaultBuildingIndex()) != (GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iJ)))
+                                            if ((GC.getBuildingClassInfo((BuildingClassTypes)iJ).getDefaultBuildingIndex()) != (getCivilizationBuilding(iJ)))
                                             {
                                                 //UB
                                                 iBuildingValue += 600;
@@ -6530,7 +6530,7 @@ int CvPlayerAI::AI_baseBonusVal(BonusTypes eBonus) const
 
 			for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 			{
-				eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+				eLoopUnit = ((UnitTypes)(getCivilizationUnit(iI)));
 
 				if (eLoopUnit != NO_UNIT)
 				{
@@ -6603,7 +6603,7 @@ int CvPlayerAI::AI_baseBonusVal(BonusTypes eBonus) const
 
 			for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
 			{
-				eLoopBuilding = ((BuildingTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI)));
+				eLoopBuilding = ((BuildingTypes)(getCivilizationBuilding(iI)));
 
 				if (eLoopBuilding != NO_BUILDING)
 				{
@@ -12652,7 +12652,7 @@ int CvPlayerAI::AI_eventValue(EventTypes eEvent, const EventTriggeredData& kTrig
 
 	if (kEvent.getUnitClass() != NO_UNITCLASS)
 	{
-		UnitTypes eUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(kEvent.getUnitClass());
+		UnitTypes eUnit = (UnitTypes)getCivilizationUnit(kEvent.getUnitClass());
 		if (eUnit != NO_UNIT)
 		{
 			//Altough AI_unitValue compares well within units, the value is somewhat independent of cost
@@ -12693,7 +12693,7 @@ int CvPlayerAI::AI_eventValue(EventTypes eEvent, const EventTriggeredData& kTrig
 
 	if (kEvent.getBuildingClass() != NO_BUILDINGCLASS)
 	{
-		BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(kEvent.getBuildingClass());
+		BuildingTypes eBuilding = (BuildingTypes)getCivilizationBuilding(kEvent.getBuildingClass());
 		if (eBuilding != NO_BUILDING)
 		{
 			if (pCity)
@@ -13502,7 +13502,7 @@ int CvPlayerAI::AI_cultureVictoryTechValue(TechTypes eTech) const
 	int iBestUnitValue = 0;
 	for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 	{
-		UnitTypes eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+		UnitTypes eLoopUnit = ((UnitTypes)(getCivilizationUnit(iI)));
 
 		if (eLoopUnit != NO_UNIT)
 		{
@@ -13521,7 +13521,7 @@ int CvPlayerAI::AI_cultureVictoryTechValue(TechTypes eTech) const
 	//cultural things
 	for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
 	{
-		BuildingTypes eLoopBuilding = ((BuildingTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI)));
+		BuildingTypes eLoopBuilding = ((BuildingTypes)(getCivilizationBuilding(iI)));
 
 		if (eLoopBuilding != NO_BUILDING)
 		{
@@ -13529,7 +13529,7 @@ int CvPlayerAI::AI_cultureVictoryTechValue(TechTypes eTech) const
 			{
 				CvBuildingInfo& kLoopBuilding = GC.getBuildingInfo(eLoopBuilding);
 
-				if ((GC.getBuildingClassInfo((BuildingClassTypes)iI).getDefaultBuildingIndex()) != (GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI)))
+				if ((GC.getBuildingClassInfo((BuildingClassTypes)iI).getDefaultBuildingIndex()) != (getCivilizationBuilding(iI)))
 				{
 					//UB
 					iValue += 100;
@@ -13813,7 +13813,7 @@ int CvPlayerAI::AI_getStrategyHash() const
     int iAttackUnitCount = 0;
 	for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 	{
-		eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+		eLoopUnit = ((UnitTypes)(getCivilizationUnit(iI)));
 		
 		if (NO_UNIT != eLoopUnit)
 		{
@@ -13822,7 +13822,7 @@ int CvPlayerAI::AI_getStrategyHash() const
 				if (getCapitalCity()->canTrain(eLoopUnit))
 				{
 			CvUnitInfo& kLoopUnit = GC.getUnitInfo(eLoopUnit);
-			bool bIsUU = (GC.getUnitClassInfo((UnitClassTypes)iI).getDefaultUnitIndex()) != (GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI));
+			bool bIsUU = (GC.getUnitClassInfo((UnitClassTypes)iI).getDefaultUnitIndex()) != (getCivilizationUnit(iI));
 			if (kLoopUnit.getUnitAIType(UNITAI_RESERVE) || kLoopUnit.getUnitAIType(UNITAI_ATTACK_CITY)
 				|| kLoopUnit.getUnitAIType(UNITAI_COUNTER) || kLoopUnit.getUnitAIType(UNITAI_PILLAGE))
 			{
@@ -13982,11 +13982,11 @@ int CvPlayerAI::AI_getStrategyHash() const
 	    
         for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
         {
-            eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+            eLoopUnit = ((UnitTypes)(getCivilizationUnit(iI)));
 
             if ((eLoopUnit != NO_UNIT) && (GC.getUnitInfo(eLoopUnit).getCombat() > 0))
             {
-                if ((GC.getUnitClassInfo((UnitClassTypes)iI).getDefaultUnitIndex()) != (GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)))
+                if ((GC.getUnitClassInfo((UnitClassTypes)iI).getDefaultUnitIndex()) != (getCivilizationUnit(iI)))
                 {
                 	bool bIsDefensive = (GC.getUnitInfo(eLoopUnit).getUnitAIType(UNITAI_CITY_DEFENSE) &&
                 		!GC.getUnitInfo(eLoopUnit).getUnitAIType(UNITAI_RESERVE));
@@ -14614,7 +14614,6 @@ int CvPlayerAI::AI_goldToUpgradeAllUnits(int iExpThreshold) const
 
 	int iTotalGold = 0;
 	
-	CvCivilizationInfo& kCivilizationInfo = GC.getCivilizationInfo(getCivilizationType());
 	
 	// cache the value for each unit type
 	std::vector<int> aiUnitUpgradePrice(GC.getNumUnitInfos(), 0);	// initializes to zeros
@@ -14654,7 +14653,7 @@ int CvPlayerAI::AI_goldToUpgradeAllUnits(int iExpThreshold) const
 		for (int iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 		{
 			UnitClassTypes eUpgradeUnitClassType = (UnitClassTypes) iI;
-			UnitTypes eUpgradeUnitType = (UnitTypes)(kCivilizationInfo.getCivilizationUnits(iI));
+			UnitTypes eUpgradeUnitType = (UnitTypes)(getCivilizationUnit(iI));
 
 			if (NO_UNIT != eUpgradeUnitType)
 			{
@@ -15131,7 +15130,7 @@ UnitTypes CvPlayerAI::AI_bestAdvancedStartUnitAI(CvPlot* pPlot, UnitAITypes eUni
 
 	for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 	{
-		eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+		eLoopUnit = ((UnitTypes)(getCivilizationUnit(iI)));
 
 		if (eLoopUnit != NO_UNIT)
 		{
@@ -16371,7 +16370,7 @@ int CvPlayerAI::AI_bestCityUnitAIValue(UnitAITypes eUnitAI, CvCity* pCity, UnitT
 	
 	for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 	{
-		eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+		eLoopUnit = ((UnitTypes)(getCivilizationUnit(iI)));
 
 		if (eLoopUnit != NO_UNIT)
 		{
@@ -16403,7 +16402,7 @@ int CvPlayerAI::AI_calculateTotalBombard(DomainTypes eDomain) const
 	
 	for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 	{
-		UnitTypes eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+		UnitTypes eLoopUnit = ((UnitTypes)(getCivilizationUnit(iI)));
 		if (eLoopUnit != NO_UNIT)
 		{
 		if (GC.getUnitInfo(eLoopUnit).getDomainType() == eDomain)

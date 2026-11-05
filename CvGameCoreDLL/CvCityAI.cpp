@@ -501,7 +501,7 @@ int CvCityAI::AI_specialistValue(SpecialistTypes eSpecialist, bool bAvoidGrowth,
 			int iUnitClass = GC.getSpecialistInfo(eSpecialist).getGreatPeopleUnitClass();
 			FAssert(iUnitClass != NO_UNITCLASS);
 			
-			UnitTypes eGreatPeopleUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iUnitClass);
+			UnitTypes eGreatPeopleUnit = (UnitTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(iUnitClass);
 			if (eGreatPeopleUnit != NO_UNIT)
 			{
 				CvUnitInfo& kUnitInfo = GC.getUnitInfo(eGreatPeopleUnit);
@@ -526,12 +526,11 @@ int CvCityAI::AI_specialistValue(SpecialistTypes eSpecialist, bool bAvoidGrowth,
                 if (isHolyCity(eReligion) && !hasShrine(eReligion)
                 	&& ((iCurrentEra < iTotalEras / 2) || GC.getGameINLINE().countReligionLevels(eReligion) >= 10))
                 {
-					CvCivilizationInfo* pCivilizationInfo = &GC.getCivilizationInfo(getCivilizationType());
 					
 					int iUnitClass = GC.getSpecialistInfo(eSpecialist).getGreatPeopleUnitClass();
                     FAssert(iUnitClass != NO_UNITCLASS);
                     
-					UnitTypes eGreatPeopleUnit = (UnitTypes) pCivilizationInfo->getCivilizationUnits(iUnitClass);
+					UnitTypes eGreatPeopleUnit = (UnitTypes) GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(iUnitClass);
 					if (eGreatPeopleUnit != NO_UNIT)
 					{
 						// note, for normal XML, this count will be one (there is only 1 shrine building for each religion)
@@ -2385,7 +2384,7 @@ UnitTypes CvCityAI::AI_bestUnitAI(UnitAITypes eUnitAI, bool bAsync, AdvisorTypes
 
 	for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 	{
-		eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+		eLoopUnit = ((UnitTypes)(GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(iI)));
 
 		if (eLoopUnit != NO_UNIT)
 		{
@@ -2416,7 +2415,7 @@ UnitTypes CvCityAI::AI_bestUnitAI(UnitAITypes eUnitAI, bool bAsync, AdvisorTypes
 
 	for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 	{
-		eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+		eLoopUnit = ((UnitTypes)(GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(iI)));
 
 		if (eLoopUnit != NO_UNIT)
 		{
@@ -2587,7 +2586,7 @@ BuildingTypes CvCityAI::AI_bestBuildingThreshold(int iFocusFlags, int iMaxTurns,
 		int iBestTurnsLeft = iMaxTurns > 0 ? iMaxTurns : MAX_INT;
 		for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
 		{
-			eLoopBuilding = ((BuildingTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI)));
+			eLoopBuilding = ((BuildingTypes)(GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(iI)));
 
 			if (NO_BUILDING != eLoopBuilding)
 			{
@@ -2616,7 +2615,7 @@ BuildingTypes CvCityAI::AI_bestBuildingThreshold(int iFocusFlags, int iMaxTurns,
 	{
 		if (!(GET_PLAYER(getOwnerINLINE()).isBuildingClassMaxedOut(((BuildingClassTypes)iI), GC.getBuildingClassInfo((BuildingClassTypes)iI).getExtraPlayerInstances())))
 		{
-			eLoopBuilding = ((BuildingTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI)));
+			eLoopBuilding = ((BuildingTypes)(GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(iI)));
 
 			if ((eLoopBuilding != NO_BUILDING) && (getNumBuilding(eLoopBuilding) < GC.getCITY_MAX_NUM_BUILDINGS())
 			&&  (!isProductionAutomated() || !(isWorldWonderClass((BuildingClassTypes)iI) || isNationalWonderClass((BuildingClassTypes)iI))))
@@ -2636,7 +2635,7 @@ BuildingTypes CvCityAI::AI_bestBuildingThreshold(int iFocusFlags, int iMaxTurns,
 
 							if (GC.getBuildingInfo(eLoopBuilding).getFreeBuildingClass() != NO_BUILDINGCLASS)
 							{
-								BuildingTypes eFreeBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(GC.getBuildingInfo(eLoopBuilding).getFreeBuildingClass());
+								BuildingTypes eFreeBuilding = (BuildingTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationBuilding(GC.getBuildingInfo(eLoopBuilding).getFreeBuildingClass());
 								if (NO_BUILDING != eFreeBuilding)
 								{
 									iValue += (AI_buildingValue(eFreeBuilding, iFocusFlags) * (GET_PLAYER(getOwnerINLINE()).getNumCities() - GET_PLAYER(getOwnerINLINE()).getBuildingClassCountPlusMaking((BuildingClassTypes)GC.getBuildingInfo(eLoopBuilding).getFreeBuildingClass())));
@@ -3051,7 +3050,7 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 
 				for (int iUnitIndex = 0; iUnitIndex < GC.getNumUnitClassInfos(); iUnitIndex++)
 				{
-					UnitTypes eUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iUnitIndex);
+					UnitTypes eUnit = (UnitTypes)GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(iUnitIndex);
 
 					if (NO_UNIT != eUnit)
 					{
@@ -6141,7 +6140,7 @@ bool CvCityAI::AI_bestSpreadUnit(bool bMissionary, bool bExecutive, int iBaseCha
 					{
 						for (int iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 						{
-							UnitTypes eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+							UnitTypes eLoopUnit = ((UnitTypes)(GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(iI)));
 
 							if (eLoopUnit != NO_UNIT)
 							{
@@ -6191,7 +6190,7 @@ bool CvCityAI::AI_bestSpreadUnit(bool bMissionary, bool bExecutive, int iBaseCha
 					{
 						for (int iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 						{
-							UnitTypes eLoopUnit = ((UnitTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iI)));
+							UnitTypes eLoopUnit = ((UnitTypes)(GET_PLAYER(getOwnerINLINE()).getCivilizationUnit(iI)));
 
 							if (eLoopUnit != NO_UNIT)
 							{

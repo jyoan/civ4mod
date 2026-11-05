@@ -412,6 +412,26 @@
 					<RouteType>ROUTE_ROAD</RouteType>
 				</FeatureRoute>
 			</FeatureRoutes>
+			<UniqueUnits>
+				<UniqueUnit>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
+					<UnitType>UNIT_TEST_WARRIOR</UnitType>
+				</UniqueUnit>
+				<UniqueUnit>
+					<UnitClassType>UNITCLASS_GREAT_GENERAL</UnitClassType>
+					<UnitType>UNIT_TEST_GENERAL</UnitType>
+				</UniqueUnit>
+				<UniqueUnit>
+					<UnitClassType>UNITCLASS_SCIENTIST</UnitClassType>
+					<UnitType>UNIT_TEST_SCIENTIST</UnitType>
+				</UniqueUnit>
+			</UniqueUnits>
+			<UniqueBuildings>
+				<UniqueBuilding>
+					<BuildingClassType>BUILDINGCLASS_GRANARY</BuildingClassType>
+					<BuildingType>BUILDING_TEST_GRANARY</BuildingType>
+				</UniqueBuilding>
+			</UniqueBuildings>
 			<NoObsoleteBuildingClasses>
 				<BuildingClassType>BUILDINGCLASS_CASTLE</BuildingClassType>
 				<BuildingClassType>BUILDINGCLASS_GREAT_LIBRARY</BuildingClassType>
