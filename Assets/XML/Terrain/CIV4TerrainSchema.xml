@@ -378,6 +378,8 @@
 		<element type="BonusTypeStruct" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="ReplacedImprovement" content="textOnly"/>
+	<ElementType name="bMakesPassable" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iPassageMoveCost" content="textOnly" dt:type="int"/>
 	<ElementType name="ImprovementPillage" content="textOnly"/>
 	<ElementType name="ImprovementUpgrade" content="textOnly"/>
 	<ElementType name="bActsAsCity" content="textOnly" dt:type="boolean"/>
@@ -460,6 +462,8 @@
 		<element type="ImprovementPillage"/>
 		<element type="ImprovementUpgrade"/>
 		<element type="ReplacedImprovement" minOccurs="0"/>
+		<element type="bMakesPassable" minOccurs="0"/>
+		<element type="iPassageMoveCost" minOccurs="0"/>
 		<element type="TechYieldChanges"/>
 		<element type="RouteYieldChanges"/>
 		<element type="WorldSoundscapeAudioScript" minOccurs="0"/>

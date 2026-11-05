@@ -198,6 +198,7 @@ public:
 
 	bool isValidDomainForLocation(const CvUnit& unit) const;																					// Exposed to Python
 	bool isValidDomainForAction(const CvUnit& unit) const;																						// Exposed to Python
+	bool isImprovementPassable() const;	// bMakesPassable of the improvement (added by this mod)
 	bool isImpassable() const;																															// Exposed to Python
 
 	DllExport int getX() const;																																				// Exposed to Python

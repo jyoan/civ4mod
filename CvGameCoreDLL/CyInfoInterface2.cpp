@@ -282,6 +282,8 @@ void CyInfoPythonInterface2()
 		.def("getPillageGold", &CvImprovementInfo::getPillageGold, "int ()")
 		.def("getImprovementPillage", &CvImprovementInfo::getImprovementPillage, "int ()")
 		.def("getImprovementUpgrade", &CvImprovementInfo::getImprovementUpgrade, "int ()")
+		.def("isMakesPassable", &CvImprovementInfo::isMakesPassable, "bool ()")
+		.def("getPassageMoveCost", &CvImprovementInfo::getPassageMoveCost, "int ()")
 		.def("getReplacedImprovement", &CvImprovementInfo::getReplacedImprovement, "int ()")
 
 		.def("isActsAsCity", &CvImprovementInfo::isActsAsCity, "bool ()")

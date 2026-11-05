@@ -22,8 +22,10 @@
 | `TECH_TEST`（検証用技術） | 神秘主義 | 技術ツリーの 1 列目の空き（`iGridX` 1・`iGridY` 9）。前提なし・費用 10・古代。交換できない・小屋から出ない（`bTrade` / `bGoodyTech` 0）・AI 評価 -10000。チームが持つ間、検証用志向を得る（`FreeTraits`）。日本などで研究すると検証用志向の効果がすべて付く（検証用文明は元から持つので変わらない） |
 | `IMPROVEMENT_TEST_TERRACE`（検証用施設（棚田）） | 農場 | 隣接する山岳 1 つにつき食料 +1・生産 +1（`AdjacentPeakYieldChanges`）。作業は `BUILD_TEST_TERRACE` |
 | `IMPROVEMENT_TEST_FARM`（検証用施設（強化農場）） | 農場 | 灌漑で食料 +2（農場は +1）。ほかは農場と同じ。`ReplacedImprovement` が農場なので、検証用志向の「農場に生産 +1」を受ける |
+| `IMPROVEMENT_TEST_TUNNEL`（検証用施設（トンネル）） | 検証用施設（棚田） | 山岳だけに作れる（`TerrainMakesValids`）。`bMakesPassable` 1、`iPassageMoveCost` 1。産出なし。作業は `BUILD_TEST_TUNNEL` |
 | `BUILD_TEST_FARM`（検証用施設（強化農場）の建設） | 農場の建設 | 前提の志向 `TRAIT_TEST`、`ReplacedBuild` が農場の建設（置換のパターン）。検証用志向を持つと農場の建設の代わりに出る。前提技術は農業のまま |
 | `BUILD_TEST_TERRACE`（検証用施設（棚田）の建設） | 農場の建設 | 前提の志向 `TRAIT_TEST`、`UnitsFromBuild` が農場の建設（新規のパターン。労働者の `Builds` は書き換えていない）。前提技術なし、ホットキーなし |
+| `BUILD_TEST_TUNNEL`（検証用施設（トンネル）の建設） | 検証用施設（棚田）の建設 | 前提の志向 `TRAIT_TEST`、`UnitsFromBuild` が農場の建設（前提技術なし） |
 | `EVENTTRIGGER_TEST_TRAIT` / `EVENT_TEST_TRAIT`（検証用志向の固有イベント） | 森林火災 | 前提の志向 `TRAIT_TEST`（`PrereqOrTraits`）。すべてのゲームで有効、毎ターン必ず判定（`iWeight` -1）、1 回だけ、都市もタイルも選ばない。選ぶと資金 +10。検証用文明は最初のターンに起きる。日本などは検証用技術を得た次のターンに起きる |
 | `UNIT_TEST_A` / `UNIT_TEST_B`（検証用ユニット A・B） | 戦士・斧兵 | 白兵戦。前提技術・資源なし。A は B にだけアップグレードできる（1 ターン目からアップグレード関連を試せる）。AI 評価 -10000。B だけ前提の志向 `TRAIT_TEST` または `TRAIT_AGGRESSIVE`（「どれか 1 つ」の確認用。攻撃志向の徳川の日本でも作れる）。B を作れる文明では A は生産候補に出ない（BtS の仕様: アップグレード先がすべて作れるユニットは候補から外れる。`CvCity::canTrain` → `allUpgradesAvailable`）。A のアップグレードは検証用文明の開始ユニットで試す |
 | `PROMOTION_TEST`（検証用昇進） | 戦闘術Ⅰ | 戦闘力 +10%。`UnitCombats` が空なので通常のレベルアップでは誰も選べず、昇進の組でだけ付く。勝利すると `PROMOTION_TEST_STATE1` を得る。生き残った戦闘相手に `PROMOTION_TEST_POISON` を与える。毎ターン経験値 +1（10 まで）。撤退率 +100%（攻撃で負けそうになると必ず撤退するので、相手が生き残って毒を受ける）。勝利すると資金 +5、50% で捕獲。自国の領土で戦闘力 +15% |

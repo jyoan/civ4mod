@@ -13997,6 +13997,8 @@ m_iPillageGold(0),
 m_iImprovementPillage(NO_IMPROVEMENT),
 m_iImprovementUpgrade(NO_IMPROVEMENT),
 m_iReplacedImprovement(NO_IMPROVEMENT),
+m_bMakesPassable(false),
+m_iPassageMoveCost(0),
 m_bActsAsCity(true),				
 m_bHillsMakesValid(false),				
 m_bFreshWaterMakesValid(false),	
@@ -14138,6 +14140,17 @@ void CvImprovementInfo::setImprovementPillage(int i)
 int CvImprovementInfo::getReplacedImprovement() const
 {
 	return m_iReplacedImprovement;
+}
+
+// Land units can enter the impassable plot with this improvement (added by this mod): see CvPlot::isImprovementPassable()
+bool CvImprovementInfo::isMakesPassable() const
+{
+	return m_bMakesPassable;
+}
+
+int CvImprovementInfo::getPassageMoveCost() const
+{
+	return m_iPassageMoveCost;
 }
 
 int CvImprovementInfo::getImprovementUpgrade() const			
@@ -14533,13 +14546,22 @@ void CvImprovementInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iReplacedImprovement);
 	}
+
+	// uiFlag < 3: cache written before bMakesPassable and iPassageMoveCost existed
+	m_bMakesPassable = false;
+	m_iPassageMoveCost = 0;
+	if (uiFlag > 2)
+	{
+		stream->Read(&m_bMakesPassable);
+		stream->Read(&m_iPassageMoveCost);
+	}
 }
 
 void CvImprovementInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=2;	// 1: AdjacentPeakYieldChanges, 2: ReplacedImprovement (added by this mod)
+	uint uiFlag=3;	// 1: AdjacentPeakYieldChanges, 2: ReplacedImprovement, 3: bMakesPassable, iPassageMoveCost (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAdvancedStartCost);
@@ -14603,6 +14625,8 @@ void CvImprovementInfo::write(FDataStreamBase* stream)
 
 	stream->Write(NUM_YIELD_TYPES, m_piAdjacentPeakYieldChange);
 	stream->Write(m_iReplacedImprovement);
+	stream->Write(m_bMakesPassable);
+	stream->Write(m_iPassageMoveCost);
 }
 bool CvImprovementInfo::read(CvXMLLoadUtility* pXML)
 {
@@ -14841,6 +14865,8 @@ bool CvImprovementInfo::readPass2(CvXMLLoadUtility* pXML)
 	// ReplacedImprovement (added by this mod)
 	pXML->GetChildXmlValByName(szTextVal, "ReplacedImprovement");
 	m_iReplacedImprovement = pXML->FindInInfoClass(szTextVal);
+	pXML->GetChildXmlValByName(&m_bMakesPassable, "bMakesPassable");
+	pXML->GetChildXmlValByName(&m_iPassageMoveCost, "iPassageMoveCost");
 
 	return true;
 }

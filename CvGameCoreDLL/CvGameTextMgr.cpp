@@ -12198,6 +12198,19 @@ void CvGameTextMgr::setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTyp
 	}
 
 	// ReplacedImprovement and the PrereqOrTraits of its build (added by this mod)
+	// bMakesPassable, iPassageMoveCost (added by this mod)
+	if (info.isMakesPassable())
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_MAKES_PASSABLE"));
+
+		if (info.getPassageMoveCost() > 0)
+		{
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_PASSAGE_MOVE_COST", info.getPassageMoveCost()));
+		}
+	}
+
 	if (info.getReplacedImprovement() != NO_IMPROVEMENT)
 	{
 		szBuffer.append(NEWLINE);

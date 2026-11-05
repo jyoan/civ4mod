@@ -2208,4 +2208,40 @@
 		<Spanish>%s1_CityName cannot carry over more [ICON_PRODUCTION]. The lost %d2_NumProduction[ICON_PRODUCTION] was converted into %d3_NumGold[ICON_GOLD]!</Spanish>
 		<Japanese>%s1_CityName &#12399;&#20313;&#12387;&#12383;[ICON_PRODUCTION]&#12434;&#12371;&#12428;&#20197;&#19978;&#32368;&#12426;&#36234;&#12379;&#12414;&#12379;&#12435;&#12290;&#22833;&#12431;&#12428;&#12383;%d2_NumProduction[ICON_PRODUCTION]&#12399;%d3_NumGold[ICON_GOLD]&#12395;&#22793;&#12431;&#12426;&#12414;&#12375;&#12383;&#65281;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_MAKES_PASSABLE</Tag>
+		<English>[ICON_BULLET]Land units can move through this tile</English>
+		<French>[ICON_BULLET]Land units can move through this tile</French>
+		<German>[ICON_BULLET]Land units can move through this tile</German>
+		<Italian>[ICON_BULLET]Land units can move through this tile</Italian>
+		<Spanish>[ICON_BULLET]Land units can move through this tile</Spanish>
+		<Japanese>[ICON_BULLET]&#38520;&#19978;&#12518;&#12491;&#12483;&#12488;&#12364;&#12371;&#12398;&#12479;&#12452;&#12523;&#12434;&#36890;&#12428;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_PASSAGE_MOVE_COST</Tag>
+		<English>[ICON_BULLET]+%d1 movement cost</English>
+		<French>[ICON_BULLET]+%d1 movement cost</French>
+		<German>[ICON_BULLET]+%d1 movement cost</German>
+		<Italian>[ICON_BULLET]+%d1 movement cost</Italian>
+		<Spanish>[ICON_BULLET]+%d1 movement cost</Spanish>
+		<Japanese>[ICON_BULLET]&#31227;&#21205;&#12467;&#12473;&#12488; +%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_TUNNEL</Tag>
+		<English>Test Improvement (Tunnel)</English>
+		<French>Test Improvement (Tunnel)</French>
+		<German>Test Improvement (Tunnel)</German>
+		<Italian>Test Improvement (Tunnel)</Italian>
+		<Spanish>Test Improvement (Tunnel)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#12488;&#12531;&#12493;&#12523;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_TUNNEL</Tag>
+		<English>Build Test Improvement (Tunnel)</English>
+		<French>Build Test Improvement (Tunnel)</French>
+		<German>Build Test Improvement (Tunnel)</German>
+		<Italian>Build Test Improvement (Tunnel)</Italian>
+		<Spanish>Build Test Improvement (Tunnel)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#12488;&#12531;&#12493;&#12523;&#65289;&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
 </Civ4GameText>

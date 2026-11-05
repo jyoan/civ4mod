@@ -3255,6 +3255,8 @@ public:
 	int getImprovementPillage() const;				// Exposed to Python
 	void setImprovementPillage(int i);
 	int getImprovementUpgrade() const;				// Exposed to Python
+	bool isMakesPassable() const;					// Exposed to Python: bMakesPassable (added by this mod)
+	int getPassageMoveCost() const;				// Exposed to Python: iPassageMoveCost (added by this mod)
 	int getReplacedImprovement() const;				// Exposed to Python: ReplacedImprovement (added by this mod)
 	void setImprovementUpgrade(int i);
 
@@ -3338,6 +3340,8 @@ protected:
 	int m_iImprovementPillage;
 	int m_iImprovementUpgrade;
 	int m_iReplacedImprovement;
+	bool m_bMakesPassable;
+	int m_iPassageMoveCost;
 
 	bool m_bActsAsCity;				
 	bool m_bHillsMakesValid;				

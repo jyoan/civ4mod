@@ -10263,7 +10263,8 @@ int CvUnit::getImpassablePlotPassageDamage(const CvPlot* pPlot) const
 	int iBestDamage = -1;
 	int iI, iJ;
 
-	if (!pPlot->isImpassable())
+	// A passable improvement makes the plot safe: it needs no passage (added by this mod)
+	if (!pPlot->isImpassable() || pPlot->isImprovementPassable())
 	{
 		return -1;
 	}
@@ -10376,6 +10377,32 @@ int CvUnit::getRiverCrossingDamagePercent() const
 
 bool CvUnit::canEnterImpassablePlot(const CvPlot* pPlot) const
 {
+	int iI;
+
+	// bMakesPassable of the improvement, and the workers that can build it there and could not get there otherwise (added by
+	// this mod)
+	if (getDomainType() == DOMAIN_LAND && pPlot->isImpassable())
+	{
+		if (pPlot->isImprovementPassable())
+		{
+			return true;
+		}
+
+		if (workRate(true) > 0)
+		{
+			for (iI = 0; iI < GC.getNumBuildInfos(); iI++)
+			{
+				if (GC.getBuildInfo((BuildTypes)iI).getImprovement() != NO_IMPROVEMENT && GC.getImprovementInfo((ImprovementTypes)GC.getBuildInfo((BuildTypes)iI).getImprovement()).isMakesPassable())
+				{
+					if (canBuild(pPlot, (BuildTypes)iI))
+					{
+						return true;
+					}
+				}
+			}
+		}
+	}
+
 	return (getImpassablePlotPassageDamage(pPlot) >= 0);
 }
 

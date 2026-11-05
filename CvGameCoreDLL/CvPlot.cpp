@@ -2098,7 +2098,8 @@ bool CvPlot::canHaveImprovement(ImprovementTypes eImprovement, TeamTypes eTeam, 
 		return false;
 	}
 
-	if (isImpassable())
+	// bMakesPassable is for such plots (changed by this mod)
+	if (isImpassable() && !GC.getImprovementInfo(eImprovement).isMakesPassable())
 	{
 		return false;
 	}
@@ -2151,7 +2152,9 @@ bool CvPlot::canHaveImprovement(ImprovementTypes eImprovement, TeamTypes eTeam, 
 		bValid = true;
 	}
 
-	if (GC.getImprovementInfo(eImprovement).getTerrainMakesValid(getTerrainType()))
+	// TERRAIN_PEAK stands for peak plots, which have another terrain under the peak (added by this mod). Only bMakesPassable
+	// improvements get here on such plots
+	if (GC.getImprovementInfo(eImprovement).getTerrainMakesValid(isPeak() ? (TerrainTypes)GC.getInfoTypeForString("TERRAIN_PEAK", true) : getTerrainType()))
 	{
 		bValid = true;
 	}
@@ -2754,7 +2757,8 @@ int CvPlot::movementCost(const CvUnit* pUnit, const CvPlot* pFromPlot) const
 	// iExtraMoveCost of ImpassablePlotPassages (added by this mod): at most all the moves of the unit
 	if (isImpassable())
 	{
-		int iPassageMoveCost = pUnit->getImpassablePlotPassageMoveCost(this);
+		// iPassageMoveCost of a passable improvement (added by this mod)
+		int iPassageMoveCost = (isImprovementPassable() ? GC.getImprovementInfo(getImprovementType()).getPassageMoveCost() : pUnit->getImpassablePlotPassageMoveCost(this));
 
 		if (iPassageMoveCost > 0)
 		{
@@ -3600,7 +3604,7 @@ bool CvPlot::isNetworkRoute(TeamTypes eTeam) const
 
 bool CvPlot::isTradeNetworkImpassable(TeamTypes eTeam) const
 {
-	return (isImpassable() && !isRiverNetwork(eTeam));
+	return (isImpassable() && !isImprovementPassable() && !isRiverNetwork(eTeam));	// isImprovementPassable added by this mod
 }
 
 bool CvPlot::isRiverNetwork(TeamTypes eTeam) const
@@ -3815,6 +3819,14 @@ bool CvPlot::isValidDomainForAction(const CvUnit& unit) const
 	}
 
 	return false;
+}
+
+
+// A land unit can enter this plot even if it is impassable (added by this mod). isImpassable() stays true: it also keeps
+// cities, yields and other improvements off the plot
+bool CvPlot::isImprovementPassable() const
+{
+	return (getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(getImprovementType()).isMakesPassable());
 }
 
 
@@ -5454,6 +5466,12 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 
 		updateIrrigated();
 		updateYield();
+
+		// isTradeNetworkImpassable depends on it (added by this mod)
+		if ((eOldImprovement != NO_IMPROVEMENT && GC.getImprovementInfo(eOldImprovement).isMakesPassable()) || isImprovementPassable())
+		{
+			updatePlotGroup();
+		}
 
 		for (iI = 0; iI < NUM_MAX_CITY_PLOTS; ++iI)
 		{

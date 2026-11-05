@@ -1700,7 +1700,7 @@ int stepValid(FAStarNode* parent, FAStarNode* node, int data, const void* pointe
 
 	pNewPlot = GC.getMapINLINE().plotSorenINLINE(node->m_iX, node->m_iY);
 
-	if (pNewPlot->isImpassable())
+	if (pNewPlot->isImpassable() && !pNewPlot->isImprovementPassable())	// isImprovementPassable added by this mod
 	{
 		return FALSE;
 	}
