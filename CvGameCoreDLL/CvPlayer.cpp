@@ -227,7 +227,7 @@ void CvPlayer::init(PlayerTypes eID)
 
 		for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
 		{
-			setCivics(((CivicOptionTypes)iI), ((CivicTypes)(GC.getCivilizationInfo(getCivilizationType()).getCivilizationInitialCivics(iI))));
+			setCivics(((CivicOptionTypes)iI), getInitialCivic((CivicOptionTypes)iI));	// with ReplacedCivic (changed by this mod)
 		}
 
 		for (iI = 0; iI < GC.getNumEventInfos(); iI++)
@@ -2349,7 +2349,7 @@ bool CvPlayer::isConditionalFreeTraitActive(const ConditionalFreeTrait& kConditi
 		return false;
 	}
 
-	if (kCondition.iPrereqCivic != NO_CIVIC && !isCivic((CivicTypes)kCondition.iPrereqCivic))
+	if (kCondition.iPrereqCivic != NO_CIVIC && !isCivicOrReplacing((CivicTypes)kCondition.iPrereqCivic))
 	{
 		return false;
 	}
@@ -2559,7 +2559,7 @@ bool CvPlayer::hasPrereqAndCivics(BuildingTypes eBuilding) const
 
 	for (iI = 0; iI < kBuilding.getNumPrereqAndCivics(); iI++)
 	{
-		if (!isCivic((CivicTypes)kBuilding.getPrereqAndCivic(iI)))
+		if (!isCivicOrReplacing((CivicTypes)kBuilding.getPrereqAndCivic(iI)))
 		{
 			return false;
 		}
@@ -2580,7 +2580,7 @@ bool CvPlayer::hasPrereqOrCivics(BuildingTypes eBuilding) const
 
 	for (iI = 0; iI < kBuilding.getNumPrereqOrCivics(); iI++)
 	{
-		if (isCivic((CivicTypes)kBuilding.getPrereqOrCivic(iI)))
+		if (isCivicOrReplacing((CivicTypes)kBuilding.getPrereqOrCivic(iI)))
 		{
 			return true;
 		}
@@ -3044,6 +3044,21 @@ void CvPlayer::verifyCivics()
 		{
 			if (!canDoCivics(getCivics((CivicOptionTypes)iI)))
 			{
+				// The civic that replaces it comes first (added by this mod)
+				for (iJ = 0; iJ < GC.getNumCivicInfos(); iJ++)
+				{
+					if (GC.getCivicInfo((CivicTypes)iJ).getReplacedCivic() == getCivics((CivicOptionTypes)iI) && canDoCivics((CivicTypes)iJ))
+					{
+						setCivics(((CivicOptionTypes)iI), ((CivicTypes)iJ));
+						break;
+					}
+				}
+
+				if (canDoCivics(getCivics((CivicOptionTypes)iI)))
+				{
+					continue;
+				}
+
 				for (iJ = 0; iJ < GC.getNumCivicInfos(); iJ++)
 				{
 					if (GC.getCivicInfo((CivicTypes)iJ).getCivicOptionType() == iI)
@@ -6644,6 +6659,83 @@ bool CvPlayer::isObserver() const
 	return (GC.getGameINLINE().isObserveMode() && getID() == GC.getGameINLINE().getActivePlayer());
 }
 
+// ReplacedCivic (added by this mod): the player can adopt a civic that replaces this one. A replacement the player cannot
+// adopt yet, for lack of the tech, leaves the replaced civic available. A civic can only replace an earlier one, so going
+// through canDoCivics ends
+bool CvPlayer::isCivicReplaced(CivicTypes eCivic) const
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
+	{
+		if (GC.getCivicInfo((CivicTypes)iI).getReplacedCivic() == eCivic && canDoCivics((CivicTypes)iI))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// For the lists that show what a player will get with the techs, as canBuildByTraits (added by this mod)
+bool CvPlayer::canDoCivicByTraits(CivicTypes eCivic) const
+{
+	int iI;
+
+	if (!hasPrereqOrTrait(GC.getCivicInfo(eCivic).getPrereqOrTraitsVector()))
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
+	{
+		if (GC.getCivicInfo((CivicTypes)iI).getReplacedCivic() == eCivic && hasPrereqOrTrait(GC.getCivicInfo((CivicTypes)iI).getPrereqOrTraitsVector()))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+// isCivic, and a civic that replaces this one counts as this one for what asks for it (added by this mod)
+bool CvPlayer::isCivicOrReplacing(CivicTypes eCivic) const
+{
+	int iI;
+
+	if (isCivic(eCivic))
+	{
+		return true;
+	}
+
+	for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
+	{
+		if (GC.getCivicInfo((CivicTypes)iI).getReplacedCivic() == eCivic && isCivicOrReplacing((CivicTypes)iI))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// The initial civic of the civilization, or what replaces it for this player without needing a tech (added by this mod)
+CivicTypes CvPlayer::getInitialCivic(CivicOptionTypes eCivicOption) const
+{
+	CivicTypes eCivic = (CivicTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationInitialCivics(eCivicOption);
+	int iI;
+
+	for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
+	{
+		if (GC.getCivicInfo((CivicTypes)iI).getReplacedCivic() == eCivic && GC.getCivicInfo((CivicTypes)iI).getTechPrereq() == NO_TECH && hasPrereqOrTrait(GC.getCivicInfo((CivicTypes)iI).getPrereqOrTraitsVector()))
+		{
+			eCivic = (CivicTypes)iI;
+		}
+	}
+
+	return eCivic;
+}
+
 // The unit of the unit class for this player (added by this mod): UniqueUnits of the traits, before the civilization. The
 // first trait in the order of the XML wins
 int CvPlayer::getCivilizationUnit(int iUnitClass) const
@@ -8202,6 +8294,12 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 
 	// ForbiddenCivics of the traits (added by this mod)
 	if (isForbiddenCivic(eCivic))
+	{
+		return false;
+	}
+
+	// ReplacedCivic of the civics (added by this mod)
+	if (isCivicReplaced(eCivic))
 	{
 		return false;
 	}
@@ -13009,7 +13107,7 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 			{
 				if (getCivics(eIndex) != NO_CIVIC)
 				{
-					if (getCivics(eIndex) != GC.getCivilizationInfo(getCivilizationType()).getCivilizationInitialCivics(eIndex))
+					if (getCivics(eIndex) != getInitialCivic(eIndex))	// with ReplacedCivic (changed by this mod)
 					{
 						for (iI = 0; iI < MAX_PLAYERS; iI++)
 						{
@@ -20222,7 +20320,7 @@ bool CvPlayer::checkExpireEvent(EventTypes eEvent, const EventTriggeredData& kTr
 
 	if (NO_CIVIC != kTrigger.getCivic())
 	{
-		if (!kPlayer.isCivic((CivicTypes)kTrigger.getCivic()))
+		if (!kPlayer.isCivicOrReplacing((CivicTypes)kTrigger.getCivic()))	// changed by this mod
 		{
 			return true;
 		}
@@ -21735,7 +21833,7 @@ bool CvPlayer::isFullMember(VoteSourceTypes eVoteSource) const
 
 	if (NO_CIVIC != GC.getVoteSourceInfo(eVoteSource).getCivic())
 	{
-		if (!isCivic((CivicTypes)GC.getVoteSourceInfo(eVoteSource).getCivic()))
+		if (!isCivicOrReplacing((CivicTypes)GC.getVoteSourceInfo(eVoteSource).getCivic()))	// changed by this mod
 		{
 			return false;
 		}

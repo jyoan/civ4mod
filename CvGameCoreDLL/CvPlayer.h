@@ -237,6 +237,10 @@ public:
 	bool isObserver() const;										// added by this mod: the player watching in the AI observe mode
 	int getCivilizationUnit(int iUnitClass) const;				// Exposed to Python: with UniqueUnits of the traits
 	int getCivilizationBuilding(int iBuildingClass) const;		// Exposed to Python: with UniqueBuildings of the traits
+	bool isCivicReplaced(CivicTypes eCivic) const;				// Exposed to Python: ReplacedCivic
+	bool canDoCivicByTraits(CivicTypes eCivic) const;			// Exposed to Python: PrereqOrTraits and ReplacedCivic, without the techs
+	bool isCivicOrReplacing(CivicTypes eCivic) const;			// added by this mod
+	CivicTypes getInitialCivic(CivicOptionTypes eCivicOption) const;	// added by this mod
 	bool isForbiddenCivic(CivicTypes eCivic) const;					// Exposed to Python: ForbiddenCivics of the traits
 	bool isMaxCitiesReached() const;									// Exposed to Python
 	bool isIgnoreObsoleteBuilding(BuildingTypes eBuilding) const;		// Exposed to Python

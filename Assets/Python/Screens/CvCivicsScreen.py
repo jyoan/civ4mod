@@ -187,15 +187,18 @@ class CvCivicsScreen:
 			self.drawCivicOptionButtons(i)
 					
 							
-	# Added by this mod: civics that need a trait (PrereqOrTraits) the player does not have are not listed.
+	# Added by this mod: civics that need a trait (PrereqOrTraits) the player does not have, or that another civic
+	# replaces for the player (ReplacedCivic), are not listed.
 	# The civic the player has now is always listed.
 	def isCivicShown(self, iCivic):
 		info = gc.getCivicInfo(iCivic)
-		if info.getNumPrereqOrTraits() == 0:
-			return True
 		if self.m_paeOriginalCivics[info.getCivicOptionType()] == iCivic:
 			return True
 		activePlayer = gc.getPlayer(self.iActivePlayer)
+		if activePlayer.isCivicReplaced(iCivic):
+			return False
+		if info.getNumPrereqOrTraits() == 0:
+			return True
 		for i in range(info.getNumPrereqOrTraits()):
 			if activePlayer.hasTrait(info.getPrereqOrTraits(i)):
 				return True

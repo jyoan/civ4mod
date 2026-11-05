@@ -1598,6 +1598,7 @@ public:
 	int getCommerceModifier(int i) const;				// Exposed to Python
 	int* getCommerceModifierArray() const;
 	int getCapitalCommerceModifier(int i) const;				// Exposed to Python
+	int getReplacedCivic() const;					// Exposed to Python: ReplacedCivic (added by this mod)
 	int* getCapitalCommerceModifierArray() const;
 	int getAngryYieldChange(int i) const;				// Exposed to Python
 	int* getAngryYieldChangeArray() const;
@@ -1693,6 +1694,7 @@ protected:
 	int* m_piCapitalYieldModifier;
 	int* m_piTradeYieldModifier;
 	int* m_piCommerceModifier;
+	int m_iReplacedCivic;
 	int* m_piCapitalCommerceModifier;
 	int* m_piAngryYieldChange;
 	int* m_piAngryCommerceChange;

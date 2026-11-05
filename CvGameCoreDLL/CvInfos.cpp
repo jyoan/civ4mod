@@ -6741,6 +6741,7 @@ m_piCapitalYieldModifier(NULL),
 m_piTradeYieldModifier(NULL),
 m_piCommerceModifier(NULL),
 m_piCapitalCommerceModifier(NULL),
+m_iReplacedCivic(NO_CIVIC),
 m_piAngryYieldChange(NULL),
 m_piAngryCommerceChange(NULL),
 m_piUnhealthyYieldChange(NULL),
@@ -7088,6 +7089,12 @@ int CvCivicInfo::getCapitalCommerceModifier(int i) const
 	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
 	FAssertMsg(i > -1, "Index out of bounds");
 	return m_piCapitalCommerceModifier ? m_piCapitalCommerceModifier[i] : -1;
+}
+
+// A player who can adopt this civic cannot adopt the replaced one (added by this mod): see CvPlayer::isCivicReplaced()
+int CvCivicInfo::getReplacedCivic() const
+{
+	return m_iReplacedCivic;
 }
 
 int* CvCivicInfo::getCapitalCommerceModifierArray() const
@@ -7474,13 +7481,20 @@ void CvCivicInfo::read(FDataStreamBase* stream)
 	readOptionalArray(stream, &m_piAngryCommerceChange, NUM_COMMERCE_TYPES, uiFlag > 5);
 	readOptionalArray(stream, &m_piUnhealthyYieldChange, NUM_YIELD_TYPES, uiFlag > 5);
 	readOptionalArray(stream, &m_piUnhealthyCommerceChange, NUM_COMMERCE_TYPES, uiFlag > 5);
+
+	// uiFlag < 7: cache written before ReplacedCivic existed
+	m_iReplacedCivic = NO_CIVIC;
+	if (uiFlag > 6)
+	{
+		stream->Read(&m_iReplacedCivic);
+	}
 }
 
 void CvCivicInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=6;	// 5: FreeTraits, 6: changes per angry citizen and per unhealthiness (added by this mod)
+	uint uiFlag=7;	// 5: FreeTraits, 6: changes per angry citizen and per unhealthiness, 7: ReplacedCivic (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iCivicOptionType);
@@ -7562,6 +7576,7 @@ void CvCivicInfo::write(FDataStreamBase* stream)
 	stream->Write(NUM_COMMERCE_TYPES, m_piAngryCommerceChange);
 	stream->Write(NUM_YIELD_TYPES, m_piUnhealthyYieldChange);
 	stream->Write(NUM_COMMERCE_TYPES, m_piUnhealthyCommerceChange);
+	stream->Write(m_iReplacedCivic);
 }
 
 // Reads <UpgradeAnywhereUnitCombats> (used by traits, civics and buildings). Each <UpgradeAnywhereUnitCombat>
@@ -7791,6 +7806,17 @@ bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 	readCommerceChanges(pXML, "AngryCommerceChanges", &m_piAngryCommerceChange);
 	readYieldChanges(pXML, "UnhealthyYieldChanges", &m_piUnhealthyYieldChange);
 	readCommerceChanges(pXML, "UnhealthyCommerceChanges", &m_piUnhealthyCommerceChange);
+	// ReplacedCivic (added by this mod): an earlier civic of the same civic option
+	pXML->GetChildXmlValByName(szTextVal, "ReplacedCivic");
+	m_iReplacedCivic = pXML->FindInInfoClass(szTextVal);
+	if (m_iReplacedCivic != NO_CIVIC && GC.getCivicInfo((CivicTypes)m_iReplacedCivic).getCivicOptionType() != getCivicOptionType())
+	{
+		char szMessage[1024];
+		sprintf(szMessage, "ReplacedCivic of %s in CIV4CivicInfos.xml is of another civic option", getType());
+		gDLL->MessageBox(szMessage, "XML Error");
+		m_iReplacedCivic = NO_CIVIC;
+	}
+
 	pXML->GetChildXmlValByName(szTextVal, "WeLoveTheKing");
 	setWeLoveTheKingKey(szTextVal);
 

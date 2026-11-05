@@ -33,6 +33,7 @@ class CvTechChooser:
 	def __init__(self):
 		self.nWidgetCount = 0
 		self.iCivSelected = 0
+		self.szTraitKey = ""
 		self.aiCurrentState = []
 		
 		# Advanced Start
@@ -72,9 +73,15 @@ class CvTechChooser:
 		else:
 			screen.hide( "CivDropDown" )
 			
+		# The icons depend on the traits of the player (UniqueUnits, PrereqOrTraits and the like), which can change during the
+		# game: the tree is built again then (added by this mod)
+		szTraitKey = self.getTraitKey()
 		if ( screen.isPersistent() and self.iCivSelected == gc.getGame().getActivePlayer()):
-			self.updateTechRecords(false)
-			return
+			if ( self.szTraitKey == szTraitKey ):
+				self.updateTechRecords(false)
+				return
+			screen.deleteWidget("TechList")
+		self.szTraitKey = szTraitKey
 		
 		self.nWidgetCount = 0
 		self.iCivSelected = gc.getGame().getActivePlayer()
@@ -130,6 +137,15 @@ class CvTechChooser:
 		
 		screen.moveToFront( "AddTechButton" )
 	
+	# Added by this mod: the traits of the active player, to see if they have changed
+	def getTraitKey (self):
+		pPlayer = gc.getActivePlayer()
+		szKey = ""
+		for i in range(gc.getNumTraitInfos()):
+			if (pPlayer.hasTrait(i)):
+				szKey += str(i) + ","
+		return szKey
+
 	def placeTechs (self):
 	
 		iMaxX = 0
@@ -579,7 +595,7 @@ class CvTechChooser:
 
 			# Civic options
 			for j in range( gc.getNumCivicInfos() ):
-				if (gc.getCivicInfo(j).getTechPrereq() == i):
+				if (gc.getCivicInfo(j).getTechPrereq() == i and gc.getPlayer(self.iCivSelected).canDoCivicByTraits(j)):
 					szCivicReveal = "CivicRevealButton" + str( ( i * 1000 ) + j )
 					screen.addDDSGFCAt( szCivicReveal, szTechRecord, gc.getCivicInfo(j).getButton(), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_HELP_CIVIC_REVEAL, i, j, False )
 					fX += X_INCREMENT

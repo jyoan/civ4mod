@@ -457,6 +457,8 @@ public:
 	int getCultureRangeChange();
 	int getCivilizationUnit(int iUnitClass);
 	int getCivilizationBuilding(int iBuildingClass);
+	bool isCivicReplaced(int /*CivicTypes*/ eCivic);
+	bool canDoCivicByTraits(int /*CivicTypes*/ eCivic);
 	bool isForbiddenCivic(int /*CivicTypes*/ eCivic);
 	bool canBuildByTraits(int /*BuildTypes*/ eBuild);
 	int getUnitCostModifier();

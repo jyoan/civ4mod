@@ -3819,6 +3819,31 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_BUILDING", szUnique.GetCString(), szDefault.GetCString()));
 		}
 
+		// Civics that need this trait (PrereqOrTraits, ReplacedCivic): "Unique civic: X (instead of Y)" (added by this mod)
+		for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
+		{
+			const CvCivicInfo& kCivic = GC.getCivicInfo((CivicTypes)iI);
+			for (int iCivicTrait = 0; iCivicTrait < kCivic.getNumPrereqOrTraits(); iCivicTrait++)
+			{
+				if (kCivic.getPrereqOrTraits(iCivicTrait) == eTrait)
+				{
+					CvWString szCivic;
+					szCivic.Format(L"<link=literal>%s</link>", kCivic.getDescription());
+					szHelpString.append(NEWLINE L"  ");
+					if (kCivic.getReplacedCivic() != NO_CIVIC)
+					{
+						CvWString szReplaced;
+						szReplaced.Format(L"<link=literal>%s</link>", GC.getCivicInfo((CivicTypes)kCivic.getReplacedCivic()).getDescription());
+						szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_CIVIC_REPLACES", szCivic.GetCString(), szReplaced.GetCString()));
+					}
+					else
+					{
+						szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_CIVIC", szCivic.GetCString()));
+					}
+				}
+			}
+		}
+
 		// AngryYieldChanges and the like (added by this mod)
 		buildMiseryChangesString(szHelpString, GC.getTraitInfo(eTrait).getAngryYieldChangeArray(), GC.getTraitInfo(eTrait).getAngryCommerceChangeArray(), GC.getTraitInfo(eTrait).getUnhealthyYieldChangeArray(), GC.getTraitInfo(eTrait).getUnhealthyCommerceChangeArray(), true);
 
@@ -5541,6 +5566,13 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	if (bCivilopediaText || !bPlayerContext || !(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).hasPrereqOrTrait(GC.getCivicInfo(eCivic).getPrereqOrTraitsVector())))
 	{
 		buildPrereqOrTraitsString(szHelpText, GC.getCivicInfo(eCivic).getPrereqOrTraitsVector());
+	}
+
+	// ReplacedCivic (added by this mod)
+	if (GC.getCivicInfo(eCivic).getReplacedCivic() != NO_CIVIC)
+	{
+		szHelpText.append(NEWLINE);
+		szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REPLACES", GC.getCivicInfo((CivicTypes)GC.getCivicInfo(eCivic).getReplacedCivic()).getTextKeyWide()));
 	}
 
 	buildFreeTraitsString(szHelpText, GC.getCivicInfo(eCivic).getFreeTraitsVector());
@@ -11900,7 +11932,8 @@ bool CvGameTextMgr::buildCivicRevealString(CvWStringBuffer &szBuffer, TechTypes 
 {
 	CvWString szTempBuffer;
 
-	if (GC.getCivicInfo((CivicTypes) iCivicType).getTechPrereq() == eTech)
+	// Only what the active player will get (canDoCivicByTraits added by this mod)
+	if (GC.getCivicInfo((CivicTypes) iCivicType).getTechPrereq() == eTech && (GC.getGameINLINE().getActivePlayer() == NO_PLAYER || GET_PLAYER(GC.getGameINLINE().getActivePlayer()).canDoCivicByTraits((CivicTypes)iCivicType)))
 	{
 		if (bList && bFirst)
 		{
