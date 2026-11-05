@@ -353,6 +353,7 @@ void CvCityAI::AI_updateAssignWork()
 {
 	if (AI_isAssignWorkDirty())
 	{
+		updateMiseryChanges();	// anger and health changes make the work dirty, too (added by this mod)
 		AI_assignWorkingPlots();
 	}
 }

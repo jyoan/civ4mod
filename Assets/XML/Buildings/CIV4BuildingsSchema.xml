@@ -528,6 +528,18 @@
 	<ElementType name="bNewCityStateReligion" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iOccupationTimeModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="NewCityCultureLevel" content="textOnly"/>
+	<ElementType name="AngryYieldChanges" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="AngryCommerceChanges" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="UnhealthyYieldChanges" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="UnhealthyCommerceChanges" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="BuildingInfo" content="eltOnly">
 		<element type="BuildingClass"/>
 		<element type="Type"/>
@@ -727,6 +739,10 @@
 		<element type="iHappinessPercentPerPopulation" minOccurs="0"/>
 		<element type="iHealthPercentPerPopulation" minOccurs="0"/>
 		<element type="GlobalBuildingExtraCommerces" minOccurs="0"/>
+		<element type="AngryYieldChanges" minOccurs="0"/>
+		<element type="AngryCommerceChanges" minOccurs="0"/>
+		<element type="UnhealthyYieldChanges" minOccurs="0"/>
+		<element type="UnhealthyCommerceChanges" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="BuildingInfos" content="eltOnly">
 		<element type="BuildingInfo" maxOccurs="*"/>

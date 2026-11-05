@@ -1850,6 +1850,16 @@
 					<bExcludeEnemyTerritory>1</bExcludeEnemyTerritory>
 				</UpgradeAnywhereUnitCombat>
 			</UpgradeAnywhereUnitCombats>
+			<AngryYieldChanges>
+				<iYield>0</iYield>
+				<iYield>0</iYield>
+				<iYield>1</iYield>
+			</AngryYieldChanges>
+			<UnhealthyCommerceChanges>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>1</iCommerce>
+			</UnhealthyCommerceChanges>
 		</CivicInfo>
 	</CivicInfos>
 </Civ4CivicInfos>

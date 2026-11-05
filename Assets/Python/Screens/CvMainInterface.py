@@ -2156,6 +2156,7 @@ class CvMainInterface:
 								for j in range( YieldTypes.NUM_YIELD_TYPES):
 									iYield = gc.getBuildingInfo(i).getYieldChange(j) + pHeadSelectedCity.getNumBuilding(i) * pHeadSelectedCity.getBuildingYieldChange(gc.getBuildingInfo(i).getBuildingClassType(), j)
 									iYield += pHeadSelectedCity.getDynamicBuildingYieldByBuilding(j, i) / pHeadSelectedCity.getNumBuilding(i)	# world wonder and tech changes of buildings (added by this mod)
+									iYield += pHeadSelectedCity.getMiseryYieldByBuilding(j, i) / pHeadSelectedCity.getNumBuilding(i)	# changes per angry citizen and per unhealthiness (added by this mod)
 
 									if (iYield != 0):
 										if ( bFirst == False ):
@@ -2172,6 +2173,7 @@ class CvMainInterface:
 
 							for j in range(CommerceTypes.NUM_COMMERCE_TYPES):
 								iCommerce = pHeadSelectedCity.getBuildingCommerceByBuilding(j, i) / pHeadSelectedCity.getNumBuilding(i)
+								iCommerce += pHeadSelectedCity.getMiseryCommerceByBuilding(j, i) / pHeadSelectedCity.getNumBuilding(i)	# changes per angry citizen and per unhealthiness (added by this mod)
 	
 								if (iCommerce != 0):
 									if ( bFirst == False ):

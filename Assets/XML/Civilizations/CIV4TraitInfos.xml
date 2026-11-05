@@ -582,6 +582,13 @@
 				<iYield>1</iYield>
 				<iYield>0</iYield>
 			</LakePlotYieldChanges>
+			<AngryCommerceChanges>
+				<iCommerce>0</iCommerce>
+				<iCommerce>1</iCommerce>
+			</AngryCommerceChanges>
+			<UnhealthyYieldChanges>
+				<iYield>1</iYield>
+			</UnhealthyYieldChanges>
 			<BonusYieldChanges>
 				<BonusYieldChange>
 					<BonusType>BONUS_STONE</BonusType>

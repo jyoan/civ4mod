@@ -35,7 +35,7 @@ build.bat clean      CvGameCoreDLL\Release\ を削除（配置はしない）
 - 全ビルド約 2 分、変更なしなら 0 秒。ヘッダを 1 つでも変えると PCH 経由で全再コンパイルになる
 - build.bat はビルド後に依存 DLL を検査し、MSVCR71.dll に依存しない／MSVCR80 以降に依存する DLL は失敗扱いにしてコピーしない
 - 元ソースは `/W3` で**警告 0 件**。警告が出たら自分の変更が原因
-- `CyPlayerInterface1.cpp` は MSVC 7.1 のデバッグ情報の上限に達している（`.def` を足すと `fatal error C1067: compiler limit : debug information module size exceeded`）。この Mod で足す `CyPlayer` の `.def` は `CyPlayerInterface2.cpp` の末尾に書く
+- `CyPlayerInterface1.cpp` は MSVC 7.1 のデバッグ情報の上限に達している（`.def` を足すと `fatal error C1067: compiler limit : debug information module size exceeded`）。この Mod で足す `CyPlayer` の `.def` は `CyPlayerInterface2.cpp` の末尾に書く。`CyCityInterface1.cpp` も同じ上限に達している。`CyCity` の `.def` は `CyCityInterface2.cpp` に書く
 - 新しい `.cpp` を追加したら Makefile の `OBJS` に 1 行足す（ワイルドカードは使っていない）
 - Debug 構成は未整備（Release のみ）。Release では `FAssert` は無効
 - `Makefile` と `build.bat` は ASCII のみ・CRLF（日本語を書くと cmd / nmake で壊れる可能性がある）
@@ -127,7 +127,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 ### XML キャッシュ
 
 - `CvCivilizationInfo` などストリーム版 `read` / `write` を持つ Info クラスは、exe が XML キャッシュ（`%LOCALAPPDATA%\My Games\Beyond the Sword(J)\cache`）経由でも読み込む。exe は `CvGlobals::read/write*InfoArray` を呼び、そこから各 Info の `read` / `write` が使われる
-- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする（現在 `CvCivilizationInfo` は `uiFlag=1`、`CvCivicInfo` は `uiFlag=5`、`CvBuildingInfo` は `uiFlag=16`、`CvUnitInfo` は `uiFlag=1`、`CvPromotionInfo` は `uiFlag=7`、`CvTechInfo` は `uiFlag=1`、`CvImprovementInfo` は `uiFlag=2`、`CvEventTriggerInfo` は `uiFlag=1`）
+- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする（現在 `CvCivilizationInfo` は `uiFlag=1`、`CvCivicInfo` は `uiFlag=6`、`CvBuildingInfo` は `uiFlag=17`、`CvUnitInfo` は `uiFlag=1`、`CvPromotionInfo` は `uiFlag=7`、`CvTechInfo` は `uiFlag=1`、`CvImprovementInfo` は `uiFlag=2`、`CvEventTriggerInfo` は `uiFlag=1`）
 - **Info の数が変わる変更（志向・昇進・技術・ユニットなどの追加や削除）をしたら、必ずキャッシュを消す**。ユニット・建物・指導者・文明などのキャッシュは「志向の数」などの数だけ配列を読むため、XML を変えていないファイルの古いキャッシュがずれて読まれ、データ破損や強制終了の原因になる
 - キャッシュを消すときは、Civ4 が起動していないことを確認してから、上記の cache フォルダ内の `*.dat` だけを消す（フォルダは残す。次回起動時に作り直される。BtS 本体や他の Mod も次回の起動が少し遅くなるだけ）
 - キャッシュが原因と思われる不具合が出たときも、同じ手順で消す

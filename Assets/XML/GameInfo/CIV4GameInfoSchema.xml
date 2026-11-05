@@ -778,6 +778,18 @@
 	<ElementType name="FreeTraits" content="eltOnly">
 		<element type="TraitType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="AngryYieldChanges" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="AngryCommerceChanges" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="UnhealthyYieldChanges" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="UnhealthyCommerceChanges" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="CivicInfo" content="eltOnly">
 		<element type="CivicOptionType"/>
 		<element type="Type"/>
@@ -849,6 +861,10 @@
 		<element type="UnitCombatProductionModifiers" minOccurs="0"/>
 		<element type="UnitCombatUpgradeDiscounts" minOccurs="0"/>
 		<element type="UpgradeAnywhereUnitCombats" minOccurs="0"/>
+		<element type="AngryYieldChanges" minOccurs="0"/>
+		<element type="AngryCommerceChanges" minOccurs="0"/>
+		<element type="UnhealthyYieldChanges" minOccurs="0"/>
+		<element type="UnhealthyCommerceChanges" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="CivicInfos" content="eltOnly">
 		<element type="CivicInfo" maxOccurs="*"/>

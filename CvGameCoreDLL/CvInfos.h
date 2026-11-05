@@ -1599,6 +1599,14 @@ public:
 	int* getCommerceModifierArray() const;
 	int getCapitalCommerceModifier(int i) const;				// Exposed to Python
 	int* getCapitalCommerceModifierArray() const;
+	int getAngryYieldChange(int i) const;				// Exposed to Python
+	int* getAngryYieldChangeArray() const;
+	int getAngryCommerceChange(int i) const;				// Exposed to Python
+	int* getAngryCommerceChangeArray() const;
+	int getUnhealthyYieldChange(int i) const;				// Exposed to Python
+	int* getUnhealthyYieldChangeArray() const;
+	int getUnhealthyCommerceChange(int i) const;				// Exposed to Python
+	int* getUnhealthyCommerceChangeArray() const;
 	int getSpecialistExtraCommerce(int i) const;				// Exposed to Python
 	int* getSpecialistExtraCommerceArray() const;
 	int getUnitCombatFreeExperience(int i) const;				// Exposed to Python
@@ -1686,6 +1694,10 @@ protected:
 	int* m_piTradeYieldModifier;
 	int* m_piCommerceModifier;
 	int* m_piCapitalCommerceModifier;
+	int* m_piAngryYieldChange;
+	int* m_piAngryCommerceChange;
+	int* m_piUnhealthyYieldChange;
+	int* m_piUnhealthyCommerceChange;
 	int* m_piSpecialistExtraCommerce;
 	int* m_piUnitCombatFreeExperience;
 	int* m_piUnitCombatProductionModifier;
@@ -1982,6 +1994,14 @@ public:
 	int* getCommerceChangeArray() const;
 	int getObsoleteSafeCommerceChange(int i) const;				// Exposed to Python
 	int* getObsoleteSafeCommerceChangeArray() const;
+	int getAngryYieldChange(int i) const;				// Exposed to Python
+	int* getAngryYieldChangeArray() const;
+	int getAngryCommerceChange(int i) const;				// Exposed to Python
+	int* getAngryCommerceChangeArray() const;
+	int getUnhealthyYieldChange(int i) const;				// Exposed to Python
+	int* getUnhealthyYieldChangeArray() const;
+	int getUnhealthyCommerceChange(int i) const;				// Exposed to Python
+	int* getUnhealthyCommerceChangeArray() const;
 	int getCommerceChangeDoubleTime(int i) const;				// Exposed to Python
 	int getCommerceModifier(int i) const;				// Exposed to Python
 	int* getCommerceModifierArray() const;
@@ -2267,6 +2287,10 @@ protected:
 	int* m_piGlobalYieldModifier;
 	int* m_piCommerceChange;
 	int* m_piObsoleteSafeCommerceChange;
+	int* m_piAngryYieldChange;
+	int* m_piAngryCommerceChange;
+	int* m_piUnhealthyYieldChange;
+	int* m_piUnhealthyCommerceChange;
 	int* m_piCommerceChangeDoubleTime;
 	int* m_piCommerceModifier;
 	int* m_piGlobalCommerceModifier;
@@ -4642,6 +4666,14 @@ public:
 	int* getRiverPlotYieldChangeArray() const;
 	int getLakePlotYieldChange(int i) const;				// Exposed to Python
 	int* getLakePlotYieldChangeArray() const;
+	int getAngryYieldChange(int i) const;				// Exposed to Python
+	int* getAngryYieldChangeArray() const;
+	int getAngryCommerceChange(int i) const;				// Exposed to Python
+	int* getAngryCommerceChangeArray() const;
+	int getUnhealthyYieldChange(int i) const;				// Exposed to Python
+	int* getUnhealthyYieldChangeArray() const;
+	int getUnhealthyCommerceChange(int i) const;				// Exposed to Python
+	int* getUnhealthyCommerceChangeArray() const;
 
 	int isFreePromotion(int i) const;				// Exposed to Python
 	bool isMaintainFeatures(int i) const;			// Exposed to Python
@@ -4746,6 +4778,10 @@ protected:
 	std::vector< std::vector<int> > m_aaiImprovementYieldChangeValues;		// because improvements are loaded after traits
 	int* m_paiRiverPlotYieldChange;
 	int* m_paiLakePlotYieldChange;
+	int* m_paiAngryYieldChange;
+	int* m_paiAngryCommerceChange;
+	int* m_paiUnhealthyYieldChange;
+	int* m_paiUnhealthyCommerceChange;
 
 	bool* m_pabFreePromotion;
 	bool* m_pabMaintainFeatures;

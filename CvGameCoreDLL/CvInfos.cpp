@@ -6638,6 +6638,52 @@ bool CvCivicOptionInfo::read(CvXMLLoadUtility* pXML)
 //					CvCivicInfo
 //======================================================================================================
 
+// The lists of the changes per angry citizen and per unhealthiness of civics, buildings and traits (added by this mod)
+static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szTag, int** ppiChanges)
+{
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szTag))
+	{
+		pXML->SetYields(ppiChanges);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(ppiChanges, NUM_YIELD_TYPES);
+	}
+}
+
+static void readCommerceChanges(CvXMLLoadUtility* pXML, const TCHAR* szTag, int** ppiChanges)
+{
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szTag))
+	{
+		pXML->SetCommerce(ppiChanges);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(ppiChanges, NUM_COMMERCE_TYPES);
+	}
+}
+
+static void readOptionalArray(FDataStreamBase* stream, int** ppiArray, int iNum, bool bInStream)
+{
+	int iI;
+
+	SAFE_DELETE_ARRAY(*ppiArray);
+	*ppiArray = new int[iNum];
+	if (bInStream)
+	{
+		stream->Read(iNum, *ppiArray);
+	}
+	else
+	{
+		for (iI = 0; iI < iNum; iI++)
+		{
+			(*ppiArray)[iI] = 0;
+		}
+	}
+}
+
 //------------------------------------------------------------------------------------------------------
 //
 //  FUNCTION:   CvCivicInfo()
@@ -6695,6 +6741,10 @@ m_piCapitalYieldModifier(NULL),
 m_piTradeYieldModifier(NULL),
 m_piCommerceModifier(NULL),
 m_piCapitalCommerceModifier(NULL),
+m_piAngryYieldChange(NULL),
+m_piAngryCommerceChange(NULL),
+m_piUnhealthyYieldChange(NULL),
+m_piUnhealthyCommerceChange(NULL),
 m_piSpecialistExtraCommerce(NULL),
 m_piUnitCombatFreeExperience(NULL),
 m_piUnitCombatProductionModifier(NULL),
@@ -6727,6 +6777,10 @@ CvCivicInfo::~CvCivicInfo()
 	SAFE_DELETE_ARRAY(m_piTradeYieldModifier);
 	SAFE_DELETE_ARRAY(m_piCommerceModifier);
 	SAFE_DELETE_ARRAY(m_piCapitalCommerceModifier);
+	SAFE_DELETE_ARRAY(m_piAngryYieldChange);
+	SAFE_DELETE_ARRAY(m_piAngryCommerceChange);
+	SAFE_DELETE_ARRAY(m_piUnhealthyYieldChange);
+	SAFE_DELETE_ARRAY(m_piUnhealthyCommerceChange);
 	SAFE_DELETE_ARRAY(m_piSpecialistExtraCommerce);
 	SAFE_DELETE_ARRAY(m_piUnitCombatFreeExperience);
 	SAFE_DELETE_ARRAY(m_piUnitCombatProductionModifier);
@@ -7039,6 +7093,54 @@ int CvCivicInfo::getCapitalCommerceModifier(int i) const
 int* CvCivicInfo::getCapitalCommerceModifierArray() const
 {
 	return m_piCapitalCommerceModifier;
+}
+
+int CvCivicInfo::getAngryYieldChange(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piAngryYieldChange ? m_piAngryYieldChange[i] : 0;
+}
+
+int* CvCivicInfo::getAngryYieldChangeArray() const
+{
+	return m_piAngryYieldChange;
+}
+
+int CvCivicInfo::getAngryCommerceChange(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piAngryCommerceChange ? m_piAngryCommerceChange[i] : 0;
+}
+
+int* CvCivicInfo::getAngryCommerceChangeArray() const
+{
+	return m_piAngryCommerceChange;
+}
+
+int CvCivicInfo::getUnhealthyYieldChange(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piUnhealthyYieldChange ? m_piUnhealthyYieldChange[i] : 0;
+}
+
+int* CvCivicInfo::getUnhealthyYieldChangeArray() const
+{
+	return m_piUnhealthyYieldChange;
+}
+
+int CvCivicInfo::getUnhealthyCommerceChange(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piUnhealthyCommerceChange ? m_piUnhealthyCommerceChange[i] : 0;
+}
+
+int* CvCivicInfo::getUnhealthyCommerceChangeArray() const
+{
+	return m_piUnhealthyCommerceChange;
 }
 
 int CvCivicInfo::getSpecialistExtraCommerce(int i) const
@@ -7366,13 +7468,19 @@ void CvCivicInfo::read(FDataStreamBase* stream)
 	{
 		m_aiFreeTraits.clear();
 	}
+
+	// uiFlag < 6: cache written before the changes per angry citizen and per unhealthiness existed
+	readOptionalArray(stream, &m_piAngryYieldChange, NUM_YIELD_TYPES, uiFlag > 5);
+	readOptionalArray(stream, &m_piAngryCommerceChange, NUM_COMMERCE_TYPES, uiFlag > 5);
+	readOptionalArray(stream, &m_piUnhealthyYieldChange, NUM_YIELD_TYPES, uiFlag > 5);
+	readOptionalArray(stream, &m_piUnhealthyCommerceChange, NUM_COMMERCE_TYPES, uiFlag > 5);
 }
 
 void CvCivicInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=5;	// 5: FreeTraits (added by this mod)
+	uint uiFlag=6;	// 5: FreeTraits, 6: changes per angry citizen and per unhealthiness (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iCivicOptionType);
@@ -7450,6 +7558,10 @@ void CvCivicInfo::write(FDataStreamBase* stream)
 	stream->Write(GC.getNumUnitCombatInfos(), m_pabUpgradeAnywhereExcludeEnemy);
 	writePrereqOrTraits(stream, m_aiPrereqOrTraits);
 	writePrereqOrTraits(stream, m_aiFreeTraits);
+	stream->Write(NUM_YIELD_TYPES, m_piAngryYieldChange);
+	stream->Write(NUM_COMMERCE_TYPES, m_piAngryCommerceChange);
+	stream->Write(NUM_YIELD_TYPES, m_piUnhealthyYieldChange);
+	stream->Write(NUM_COMMERCE_TYPES, m_piUnhealthyCommerceChange);
 }
 
 // Reads <UpgradeAnywhereUnitCombats> (used by traits, civics and buildings). Each <UpgradeAnywhereUnitCombat>
@@ -7675,6 +7787,10 @@ bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 
+	readYieldChanges(pXML, "AngryYieldChanges", &m_piAngryYieldChange);
+	readCommerceChanges(pXML, "AngryCommerceChanges", &m_piAngryCommerceChange);
+	readYieldChanges(pXML, "UnhealthyYieldChanges", &m_piUnhealthyYieldChange);
+	readCommerceChanges(pXML, "UnhealthyCommerceChanges", &m_piUnhealthyCommerceChange);
 	pXML->GetChildXmlValByName(szTextVal, "WeLoveTheKing");
 	setWeLoveTheKingKey(szTextVal);
 
@@ -8098,6 +8214,10 @@ m_piAreaYieldModifier(NULL),
 m_piGlobalYieldModifier(NULL),
 m_piCommerceChange(NULL),
 m_piObsoleteSafeCommerceChange(NULL),
+m_piAngryYieldChange(NULL),
+m_piAngryCommerceChange(NULL),
+m_piUnhealthyYieldChange(NULL),
+m_piUnhealthyCommerceChange(NULL),
 m_piCommerceChangeDoubleTime(NULL),
 m_piCommerceModifier(NULL),
 m_piGlobalCommerceModifier(NULL),
@@ -8154,6 +8274,10 @@ CvBuildingInfo::~CvBuildingInfo()
 	SAFE_DELETE_ARRAY(m_piGlobalYieldModifier);
 	SAFE_DELETE_ARRAY(m_piCommerceChange);
 	SAFE_DELETE_ARRAY(m_piObsoleteSafeCommerceChange);
+	SAFE_DELETE_ARRAY(m_piAngryYieldChange);
+	SAFE_DELETE_ARRAY(m_piAngryCommerceChange);
+	SAFE_DELETE_ARRAY(m_piUnhealthyYieldChange);
+	SAFE_DELETE_ARRAY(m_piUnhealthyCommerceChange);
 	SAFE_DELETE_ARRAY(m_piCommerceChangeDoubleTime);
 	SAFE_DELETE_ARRAY(m_piCommerceModifier);
 	SAFE_DELETE_ARRAY(m_piGlobalCommerceModifier);
@@ -8980,6 +9104,54 @@ int CvBuildingInfo::getObsoleteSafeCommerceChange(int i) const
 int* CvBuildingInfo::getObsoleteSafeCommerceChangeArray() const
 {
 	return m_piObsoleteSafeCommerceChange;
+}
+
+int CvBuildingInfo::getAngryYieldChange(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piAngryYieldChange ? m_piAngryYieldChange[i] : 0;
+}
+
+int* CvBuildingInfo::getAngryYieldChangeArray() const
+{
+	return m_piAngryYieldChange;
+}
+
+int CvBuildingInfo::getAngryCommerceChange(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piAngryCommerceChange ? m_piAngryCommerceChange[i] : 0;
+}
+
+int* CvBuildingInfo::getAngryCommerceChangeArray() const
+{
+	return m_piAngryCommerceChange;
+}
+
+int CvBuildingInfo::getUnhealthyYieldChange(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piUnhealthyYieldChange ? m_piUnhealthyYieldChange[i] : 0;
+}
+
+int* CvBuildingInfo::getUnhealthyYieldChangeArray() const
+{
+	return m_piUnhealthyYieldChange;
+}
+
+int CvBuildingInfo::getUnhealthyCommerceChange(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piUnhealthyCommerceChange ? m_piUnhealthyCommerceChange[i] : 0;
+}
+
+int* CvBuildingInfo::getUnhealthyCommerceChangeArray() const
+{
+	return m_piUnhealthyCommerceChange;
 }
 
 int CvBuildingInfo::getCommerceChangeDoubleTime(int i) const
@@ -10119,6 +10291,12 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 	{
 		m_aGlobalBuildingExtraCommerces.clear();
 	}
+
+	// uiFlag < 17: cache written before the changes per angry citizen and per unhealthiness existed
+	readOptionalArray(stream, &m_piAngryYieldChange, NUM_YIELD_TYPES, uiFlag > 16);
+	readOptionalArray(stream, &m_piAngryCommerceChange, NUM_COMMERCE_TYPES, uiFlag > 16);
+	readOptionalArray(stream, &m_piUnhealthyYieldChange, NUM_YIELD_TYPES, uiFlag > 16);
+	readOptionalArray(stream, &m_piUnhealthyCommerceChange, NUM_COMMERCE_TYPES, uiFlag > 16);
 }
 
 //
@@ -10128,7 +10306,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=16;	// 9: FreeTraits, 10: world wonder changes, 11: city prerequisites, 12: city radius prerequisites, 13: civic prerequisites, 14: building changes, 15: changes per population, 16: GlobalBuildingExtraCommerces (added by this mod)
+	uint uiFlag=17;	// 9: FreeTraits, 10: world wonder changes, 11: city prerequisites, 12: city radius prerequisites, 13: civic prerequisites, 14: building changes, 15: changes per population, 16: GlobalBuildingExtraCommerces, 17: changes per angry citizen and per unhealthiness (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -10338,6 +10516,10 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iHappinessPercentPerPopulation);
 	stream->Write(m_iHealthPercentPerPopulation);
 	writeBuildingChanges(stream, m_aGlobalBuildingExtraCommerces);
+	stream->Write(NUM_YIELD_TYPES, m_piAngryYieldChange);
+	stream->Write(NUM_COMMERCE_TYPES, m_piAngryCommerceChange);
+	stream->Write(NUM_YIELD_TYPES, m_piUnhealthyYieldChange);
+	stream->Write(NUM_COMMERCE_TYPES, m_piUnhealthyCommerceChange);
 }
 
 // Turns the civic types of a building list into numbers. A wrong name shows an XML Error message.
@@ -10550,6 +10732,10 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iHealthPercentPerPopulation, "iHealthPercentPerPopulation");
 	m_aGlobalBuildingExtraCommerces.clear();
 	readBuildingChanges(pXML, "GlobalBuildingExtraCommerces", "GlobalBuildingExtraCommerce", "BuildingClassType", "CommerceChanges", BUILDINGCHANGE_SOURCE_TECH, BUILDINGCHANGE_EFFECT_COMMERCE, m_aGlobalBuildingExtraCommerces);
+	readYieldChanges(pXML, "AngryYieldChanges", &m_piAngryYieldChange);
+	readCommerceChanges(pXML, "AngryCommerceChanges", &m_piAngryCommerceChange);
+	readYieldChanges(pXML, "UnhealthyYieldChanges", &m_piUnhealthyYieldChange);
+	readCommerceChanges(pXML, "UnhealthyCommerceChanges", &m_piUnhealthyCommerceChange);
 	pXML->GetChildXmlValByName(&m_iPrereqPopulation, "iPrereqPopulation");
 	pXML->GetChildXmlValByName(szTextVal, "PrereqCultureLevel");
 	m_iPrereqCultureLevel = pXML->FindInInfoClass(szTextVal);
@@ -18540,6 +18726,10 @@ m_pabUpgradeAnywhereUnitCombat(NULL),
 m_pabUpgradeAnywhereExcludeEnemy(NULL),
 m_paiRiverPlotYieldChange(NULL),
 m_paiLakePlotYieldChange(NULL),
+m_paiAngryYieldChange(NULL),
+m_paiAngryCommerceChange(NULL),
+m_paiUnhealthyYieldChange(NULL),
+m_paiUnhealthyCommerceChange(NULL),
 m_paiTradeYieldModifier(NULL),
 m_paiCommerceChange(NULL),
 m_paiCommerceModifier(NULL),
@@ -18578,6 +18768,10 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabUpgradeAnywhereExcludeEnemy);
 	SAFE_DELETE_ARRAY(m_paiRiverPlotYieldChange);
 	SAFE_DELETE_ARRAY(m_paiLakePlotYieldChange);
+	SAFE_DELETE_ARRAY(m_paiAngryYieldChange);
+	SAFE_DELETE_ARRAY(m_paiAngryCommerceChange);
+	SAFE_DELETE_ARRAY(m_paiUnhealthyYieldChange);
+	SAFE_DELETE_ARRAY(m_paiUnhealthyCommerceChange);
 	SAFE_DELETE_ARRAY(m_pabFreePromotionUnitCombat);
 	SAFE_DELETE_ARRAY(m_pabFreePromotion);
 	SAFE_DELETE_ARRAY(m_pabMaintainFeatures);
@@ -19178,6 +19372,54 @@ int* CvTraitInfo::getLakePlotYieldChangeArray() const
 	return m_paiLakePlotYieldChange;
 }
 
+int CvTraitInfo::getAngryYieldChange(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiAngryYieldChange ? m_paiAngryYieldChange[i] : 0;
+}
+
+int* CvTraitInfo::getAngryYieldChangeArray() const
+{
+	return m_paiAngryYieldChange;
+}
+
+int CvTraitInfo::getAngryCommerceChange(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiAngryCommerceChange ? m_paiAngryCommerceChange[i] : 0;
+}
+
+int* CvTraitInfo::getAngryCommerceChangeArray() const
+{
+	return m_paiAngryCommerceChange;
+}
+
+int CvTraitInfo::getUnhealthyYieldChange(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiUnhealthyYieldChange ? m_paiUnhealthyYieldChange[i] : 0;
+}
+
+int* CvTraitInfo::getUnhealthyYieldChangeArray() const
+{
+	return m_paiUnhealthyYieldChange;
+}
+
+int CvTraitInfo::getUnhealthyCommerceChange(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiUnhealthyCommerceChange ? m_paiUnhealthyCommerceChange[i] : 0;
+}
+
+int* CvTraitInfo::getUnhealthyCommerceChangeArray() const
+{
+	return m_paiUnhealthyCommerceChange;
+}
+
 // Reads a list of yield changes such as <TerrainYieldChanges>: each item has the type tag (TerrainType) and
 // the yields tag (Yields). The types are kept as strings, because some (improvements) are loaded after traits.
 static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, const TCHAR* szYieldsTag, std::vector<CvString>& aszTypes, std::vector< std::vector<int> >& aaiYields)
@@ -19620,6 +19862,11 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	{
 		pXML->InitList(&m_paiLakePlotYieldChange, NUM_YIELD_TYPES);
 	}
+
+	readYieldChanges(pXML, "AngryYieldChanges", &m_paiAngryYieldChange);
+	readCommerceChanges(pXML, "AngryCommerceChanges", &m_paiAngryCommerceChange);
+	readYieldChanges(pXML, "UnhealthyYieldChanges", &m_paiUnhealthyYieldChange);
+	readCommerceChanges(pXML, "UnhealthyCommerceChanges", &m_paiUnhealthyCommerceChange);
 
 	return true;
 }

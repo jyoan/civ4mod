@@ -2073,4 +2073,67 @@
 		<Spanish>+%d1_Change[ICON_UNHAPPY]: &quot;Too long without a war!&quot;</Spanish>
 		<Japanese>[ICON_UNHAPPY]+%d1_Change:&#12300;&#25126;&#12399;&#12414;&#12384;&#12363;&#65281;&#12301;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISERY_PER_ANGRY</Tag>
+		<English>Per angry citizen</English>
+		<French>Per angry citizen</French>
+		<German>Per angry citizen</German>
+		<Italian>Per angry citizen</Italian>
+		<Spanish>Per angry citizen</Spanish>
+		<Japanese>&#24594;&#12387;&#12390;&#12356;&#12427;&#24066;&#27665; 1 &#20154;&#12395;&#12388;&#12365;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISERY_PER_UNHEALTHY</Tag>
+		<English>Per point of unhealthiness</English>
+		<French>Per point of unhealthiness</French>
+		<German>Per point of unhealthiness</German>
+		<Italian>Per point of unhealthiness</Italian>
+		<Spanish>Per point of unhealthiness</Spanish>
+		<Japanese>&#19981;&#34907;&#29983; 1 &#12395;&#12388;&#12365;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_ANGRY</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Anger: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Anger: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Anger: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Anger: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Anger: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#24594;&#12426;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_UNHEALTHY</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Unhealthiness: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Unhealthiness: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Unhealthiness: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Unhealthiness: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Unhealthiness: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#19981;&#34907;&#29983;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_ANGRY_COMMERCE</Tag>
+		<English>[ICON_BULLET]%D1%F2 from anger</English>
+		<French>[ICON_BULLET]%D1%F2 from anger</French>
+		<German>[ICON_BULLET]%D1%F2 from anger</German>
+		<Italian>[ICON_BULLET]%D1%F2 from anger</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 from anger</Spanish>
+		<Japanese>[ICON_BULLET]&#24594;&#12426;&#12424;&#12426;%F2%D1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_UNHEALTHY_COMMERCE</Tag>
+		<English>[ICON_BULLET]%D1%F2 from unhealthiness</English>
+		<French>[ICON_BULLET]%D1%F2 from unhealthiness</French>
+		<German>[ICON_BULLET]%D1%F2 from unhealthiness</German>
+		<Italian>[ICON_BULLET]%D1%F2 from unhealthiness</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 from unhealthiness</Spanish>
+		<Japanese>[ICON_BULLET]&#19981;&#34907;&#29983;&#12424;&#12426;%F2%D1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_MISERY</Tag>
+		<English>Test Building (Misery)</English>
+		<French>Test Building (Misery)</French>
+		<German>Test Building (Misery)</German>
+		<Italian>Test Building (Misery)</Italian>
+		<Spanish>Test Building (Misery)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#24594;&#12426;&#12398;&#24681;&#24693;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

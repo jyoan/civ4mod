@@ -35,6 +35,10 @@ CvCity::CvCity()
 	m_aiSeaPlotYield = new int[NUM_YIELD_TYPES];
 	m_aiRiverPlotYield = new int[NUM_YIELD_TYPES];
 	m_aiDynamicBuildingYield = new int[NUM_YIELD_TYPES];
+	m_aiAngryYield = new int[NUM_YIELD_TYPES];
+	m_aiUnhealthyYield = new int[NUM_YIELD_TYPES];
+	m_aiAngryCommerce = new int[NUM_COMMERCE_TYPES];
+	m_aiUnhealthyCommerce = new int[NUM_COMMERCE_TYPES];
 	m_aiBaseYieldRate = new int[NUM_YIELD_TYPES];
 	m_aiYieldRateModifier = new int[NUM_YIELD_TYPES];
 	m_aiPowerYieldRateModifier = new int[NUM_YIELD_TYPES];
@@ -121,6 +125,10 @@ CvCity::~CvCity()
 	SAFE_DELETE_ARRAY(m_aiSeaPlotYield);
 	SAFE_DELETE_ARRAY(m_aiRiverPlotYield);
 	SAFE_DELETE_ARRAY(m_aiDynamicBuildingYield);
+	SAFE_DELETE_ARRAY(m_aiAngryYield);
+	SAFE_DELETE_ARRAY(m_aiUnhealthyYield);
+	SAFE_DELETE_ARRAY(m_aiAngryCommerce);
+	SAFE_DELETE_ARRAY(m_aiUnhealthyCommerce);
 	SAFE_DELETE_ARRAY(m_aiBaseYieldRate);
 	SAFE_DELETE_ARRAY(m_aiYieldRateModifier);
 	SAFE_DELETE_ARRAY(m_aiPowerYieldRateModifier);
@@ -479,6 +487,8 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 		m_aiSeaPlotYield[iI] = 0;
 		m_aiRiverPlotYield[iI] = 0;
 		m_aiDynamicBuildingYield[iI] = 0;
+		m_aiAngryYield[iI] = 0;
+		m_aiUnhealthyYield[iI] = 0;
 		m_aiBaseYieldRate[iI] = 0;
 		m_aiYieldRateModifier[iI] = 0;
 		m_aiPowerYieldRateModifier[iI] = 0;
@@ -493,6 +503,8 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 		m_aiCommerceRate[iI] = 0;
 		m_aiProductionToCommerceModifier[iI] = 0;
 		m_aiBuildingCommerce[iI] = 0;
+		m_aiAngryCommerce[iI] = 0;
+		m_aiUnhealthyCommerce[iI] = 0;
 		m_aiSpecialistCommerce[iI] = 0;
 		m_aiReligionCommerce[iI] = 0;
 		m_aiCorporationCommerce[iI] = 0;
@@ -882,6 +894,9 @@ void CvCity::doTurn()
 
 	// VicinityBonusYieldChanges of buildings (added by this mod): the plots of the city radius may have changed
 	updateDynamicBuildingYields();
+
+	// AngryYieldChanges and the like (added by this mod): before the growth and the production of this turn
+	updateMiseryChanges();
 
 	AI_doTurn();
 
@@ -5582,6 +5597,140 @@ int CvCity::getDynamicBuildingYield(YieldTypes eIndex) const
 	return m_aiDynamicBuildingYield[eIndex];
 }
 
+int CvCity::getAngryYield(YieldTypes eIndex) const
+{
+	return m_aiAngryYield[eIndex];
+}
+
+int CvCity::getUnhealthyYield(YieldTypes eIndex) const
+{
+	return m_aiUnhealthyYield[eIndex];
+}
+
+int CvCity::getAngryCommerce(CommerceTypes eIndex) const
+{
+	return m_aiAngryCommerce[eIndex];
+}
+
+int CvCity::getUnhealthyCommerce(CommerceTypes eIndex) const
+{
+	return m_aiUnhealthyCommerce[eIndex];
+}
+
+// The part of the anger and unhealthiness changes from one type of building (added by this mod)
+int CvCity::getMiseryYieldByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const
+{
+	const CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+
+	return getNumActiveBuilding(eBuilding) * ((angryPopulation() * kBuilding.getAngryYieldChange(eIndex)) + (std::max(0, -healthRate()) * kBuilding.getUnhealthyYieldChange(eIndex)));
+}
+
+int CvCity::getMiseryCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const
+{
+	const CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+
+	return getNumActiveBuilding(eBuilding) * ((angryPopulation() * kBuilding.getAngryCommerceChange(eIndex)) + (std::max(0, -healthRate()) * kBuilding.getUnhealthyCommerceChange(eIndex)));
+}
+
+// Adds one set of the changes per angry citizen or per unhealthiness (added by this mod)
+static void addMiseryChanges(int* aiYield, int* aiCommerce, int iCount, const int* piYield, const int* piCommerce)
+{
+	int iI;
+
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		aiYield[iI] += iCount * piYield[iI];
+	}
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		aiCommerce[iI] += iCount * piCommerce[iI];
+	}
+}
+
+// AngryYieldChanges, AngryCommerceChanges, UnhealthyYieldChanges and UnhealthyCommerceChanges of the buildings of this city
+// and of the traits and civics of the owner (added by this mod). At the start of each turn of the city and, for human players,
+// in AI_updateAssignWork(): anger and unhealthiness change in too many places to follow them one by one, but nearly all of
+// those places make the work of the city dirty
+void CvCity::updateMiseryChanges()
+{
+	const CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+	int aiAngryYield[NUM_YIELD_TYPES];
+	int aiUnhealthyYield[NUM_YIELD_TYPES];
+	int aiAngryCommerce[NUM_COMMERCE_TYPES];
+	int aiUnhealthyCommerce[NUM_COMMERCE_TYPES];
+	int iAngry = angryPopulation();
+	int iUnhealthy = std::max(0, -healthRate());
+	int iNum;
+	int iI;
+
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		aiAngryYield[iI] = 0;
+		aiUnhealthyYield[iI] = 0;
+	}
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		aiAngryCommerce[iI] = 0;
+		aiUnhealthyCommerce[iI] = 0;
+	}
+
+	if (iAngry > 0 || iUnhealthy > 0)
+	{
+		for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+		{
+			iNum = getNumActiveBuilding((BuildingTypes)iI);
+			if (iNum > 0)
+			{
+				const CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)iI);
+				addMiseryChanges(aiAngryYield, aiAngryCommerce, iAngry * iNum, kBuilding.getAngryYieldChangeArray(), kBuilding.getAngryCommerceChangeArray());
+				addMiseryChanges(aiUnhealthyYield, aiUnhealthyCommerce, iUnhealthy * iNum, kBuilding.getUnhealthyYieldChangeArray(), kBuilding.getUnhealthyCommerceChangeArray());
+			}
+		}
+
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (kOwner.hasTrait((TraitTypes)iI))
+			{
+				const CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+				addMiseryChanges(aiAngryYield, aiAngryCommerce, iAngry, kTrait.getAngryYieldChangeArray(), kTrait.getAngryCommerceChangeArray());
+				addMiseryChanges(aiUnhealthyYield, aiUnhealthyCommerce, iUnhealthy, kTrait.getUnhealthyYieldChangeArray(), kTrait.getUnhealthyCommerceChangeArray());
+			}
+		}
+
+		for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
+		{
+			if (kOwner.isCivic((CivicTypes)iI))
+			{
+				const CvCivicInfo& kCivic = GC.getCivicInfo((CivicTypes)iI);
+				addMiseryChanges(aiAngryYield, aiAngryCommerce, iAngry, kCivic.getAngryYieldChangeArray(), kCivic.getAngryCommerceChangeArray());
+				addMiseryChanges(aiUnhealthyYield, aiUnhealthyCommerce, iUnhealthy, kCivic.getUnhealthyYieldChangeArray(), kCivic.getUnhealthyCommerceChangeArray());
+			}
+		}
+	}
+
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		if (aiAngryYield[iI] != m_aiAngryYield[iI] || aiUnhealthyYield[iI] != m_aiUnhealthyYield[iI])
+		{
+			changeBaseYieldRate((YieldTypes)iI, aiAngryYield[iI] + aiUnhealthyYield[iI] - m_aiAngryYield[iI] - m_aiUnhealthyYield[iI]);
+			m_aiAngryYield[iI] = aiAngryYield[iI];
+			m_aiUnhealthyYield[iI] = aiUnhealthyYield[iI];
+		}
+	}
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		if (aiAngryCommerce[iI] != m_aiAngryCommerce[iI] || aiUnhealthyCommerce[iI] != m_aiUnhealthyCommerce[iI])
+		{
+			m_aiAngryCommerce[iI] = aiAngryCommerce[iI];
+			m_aiUnhealthyCommerce[iI] = aiUnhealthyCommerce[iI];
+			updateCommerce((CommerceTypes)iI);
+		}
+	}
+}
+
 // Changes the base yield rate by the difference of calculateDynamicBuildingYield (added by this mod)
 void CvCity::updateDynamicBuildingYields()
 {
@@ -8432,6 +8581,7 @@ int CvCity::getBaseCommerceRateTimes100(CommerceTypes eIndex) const
 
 	iBaseCommerceRate += 100 * ((getSpecialistPopulation() + getNumGreatPeople()) * GET_PLAYER(getOwnerINLINE()).getSpecialistExtraCommerce(eIndex));
 	iBaseCommerceRate += 100 * (getBuildingCommerce(eIndex) + getSpecialistCommerce(eIndex) + getReligionCommerce(eIndex) + getCorporationCommerce(eIndex) + GET_PLAYER(getOwnerINLINE()).getFreeCityCommerce(eIndex));
+	iBaseCommerceRate += 100 * (getAngryCommerce(eIndex) + getUnhealthyCommerce(eIndex));	// added by this mod
 
 	return iBaseCommerceRate;
 }
@@ -12720,13 +12870,22 @@ void CvCity::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(GC.getNumSpecialistInfos(), m_paiBuildingChangeSpecialist);
 	}
+
+	// uiFlag < 4: saved before the changes per angry citizen and per unhealthiness existed (added by this mod)
+	if (uiFlag > 3)
+	{
+		pStream->Read(NUM_YIELD_TYPES, m_aiAngryYield);
+		pStream->Read(NUM_YIELD_TYPES, m_aiUnhealthyYield);
+		pStream->Read(NUM_COMMERCE_TYPES, m_aiAngryCommerce);
+		pStream->Read(NUM_COMMERCE_TYPES, m_aiUnhealthyCommerce);
+	}
 }
 
 void CvCity::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=3;	// 1: plot radius, 2: m_aiDynamicBuildingYield, 3: m_paiBuildingChangeSpecialist (added by this mod)
+	uint uiFlag=4;	// 1: plot radius, 2: m_aiDynamicBuildingYield, 3: m_paiBuildingChangeSpecialist, 4: m_aiAngryYield, m_aiUnhealthyYield, m_aiAngryCommerce, m_aiUnhealthyCommerce (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -12945,6 +13104,10 @@ void CvCity::write(FDataStreamBase* pStream)
 
 	pStream->Write(NUM_YIELD_TYPES, m_aiDynamicBuildingYield);
 	pStream->Write(GC.getNumSpecialistInfos(), m_paiBuildingChangeSpecialist);
+	pStream->Write(NUM_YIELD_TYPES, m_aiAngryYield);
+	pStream->Write(NUM_YIELD_TYPES, m_aiUnhealthyYield);
+	pStream->Write(NUM_COMMERCE_TYPES, m_aiAngryCommerce);
+	pStream->Write(NUM_COMMERCE_TYPES, m_aiUnhealthyCommerce);
 }
 
 

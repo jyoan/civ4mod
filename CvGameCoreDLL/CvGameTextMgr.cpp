@@ -3787,6 +3787,9 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", GC.getTraitInfo(eTrait).getRiverPlotYieldChangeArray(), false, false);
 		}
 
+		// AngryYieldChanges and the like (added by this mod)
+		buildMiseryChangesString(szHelpString, GC.getTraitInfo(eTrait).getAngryYieldChangeArray(), GC.getTraitInfo(eTrait).getAngryCommerceChangeArray(), GC.getTraitInfo(eTrait).getUnhealthyYieldChangeArray(), GC.getTraitInfo(eTrait).getUnhealthyCommerceChangeArray(), true);
+
 		// LakePlotYieldChanges: "Lake Tiles: +1 production" (added by this mod)
 		if (GC.getTraitInfo(eTrait).getLakePlotYieldChangeArray() != NULL)
 		{
@@ -5709,6 +5712,9 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 			szHelpText.append(gDLL->getText("TXT_KEY_UNITCOMBAT_UPGRADE_COST_MODIFIER", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), -GC.getCivicInfo(eCivic).getUnitCombatUpgradeDiscount(iI)));
 		}
 	}
+
+	//	AngryYieldChanges and the like (added by this mod)
+	buildMiseryChangesString(szHelpText, GC.getCivicInfo(eCivic).getAngryYieldChangeArray(), GC.getCivicInfo(eCivic).getAngryCommerceChangeArray(), GC.getCivicInfo(eCivic).getUnhealthyYieldChangeArray(), GC.getCivicInfo(eCivic).getUnhealthyCommerceChangeArray(), false);
 
 	//	UpgradeAnywhereUnitCombats
 	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
@@ -8487,6 +8493,9 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 	// GlobalBuildingExtraCommerces (added by this mod)
 	buildGlobalBuildingExtraCommercesString(szBuffer, eBuilding);
 
+	// AngryYieldChanges and the like (added by this mod)
+	buildMiseryChangesString(szBuffer, kBuilding.getAngryYieldChangeArray(), kBuilding.getAngryCommerceChangeArray(), kBuilding.getUnhealthyYieldChangeArray(), kBuilding.getUnhealthyCommerceChangeArray(), false);
+
 	// iPlotRadius (added by this mod)
 	if (kBuilding.getPlotRadius() > 0)
 	{
@@ -9468,6 +9477,25 @@ void CvGameTextMgr::buildPerPopulationString(CvWStringBuffer& szBuffer, int iPer
 
 	szBuffer.append(NEWLINE);
 	szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_PER_POPULATION", bDivides ? (100 / iAbsPercent) : 100, szEffect.GetCString()));
+}
+
+// AngryYieldChanges and the like: "Per angry citizen: +1 production" (added by this mod). bIndent is the line format of the
+// trait help
+void CvGameTextMgr::buildMiseryChangesString(CvWStringBuffer& szBuffer, const int* piAngryYield, const int* piAngryCommerce, const int* piUnhealthyYield, const int* piUnhealthyCommerce, bool bIndent)
+{
+	CvWString szAngry = gDLL->getText("TXT_KEY_MISERY_PER_ANGRY");
+	CvWString szUnhealthy = gDLL->getText("TXT_KEY_MISERY_PER_UNHEALTHY");
+
+	if (bIndent)
+	{
+		szAngry = CvWString::format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), szAngry.GetCString());
+		szUnhealthy = CvWString::format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), szUnhealthy.GetCString());
+	}
+
+	setYieldChangeHelp(szBuffer, szAngry, L": ", L"", piAngryYield, false, !bIndent);
+	setCommerceChangeHelp(szBuffer, szAngry, L": ", L"", piAngryCommerce, false, !bIndent);
+	setYieldChangeHelp(szBuffer, szUnhealthy, L": ", L"", piUnhealthyYield, false, !bIndent);
+	setCommerceChangeHelp(szBuffer, szUnhealthy, L": ", L"", piUnhealthyCommerce, false, !bIndent);
 }
 
 // GlobalBuildingExtraCommerces of buildings: "All Libraries: +1 research" (added by this mod). The building names are those of
@@ -13439,6 +13467,23 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 		iBaseCommerceRate += 100 * iBuildingCommerce;
 	}
 
+	// AngryCommerceChanges and UnhealthyCommerceChanges (added by this mod)
+	int iAngryCommerce = city.getAngryCommerce(eCommerceType);
+	if (0 != iAngryCommerce)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_ANGRY_COMMERCE", iAngryCommerce, info.getChar()));
+		szBuffer.append(NEWLINE);
+		iBaseCommerceRate += 100 * iAngryCommerce;
+	}
+
+	int iUnhealthyCommerce = city.getUnhealthyCommerce(eCommerceType);
+	if (0 != iUnhealthyCommerce)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_UNHEALTHY_COMMERCE", iUnhealthyCommerce, info.getChar()));
+		szBuffer.append(NEWLINE);
+		iBaseCommerceRate += 100 * iUnhealthyCommerce;
+	}
+
 	int iFreeCityCommerce = owner.getFreeCityCommerce(eCommerceType);
 	if (0 != iFreeCityCommerce)
 	{
@@ -13592,6 +13637,8 @@ void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity&
 	int iBuildings = 0;
 	int iTradeRoutes = 0;
 	int iCorporations = 0;
+	int iAngry;
+	int iUnhealthy;
 	int iOther;
 	int iI;
 
@@ -13624,7 +13671,9 @@ void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity&
 
 	iTradeRoutes = city.getTradeYield(eYieldType);
 	iCorporations = city.getCorporationYield(eYieldType);
-	iOther = city.getBaseYieldRate(eYieldType) - iPlots - iSpecialists - iBuildings - iTradeRoutes - iCorporations;
+	iAngry = city.getAngryYield(eYieldType);
+	iUnhealthy = city.getUnhealthyYield(eYieldType);
+	iOther = city.getBaseYieldRate(eYieldType) - iPlots - iSpecialists - iBuildings - iTradeRoutes - iCorporations - iAngry - iUnhealthy;
 
 	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_PLOTS", iPlots, info.getChar()));
 	szBuffer.append(NEWLINE);
@@ -13638,6 +13687,18 @@ void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity&
 	if (iBuildings != 0)
 	{
 		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_BUILDINGS", iBuildings, info.getChar()));
+		szBuffer.append(NEWLINE);
+	}
+
+	if (iAngry != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_ANGRY", iAngry, info.getChar()));
+		szBuffer.append(NEWLINE);
+	}
+
+	if (iUnhealthy != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_UNHEALTHY", iUnhealthy, info.getChar()));
 		szBuffer.append(NEWLINE);
 	}
 

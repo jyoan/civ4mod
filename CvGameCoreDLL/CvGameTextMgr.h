@@ -164,6 +164,7 @@ public:
 	void buildBuildingChangesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding);	// added by this mod
 	void buildPerPopulationString(CvWStringBuffer& szBuffer, int iPercent, int iGoodSymbol, int iBadSymbol);	// added by this mod
 	void buildGlobalBuildingExtraCommercesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding);	// added by this mod
+	void buildMiseryChangesString(CvWStringBuffer& szBuffer, const int* piAngryYield, const int* piAngryCommerce, const int* piUnhealthyYield, const int* piUnhealthyCommerce, bool bIndent);	// added by this mod
 
 	DllExport void buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvCity* pCity);
 	DllExport void buildCityBillboardCityNameString( CvWStringBuffer& szBuffer, CvCity* pCity);

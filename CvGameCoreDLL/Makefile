@@ -117,6 +117,7 @@ OBJS = \
 	$(INTDIR)\CyArtFileMgrInterface.obj \
 	$(INTDIR)\CyCity.obj \
 	$(INTDIR)\CyCityInterface1.obj \
+	$(INTDIR)\CyCityInterface2.obj \
 	$(INTDIR)\CyDeal.obj \
 	$(INTDIR)\CyEnumsInterface.obj \
 	$(INTDIR)\CyGame.obj \

@@ -299,6 +299,13 @@ public:
 	int getDynamicBuildingYieldByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const;	// added by this mod
 	int getDynamicBuildingYield(YieldTypes eIndex) const;			// added by this mod: the part of the base yield rate
 	void updateDynamicBuildingYields();								// added by this mod
+	int getAngryYield(YieldTypes eIndex) const;						// added by this mod: the part of the base yield rate
+	int getUnhealthyYield(YieldTypes eIndex) const;					// added by this mod: the part of the base yield rate
+	int getAngryCommerce(CommerceTypes eIndex) const;				// added by this mod: the part of the base commerce rate
+	int getUnhealthyCommerce(CommerceTypes eIndex) const;			// added by this mod: the part of the base commerce rate
+	int getMiseryYieldByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const;			// Exposed to Python
+	int getMiseryCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const;	// Exposed to Python
+	void updateMiseryChanges();										// added by this mod
 	bool isBuildingChangeActive(int iSourceType, int iSource) const;	// added by this mod
 	int getBuildingChangeTotal(BuildingTypes eBuilding, int iEffect, int iIndex) const;	// added by this mod: for one building
 	void updateBuildingChangeSpecialists();							// added by this mod
@@ -1066,6 +1073,10 @@ protected:
 
 	int* m_aiSeaPlotYield;
 	int* m_aiRiverPlotYield;
+	int* m_aiAngryYield;		// the part of m_aiBaseYieldRate from the changes per angry citizen (added by this mod)
+	int* m_aiUnhealthyYield;	// the part of m_aiBaseYieldRate from the changes per unhealthiness (added by this mod)
+	int* m_aiAngryCommerce;		// the same for the base commerce rates (added by this mod)
+	int* m_aiUnhealthyCommerce;	// the same for the base commerce rates (added by this mod)
 	int* m_aiDynamicBuildingYield;	// the part of m_aiBaseYieldRate from the world wonder and tech changes of buildings (added by this mod)
 	int* m_aiBaseYieldRate;
 	int* m_aiYieldRateModifier;
