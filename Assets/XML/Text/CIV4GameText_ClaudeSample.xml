@@ -2406,4 +2406,22 @@
 		<Spanish>Test Peak Wonder</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#21517;&#23792;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_POLDER</Tag>
+		<English>Test Improvement (Polder)</English>
+		<French>Test Improvement (Polder)</French>
+		<German>Test Improvement (Polder)</German>
+		<Italian>Test Improvement (Polder)</Italian>
+		<Spanish>Test Improvement (Polder)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#12509;&#12523;&#12480;&#12540;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_POLDER</Tag>
+		<English>Build Test Improvement (Polder)</English>
+		<French>Build Test Improvement (Polder)</French>
+		<German>Build Test Improvement (Polder)</German>
+		<Italian>Build Test Improvement (Polder)</Italian>
+		<Spanish>Build Test Improvement (Polder)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#12509;&#12523;&#12480;&#12540;&#65289;&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
 </Civ4GameText>

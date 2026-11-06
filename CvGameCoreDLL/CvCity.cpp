@@ -1442,7 +1442,8 @@ bool CvCity::canWork(CvPlot* pPlot) const
 		return false;
 	}
 
-	if (pPlot->isWater())
+	// A polder (bMakesPassable) is worked like land (changed by this mod)
+	if (pPlot->isWater() && !pPlot->isImprovementPassable())
 	{
 		if (!(GET_TEAM(getTeam()).isWaterWork()))
 		{

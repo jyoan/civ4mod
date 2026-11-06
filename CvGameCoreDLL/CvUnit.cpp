@@ -10379,22 +10379,23 @@ bool CvUnit::canEnterImpassablePlot(const CvPlot* pPlot) const
 {
 	int iI;
 
-	// bMakesPassable of the improvement, and the workers that can build it there and could not get there otherwise (added by
-	// this mod)
-	if (getDomainType() == DOMAIN_LAND && pPlot->isImpassable())
+	// bMakesPassable of the improvement, on impassable and water plots, and the workers that can build it there and could not
+	// get there otherwise (added by this mod). On water only from land or the plot they are on, or a worker of a civilization
+	// with polders would walk across the sea of its borders. Not canBuild(): it asks this function for the domain
+	if (getDomainType() == DOMAIN_LAND && (pPlot->isImpassable() || pPlot->isWater()))
 	{
 		if (pPlot->isImprovementPassable())
 		{
 			return true;
 		}
 
-		if (workRate(true) > 0)
+		if (workRate(true) > 0 && (!pPlot->isWater() || atPlot(pPlot) || (plot() != NULL && !plot()->isWater())))
 		{
 			for (iI = 0; iI < GC.getNumBuildInfos(); iI++)
 			{
-				if (GC.getBuildInfo((BuildTypes)iI).getImprovement() != NO_IMPROVEMENT && GC.getImprovementInfo((ImprovementTypes)GC.getBuildInfo((BuildTypes)iI).getImprovement()).isMakesPassable())
+				if (m_pUnitInfo->getBuilds(iI) && GC.getBuildInfo((BuildTypes)iI).getImprovement() != NO_IMPROVEMENT && GC.getImprovementInfo((ImprovementTypes)GC.getBuildInfo((BuildTypes)iI).getImprovement()).isMakesPassable())
 				{
-					if (canBuild(pPlot, (BuildTypes)iI))
+					if (GET_PLAYER(getOwnerINLINE()).canBuild(pPlot, (BuildTypes)iI))
 					{
 						return true;
 					}

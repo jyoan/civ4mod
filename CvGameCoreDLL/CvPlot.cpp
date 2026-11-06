@@ -2755,7 +2755,7 @@ int CvPlot::movementCost(const CvUnit* pUnit, const CvPlot* pFromPlot) const
 	}
 
 	// iExtraMoveCost of ImpassablePlotPassages (added by this mod): at most all the moves of the unit
-	if (isImpassable())
+	if (isImpassable() || isImprovementPassable())
 	{
 		// iPassageMoveCost of a passable improvement (added by this mod)
 		int iPassageMoveCost = (isImprovementPassable() ? GC.getImprovementInfo(getImprovementType()).getPassageMoveCost() : pUnit->getImpassablePlotPassageMoveCost(this));
@@ -5483,6 +5483,9 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 		if ((eOldImprovement != NO_IMPROVEMENT && GC.getImprovementInfo(eOldImprovement).isMakesPassable()) || isImprovementPassable())
 		{
 			updatePlotGroup();
+
+			// Land units on water lose their ground when it is pillaged
+			verifyUnitValidPlot();
 		}
 
 		for (iI = 0; iI < NUM_MAX_CITY_PLOTS; ++iI)
