@@ -2371,6 +2371,16 @@ bool CvPlayer::isConditionalFreeTraitActive(const ConditionalFreeTrait& kConditi
 		return false;
 	}
 
+	// The leader of the player, as the traits: with random personalities the AI plays by another favorite civic
+	if (kCondition.bFavoriteCivic)
+	{
+		CivicTypes eFavoriteCivic = (CivicTypes)GC.getLeaderHeadInfo(getLeaderType()).getFavoriteCivic();
+		if (eFavoriteCivic == NO_CIVIC || !isCivicOrReplacing(eFavoriteCivic))
+		{
+			return false;
+		}
+	}
+
 	if (getNumUnitsKilled() < kCondition.iMinUnitsKilled || getNumCitiesConquered() < kCondition.iMinCitiesConquered)
 	{
 		return false;
@@ -6738,6 +6748,56 @@ bool CvPlayer::isCivicReplaced(CivicTypes eCivic) const
 	}
 
 	return false;
+}
+
+// The traits eCivic gives this player through bFavoriteCivic of ConditionalFreeTraits (added by this mod): it is the favorite
+// civic of the leader or replaces it (ReplacedCivic). For the displays, it does not look at the other conditions of the items
+void CvPlayer::getFavoriteCivicTraits(CivicTypes eCivic, std::vector<TraitTypes>& aeTraits) const
+{
+	int iLoopCivic;
+	int iI, iJ;
+
+	aeTraits.clear();
+
+	if (getLeaderType() == NO_LEADER || GC.getLeaderHeadInfo(getLeaderType()).getFavoriteCivic() == NO_CIVIC)
+	{
+		return;
+	}
+
+	// A civic can only replace an earlier one, so this ends
+	iLoopCivic = eCivic;
+	while (iLoopCivic != NO_CIVIC && iLoopCivic != GC.getLeaderHeadInfo(getLeaderType()).getFavoriteCivic())
+	{
+		iLoopCivic = GC.getCivicInfo((CivicTypes)iLoopCivic).getReplacedCivic();
+	}
+
+	if (iLoopCivic == NO_CIVIC)
+	{
+		return;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			for (iJ = 0; iJ < GC.getTraitInfo((TraitTypes)iI).getNumConditionalFreeTraits(); iJ++)
+			{
+				const ConditionalFreeTrait& kCondition = GC.getTraitInfo((TraitTypes)iI).getConditionalFreeTrait(iJ);
+				if (kCondition.bFavoriteCivic && std::find(aeTraits.begin(), aeTraits.end(), (TraitTypes)kCondition.iTrait) == aeTraits.end())
+				{
+					aeTraits.push_back((TraitTypes)kCondition.iTrait);
+				}
+			}
+		}
+	}
+}
+
+bool CvPlayer::isFavoriteCivicWithTraits(CivicTypes eCivic) const
+{
+	std::vector<TraitTypes> aeTraits;
+
+	getFavoriteCivicTraits(eCivic, aeTraits);
+	return !aeTraits.empty();
 }
 
 // For the lists that show what a player will get with the techs, as canBuildByTraits (added by this mod)
@@ -13037,7 +13097,7 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 			processCivics(getCivics(eIndex), 1);
 		}
 
-		// ConditionalFreeTraits (PrereqCivic, StateReligion; added by this mod)
+		// ConditionalFreeTraits (PrereqCivic, bFavoriteCivic, StateReligion; added by this mod)
 		updateConditionalTraits();
 
 		GC.getGameINLINE().updateSecretaryGeneral();

@@ -2027,6 +2027,11 @@ int CyPlayer::getCivilizationBuilding(int iBuildingClass)
 	return m_pPlayer ? m_pPlayer->getCivilizationBuilding(iBuildingClass) : -1;
 }
 
+bool CyPlayer::isFavoriteCivicWithTraits(int /*CivicTypes*/ eCivic)
+{
+	return m_pPlayer ? m_pPlayer->isFavoriteCivicWithTraits((CivicTypes)eCivic) : false;
+}
+
 bool CyPlayer::isCivicReplaced(int /*CivicTypes*/ eCivic)
 {
 	return m_pPlayer ? m_pPlayer->isCivicReplaced((CivicTypes)eCivic) : false;

@@ -250,6 +250,8 @@ public:
 	bool isCivicReplaced(CivicTypes eCivic) const;				// Exposed to Python: ReplacedCivic
 	bool canDoCivicByTraits(CivicTypes eCivic) const;			// Exposed to Python: PrereqOrTraits and ReplacedCivic, without the techs
 	bool isCivicOrReplacing(CivicTypes eCivic) const;			// added by this mod
+	void getFavoriteCivicTraits(CivicTypes eCivic, std::vector<TraitTypes>& aeTraits) const;	// added by this mod
+	bool isFavoriteCivicWithTraits(CivicTypes eCivic) const;	// Exposed to Python: bFavoriteCivic
 	CivicTypes getInitialCivic(CivicOptionTypes eCivicOption) const;	// added by this mod
 	bool isForbiddenCivic(CivicTypes eCivic) const;					// Exposed to Python: ForbiddenCivics of the traits
 	bool isMaxCitiesReached() const;									// Exposed to Python

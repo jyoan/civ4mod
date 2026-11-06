@@ -4586,6 +4586,7 @@ struct ConditionalFreeTrait
 	int iEraMin;			// NO_ERA: no limit (the current era of the player)
 	int iEraMax;
 	int iPrereqCivic;		// NO_CIVIC: any
+	bool bFavoriteCivic;		// the leader of the player has adopted its FavoriteCivic
 	int iMinUnitsKilled;		// 0: no limit. Enemy units the player has killed in the whole game
 	int iMinCitiesConquered;	// 0: no limit. Cities the player has conquered in the whole game
 };

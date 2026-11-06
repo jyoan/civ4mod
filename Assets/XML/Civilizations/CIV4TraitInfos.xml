@@ -478,6 +478,10 @@
 					<TraitType>TRAIT_IMPERIALIST</TraitType>
 					<iMinCitiesConquered>1</iMinCitiesConquered>
 				</ConditionalFreeTrait>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_FINANCIAL</TraitType>
+					<bFavoriteCivic>1</bFavoriteCivic>
+				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>

@@ -3445,9 +3445,10 @@ void CvGameTextMgr::parseTraitConditionalFreeTraits(CvWStringBuffer& szHelpStrin
 	CvWString szText;
 	int iI;
 
-	// The record so far, for a trait of the player who reads this
+	// The record so far and the favorite civic, for a trait of the player who reads this. Only in a game: on the screen that
+	// chooses the civilization there is an active player whose leader is NO_LEADER, and hasTrait() cannot take that
 	PlayerTypes eActivePlayer = GC.getGameINLINE().getActivePlayer();
-	bool bShowRecord = (eActivePlayer != NO_PLAYER && GET_PLAYER(eActivePlayer).hasTrait(eTrait));
+	bool bShowRecord = (GC.getGameINLINE().isFinalInitialized() && eActivePlayer != NO_PLAYER && GET_PLAYER(eActivePlayer).getLeaderType() != NO_LEADER && GET_PLAYER(eActivePlayer).hasTrait(eTrait));
 
 	// ConditionalFreeTraits: "Gains Aggressive (at war, Buddhism is the state religion)" (added by this mod)
 	for (iI = 0; iI < kTrait.getNumConditionalFreeTraits(); iI++)
@@ -3492,6 +3493,15 @@ void CvGameTextMgr::parseTraitConditionalFreeTraits(CvWStringBuffer& szHelpStrin
 		{
 			szText = getLinkText(GC.getCivicInfo((CivicTypes)kCondition.iPrereqCivic).getDescription());
 			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_CIVIC", szText.GetCString()));
+		}
+		if (kCondition.bFavoriteCivic)
+		{
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_FAVORITE_CIVIC"));
+			if (bShowRecord && GC.getLeaderHeadInfo(GET_PLAYER(eActivePlayer).getLeaderType()).getFavoriteCivic() != NO_CIVIC)
+			{
+				szText = getLinkText(GC.getCivicInfo((CivicTypes)GC.getLeaderHeadInfo(GET_PLAYER(eActivePlayer).getLeaderType()).getFavoriteCivic()).getDescription());
+				szConditions += gDLL->getText("TXT_KEY_CONDITION_FAVORITE_CIVIC_NOW", szText.GetCString());
+			}
 		}
 		if (kCondition.iMinUnitsKilled > 0)
 		{
@@ -5660,6 +5670,18 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	{
 		szHelpText.append(NEWLINE);
 		szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REPLACES", GC.getCivicInfo((CivicTypes)GC.getCivicInfo(eCivic).getReplacedCivic()).getTextKeyWide()));
+	}
+
+	// bFavoriteCivic of ConditionalFreeTraits (added by this mod): in the game, for the active player
+	if (bPlayerContext && !bCivilopediaText && GC.getGameINLINE().getActivePlayer() != NO_PLAYER)
+	{
+		std::vector<TraitTypes> aeFavoriteTraits;
+		GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getFavoriteCivicTraits(eCivic, aeFavoriteTraits);
+		for (iI = 0; iI < (int)aeFavoriteTraits.size(); iI++)
+		{
+			szHelpText.append(NEWLINE);
+			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_FAVORITE_GIVES_TRAIT", GC.getTraitInfo(aeFavoriteTraits[iI]).getTextKeyWide()));
+		}
 	}
 
 	buildFreeTraitsString(szHelpText, GC.getCivicInfo(eCivic).getFreeTraitsVector());

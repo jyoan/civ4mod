@@ -1460,6 +1460,33 @@
 		<Spanish>Your record has earned you %s1_Trait!</Spanish>
 		<Japanese>&#25126;&#32318;&#12395;&#12424;&#12426;%s1_Trait&#12434;&#24471;&#12414;&#12375;&#12383;&#65281;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_FAVORITE_CIVIC</Tag>
+		<English>the favorite civic is adopted</English>
+		<French>the favorite civic is adopted</French>
+		<German>the favorite civic is adopted</German>
+		<Italian>the favorite civic is adopted</Italian>
+		<Spanish>the favorite civic is adopted</Spanish>
+		<Japanese>&#22909;&#12365;&#12394;&#31038;&#20250;&#21046;&#24230;&#12434;&#25505;&#29992;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_FAVORITE_CIVIC_NOW</Tag>
+		<English>: %s1_Civic</English>
+		<French>: %s1_Civic</French>
+		<German>: %s1_Civic</German>
+		<Italian>: %s1_Civic</Italian>
+		<Spanish>: %s1_Civic</Spanish>
+		<Japanese>&#65306;%s1_Civic</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIVIC_FAVORITE_GIVES_TRAIT</Tag>
+		<English>[ICON_BULLET]Favorite civic: gives %s1_Trait</English>
+		<French>[ICON_BULLET]Favorite civic: gives %s1_Trait</French>
+		<German>[ICON_BULLET]Favorite civic: gives %s1_Trait</German>
+		<Italian>[ICON_BULLET]Favorite civic: gives %s1_Trait</Italian>
+		<Spanish>[ICON_BULLET]Favorite civic: gives %s1_Trait</Spanish>
+		<Japanese>[ICON_BULLET]&#22909;&#12365;&#12394;&#31038;&#20250;&#21046;&#24230;: %s1_Trait&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

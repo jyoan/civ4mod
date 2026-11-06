@@ -182,7 +182,11 @@ class CvCivicsScreen:
 						continue
 					fY += self.iRowHeight
 					screen.addCheckBoxGFC(self.getCivicsButtonName(j), gc.getCivicInfo(j).getButton(), ArtFileMgr.getInterfaceArtInfo("BUTTON_HILITE_SQUARE").getPath(), fX + self.BUTTON_SIZE/2, fY, self.BUTTON_SIZE, self.BUTTON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1, ButtonStyles.BUTTON_STYLE_LABEL)
-					screen.setText(self.getCivicsTextName(j), "", gc.getCivicInfo(j).getDescription(), CvUtil.FONT_LEFT_JUSTIFY, fX + self.BUTTON_SIZE + self.TEXT_MARGIN, fY, 0, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+					# Added by this mod: the name is yellow if the civic gives the player traits (bFavoriteCivic)
+					szCivicName = gc.getCivicInfo(j).getDescription()
+					if gc.getPlayer(self.iActivePlayer).isFavoriteCivicWithTraits(j):
+						szCivicName = localText.changeTextColor(szCivicName, gc.getInfoTypeForString("COLOR_YELLOW"))
+					screen.setText(self.getCivicsTextName(j), "", szCivicName, CvUtil.FONT_LEFT_JUSTIFY, fX + self.BUTTON_SIZE + self.TEXT_MARGIN, fY, 0, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
 			self.drawCivicOptionButtons(i)
 					
