@@ -172,6 +172,12 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 
 ## git
 
+- **ブランチ**: `master` がベース（DLL・Schema・Python の機能、タグ、検証用データ）。実在の文明のデザイン（日本の武士道など）は `civ-design` に入れる
+  - 機能を足すときは `master` で実装してコミットし、そのあと `civ-design` で `git merge master` する。文明のデザインの途中で新しいタグが要るとわかったときも、先に `master` に入れる
+  - `civ-design` では `CvGameCoreDLL/`・Schema・`Assets/CvGameCoreDLL.dll` を変更しない（DLL の衝突を防ぐ）
+  - コミットの前に今のブランチを確かめる。`build.bat` が配置するのは**今のブランチ**の `Assets\` なので、ブランチを切り替えたら配置し直す
+  - `civ-design` のテキストは `CIV4GameText_ClaudeCivs.xml`、記録は `docs/civ-design.md` に書く（`master` の追記と衝突しないように）。`docs/test-log.md` は `.gitattributes` の `merge=union` で両方の追記が残る
+  - 志向や昇進などの Info は両方のブランチで各ファイルの末尾に足すので、マージで衝突することがある。両方の項目を残し、`master` の項目を先にする。Info の順番が変わるので、古いセーブは使えなくなることがある。マージ後はキャッシュを消す
 - `2b1bf36` が無改造の公式ソース。改造の全差分は `git diff 2b1bf36 -- CvGameCoreDLL` で見られる
 - Edit ツールは、書き換えた既存行の**行末の空白・タブを消す**ことがある。編集後は `git diff` で意図しない削除行（`-` で始まる行）がないか確認し、あれば元に戻す
 - `Assets/CvGameCoreDLL.dll` も git で管理する。DLL を作り直したら、元になったソース変更と同じコミットに含める
@@ -190,6 +196,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 | `docs/spells.md` | 呪文（判定順、効果、召喚、AI、ペディア） | 呪文に触れるとき |
 | `docs/python-screens.md` | 社会制度の画面、志向のペディア（画面番号の落とし穴を含む） | 画面・ペディアの Python に触れるとき |
 | `docs/test-log.md` | 動作確認の記録 | 確認済みの範囲を調べるとき |
+| `docs/civ-design.md` | 実在の文明のデザイン（`civ-design` ブランチだけにある） | 文明をデザインするとき |
 
 - タグを足したら `docs/xml-tags.md` の表と `docs/test-data.md` を更新する。ユーザーが動作確認したら `docs/test-log.md` に 1 行足す（コミットの前）
 - docs のファイルも UTF-8・CRLF
