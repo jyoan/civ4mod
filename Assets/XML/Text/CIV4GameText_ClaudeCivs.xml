@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- claude_sample: text for features added by this mod -->
+<!-- Japanese text is written as decimal character references (ASCII file) -->
+<Civ4GameText xmlns="http://www.firaxis.com">
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BUSHIDO</Tag>
+		<English>Bushido</English>
+		<French>Bushido</French>
+		<German>Bushido</German>
+		<Italian>Bushido</Italian>
+		<Spanish>Bushido</Spanish>
+		<Japanese>&#27494;&#22763;&#36947;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BUSHIDO_SHORT</Tag>
+		<English>Bus</English>
+		<French>Bus</French>
+		<German>Bus</German>
+		<Italian>Bus</Italian>
+		<Spanish>Bus</Spanish>
+		<Japanese>&#27494;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_BUSHIDO</Tag>
+		<English>Bushido</English>
+		<French>Bushido</French>
+		<German>Bushido</German>
+		<Italian>Bushido</Italian>
+		<Spanish>Bushido</Spanish>
+		<Japanese>&#27494;&#22763;&#36947;</Japanese>
+	</TEXT>
+</Civ4GameText>
