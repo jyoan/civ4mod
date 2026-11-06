@@ -694,6 +694,12 @@ int CyUnit::currHitPoints()
 	return m_pUnit ? m_pUnit->currHitPoints() : -1;
 }
 
+// bNoDamagePenalty of the promotions (added by this mod)
+bool CyUnit::isNoDamagePenalty()
+{
+	return m_pUnit ? m_pUnit->isNoDamagePenalty() : false;
+}
+
 bool CyUnit::isHurt()
 {
 	return m_pUnit ? m_pUnit->isHurt() : false;

@@ -2656,7 +2656,7 @@ class CvMainInterface:
 							szLeftBuffer = localText.getText("INTERFACE_PANE_STRENGTH", ())
 							if (pHeadSelectedUnit.isFighting()):
 								szRightBuffer = u"?/%d%c" %(pHeadSelectedUnit.baseCombatStr(), CyGame().getSymbolID(FontSymbols.STRENGTH_CHAR))
-							elif (pHeadSelectedUnit.isHurt()):
+							elif (pHeadSelectedUnit.isHurt() and not pHeadSelectedUnit.isNoDamagePenalty()):
 								szRightBuffer = u"%.1f/%d%c" %(((float(pHeadSelectedUnit.baseCombatStr() * pHeadSelectedUnit.currHitPoints())) / (float(pHeadSelectedUnit.maxHitPoints()))), pHeadSelectedUnit.baseCombatStr(), CyGame().getSymbolID(FontSymbols.STRENGTH_CHAR))
 							else:
 								szRightBuffer = u"%d%c" %(pHeadSelectedUnit.baseCombatStr(), CyGame().getSymbolID(FontSymbols.STRENGTH_CHAR))

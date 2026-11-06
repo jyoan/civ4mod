@@ -187,6 +187,7 @@ public:
 	int maxHitPoints();
 	int currHitPoints();
 	bool isHurt();
+	bool isNoDamagePenalty();
 	bool isDead();
 	void setBaseCombatStr(int iCombat);
 	int baseCombatStr();

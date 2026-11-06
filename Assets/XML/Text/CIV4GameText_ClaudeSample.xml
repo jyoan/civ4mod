@@ -1415,6 +1415,15 @@
 		<Spanish>[ICON_BULLET]%D1_Bonus%% Strength in own territory</Spanish>
 		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#25126;&#38360;&#21147;%D1_Bonus%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_NO_DAMAGE_PENALTY</Tag>
+		<English>[ICON_BULLET]Keeps full Strength when damaged</English>
+		<French>[ICON_BULLET]Keeps full Strength when damaged</French>
+		<German>[ICON_BULLET]Keeps full Strength when damaged</German>
+		<Italian>[ICON_BULLET]Keeps full Strength when damaged</Italian>
+		<Spanish>[ICON_BULLET]Keeps full Strength when damaged</Spanish>
+		<Japanese>[ICON_BULLET]&#20663;&#12434;&#36000;&#12387;&#12390;&#12418;&#25126;&#38360;&#21147;&#12364;&#19979;&#12364;&#12425;&#12394;&#12356;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
@@ -2423,5 +2432,14 @@
 		<Italian>Build Test Improvement (Polder)</Italian>
 		<Spanish>Build Test Improvement (Polder)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#12509;&#12523;&#12480;&#12540;&#65289;&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_NO_PENALTY</Tag>
+		<English>Test Promotion (No Damage Penalty)</English>
+		<French>Test Promotion (No Damage Penalty)</French>
+		<German>Test Promotion (No Damage Penalty)</German>
+		<Italian>Test Promotion (No Damage Penalty)</Italian>
+		<Spanish>Test Promotion (No Damage Penalty)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#20663;&#12398;&#24433;&#38911;&#12394;&#12375;&#65289;</Japanese>
 	</TEXT>
 </Civ4GameText>

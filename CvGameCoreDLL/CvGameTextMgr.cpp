@@ -548,7 +548,7 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szString, const CvUnit* pUnit, 
 			{
 				szTempBuffer.Format(L"?/%d%c, ", pUnit->baseCombatStr(), gDLL->getSymbolID(STRENGTH_CHAR));
 			}
-			else if (pUnit->isHurt())
+			else if (pUnit->isHurt() && !pUnit->isNoDamagePenalty())
 			{
 				szTempBuffer.Format(L"%.1f/%d%c, ", (((float)(pUnit->baseCombatStr() * pUnit->currHitPoints())) / ((float)(pUnit->maxHitPoints()))), pUnit->baseCombatStr(), gDLL->getSymbolID(STRENGTH_CHAR));
 			}
@@ -1592,7 +1592,7 @@ void CvGameTextMgr::setPlotListHelp(CvWStringBuffer &szString, CvPlot* pPlot, bo
 				if (iBase > 0 && pLoopUnit->maxHitPoints() > 0)
 				{
 					aiUnitMaxStrength[iIndex] += 100 * iBase;
-					aiUnitStrength[iIndex] += (100 * iBase * pLoopUnit->currHitPoints()) / pLoopUnit->maxHitPoints();
+					aiUnitStrength[iIndex] += (pLoopUnit->isNoDamagePenalty() ? (100 * iBase) : ((100 * iBase * pLoopUnit->currHitPoints()) / pLoopUnit->maxHitPoints()));
 				}
 
 				for (int iJ = 0; iJ < numPromotionInfos; iJ++)
@@ -5164,6 +5164,13 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_RIVER_CROSSING_DAMAGE", GC.getPromotionInfo(ePromotion).getRiverCrossingDamagePercent()));
+	}
+
+	// bNoDamagePenalty (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).isNoDamagePenalty())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_NO_DAMAGE_PENALTY"));
 	}
 
 	if (GC.getPromotionInfo(ePromotion).getCombatPercentInBorders() != 0)

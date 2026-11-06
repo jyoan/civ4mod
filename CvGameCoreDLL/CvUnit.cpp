@@ -325,6 +325,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iAdjacentTileHeal = 0;
 	m_iExtraCombatPercent = 0;
 	m_iCombatPercentInBorders = 0;
+	m_iNoDamagePenaltyCount = 0;
 	m_iExtraCityAttackPercent = 0;
 	m_iExtraCityDefensePercent = 0;
 	m_iExtraHillsAttackPercent = 0;
@@ -9688,7 +9689,7 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 		pCombatDetails->iMaxCombatStr = std::max(1, iCombat);
 		pCombatDetails->iCurrHitPoints = currHitPoints();
 		pCombatDetails->iMaxHitPoints = maxHitPoints();
-		pCombatDetails->iCurrCombatStr = ((pCombatDetails->iMaxCombatStr * pCombatDetails->iCurrHitPoints) / pCombatDetails->iMaxHitPoints);
+		pCombatDetails->iCurrCombatStr = (isNoDamagePenalty() ? pCombatDetails->iMaxCombatStr : ((pCombatDetails->iMaxCombatStr * pCombatDetails->iCurrHitPoints) / pCombatDetails->iMaxHitPoints));
 	}
 
 	return std::max(1, iCombat);
@@ -9697,6 +9698,13 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 
 int CvUnit::currCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDetails* pCombatDetails) const
 {
+	// bNoDamagePenalty of the promotions (added by this mod). currFirepower() follows from this, and the hit points still
+	// decide how many hits the unit can take
+	if (isNoDamagePenalty())
+	{
+		return maxCombatStr(pPlot, pAttacker, pCombatDetails);
+	}
+
 	return ((maxCombatStr(pPlot, pAttacker, pCombatDetails) * currHitPoints()) / maxHitPoints());
 }
 
@@ -10373,6 +10381,12 @@ int CvUnit::getRiverCrossingDamagePercent() const
 	}
 
 	return iPercent;
+}
+
+// bNoDamagePenalty of the promotions (added by this mod). Not for aircraft: their strength is airCurrCombatStr()
+bool CvUnit::isNoDamagePenalty() const
+{
+	return (m_iNoDamagePenaltyCount > 0 && getDomainType() != DOMAIN_AIR);
 }
 
 bool CvUnit::canEnterImpassablePlot(const CvPlot* pPlot) const
@@ -13160,6 +13174,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		changeAdjacentTileHeal(GC.getPromotionInfo(eIndex).getAdjacentTileHealChange() * iChange);
 		changeExtraCombatPercent(GC.getPromotionInfo(eIndex).getCombatPercent() * iChange);
 		m_iCombatPercentInBorders += GC.getPromotionInfo(eIndex).getCombatPercentInBorders() * iChange;
+		m_iNoDamagePenaltyCount += (GC.getPromotionInfo(eIndex).isNoDamagePenalty() ? iChange : 0);
 		changeExtraCityAttackPercent(GC.getPromotionInfo(eIndex).getCityAttackPercent() * iChange);
 		changeExtraCityDefensePercent(GC.getPromotionInfo(eIndex).getCityDefensePercent() * iChange);
 		changeExtraHillsAttackPercent(GC.getPromotionInfo(eIndex).getHillsAttackPercent() * iChange);
@@ -13373,13 +13388,15 @@ void CvUnit::read(FDataStreamBase* pStream)
 
 	pStream->Read(GC.getNumPromotionInfos(), m_pabHasPromotion);
 
-	// Not saved: the sum of iCombatPercentInBorders of the promotions (added by this mod)
+	// Not saved: the sum of iCombatPercentInBorders and the count of bNoDamagePenalty of the promotions (added by this mod)
 	m_iCombatPercentInBorders = 0;
+	m_iNoDamagePenaltyCount = 0;
 	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
 	{
 		if (m_pabHasPromotion[iI])
 		{
 			m_iCombatPercentInBorders += GC.getPromotionInfo((PromotionTypes)iI).getCombatPercentInBorders();
+			m_iNoDamagePenaltyCount += (GC.getPromotionInfo((PromotionTypes)iI).isNoDamagePenalty() ? 1 : 0);
 		}
 	}
 

@@ -814,6 +814,7 @@
 	<ElementType name="iExtraMoveCost" content="textOnly" dt:type="int"/>
 	<ElementType name="bRemoveFeature" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iRiverCrossingDamagePercent" content="textOnly" dt:type="int"/>
+	<ElementType name="bNoDamagePenalty" content="textOnly" dt:type="boolean"/>
 	<ElementType name="ImpassablePlotPassage" content="eltOnly">
 		<element type="TerrainType" minOccurs="0"/>
 		<element type="FeatureType" minOccurs="0"/>
@@ -953,6 +954,7 @@
 		<element type="iCombatPercentInBorders" minOccurs="0"/>
 		<element type="ImpassablePlotPassages" minOccurs="0"/>
 		<element type="iRiverCrossingDamagePercent" minOccurs="0"/>
+		<element type="bNoDamagePenalty" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

@@ -532,6 +532,7 @@ public:
 	int getImpassablePlotPassageMoveCost(int i) const;	// Exposed to Python
 	bool isImpassablePlotPassageRemoveFeature(int i) const;	// Exposed to Python
 	int getRiverCrossingDamagePercent() const;		// Exposed to Python
+	bool isNoDamagePenalty() const;				// Exposed to Python
 
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
@@ -623,6 +624,7 @@ protected:
 	std::vector<int> m_aiEnslavementUnitClassEnslaved;	// and the unit class it becomes (NO_UNITCLASS: not enslaved)
 	bool m_bRemovedByCombat;
 	bool m_bRemovedWhenHealed;
+	bool m_bNoDamagePenalty;
 
 	bool m_bLeader;
 	bool m_bBlitz;									

@@ -1706,6 +1706,7 @@ m_iCombatPercentInBorders(0),
 m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
+m_bNoDamagePenalty(false),
 m_bLeader(false),
 m_bBlitz(false),
 m_bAmphib(false),
@@ -2145,6 +2146,12 @@ int CvPromotionInfo::getRiverCrossingDamagePercent() const
 	return m_iRiverCrossingDamagePercent;
 }
 
+// The unit keeps its full strength when it is damaged (added by this mod)
+bool CvPromotionInfo::isNoDamagePenalty() const
+{
+	return m_bNoDamagePenalty;
+}
+
 int CvPromotionInfo::getCombatPercentInBorders() const
 {
 	return m_iCombatPercentInBorders;
@@ -2449,13 +2456,20 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iRiverCrossingDamagePercent);
 	}
+
+	// uiFlag < 8: cache written before bNoDamagePenalty existed
+	m_bNoDamagePenalty = false;
+	if (uiFlag > 7)
+	{
+		stream->Read(&m_bNoDamagePenalty);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 7;
+	uint uiFlag = 8;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2558,6 +2572,7 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	}
 
 	stream->Write(m_iRiverCrossingDamagePercent);
+	stream->Write(m_bNoDamagePenalty);
 }
 
 bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
@@ -2669,6 +2684,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCombatPercentInBorders, "iCombatPercentInBorders");
 
 	pXML->GetChildXmlValByName(&m_iRiverCrossingDamagePercent, "iRiverCrossingDamagePercent");
+	pXML->GetChildXmlValByName(&m_bNoDamagePenalty, "bNoDamagePenalty");
 
 	// ImpassablePlotPassages: terrains and features are loaded before promotions
 	m_aiImpassablePlotPassageTerrain.clear();

@@ -405,6 +405,7 @@ public:
 	int getImpassablePlotPassageMoveCost(const CvPlot* pPlot) const;	// added by this mod: extra moves to enter the plot
 	bool isImpassablePlotPassageRemoveFeature(const CvPlot* pPlot) const;	// added by this mod
 	int getRiverCrossingDamagePercent() const;	// added by this mod
+	bool isNoDamagePenalty() const;	// added by this mod. Exposed to Python
 	bool canEnterImpassablePlot(const CvPlot* pPlot) const;	// added by this mod
 	bool canMoveImpassable() const;																										// Exposed to Python
 	bool canMoveAllTerrain() const;																										// Exposed to Python
@@ -856,6 +857,7 @@ protected:
 	int m_iAdjacentTileHeal;
 	int m_iExtraCombatPercent;
 	int m_iCombatPercentInBorders;		// added by this mod: iCombatPercentInBorders of the promotions (not saved)
+	int m_iNoDamagePenaltyCount;		// added by this mod: promotions with bNoDamagePenalty (not saved)
 	int m_iExtraCityAttackPercent;
 	int m_iExtraCityDefensePercent;
 	int m_iExtraHillsAttackPercent;
