@@ -4397,6 +4397,27 @@ void CvGameTextMgr::buildLeaderTraitsString(CvWStringBuffer &szHelpString, Leade
 //	return szHelpString;
 }
 
+// All the civilizations of the leader have the trait (added by this mod). The screens that list the leaders give no civilization
+static bool isTraitOfLeaderCivilizations(LeaderHeadTypes eLeader, int iTrait)
+{
+	bool bFound = false;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumCivilizationInfos(); ++iI)
+	{
+		if (GC.getCivilizationInfo((CivilizationTypes)iI).isLeaders(eLeader))
+		{
+			if (!GC.getCivilizationInfo((CivilizationTypes)iI).hasTrait(iTrait))
+			{
+				return false;
+			}
+			bFound = true;
+		}
+	}
+
+	return bFound;
+}
+
 //
 // parseLeaderTraits - SimpleCivPicker							// LOCALIZATION READY
 //
@@ -4415,7 +4436,7 @@ void CvGameTextMgr::parseLeaderShortTraits(CvWStringBuffer &szHelpString, Leader
 		bool bFirst = true;
 		for (iI = 0; iI < GC.getNumTraitInfos(); ++iI)
 		{
-			if (GC.getLeaderHeadInfo(eLeader).hasTrait(iI))
+			if (GC.getLeaderHeadInfo(eLeader).hasTrait(iI) || isTraitOfLeaderCivilizations(eLeader, iI))
 			{
 				if (!bFirst)
 				{
