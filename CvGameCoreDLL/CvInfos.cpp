@@ -20004,9 +20004,13 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 				kCondition.iEraMin = NO_ERA;
 				kCondition.iEraMax = NO_ERA;
 				kCondition.iPrereqCivic = NO_CIVIC;
+				kCondition.iMinUnitsKilled = 0;
+				kCondition.iMinCitiesConquered = 0;
 				pXML->GetChildXmlValByName(&kCondition.bAtWar, "bAtWar");
 				pXML->GetChildXmlValByName(&kCondition.bAtPeace, "bAtPeace");
 				pXML->GetChildXmlValByName(&kCondition.bNoStateReligion, "bNoStateReligion");
+				pXML->GetChildXmlValByName(&kCondition.iMinUnitsKilled, "iMinUnitsKilled");
+				pXML->GetChildXmlValByName(&kCondition.iMinCitiesConquered, "iMinCitiesConquered");
 				m_aConditionalFreeTraits.push_back(kCondition);
 
 				szTextVal = "";

@@ -522,6 +522,12 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 		}
 	}
 
+	// iMinUnitsKilled of ConditionalFreeTraits (added by this mod). Once for a unit that is already about to die
+	if (ePlayer != NO_PLAYER && ePlayer != getOwnerINLINE() && !isDelayedDeath())
+	{
+		GET_PLAYER(ePlayer).changeNumUnitsKilled(1);
+	}
+
 	if (ePlayer != NO_PLAYER)
 	{
 		CvEventReporter::getInstance().unitKilled(this, ePlayer);

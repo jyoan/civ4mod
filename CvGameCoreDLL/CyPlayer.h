@@ -468,6 +468,8 @@ public:
 	int getConditionalTraitCount(int /*TraitTypes*/ eTrait);
 	int getBuildingClassExtraCommerce(int /*BuildingClassTypes*/ eBuildingClass, int /*CommerceTypes*/ eCommerce);
 	void updateConditionalTraits();
+	int getNumUnitsKilled();
+	int getNumCitiesConquered();
 	int getFreeTraitCount(int /*TraitTypes*/ eTrait);
 	void changeFreeTraitCount(int /*TraitTypes*/ eTrait, int iChange);
 	bool isIgnoreObsoleteBuilding(int /*BuildingTypes*/ eBuilding);

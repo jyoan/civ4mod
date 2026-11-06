@@ -1424,6 +1424,42 @@
 		<Spanish>[ICON_BULLET]Keeps full Strength when damaged</Spanish>
 		<Japanese>[ICON_BULLET]&#20663;&#12434;&#36000;&#12387;&#12390;&#12418;&#25126;&#38360;&#21147;&#12364;&#19979;&#12364;&#12425;&#12394;&#12356;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_UNITS_KILLED</Tag>
+		<English>after killing %d1_Num enemy units</English>
+		<French>after killing %d1_Num enemy units</French>
+		<German>after killing %d1_Num enemy units</German>
+		<Italian>after killing %d1_Num enemy units</Italian>
+		<Spanish>after killing %d1_Num enemy units</Spanish>
+		<Japanese>&#25973;&#12518;&#12491;&#12483;&#12488;&#12434;&#32047;&#35336;%d1_Num&#20307;&#25731;&#30772;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_CITIES_CONQUERED</Tag>
+		<English>after conquering %d1_Num cities</English>
+		<French>after conquering %d1_Num cities</French>
+		<German>after conquering %d1_Num cities</German>
+		<Italian>after conquering %d1_Num cities</Italian>
+		<Spanish>after conquering %d1_Num cities</Spanish>
+		<Japanese>&#37117;&#24066;&#12434;&#32047;&#35336;%d1_Num&#20491;&#21344;&#38936;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_RECORD_NOW</Tag>
+		<English>: now %d1_Num</English>
+		<French>: now %d1_Num</French>
+		<German>: now %d1_Num</German>
+		<Italian>: now %d1_Num</Italian>
+		<Spanish>: now %d1_Num</Spanish>
+		<Japanese>&#65306;&#29694;&#22312;%d1_Num</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_TRAIT_GAINED_BY_RECORD</Tag>
+		<English>Your record has earned you %s1_Trait!</English>
+		<French>Your record has earned you %s1_Trait!</French>
+		<German>Your record has earned you %s1_Trait!</German>
+		<Italian>Your record has earned you %s1_Trait!</Italian>
+		<Spanish>Your record has earned you %s1_Trait!</Spanish>
+		<Japanese>&#25126;&#32318;&#12395;&#12424;&#12426;%s1_Trait&#12434;&#24471;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

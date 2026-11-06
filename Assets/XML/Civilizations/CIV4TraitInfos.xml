@@ -470,6 +470,14 @@
 					<bAtPeace>1</bAtPeace>
 					<PrereqCivic>CIVIC_TEST</PrereqCivic>
 				</ConditionalFreeTrait>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_CHARISMATIC</TraitType>
+					<iMinUnitsKilled>2</iMinUnitsKilled>
+				</ConditionalFreeTrait>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_IMPERIALIST</TraitType>
+					<iMinCitiesConquered>1</iMinCitiesConquered>
+				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>

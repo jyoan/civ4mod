@@ -468,6 +468,8 @@
 	<ElementType name="EraMin" content="textOnly"/>
 	<ElementType name="EraMax" content="textOnly"/>
 	<ElementType name="PrereqCivic" content="textOnly"/>
+	<ElementType name="iMinUnitsKilled" content="textOnly" dt:type="int"/>
+	<ElementType name="iMinCitiesConquered" content="textOnly" dt:type="int"/>
 	<ElementType name="ConditionalFreeTrait" content="eltOnly">
 		<element type="TraitType"/>
 		<element type="bAtWar" minOccurs="0"/>
@@ -477,6 +479,8 @@
 		<element type="EraMin" minOccurs="0"/>
 		<element type="EraMax" minOccurs="0"/>
 		<element type="PrereqCivic" minOccurs="0"/>
+		<element type="iMinUnitsKilled" minOccurs="0"/>
+		<element type="iMinCitiesConquered" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="ConditionalFreeTraits" content="eltOnly">
 		<element type="ConditionalFreeTrait" minOccurs="0" maxOccurs="*"/>

@@ -2072,6 +2072,17 @@ int CyPlayer::getConditionalTraitCount(int /*TraitTypes*/ eTrait)
 	return m_pPlayer ? m_pPlayer->getConditionalTraitCount((TraitTypes)eTrait) : -1;
 }
 
+// The record of the player for ConditionalFreeTraits (added by this mod)
+int CyPlayer::getNumUnitsKilled()
+{
+	return m_pPlayer ? m_pPlayer->getNumUnitsKilled() : -1;
+}
+
+int CyPlayer::getNumCitiesConquered()
+{
+	return m_pPlayer ? m_pPlayer->getNumCitiesConquered() : -1;
+}
+
 void CyPlayer::updateConditionalTraits()
 {
 	if (m_pPlayer)

@@ -80,7 +80,11 @@ public:
 	void changeFreeTraitCount(TraitTypes eTrait, int iChange);	// Exposed to Python
 	int getConditionalTraitCount(TraitTypes eTrait) const;		// Exposed to Python: given by ConditionalFreeTraits
 	bool isConditionalFreeTraitActive(const ConditionalFreeTrait& kCondition) const;
-	void updateConditionalTraits();								// Exposed to Python
+	void updateConditionalTraits(bool bNotify = false);								// Exposed to Python
+	int getNumUnitsKilled() const;								// Exposed to Python: iMinUnitsKilled of ConditionalFreeTraits
+	void changeNumUnitsKilled(int iChange);
+	int getNumCitiesConquered() const;							// Exposed to Python: iMinCitiesConquered of ConditionalFreeTraits
+	void changeNumCitiesConquered(int iChange);
 	void doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity = NULL, PlayerTypes eOldOwner = NO_PLAYER, bool bConquest = false, bool bTrade = false);	// PyOnGameStart etc. of the traits
 	DllExport bool isHuman() const;																																							// Exposed to Python						
 	DllExport void updateHuman();
@@ -1188,6 +1192,8 @@ protected:
 	int m_iLargestCityHappiness;
 	int m_iWarWearinessPercentAnger;
 	int m_iPeaceAngerTimes100;
+	int m_iNumUnitsKilled;		// added by this mod: iMinUnitsKilled of ConditionalFreeTraits
+	int m_iNumCitiesConquered;	// added by this mod: iMinCitiesConquered of ConditionalFreeTraits
 	int m_iWarWearinessModifier;
 	int m_iFreeSpecialist;
 	int m_iNoForeignTradeCount;

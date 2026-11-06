@@ -3445,6 +3445,10 @@ void CvGameTextMgr::parseTraitConditionalFreeTraits(CvWStringBuffer& szHelpStrin
 	CvWString szText;
 	int iI;
 
+	// The record so far, for a trait of the player who reads this
+	PlayerTypes eActivePlayer = GC.getGameINLINE().getActivePlayer();
+	bool bShowRecord = (eActivePlayer != NO_PLAYER && GET_PLAYER(eActivePlayer).hasTrait(eTrait));
+
 	// ConditionalFreeTraits: "Gains Aggressive (at war, Buddhism is the state religion)" (added by this mod)
 	for (iI = 0; iI < kTrait.getNumConditionalFreeTraits(); iI++)
 	{
@@ -3488,6 +3492,22 @@ void CvGameTextMgr::parseTraitConditionalFreeTraits(CvWStringBuffer& szHelpStrin
 		{
 			szText = getLinkText(GC.getCivicInfo((CivicTypes)kCondition.iPrereqCivic).getDescription());
 			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_CIVIC", szText.GetCString()));
+		}
+		if (kCondition.iMinUnitsKilled > 0)
+		{
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_UNITS_KILLED", kCondition.iMinUnitsKilled));
+			if (bShowRecord)
+			{
+				szConditions += gDLL->getText("TXT_KEY_CONDITION_RECORD_NOW", GET_PLAYER(eActivePlayer).getNumUnitsKilled());
+			}
+		}
+		if (kCondition.iMinCitiesConquered > 0)
+		{
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_CITIES_CONQUERED", kCondition.iMinCitiesConquered));
+			if (bShowRecord)
+			{
+				szConditions += gDLL->getText("TXT_KEY_CONDITION_RECORD_NOW", GET_PLAYER(eActivePlayer).getNumCitiesConquered());
+			}
 		}
 
 		szText = getLinkText(GC.getTraitInfo((TraitTypes)kCondition.iTrait).getDescription());

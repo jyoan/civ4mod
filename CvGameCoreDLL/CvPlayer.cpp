@@ -410,6 +410,8 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_iLargestCityHappiness = 0;
 	m_iWarWearinessPercentAnger = 0;
 	m_iPeaceAngerTimes100 = 0;
+	m_iNumUnitsKilled = 0;
+	m_iNumCitiesConquered = 0;
 	m_iWarWearinessModifier = 0;
 	m_iFreeSpecialist = 0;
 	m_iNoForeignTradeCount = 0;
@@ -1704,6 +1706,13 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		GC.getGameINLINE().updatePlotGroups();
 	}
 
+	// iMinCitiesConquered of ConditionalFreeTraits (added by this mod). Not for culture or trade. Before the hooks, so a trait
+	// gained here also runs its PyOnCityAcquired for this city
+	if (bConquest)
+	{
+		changeNumCitiesConquered(1);
+	}
+
 	CvEventReporter::getInstance().cityAcquired(eOldOwner, getID(), pNewCity, bConquest, bTrade);
 	doTraitPythonHook(TRAIT_PYHOOK_CITY_ACQUIRED, pNewCity, eOldOwner, bConquest, bTrade);	// PyOnCityAcquired (added by this mod)
 
@@ -2362,17 +2371,24 @@ bool CvPlayer::isConditionalFreeTraitActive(const ConditionalFreeTrait& kConditi
 		return false;
 	}
 
+	if (getNumUnitsKilled() < kCondition.iMinUnitsKilled || getNumCitiesConquered() < kCondition.iMinCitiesConquered)
+	{
+		return false;
+	}
+
 	return true;
 }
 
 // ConditionalFreeTraits (added by this mod): gives and takes away the traits whose conditions changed. Called where a
 // condition can change (war and peace, the state religion, the era, the civics, a trait with ConditionalFreeTraits
 // gained or lost) and at the start of each turn. A given trait can give traits itself, so this repeats until nothing
-// changes (at most once per trait).
-void CvPlayer::updateConditionalTraits()
+// changes (at most once per trait). bNotify: the player gets a message for each trait gained (the record of the player).
+void CvPlayer::updateConditionalTraits(bool bNotify)
 {
 	std::vector<int> aiCount;
+	CvWString szBuffer;
 	bool bChanged;
+	bool bOldHasTrait;
 	int iPass;
 	int iChange;
 	int iI, iJ;
@@ -2409,9 +2425,16 @@ void CvPlayer::updateConditionalTraits()
 			iChange = aiCount[iI] - m_paiConditionalTraitCount[iI];
 			if (iChange != 0)
 			{
+				bOldHasTrait = hasTrait((TraitTypes)iI);
 				m_paiConditionalTraitCount[iI] = aiCount[iI];
 				changeFreeTraitCount((TraitTypes)iI, iChange);
 				bChanged = true;
+
+				if (bNotify && !bOldHasTrait && hasTrait((TraitTypes)iI))
+				{
+					szBuffer = gDLL->getText("TXT_KEY_MISC_TRAIT_GAINED_BY_RECORD", GC.getTraitInfo((TraitTypes)iI).getTextKeyWide());
+					gDLL->getInterfaceIFace()->addMessage(getID(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_GOLDAGESTART", MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
+				}
 			}
 		}
 
@@ -2422,6 +2445,29 @@ void CvPlayer::updateConditionalTraits()
 	}
 
 	m_bUpdatingConditionalTraits = false;
+}
+
+// The record of the player for ConditionalFreeTraits (added by this mod). It only grows, so these traits stay
+int CvPlayer::getNumUnitsKilled() const
+{
+	return m_iNumUnitsKilled;
+}
+
+void CvPlayer::changeNumUnitsKilled(int iChange)
+{
+	m_iNumUnitsKilled += iChange;
+	updateConditionalTraits(true);
+}
+
+int CvPlayer::getNumCitiesConquered() const
+{
+	return m_iNumCitiesConquered;
+}
+
+void CvPlayer::changeNumCitiesConquered(int iChange)
+{
+	m_iNumCitiesConquered += iChange;
+	updateConditionalTraits(true);
 }
 
 // After the player gains or loses traits: updates the stored values that depend on the traits. abObsoleteBuilding holds
@@ -17593,6 +17639,13 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(&m_iPeaceAngerTimes100);
 	}
+
+	// iMinUnitsKilled and iMinCitiesConquered of ConditionalFreeTraits (uiFlag 7)
+	if (uiFlag > 6)
+	{
+		pStream->Read(&m_iNumUnitsKilled);
+		pStream->Read(&m_iNumCitiesConquered);
+	}
 }
 
 //
@@ -17603,7 +17656,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 6;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100 (added by this mod)
+	uint uiFlag = 7;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -18016,6 +18069,8 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(GC.getNumTraitInfos(), m_paiConditionalTraitCount);
 	pStream->Write(GC.getNumBuildingClassInfos() * NUM_COMMERCE_TYPES, m_paiBuildingClassExtraCommerce);
 	pStream->Write(m_iPeaceAngerTimes100);
+	pStream->Write(m_iNumUnitsKilled);
+	pStream->Write(m_iNumCitiesConquered);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)
