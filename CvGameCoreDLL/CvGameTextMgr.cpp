@@ -3298,13 +3298,13 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 }
 
 
-// Joins the conditions of ConditionalFreeTraits (added by this mod)
 // 1/10 % as text: 5 -> "0.5", 200 -> "20" (added by this mod)
 static CvWString getPerMilleText(int iValue)
 {
 	return ((iValue % 10) == 0) ? CvWString::format(L"%d", iValue / 10) : CvWString::format(L"%d.%d", iValue / 10, iValue % 10);
 }
 
+// Joins the conditions of ConditionalFreeTraits (added by this mod)
 static void appendConditionText(CvWString& szConditions, const CvWString& szCondition)
 {
 	if (!szConditions.empty())
@@ -3312,6 +3312,607 @@ static void appendConditionText(CvWString& szConditions, const CvWString& szCond
 		szConditions += gDLL->getText("TXT_KEY_CONDITION_SEPARATOR");
 	}
 	szConditions += szCondition;
+}
+
+// One line of the help of a trait, with the newline and the indent of the trait (added by this mod)
+static void appendTraitLine(CvWStringBuffer& szHelpString, const CvWString& szLine)
+{
+	szHelpString.append(NEWLINE L"  ");
+	szHelpString.append(szLine);
+}
+
+// A name that links to its Civilopedia page (added by this mod)
+static CvWString getLinkText(const wchar* szName)
+{
+	return CvWString::format(L"<link=literal>%s</link>", szName);
+}
+
+// One entry of TerrainYieldChanges and the like: "+1 food: Forest, Jungle". iLast starts a new line when the value changes
+// (added by this mod)
+static void appendTraitPlotYieldChange(CvWStringBuffer& szHelpString, int iChange, int iYield, const wchar* szName, int& iLast)
+{
+	if (iChange != 0)
+	{
+		CvWString szStart;
+		szStart.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_YIELD_CHANGE", iChange, GC.getYieldInfo((YieldTypes)iYield).getChar()).c_str());
+		setListHelp(szHelpString, szStart.GetCString(), getLinkText(szName).GetCString(), L", ", (iChange != iLast));
+		iLast = iChange;
+	}
+}
+
+// The parts of parseTraits (added by this mod), in the order of the text.
+void CvGameTextMgr::parseTraitCivicEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szTempBuffer;
+	CvWString szText;
+	int iI;
+
+	// Civic-like modifiers. The civic text keys start with [ICON_BULLET] and no newline,
+	// so the newline and the trait indent are added here.
+	if (kTrait.getFreeExperience() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_FREE_XP", kTrait.getFreeExperience()));
+	}
+
+	if (kTrait.getMilitaryProductionModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_MILITARY_PRODUCTION", kTrait.getMilitaryProductionModifier()));
+	}
+
+	if (kTrait.getImprovementUpgradeRateModifier() != 0)
+	{
+		bool bFirstImprovement = true;
+		for (iI = 0; iI < GC.getNumImprovementInfos(); ++iI)
+		{
+			if (GC.getImprovementInfo((ImprovementTypes)iI).getImprovementUpgrade() != NO_IMPROVEMENT)
+			{
+				szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_UPGRADE", kTrait.getImprovementUpgradeRateModifier()).c_str());
+				szText = getLinkText(GC.getImprovementInfo((ImprovementTypes)iI).getDescription());
+				setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstImprovement);
+				bFirstImprovement = false;
+			}
+		}
+	}
+
+	if (kTrait.getDistanceMaintenanceModifier() != 0)
+	{
+		if (kTrait.getDistanceMaintenanceModifier() <= -100)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_DISTANCE_MAINT"));
+		}
+		else
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_DISTANCE_MAINT_MOD", kTrait.getDistanceMaintenanceModifier()));
+		}
+	}
+
+	if (kTrait.getNumCitiesMaintenanceModifier() != 0)
+	{
+		if (kTrait.getNumCitiesMaintenanceModifier() <= -100)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_NO_MAINT_NUM_CITIES"));
+		}
+		else
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_NO_MAINT_NUM_CITIES_MOD", kTrait.getNumCitiesMaintenanceModifier()));
+		}
+	}
+
+	if (kTrait.getWarWearinessModifier() != 0)
+	{
+		if (kTrait.getWarWearinessModifier() <= -100)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_NO_WAR_WEARINESS"));
+		}
+		else
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_EXTRA_WAR_WEARINESS", kTrait.getWarWearinessModifier()));
+		}
+	}
+
+	if (kTrait.getFreeSpecialist() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_FREE_SPECIALISTS", kTrait.getFreeSpecialist()));
+	}
+
+	if (kTrait.getTradeRoutes() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_TRADE_ROUTES", kTrait.getTradeRoutes()));
+	}
+
+	if (kTrait.getExpInBorderModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_EXPERIENCE_IN_BORDERS", kTrait.getExpInBorderModifier()));
+	}
+
+	if (kTrait.getCityRadiusChange() != 0)
+	{
+		if (kTrait.getCityRadiusCultureLevel() == NO_CULTURELEVEL)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CITY_RADIUS_CHANGE", kTrait.getCityRadiusChange(), CITY_PLOTS_MAX_RADIUS));
+		}
+		else
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CITY_RADIUS_CHANGE_CULTURE", kTrait.getCityRadiusChange(), CITY_PLOTS_MAX_RADIUS, GC.getCultureLevelInfo((CultureLevelTypes)kTrait.getCityRadiusCultureLevel()).getTextKeyWide()));
+		}
+	}
+}
+
+void CvGameTextMgr::parseTraitConditionalFreeTraits(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szText;
+	int iI;
+
+	// ConditionalFreeTraits: "Gains Aggressive (at war, Buddhism is the state religion)" (added by this mod)
+	for (iI = 0; iI < kTrait.getNumConditionalFreeTraits(); iI++)
+	{
+		const ConditionalFreeTrait& kCondition = kTrait.getConditionalFreeTrait(iI);
+		CvWString szConditions;
+
+		if (kCondition.bAtWar)
+		{
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_AT_WAR"));
+		}
+		if (kCondition.bAtPeace)
+		{
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_AT_PEACE"));
+		}
+		if (kCondition.iStateReligion != NO_RELIGION)
+		{
+			szText = getLinkText(GC.getReligionInfo((ReligionTypes)kCondition.iStateReligion).getDescription());
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_STATE_RELIGION", szText.GetCString()));
+		}
+		if (kCondition.bNoStateReligion)
+		{
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_NO_STATE_RELIGION"));
+		}
+		if (kCondition.iEraMin != NO_ERA && kCondition.iEraMin == kCondition.iEraMax)
+		{
+			appendConditionText(szConditions, GC.getEraInfo((EraTypes)kCondition.iEraMin).getDescription());
+		}
+		else if (kCondition.iEraMin != NO_ERA && kCondition.iEraMax != NO_ERA)
+		{
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_RANGE", GC.getEraInfo((EraTypes)kCondition.iEraMin).getTextKeyWide(), GC.getEraInfo((EraTypes)kCondition.iEraMax).getTextKeyWide()));
+		}
+		else if (kCondition.iEraMin != NO_ERA)
+		{
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_MIN", GC.getEraInfo((EraTypes)kCondition.iEraMin).getTextKeyWide()));
+		}
+		else if (kCondition.iEraMax != NO_ERA)
+		{
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_MAX", GC.getEraInfo((EraTypes)kCondition.iEraMax).getTextKeyWide()));
+		}
+		if (kCondition.iPrereqCivic != NO_CIVIC)
+		{
+			szText = getLinkText(GC.getCivicInfo((CivicTypes)kCondition.iPrereqCivic).getDescription());
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_CIVIC", szText.GetCString()));
+		}
+
+		szText = getLinkText(GC.getTraitInfo((TraitTypes)kCondition.iTrait).getDescription());
+		if (szConditions.empty())
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONDITIONAL_FREE_TRAIT_ALWAYS", szText.GetCString()));
+		}
+		else
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONDITIONAL_FREE_TRAIT", szText.GetCString(), szConditions.GetCString()));
+		}
+	}
+}
+
+void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szTempBuffer;
+	CvWString szText;
+	int iI;
+
+	// iMaxCities / iMaxCitiesPercent: "Can found up to 5 cities" on the map size of the game (added by this mod)
+	if (kTrait.getMaxCitiesLimit(GC.getMapINLINE().getWorldSize()) >= 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText(((kTrait.getMaxCitiesPercent() != 0) ? "TXT_KEY_TRAIT_MAX_CITIES_MAP" : "TXT_KEY_TRAIT_MAX_CITIES"), kTrait.getMaxCitiesLimit(GC.getMapINLINE().getWorldSize())));
+	}
+
+	if (kTrait.getNewCityPopulation() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_NEW_CITY_POPULATION", kTrait.getNewCityPopulation()));
+	}
+
+	if (kTrait.isNewCityStateReligion())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_NEW_CITY_STATE_RELIGION"));
+	}
+
+	if (kTrait.getOccupationTimeModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_OCCUPATION_TIME_MODIFIER", kTrait.getOccupationTimeModifier()));
+	}
+
+	// bNoPillageInBorders (added by this mod)
+	if (kTrait.isNoPillageInBorders())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_PILLAGE_IN_BORDERS"));
+	}
+
+	// iGoldInterestPercent / iGoldInterestMax: "3% of the treasury as gold every turn (at most 25)" (added by this mod)
+	if (kTrait.getGoldInterestPercent() > 0)
+	{
+		if (kTrait.getGoldInterestMax() > 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLD_INTEREST_MAX", kTrait.getGoldInterestPercent(), kTrait.getGoldInterestMax()));
+		}
+		else
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLD_INTEREST", kTrait.getGoldInterestPercent()));
+		}
+	}
+
+	// iCultureRangeChange: "+1 culture range of all cities" (added by this mod)
+	if (kTrait.getCultureRangeChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CULTURE_RANGE_CHANGE", kTrait.getCultureRangeChange()));
+	}
+
+	// iPeaceAngerPerTurn: "Cities grow angry in peace" (added by this mod)
+	if (kTrait.getPeaceAngerPerTurn() > 0 && kTrait.getPeaceAngerMax() > 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_PEACE_ANGER", getPerMilleText(kTrait.getPeaceAngerPerTurn()).GetCString(), getPerMilleText(kTrait.getPeaceAngerMax()).GetCString(), getPerMilleText(kTrait.getPeaceAngerDecayPerTurn()).GetCString()));
+	}
+
+	// ForbiddenCivics: "Cannot adopt: Slavery, Serfdom" (added by this mod)
+	bool bFirstCivic = true;
+	for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
+	{
+		if (kTrait.isForbiddenCivic(iI))
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_FORBIDDEN_CIVICS").c_str());
+			szText = getLinkText(GC.getCivicInfo((CivicTypes)iI).getDescription());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstCivic);
+			bFirstCivic = false;
+		}
+	}
+
+	// iUnitCostModifier / iBuildingCostModifier: "-20% production cost of units" (added by this mod)
+	if (kTrait.getUnitCostModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_UNIT_COST_MODIFIER", kTrait.getUnitCostModifier()));
+	}
+
+	if (kTrait.getBuildingCostModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_BUILDING_COST_MODIFIER", kTrait.getBuildingCostModifier()));
+	}
+
+	if (kTrait.getSummonDuration() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_SUMMON_DURATION", kTrait.getSummonDuration()));
+	}
+
+	// Civ5 abilities (added by this mod)
+	if (kTrait.getGoldenAgeModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_GOLDENAGE_MOD", kTrait.getGoldenAgeModifier()));
+	}
+
+	if (kTrait.getGoldenAgeGreatPeopleRateModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_GREAT_PEOPLE", kTrait.getGoldenAgeGreatPeopleRateModifier()));
+	}
+
+	if (kTrait.getCapitalBuildingProductionModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CAPITAL_BUILDING_PRODUCTION", kTrait.getCapitalBuildingProductionModifier()));
+	}
+
+	if (kTrait.getPillageGoldModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_PILLAGE_GOLD", kTrait.getPillageGoldModifier()));
+	}
+
+	if (kTrait.getCityCaptureGoldModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CITY_CAPTURE_GOLD", kTrait.getCityCaptureGoldModifier()));
+	}
+
+	if (kTrait.getNewCityCultureLevel() != NO_CULTURELEVEL)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_NEW_CITY_CULTURE_LEVEL", GC.getCultureLevelInfo((CultureLevelTypes)kTrait.getNewCityCultureLevel()).getTextKeyWide()));
+	}
+}
+
+void CvGameTextMgr::parseTraitUnitCombatEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	int iI;
+
+	// UnitCombatFreeExperiences / UnitCombatProductionModifiers (building text keys)
+	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+	{
+		if (kTrait.getUnitCombatFreeExperience(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_FREE_XP", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), kTrait.getUnitCombatFreeExperience(iI)));
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+	{
+		if (kTrait.getUnitCombatProductionModifier(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_BUILDS_FASTER_DOMAIN", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), kTrait.getUnitCombatProductionModifier(iI)));
+		}
+	}
+
+	// UnitCombatUpgradeDiscounts: shown as a cost change, so a 50% discount reads "-50%"
+	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+	{
+		if (kTrait.getUnitCombatUpgradeDiscount(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_UNITCOMBAT_UPGRADE_COST_MODIFIER", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), -kTrait.getUnitCombatUpgradeDiscount(iI)));
+		}
+	}
+
+	// UpgradeAnywhereUnitCombats
+	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+	{
+		if (kTrait.isUpgradeAnywhereUnitCombat(iI))
+		{
+			appendTraitLine(szHelpString, gDLL->getText(kTrait.isUpgradeAnywhereExcludeEnemy(iI) ? "TXT_KEY_UNITCOMBAT_UPGRADE_ANYWHERE_NOT_ENEMY" : "TXT_KEY_UNITCOMBAT_UPGRADE_ANYWHERE", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide()));
+		}
+	}
+}
+
+void CvGameTextMgr::parseTraitYieldEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szTempBuffer;
+	int iLast;
+	int iI, iJ;
+
+	// Yield / commerce modifiers: bNewLine=false and the newline, indent and bullet passed as szStart,
+	// so nothing is written when all values are zero
+	szTempBuffer.Format(L"%s  %c", NEWLINE, gDLL->getSymbolID(BULLET_CHAR));
+	setYieldChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_IN_ALL_CITIES"), kTrait.getYieldModifierArray(), true, false);
+	setYieldChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_IN_CAPITAL"), kTrait.getCapitalYieldModifierArray(), true, false);
+	setCommerceChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_IN_CAPITAL"), kTrait.getCapitalCommerceModifierArray(), true, false);
+	setCommerceChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_PER_SPECIALIST"), kTrait.getSpecialistExtraCommerceArray(), false, false);
+
+	// TerrainYieldChanges / FeatureYieldChanges: one line per yield and value, like the civic improvement yields
+	for (iI = 0; iI < NUM_YIELD_TYPES; ++iI)
+	{
+		iLast = 0;
+
+		for (iJ = 0; iJ < GC.getNumTerrainInfos(); ++iJ)
+		{
+			appendTraitPlotYieldChange(szHelpString, kTrait.getTerrainYieldChange(iJ, iI), iI, GC.getTerrainInfo((TerrainTypes)iJ).getDescription(), iLast);
+		}
+
+		for (iJ = 0; iJ < GC.getNumFeatureInfos(); ++iJ)
+		{
+			appendTraitPlotYieldChange(szHelpString, kTrait.getFeatureYieldChange(iJ, iI), iI, GC.getFeatureInfo((FeatureTypes)iJ).getDescription(), iLast);
+		}
+
+		for (iJ = 0; iJ < GC.getNumImprovementInfos(); ++iJ)
+		{
+			appendTraitPlotYieldChange(szHelpString, kTrait.getImprovementYieldChanges(iJ, iI), iI, GC.getImprovementInfo((ImprovementTypes)iJ).getDescription(), iLast);
+		}
+
+		for (iJ = 0; iJ < GC.getNumBonusInfos(); ++iJ)
+		{
+			appendTraitPlotYieldChange(szHelpString, kTrait.getBonusYieldChange(iJ, iI), iI, GC.getBonusInfo((BonusTypes)iJ).getDescription(), iLast);
+		}
+	}
+
+	// RiverPlotYieldChanges: "River Tiles: +1 food", with the building text key
+	if (kTrait.getRiverPlotYieldChangeArray() != NULL)
+	{
+		szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_BUILDING_RIVER_PLOTS").c_str());
+		setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", kTrait.getRiverPlotYieldChangeArray(), false, false);
+	}
+}
+
+void CvGameTextMgr::parseTraitUniqueElements(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	int iI;
+
+	// UniqueUnits and UniqueBuildings: "Unique unit: X (instead of Y)" (added by this mod)
+	for (iI = 0; iI < kTrait.getNumUniqueUnits(); iI++)
+	{
+		CvUnitInfo& kUnique = GC.getUnitInfo((UnitTypes)kTrait.getUniqueUnit(iI));
+		int iDefault = GC.getUnitClassInfo((UnitClassTypes)kTrait.getUniqueUnitClass(iI)).getDefaultUnitIndex();
+		CvWString szUnique;
+		CvWString szDefault;
+		szUnique = getLinkText(kUnique.getDescription());
+		szDefault = getLinkText((iDefault != NO_UNIT) ? GC.getUnitInfo((UnitTypes)iDefault).getDescription() : L"");
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_UNIQUE_UNIT", szUnique.GetCString(), szDefault.GetCString()));
+	}
+
+	for (iI = 0; iI < kTrait.getNumUniqueBuildings(); iI++)
+	{
+		CvBuildingInfo& kUnique = GC.getBuildingInfo((BuildingTypes)kTrait.getUniqueBuilding(iI));
+		int iDefault = GC.getBuildingClassInfo((BuildingClassTypes)kTrait.getUniqueBuildingClass(iI)).getDefaultBuildingIndex();
+		CvWString szUnique;
+		CvWString szDefault;
+		szUnique = getLinkText(kUnique.getDescription());
+		szDefault = getLinkText((iDefault != NO_BUILDING) ? GC.getBuildingInfo((BuildingTypes)iDefault).getDescription() : L"");
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_UNIQUE_BUILDING", szUnique.GetCString(), szDefault.GetCString()));
+	}
+
+	// Bonuses that need this trait (PrereqOrTraits): "Unique resource: X" (added by this mod)
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		const CvBonusInfo& kBonus = GC.getBonusInfo((BonusTypes)iI);
+		for (int iBonusTrait = 0; iBonusTrait < kBonus.getNumPrereqOrTraits(); iBonusTrait++)
+		{
+			if (kBonus.getPrereqOrTraits(iBonusTrait) == eTrait)
+			{
+				CvWString szBonus;
+				szBonus = getLinkText(kBonus.getDescription());
+				appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_UNIQUE_BONUS", szBonus.GetCString()));
+			}
+		}
+	}
+
+	// Civics that need this trait (PrereqOrTraits, ReplacedCivic): "Unique civic: X (instead of Y)" (added by this mod)
+	for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
+	{
+		const CvCivicInfo& kCivic = GC.getCivicInfo((CivicTypes)iI);
+		for (int iCivicTrait = 0; iCivicTrait < kCivic.getNumPrereqOrTraits(); iCivicTrait++)
+		{
+			if (kCivic.getPrereqOrTraits(iCivicTrait) == eTrait)
+			{
+				CvWString szCivic;
+				szCivic = getLinkText(kCivic.getDescription());
+				szHelpString.append(NEWLINE L"  ");
+				if (kCivic.getReplacedCivic() != NO_CIVIC)
+				{
+					CvWString szReplaced;
+					szReplaced = getLinkText(GC.getCivicInfo((CivicTypes)kCivic.getReplacedCivic()).getDescription());
+					szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_CIVIC_REPLACES", szCivic.GetCString(), szReplaced.GetCString()));
+				}
+				else
+				{
+					szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_CIVIC", szCivic.GetCString()));
+				}
+			}
+		}
+	}
+}
+
+void CvGameTextMgr::parseTraitMiseryAndLakeEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szTempBuffer;
+
+	// AngryYieldChanges and the like (added by this mod)
+	buildMiseryChangesString(szHelpString, kTrait.getAngryYieldChangeArray(), kTrait.getAngryCommerceChangeArray(), kTrait.getUnhealthyYieldChangeArray(), kTrait.getUnhealthyCommerceChangeArray(), true);
+
+	// LakePlotYieldChanges: "Lake Tiles: +1 production" (added by this mod)
+	if (kTrait.getLakePlotYieldChangeArray() != NULL)
+	{
+		szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_LAKE_PLOTS").c_str());
+		setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", kTrait.getLakePlotYieldChangeArray(), false, false);
+	}
+}
+
+void CvGameTextMgr::parseTraitUniqueImprovements(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szTempBuffer;
+	CvWString szText;
+	int iI, iJ;
+
+	// PrereqOrTraits of the builds: "Unique improvement: Terrace", "Unique improvement: Terrace (replaces Farm)" (added by
+	// this mod)
+	for (iI = 0; iI < GC.getNumBuildInfos(); ++iI)
+	{
+		CvBuildInfo& kBuild = GC.getBuildInfo((BuildTypes)iI);
+
+		for (iJ = 0; iJ < kBuild.getNumPrereqOrTraits(); ++iJ)
+		{
+			if (kBuild.getPrereqOrTraits(iJ) == eTrait)
+			{
+				szText = getLinkText(getBuildResultDescription(kBuild));
+				if (kBuild.getReplacedBuild() != NO_BUILD)
+				{
+					CvWString szReplaced;
+					szReplaced = getLinkText(getBuildResultDescription(GC.getBuildInfo((BuildTypes)kBuild.getReplacedBuild())));
+					szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT_REPLACES", szText.GetCString(), szReplaced.GetCString()).c_str());
+				}
+				else
+				{
+					szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT", szText.GetCString()).c_str());
+				}
+				szHelpString.append(szTempBuffer);
+				break;
+			}
+		}
+	}
+}
+
+void CvGameTextMgr::parseTraitFeatureAndObsolescenceEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait, CivilizationTypes eCivilization)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szTempBuffer;
+	CvWString szText;
+	int iI, iJ;
+
+	// MaintainFeatures: "Improvements keep: Forest, Jungle"
+	bool bFirstFeature = true;
+	for (iI = 0; iI < GC.getNumFeatureInfos(); ++iI)
+	{
+		if (kTrait.isMaintainFeatures(iI))
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_MAINTAIN_FEATURES").c_str());
+			szText = getLinkText(GC.getFeatureInfo((FeatureTypes)iI).getDescription());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstFeature);
+			bFirstFeature = false;
+		}
+	}
+
+	// FeatureRoutes: "Counts as Road in our territory (movement and trade network): Forest, Jungle", a line for each
+	// route type
+	for (iJ = 0; iJ < GC.getNumRouteInfos(); ++iJ)
+	{
+		bFirstFeature = true;
+		for (iI = 0; iI < GC.getNumFeatureInfos(); ++iI)
+		{
+			if (kTrait.getFeatureRouteType(iI) == iJ)
+			{
+				szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_FEATURE_ROUTES", GC.getRouteInfo((RouteTypes)iJ).getTextKeyWide()).c_str());
+				szText = getLinkText(GC.getFeatureInfo((FeatureTypes)iI).getDescription());
+				setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstFeature);
+				bFirstFeature = false;
+			}
+		}
+	}
+
+	// bIgnoreBuildingObsolescence: "Buildings never become obsolete". Otherwise NoObsoleteBuildingClasses and
+	// NoObsoleteSpecialBuildings: "Never obsolete: Castle, Monastery" (the buildings of the civilization)
+	if (kTrait.isIgnoreBuildingObsolescence())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_IGNORE_BUILDING_OBSOLESCENCE"));
+	}
+	else
+	{
+		bool bFirstBuilding = true;
+		for (iI = 0; iI < GC.getNumBuildingClassInfos(); ++iI)
+		{
+			if (kTrait.isNoObsoleteBuildingClass(iI))
+			{
+				BuildingTypes eLoopBuilding = NO_BUILDING;
+				if (eCivilization != NO_CIVILIZATION)
+				{
+					eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(eCivilization).getCivilizationBuildings(iI);
+				}
+				if (eLoopBuilding == NO_BUILDING)
+				{
+					eLoopBuilding = (BuildingTypes)GC.getBuildingClassInfo((BuildingClassTypes)iI).getDefaultBuildingIndex();
+				}
+
+				if (eLoopBuilding != NO_BUILDING)
+				{
+					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_NO_OBSOLETE_BUILDINGS").c_str());
+					szText = getLinkText(GC.getBuildingInfo(eLoopBuilding).getDescription());
+					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstBuilding);
+					bFirstBuilding = false;
+				}
+			}
+		}
+
+		// Special buildings have no Civilopedia page: no link
+		for (iI = 0; iI < GC.getNumSpecialBuildingInfos(); ++iI)
+		{
+			if (kTrait.isNoObsoleteSpecialBuilding(iI))
+			{
+				szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_NO_OBSOLETE_BUILDINGS").c_str());
+				setListHelp(szHelpString, szTempBuffer.GetCString(), GC.getSpecialBuildingInfo((SpecialBuildingTypes)iI).getDescription(), L", ", bFirstBuilding);
+				bFirstBuilding = false;
+			}
+		}
+	}
 }
 
 void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait, CivilizationTypes eCivilization, bool bDawnOfMan)
@@ -3405,573 +4006,16 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_WORKER_SPEED_MODIFIER", GC.getTraitInfo(eTrait).getWorkerSpeedModifier()));
 		}
 
-		// Civic-like modifiers. The civic text keys start with [ICON_BULLET] and no newline,
-		// so the newline and the trait indent are added here.
-		if (GC.getTraitInfo(eTrait).getFreeExperience() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_FREE_XP", GC.getTraitInfo(eTrait).getFreeExperience()));
-		}
-
-		if (GC.getTraitInfo(eTrait).getMilitaryProductionModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_MILITARY_PRODUCTION", GC.getTraitInfo(eTrait).getMilitaryProductionModifier()));
-		}
-
-		if (GC.getTraitInfo(eTrait).getImprovementUpgradeRateModifier() != 0)
-		{
-			bool bFirstImprovement = true;
-			for (iI = 0; iI < GC.getNumImprovementInfos(); ++iI)
-			{
-				if (GC.getImprovementInfo((ImprovementTypes)iI).getImprovementUpgrade() != NO_IMPROVEMENT)
-				{
-					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_UPGRADE", GC.getTraitInfo(eTrait).getImprovementUpgradeRateModifier()).c_str());
-					szText.Format(L"<link=literal>%s</link>", GC.getImprovementInfo((ImprovementTypes)iI).getDescription());
-					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstImprovement);
-					bFirstImprovement = false;
-				}
-			}
-		}
-
-		if (GC.getTraitInfo(eTrait).getDistanceMaintenanceModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			if (GC.getTraitInfo(eTrait).getDistanceMaintenanceModifier() <= -100)
-			{
-				szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_DISTANCE_MAINT"));
-			}
-			else
-			{
-				szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_DISTANCE_MAINT_MOD", GC.getTraitInfo(eTrait).getDistanceMaintenanceModifier()));
-			}
-		}
-
-		if (GC.getTraitInfo(eTrait).getNumCitiesMaintenanceModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			if (GC.getTraitInfo(eTrait).getNumCitiesMaintenanceModifier() <= -100)
-			{
-				szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_NO_MAINT_NUM_CITIES"));
-			}
-			else
-			{
-				szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_NO_MAINT_NUM_CITIES_MOD", GC.getTraitInfo(eTrait).getNumCitiesMaintenanceModifier()));
-			}
-		}
-
-		if (GC.getTraitInfo(eTrait).getWarWearinessModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			if (GC.getTraitInfo(eTrait).getWarWearinessModifier() <= -100)
-			{
-				szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_NO_WAR_WEARINESS"));
-			}
-			else
-			{
-				szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_EXTRA_WAR_WEARINESS", GC.getTraitInfo(eTrait).getWarWearinessModifier()));
-			}
-		}
-
-		if (GC.getTraitInfo(eTrait).getFreeSpecialist() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_FREE_SPECIALISTS", GC.getTraitInfo(eTrait).getFreeSpecialist()));
-		}
-
-		if (GC.getTraitInfo(eTrait).getTradeRoutes() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_TRADE_ROUTES", GC.getTraitInfo(eTrait).getTradeRoutes()));
-		}
-
-		if (GC.getTraitInfo(eTrait).getExpInBorderModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_CIVIC_EXPERIENCE_IN_BORDERS", GC.getTraitInfo(eTrait).getExpInBorderModifier()));
-		}
-
-		if (GC.getTraitInfo(eTrait).getCityRadiusChange() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			if (GC.getTraitInfo(eTrait).getCityRadiusCultureLevel() == NO_CULTURELEVEL)
-			{
-				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CITY_RADIUS_CHANGE", GC.getTraitInfo(eTrait).getCityRadiusChange(), CITY_PLOTS_MAX_RADIUS));
-			}
-			else
-			{
-				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CITY_RADIUS_CHANGE_CULTURE", GC.getTraitInfo(eTrait).getCityRadiusChange(), CITY_PLOTS_MAX_RADIUS, GC.getCultureLevelInfo((CultureLevelTypes)GC.getTraitInfo(eTrait).getCityRadiusCultureLevel()).getTextKeyWide()));
-			}
-		}
-
-		// ConditionalFreeTraits: "Gains Aggressive (at war, Buddhism is the state religion)" (added by this mod)
-		for (iI = 0; iI < GC.getTraitInfo(eTrait).getNumConditionalFreeTraits(); iI++)
-		{
-			const ConditionalFreeTrait& kCondition = GC.getTraitInfo(eTrait).getConditionalFreeTrait(iI);
-			CvWString szConditions;
-
-			if (kCondition.bAtWar)
-			{
-				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_AT_WAR"));
-			}
-			if (kCondition.bAtPeace)
-			{
-				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_AT_PEACE"));
-			}
-			if (kCondition.iStateReligion != NO_RELIGION)
-			{
-				szText.Format(L"<link=literal>%s</link>", GC.getReligionInfo((ReligionTypes)kCondition.iStateReligion).getDescription());
-				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_STATE_RELIGION", szText.GetCString()));
-			}
-			if (kCondition.bNoStateReligion)
-			{
-				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_NO_STATE_RELIGION"));
-			}
-			if (kCondition.iEraMin != NO_ERA && kCondition.iEraMin == kCondition.iEraMax)
-			{
-				appendConditionText(szConditions, GC.getEraInfo((EraTypes)kCondition.iEraMin).getDescription());
-			}
-			else if (kCondition.iEraMin != NO_ERA && kCondition.iEraMax != NO_ERA)
-			{
-				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_RANGE", GC.getEraInfo((EraTypes)kCondition.iEraMin).getTextKeyWide(), GC.getEraInfo((EraTypes)kCondition.iEraMax).getTextKeyWide()));
-			}
-			else if (kCondition.iEraMin != NO_ERA)
-			{
-				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_MIN", GC.getEraInfo((EraTypes)kCondition.iEraMin).getTextKeyWide()));
-			}
-			else if (kCondition.iEraMax != NO_ERA)
-			{
-				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_MAX", GC.getEraInfo((EraTypes)kCondition.iEraMax).getTextKeyWide()));
-			}
-			if (kCondition.iPrereqCivic != NO_CIVIC)
-			{
-				szText.Format(L"<link=literal>%s</link>", GC.getCivicInfo((CivicTypes)kCondition.iPrereqCivic).getDescription());
-				appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_CIVIC", szText.GetCString()));
-			}
-
-			szText.Format(L"<link=literal>%s</link>", GC.getTraitInfo((TraitTypes)kCondition.iTrait).getDescription());
-			szHelpString.append(NEWLINE L"  ");
-			if (szConditions.empty())
-			{
-				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CONDITIONAL_FREE_TRAIT_ALWAYS", szText.GetCString()));
-			}
-			else
-			{
-				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CONDITIONAL_FREE_TRAIT", szText.GetCString(), szConditions.GetCString()));
-			}
-		}
-
-		// iMaxCities / iMaxCitiesPercent: "Can found up to 5 cities" on the map size of the game (added by this mod)
-		if (GC.getTraitInfo(eTrait).getMaxCitiesLimit(GC.getMapINLINE().getWorldSize()) >= 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText(((GC.getTraitInfo(eTrait).getMaxCitiesPercent() != 0) ? "TXT_KEY_TRAIT_MAX_CITIES_MAP" : "TXT_KEY_TRAIT_MAX_CITIES"), GC.getTraitInfo(eTrait).getMaxCitiesLimit(GC.getMapINLINE().getWorldSize())));
-		}
-
-		if (GC.getTraitInfo(eTrait).getNewCityPopulation() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_NEW_CITY_POPULATION", GC.getTraitInfo(eTrait).getNewCityPopulation()));
-		}
-
-		if (GC.getTraitInfo(eTrait).isNewCityStateReligion())
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_NEW_CITY_STATE_RELIGION"));
-		}
-
-		if (GC.getTraitInfo(eTrait).getOccupationTimeModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_OCCUPATION_TIME_MODIFIER", GC.getTraitInfo(eTrait).getOccupationTimeModifier()));
-		}
-
-		// bNoPillageInBorders (added by this mod)
-		if (GC.getTraitInfo(eTrait).isNoPillageInBorders())
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_NO_PILLAGE_IN_BORDERS"));
-		}
-
-		// iGoldInterestPercent / iGoldInterestMax: "3% of the treasury as gold every turn (at most 25)" (added by this mod)
-		if (GC.getTraitInfo(eTrait).getGoldInterestPercent() > 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			if (GC.getTraitInfo(eTrait).getGoldInterestMax() > 0)
-			{
-				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_GOLD_INTEREST_MAX", GC.getTraitInfo(eTrait).getGoldInterestPercent(), GC.getTraitInfo(eTrait).getGoldInterestMax()));
-			}
-			else
-			{
-				szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_GOLD_INTEREST", GC.getTraitInfo(eTrait).getGoldInterestPercent()));
-			}
-		}
-
-		// iCultureRangeChange: "+1 culture range of all cities" (added by this mod)
-		if (GC.getTraitInfo(eTrait).getCultureRangeChange() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CULTURE_RANGE_CHANGE", GC.getTraitInfo(eTrait).getCultureRangeChange()));
-		}
-
-		// iPeaceAngerPerTurn: "Cities grow angry in peace" (added by this mod)
-		if (GC.getTraitInfo(eTrait).getPeaceAngerPerTurn() > 0 && GC.getTraitInfo(eTrait).getPeaceAngerMax() > 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_PEACE_ANGER", getPerMilleText(GC.getTraitInfo(eTrait).getPeaceAngerPerTurn()).GetCString(), getPerMilleText(GC.getTraitInfo(eTrait).getPeaceAngerMax()).GetCString(), getPerMilleText(GC.getTraitInfo(eTrait).getPeaceAngerDecayPerTurn()).GetCString()));
-		}
-
-		// ForbiddenCivics: "Cannot adopt: Slavery, Serfdom" (added by this mod)
-		bool bFirstCivic = true;
-		for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
-		{
-			if (GC.getTraitInfo(eTrait).isForbiddenCivic(iI))
-			{
-				szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_FORBIDDEN_CIVICS").c_str());
-				szText.Format(L"<link=literal>%s</link>", GC.getCivicInfo((CivicTypes)iI).getDescription());
-				setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstCivic);
-				bFirstCivic = false;
-			}
-		}
-
-		// iUnitCostModifier / iBuildingCostModifier: "-20% production cost of units" (added by this mod)
-		if (GC.getTraitInfo(eTrait).getUnitCostModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIT_COST_MODIFIER", GC.getTraitInfo(eTrait).getUnitCostModifier()));
-		}
-
-		if (GC.getTraitInfo(eTrait).getBuildingCostModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_BUILDING_COST_MODIFIER", GC.getTraitInfo(eTrait).getBuildingCostModifier()));
-		}
-
-		if (GC.getTraitInfo(eTrait).getSummonDuration() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_SUMMON_DURATION", GC.getTraitInfo(eTrait).getSummonDuration()));
-		}
-
-		// Civ5 abilities (added by this mod)
-		if (GC.getTraitInfo(eTrait).getGoldenAgeModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_GOLDENAGE_MOD", GC.getTraitInfo(eTrait).getGoldenAgeModifier()));
-		}
-
-		if (GC.getTraitInfo(eTrait).getGoldenAgeGreatPeopleRateModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_GREAT_PEOPLE", GC.getTraitInfo(eTrait).getGoldenAgeGreatPeopleRateModifier()));
-		}
-
-		if (GC.getTraitInfo(eTrait).getCapitalBuildingProductionModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CAPITAL_BUILDING_PRODUCTION", GC.getTraitInfo(eTrait).getCapitalBuildingProductionModifier()));
-		}
-
-		if (GC.getTraitInfo(eTrait).getPillageGoldModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_PILLAGE_GOLD", GC.getTraitInfo(eTrait).getPillageGoldModifier()));
-		}
-
-		if (GC.getTraitInfo(eTrait).getCityCaptureGoldModifier() != 0)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_CITY_CAPTURE_GOLD", GC.getTraitInfo(eTrait).getCityCaptureGoldModifier()));
-		}
-
-		if (GC.getTraitInfo(eTrait).getNewCityCultureLevel() != NO_CULTURELEVEL)
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_NEW_CITY_CULTURE_LEVEL", GC.getCultureLevelInfo((CultureLevelTypes)GC.getTraitInfo(eTrait).getNewCityCultureLevel()).getTextKeyWide()));
-		}
-
-		// UnitCombatFreeExperiences / UnitCombatProductionModifiers (building text keys)
-		for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
-		{
-			if (GC.getTraitInfo(eTrait).getUnitCombatFreeExperience(iI) != 0)
-			{
-				szHelpString.append(NEWLINE L"  ");
-				szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_FREE_XP", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), GC.getTraitInfo(eTrait).getUnitCombatFreeExperience(iI)));
-			}
-		}
-
-		for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
-		{
-			if (GC.getTraitInfo(eTrait).getUnitCombatProductionModifier(iI) != 0)
-			{
-				szHelpString.append(NEWLINE L"  ");
-				szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_BUILDS_FASTER_DOMAIN", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), GC.getTraitInfo(eTrait).getUnitCombatProductionModifier(iI)));
-			}
-		}
-
-		// UnitCombatUpgradeDiscounts: shown as a cost change, so a 50% discount reads "-50%"
-		for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
-		{
-			if (GC.getTraitInfo(eTrait).getUnitCombatUpgradeDiscount(iI) != 0)
-			{
-				szHelpString.append(NEWLINE L"  ");
-				szHelpString.append(gDLL->getText("TXT_KEY_UNITCOMBAT_UPGRADE_COST_MODIFIER", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide(), -GC.getTraitInfo(eTrait).getUnitCombatUpgradeDiscount(iI)));
-			}
-		}
-
-		// UpgradeAnywhereUnitCombats
-		for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
-		{
-			if (GC.getTraitInfo(eTrait).isUpgradeAnywhereUnitCombat(iI))
-			{
-				szHelpString.append(NEWLINE L"  ");
-				szHelpString.append(gDLL->getText(GC.getTraitInfo(eTrait).isUpgradeAnywhereExcludeEnemy(iI) ? "TXT_KEY_UNITCOMBAT_UPGRADE_ANYWHERE_NOT_ENEMY" : "TXT_KEY_UNITCOMBAT_UPGRADE_ANYWHERE", GC.getUnitCombatInfo((UnitCombatTypes)iI).getTextKeyWide()));
-			}
-		}
-
-		// Yield / commerce modifiers: bNewLine=false and the newline, indent and bullet passed as szStart,
-		// so nothing is written when all values are zero
-		szTempBuffer.Format(L"%s  %c", NEWLINE, gDLL->getSymbolID(BULLET_CHAR));
-		setYieldChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_IN_ALL_CITIES"), GC.getTraitInfo(eTrait).getYieldModifierArray(), true, false);
-		setYieldChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_IN_CAPITAL"), GC.getTraitInfo(eTrait).getCapitalYieldModifierArray(), true, false);
-		setCommerceChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_IN_CAPITAL"), GC.getTraitInfo(eTrait).getCapitalCommerceModifierArray(), true, false);
-		setCommerceChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_PER_SPECIALIST"), GC.getTraitInfo(eTrait).getSpecialistExtraCommerceArray(), false, false);
-
-		// TerrainYieldChanges / FeatureYieldChanges: one line per yield and value, like the civic improvement yields
-		for (iI = 0; iI < NUM_YIELD_TYPES; ++iI)
-		{
-			iLast = 0;
-
-			for (iJ = 0; iJ < GC.getNumTerrainInfos(); ++iJ)
-			{
-				if (GC.getTraitInfo(eTrait).getTerrainYieldChange(iJ, iI) != 0)
-				{
-					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_YIELD_CHANGE", GC.getTraitInfo(eTrait).getTerrainYieldChange(iJ, iI), GC.getYieldInfo((YieldTypes)iI).getChar()).c_str());
-					szText.Format(L"<link=literal>%s</link>", GC.getTerrainInfo((TerrainTypes)iJ).getDescription());
-					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", (GC.getTraitInfo(eTrait).getTerrainYieldChange(iJ, iI) != iLast));
-					iLast = GC.getTraitInfo(eTrait).getTerrainYieldChange(iJ, iI);
-				}
-			}
-
-			for (iJ = 0; iJ < GC.getNumFeatureInfos(); ++iJ)
-			{
-				if (GC.getTraitInfo(eTrait).getFeatureYieldChange(iJ, iI) != 0)
-				{
-					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_YIELD_CHANGE", GC.getTraitInfo(eTrait).getFeatureYieldChange(iJ, iI), GC.getYieldInfo((YieldTypes)iI).getChar()).c_str());
-					szText.Format(L"<link=literal>%s</link>", GC.getFeatureInfo((FeatureTypes)iJ).getDescription());
-					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", (GC.getTraitInfo(eTrait).getFeatureYieldChange(iJ, iI) != iLast));
-					iLast = GC.getTraitInfo(eTrait).getFeatureYieldChange(iJ, iI);
-				}
-			}
-
-			for (iJ = 0; iJ < GC.getNumImprovementInfos(); ++iJ)
-			{
-				if (GC.getTraitInfo(eTrait).getImprovementYieldChanges(iJ, iI) != 0)
-				{
-					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_YIELD_CHANGE", GC.getTraitInfo(eTrait).getImprovementYieldChanges(iJ, iI), GC.getYieldInfo((YieldTypes)iI).getChar()).c_str());
-					szText.Format(L"<link=literal>%s</link>", GC.getImprovementInfo((ImprovementTypes)iJ).getDescription());
-					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", (GC.getTraitInfo(eTrait).getImprovementYieldChanges(iJ, iI) != iLast));
-					iLast = GC.getTraitInfo(eTrait).getImprovementYieldChanges(iJ, iI);
-				}
-			}
-
-			for (iJ = 0; iJ < GC.getNumBonusInfos(); ++iJ)
-			{
-				if (GC.getTraitInfo(eTrait).getBonusYieldChange(iJ, iI) != 0)
-				{
-					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_YIELD_CHANGE", GC.getTraitInfo(eTrait).getBonusYieldChange(iJ, iI), GC.getYieldInfo((YieldTypes)iI).getChar()).c_str());
-					szText.Format(L"<link=literal>%s</link>", GC.getBonusInfo((BonusTypes)iJ).getDescription());
-					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", (GC.getTraitInfo(eTrait).getBonusYieldChange(iJ, iI) != iLast));
-					iLast = GC.getTraitInfo(eTrait).getBonusYieldChange(iJ, iI);
-				}
-			}
-		}
-
-		// RiverPlotYieldChanges: "River Tiles: +1 food", with the building text key
-		if (GC.getTraitInfo(eTrait).getRiverPlotYieldChangeArray() != NULL)
-		{
-			szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_BUILDING_RIVER_PLOTS").c_str());
-			setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", GC.getTraitInfo(eTrait).getRiverPlotYieldChangeArray(), false, false);
-		}
-
-		// UniqueUnits and UniqueBuildings: "Unique unit: X (instead of Y)" (added by this mod)
-		for (iI = 0; iI < GC.getTraitInfo(eTrait).getNumUniqueUnits(); iI++)
-		{
-			CvUnitInfo& kUnique = GC.getUnitInfo((UnitTypes)GC.getTraitInfo(eTrait).getUniqueUnit(iI));
-			int iDefault = GC.getUnitClassInfo((UnitClassTypes)GC.getTraitInfo(eTrait).getUniqueUnitClass(iI)).getDefaultUnitIndex();
-			CvWString szUnique;
-			CvWString szDefault;
-			szUnique.Format(L"<link=literal>%s</link>", kUnique.getDescription());
-			szDefault.Format(L"<link=literal>%s</link>", (iDefault != NO_UNIT) ? GC.getUnitInfo((UnitTypes)iDefault).getDescription() : L"");
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_UNIT", szUnique.GetCString(), szDefault.GetCString()));
-		}
-
-		for (iI = 0; iI < GC.getTraitInfo(eTrait).getNumUniqueBuildings(); iI++)
-		{
-			CvBuildingInfo& kUnique = GC.getBuildingInfo((BuildingTypes)GC.getTraitInfo(eTrait).getUniqueBuilding(iI));
-			int iDefault = GC.getBuildingClassInfo((BuildingClassTypes)GC.getTraitInfo(eTrait).getUniqueBuildingClass(iI)).getDefaultBuildingIndex();
-			CvWString szUnique;
-			CvWString szDefault;
-			szUnique.Format(L"<link=literal>%s</link>", kUnique.getDescription());
-			szDefault.Format(L"<link=literal>%s</link>", (iDefault != NO_BUILDING) ? GC.getBuildingInfo((BuildingTypes)iDefault).getDescription() : L"");
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_BUILDING", szUnique.GetCString(), szDefault.GetCString()));
-		}
-
-		// Bonuses that need this trait (PrereqOrTraits): "Unique resource: X" (added by this mod)
-		for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
-		{
-			const CvBonusInfo& kBonus = GC.getBonusInfo((BonusTypes)iI);
-			for (int iBonusTrait = 0; iBonusTrait < kBonus.getNumPrereqOrTraits(); iBonusTrait++)
-			{
-				if (kBonus.getPrereqOrTraits(iBonusTrait) == eTrait)
-				{
-					CvWString szBonus;
-					szBonus.Format(L"<link=literal>%s</link>", kBonus.getDescription());
-					szHelpString.append(NEWLINE L"  ");
-					szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_BONUS", szBonus.GetCString()));
-				}
-			}
-		}
-
-		// Civics that need this trait (PrereqOrTraits, ReplacedCivic): "Unique civic: X (instead of Y)" (added by this mod)
-		for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
-		{
-			const CvCivicInfo& kCivic = GC.getCivicInfo((CivicTypes)iI);
-			for (int iCivicTrait = 0; iCivicTrait < kCivic.getNumPrereqOrTraits(); iCivicTrait++)
-			{
-				if (kCivic.getPrereqOrTraits(iCivicTrait) == eTrait)
-				{
-					CvWString szCivic;
-					szCivic.Format(L"<link=literal>%s</link>", kCivic.getDescription());
-					szHelpString.append(NEWLINE L"  ");
-					if (kCivic.getReplacedCivic() != NO_CIVIC)
-					{
-						CvWString szReplaced;
-						szReplaced.Format(L"<link=literal>%s</link>", GC.getCivicInfo((CivicTypes)kCivic.getReplacedCivic()).getDescription());
-						szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_CIVIC_REPLACES", szCivic.GetCString(), szReplaced.GetCString()));
-					}
-					else
-					{
-						szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_UNIQUE_CIVIC", szCivic.GetCString()));
-					}
-				}
-			}
-		}
-
-		// AngryYieldChanges and the like (added by this mod)
-		buildMiseryChangesString(szHelpString, GC.getTraitInfo(eTrait).getAngryYieldChangeArray(), GC.getTraitInfo(eTrait).getAngryCommerceChangeArray(), GC.getTraitInfo(eTrait).getUnhealthyYieldChangeArray(), GC.getTraitInfo(eTrait).getUnhealthyCommerceChangeArray(), true);
-
-		// LakePlotYieldChanges: "Lake Tiles: +1 production" (added by this mod)
-		if (GC.getTraitInfo(eTrait).getLakePlotYieldChangeArray() != NULL)
-		{
-			szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_LAKE_PLOTS").c_str());
-			setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", GC.getTraitInfo(eTrait).getLakePlotYieldChangeArray(), false, false);
-		}
-
-		// PrereqOrTraits of the builds: "Unique improvement: Terrace", "Unique improvement: Terrace (replaces Farm)" (added by
-		// this mod)
-		for (iI = 0; iI < GC.getNumBuildInfos(); ++iI)
-		{
-			CvBuildInfo& kBuild = GC.getBuildInfo((BuildTypes)iI);
-
-			for (iJ = 0; iJ < kBuild.getNumPrereqOrTraits(); ++iJ)
-			{
-				if (kBuild.getPrereqOrTraits(iJ) == eTrait)
-				{
-					szText.Format(L"<link=literal>%s</link>", getBuildResultDescription(kBuild));
-					if (kBuild.getReplacedBuild() != NO_BUILD)
-					{
-						CvWString szReplaced;
-						szReplaced.Format(L"<link=literal>%s</link>", getBuildResultDescription(GC.getBuildInfo((BuildTypes)kBuild.getReplacedBuild())));
-						szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT_REPLACES", szText.GetCString(), szReplaced.GetCString()).c_str());
-					}
-					else
-					{
-						szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT", szText.GetCString()).c_str());
-					}
-					szHelpString.append(szTempBuffer);
-					break;
-				}
-			}
-		}
-
-		// MaintainFeatures: "Improvements keep: Forest, Jungle"
-		bool bFirstFeature = true;
-		for (iI = 0; iI < GC.getNumFeatureInfos(); ++iI)
-		{
-			if (GC.getTraitInfo(eTrait).isMaintainFeatures(iI))
-			{
-				szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_MAINTAIN_FEATURES").c_str());
-				szText.Format(L"<link=literal>%s</link>", GC.getFeatureInfo((FeatureTypes)iI).getDescription());
-				setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstFeature);
-				bFirstFeature = false;
-			}
-		}
-
-		// FeatureRoutes: "Counts as Road in our territory (movement and trade network): Forest, Jungle", a line for each
-		// route type
-		for (iJ = 0; iJ < GC.getNumRouteInfos(); ++iJ)
-		{
-			bFirstFeature = true;
-			for (iI = 0; iI < GC.getNumFeatureInfos(); ++iI)
-			{
-				if (GC.getTraitInfo(eTrait).getFeatureRouteType(iI) == iJ)
-				{
-					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_FEATURE_ROUTES", GC.getRouteInfo((RouteTypes)iJ).getTextKeyWide()).c_str());
-					szText.Format(L"<link=literal>%s</link>", GC.getFeatureInfo((FeatureTypes)iI).getDescription());
-					setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstFeature);
-					bFirstFeature = false;
-				}
-			}
-		}
-
-		// bIgnoreBuildingObsolescence: "Buildings never become obsolete". Otherwise NoObsoleteBuildingClasses and
-		// NoObsoleteSpecialBuildings: "Never obsolete: Castle, Monastery" (the buildings of the civilization)
-		if (GC.getTraitInfo(eTrait).isIgnoreBuildingObsolescence())
-		{
-			szHelpString.append(NEWLINE L"  ");
-			szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_IGNORE_BUILDING_OBSOLESCENCE"));
-		}
-		else
-		{
-			bool bFirstBuilding = true;
-			for (iI = 0; iI < GC.getNumBuildingClassInfos(); ++iI)
-			{
-				if (GC.getTraitInfo(eTrait).isNoObsoleteBuildingClass(iI))
-				{
-					BuildingTypes eLoopBuilding = NO_BUILDING;
-					if (eCivilization != NO_CIVILIZATION)
-					{
-						eLoopBuilding = (BuildingTypes)GC.getCivilizationInfo(eCivilization).getCivilizationBuildings(iI);
-					}
-					if (eLoopBuilding == NO_BUILDING)
-					{
-						eLoopBuilding = (BuildingTypes)GC.getBuildingClassInfo((BuildingClassTypes)iI).getDefaultBuildingIndex();
-					}
-
-					if (eLoopBuilding != NO_BUILDING)
-					{
-						szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_NO_OBSOLETE_BUILDINGS").c_str());
-						szText.Format(L"<link=literal>%s</link>", GC.getBuildingInfo(eLoopBuilding).getDescription());
-						setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstBuilding);
-						bFirstBuilding = false;
-					}
-				}
-			}
-
-			// Special buildings have no Civilopedia page: no link
-			for (iI = 0; iI < GC.getNumSpecialBuildingInfos(); ++iI)
-			{
-				if (GC.getTraitInfo(eTrait).isNoObsoleteSpecialBuilding(iI))
-				{
-					szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_NO_OBSOLETE_BUILDINGS").c_str());
-					setListHelp(szHelpString, szTempBuffer.GetCString(), GC.getSpecialBuildingInfo((SpecialBuildingTypes)iI).getDescription(), L", ", bFirstBuilding);
-					bFirstBuilding = false;
-				}
-			}
-		}
+		// The parts of the mod (added by this mod)
+		parseTraitCivicEffects(szHelpString, eTrait);
+		parseTraitConditionalFreeTraits(szHelpString, eTrait);
+		parseTraitEmpireEffects(szHelpString, eTrait);
+		parseTraitUnitCombatEffects(szHelpString, eTrait);
+		parseTraitYieldEffects(szHelpString, eTrait);
+		parseTraitUniqueElements(szHelpString, eTrait);
+		parseTraitMiseryAndLakeEffects(szHelpString, eTrait);
+		parseTraitUniqueImprovements(szHelpString, eTrait);
+		parseTraitFeatureAndObsolescenceEffects(szHelpString, eTrait, eCivilization);
 
 		// Wonder Production Effects
 		if ((GC.getTraitInfo(eTrait).getMaxGlobalBuildingProductionModifier() != 0)

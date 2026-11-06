@@ -164,6 +164,15 @@ public:
 	void buildBuildingChangesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding);	// added by this mod
 	void buildPerPopulationString(CvWStringBuffer& szBuffer, int iPercent, int iGoodSymbol, int iBadSymbol);	// added by this mod
 	void buildGlobalBuildingExtraCommercesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding);	// added by this mod
+	void parseTraitCivicEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitConditionalFreeTraits(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitEmpireEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitUnitCombatEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitYieldEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitUniqueElements(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitMiseryAndLakeEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitUniqueImprovements(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitFeatureAndObsolescenceEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait, CivilizationTypes eCivilization);	// added by this mod
 	void buildMiseryChangesString(CvWStringBuffer& szBuffer, const int* piAngryYield, const int* piAngryCommerce, const int* piUnhealthyYield, const int* piUnhealthyCommerce, bool bIndent);	// added by this mod
 
 	DllExport void buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvCity* pCity);
