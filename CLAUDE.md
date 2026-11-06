@@ -175,7 +175,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - **ブランチ**: `master` がベース（DLL・Schema・Python の機能、タグ、検証用データ）。実在の文明のデザイン（日本の武士道など）は `civ-design` に入れる
   - 機能を足すときは `master` で実装してコミットし、そのあと `civ-design` で `git merge master` する。文明のデザインの途中で新しいタグが要るとわかったときも、先に `master` に入れる
   - `civ-design` では `CvGameCoreDLL/`・Schema・`Assets/CvGameCoreDLL.dll` を変更しない（DLL の衝突を防ぐ）
-  - コミットの前に今のブランチを確かめる。`build.bat` が配置するのは**今のブランチ**の `Assets\` なので、ブランチを切り替えたら配置し直す
+  - コミットの前に今のブランチを確かめる。`build.bat` が配置するのは**今のブランチ**の `Assets\` なので、ブランチを切り替えたら配置し直し、Info の数が違うのでキャッシュも消す
   - `civ-design` のテキストは `CIV4GameText_ClaudeCivs.xml`、記録は `docs/civ-design.md` に書く（`master` の追記と衝突しないように）。`docs/test-log.md` は `.gitattributes` の `merge=union` で両方の追記が残る
   - 志向や昇進などの Info は両方のブランチで各ファイルの末尾に足すので、マージで衝突することがある。両方の項目を残し、`master` の項目を先にする。Info の順番が変わるので、古いセーブは使えなくなることがある。マージ後はキャッシュを消す
 - `2b1bf36` が無改造の公式ソース。改造の全差分は `git diff 2b1bf36 -- CvGameCoreDLL` で見られる
