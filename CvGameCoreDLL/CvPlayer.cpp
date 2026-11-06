@@ -6273,21 +6273,62 @@ int CvPlayer::getProductionModifier(UnitTypes eUnit) const
 	return iMultiplier;
 }
 
-int CvPlayer::getUnitCombatFreeExperience(UnitCombatTypes eUnitCombat) const
+// The sum of a value of the traits the player has (added by this mod)
+int CvPlayer::sumTraitValues(int (CvTraitInfo::*pGetter)() const) const
 {
-	int iExperience = 0;
+	int iSum = 0;
 	int iI;
-
-	FAssertMsg(eUnitCombat >= 0, "eUnitCombat is expected to be non-negative");
-	FAssertMsg(eUnitCombat < GC.getNumUnitCombatInfos(), "eUnitCombat is expected to be within maximum bounds");
 
 	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
 	{
 		if (hasTrait((TraitTypes)iI))
 		{
-			iExperience += GC.getTraitInfo((TraitTypes)iI).getUnitCombatFreeExperience(eUnitCombat);
+			iSum += (GC.getTraitInfo((TraitTypes)iI).*pGetter)();
 		}
 	}
+
+	return iSum;
+}
+
+int CvPlayer::sumTraitValues(int (CvTraitInfo::*pGetter)(int) const, int iArg) const
+{
+	int iSum = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iSum += (GC.getTraitInfo((TraitTypes)iI).*pGetter)(iArg);
+		}
+	}
+
+	return iSum;
+}
+
+int CvPlayer::sumTraitValues(int (CvTraitInfo::*pGetter)(int, int) const, int iArg1, int iArg2) const
+{
+	int iSum = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			iSum += (GC.getTraitInfo((TraitTypes)iI).*pGetter)(iArg1, iArg2);
+		}
+	}
+
+	return iSum;
+}
+
+int CvPlayer::getUnitCombatFreeExperience(UnitCombatTypes eUnitCombat) const
+{
+	int iExperience = sumTraitValues(&CvTraitInfo::getUnitCombatFreeExperience, eUnitCombat);
+	int iI;
+
+	FAssertMsg(eUnitCombat >= 0, "eUnitCombat is expected to be non-negative");
+	FAssertMsg(eUnitCombat < GC.getNumUnitCombatInfos(), "eUnitCombat is expected to be within maximum bounds");
 
 	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
 	{
@@ -6302,19 +6343,11 @@ int CvPlayer::getUnitCombatFreeExperience(UnitCombatTypes eUnitCombat) const
 
 int CvPlayer::getUnitCombatProductionModifier(UnitCombatTypes eUnitCombat) const
 {
-	int iModifier = 0;
+	int iModifier = sumTraitValues(&CvTraitInfo::getUnitCombatProductionModifier, eUnitCombat);
 	int iI;
 
 	FAssertMsg(eUnitCombat >= 0, "eUnitCombat is expected to be non-negative");
 	FAssertMsg(eUnitCombat < GC.getNumUnitCombatInfos(), "eUnitCombat is expected to be within maximum bounds");
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iModifier += GC.getTraitInfo((TraitTypes)iI).getUnitCombatProductionModifier(eUnitCombat);
-		}
-	}
 
 	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
 	{
@@ -6329,19 +6362,11 @@ int CvPlayer::getUnitCombatProductionModifier(UnitCombatTypes eUnitCombat) const
 
 int CvPlayer::getUnitCombatUpgradeDiscount(UnitCombatTypes eUnitCombat) const
 {
-	int iDiscount = 0;
+	int iDiscount = sumTraitValues(&CvTraitInfo::getUnitCombatUpgradeDiscount, eUnitCombat);
 	int iI;
 
 	FAssertMsg(eUnitCombat >= 0, "eUnitCombat is expected to be non-negative");
 	FAssertMsg(eUnitCombat < GC.getNumUnitCombatInfos(), "eUnitCombat is expected to be within maximum bounds");
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iDiscount += GC.getTraitInfo((TraitTypes)iI).getUnitCombatUpgradeDiscount(eUnitCombat);
-		}
-	}
 
 	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
 	{
@@ -6356,82 +6381,27 @@ int CvPlayer::getUnitCombatUpgradeDiscount(UnitCombatTypes eUnitCombat) const
 
 int CvPlayer::getTraitTerrainYieldChange(TerrainTypes eTerrain, YieldTypes eYield) const
 {
-	int iChange = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iChange += GC.getTraitInfo((TraitTypes)iI).getTerrainYieldChange(eTerrain, eYield);
-		}
-	}
-
-	return iChange;
+	return sumTraitValues(&CvTraitInfo::getTerrainYieldChange, eTerrain, eYield);
 }
 
 int CvPlayer::getTraitFeatureYieldChange(FeatureTypes eFeature, YieldTypes eYield) const
 {
-	int iChange = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iChange += GC.getTraitInfo((TraitTypes)iI).getFeatureYieldChange(eFeature, eYield);
-		}
-	}
-
-	return iChange;
+	return sumTraitValues(&CvTraitInfo::getFeatureYieldChange, eFeature, eYield);
 }
 
 int CvPlayer::getTraitImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield) const
 {
-	int iChange = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iChange += GC.getTraitInfo((TraitTypes)iI).getImprovementYieldChanges(eImprovement, eYield);
-		}
-	}
-
-	return iChange;
+	return sumTraitValues(&CvTraitInfo::getImprovementYieldChanges, eImprovement, eYield);
 }
 
 int CvPlayer::getTraitRiverPlotYieldChange(YieldTypes eYield) const
 {
-	int iChange = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iChange += GC.getTraitInfo((TraitTypes)iI).getRiverPlotYieldChange(eYield);
-		}
-	}
-
-	return iChange;
+	return sumTraitValues(&CvTraitInfo::getRiverPlotYieldChange, eYield);
 }
 
 int CvPlayer::getTraitLakePlotYieldChange(YieldTypes eYield) const
 {
-	int iChange = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iChange += GC.getTraitInfo((TraitTypes)iI).getLakePlotYieldChange(eYield);
-		}
-	}
-
-	return iChange;
+	return sumTraitValues(&CvTraitInfo::getLakePlotYieldChange, eYield);
 }
 
 // CITY_PLOTS_DEFAULT_RADIUS and the iCityRadiusChange of the traits whose CityRadiusCultureLevel the city has
@@ -6464,18 +6434,7 @@ int CvPlayer::getNextCityRadius() const
 
 int CvPlayer::getSummonDuration() const
 {
-	int iDuration = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iDuration += GC.getTraitInfo((TraitTypes)iI).getSummonDuration();
-		}
-	}
-
-	return std::max(0, iDuration);
+	return std::max(0, sumTraitValues(&CvTraitInfo::getSummonDuration));
 }
 
 bool CvPlayer::isMaintainFeatures(FeatureTypes eFeature) const
@@ -6846,18 +6805,7 @@ int CvPlayer::getCivilizationBuilding(int iBuildingClass) const
 // iCultureRangeChange of the traits (added by this mod)
 int CvPlayer::getCultureRangeChange() const
 {
-	int iChange = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iChange += GC.getTraitInfo((TraitTypes)iI).getCultureRangeChange();
-		}
-	}
-
-	return iChange;
+	return sumTraitValues(&CvTraitInfo::getCultureRangeChange);
 }
 
 // The anger of the traits, in 1/10 % of the population (added by this mod)
@@ -6872,21 +6820,10 @@ int CvPlayer::getPeaceAngerPercentAnger() const
 void CvPlayer::doPeaceAnger()
 {
 	int iOldAnger = getPeaceAngerPercentAnger();
-	int iPerTurn = 0;
-	int iDecay = 0;
-	int iMax = 0;
+	int iPerTurn = sumTraitValues(&CvTraitInfo::getPeaceAngerPerTurn);
+	int iDecay = sumTraitValues(&CvTraitInfo::getPeaceAngerDecayPerTurn);
+	int iMax = sumTraitValues(&CvTraitInfo::getPeaceAngerMax);
 	int iGrowthPercent;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iPerTurn += GC.getTraitInfo((TraitTypes)iI).getPeaceAngerPerTurn();
-			iDecay += GC.getTraitInfo((TraitTypes)iI).getPeaceAngerDecayPerTurn();
-			iMax += GC.getTraitInfo((TraitTypes)iI).getPeaceAngerMax();
-		}
-	}
 
 	iGrowthPercent = std::max(1, GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getGrowthPercent());
 
@@ -6980,116 +6917,39 @@ RouteTypes CvPlayer::getFeatureRouteType(FeatureTypes eFeature) const
 
 int CvPlayer::getGoldenAgeGreatPeopleRateModifier() const
 {
-	int iModifier = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iModifier += GC.getTraitInfo((TraitTypes)iI).getGoldenAgeGreatPeopleRateModifier();
-		}
-	}
-
-	return iModifier;
+	return sumTraitValues(&CvTraitInfo::getGoldenAgeGreatPeopleRateModifier);
 }
 
 int CvPlayer::getTraitBonusYieldChange(BonusTypes eBonus, YieldTypes eYield) const
 {
-	int iChange = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iChange += GC.getTraitInfo((TraitTypes)iI).getBonusYieldChange(eBonus, eYield);
-		}
-	}
-
-	return iChange;
+	return sumTraitValues(&CvTraitInfo::getBonusYieldChange, eBonus, eYield);
 }
 
 int CvPlayer::getCapitalBuildingProductionModifier() const
 {
-	int iModifier = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iModifier += GC.getTraitInfo((TraitTypes)iI).getCapitalBuildingProductionModifier();
-		}
-	}
-
-	return iModifier;
+	return sumTraitValues(&CvTraitInfo::getCapitalBuildingProductionModifier);
 }
 
 int CvPlayer::getPillageGoldModifier() const
 {
-	int iModifier = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iModifier += GC.getTraitInfo((TraitTypes)iI).getPillageGoldModifier();
-		}
-	}
-
-	return iModifier;
+	return sumTraitValues(&CvTraitInfo::getPillageGoldModifier);
 }
 
 int CvPlayer::getCityCaptureGoldModifier() const
 {
-	int iModifier = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iModifier += GC.getTraitInfo((TraitTypes)iI).getCityCaptureGoldModifier();
-		}
-	}
-
-	return iModifier;
+	return sumTraitValues(&CvTraitInfo::getCityCaptureGoldModifier);
 }
 
 // Production cost % of all units, the sum of the traits (iUnitCostModifier; added by this mod)
 int CvPlayer::getUnitCostModifier() const
 {
-	int iModifier = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iModifier += GC.getTraitInfo((TraitTypes)iI).getUnitCostModifier();
-		}
-	}
-
-	return iModifier;
+	return sumTraitValues(&CvTraitInfo::getUnitCostModifier);
 }
 
 // Production cost % of all buildings, the sum of the traits (iBuildingCostModifier; added by this mod)
 int CvPlayer::getBuildingCostModifier() const
 {
-	int iModifier = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iModifier += GC.getTraitInfo((TraitTypes)iI).getBuildingCostModifier();
-		}
-	}
-
-	return iModifier;
+	return sumTraitValues(&CvTraitInfo::getBuildingCostModifier);
 }
 
 // The highest NewCityCultureLevel of the traits and of the buildings in any city of this player (not obsolete)
@@ -7139,16 +6999,8 @@ bool CvPlayer::hasActiveBuilding(BuildingTypes eBuilding) const
 // Extra population of the cities this player founds (CvPlayer::found)
 int CvPlayer::getNewCityPopulation() const
 {
-	int iPopulation = 0;
+	int iPopulation = sumTraitValues(&CvTraitInfo::getNewCityPopulation);
 	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iPopulation += GC.getTraitInfo((TraitTypes)iI).getNewCityPopulation();
-		}
-	}
 
 	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
 	{
@@ -7197,16 +7049,8 @@ bool CvPlayer::isNewCityStateReligion() const
 // Revolt time % of the cities this player conquers (CvPlayer::acquireCity)
 int CvPlayer::getOccupationTimeModifier() const
 {
-	int iModifier = 0;
+	int iModifier = sumTraitValues(&CvTraitInfo::getOccupationTimeModifier);
 	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			iModifier += GC.getTraitInfo((TraitTypes)iI).getOccupationTimeModifier();
-		}
-	}
 
 	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
 	{
