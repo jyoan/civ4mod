@@ -11722,6 +11722,7 @@ m_pbCivilizationFreeBuildingClass(NULL),
 m_pbCivilizationFreeTechs(NULL),
 m_pbCivilizationDisableTechs(NULL),
 m_pbTraits(NULL),
+m_pbUniqueBuilds(NULL),
 m_paszCityNames(NULL)
 {
 }
@@ -11744,6 +11745,7 @@ CvCivilizationInfo::~CvCivilizationInfo()
 	SAFE_DELETE_ARRAY(m_pbCivilizationFreeTechs);
 	SAFE_DELETE_ARRAY(m_pbCivilizationDisableTechs);
 	SAFE_DELETE_ARRAY(m_pbTraits);
+	SAFE_DELETE_ARRAY(m_pbUniqueBuilds);
 	SAFE_DELETE_ARRAY(m_paszCityNames);
 }
 
@@ -11903,6 +11905,51 @@ bool CvCivilizationInfo::isCivilizationDisableTechs(int i) const
 	return m_pbCivilizationDisableTechs ? m_pbCivilizationDisableTechs[i] : false;
 }
 
+// UniqueBuilds (added by this mod): the players of this civilization can do this build, as with PrereqOrTraits
+bool CvCivilizationInfo::isUniqueBuild(int i) const
+{
+	FAssertMsg(i < GC.getNumBuildInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_pbUniqueBuilds ? m_pbUniqueBuilds[i] : false;
+}
+
+// For the help and the Civilopedia: UniqueBuilds, or PrereqOrTraits of the build with a trait of the civilization
+bool CvCivilizationInfo::isBuildOfCivilization(int i) const
+{
+	const std::vector<int>& aiTraits = GC.getBuildInfo((BuildTypes)i).getPrereqOrTraitsVector();
+	int iJ;
+
+	if (isUniqueBuild(i))
+	{
+		return true;
+	}
+
+	for (iJ = 0; iJ < (int)aiTraits.size(); iJ++)
+	{
+		if (hasTrait(aiTraits[iJ]))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// A build in UniqueBuilds is only for the civilizations that list it, even without PrereqOrTraits. The builds are loaded
+// before the civilizations
+void CvCivilizationInfo::updateCivilizationUniqueBuilds()
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumBuildInfos(); iI++)
+	{
+		if (isUniqueBuild(iI))
+		{
+			GC.getBuildInfo((BuildTypes)iI).setCivilizationUnique(true);
+		}
+	}
+}
+
 bool CvCivilizationInfo::hasTrait(int i) const
 {
 	FAssertMsg(i < GC.getNumTraitInfos(), "Index out of bounds");
@@ -12012,13 +12059,29 @@ void CvCivilizationInfo::read(FDataStreamBase* stream)
 			m_pbTraits[iI] = false;
 		}
 	}
+
+	// uiFlag < 2: cache written before UniqueBuilds existed
+	SAFE_DELETE_ARRAY(m_pbUniqueBuilds);
+	m_pbUniqueBuilds = new bool[GC.getNumBuildInfos()];
+	if (uiFlag > 1)
+	{
+		stream->Read(GC.getNumBuildInfos(), m_pbUniqueBuilds);
+	}
+	else
+	{
+		for (int iI = 0; iI < GC.getNumBuildInfos(); iI++)
+		{
+			m_pbUniqueBuilds[iI] = false;
+		}
+	}
+	updateCivilizationUniqueBuilds();
 }
 
 void CvCivilizationInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=1;
+	uint uiFlag=2;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iDefaultPlayerColor);
@@ -12049,6 +12112,7 @@ void CvCivilizationInfo::write(FDataStreamBase* stream)
 	stream->Write(GC.getNumTechInfos(), m_pbCivilizationDisableTechs);
 	stream->WriteString(m_iNumCityNames, m_paszCityNames);
 	stream->Write(GC.getNumTraitInfos(), m_pbTraits);
+	stream->Write(GC.getNumBuildInfos(), m_pbUniqueBuilds);
 }
 
 bool CvCivilizationInfo::read(CvXMLLoadUtility* pXML)
@@ -12254,6 +12318,8 @@ bool CvCivilizationInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->SetVariableListTagPair(&m_pbLeaders, "Leaders", sizeof(GC.getLeaderHeadInfo((LeaderHeadTypes)0)), GC.getNumLeaderHeadInfos());
 	pXML->SetVariableListTagPair(&m_pbTraits, "Traits", sizeof(GC.getTraitInfo((TraitTypes)0)), GC.getNumTraitInfos());
+	pXML->SetVariableListTagPair(&m_pbUniqueBuilds, "UniqueBuilds", sizeof(GC.getBuildInfo((BuildTypes)0)), GC.getNumBuildInfos());
+	updateCivilizationUniqueBuilds();
 
 	pXML->GetChildXmlValByName(szTextVal, "CivilizationSelectionSound");
 
@@ -13450,6 +13516,7 @@ m_iEntityEvent(ENTITY_EVENT_NONE),
 m_iMissionType(NO_MISSION),
 m_bKill(false),
 m_iReplacedBuild(NO_BUILD),
+m_bCivilizationUnique(false),
 m_iUnitsFromBuild(NO_BUILD),
 m_paiFeatureTech(NULL),
 m_paiFeatureTime(NULL),
@@ -13533,6 +13600,16 @@ int CvBuildInfo::getPrereqOrTraits(int i) const
 const std::vector<int>& CvBuildInfo::getPrereqOrTraitsVector() const
 {
 	return m_aiPrereqOrTraits;
+}
+
+bool CvBuildInfo::isCivilizationUnique() const
+{
+	return m_bCivilizationUnique;
+}
+
+void CvBuildInfo::setCivilizationUnique(bool bNewValue)
+{
+	m_bCivilizationUnique = bNewValue;
 }
 
 int CvBuildInfo::getReplacedBuild() const

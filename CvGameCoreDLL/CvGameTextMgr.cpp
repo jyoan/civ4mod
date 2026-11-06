@@ -4620,6 +4620,55 @@ void CvGameTextMgr::parseCivInfos(CvWStringBuffer &szInfoText, CivilizationTypes
 			}
 			szInfoText.append(szTempString);
 		}
+
+		// Unique improvements (added by this mod): UniqueBuilds and the traits of the civilization. No heading without any
+		bFound = false;
+		for (int iUniqueBuild = 0; iUniqueBuild < GC.getNumBuildInfos(); ++iUniqueBuild)
+		{
+			CvBuildInfo& kUniqueBuild = GC.getBuildInfo((BuildTypes)iUniqueBuild);
+			if (kUniqueBuild.getImprovement() != NO_IMPROVEMENT && GC.getCivilizationInfo(eCivilization).isBuildOfCivilization(iUniqueBuild))
+			{
+				if (!bFound)
+				{
+					szText = gDLL->getText("TXT_KEY_UNIQUE_IMPROVEMENTS");
+					if (bDawnOfMan)
+					{
+						szInfoText.append(NEWLINE);
+						szTempString.Format(L"%s: ", szText.GetCString());
+					}
+					else
+					{
+						szTempString.Format(NEWLINE SETCOLR L"%s" ENDCOLR , TEXT_COLOR("COLOR_ALT_HIGHLIGHT_TEXT"), szText.GetCString());
+					}
+					szInfoText.append(szTempString);
+				}
+				else if (bDawnOfMan)
+				{
+					szInfoText.append(L", ");
+				}
+
+				if (!bDawnOfMan)
+				{
+					szBuffer.Format(L"\n  %c%s", gDLL->getSymbolID(BULLET_CHAR), getBuildResultDescription(kUniqueBuild));
+				}
+				else if (bLinks)
+				{
+					szBuffer = getLinkText(getBuildResultDescription(kUniqueBuild));
+				}
+				else
+				{
+					szBuffer = getBuildResultDescription(kUniqueBuild);
+				}
+				if (kUniqueBuild.getReplacedBuild() != NO_BUILD)
+				{
+					szBuffer += L" - (";
+					szBuffer += ((bLinks && bDawnOfMan) ? getLinkText(getBuildResultDescription(GC.getBuildInfo((BuildTypes)kUniqueBuild.getReplacedBuild()))) : CvWString(getBuildResultDescription(GC.getBuildInfo((BuildTypes)kUniqueBuild.getReplacedBuild()))));
+					szBuffer += L")";
+				}
+				szInfoText.append(szBuffer);
+				bFound = true;
+			}
+		}
 	}
 	else
 	{
@@ -12426,6 +12475,29 @@ void CvGameTextMgr::setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTyp
 			buildPrereqOrTraitsString(szBuffer, GC.getBuildInfo((BuildTypes)iBuild).getPrereqOrTraitsVector());
 			break;
 		}
+	}
+
+	// UniqueBuilds of the civilizations (added by this mod)
+	CvWString szUniqueCivs;
+	for (int iUniqueCiv = 0; iUniqueCiv < GC.getNumCivilizationInfos(); iUniqueCiv++)
+	{
+		for (int iUniqueBuild = 0; iUniqueBuild < GC.getNumBuildInfos(); iUniqueBuild++)
+		{
+			if (GC.getBuildInfo((BuildTypes)iUniqueBuild).getImprovement() == eImprovement && GC.getCivilizationInfo((CivilizationTypes)iUniqueCiv).isUniqueBuild(iUniqueBuild))
+			{
+				if (!szUniqueCivs.empty())
+				{
+					szUniqueCivs += L", ";
+				}
+				szUniqueCivs += getLinkText(GC.getCivilizationInfo((CivilizationTypes)iUniqueCiv).getDescription());
+				break;
+			}
+		}
+	}
+	if (!szUniqueCivs.empty())
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_CIVILIZATIONS", szUniqueCivs.GetCString()));
 	}
 
 	if (info.isRequiresRiverSide())

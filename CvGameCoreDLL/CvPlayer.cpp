@@ -7412,20 +7412,38 @@ void CvPlayer::processBuilding(BuildingTypes eBuilding, int iChange, CvArea* pAr
 }
 
 
-// PrereqOrTraits and ReplacedBuild of the builds (added by this mod): the player has a trait of the build, and no build of the
-// player's traits takes its place. A replacing build without traits takes its place for all the players.
+// PrereqOrTraits of the build or UniqueBuilds of the civilization (added by this mod): a build with neither is for everyone
+bool CvPlayer::hasBuildPrereq(BuildTypes eBuild) const
+{
+	CvBuildInfo& kBuild = GC.getBuildInfo(eBuild);
+
+	if (kBuild.isCivilizationUnique())
+	{
+		if (getCivilizationType() != NO_CIVILIZATION && GC.getCivilizationInfo(getCivilizationType()).isUniqueBuild(eBuild))
+		{
+			return true;
+		}
+
+		return (kBuild.getNumPrereqOrTraits() > 0 && hasPrereqOrTrait(kBuild.getPrereqOrTraitsVector()));
+	}
+
+	return hasPrereqOrTrait(kBuild.getPrereqOrTraitsVector());
+}
+
+// PrereqOrTraits, UniqueBuilds and ReplacedBuild of the builds (added by this mod): the player has the build, and no build of
+// the player takes its place. A replacing build without traits or civilizations takes its place for all the players.
 bool CvPlayer::canBuildByTraits(BuildTypes eBuild) const
 {
 	int iI;
 
-	if (!hasPrereqOrTrait(GC.getBuildInfo(eBuild).getPrereqOrTraitsVector()))
+	if (!hasBuildPrereq(eBuild))
 	{
 		return false;
 	}
 
 	for (iI = 0; iI < GC.getNumBuildInfos(); iI++)
 	{
-		if (GC.getBuildInfo((BuildTypes)iI).getReplacedBuild() == eBuild && hasPrereqOrTrait(GC.getBuildInfo((BuildTypes)iI).getPrereqOrTraitsVector()))
+		if (GC.getBuildInfo((BuildTypes)iI).getReplacedBuild() == eBuild && hasBuildPrereq((BuildTypes)iI))
 		{
 			return false;
 		}

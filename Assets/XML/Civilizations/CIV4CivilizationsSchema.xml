@@ -707,6 +707,15 @@
 	<ElementType name="CivilizationSelectionSound" content="textOnly"/>
 	<ElementType name="CivilizationActionSound" content="textOnly"/>
 	<ElementType name="UnitArtStyleType" content="textOnly"/>
+	<ElementType name="BuildType" content="textOnly"/>
+	<ElementType name="bUniqueBuild" content="textOnly" dt:type="boolean"/>
+	<ElementType name="UniqueBuild" content="eltOnly">
+		<element type="BuildType"/>
+		<element type="bUniqueBuild"/>
+	</ElementType>
+	<ElementType name="UniqueBuilds" content="eltOnly">
+		<element type="UniqueBuild" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="CivilizationInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -730,6 +739,7 @@
 		<element type="AnarchyCivics" minOccurs="0"/>
 		<element type="Leaders" minOccurs="0"/>
 		<element type="Traits" minOccurs="0"/>
+		<element type="UniqueBuilds" minOccurs="0"/>
 		<element type="DerivativeCiv"/>
 		<element type="CivilizationSelectionSound"/>
 		<element type="CivilizationActionSound"/>

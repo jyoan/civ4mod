@@ -52,6 +52,7 @@ class CvPediaCivilization:
 		self.Y_TEXT = self.Y_MAIN_PANE + self.H_MAIN_PANE + 20
 		self.W_TEXT = 705
 		self.H_TEXT = 350
+		self.H_IMPROVEMENT = 110	# added by this mod
 		
 	# Screen construction function
 	def interfaceScreen(self, iCivilization):	
@@ -92,6 +93,7 @@ class CvPediaCivilization:
 		self.placeBuilding()
 		self.placeUnit()
 		self.placeLeader()
+		self.placeImprovement()
 		self.placeText()
 
 		return
@@ -142,6 +144,32 @@ class CvPediaCivilization:
 					szButton = gc.getPlayer(self.top.iActivePlayer).getUnitButton(iUniqueUnit)
 				screen.attachImageButton( panelName, "", szButton, GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUniqueUnit, 1, False )
 		
+	# Added by this mod: the improvements of UniqueBuilds and of the traits of the civilization
+	def getUniqueImprovements(self):
+		civilization = gc.getCivilizationInfo(self.iCivilization)
+		lImprovements = []
+		for iBuild in range(gc.getNumBuildInfos()):
+			iImprovement = gc.getBuildInfo(iBuild).getImprovement()
+			if iImprovement > -1 and iImprovement not in lImprovements and civilization.isBuildOfCivilization(iBuild):
+				lImprovements.append(iImprovement)
+		return lImprovements
+
+	# Added by this mod: a row under the panels, only for a civilization with unique improvements
+	def placeImprovement(self):
+		lImprovements = self.getUniqueImprovements()
+		if len(lImprovements) == 0:
+			return
+
+		screen = self.top.getScreen()
+
+		panelName = self.top.getNextWidgetName()
+		screen.addPanel( panelName, localText.getText("TXT_KEY_UNIQUE_IMPROVEMENTS", ()), "", false, true,
+				 self.X_TEXT, self.Y_TEXT - 10, self.W_TEXT, self.H_IMPROVEMENT, PanelStyles.PANEL_STYLE_BLUE50 )
+		screen.attachLabel(panelName, "", "  ")
+
+		for iImprovement in lImprovements:
+			screen.attachImageButton( panelName, "", gc.getImprovementInfo(iImprovement).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_IMPROVEMENT, iImprovement, 1, False )
+
 	def placeLeader(self):
 		
 		screen = self.top.getScreen()
@@ -161,8 +189,12 @@ class CvPediaCivilization:
 		screen = self.top.getScreen()
 		
 		panelName = self.top.getNextWidgetName()
+		# Changed by this mod: under the row of the unique improvements, if there is one
+		iShift = 0
+		if len(self.getUniqueImprovements()) > 0:
+			iShift = self.H_IMPROVEMENT
 		screen.addPanel( panelName, "", "", true, true,
-				 self.X_TEXT, self.Y_TEXT, self.W_TEXT, self.H_TEXT, PanelStyles.PANEL_STYLE_BLUE50 )
+				 self.X_TEXT, self.Y_TEXT + iShift, self.W_TEXT, self.H_TEXT - iShift, PanelStyles.PANEL_STYLE_BLUE50 )
  
 		szText = gc.getCivilizationInfo(self.iCivilization).getCivilopedia()
 		screen.attachMultilineText( panelName, "Text", szText, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)

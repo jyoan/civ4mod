@@ -26,12 +26,16 @@
 | `IMPROVEMENT_TEST_FARM`（検証用施設（強化農場）） | 農場 | 灌漑で食料 +2（農場は +1）。ほかは農場と同じ。`ReplacedImprovement` が農場なので、検証用志向の「農場に生産 +1」を受ける |
 | `IMPROVEMENT_TEST_TUNNEL`（検証用施設（トンネル）） | 検証用施設（棚田） | 山岳だけに作れる（`TerrainMakesValids`）。`bMakesPassable` 1、`iPassageMoveCost` 1。産出なし。作業は `BUILD_TEST_TUNNEL` |
 | `IMPROVEMENT_TEST_POLDER`（検証用施設（ポルダー）） | 検証用施設（トンネル） | 湖と沿岸（`bWater` 1、`TerrainMakesValids` が `TERRAIN_COAST`）。`bMakesPassable` 1。食料 +2・生産 +1。見た目は漁船。作業は `BUILD_TEST_POLDER` |
+| `IMPROVEMENT_TEST_CIV`（検証用施設（文明）） | 検証用施設（棚田） | 効果は棚田と同じ。作業は `BUILD_TEST_CIV` |
+| `IMPROVEMENT_TEST_FORT`（検証用砦） | 砦 | 効果は砦と同じ。`ReplacedImprovement` が砦。作業は `BUILD_TEST_CIV_FORT` |
 | `IMPROVEMENT_TEST_LANDMARK`・`IMPROVEMENT_TEST_WONDER`・`IMPROVEMENT_TEST_PEAK_WONDER`（検証用名所・検証用自然遺産・検証用名峰） | 検証用施設（トンネル） | どれも `iUniqueChance` 100、`bPermanent` 1。名所は草原と平原で食料 +2・商業 +3（砦の見た目）。自然遺産は草原と平原で `bImpassable`、生産 +2・商業 +4（風車の見た目）。名峰は山岳で商業 +6（水車の見た目） |
 | `BONUS_TEST`（検証用資源） | 銀 | 前提の志向 `TRAIT_TEST`。平地の草原と平原。技術なし。`iPlacementOrder` 7、`iTilesPer` 16、`bNormalize` 0。検証用施設（棚田）で幸福 +1 の資源として得られ、商業 +2 |
 | `BUILD_TEST_FARM`（検証用施設（強化農場）の建設） | 農場の建設 | 前提の志向 `TRAIT_TEST`、`ReplacedBuild` が農場の建設（置換のパターン）。検証用志向を持つと農場の建設の代わりに出る。前提技術は農業のまま |
 | `BUILD_TEST_TERRACE`（検証用施設（棚田）の建設） | 農場の建設 | 前提の志向 `TRAIT_TEST`、`UnitsFromBuild` が農場の建設（新規のパターン。労働者の `Builds` は書き換えていない）。前提技術なし、ホットキーなし |
 | `BUILD_TEST_TUNNEL`（検証用施設（トンネル）の建設） | 検証用施設（棚田）の建設 | 前提の志向 `TRAIT_TEST`、`UnitsFromBuild` が農場の建設（前提技術なし） |
 | `BUILD_TEST_POLDER`（検証用施設（ポルダー）の建設） | 検証用施設（トンネル）の建設 | 前提の志向 `TRAIT_TEST`、`UnitsFromBuild` が農場の建設（前提技術なし） |
+| `BUILD_TEST_CIV`（検証用施設（文明）の建設） | 検証用施設（棚田）の建設 | 前提の志向なし。`CIVILIZATION_TEST` の `UniqueBuilds` にだけ書いてある（文明から設定する新規のパターン）。`UnitsFromBuild` が農場の建設（前提技術なし） |
+| `BUILD_TEST_CIV_FORT`（検証用砦の建設） | 砦の建設 | 前提の志向なし。`CIVILIZATION_TEST` の `UniqueBuilds` にだけ書いてある（文明から設定する置換のパターン）。`ReplacedBuild` が砦の建設。作業時間 300（砦は 1000）、ホットキーなし。前提技術は数学のまま |
 | `EVENTTRIGGER_TEST_TRAIT` / `EVENT_TEST_TRAIT`（検証用志向の固有イベント） | 森林火災 | 前提の志向 `TRAIT_TEST`（`PrereqOrTraits`）。すべてのゲームで有効、毎ターン必ず判定（`iWeight` -1）、1 回だけ、都市もタイルも選ばない。選ぶと資金 +10。検証用文明は最初のターンに起きる。日本などは検証用技術を得た次のターンに起きる |
 | `UNIT_TEST_A` / `UNIT_TEST_B`（検証用ユニット A・B） | 戦士・斧兵 | 白兵戦。前提技術・資源なし。A は B にだけアップグレードできる（1 ターン目からアップグレード関連を試せる）。AI 評価 -10000。B だけ前提の志向 `TRAIT_TEST` または `TRAIT_AGGRESSIVE`（「どれか 1 つ」の確認用。攻撃志向の徳川の日本でも作れる）。B を作れる文明では A は生産候補に出ない（BtS の仕様: アップグレード先がすべて作れるユニットは候補から外れる。`CvCity::canTrain` → `allUpgradesAvailable`）。A のアップグレードは検証用文明の開始ユニットで試す |
 | `UNIT_TEST_WARRIOR`・`UNIT_TEST_GENERAL`・`UNIT_TEST_SCIENTIST`（検証用戦士・大将軍・大科学者） | 戦士・大将軍・大科学者 | クラスは元のまま。戦士は戦闘力 4、大将軍は `iLeaderExperience` 40、大科学者は `iBaseDiscover` 3000。検証用志向の固有ユニット |

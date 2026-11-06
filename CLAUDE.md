@@ -129,7 +129,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 ### XML キャッシュ
 
 - `CvCivilizationInfo` などストリーム版 `read` / `write` を持つ Info クラスは、exe が XML キャッシュ（`%LOCALAPPDATA%\My Games\Beyond the Sword(J)\cache`）経由でも読み込む。exe は `CvGlobals::read/write*InfoArray` を呼び、そこから各 Info の `read` / `write` が使われる
-- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする（現在 `CvCivilizationInfo` は `uiFlag=1`、`CvCivicInfo` は `uiFlag=7`、`CvBuildingInfo` は `uiFlag=17`、`CvUnitInfo` は `uiFlag=1`、`CvPromotionInfo` は `uiFlag=8`、`CvTechInfo` は `uiFlag=1`、`CvImprovementInfo` は `uiFlag=4`、`CvEventTriggerInfo` は `uiFlag=1`）
+- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする（現在 `CvCivilizationInfo` は `uiFlag=2`、`CvCivicInfo` は `uiFlag=7`、`CvBuildingInfo` は `uiFlag=17`、`CvUnitInfo` は `uiFlag=1`、`CvPromotionInfo` は `uiFlag=8`、`CvTechInfo` は `uiFlag=1`、`CvImprovementInfo` は `uiFlag=4`、`CvEventTriggerInfo` は `uiFlag=1`）
 - **Info の数が変わる変更（志向・昇進・技術・ユニットなどの追加や削除）をしたら、必ずキャッシュを消す**。ユニット・建物・指導者・文明などのキャッシュは「志向の数」などの数だけ配列を読むため、XML を変えていないファイルの古いキャッシュがずれて読まれ、データ破損や強制終了の原因になる
 - キャッシュを消すときは、Civ4 が起動していないことを確認してから、上記の cache フォルダ内の `*.dat` だけを消す（フォルダは残す。次回起動時に作り直される。BtS 本体や他の Mod も次回の起動が少し遅くなるだけ）
 - キャッシュが原因と思われる不具合が出たときも、同じ手順で消す
@@ -143,7 +143,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - `Assets\Python\` に置いたファイルは本体の同名ファイルを置き換える。`<BTS>\Assets\Python\` から同じ相対パス（`EntryPoints\`、`Screens\` など）でコピーしてから編集する
 - 元の Python はすべて ASCII・CRLF。日本語を書く必要があるなら、ファイル先頭に coding 宣言を入れる
 - DLL の機能を Python に公開するには `Cy*.cpp` と `Cy*Interface*.cpp`（boost::python）に追加する
-- Mod に入れている Python: `Screens\CvPediaMain.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`・`Screens\CvVictoryScreen.py`・`Screens\CvMainInterface.py`・`Screens\CvTechChooser.py`・`CvEventManager.py`（BtS(J) のコピーに追記）、`Screens\CvCivicsScreen.py`（無印 Civ4(J) のコピーに追記。BtS(J)・Warlords(J) には無く、無印のものが使われている）、`Screens\CvFinanceAdvisor.py`（Warlords(J) のコピーに追記。BtS(J) には無い）、`Screens\CvPediaTrait.py`・`Screens\CvPediaSpell.py`・`EntryPoints\CvSpellInterface.py`・`EntryPoints\CvTraitInterface.py`（新規）
+- Mod に入れている Python: `Screens\CvPediaMain.py`・`Screens\CvPediaCivilization.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`・`Screens\CvVictoryScreen.py`・`Screens\CvMainInterface.py`・`Screens\CvTechChooser.py`・`CvEventManager.py`（BtS(J) のコピーに追記）、`Screens\CvCivicsScreen.py`（無印 Civ4(J) のコピーに追記。BtS(J)・Warlords(J) には無く、無印のものが使われている）、`Screens\CvFinanceAdvisor.py`（Warlords(J) のコピーに追記。BtS(J) には無い）、`Screens\CvPediaTrait.py`・`Screens\CvPediaSpell.py`・`EntryPoints\CvSpellInterface.py`・`EntryPoints\CvTraitInterface.py`（新規）
 - 文法チェック: Python 3.14 が入っている（`python -I`）。Python 2.4 そのものではないが、インデントや括弧の誤りは見つかる。BtS のファイルには Python 2 の `print` 文があって途中で止まるので、`print` 行を `pass` に置き換えた複製で、**編集前と編集後の両方**をチェックして比べる
 
 ## Mod の設計方針

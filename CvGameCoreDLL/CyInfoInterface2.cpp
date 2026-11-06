@@ -70,6 +70,8 @@ void CyInfoPythonInterface2()
 		.def("isCivilizationFreeTechs", &CvCivilizationInfo::isCivilizationFreeTechs, "bool (int i)")
 		.def("isCivilizationDisableTechs", &CvCivilizationInfo::isCivilizationDisableTechs, "bool (int i)")
 		.def("hasTrait", &CvCivilizationInfo::hasTrait, "bool (int i)")
+		.def("isUniqueBuild", &CvCivilizationInfo::isUniqueBuild, "bool (int i)")
+		.def("isBuildOfCivilization", &CvCivilizationInfo::isBuildOfCivilization, "bool (int i)")
 
 		.def("getCityNames", &CvCivilizationInfo::getCityNames, "string (int i)")
 		;

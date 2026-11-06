@@ -1487,6 +1487,24 @@
 		<Spanish>[ICON_BULLET]Favorite civic: gives %s1_Trait</Spanish>
 		<Japanese>[ICON_BULLET]&#22909;&#12365;&#12394;&#31038;&#20250;&#21046;&#24230;: %s1_Trait&#12434;&#24471;&#12427;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIQUE_IMPROVEMENTS</Tag>
+		<English>Unique Improvements</English>
+		<French>Unique Improvements</French>
+		<German>Unique Improvements</German>
+		<Italian>Unique Improvements</Italian>
+		<Spanish>Unique Improvements</Spanish>
+		<Japanese>&#22266;&#26377;&#12398;&#26045;&#35373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_CIVILIZATIONS</Tag>
+		<English>[ICON_BULLET]Unique to: %s1_Civs</English>
+		<French>[ICON_BULLET]Unique to: %s1_Civs</French>
+		<German>[ICON_BULLET]Unique to: %s1_Civs</German>
+		<Italian>[ICON_BULLET]Unique to: %s1_Civs</Italian>
+		<Spanish>[ICON_BULLET]Unique to: %s1_Civs</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#12398;&#25991;&#26126;: %s1_Civs</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
@@ -2504,5 +2522,41 @@
 		<Italian>Test Promotion (No Damage Penalty)</Italian>
 		<Spanish>Test Promotion (No Damage Penalty)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#20663;&#12398;&#24433;&#38911;&#12394;&#12375;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_CIV</Tag>
+		<English>Test Improvement (Civilization)</English>
+		<French>Test Improvement (Civilization)</French>
+		<German>Test Improvement (Civilization)</German>
+		<Italian>Test Improvement (Civilization)</Italian>
+		<Spanish>Test Improvement (Civilization)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#25991;&#26126;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_CIV</Tag>
+		<English>Build Test Improvement (Civilization)</English>
+		<French>Build Test Improvement (Civilization)</French>
+		<German>Build Test Improvement (Civilization)</German>
+		<Italian>Build Test Improvement (Civilization)</Italian>
+		<Spanish>Build Test Improvement (Civilization)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#25991;&#26126;&#65289;&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_FORT</Tag>
+		<English>Test Fort</English>
+		<French>Test Fort</French>
+		<German>Test Fort</German>
+		<Italian>Test Fort</Italian>
+		<Spanish>Test Fort</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#30758;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_CIV_FORT</Tag>
+		<English>Build Test Fort</English>
+		<French>Build Test Fort</French>
+		<German>Build Test Fort</German>
+		<Italian>Build Test Fort</Italian>
+		<Spanish>Build Test Fort</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#30758;&#12398;&#24314;&#35373;</Japanese>
 	</TEXT>
 </Civ4GameText>

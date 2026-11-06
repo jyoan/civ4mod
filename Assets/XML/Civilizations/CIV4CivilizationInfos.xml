@@ -4767,6 +4767,16 @@
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
+			<UniqueBuilds>
+				<UniqueBuild>
+					<BuildType>BUILD_TEST_CIV</BuildType>
+					<bUniqueBuild>1</bUniqueBuild>
+				</UniqueBuild>
+				<UniqueBuild>
+					<BuildType>BUILD_TEST_CIV_FORT</BuildType>
+					<bUniqueBuild>1</bUniqueBuild>
+				</UniqueBuild>
+			</UniqueBuilds>
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_JAPAN_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_JAPAN_ORDER</CivilizationActionSound>

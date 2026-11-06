@@ -2587,6 +2587,9 @@ public:
 	DllExport bool isCivilizationFreeTechs(int i) const;				// Exposed to Python
 	DllExport bool isCivilizationDisableTechs(int i) const;				// Exposed to Python
 	bool hasTrait(int i) const;				// Exposed to Python
+	bool isUniqueBuild(int i) const;			// Exposed to Python: UniqueBuilds (added by this mod)
+	bool isBuildOfCivilization(int i) const;	// Exposed to Python: UniqueBuilds or PrereqOrTraits with a trait of the civilization
+	void updateCivilizationUniqueBuilds();
 
 	DllExport std::string getCityNames(int i) const;				// Exposed to Python
 
@@ -2632,6 +2635,7 @@ protected:
 	bool* m_pbCivilizationFreeTechs;
 	bool* m_pbCivilizationDisableTechs;
 	bool* m_pbTraits;
+	bool* m_pbUniqueBuilds;
 
 	CvString* m_paszCityNames;
 
@@ -3029,6 +3033,8 @@ public:
 	const std::vector<int>& getPrereqOrTraitsVector() const;
 	int getReplacedBuild() const;				// Exposed to Python
 	int getUnitsFromBuild() const;				// Exposed to Python
+	bool isCivilizationUnique() const;			// a civilization has it in UniqueBuilds (added by this mod)
+	void setCivilizationUnique(bool bNewValue);
 
 	// Arrays
 
@@ -3056,6 +3062,7 @@ protected:
 
 	int m_iReplacedBuild;
 	int m_iUnitsFromBuild;
+	bool m_bCivilizationUnique;
 	std::vector<int> m_aiPrereqOrTraits;
 
 	// Arrays

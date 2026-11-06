@@ -4,6 +4,10 @@
 
 - 社会制度の画面（`CvCivicsScreen.py`）: 元は各区分の枠が 5 行分の固定の高さで、6 行目がはみ出していた。`updateLayout()` で一番行数の多い区分に合わせて上の枠を伸ばし、大きいアイコンと説明の枠を下にずらす（5 行以下なら元と同じ座標）。9 行以上は説明の枠を 170 ピクセル残すため行の間隔を詰める。`isCivicShown()` で、前提の志向（`PrereqOrTraits`）を持たない社会制度は一覧から外す（今採用中のものは表示）。`bFavoriteCivic` で志向が付く制度の名前は黄色（`CyPlayer.isFavoriteCivicWithTraits`）
 
+## 文明のペディア
+
+- `CvPediaCivilization.py`: 固有の施設がある文明だけ、上の枠と歴史の文の間に「固有の施設」の段（高さ 110）を足し、歴史の文の枠をその分だけ下げて縮める。施設がない文明の配置は元のまま。アイコンはクリックで施設のページへ移動する
+
 ## 志向のペディア
 
 - カテゴリ「志向」（`CIVILOPEDIA_PAGE_TRAIT`、テキスト `TXT_KEY_PEDIA_CATEGORY_TRAIT`）。一覧の位置は最後（ヒントの下）。`listCategories` の位置がそのまま `CivilopediaPageTypes` の値として使われるので、途中に挟めない
