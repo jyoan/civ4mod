@@ -384,6 +384,7 @@
 			<bNoPillageInBorders>1</bNoPillageInBorders>
 			<iMinCityRangeChange>-2</iMinCityRangeChange>
 			<bFoundInForeignTerritory>1</bFoundInForeignTerritory>
+			<bNoGlobalWarmingInBorders>1</bNoGlobalWarmingInBorders>
 			<iGoldInterestPercent>3</iGoldInterestPercent>
 			<iGoldInterestMax>25</iGoldInterestMax>
 			<iPeaceAngerPerTurn>50</iPeaceAngerPerTurn>

@@ -3580,6 +3580,12 @@ void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, Trait
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FOUND_IN_FOREIGN_TERRITORY"));
 	}
 
+	// bNoGlobalWarmingInBorders (added by this mod)
+	if (kTrait.isNoGlobalWarmingInBorders())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_GLOBAL_WARMING_IN_BORDERS"));
+	}
+
 	// bNoPillageInBorders (added by this mod)
 	if (kTrait.isNoPillageInBorders())
 	{

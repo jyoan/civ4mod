@@ -5950,6 +5950,13 @@ void CvGame::doGlobalWarming()
 		{
 			CvPlot* pPlot = GC.getMapINLINE().syncRandPlot(RANDPLOT_LAND | RANDPLOT_NOT_CITY);
 
+			// bNoGlobalWarmingInBorders of the traits of the owner (added by this mod): nothing happens, and the warming does not
+			// go to another plot
+			if (pPlot != NULL && pPlot->isOwned() && GET_PLAYER(pPlot->getOwnerINLINE()).isNoGlobalWarmingInBorders())
+			{
+				pPlot = NULL;
+			}
+
 			if (pPlot != NULL)
 			{
 				bool bChanged = false;
