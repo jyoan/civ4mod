@@ -3580,6 +3580,24 @@ void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, Trait
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FOUND_IN_FOREIGN_TERRITORY"));
 	}
 
+	// iReligionSpreadChange / iCorporationSpreadChange (added by this mod)
+	if (kTrait.getReligionSpreadChange() >= 100)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_RELIGION_SPREAD_ALWAYS"));
+	}
+	else if (kTrait.getReligionSpreadChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_RELIGION_SPREAD_CHANGE", kTrait.getReligionSpreadChange()));
+	}
+	if (kTrait.getCorporationSpreadChange() >= 100)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CORPORATION_SPREAD_ALWAYS"));
+	}
+	else if (kTrait.getCorporationSpreadChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CORPORATION_SPREAD_CHANGE", kTrait.getCorporationSpreadChange()));
+	}
+
 	// bNoGlobalWarmingInBorders (added by this mod)
 	if (kTrait.isNoGlobalWarmingInBorders())
 	{

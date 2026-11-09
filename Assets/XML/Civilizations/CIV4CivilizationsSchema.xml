@@ -349,6 +349,8 @@
 	<ElementType name="iMinCityRangeChange" content="textOnly" dt:type="int"/>
 	<ElementType name="bFoundInForeignTerritory" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoGlobalWarmingInBorders" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iReligionSpreadChange" content="textOnly" dt:type="int"/>
+	<ElementType name="iCorporationSpreadChange" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldInterestPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldInterestMax" content="textOnly" dt:type="int"/>
 	<ElementType name="iPeaceAngerPerTurn" content="textOnly" dt:type="int"/>
@@ -588,6 +590,8 @@
 		<element type="iMinCityRangeChange" minOccurs="0"/>
 		<element type="bFoundInForeignTerritory" minOccurs="0"/>
 		<element type="bNoGlobalWarmingInBorders" minOccurs="0"/>
+		<element type="iReligionSpreadChange" minOccurs="0"/>
+		<element type="iCorporationSpreadChange" minOccurs="0"/>
 		<element type="iGoldInterestPercent" minOccurs="0"/>
 		<element type="iGoldInterestMax" minOccurs="0"/>
 		<element type="iPeaceAngerPerTurn" minOccurs="0"/>

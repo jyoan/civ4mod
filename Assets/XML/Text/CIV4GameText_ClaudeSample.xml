@@ -1559,6 +1559,42 @@
 		<Spanish>[ICON_BULLET]No damage from global warming in own territory</Spanish>
 		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#25991;&#21270;&#22287;&#12399;&#22320;&#29699;&#28201;&#26262;&#21270;&#12398;&#34987;&#23475;&#12434;&#21463;&#12369;&#12394;&#12356;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RELIGION_SPREAD_ALWAYS</Tag>
+		<English>[ICON_BULLET]Missionaries always spread their religion</English>
+		<French>[ICON_BULLET]Missionaries always spread their religion</French>
+		<German>[ICON_BULLET]Missionaries always spread their religion</German>
+		<Italian>[ICON_BULLET]Missionaries always spread their religion</Italian>
+		<Spanish>[ICON_BULLET]Missionaries always spread their religion</Spanish>
+		<Japanese>[ICON_BULLET]&#23459;&#25945;&#24107;&#12398;&#24067;&#25945;&#12364;&#24517;&#12378;&#25104;&#21151;&#12377;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RELIGION_SPREAD_CHANGE</Tag>
+		<English>[ICON_BULLET]%D1_Num%% chance for missionaries to spread their religion</English>
+		<French>[ICON_BULLET]%D1_Num%% chance for missionaries to spread their religion</French>
+		<German>[ICON_BULLET]%D1_Num%% chance for missionaries to spread their religion</German>
+		<Italian>[ICON_BULLET]%D1_Num%% chance for missionaries to spread their religion</Italian>
+		<Spanish>[ICON_BULLET]%D1_Num%% chance for missionaries to spread their religion</Spanish>
+		<Japanese>[ICON_BULLET]&#23459;&#25945;&#24107;&#12398;&#24067;&#25945;&#12398;&#25104;&#21151;&#29575;%D1_Num%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CORPORATION_SPREAD_ALWAYS</Tag>
+		<English>[ICON_BULLET]Executives always spread their corporation</English>
+		<French>[ICON_BULLET]Executives always spread their corporation</French>
+		<German>[ICON_BULLET]Executives always spread their corporation</German>
+		<Italian>[ICON_BULLET]Executives always spread their corporation</Italian>
+		<Spanish>[ICON_BULLET]Executives always spread their corporation</Spanish>
+		<Japanese>[ICON_BULLET]&#24185;&#37096;&#12395;&#12424;&#12427;&#20225;&#26989;&#12398;&#36914;&#20986;&#12364;&#24517;&#12378;&#25104;&#21151;&#12377;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CORPORATION_SPREAD_CHANGE</Tag>
+		<English>[ICON_BULLET]%D1_Num%% chance for executives to spread their corporation</English>
+		<French>[ICON_BULLET]%D1_Num%% chance for executives to spread their corporation</French>
+		<German>[ICON_BULLET]%D1_Num%% chance for executives to spread their corporation</German>
+		<Italian>[ICON_BULLET]%D1_Num%% chance for executives to spread their corporation</Italian>
+		<Spanish>[ICON_BULLET]%D1_Num%% chance for executives to spread their corporation</Spanish>
+		<Japanese>[ICON_BULLET]&#24185;&#37096;&#12395;&#12424;&#12427;&#20225;&#26989;&#12398;&#36914;&#20986;&#12398;&#25104;&#21151;&#29575;%D1_Num%%</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

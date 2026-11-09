@@ -7129,6 +7129,8 @@ bool CvUnit::spread(ReligionTypes eReligion)
 		bool bSuccess;
 
 		iSpreadProb += (((GC.getNumReligionInfos() - pCity->getReligionCount()) * (100 - iSpreadProb)) / GC.getNumReligionInfos());
+		// iReligionSpreadChange of the traits of the owner (added by this mod): 100 never fails
+		iSpreadProb += GET_PLAYER(getOwnerINLINE()).sumTraitValues(&CvTraitInfo::getReligionSpreadChange);
 
 		if (GC.getGameINLINE().getSorenRandNum(100, "Unit Spread Religion") < iSpreadProb)
 		{
@@ -7292,6 +7294,8 @@ bool CvUnit::spreadCorporation(CorporationTypes eCorporation)
 		}
 
 		iSpreadProb += (((GC.getNumCorporationInfos() - pCity->getCorporationCount()) * (100 - iSpreadProb)) / GC.getNumCorporationInfos());
+		// iCorporationSpreadChange of the traits of the owner (added by this mod): 100 never fails
+		iSpreadProb += GET_PLAYER(getOwnerINLINE()).sumTraitValues(&CvTraitInfo::getCorporationSpreadChange);
 
 		if (GC.getGameINLINE().getSorenRandNum(100, "Unit Spread Corporation") < iSpreadProb)
 		{
