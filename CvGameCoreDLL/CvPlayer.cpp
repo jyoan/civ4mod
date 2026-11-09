@@ -5450,7 +5450,8 @@ bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 		}
 	}
 
-	if (pPlot->isOwned() && (pPlot->getOwnerINLINE() != getID()))
+	// bFoundInForeignTerritory of the traits (added by this mod). The city plot becomes ours, the others go by culture
+	if (pPlot->isOwned() && (pPlot->getOwnerINLINE() != getID()) && !isFoundInForeignTerritory())
 	{
 		return false;
 	}
@@ -5515,7 +5516,7 @@ bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 
 	if (!bTestVisible)
 	{
-		iRange = GC.getMIN_CITY_RANGE();
+		iRange = getMinCityRange();	// iMinCityRangeChange of the traits (added by this mod)
 
 		for (iDX = -(iRange); iDX <= iRange; iDX++)
 		{
@@ -6635,6 +6636,38 @@ void CvPlayer::updateWorldWonderEffects()
 		pLoopCity->updateDynamicBuildingYields();
 		pLoopCity->updateBuildingCommerce();
 	}
+}
+
+// MIN_CITY_RANGE with iMinCityRangeChange of the traits (added by this mod): 0 lets cities be next to each other
+int CvPlayer::getMinCityRange() const
+{
+	if (getLeaderType() == NO_LEADER)
+	{
+		return GC.getMIN_CITY_RANGE();
+	}
+
+	return std::max(0, GC.getMIN_CITY_RANGE() + sumTraitValues(&CvTraitInfo::getMinCityRangeChange));
+}
+
+// bFoundInForeignTerritory of the traits (added by this mod)
+bool CvPlayer::isFoundInForeignTerritory() const
+{
+	int iI;
+
+	if (getLeaderType() == NO_LEADER)
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI) && GC.getTraitInfo((TraitTypes)iI).isFoundInForeignTerritory())
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 // bNoPillageInBorders of the traits (added by this mod)

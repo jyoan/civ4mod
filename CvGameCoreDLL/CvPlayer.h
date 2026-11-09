@@ -236,6 +236,8 @@ public:
 	int getBuildingClassExtraCommerce(BuildingClassTypes eBuildingClass, CommerceTypes eCommerce) const;	// added by this mod
 	void changeBuildingClassExtraCommerce(BuildingClassTypes eBuildingClass, CommerceTypes eCommerce, int iChange);	// added by this mod
 	bool isNoPillageInBorders() const;								// Exposed to Python
+	int getMinCityRange() const;									// Exposed to Python: MIN_CITY_RANGE with iMinCityRangeChange of the traits
+	bool isFoundInForeignTerritory() const;							// Exposed to Python: bFoundInForeignTerritory of the traits
 	int getGoldInterest() const;									// Exposed to Python: gold of this turn from the traits
 	int getPeaceAngerPercentAnger() const;						// Exposed to Python: anger from iPeaceAngerPerTurn of the traits
 	void doPeaceAnger();										// added by this mod

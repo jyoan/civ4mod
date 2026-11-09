@@ -18909,6 +18909,8 @@ m_iCityCaptureGoldModifier(0),
 m_iUnitCostModifier(0),
 m_iBuildingCostModifier(0),
 m_bNoPillageInBorders(false),
+m_iMinCityRangeChange(0),
+m_bFoundInForeignTerritory(false),
 m_iGoldInterestPercent(0),
 m_iGoldInterestMax(0),
 m_iPeaceAngerPerTurn(0),
@@ -19196,6 +19198,18 @@ int CvTraitInfo::getBuildingCostModifier() const
 }
 
 // The units of other teams cannot pillage in the territory of the player (added by this mod, as in ex's CivGoldEmpires)
+// Added to MIN_CITY_RANGE for the cities of the player (added by this mod)
+int CvTraitInfo::getMinCityRangeChange() const
+{
+	return m_iMinCityRangeChange;
+}
+
+// The player can found cities in the territory of other players (added by this mod)
+bool CvTraitInfo::isFoundInForeignTerritory() const
+{
+	return m_bFoundInForeignTerritory;
+}
+
 bool CvTraitInfo::isNoPillageInBorders() const
 {
 	return m_bNoPillageInBorders;
@@ -19916,6 +19930,8 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iUnitCostModifier, "iUnitCostModifier");
 	pXML->GetChildXmlValByName(&m_iBuildingCostModifier, "iBuildingCostModifier");
 	pXML->GetChildXmlValByName(&m_bNoPillageInBorders, "bNoPillageInBorders");
+	pXML->GetChildXmlValByName(&m_iMinCityRangeChange, "iMinCityRangeChange");
+	pXML->GetChildXmlValByName(&m_bFoundInForeignTerritory, "bFoundInForeignTerritory");
 	pXML->GetChildXmlValByName(&m_iGoldInterestPercent, "iGoldInterestPercent");
 	pXML->GetChildXmlValByName(&m_iGoldInterestMax, "iGoldInterestMax");
 	pXML->GetChildXmlValByName(&m_iPeaceAngerPerTurn, "iPeaceAngerPerTurn");

@@ -346,6 +346,8 @@
 	<ElementType name="iUnitCostModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iBuildingCostModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="bNoPillageInBorders" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iMinCityRangeChange" content="textOnly" dt:type="int"/>
+	<ElementType name="bFoundInForeignTerritory" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iGoldInterestPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldInterestMax" content="textOnly" dt:type="int"/>
 	<ElementType name="iPeaceAngerPerTurn" content="textOnly" dt:type="int"/>
@@ -582,6 +584,8 @@
 		<element type="iUnitCostModifier" minOccurs="0"/>
 		<element type="iBuildingCostModifier" minOccurs="0"/>
 		<element type="bNoPillageInBorders" minOccurs="0"/>
+		<element type="iMinCityRangeChange" minOccurs="0"/>
+		<element type="bFoundInForeignTerritory" minOccurs="0"/>
 		<element type="iGoldInterestPercent" minOccurs="0"/>
 		<element type="iGoldInterestMax" minOccurs="0"/>
 		<element type="iPeaceAngerPerTurn" minOccurs="0"/>

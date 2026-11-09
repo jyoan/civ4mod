@@ -452,6 +452,8 @@ public:
 	int getMaxCities();
 	int getNumWorldWonders();
 	bool isNoPillageInBorders();
+	int getMinCityRange();
+	bool isFoundInForeignTerritory();
 	int getGoldInterest();
 	int getPeaceAngerPercentAnger();
 	int getCultureRangeChange();

@@ -3560,6 +3560,26 @@ void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, Trait
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_OCCUPATION_TIME_MODIFIER", kTrait.getOccupationTimeModifier()));
 	}
 
+	// iMinCityRangeChange: the range of this trait alone (added by this mod)
+	if (kTrait.getMinCityRangeChange() != 0)
+	{
+		int iRange = std::max(0, GC.getMIN_CITY_RANGE() + kTrait.getMinCityRangeChange());
+		if (iRange == 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_MIN_CITY_RANGE_ZERO", GC.getMIN_CITY_RANGE()));
+		}
+		else
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_MIN_CITY_RANGE", iRange, GC.getMIN_CITY_RANGE()));
+		}
+	}
+
+	// bFoundInForeignTerritory (added by this mod)
+	if (kTrait.isFoundInForeignTerritory())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FOUND_IN_FOREIGN_TERRITORY"));
+	}
+
 	// bNoPillageInBorders (added by this mod)
 	if (kTrait.isNoPillageInBorders())
 	{

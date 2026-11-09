@@ -2052,6 +2052,17 @@ bool CyPlayer::canBuildByTraits(int /*BuildTypes*/ eBuild)
 	return m_pPlayer ? m_pPlayer->canBuildByTraits((BuildTypes)eBuild) : false;
 }
 
+// iMinCityRangeChange and bFoundInForeignTerritory of the traits (added by this mod)
+int CyPlayer::getMinCityRange()
+{
+	return m_pPlayer ? m_pPlayer->getMinCityRange() : -1;
+}
+
+bool CyPlayer::isFoundInForeignTerritory()
+{
+	return m_pPlayer ? m_pPlayer->isFoundInForeignTerritory() : false;
+}
+
 bool CyPlayer::isNoPillageInBorders()
 {
 	return m_pPlayer ? m_pPlayer->isNoPillageInBorders() : false;

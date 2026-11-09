@@ -4652,6 +4652,8 @@ public:
 	int getUnitCostModifier() const;				// Exposed to Python
 	int getBuildingCostModifier() const;			// Exposed to Python
 	bool isNoPillageInBorders() const;				// Exposed to Python
+	int getMinCityRangeChange() const;			// Exposed to Python
+	bool isFoundInForeignTerritory() const;		// Exposed to Python
 	int getGoldInterestPercent() const;				// Exposed to Python
 	int getGoldInterestMax() const;					// Exposed to Python
 	int getPeaceAngerPerTurn() const;				// Exposed to Python
@@ -4773,6 +4775,8 @@ protected:
 	int m_iUnitCostModifier;
 	int m_iBuildingCostModifier;
 	bool m_bNoPillageInBorders;
+	int m_iMinCityRangeChange;
+	bool m_bFoundInForeignTerritory;
 	int m_iGoldInterestPercent;
 	int m_iGoldInterestMax;
 	int m_iPeaceAngerPerTurn;
