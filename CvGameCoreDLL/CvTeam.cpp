@@ -974,6 +974,12 @@ bool CvTeam::canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal) const
 		return false;
 	}
 
+	// GAMEOPTION_ALWAYS_WAR_AI (added by this mod). At war, this also ends the diplomacy between them (CvPlayer::canContact)
+	if (GC.getGameINLINE().isAlwaysWarAI(getID(), eTeam))
+	{
+		return false;
+	}
+
 	if (isPermanentWarPeace(eTeam) || GET_TEAM(eTeam).isPermanentWarPeace(getID()))
 	{
 		return false;
@@ -3362,6 +3368,12 @@ void CvTeam::makeHasMet(TeamTypes eIndex, bool bNewDiplo)
 			gDLL->getInterfaceIFace()->setDirty(Score_DIRTY_BIT, true);
 		}
 
+		// GAMEOPTION_ALWAYS_WAR_AI (added by this mod): two AI teams go to war when they meet
+		if (GC.getGameINLINE().isAlwaysWarAI(getID(), eIndex) && !isAtWar(eIndex))
+		{
+			declareWar(eIndex, false, NO_WARPLAN);
+		}
+
 		if (GC.getGameINLINE().isOption(GAMEOPTION_ALWAYS_WAR))
 		{
 			if (isHuman() && getID() != eIndex)
@@ -5200,7 +5212,8 @@ void CvTeam::doWarWeariness()
 		{
 			changeWarWeariness(((TeamTypes)iI), 100 * GC.getDefineINT("WW_DECAY_RATE"));
 
-			if (!(GET_TEAM((TeamTypes)iI).isAlive()) || !isAtWar((TeamTypes)iI) || GC.getGameINLINE().isOption(GAMEOPTION_ALWAYS_WAR) || GC.getGameINLINE().isOption(GAMEOPTION_NO_CHANGING_WAR_PEACE))
+			// GAMEOPTION_ALWAYS_WAR_AI as GAMEOPTION_ALWAYS_WAR (added by this mod)
+			if (!(GET_TEAM((TeamTypes)iI).isAlive()) || !isAtWar((TeamTypes)iI) || GC.getGameINLINE().isOption(GAMEOPTION_ALWAYS_WAR) || GC.getGameINLINE().isOption(GAMEOPTION_NO_CHANGING_WAR_PEACE) || GC.getGameINLINE().isAlwaysWarAI(getID(), (TeamTypes)iI))
 			{
 				setWarWeariness(((TeamTypes)iI), ((getWarWeariness((TeamTypes)iI) * GC.getDefineINT("WW_DECAY_PEACE_PERCENT")) / 100));
 			}

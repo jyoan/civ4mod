@@ -335,6 +335,7 @@ public:
 	void setTeamScore(TeamTypes eTeam, int iScore);
 
 	DllExport bool isOption(GameOptionTypes eIndex) const;																// Exposed to Python
+	bool isAlwaysWarAI(TeamTypes eTeam1, TeamTypes eTeam2) const;	// added by this mod: GAMEOPTION_ALWAYS_WAR_AI
 	DllExport void setOption(GameOptionTypes eIndex, bool bEnabled);
 
 	DllExport bool isMPOption(MultiplayerOptionTypes eIndex) const;												// Exposed to Python

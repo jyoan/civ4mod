@@ -6658,9 +6658,48 @@ void CvGame::createAnimals()
 }
 
 
+// GAMEOPTION_ALWAYS_WAR_AI (added by this mod): a team that the option keeps at war with the others like it. Not a team
+// with a human player, the barbarians and the minor civilizations (at war with everyone anyway), or a vassal (it follows
+// its master)
+static bool isAlwaysWarAITeam(TeamTypes eTeam)
+{
+	if (eTeam < 0 || eTeam >= MAX_CIV_TEAMS)
+	{
+		return false;
+	}
+
+	const CvTeam& kTeam = GET_TEAM(eTeam);
+	return (kTeam.isAlive() && !kTeam.isHuman() && !kTeam.isBarbarian() && !kTeam.isMinorCiv() && !kTeam.isAVassal());
+}
+
+// The two teams must be at war and cannot make peace (GAMEOPTION_ALWAYS_WAR_AI, added by this mod). GAMEOPTION_ALWAYS_PEACE
+// wins, as it forbids all wars
+bool CvGame::isAlwaysWarAI(TeamTypes eTeam1, TeamTypes eTeam2) const
+{
+	if (!isOption(GAMEOPTION_ALWAYS_WAR_AI) || isOption(GAMEOPTION_ALWAYS_PEACE) || eTeam1 == eTeam2)
+	{
+		return false;
+	}
+
+	return (isAlwaysWarAITeam(eTeam1) && isAlwaysWarAITeam(eTeam2));
+}
+
 void CvGame::updateWar()
 {
 	int iI, iJ;
+
+	// GAMEOPTION_ALWAYS_WAR_AI (added by this mod). CvTeam::meet declares the war when two AI teams meet; this is for the
+	// teams that met while the option did not apply to them (a vassal that became free, a team that lost its human player)
+	for (iI = 0; iI < MAX_CIV_TEAMS; iI++)
+	{
+		for (iJ = iI + 1; iJ < MAX_CIV_TEAMS; iJ++)
+		{
+			if (isAlwaysWarAI((TeamTypes)iI, (TeamTypes)iJ) && GET_TEAM((TeamTypes)iI).isHasMet((TeamTypes)iJ) && !GET_TEAM((TeamTypes)iI).isAtWar((TeamTypes)iJ))
+			{
+				GET_TEAM((TeamTypes)iI).declareWar((TeamTypes)iJ, false, NO_WARPLAN);
+			}
+		}
+	}
 
 	if (isOption(GAMEOPTION_ALWAYS_WAR))
 	{
