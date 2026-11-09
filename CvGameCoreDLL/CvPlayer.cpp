@@ -6670,6 +6670,27 @@ bool CvPlayer::isFoundInForeignTerritory() const
 	return false;
 }
 
+// bNoGlobalWarmingInBorders of the traits (added by this mod)
+bool CvPlayer::isNoGlobalWarmingInBorders() const
+{
+	int iI;
+
+	if (getLeaderType() == NO_LEADER)
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI) && GC.getTraitInfo((TraitTypes)iI).isNoGlobalWarmingInBorders())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 // bNoPillageInBorders of the traits (added by this mod)
 bool CvPlayer::isNoPillageInBorders() const
 {

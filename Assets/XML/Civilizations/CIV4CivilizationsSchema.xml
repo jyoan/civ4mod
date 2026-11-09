@@ -348,6 +348,7 @@
 	<ElementType name="bNoPillageInBorders" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iMinCityRangeChange" content="textOnly" dt:type="int"/>
 	<ElementType name="bFoundInForeignTerritory" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bNoGlobalWarmingInBorders" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iGoldInterestPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldInterestMax" content="textOnly" dt:type="int"/>
 	<ElementType name="iPeaceAngerPerTurn" content="textOnly" dt:type="int"/>
@@ -586,6 +587,7 @@
 		<element type="bNoPillageInBorders" minOccurs="0"/>
 		<element type="iMinCityRangeChange" minOccurs="0"/>
 		<element type="bFoundInForeignTerritory" minOccurs="0"/>
+		<element type="bNoGlobalWarmingInBorders" minOccurs="0"/>
 		<element type="iGoldInterestPercent" minOccurs="0"/>
 		<element type="iGoldInterestMax" minOccurs="0"/>
 		<element type="iPeaceAngerPerTurn" minOccurs="0"/>

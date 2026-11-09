@@ -454,6 +454,7 @@ public:
 	bool isNoPillageInBorders();
 	int getMinCityRange();
 	bool isFoundInForeignTerritory();
+	bool isNoGlobalWarmingInBorders();
 	int getGoldInterest();
 	int getPeaceAngerPercentAnger();
 	int getCultureRangeChange();

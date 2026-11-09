@@ -18911,6 +18911,7 @@ m_iBuildingCostModifier(0),
 m_bNoPillageInBorders(false),
 m_iMinCityRangeChange(0),
 m_bFoundInForeignTerritory(false),
+m_bNoGlobalWarmingInBorders(false),
 m_iGoldInterestPercent(0),
 m_iGoldInterestMax(0),
 m_iPeaceAngerPerTurn(0),
@@ -19208,6 +19209,12 @@ int CvTraitInfo::getMinCityRangeChange() const
 bool CvTraitInfo::isFoundInForeignTerritory() const
 {
 	return m_bFoundInForeignTerritory;
+}
+
+// Global warming does nothing on the plots of the player (added by this mod)
+bool CvTraitInfo::isNoGlobalWarmingInBorders() const
+{
+	return m_bNoGlobalWarmingInBorders;
 }
 
 bool CvTraitInfo::isNoPillageInBorders() const
@@ -19932,6 +19939,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bNoPillageInBorders, "bNoPillageInBorders");
 	pXML->GetChildXmlValByName(&m_iMinCityRangeChange, "iMinCityRangeChange");
 	pXML->GetChildXmlValByName(&m_bFoundInForeignTerritory, "bFoundInForeignTerritory");
+	pXML->GetChildXmlValByName(&m_bNoGlobalWarmingInBorders, "bNoGlobalWarmingInBorders");
 	pXML->GetChildXmlValByName(&m_iGoldInterestPercent, "iGoldInterestPercent");
 	pXML->GetChildXmlValByName(&m_iGoldInterestMax, "iGoldInterestMax");
 	pXML->GetChildXmlValByName(&m_iPeaceAngerPerTurn, "iPeaceAngerPerTurn");
