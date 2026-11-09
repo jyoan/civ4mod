@@ -18912,6 +18912,8 @@ m_bNoPillageInBorders(false),
 m_iMinCityRangeChange(0),
 m_bFoundInForeignTerritory(false),
 m_bNoGlobalWarmingInBorders(false),
+m_iReligionSpreadChange(0),
+m_iCorporationSpreadChange(0),
 m_iGoldInterestPercent(0),
 m_iGoldInterestMax(0),
 m_iPeaceAngerPerTurn(0),
@@ -19215,6 +19217,17 @@ bool CvTraitInfo::isFoundInForeignTerritory() const
 bool CvTraitInfo::isNoGlobalWarmingInBorders() const
 {
 	return m_bNoGlobalWarmingInBorders;
+}
+
+// Added to the chance (%) of the missionaries and the executives of the player (added by this mod)
+int CvTraitInfo::getReligionSpreadChange() const
+{
+	return m_iReligionSpreadChange;
+}
+
+int CvTraitInfo::getCorporationSpreadChange() const
+{
+	return m_iCorporationSpreadChange;
 }
 
 bool CvTraitInfo::isNoPillageInBorders() const
@@ -19940,6 +19953,8 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iMinCityRangeChange, "iMinCityRangeChange");
 	pXML->GetChildXmlValByName(&m_bFoundInForeignTerritory, "bFoundInForeignTerritory");
 	pXML->GetChildXmlValByName(&m_bNoGlobalWarmingInBorders, "bNoGlobalWarmingInBorders");
+	pXML->GetChildXmlValByName(&m_iReligionSpreadChange, "iReligionSpreadChange");
+	pXML->GetChildXmlValByName(&m_iCorporationSpreadChange, "iCorporationSpreadChange");
 	pXML->GetChildXmlValByName(&m_iGoldInterestPercent, "iGoldInterestPercent");
 	pXML->GetChildXmlValByName(&m_iGoldInterestMax, "iGoldInterestMax");
 	pXML->GetChildXmlValByName(&m_iPeaceAngerPerTurn, "iPeaceAngerPerTurn");

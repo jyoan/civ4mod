@@ -4655,6 +4655,8 @@ public:
 	int getMinCityRangeChange() const;			// Exposed to Python
 	bool isFoundInForeignTerritory() const;		// Exposed to Python
 	bool isNoGlobalWarmingInBorders() const;		// Exposed to Python
+	int getReligionSpreadChange() const;			// Exposed to Python
+	int getCorporationSpreadChange() const;		// Exposed to Python
 	int getGoldInterestPercent() const;				// Exposed to Python
 	int getGoldInterestMax() const;					// Exposed to Python
 	int getPeaceAngerPerTurn() const;				// Exposed to Python
@@ -4779,6 +4781,8 @@ protected:
 	int m_iMinCityRangeChange;
 	bool m_bFoundInForeignTerritory;
 	bool m_bNoGlobalWarmingInBorders;
+	int m_iReligionSpreadChange;
+	int m_iCorporationSpreadChange;
 	int m_iGoldInterestPercent;
 	int m_iGoldInterestMax;
 	int m_iPeaceAngerPerTurn;
