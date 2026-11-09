@@ -1937,8 +1937,9 @@ void CvInitCore::read(FDataStreamBase* pStream)
 	}
 
 
-	// uiSaveFlag 0: saved before GAMEOPTION_NO_ESPIONAGE, 1: before GAMEOPTION_MULTIPLE_PRODUCTION (added by this mod)
-	int iNumSavedOptions = NUM_GAMEOPTION_TYPES - std::max(0, 2 - (int)uiSaveFlag);
+	// uiSaveFlag 0: saved before GAMEOPTION_NO_ESPIONAGE, 1: before GAMEOPTION_MULTIPLE_PRODUCTION, 2: before
+	// GAMEOPTION_ALWAYS_WAR_AI (added by this mod)
+	int iNumSavedOptions = NUM_GAMEOPTION_TYPES - std::max(0, 3 - (int)uiSaveFlag);
 	pStream->Read(iNumSavedOptions, m_abOptions);
 	for (int iOption = iNumSavedOptions; iOption < NUM_GAMEOPTION_TYPES; iOption++)
 	{
@@ -2004,7 +2005,7 @@ void CvInitCore::read(FDataStreamBase* pStream)
 
 void CvInitCore::write(FDataStreamBase* pStream)
 {
-	uint uiSaveFlag=2;	// 2: GAMEOPTION_MULTIPLE_PRODUCTION (added by this mod)
+	uint uiSaveFlag=3;	// 2: GAMEOPTION_MULTIPLE_PRODUCTION, 3: GAMEOPTION_ALWAYS_WAR_AI (added by this mod)
 	pStream->Write(uiSaveFlag);		// flag for expansion, see SaveBits)
 
 	// GAME DATA

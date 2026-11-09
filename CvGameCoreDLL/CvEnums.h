@@ -731,6 +731,7 @@ enum GameOptionTypes				// Exposed to Python
 	GAMEOPTION_NO_EVENTS,
 	GAMEOPTION_NO_ESPIONAGE,
 	GAMEOPTION_MULTIPLE_PRODUCTION,	// added by this mod
+	GAMEOPTION_ALWAYS_WAR_AI,		// added by this mod
 
 #ifdef _USRDLL
 	NUM_GAMEOPTION_TYPES

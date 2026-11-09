@@ -10314,7 +10314,8 @@ int CvPlayer::getModifiedWarWearinessPercentAnger(int iWarWearinessPercentAnger)
 {
 	iWarWearinessPercentAnger *= GC.getDefineINT("BASE_WAR_WEARINESS_MULTIPLIER");
 
-	if (GC.getGameINLINE().isOption(GAMEOPTION_ALWAYS_WAR) || GC.getGameINLINE().isOption(GAMEOPTION_NO_CHANGING_WAR_PEACE))
+	// GAMEOPTION_ALWAYS_WAR_AI for the AI players, as GAMEOPTION_ALWAYS_WAR (added by this mod)
+	if (GC.getGameINLINE().isOption(GAMEOPTION_ALWAYS_WAR) || GC.getGameINLINE().isOption(GAMEOPTION_NO_CHANGING_WAR_PEACE) || (GC.getGameINLINE().isOption(GAMEOPTION_ALWAYS_WAR_AI) && !isHuman()))
 	{
 		iWarWearinessPercentAnger *= std::max(0, (GC.getDefineINT("FORCED_WAR_WAR_WEARINESS_MODIFIER") + 100));
 		iWarWearinessPercentAnger /= 100;
@@ -22075,6 +22076,12 @@ bool CvPlayer::canSpyDestroyProject(PlayerTypes eTarget, ProjectTypes eProject) 
 
 void CvPlayer::forcePeace(PlayerTypes ePlayer)
 {
+	// The vote of peace does not end a war of GAMEOPTION_ALWAYS_WAR_AI (added by this mod)
+	if (GC.getGameINLINE().isAlwaysWarAI(getTeam(), GET_PLAYER(ePlayer).getTeam()))
+	{
+		return;
+	}
+
 	if (!GET_TEAM(getTeam()).isAVassal())
 	{
 		FAssert(GET_TEAM(getTeam()).canChangeWarPeace(GET_PLAYER(ePlayer).getTeam()));
