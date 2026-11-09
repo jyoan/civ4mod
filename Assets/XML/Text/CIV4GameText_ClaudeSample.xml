@@ -1523,6 +1523,33 @@
 		<Spanish>The AI civilizations go to war with each other when they meet, and cannot make peace until the game ends. Diplomacy with the human players is as usual.</Spanish>
 		<Japanese>AI&#12398;&#25991;&#26126;&#12393;&#12358;&#12375;&#12399;&#12289;&#20986;&#20250;&#12358;&#12392;&#25126;&#20105;&#12395;&#12394;&#12426;&#12289;&#12466;&#12540;&#12512;&#32066;&#20102;&#12414;&#12391;&#21644;&#24179;&#12391;&#12365;&#12414;&#12379;&#12435;&#12290;&#20154;&#38291;&#12398;&#12503;&#12524;&#12452;&#12516;&#12540;&#12392;&#12398;&#22806;&#20132;&#12399;&#36890;&#24120;&#12393;&#12362;&#12426;&#12391;&#12377;&#12290;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MIN_CITY_RANGE</Tag>
+		<English>[ICON_BULLET]Can found cities with %d1_Num tiles between them (normally %d2_Num)</English>
+		<French>[ICON_BULLET]Can found cities with %d1_Num tiles between them (normally %d2_Num)</French>
+		<German>[ICON_BULLET]Can found cities with %d1_Num tiles between them (normally %d2_Num)</German>
+		<Italian>[ICON_BULLET]Can found cities with %d1_Num tiles between them (normally %d2_Num)</Italian>
+		<Spanish>[ICON_BULLET]Can found cities with %d1_Num tiles between them (normally %d2_Num)</Spanish>
+		<Japanese>[ICON_BULLET]&#12411;&#12363;&#12398;&#37117;&#24066;&#12392;&#12398;&#38291;&#12395;%d1_Num&#12510;&#12473;&#31354;&#12369;&#12428;&#12400;&#37117;&#24066;&#12434;&#24314;&#12390;&#12425;&#12428;&#12427;&#65288;&#36890;&#24120;&#12399;%d2_Num&#12510;&#12473;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MIN_CITY_RANGE_ZERO</Tag>
+		<English>[ICON_BULLET]Can found cities next to other cities (normally %d1_Num tiles between them)</English>
+		<French>[ICON_BULLET]Can found cities next to other cities (normally %d1_Num tiles between them)</French>
+		<German>[ICON_BULLET]Can found cities next to other cities (normally %d1_Num tiles between them)</German>
+		<Italian>[ICON_BULLET]Can found cities next to other cities (normally %d1_Num tiles between them)</Italian>
+		<Spanish>[ICON_BULLET]Can found cities next to other cities (normally %d1_Num tiles between them)</Spanish>
+		<Japanese>[ICON_BULLET]&#12411;&#12363;&#12398;&#37117;&#24066;&#12398;&#38563;&#12395;&#12418;&#37117;&#24066;&#12434;&#24314;&#12390;&#12425;&#12428;&#12427;&#65288;&#36890;&#24120;&#12399;&#38291;&#12395;%d1_Num&#12510;&#12473;&#24517;&#35201;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOUND_IN_FOREIGN_TERRITORY</Tag>
+		<English>[ICON_BULLET]Can found cities in the territory of other civilizations</English>
+		<French>[ICON_BULLET]Can found cities in the territory of other civilizations</French>
+		<German>[ICON_BULLET]Can found cities in the territory of other civilizations</German>
+		<Italian>[ICON_BULLET]Can found cities in the territory of other civilizations</Italian>
+		<Spanish>[ICON_BULLET]Can found cities in the territory of other civilizations</Spanish>
+		<Japanese>[ICON_BULLET]&#20182;&#22269;&#12398;&#25991;&#21270;&#22287;&#12395;&#12418;&#37117;&#24066;&#12434;&#24314;&#12390;&#12425;&#12428;&#12427;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

@@ -2147,7 +2147,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 				{
 					bValid = true;
 
-					iRange = GC.getMIN_CITY_RANGE();
+					iRange = GET_PLAYER(pHeadSelectedUnit->getOwnerINLINE()).getMinCityRange();	// iMinCityRangeChange (added by this mod)
 
 					for (iDX = -(iRange); iDX <= iRange; iDX++)
 					{
@@ -2168,7 +2168,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 					if (!bValid)
 					{
 						szBuffer.append(NEWLINE);
-						szBuffer.append(gDLL->getText("TXT_KEY_ACTION_CANNOT_FOUND", GC.getMIN_CITY_RANGE()));
+						szBuffer.append(gDLL->getText("TXT_KEY_ACTION_CANNOT_FOUND", iRange));
 					}
 				}
 			}
