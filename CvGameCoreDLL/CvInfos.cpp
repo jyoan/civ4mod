@@ -11869,6 +11869,11 @@ m_pbCivilizationFreeTechs(NULL),
 m_pbCivilizationDisableTechs(NULL),
 m_pbTraits(NULL),
 m_pbUniqueBuilds(NULL),
+m_iStartBiasCoastal(0),
+m_iStartBiasRiver(0),
+m_piStartBiasTerrains(NULL),
+m_piStartBiasFeatures(NULL),
+m_piStartBiasBonuses(NULL),
 m_paszCityNames(NULL)
 {
 }
@@ -11892,6 +11897,9 @@ CvCivilizationInfo::~CvCivilizationInfo()
 	SAFE_DELETE_ARRAY(m_pbCivilizationDisableTechs);
 	SAFE_DELETE_ARRAY(m_pbTraits);
 	SAFE_DELETE_ARRAY(m_pbUniqueBuilds);
+	SAFE_DELETE_ARRAY(m_piStartBiasTerrains);
+	SAFE_DELETE_ARRAY(m_piStartBiasFeatures);
+	SAFE_DELETE_ARRAY(m_piStartBiasBonuses);
 	SAFE_DELETE_ARRAY(m_paszCityNames);
 }
 
@@ -12049,6 +12057,33 @@ bool CvCivilizationInfo::isCivilizationDisableTechs(int i) const
 	FAssertMsg(i < GC.getNumTechInfos(), "Index out of bounds");
 	FAssertMsg(i > -1, "Index out of bounds");
 	return m_pbCivilizationDisableTechs ? m_pbCivilizationDisableTechs[i] : false;
+}
+
+// Start bias (added by this mod): iStartBiasCoastal and iStartBiasRiver (% of the found value), StartBiasTerrains,
+// StartBiasFeatures and StartBiasBonuses (% for each plot of the city radius)
+int CvCivilizationInfo::getStartBiasCoastal() const
+{
+	return m_iStartBiasCoastal;
+}
+
+int CvCivilizationInfo::getStartBiasRiver() const
+{
+	return m_iStartBiasRiver;
+}
+
+int CvCivilizationInfo::getStartBiasTerrain(int i) const
+{
+	return (m_piStartBiasTerrains != NULL && i > -1 && i < GC.getNumTerrainInfos()) ? m_piStartBiasTerrains[i] : 0;
+}
+
+int CvCivilizationInfo::getStartBiasFeature(int i) const
+{
+	return (m_piStartBiasFeatures != NULL && i > -1 && i < GC.getNumFeatureInfos()) ? m_piStartBiasFeatures[i] : 0;
+}
+
+int CvCivilizationInfo::getStartBiasBonus(int i) const
+{
+	return (m_piStartBiasBonuses != NULL && i > -1 && i < GC.getNumBonusInfos()) ? m_piStartBiasBonuses[i] : 0;
 }
 
 // UniqueBuilds (added by this mod): the players of this civilization can do this build, as with PrereqOrTraits
@@ -12221,13 +12256,46 @@ void CvCivilizationInfo::read(FDataStreamBase* stream)
 		}
 	}
 	updateCivilizationUniqueBuilds();
+
+	// uiFlag < 3: cache written before the start bias existed
+	m_iStartBiasCoastal = 0;
+	m_iStartBiasRiver = 0;
+	SAFE_DELETE_ARRAY(m_piStartBiasTerrains);
+	SAFE_DELETE_ARRAY(m_piStartBiasFeatures);
+	SAFE_DELETE_ARRAY(m_piStartBiasBonuses);
+	m_piStartBiasTerrains = new int[GC.getNumTerrainInfos()];
+	m_piStartBiasFeatures = new int[GC.getNumFeatureInfos()];
+	m_piStartBiasBonuses = new int[GC.getNumBonusInfos()];
+	if (uiFlag > 2)
+	{
+		stream->Read(&m_iStartBiasCoastal);
+		stream->Read(&m_iStartBiasRiver);
+		stream->Read(GC.getNumTerrainInfos(), m_piStartBiasTerrains);
+		stream->Read(GC.getNumFeatureInfos(), m_piStartBiasFeatures);
+		stream->Read(GC.getNumBonusInfos(), m_piStartBiasBonuses);
+	}
+	else
+	{
+		for (int iBias = 0; iBias < GC.getNumTerrainInfos(); iBias++)
+		{
+			m_piStartBiasTerrains[iBias] = 0;
+		}
+		for (int iBias = 0; iBias < GC.getNumFeatureInfos(); iBias++)
+		{
+			m_piStartBiasFeatures[iBias] = 0;
+		}
+		for (int iBias = 0; iBias < GC.getNumBonusInfos(); iBias++)
+		{
+			m_piStartBiasBonuses[iBias] = 0;
+		}
+	}
 }
 
 void CvCivilizationInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=2;
+	uint uiFlag=3;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iDefaultPlayerColor);
@@ -12259,6 +12327,11 @@ void CvCivilizationInfo::write(FDataStreamBase* stream)
 	stream->WriteString(m_iNumCityNames, m_paszCityNames);
 	stream->Write(GC.getNumTraitInfos(), m_pbTraits);
 	stream->Write(GC.getNumBuildInfos(), m_pbUniqueBuilds);
+	stream->Write(m_iStartBiasCoastal);
+	stream->Write(m_iStartBiasRiver);
+	stream->Write(GC.getNumTerrainInfos(), m_piStartBiasTerrains);
+	stream->Write(GC.getNumFeatureInfos(), m_piStartBiasFeatures);
+	stream->Write(GC.getNumBonusInfos(), m_piStartBiasBonuses);
 }
 
 bool CvCivilizationInfo::read(CvXMLLoadUtility* pXML)
@@ -12466,6 +12539,13 @@ bool CvCivilizationInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_pbTraits, "Traits", sizeof(GC.getTraitInfo((TraitTypes)0)), GC.getNumTraitInfos());
 	pXML->SetVariableListTagPair(&m_pbUniqueBuilds, "UniqueBuilds", sizeof(GC.getBuildInfo((BuildTypes)0)), GC.getNumBuildInfos());
 	updateCivilizationUniqueBuilds();
+
+	// Start bias (added by this mod): the terrains, features and bonuses are loaded before the civilizations
+	pXML->GetChildXmlValByName(&m_iStartBiasCoastal, "iStartBiasCoastal");
+	pXML->GetChildXmlValByName(&m_iStartBiasRiver, "iStartBiasRiver");
+	pXML->SetVariableListTagPair(&m_piStartBiasTerrains, "StartBiasTerrains", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());
+	pXML->SetVariableListTagPair(&m_piStartBiasFeatures, "StartBiasFeatures", sizeof(GC.getFeatureInfo((FeatureTypes)0)), GC.getNumFeatureInfos());
+	pXML->SetVariableListTagPair(&m_piStartBiasBonuses, "StartBiasBonuses", sizeof(GC.getBonusInfo((BonusTypes)0)), GC.getNumBonusInfos());
 
 	pXML->GetChildXmlValByName(szTextVal, "CivilizationSelectionSound");
 
@@ -19064,6 +19144,11 @@ m_iGoldenAgeLandMovesChange(0),
 m_iGoldenAgeSeaMovesChange(0),
 m_bInlandCanals(false),
 m_bBarbarianAlly(false),
+m_iStartBiasCoastal(0),
+m_iStartBiasRiver(0),
+m_piStartBiasTerrains(NULL),
+m_piStartBiasFeatures(NULL),
+m_piStartBiasBonuses(NULL),
 m_iGoldInterestPercent(0),
 m_iGoldInterestMax(0),
 m_iPeaceAngerPerTurn(0),
@@ -19141,6 +19226,9 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabNoObsoleteBuildingClass);
 	SAFE_DELETE_ARRAY(m_pabNoObsoleteSpecialBuilding);
 	SAFE_DELETE_ARRAY(m_pabNoObsoleteBonus);
+	SAFE_DELETE_ARRAY(m_piStartBiasTerrains);
+	SAFE_DELETE_ARRAY(m_piStartBiasFeatures);
+	SAFE_DELETE_ARRAY(m_piStartBiasBonuses);
 	SAFE_DELETE_ARRAY(m_pabForbiddenCivic);
 }
 
@@ -19398,6 +19486,32 @@ int CvTraitInfo::getGoldenAgeSeaMovesChange() const
 bool CvTraitInfo::isInlandCanals() const
 {
 	return m_bInlandCanals;
+}
+
+// Start bias of the trait (added by this mod), as the civilizations
+int CvTraitInfo::getStartBiasCoastal() const
+{
+	return m_iStartBiasCoastal;
+}
+
+int CvTraitInfo::getStartBiasRiver() const
+{
+	return m_iStartBiasRiver;
+}
+
+int CvTraitInfo::getStartBiasTerrain(int i) const
+{
+	return (m_piStartBiasTerrains != NULL && i > -1 && i < GC.getNumTerrainInfos()) ? m_piStartBiasTerrains[i] : 0;
+}
+
+int CvTraitInfo::getStartBiasFeature(int i) const
+{
+	return (m_piStartBiasFeatures != NULL && i > -1 && i < GC.getNumFeatureInfos()) ? m_piStartBiasFeatures[i] : 0;
+}
+
+int CvTraitInfo::getStartBiasBonus(int i) const
+{
+	return (m_piStartBiasBonuses != NULL && i > -1 && i < GC.getNumBonusInfos()) ? m_piStartBiasBonuses[i] : 0;
 }
 
 // The team of the player is at peace with the barbarians (added by this mod, as FFH2)
@@ -20206,6 +20320,34 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iGoldenAgeSeaMovesChange, "iGoldenAgeSeaMovesChange");
 	pXML->GetChildXmlValByName(&m_bInlandCanals, "bInlandCanals");
 	pXML->GetChildXmlValByName(&m_bBarbarianAlly, "bBarbarianAlly");
+
+	// Start bias (added by this mod). The terrains and features are loaded before the traits, the bonuses after them
+	pXML->GetChildXmlValByName(&m_iStartBiasCoastal, "iStartBiasCoastal");
+	pXML->GetChildXmlValByName(&m_iStartBiasRiver, "iStartBiasRiver");
+	pXML->SetVariableListTagPair(&m_piStartBiasTerrains, "StartBiasTerrains", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());
+	pXML->SetVariableListTagPair(&m_piStartBiasFeatures, "StartBiasFeatures", sizeof(GC.getFeatureInfo((FeatureTypes)0)), GC.getNumFeatureInfos());
+	m_aszStartBiasBonusTypes.clear();
+	m_aiStartBiasBonusValues.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "StartBiasBonuses"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "StartBiasBonus"))
+		{
+			do
+			{
+				CvString szBiasBonus;
+				int iBiasBonus = 0;
+				pXML->GetChildXmlValByName(szBiasBonus, "BonusType");
+				pXML->GetChildXmlValByName(&iBiasBonus, "iStartBias");
+				m_aszStartBiasBonusTypes.push_back(szBiasBonus);
+				m_aiStartBiasBonusValues.push_back(iBiasBonus);
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "StartBiasBonus"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 	pXML->GetChildXmlValByName(&m_iGoldInterestPercent, "iGoldInterestPercent");
 	pXML->GetChildXmlValByName(&m_iGoldInterestMax, "iGoldInterestMax");
 	pXML->GetChildXmlValByName(&m_iPeaceAngerPerTurn, "iPeaceAngerPerTurn");
@@ -20545,6 +20687,27 @@ bool CvTraitInfo::readPass3()
 	char szMessage[1024];
 	int iRoute;
 	int i;
+
+	// StartBiasBonuses (added by this mod)
+	SAFE_DELETE_ARRAY(m_piStartBiasBonuses);
+	if (!m_aszStartBiasBonusTypes.empty())
+	{
+		m_piStartBiasBonuses = new int[GC.getNumBonusInfos()];
+		for (i = 0; i < GC.getNumBonusInfos(); i++)
+		{
+			m_piStartBiasBonuses[i] = 0;
+		}
+		for (i = 0; i < (int)m_aszStartBiasBonusTypes.size(); i++)
+		{
+			int iBiasBonus = GC.getInfoTypeForString(m_aszStartBiasBonusTypes[i].GetCString());
+			if (iBiasBonus > -1)
+			{
+				m_piStartBiasBonuses[iBiasBonus] = m_aiStartBiasBonusValues[i];
+			}
+		}
+	}
+	m_aszStartBiasBonusTypes.clear();
+	m_aiStartBiasBonusValues.clear();
 
 	// UniqueBuildings: the building must be of the class, as in the civilizations (added by this mod)
 	m_aiUniqueBuildingClasses.clear();

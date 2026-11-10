@@ -1142,6 +1142,153 @@ int CvPlayer::findStartingArea() const
 }
 
 
+// Start bias of the civilization and the traits of a player (added by this mod), summed once before the plots are compared
+struct StartBias
+{
+	int iCoastal;
+	int iRiver;
+	int iHillTerrain;
+	int iPeakTerrain;
+	std::vector<int> aiTerrain;
+	std::vector<int> aiFeature;
+	std::vector<int> aiBonus;
+};
+
+// False without any bias
+static bool buildStartBias(const CvPlayer& kPlayer, StartBias& kBias)
+{
+	bool bAny = false;
+	int iI, iJ;
+
+	kBias.iCoastal = 0;
+	kBias.iRiver = 0;
+	kBias.iHillTerrain = GC.getInfoTypeForString("TERRAIN_HILL", true);
+	kBias.iPeakTerrain = GC.getInfoTypeForString("TERRAIN_PEAK", true);
+	kBias.aiTerrain.assign(GC.getNumTerrainInfos(), 0);
+	kBias.aiFeature.assign(GC.getNumFeatureInfos(), 0);
+	kBias.aiBonus.assign(GC.getNumBonusInfos(), 0);
+
+	if (kPlayer.getLeaderType() == NO_LEADER)
+	{
+		return false;
+	}
+
+	// -1: the civilization, then the traits
+	for (iI = -1; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (iI == -1)
+		{
+			if (kPlayer.getCivilizationType() == NO_CIVILIZATION)
+			{
+				continue;
+			}
+			CvCivilizationInfo& kCiv = GC.getCivilizationInfo(kPlayer.getCivilizationType());
+			kBias.iCoastal += kCiv.getStartBiasCoastal();
+			kBias.iRiver += kCiv.getStartBiasRiver();
+			for (iJ = 0; iJ < GC.getNumTerrainInfos(); iJ++)
+			{
+				kBias.aiTerrain[iJ] += kCiv.getStartBiasTerrain(iJ);
+			}
+			for (iJ = 0; iJ < GC.getNumFeatureInfos(); iJ++)
+			{
+				kBias.aiFeature[iJ] += kCiv.getStartBiasFeature(iJ);
+			}
+			for (iJ = 0; iJ < GC.getNumBonusInfos(); iJ++)
+			{
+				kBias.aiBonus[iJ] += kCiv.getStartBiasBonus(iJ);
+			}
+		}
+		else if (kPlayer.hasTrait((TraitTypes)iI))
+		{
+			CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+			kBias.iCoastal += kTrait.getStartBiasCoastal();
+			kBias.iRiver += kTrait.getStartBiasRiver();
+			for (iJ = 0; iJ < GC.getNumTerrainInfos(); iJ++)
+			{
+				kBias.aiTerrain[iJ] += kTrait.getStartBiasTerrain(iJ);
+			}
+			for (iJ = 0; iJ < GC.getNumFeatureInfos(); iJ++)
+			{
+				kBias.aiFeature[iJ] += kTrait.getStartBiasFeature(iJ);
+			}
+			for (iJ = 0; iJ < GC.getNumBonusInfos(); iJ++)
+			{
+				kBias.aiBonus[iJ] += kTrait.getStartBiasBonus(iJ);
+			}
+		}
+	}
+
+	bAny = (kBias.iCoastal != 0 || kBias.iRiver != 0);
+	for (iJ = 0; iJ < GC.getNumTerrainInfos() && !bAny; iJ++)
+	{
+		bAny = (kBias.aiTerrain[iJ] != 0);
+	}
+	for (iJ = 0; iJ < GC.getNumFeatureInfos() && !bAny; iJ++)
+	{
+		bAny = (kBias.aiFeature[iJ] != 0);
+	}
+	for (iJ = 0; iJ < GC.getNumBonusInfos() && !bAny; iJ++)
+	{
+		bAny = (kBias.aiBonus[iJ] != 0);
+	}
+
+	return bAny;
+}
+
+// The % the bias adds to the found value of a plot: coast (an ocean, not a lake) and river at the plot; terrains (hills and
+// peaks count as TERRAIN_HILL and TERRAIN_PEAK, hills also as the terrain below), features and bonuses for each plot of the
+// default city radius
+static int getStartBiasPercent(const CvPlot* pPlot, const StartBias& kBias)
+{
+	int iBias = 0;
+	int iI;
+
+	if (kBias.iCoastal != 0 && pPlot->isCoastalLand(GC.getMIN_WATER_SIZE_FOR_OCEAN()))
+	{
+		iBias += kBias.iCoastal;
+	}
+	if (kBias.iRiver != 0 && pPlot->isRiver())
+	{
+		iBias += kBias.iRiver;
+	}
+
+	for (iI = 0; iI < NUM_DEFAULT_CITY_PLOTS; iI++)
+	{
+		CvPlot* pLoopPlot = plotCity(pPlot->getX_INLINE(), pPlot->getY_INLINE(), iI);
+		if (pLoopPlot == NULL)
+		{
+			continue;
+		}
+
+		if (pLoopPlot->isPeak())
+		{
+			if (kBias.iPeakTerrain > -1)
+			{
+				iBias += kBias.aiTerrain[kBias.iPeakTerrain];
+			}
+		}
+		else
+		{
+			iBias += kBias.aiTerrain[pLoopPlot->getTerrainType()];
+			if (pLoopPlot->isHills() && kBias.iHillTerrain > -1)
+			{
+				iBias += kBias.aiTerrain[kBias.iHillTerrain];
+			}
+		}
+
+		if (pLoopPlot->getFeatureType() != NO_FEATURE)
+		{
+			iBias += kBias.aiFeature[pLoopPlot->getFeatureType()];
+		}
+		if (pLoopPlot->getBonusType() != NO_BONUS)
+		{
+			iBias += kBias.aiBonus[pLoopPlot->getBonusType()];
+		}
+	}
+
+	return iBias;
+}
+
 CvPlot* CvPlayer::findStartingPlot(bool bRandomize)
 {
 	PROFILE_FUNC();
@@ -1187,6 +1334,10 @@ CvPlot* CvPlayer::findStartingPlot(bool bRandomize)
 		iBestArea = findStartingArea();
 	}
 
+	// Start bias of the civilization and the traits (added by this mod)
+	StartBias kStartBias;
+	bool bStartBias = buildStartBias(*this, kStartBias);
+
 	iRange = startingPlotRange();
 	for(int iPass = 0; iPass < GC.getMapINLINE().maxPlotDistance(); iPass++)
 	{
@@ -1201,6 +1352,12 @@ CvPlot* CvPlayer::findStartingPlot(bool bRandomize)
 			{
 				//the distance factor is now done inside foundValue
 				iValue = pLoopPlot->getFoundValue(getID());
+
+				// Start bias (added by this mod): a % of the found value
+				if (bStartBias && iValue > 0)
+				{
+					iValue = (iValue * std::max(0, 100 + getStartBiasPercent(pLoopPlot, kStartBias))) / 100;
+				}
 
 				if (bRandomize && iValue > 0)
 				{

@@ -86,3 +86,4 @@
 - 2026-11-10: 志向の `bBarbarianAlly`（検証用志向（蛮族）。検証用社会制度の採用で蛮族と和平、変更で蛮族が宣戦、お互いの領土に入れる、他の文明は本体どおり、セーブと読み込み）と、社会制度の説明への `ConditionalFreeTraits` の `PrereqCivic` の表示（ペディア、ゲーム中は自分の志向の分だけ、志向の説明文は変わらない）をゲーム内で確認
 - 2026-11-10: 志向の `NoObsoleteBonuses`（検証用志向で毛皮と象牙。説明文、プラスチック・工業主義の後も毛皮と象牙が使える、鯨は内燃機関で陳腐化、他の文明は本体どおり、セーブと読み込み）をゲーム内で確認。`bIgnoreBonusObsolescence` は未確認
 - 2026-11-10: 志向の `FreePromotionSets` の `FreePromotionUnitClasses`・`bFreePromotionNoUnitCombat`・`FreePromotionDomains`（検証用志向で、兵科のない陸上ユニットに森林Ⅱ、作業船に航海術Ⅰ。説明文、労働者・開拓者・宣教師、作業船には森林Ⅱが付かない、戦闘ユニットと他の文明は本体どおり）をゲーム内で確認
+- 2026-11-10: 文明と志向の開始位置のバイアス（`iStartBiasCoastal`・`iStartBiasRiver`・`StartBiasTerrains`・`StartBiasFeatures`・`StartBiasBonuses`。説明文、検証用文明の沿岸と検証用志向の好み、一時的にモンゴルへ馬 +500% を付けて新しいゲームとマップの再生成で馬の近くから始まることを確認。モンゴルの設定は外した）をゲーム内で確認
