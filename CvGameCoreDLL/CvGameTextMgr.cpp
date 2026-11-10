@@ -3663,6 +3663,23 @@ void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, Trait
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_SEA_MOVES", kTrait.getGoldenAgeSeaMovesChange()));
 	}
 
+	// CityFoundedUnits (added by this mod): "Each city founded gets 1 Galley (cities on the coast only)"
+	for (iI = 0; iI < kTrait.getNumCityFoundedUnits(); iI++)
+	{
+		int iFoundedUnit = GC.getUnitClassInfo((UnitClassTypes)kTrait.getCityFoundedUnitClass(iI)).getDefaultUnitIndex();
+		if (iFoundedUnit == NO_UNIT)
+		{
+			continue;
+		}
+		szText = getLinkText(GC.getUnitInfo((UnitTypes)iFoundedUnit).getDescription());
+		szTempBuffer = gDLL->getText("TXT_KEY_TRAIT_CITY_FOUNDED_UNIT", szText.GetCString(), kTrait.getCityFoundedUnitNum(iI));
+		if (kTrait.isCityFoundedUnitCoastalOnly(iI) || GC.getUnitInfo((UnitTypes)iFoundedUnit).getDomainType() == DOMAIN_SEA)
+		{
+			szTempBuffer += gDLL->getText("TXT_KEY_TRAIT_CITY_FOUNDED_UNIT_COASTAL");
+		}
+		appendTraitLine(szHelpString, szTempBuffer);
+	}
+
 	// Start bias (added by this mod)
 	CvWString szStartBias = getStartBiasText(kTrait);
 	if (!szStartBias.empty())

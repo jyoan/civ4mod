@@ -5976,6 +5976,37 @@ void CvPlayer::found(int iX, int iY)
 
 	CvEventReporter::getInstance().cityBuilt(pCity);
 	doTraitPythonHook(TRAIT_PYHOOK_CITY_FOUNDED, pCity);	// PyOnCityFounded (added by this mod)
+
+	// CityFoundedUnits of the traits (added by this mod): the unit of the civilization of each class, in the city. Ships and
+	// bCoastalOnly only in a city on the coast of an ocean
+	bool bCoastalCity = pCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN());
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (!hasTrait((TraitTypes)iI))
+		{
+			continue;
+		}
+
+		CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+		for (int iFounded = 0; iFounded < kTrait.getNumCityFoundedUnits(); iFounded++)
+		{
+			UnitTypes eFoundedUnit = (UnitTypes)getCivilizationUnit(kTrait.getCityFoundedUnitClass(iFounded));
+			if (eFoundedUnit == NO_UNIT)
+			{
+				continue;
+			}
+
+			if (!bCoastalCity && (kTrait.isCityFoundedUnitCoastalOnly(iFounded) || GC.getUnitInfo(eFoundedUnit).getDomainType() == DOMAIN_SEA))
+			{
+				continue;
+			}
+
+			for (int iNum = 0; iNum < kTrait.getCityFoundedUnitNum(iFounded); iNum++)
+			{
+				initUnit(eFoundedUnit, pCity->getX_INLINE(), pCity->getY_INLINE());
+			}
+		}
+	}
 }
 
 

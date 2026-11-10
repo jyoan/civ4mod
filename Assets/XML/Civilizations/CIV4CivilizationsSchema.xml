@@ -366,6 +366,16 @@
 	<ElementType name="iGoldenAgeSeaMovesChange" content="textOnly" dt:type="int"/>
 	<ElementType name="bInlandCanals" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bBarbarianAlly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iNumUnits" content="textOnly" dt:type="int"/>
+	<ElementType name="bCoastalOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="CityFoundedUnit" content="eltOnly">
+		<element type="UnitClassType"/>
+		<element type="iNumUnits" minOccurs="0"/>
+		<element type="bCoastalOnly" minOccurs="0"/>
+	</ElementType>
+	<ElementType name="CityFoundedUnits" content="eltOnly">
+		<element type="CityFoundedUnit" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="iGoldInterestPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldInterestMax" content="textOnly" dt:type="int"/>
 	<ElementType name="iPeaceAngerPerTurn" content="textOnly" dt:type="int"/>
@@ -644,6 +654,7 @@
 		<element type="StartBiasTerrains" minOccurs="0"/>
 		<element type="StartBiasFeatures" minOccurs="0"/>
 		<element type="StartBiasBonuses" minOccurs="0"/>
+		<element type="CityFoundedUnits" minOccurs="0"/>
 		<element type="iGoldInterestPercent" minOccurs="0"/>
 		<element type="iGoldInterestMax" minOccurs="0"/>
 		<element type="iPeaceAngerPerTurn" minOccurs="0"/>
