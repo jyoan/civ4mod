@@ -2508,6 +2508,56 @@ bool CvTeam::isBarbarian() const
 }
 
 
+// bBarbarianAlly of the traits (added by this mod, as FFH2): a living player of the team has such a trait
+bool CvTeam::isBarbarianAlly() const
+{
+	int iI;
+
+	if (isBarbarian())
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
+		if (kPlayer.isAlive() && kPlayer.getTeam() == getID() && kPlayer.getLeaderType() != NO_LEADER)
+		{
+			for (int iTrait = 0; iTrait < GC.getNumTraitInfos(); iTrait++)
+			{
+				if (GC.getTraitInfo((TraitTypes)iTrait).isBarbarianAlly() && kPlayer.hasTrait((TraitTypes)iTrait))
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+// After a player of the team gains or loses a trait with bBarbarianAlly (added by this mod): peace with the barbarians, or
+// the barbarians declare war again. CvGame::initDiplomacy handles the traits at the start of the game
+void CvTeam::updateBarbarianAlly()
+{
+	if (isBarbarian() || !isAlive() || !GET_TEAM(BARBARIAN_TEAM).isAlive())
+	{
+		return;
+	}
+
+	if (isBarbarianAlly())
+	{
+		if (isAtWar(BARBARIAN_TEAM))
+		{
+			makePeace(BARBARIAN_TEAM);
+		}
+	}
+	else if (!isAtWar(BARBARIAN_TEAM))
+	{
+		GET_TEAM(BARBARIAN_TEAM).declareWar(getID(), false, NO_WARPLAN);
+	}
+}
+
 bool CvTeam::isMinorCiv() const
 {
 	bool bValid;

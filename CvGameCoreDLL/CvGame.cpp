@@ -629,7 +629,9 @@ void CvGame::initDiplomacy()
 		{
 			for (iJ = 0; iJ < MAX_CIV_TEAMS; iJ++)
 			{
-				if (iI != iJ)
+				// Not the barbarians against a team with bBarbarianAlly (added by this mod, as FFH2; FFH2 also skips the minor
+				// civilizations here)
+				if (iI != iJ && !(GET_TEAM((TeamTypes)iI).isBarbarian() && GET_TEAM((TeamTypes)iJ).isBarbarianAlly()))
 				{
 					GET_TEAM((TeamTypes)iI).declareWar(((TeamTypes)iJ), false, NO_WARPLAN);
 				}

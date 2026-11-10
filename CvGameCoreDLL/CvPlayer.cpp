@@ -2318,6 +2318,12 @@ void CvPlayer::changeFreeTraitCount(TraitTypes eTrait, int iChange)
 	{
 		updateTraitBonusPlots(eTrait, true);
 
+		// bBarbarianAlly (added by this mod)
+		if (GC.getTraitInfo(eTrait).isBarbarianAlly())
+		{
+			GET_TEAM(getTeam()).updateBarbarianAlly();
+		}
+
 		processTrait(eTrait, (hasTrait(eTrait) ? 1 : -1));
 
 		if (bUpdate)

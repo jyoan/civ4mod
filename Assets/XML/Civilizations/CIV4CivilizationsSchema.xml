@@ -354,6 +354,7 @@
 	<ElementType name="iGoldenAgeLandMovesChange" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldenAgeSeaMovesChange" content="textOnly" dt:type="int"/>
 	<ElementType name="bInlandCanals" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bBarbarianAlly" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iGoldInterestPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldInterestMax" content="textOnly" dt:type="int"/>
 	<ElementType name="iPeaceAngerPerTurn" content="textOnly" dt:type="int"/>
@@ -598,6 +599,7 @@
 		<element type="iGoldenAgeLandMovesChange" minOccurs="0"/>
 		<element type="iGoldenAgeSeaMovesChange" minOccurs="0"/>
 		<element type="bInlandCanals" minOccurs="0"/>
+		<element type="bBarbarianAlly" minOccurs="0"/>
 		<element type="iGoldInterestPercent" minOccurs="0"/>
 		<element type="iGoldInterestMax" minOccurs="0"/>
 		<element type="iPeaceAngerPerTurn" minOccurs="0"/>
