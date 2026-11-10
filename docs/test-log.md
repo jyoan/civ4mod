@@ -88,3 +88,4 @@
 - 2026-11-10: 志向の `FreePromotionSets` の `FreePromotionUnitClasses`・`bFreePromotionNoUnitCombat`・`FreePromotionDomains`（検証用志向で、兵科のない陸上ユニットに森林Ⅱ、作業船に航海術Ⅰ。説明文、労働者・開拓者・宣教師、作業船には森林Ⅱが付かない、戦闘ユニットと他の文明は本体どおり）をゲーム内で確認
 - 2026-11-10: 文明と志向の開始位置のバイアス（`iStartBiasCoastal`・`iStartBiasRiver`・`StartBiasTerrains`・`StartBiasFeatures`・`StartBiasBonuses`。説明文、検証用文明の沿岸と検証用志向の好み、一時的にモンゴルへ馬 +500% を付けて新しいゲームとマップの再生成で馬の近くから始まることを確認。モンゴルの設定は外した）をゲーム内で確認
 - 2026-11-10: 志向の `CityFoundedUnits`（検証用志向でガレー船 1 隻と戦士 2 体（`bCoastalOnly`）。説明文、沿岸の都市で両方が出る、内陸と湖のほとりでは出ない、他の文明は出ない）をゲーム内で確認
+- 2026-11-10: リファクタリング第 1 段階（`CvPlayer::hasTraitFlag`・`CvTeam::hasPlayerTraitFlag`・`CvUnit::hasPromotionFlag` / `countPromotions` / `sumPromotionValues` / `updatePromotionCounts`）の後、関係する志向と昇進の効果（領内の略奪不可・他国の文化圏の都市・温暖化・内陸の運河・国教の伝播・蛮族と平和・資源の陳腐化・部族集落・川のダメージ、ロード後の傷・国籍秘匿・領内の戦闘力）をゲーム内で確認

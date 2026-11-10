@@ -8,6 +8,7 @@
 //#include "CvEnums.h"
 
 class CvArea;
+class CvTraitInfo;		// CvInfos.h (added by this mod)
 
 class CvTeam
 {
@@ -91,6 +92,8 @@ public:
 	bool hasBonus(BonusTypes eBonus) const;
 	bool isBonusObsolete(BonusTypes eBonus) const;
 	bool isBonusObsolescenceIgnored(BonusTypes eBonus) const;	// added by this mod: a trait of a player of the team keeps the bonus
+	bool hasPlayerTraitFlag(bool (CvTraitInfo::*pGetter)() const) const;			// added by this mod
+	bool hasPlayerTraitFlag(bool (CvTraitInfo::*pGetter)(int) const, int iArg) const;	// added by this mod
 
 	bool isHuman() const;																																// Exposed to Python
 	bool isBarbarian() const;																														// Exposed to Python

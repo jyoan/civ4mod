@@ -17,6 +17,7 @@ class CvUnitInfo;
 class CvSelectionGroup;
 class FAStarNode;
 class CvArtInfoUnit;
+class CvPromotionInfo;		// CvInfos.h (added by this mod)
 
 struct DllExport CombatDetails					// Exposed to Python
 {
@@ -407,6 +408,10 @@ public:
 	int getRiverCrossingDamagePercent() const;	// added by this mod
 	bool isNoDamagePenalty() const;	// added by this mod. Exposed to Python
 	bool isChooseGoody() const;	// added by this mod: bChooseGoody of the promotions
+	bool hasPromotionFlag(bool (CvPromotionInfo::*pGetter)() const) const;	// added by this mod: a promotion of the unit says yes
+	int countPromotions(bool (CvPromotionInfo::*pGetter)() const) const;		// added by this mod: the promotions of the unit that say yes
+	int sumPromotionValues(int (CvPromotionInfo::*pGetter)() const) const;	// added by this mod: the sum over the promotions of the unit
+	void updatePromotionCounts();												// added by this mod: the values of the promotions that are not saved
 	void doFeatureSpreads();	// added by this mod: FeatureSpreads of the promotions
 	bool isHiddenNationality() const;	// added by this mod: bHiddenNationality of the unit or of its promotions. Exposed to Python
 	bool canEnterImpassablePlot(const CvPlot* pPlot) const;	// added by this mod
