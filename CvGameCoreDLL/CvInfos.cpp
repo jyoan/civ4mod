@@ -2159,6 +2159,37 @@ bool CvPromotionInfo::isChooseGoody() const
 	return m_bChooseGoody;
 }
 
+// FeatureSpreads (added by this mod): at the end of the turn of the unit, each plot in range gets the feature with the chance
+int CvPromotionInfo::getNumFeatureSpreads() const
+{
+	return (int)m_aiFeatureSpreadFeature.size();
+}
+
+int CvPromotionInfo::getFeatureSpreadFeature(int i) const
+{
+	return (i > -1 && i < getNumFeatureSpreads()) ? m_aiFeatureSpreadFeature[i] : -1;
+}
+
+int CvPromotionInfo::getFeatureSpreadChance(int i) const
+{
+	return (i > -1 && i < getNumFeatureSpreads()) ? m_aiFeatureSpreadChance[i] : 0;
+}
+
+int CvPromotionInfo::getFeatureSpreadRange(int i) const
+{
+	return (i > -1 && i < getNumFeatureSpreads()) ? m_aiFeatureSpreadRange[i] : 0;
+}
+
+bool CvPromotionInfo::isFeatureSpreadNotOwnPlot(int i) const
+{
+	return (i > -1 && i < getNumFeatureSpreads()) ? (m_aiFeatureSpreadNotOwnPlot[i] != 0) : false;
+}
+
+bool CvPromotionInfo::isFeatureSpreadForce(int i) const
+{
+	return (i > -1 && i < getNumFeatureSpreads()) ? (m_aiFeatureSpreadForce[i] != 0) : false;
+}
+
 int CvPromotionInfo::getCombatPercentInBorders() const
 {
 	return m_iCombatPercentInBorders;
@@ -2477,13 +2508,41 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_bChooseGoody);
 	}
+
+	// uiFlag < 10: cache written before FeatureSpreads existed
+	m_aiFeatureSpreadFeature.clear();
+	m_aiFeatureSpreadChance.clear();
+	m_aiFeatureSpreadRange.clear();
+	m_aiFeatureSpreadNotOwnPlot.clear();
+	m_aiFeatureSpreadForce.clear();
+	if (uiFlag > 9)
+	{
+		int iNumSpreads;
+		int iSpreadValue;
+		int iSpread;
+
+		stream->Read(&iNumSpreads);
+		for (iSpread = 0; iSpread < iNumSpreads; iSpread++)
+		{
+			stream->Read(&iSpreadValue);
+			m_aiFeatureSpreadFeature.push_back(iSpreadValue);
+			stream->Read(&iSpreadValue);
+			m_aiFeatureSpreadChance.push_back(iSpreadValue);
+			stream->Read(&iSpreadValue);
+			m_aiFeatureSpreadRange.push_back(iSpreadValue);
+			stream->Read(&iSpreadValue);
+			m_aiFeatureSpreadNotOwnPlot.push_back(iSpreadValue);
+			stream->Read(&iSpreadValue);
+			m_aiFeatureSpreadForce.push_back(iSpreadValue);
+		}
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 9;
+	uint uiFlag = 10;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2588,6 +2647,17 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iRiverCrossingDamagePercent);
 	stream->Write(m_bNoDamagePenalty);
 	stream->Write(m_bChooseGoody);
+
+	int iSpread;
+	stream->Write(getNumFeatureSpreads());
+	for (iSpread = 0; iSpread < getNumFeatureSpreads(); iSpread++)
+	{
+		stream->Write(m_aiFeatureSpreadFeature[iSpread]);
+		stream->Write(m_aiFeatureSpreadChance[iSpread]);
+		stream->Write(m_aiFeatureSpreadRange[iSpread]);
+		stream->Write(m_aiFeatureSpreadNotOwnPlot[iSpread]);
+		stream->Write(m_aiFeatureSpreadForce[iSpread]);
+	}
 }
 
 bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
@@ -2701,6 +2771,48 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iRiverCrossingDamagePercent, "iRiverCrossingDamagePercent");
 	pXML->GetChildXmlValByName(&m_bNoDamagePenalty, "bNoDamagePenalty");
 	pXML->GetChildXmlValByName(&m_bChooseGoody, "bChooseGoody");
+
+	// FeatureSpreads (added by this mod): the features are loaded before the promotions
+	m_aiFeatureSpreadFeature.clear();
+	m_aiFeatureSpreadChance.clear();
+	m_aiFeatureSpreadRange.clear();
+	m_aiFeatureSpreadNotOwnPlot.clear();
+	m_aiFeatureSpreadForce.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FeatureSpreads"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FeatureSpread"))
+		{
+			do
+			{
+				int iSpreadFeature;
+				int iSpreadChance = 0;
+				int iSpreadRange = 0;
+				bool bNotOwnPlot = false;
+				bool bForce = false;
+
+				pXML->GetChildXmlValByName(szTextVal, "FeatureType");
+				iSpreadFeature = pXML->FindInInfoClass(szTextVal);
+				pXML->GetChildXmlValByName(&iSpreadChance, "iSpreadChance");
+				pXML->GetChildXmlValByName(&iSpreadRange, "iSpreadRange");
+				pXML->GetChildXmlValByName(&bNotOwnPlot, "bNotOwnPlot");
+				pXML->GetChildXmlValByName(&bForce, "bForce");
+
+				if (iSpreadFeature > -1 && iSpreadChance > 0)
+				{
+					m_aiFeatureSpreadFeature.push_back(iSpreadFeature);
+					m_aiFeatureSpreadChance.push_back(iSpreadChance);
+					m_aiFeatureSpreadRange.push_back(std::max(0, iSpreadRange));
+					m_aiFeatureSpreadNotOwnPlot.push_back(bNotOwnPlot ? 1 : 0);
+					m_aiFeatureSpreadForce.push_back(bForce ? 1 : 0);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "FeatureSpread"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 
 	// ImpassablePlotPassages: terrains and features are loaded before promotions
 	m_aiImpassablePlotPassageTerrain.clear();

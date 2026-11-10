@@ -771,6 +771,12 @@ void CvUnit::doTurn()
 		doTurnPromotions();
 	}
 
+	// FeatureSpreads of the promotions (added by this mod)
+	if (!isDead() && !isDelayedDeath())
+	{
+		doFeatureSpreads();
+	}
+
 	changeImmobileTimer(-1);
 
 	setMadeAttack(false);
@@ -10400,6 +10406,99 @@ int CvUnit::getRiverCrossingDamagePercent() const
 	}
 
 	return iPercent;
+}
+
+// FeatureSpreads (added by this mod): the plot can get the feature. Without bForce, as the features that grow by themselves
+// (CvPlot::doFeature): no feature, no improvement, a bonus that allows it. With bForce, as the fallout of a nuke: land that
+// is not impassable and not a city, over any feature that is not nuke immune; a permanent improvement or a landmark keeps it
+static bool canSpreadFeatureToPlot(const CvPlot* pPlot, FeatureTypes eFeature, bool bForce)
+{
+	if (pPlot->getFeatureType() == eFeature)
+	{
+		return false;
+	}
+
+	if (bForce)
+	{
+		if (pPlot->isCity() || pPlot->isWater() || pPlot->isImpassable())
+		{
+			return false;
+		}
+
+		if (pPlot->getFeatureType() != NO_FEATURE && GC.getFeatureInfo(pPlot->getFeatureType()).isNukeImmune())
+		{
+			return false;
+		}
+
+		if (pPlot->getImprovementType() != NO_IMPROVEMENT)
+		{
+			CvImprovementInfo& kImprovement = GC.getImprovementInfo(pPlot->getImprovementType());
+			if (kImprovement.isPermanent() || kImprovement.getUniqueChance() > 0)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	if (!pPlot->canHaveFeature(eFeature) || pPlot->getImprovementType() != NO_IMPROVEMENT)
+	{
+		return false;
+	}
+
+	return (pPlot->getBonusType() == NO_BONUS || GC.getBonusInfo(pPlot->getBonusType()).isFeature(eFeature));
+}
+
+// FeatureSpreads of the promotions (added by this mod): at the end of the turn, each plot in range (iSpreadRange around the
+// unit, without its own plot with bNotOwnPlot) gets the feature with iSpreadChance %. bForce removes the improvement
+void CvUnit::doFeatureSpreads()
+{
+	CvPlot* pLoopPlot;
+	FeatureTypes eFeature;
+	bool bForce;
+	int iRange;
+	int iI, iJ, iDX, iDY;
+
+	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	{
+		if (!isHasPromotion((PromotionTypes)iI))
+		{
+			continue;
+		}
+
+		CvPromotionInfo& kPromotion = GC.getPromotionInfo((PromotionTypes)iI);
+		for (iJ = 0; iJ < kPromotion.getNumFeatureSpreads(); iJ++)
+		{
+			eFeature = (FeatureTypes)kPromotion.getFeatureSpreadFeature(iJ);
+			bForce = kPromotion.isFeatureSpreadForce(iJ);
+			iRange = kPromotion.getFeatureSpreadRange(iJ);
+
+			for (iDX = -iRange; iDX <= iRange; iDX++)
+			{
+				for (iDY = -iRange; iDY <= iRange; iDY++)
+				{
+					if (iDX == 0 && iDY == 0 && kPromotion.isFeatureSpreadNotOwnPlot(iJ))
+					{
+						continue;
+					}
+
+					pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+					if (pLoopPlot != NULL && canSpreadFeatureToPlot(pLoopPlot, eFeature, bForce))
+					{
+						if (GC.getGameINLINE().getSorenRandNum(100, "Promotion Feature Spread") < kPromotion.getFeatureSpreadChance(iJ))
+						{
+							if (bForce)
+							{
+								pLoopPlot->setImprovementType(NO_IMPROVEMENT);
+							}
+							pLoopPlot->setFeatureType(eFeature);
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 // bChooseGoody of the promotions (added by this mod)

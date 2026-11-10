@@ -47,6 +47,7 @@
 | `PROMOTION_TEST_ICEBREAKER`（検証用昇進（砕氷船）） | 検証用昇進（通行不可タイル） | 状態の昇進（ワールドビルダーで船に付ける）。氷河に入れ、移動コスト +1、入ると氷河が消える（`iExtraMoveCost`・`bRemoveFeature`）。ダメージなし |
 | `PROMOTION_TEST_NO_PENALTY`（検証用昇進（傷の影響なし）） | 検証用昇進（砕氷船） | 状態の昇進（`UnitCombats` は空。ワールドビルダーで付ける）。`bNoDamagePenalty` 1。ほかの効果はない |
 | `PROMOTION_TEST_CHOOSE_GOODY`（検証用昇進（部族集落）） | 検証用昇進（傷の影響なし） | `bChooseGoody` 1。検証用志向の昇進の組で偵察ユニット（斥候・探検家）に付く |
+| `PROMOTION_TEST_FEATURE`（検証用昇進（地形の特徴）） | 検証用昇進（傷の影響なし） | 状態の昇進（ワールドビルダーで付ける）。`FeatureSpreads`: いるタイルに森 100%、周囲 1 マス（いるタイルを除く）に死の灰 25%（`bForce`） |
 | `SPELL_TEST_GOLD`（検証用呪文（資金）） | — | 検証用文明の白兵戦ユニットが、自国の領土で資金 +25（`spellGainGold(pCaster, 25)`。`PyRequirement` なし）。使えないときも無効のボタンで出る（`bDisplayWhenDisabled`）。実行済みになる。ボタンは「富」 |
 | `SPELL_TEST_PROMOTION`（検証用呪文（昇進）） | — | 検証用昇進を持つユニットが、都市で、検証用状態Ⅰを持っていなければ得る（`reqNotHasPromotion` / `spellAddPromotion`）。使えないときはボタンが出ない。実行済みになる。ボタンは戦闘術Ⅱ |
 | `SPELL_TEST_CONVERT`（検証用呪文（変身）） | — | ユニット A が、資金 10 で検証用状態Ⅱを得てからユニット B に変わる（状態Ⅱ・経験値・実行済みは B に引き継ぐ。B はそのターン動けない）。演出 `EFFECT_SETTLERSMOKE`、音 `AS2D_GOODY_WARRIOR`。使えないときも無効のボタンで出る。実行済みになる |

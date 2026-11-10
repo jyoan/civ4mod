@@ -816,6 +816,20 @@
 	<ElementType name="iRiverCrossingDamagePercent" content="textOnly" dt:type="int"/>
 	<ElementType name="bNoDamagePenalty" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bChooseGoody" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iSpreadChance" content="textOnly" dt:type="int"/>
+	<ElementType name="iSpreadRange" content="textOnly" dt:type="int"/>
+	<ElementType name="bNotOwnPlot" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bForce" content="textOnly" dt:type="boolean"/>
+	<ElementType name="FeatureSpread" content="eltOnly">
+		<element type="FeatureType"/>
+		<element type="iSpreadChance"/>
+		<element type="iSpreadRange" minOccurs="0"/>
+		<element type="bNotOwnPlot" minOccurs="0"/>
+		<element type="bForce" minOccurs="0"/>
+	</ElementType>
+	<ElementType name="FeatureSpreads" content="eltOnly">
+		<element type="FeatureSpread" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="ImpassablePlotPassage" content="eltOnly">
 		<element type="TerrainType" minOccurs="0"/>
 		<element type="FeatureType" minOccurs="0"/>
@@ -957,6 +971,7 @@
 		<element type="iRiverCrossingDamagePercent" minOccurs="0"/>
 		<element type="bNoDamagePenalty" minOccurs="0"/>
 		<element type="bChooseGoody" minOccurs="0"/>
+		<element type="FeatureSpreads" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

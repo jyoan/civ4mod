@@ -1676,6 +1676,42 @@
 		<Spanish>[ICON_BULLET]%D1_Num[ICON_MOVES] for naval units during a golden age</Spanish>
 		<Japanese>[ICON_BULLET]&#40644;&#37329;&#26399;&#12398;&#38291;&#12289;&#33382;&#33337;&#12398;&#31227;&#21205;&#21147;%D1_Num[ICON_MOVES]</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FEATURE_SPREAD_PLOT</Tag>
+		<English>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot</English>
+		<French>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot</French>
+		<German>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot</German>
+		<Italian>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot</Italian>
+		<Spanish>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot</Spanish>
+		<Japanese>[ICON_BULLET]&#12479;&#12540;&#12531;&#32066;&#20102;&#26178;&#12289;%d1_Num%%&#12398;&#30906;&#29575;&#12391;&#12356;&#12427;&#12479;&#12452;&#12523;&#12395;%s2_Feature&#12434;&#32622;&#12367;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FEATURE_SPREAD_AROUND</Tag>
+		<English>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on each plot within %d3_Range tiles (not its own)</English>
+		<French>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on each plot within %d3_Range tiles (not its own)</French>
+		<German>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on each plot within %d3_Range tiles (not its own)</German>
+		<Italian>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on each plot within %d3_Range tiles (not its own)</Italian>
+		<Spanish>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on each plot within %d3_Range tiles (not its own)</Spanish>
+		<Japanese>[ICON_BULLET]&#12479;&#12540;&#12531;&#32066;&#20102;&#26178;&#12289;&#21608;&#22258;%d3_Range&#12510;&#12473;&#12398;&#21508;&#12479;&#12452;&#12523;&#12395;%d1_Num%%&#12398;&#30906;&#29575;&#12391;%s2_Feature&#12434;&#32622;&#12367;&#65288;&#12356;&#12427;&#12479;&#12452;&#12523;&#12399;&#38500;&#12367;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FEATURE_SPREAD_AREA</Tag>
+		<English>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot and each plot within %d3_Range tiles</English>
+		<French>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot and each plot within %d3_Range tiles</French>
+		<German>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot and each plot within %d3_Range tiles</German>
+		<Italian>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot and each plot within %d3_Range tiles</Italian>
+		<Spanish>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot and each plot within %d3_Range tiles</Spanish>
+		<Japanese>[ICON_BULLET]&#12479;&#12540;&#12531;&#32066;&#20102;&#26178;&#12289;&#12356;&#12427;&#12479;&#12452;&#12523;&#12392;&#21608;&#22258;%d3_Range&#12510;&#12473;&#12398;&#21508;&#12479;&#12452;&#12523;&#12395;%d1_Num%%&#12398;&#30906;&#29575;&#12391;%s2_Feature&#12434;&#32622;&#12367;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FEATURE_SPREAD_FORCE</Tag>
+		<English> (replaces features and improvements)</English>
+		<French> (replaces features and improvements)</French>
+		<German> (replaces features and improvements)</German>
+		<Italian> (replaces features and improvements)</Italian>
+		<Spanish> (replaces features and improvements)</Spanish>
+		<Japanese>&#65288;&#22320;&#24418;&#12398;&#29305;&#24500;&#12392;&#26045;&#35373;&#12434;&#32622;&#12365;&#25563;&#12360;&#12427;&#65289;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
@@ -2738,5 +2774,14 @@
 		<Italian>Test Promotion (Goody Huts)</Italian>
 		<Spanish>Test Promotion (Goody Huts)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#37096;&#26063;&#38598;&#33853;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_FEATURE</Tag>
+		<English>Test Promotion (Features)</English>
+		<French>Test Promotion (Features)</French>
+		<German>Test Promotion (Features)</German>
+		<Italian>Test Promotion (Features)</Italian>
+		<Spanish>Test Promotion (Features)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#22320;&#24418;&#12398;&#29305;&#24500;&#65289;</Japanese>
 	</TEXT>
 </Civ4GameText>
