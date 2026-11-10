@@ -4659,6 +4659,8 @@ public:
 	bool isNoGlobalWarmingInBorders() const;		// Exposed to Python
 	int getReligionSpreadChange() const;			// Exposed to Python
 	int getCorporationSpreadChange() const;		// Exposed to Python
+	int getGoldenAgeLandMovesChange() const;		// Exposed to Python
+	int getGoldenAgeSeaMovesChange() const;		// Exposed to Python
 	int getGoldInterestPercent() const;				// Exposed to Python
 	int getGoldInterestMax() const;					// Exposed to Python
 	int getPeaceAngerPerTurn() const;				// Exposed to Python
@@ -4785,6 +4787,8 @@ protected:
 	bool m_bNoGlobalWarmingInBorders;
 	int m_iReligionSpreadChange;
 	int m_iCorporationSpreadChange;
+	int m_iGoldenAgeLandMovesChange;
+	int m_iGoldenAgeSeaMovesChange;
 	int m_iGoldInterestPercent;
 	int m_iGoldInterestMax;
 	int m_iPeaceAngerPerTurn;

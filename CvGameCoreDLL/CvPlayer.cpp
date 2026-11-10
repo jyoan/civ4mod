@@ -6825,6 +6825,26 @@ bool CvPlayer::isFoundInForeignTerritory() const
 	return false;
 }
 
+// iGoldenAgeLandMovesChange / iGoldenAgeSeaMovesChange of the traits (added by this mod): the moves the units of the domain get
+// during a golden age. CvUnit::baseMoves asks only during a golden age
+int CvPlayer::getGoldenAgeMovesChange(DomainTypes eDomain) const
+{
+	if (getLeaderType() == NO_LEADER)
+	{
+		return 0;
+	}
+
+	switch (eDomain)
+	{
+	case DOMAIN_LAND:
+		return sumTraitValues(&CvTraitInfo::getGoldenAgeLandMovesChange);
+	case DOMAIN_SEA:
+		return sumTraitValues(&CvTraitInfo::getGoldenAgeSeaMovesChange);
+	default:
+		return 0;
+	}
+}
+
 // bNoGlobalWarmingInBorders of the traits (added by this mod)
 bool CvPlayer::isNoGlobalWarmingInBorders() const
 {

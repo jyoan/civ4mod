@@ -1658,6 +1658,24 @@
 		<Spanish>Healing of the unit</Spanish>
 		<Japanese>&#12518;&#12491;&#12483;&#12488;&#12398;&#22238;&#24489;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_AGE_LAND_MOVES</Tag>
+		<English>[ICON_BULLET]%D1_Num[ICON_MOVES] for land units during a golden age</English>
+		<French>[ICON_BULLET]%D1_Num[ICON_MOVES] for land units during a golden age</French>
+		<German>[ICON_BULLET]%D1_Num[ICON_MOVES] for land units during a golden age</German>
+		<Italian>[ICON_BULLET]%D1_Num[ICON_MOVES] for land units during a golden age</Italian>
+		<Spanish>[ICON_BULLET]%D1_Num[ICON_MOVES] for land units during a golden age</Spanish>
+		<Japanese>[ICON_BULLET]&#40644;&#37329;&#26399;&#12398;&#38291;&#12289;&#38520;&#19978;&#12518;&#12491;&#12483;&#12488;&#12398;&#31227;&#21205;&#21147;%D1_Num[ICON_MOVES]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_AGE_SEA_MOVES</Tag>
+		<English>[ICON_BULLET]%D1_Num[ICON_MOVES] for naval units during a golden age</English>
+		<French>[ICON_BULLET]%D1_Num[ICON_MOVES] for naval units during a golden age</French>
+		<German>[ICON_BULLET]%D1_Num[ICON_MOVES] for naval units during a golden age</German>
+		<Italian>[ICON_BULLET]%D1_Num[ICON_MOVES] for naval units during a golden age</Italian>
+		<Spanish>[ICON_BULLET]%D1_Num[ICON_MOVES] for naval units during a golden age</Spanish>
+		<Japanese>[ICON_BULLET]&#40644;&#37329;&#26399;&#12398;&#38291;&#12289;&#33382;&#33337;&#12398;&#31227;&#21205;&#21147;%D1_Num[ICON_MOVES]</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

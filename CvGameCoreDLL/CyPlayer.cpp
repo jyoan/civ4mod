@@ -2063,6 +2063,12 @@ bool CyPlayer::isFoundInForeignTerritory()
 	return m_pPlayer ? m_pPlayer->isFoundInForeignTerritory() : false;
 }
 
+// iGoldenAgeLandMovesChange / iGoldenAgeSeaMovesChange of the traits (added by this mod)
+int CyPlayer::getGoldenAgeMovesChange(int /*DomainTypes*/ eDomain)
+{
+	return m_pPlayer ? m_pPlayer->getGoldenAgeMovesChange((DomainTypes)eDomain) : 0;
+}
+
 // bNoGlobalWarmingInBorders of the traits (added by this mod)
 bool CyPlayer::isNoGlobalWarmingInBorders()
 {
