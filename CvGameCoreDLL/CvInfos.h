@@ -4758,6 +4758,11 @@ public:
 	int getNewCityPopulation() const;				// Exposed to Python
 	bool isNewCityStateReligion() const;			// Exposed to Python
 	int getOccupationTimeModifier() const;			// Exposed to Python
+	// iConquestCulturePercent, iConquestBuildingSurviveModifier and bNoConquestPopulationLoss (added by this mod): conquered cities
+	int getConquestCulturePercent() const;			// Exposed to Python
+	int getConquestBuildingSurviveModifier() const;		// Exposed to Python
+	bool isNoConquestPopulationLoss() const;			// Exposed to Python
+	bool isNoAutoRaze() const;				// Exposed to Python (added by this mod)
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -4920,6 +4925,10 @@ protected:
 	std::vector< std::vector<int> > m_aaiBonusYieldChangeValues;	// because bonuses are loaded after traits
 	int m_iNewCityPopulation;
 	int m_iOccupationTimeModifier;
+	int m_iConquestCulturePercent;	// added by this mod
+	int m_iConquestBuildingSurviveModifier;	// added by this mod
+	bool m_bNoConquestPopulationLoss;	// added by this mod
+	bool m_bNoAutoRaze;	// added by this mod
 	bool m_bNewCityStateReligion;
 
 	CvString m_szShortDescription;

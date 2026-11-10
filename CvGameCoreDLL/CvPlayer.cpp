@@ -1748,7 +1748,8 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	pNewCity->setPreviousOwner(eOldOwner);
 	pNewCity->setOriginalOwner(eOriginalOwner);
 	pNewCity->setGameTurnFounded(iGameTurnFounded);
-	pNewCity->setPopulation((bConquest && !bRecapture) ? std::max(1, (iPopulation - 1)) : iPopulation);
+	// bNoConquestPopulationLoss of the traits (added by this mod): the city keeps its population
+	pNewCity->setPopulation((bConquest && !bRecapture && !isNoConquestPopulationLoss()) ? std::max(1, (iPopulation - 1)) : iPopulation);
 	pNewCity->setHighestPopulation(iHighestPopulation);
 	pNewCity->setName(szName);
 	pNewCity->setNeverLost(false);
@@ -1758,6 +1759,62 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	{
 		pNewCity->setEverOwned(((PlayerTypes)iI), abEverOwned[iI]);
 		pNewCity->setCultureTimes100(((PlayerTypes)iI), aiCulture[iI], false, false);
+	}
+
+	// iConquestCulturePercent of the traits (added by this mod): the conqueror takes over that share of the culture of the other
+	// players in the city, and of the culture of the old owner in the plots of the culture range of the city. Before the
+	// revolt, which goes by the culture of the city.
+	if (bConquest && (getConquestCulturePercent() > 0))
+	{
+		int iPercent = getConquestCulturePercent();
+		int iTaken = 0;
+		int iCulture;
+		int iMove;
+
+		for (iI = 0; iI < MAX_PLAYERS; iI++)
+		{
+			iCulture = pNewCity->getCultureTimes100((PlayerTypes)iI);
+
+			if ((iI != getID()) && (iCulture > 0))
+			{
+				iMove = ((iCulture / 100) * iPercent) + (((iCulture % 100) * iPercent) / 100);
+				pNewCity->setCultureTimes100(((PlayerTypes)iI), (iCulture - iMove), false, false);
+				iTaken += iMove;
+			}
+		}
+
+		if (iTaken > 0)
+		{
+			pNewCity->changeCultureTimes100(getID(), iTaken, false, false);
+		}
+
+		if (eOldOwner != getID())
+		{
+			iRange = pNewCity->getCultureRange();
+
+			for (iDX = -(iRange); iDX <= iRange; iDX++)
+			{
+				for (iDY = -(iRange); iDY <= iRange; iDY++)
+				{
+					if (pNewCity->cultureDistance(iDX, iDY) <= iRange)
+					{
+						pLoopPlot = plotXY(pNewCity->getX_INLINE(), pNewCity->getY_INLINE(), iDX, iDY);
+
+						if (pLoopPlot != NULL)
+						{
+							iCulture = pLoopPlot->getCulture(eOldOwner);
+
+							if (iCulture > 0)
+							{
+								iMove = ((iCulture / 100) * iPercent) + (((iCulture % 100) * iPercent) / 100);
+								pLoopPlot->changeCulture(eOldOwner, -iMove, false);
+								pLoopPlot->changeCulture(getID(), iMove, true);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
@@ -1784,7 +1841,14 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 					{
 						if (pNewCity->isValidBuildingLocation(eBuilding))
 						{
-							if (!bConquest || bRecapture || GC.getGameINLINE().getSorenRandNum(100, "Capture Probability") < GC.getBuildingInfo((BuildingTypes)iI).getConquestProbability())
+							// With iConquestBuildingSurviveModifier of the traits (added by this mod). A building that never survives (0)
+							// stays so
+							int iSurviveChance = GC.getBuildingInfo((BuildingTypes)iI).getConquestProbability();
+							if (bConquest && !bRecapture && (iSurviveChance > 0))
+							{
+								iSurviveChance = range((iSurviveChance * (100 + getConquestBuildingSurviveModifier())) / 100, 0, 100);
+							}
+							if (!bConquest || bRecapture || GC.getGameINLINE().getSorenRandNum(100, "Capture Probability") < iSurviveChance)
 							{
 								iNum += paiNumRealBuilding[iI];
 							}
@@ -1857,9 +1921,11 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 			pNewCity->changeDefyResolutionAngerTimer(iDefyResolutionAngerTimer);
 		}
 
+		// The revolt the city was already in, with the iOccupationTimeModifier of the conqueror as the new revolt (added by
+		// this mod)
 		if (!bRecapture)
 		{
-			pNewCity->changeOccupationTimer(iOccupationTimer);
+			pNewCity->changeOccupationTimer(bConquest ? ((iOccupationTimer * std::max(0, 100 + getOccupationTimeModifier())) / 100) : iOccupationTimer);
 		}
 	}
 
@@ -7685,6 +7751,31 @@ int CvPlayer::getOccupationTimeModifier() const
 	}
 
 	return iModifier;
+}
+
+// iConquestCulturePercent of the traits (added by this mod): the share of the culture of the others the player takes over in a
+// conquered city, 0 to 100
+int CvPlayer::getConquestCulturePercent() const
+{
+	return range(sumTraitValues(&CvTraitInfo::getConquestCulturePercent), 0, 100);
+}
+
+// iConquestBuildingSurviveModifier of the traits (added by this mod): % to the chance the buildings survive a conquest
+int CvPlayer::getConquestBuildingSurviveModifier() const
+{
+	return sumTraitValues(&CvTraitInfo::getConquestBuildingSurviveModifier);
+}
+
+// bNoConquestPopulationLoss of the traits (added by this mod): a conquered city keeps its population
+bool CvPlayer::isNoConquestPopulationLoss() const
+{
+	return hasTraitFlag(&CvTraitInfo::isNoConquestPopulationLoss);
+}
+
+// bNoAutoRaze of the traits (added by this mod): a conquered city that never grew beyond 1 is not razed automatically
+bool CvPlayer::isNoAutoRaze() const
+{
+	return hasTraitFlag(&CvTraitInfo::isNoAutoRaze);
 }
 
 // True if a trait, current civic or owned building lets eUnitCombat units upgrade outside the team's territory.

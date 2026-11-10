@@ -486,6 +486,10 @@ public:
 	int getCityCaptureGoldModifier();
 	int getNewCityCultureLevel();
 	int getOccupationTimeModifier();
+	int getConquestCulturePercent();
+	int getConquestBuildingSurviveModifier();
+	bool isNoConquestPopulationLoss();
+	bool isNoAutoRaze();
 	CyUnit* getUnit(int iID);
 	python::tuple firstSelectionGroup(bool bRev);	// returns tuple of (CySelectionGroup, iterOut)
 	python::tuple nextSelectionGroup(int iterIn, bool bRev);	// returns tuple of (CySelectionGroup, iterOut)
