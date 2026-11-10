@@ -180,6 +180,12 @@ void CyInfoPythonInterface1()
 		.def("getRiverCrossingDamagePercent", &CvPromotionInfo::getRiverCrossingDamagePercent, "int ()")
 		.def("isNoDamagePenalty", &CvPromotionInfo::isNoDamagePenalty, "bool ()")
 		.def("isChooseGoody", &CvPromotionInfo::isChooseGoody, "bool ()")
+		.def("getNumFeatureSpreads", &CvPromotionInfo::getNumFeatureSpreads, "int ()")
+		.def("getFeatureSpreadFeature", &CvPromotionInfo::getFeatureSpreadFeature, "int (int i)")
+		.def("getFeatureSpreadChance", &CvPromotionInfo::getFeatureSpreadChance, "int (int i)")
+		.def("getFeatureSpreadRange", &CvPromotionInfo::getFeatureSpreadRange, "int (int i)")
+		.def("isFeatureSpreadNotOwnPlot", &CvPromotionInfo::isFeatureSpreadNotOwnPlot, "bool (int i)")
+		.def("isFeatureSpreadForce", &CvPromotionInfo::isFeatureSpreadForce, "bool (int i)")
 
 		.def("getSound", &CvPromotionInfo::getSound, "string ()")
 

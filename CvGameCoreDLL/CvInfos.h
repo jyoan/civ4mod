@@ -534,6 +534,12 @@ public:
 	int getRiverCrossingDamagePercent() const;		// Exposed to Python
 	bool isNoDamagePenalty() const;				// Exposed to Python
 	bool isChooseGoody() const;					// Exposed to Python
+	int getNumFeatureSpreads() const;			// Exposed to Python
+	int getFeatureSpreadFeature(int i) const;	// Exposed to Python
+	int getFeatureSpreadChance(int i) const;	// Exposed to Python
+	int getFeatureSpreadRange(int i) const;		// Exposed to Python
+	bool isFeatureSpreadNotOwnPlot(int i) const;	// Exposed to Python
+	bool isFeatureSpreadForce(int i) const;		// Exposed to Python
 
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
@@ -627,6 +633,11 @@ protected:
 	bool m_bRemovedWhenHealed;
 	bool m_bNoDamagePenalty;
 	bool m_bChooseGoody;
+	std::vector<int> m_aiFeatureSpreadFeature;		// FeatureSpreads (added by this mod)
+	std::vector<int> m_aiFeatureSpreadChance;
+	std::vector<int> m_aiFeatureSpreadRange;
+	std::vector<int> m_aiFeatureSpreadNotOwnPlot;	// 0 or 1
+	std::vector<int> m_aiFeatureSpreadForce;		// 0 or 1
 
 	bool m_bLeader;
 	bool m_bBlitz;									

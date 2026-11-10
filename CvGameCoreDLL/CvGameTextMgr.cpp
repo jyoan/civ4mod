@@ -5320,6 +5320,23 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_RIVER_CROSSING_DAMAGE", GC.getPromotionInfo(ePromotion).getRiverCrossingDamagePercent()));
 	}
 
+	// FeatureSpreads (added by this mod)
+	for (iI = 0; iI < GC.getPromotionInfo(ePromotion).getNumFeatureSpreads(); iI++)
+	{
+		CvPromotionInfo& kSpreadPromotion = GC.getPromotionInfo(ePromotion);
+		const char* szSpreadKey = "TXT_KEY_PROMOTION_FEATURE_SPREAD_PLOT";
+		if (kSpreadPromotion.getFeatureSpreadRange(iI) > 0)
+		{
+			szSpreadKey = (kSpreadPromotion.isFeatureSpreadNotOwnPlot(iI) ? "TXT_KEY_PROMOTION_FEATURE_SPREAD_AROUND" : "TXT_KEY_PROMOTION_FEATURE_SPREAD_AREA");
+		}
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText(szSpreadKey, kSpreadPromotion.getFeatureSpreadChance(iI), GC.getFeatureInfo((FeatureTypes)kSpreadPromotion.getFeatureSpreadFeature(iI)).getTextKeyWide(), kSpreadPromotion.getFeatureSpreadRange(iI)));
+		if (kSpreadPromotion.isFeatureSpreadForce(iI))
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_FEATURE_SPREAD_FORCE"));
+		}
+	}
+
 	// bChooseGoody (added by this mod)
 	if (GC.getPromotionInfo(ePromotion).isChooseGoody())
 	{
