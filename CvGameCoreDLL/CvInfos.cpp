@@ -19734,6 +19734,59 @@ bool CvTraitInfo::isFreePromotionSetUnitCombat(int iSet, int iUnitCombat) const
 	return m_aabFreePromotionSetUnitCombat[iSet][iUnitCombat];
 }
 
+// FreePromotionUnitClasses, bFreePromotionNoUnitCombat and FreePromotionDomains of a FreePromotionSet (added by this mod)
+bool CvTraitInfo::isFreePromotionSetUnitClass(int iSet, int iUnitClass) const
+{
+	if (iSet < 0 || iSet >= getNumFreePromotionSets())
+	{
+		return false;
+	}
+	return (std::find(m_aaiFreePromotionSetUnitClasses[iSet].begin(), m_aaiFreePromotionSetUnitClasses[iSet].end(), iUnitClass) != m_aaiFreePromotionSetUnitClasses[iSet].end());
+}
+
+bool CvTraitInfo::isFreePromotionSetNoUnitCombat(int iSet) const
+{
+	return (iSet > -1 && iSet < getNumFreePromotionSets()) ? m_abFreePromotionSetNoUnitCombat[iSet] : false;
+}
+
+bool CvTraitInfo::isFreePromotionSetDomain(int iSet, int iDomain) const
+{
+	if (iSet < 0 || iSet >= getNumFreePromotionSets())
+	{
+		return false;
+	}
+	return (m_aaiFreePromotionSetDomains[iSet].empty() || std::find(m_aaiFreePromotionSetDomains[iSet].begin(), m_aaiFreePromotionSetDomains[iSet].end(), iDomain) != m_aaiFreePromotionSetDomains[iSet].end());
+}
+
+// The set gives its promotions to units of iUnit (added by this mod): its unit combat, its unit class, or any unit without a
+// unit combat with bFreePromotionNoUnitCombat; and its domain, when the set has FreePromotionDomains
+bool CvTraitInfo::isFreePromotionSetUnit(int iSet, int iUnit) const
+{
+	if (iSet < 0 || iSet >= getNumFreePromotionSets() || iUnit < 0 || iUnit >= GC.getNumUnitInfos())
+	{
+		return false;
+	}
+
+	CvUnitInfo& kUnit = GC.getUnitInfo((UnitTypes)iUnit);
+	bool bTarget = ((kUnit.getUnitCombatType() != NO_UNITCOMBAT && isFreePromotionSetUnitCombat(iSet, kUnit.getUnitCombatType()))
+		|| isFreePromotionSetUnitClass(iSet, kUnit.getUnitClassType())
+		|| (kUnit.getUnitCombatType() == NO_UNITCOMBAT && isFreePromotionSetNoUnitCombat(iSet)));
+
+	return (bTarget && isFreePromotionSetDomain(iSet, kUnit.getDomainType()));
+}
+
+bool CvTraitInfo::isUnitFreePromotion(int iUnit, int iPromotion) const
+{
+	for (int iSet = 0; iSet < getNumFreePromotionSets(); iSet++)
+	{
+		if (isFreePromotionSetPromotion(iSet, iPromotion) && isFreePromotionSetUnit(iSet, iUnit))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 // True if any FreePromotionSet gives iPromotion to units of iUnitCombat
 bool CvTraitInfo::isUnitCombatFreePromotion(int iUnitCombat, int iPromotion) const
 {
@@ -20358,6 +20411,9 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	// FreePromotionSets: any number of <FreePromotions> x <FreePromotionUnitCombats> pairs
 	m_aabFreePromotionSetPromotion.clear();
 	m_aabFreePromotionSetUnitCombat.clear();
+	m_aaiFreePromotionSetUnitClasses.clear();
+	m_abFreePromotionSetNoUnitCombat.clear();
+	m_aaiFreePromotionSetDomains.clear();
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FreePromotionSets"))
 	{
 		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FreePromotionSet"))
@@ -20374,6 +20430,18 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 
 				SAFE_DELETE_ARRAY(pabPromotions);
 				SAFE_DELETE_ARRAY(pabUnitCombats);
+
+				// The units without a unit combat, by unit class or all of them, and the domains (added by this mod). Unit classes and
+				// domains are loaded before the traits
+				std::vector<int> aiSetUnitClasses;
+				std::vector<int> aiSetDomains;
+				bool bSetNoUnitCombat = false;
+				readTypeList(pXML, "FreePromotionUnitClasses", aiSetUnitClasses);
+				pXML->GetChildXmlValByName(&bSetNoUnitCombat, "bFreePromotionNoUnitCombat");
+				readTypeList(pXML, "FreePromotionDomains", aiSetDomains);
+				m_aaiFreePromotionSetUnitClasses.push_back(aiSetUnitClasses);
+				m_abFreePromotionSetNoUnitCombat.push_back(bSetNoUnitCombat);
+				m_aaiFreePromotionSetDomains.push_back(aiSetDomains);
 			}
 			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "FreePromotionSet"));
 

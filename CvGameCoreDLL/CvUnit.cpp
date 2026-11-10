@@ -182,7 +182,8 @@ void CvUnit::init(int iID, UnitTypes eUnit, UnitAITypes eUnitAI, PlayerTypes eOw
 					}
 				}
 
-				if ((getUnitCombatType() != NO_UNITCOMBAT) && GC.getTraitInfo((TraitTypes) iI).isUnitCombatFreePromotion(getUnitCombatType(), iJ))
+				// FreePromotionSets (added by this mod): unit combats, unit classes, units without a unit combat, domains
+				if (GC.getTraitInfo((TraitTypes) iI).isUnitFreePromotion(getUnitType(), iJ))
 				{
 					setHasPromotion(((PromotionTypes)iJ), true);
 				}

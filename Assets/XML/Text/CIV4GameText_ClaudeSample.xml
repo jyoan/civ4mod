@@ -1775,6 +1775,24 @@
 		<Spanish>[ICON_BULLET]Resources that never become obsolete: </Spanish>
 		<Japanese>[ICON_BULLET]&#38515;&#33104;&#21270;&#12375;&#12394;&#12356;&#36039;&#28304;: </Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FREE_PROMOTION_NO_UNIT_COMBAT</Tag>
+		<English>Units without a unit combat (workers, settlers, missionaries...)</English>
+		<French>Units without a unit combat (workers, settlers, missionaries...)</French>
+		<German>Units without a unit combat (workers, settlers, missionaries...)</German>
+		<Italian>Units without a unit combat (workers, settlers, missionaries...)</Italian>
+		<Spanish>Units without a unit combat (workers, settlers, missionaries...)</Spanish>
+		<Japanese>&#20853;&#31185;&#12398;&#12394;&#12356;&#12518;&#12491;&#12483;&#12488;&#65288;&#21172;&#20685;&#32773;&#12289;&#38283;&#25299;&#32773;&#12289;&#23459;&#25945;&#24107;&#12394;&#12393;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FREE_PROMOTION_DOMAINS</Tag>
+		<English>(only %s1_Domains)</English>
+		<French>(only %s1_Domains)</French>
+		<German>(only %s1_Domains)</German>
+		<Italian>(only %s1_Domains)</Italian>
+		<Spanish>(only %s1_Domains)</Spanish>
+		<Japanese>&#65288;%s1_Domains&#12398;&#12415;&#65289;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
