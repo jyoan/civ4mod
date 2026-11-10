@@ -326,6 +326,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iExtraCombatPercent = 0;
 	m_iCombatPercentInBorders = 0;
 	m_iNoDamagePenaltyCount = 0;
+	m_iHiddenNationalityCount = 0;
 	m_iExtraCityAttackPercent = 0;
 	m_iExtraCityDefensePercent = 0;
 	m_iExtraHillsAttackPercent = 0;
@@ -1774,7 +1775,7 @@ void CvUnit::updateCombat(bool bQuick)
 			}
 
 			// Not for a summoned unit that would disappear (added by this mod, same as FFH2)
-			if (!m_pUnitInfo->isHiddenNationality() && !pDefender->getUnitInfo().isHiddenNationality() && (getDuration() == 0))
+			if (!isHiddenNationality() && !pDefender->isHiddenNationality() && (getDuration() == 0))
 			{
 				GET_TEAM(getTeam()).changeWarWeariness(pDefender->getTeam(), *pPlot, GC.getDefineINT("WW_UNIT_KILLED_ATTACKING"));
 				GET_TEAM(pDefender->getTeam()).changeWarWeariness(getTeam(), *pPlot, GC.getDefineINT("WW_KILLED_UNIT_DEFENDING"));
@@ -1797,7 +1798,7 @@ void CvUnit::updateCombat(bool bQuick)
 			}
 
 			// Not for a summoned unit that would disappear (added by this mod, same as FFH2)
-			if (!m_pUnitInfo->isHiddenNationality() && !pDefender->getUnitInfo().isHiddenNationality() && (pDefender->getDuration() == 0))
+			if (!isHiddenNationality() && !pDefender->isHiddenNationality() && (pDefender->getDuration() == 0))
 			{
 				GET_TEAM(pDefender->getTeam()).changeWarWeariness(getTeam(), *pPlot, GC.getDefineINT("WW_UNIT_KILLED_DEFENDING"));
 				GET_TEAM(getTeam()).changeWarWeariness(pDefender->getTeam(), *pPlot, GC.getDefineINT("WW_KILLED_UNIT_ATTACKING"));
@@ -3937,7 +3938,7 @@ bool CvUnit::canEnterTerritory(TeamTypes eTeam, bool bIgnoreRightOfPassage) cons
 		return true;
 	}
 
-	if (m_pUnitInfo->isHiddenNationality())
+	if (isHiddenNationality())	// also of the promotions (changed by this mod)
 	{
 		return true;
 	}
@@ -4875,7 +4876,8 @@ bool CvUnit::canLoadUnit(const CvUnit* pUnit, const CvPlot* pPlot) const
 		return false;
 	}
 
-	if (!m_pUnitInfo->isHiddenNationality() && pUnit->getUnitInfo().isHiddenNationality())
+	// Also of the promotions, and both ways (changed by this mod, as FFH2)
+	if (isHiddenNationality() != pUnit->isHiddenNationality())
 	{
 		return false;
 	}
@@ -9140,6 +9142,12 @@ bool CvUnit::isOnlyDefensive() const
 
 bool CvUnit::isNoCapture() const
 {
+	// bHiddenNationality of the promotions (added by this mod, as FFH2): no units or cities captured that would show who did it
+	if (m_iHiddenNationalityCount > 0)
+	{
+		return true;
+	}
+
 	return m_pUnitInfo->isNoCapture();
 }
 
@@ -10501,6 +10509,18 @@ void CvUnit::doFeatureSpreads()
 	}
 }
 
+// bHiddenNationality of the unit (BtS) or of its promotions (added by this mod, as FFH2). Cargo shows the nationality of its
+// transport
+bool CvUnit::isHiddenNationality() const
+{
+	if (isCargo() && !getTransportUnit()->isHiddenNationality())
+	{
+		return false;
+	}
+
+	return (m_pUnitInfo->isHiddenNationality() || m_iHiddenNationalityCount > 0);
+}
+
 // bChooseGoody of the promotions (added by this mod)
 bool CvUnit::isChooseGoody() const
 {
@@ -11258,7 +11278,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 							}
 							else
 							{
-								if (!m_pUnitInfo->isHiddenNationality() && !pLoopUnit->getUnitInfo().isHiddenNationality())
+								if (!isHiddenNationality() && !pLoopUnit->isHiddenNationality())
 								{
 									GET_TEAM(pLoopUnit->getTeam()).changeWarWeariness(getTeam(), *pNewPlot, GC.getDefineINT("WW_UNIT_CAPTURED"));
 									GET_TEAM(getTeam()).changeWarWeariness(pLoopUnit->getTeam(), *pNewPlot, GC.getDefineINT("WW_CAPTURED_UNIT"));
@@ -12715,7 +12735,7 @@ PlayerTypes CvUnit::getVisualOwner(TeamTypes eForTeam) const
 
 	if (getTeam() != eForTeam && eForTeam != BARBARIAN_TEAM)
 	{
-		if (m_pUnitInfo->isHiddenNationality())
+		if (isHiddenNationality())	// also of the promotions (changed by this mod)
 		{
 			if (!plot()->isCity(true, getTeam()))
 			{
@@ -13309,6 +13329,24 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		changeExtraCombatPercent(GC.getPromotionInfo(eIndex).getCombatPercent() * iChange);
 		m_iCombatPercentInBorders += GC.getPromotionInfo(eIndex).getCombatPercentInBorders() * iChange;
 		m_iNoDamagePenaltyCount += (GC.getPromotionInfo(eIndex).isNoDamagePenalty() ? iChange : 0);
+
+		// bHiddenNationality (added by this mod, as FFH2). A unit that shows or hides its nationality stops blockading first (the
+		// blockade counts its enemies) and leaves its group (the units of a group all hide it or all show it)
+		if (GC.getPromotionInfo(eIndex).isHiddenNationality())
+		{
+			bool bOldHidden = isHiddenNationality();
+			bool bNewHidden = (m_pUnitInfo->isHiddenNationality() || (m_iHiddenNationalityCount + iChange > 0));
+			if (bOldHidden != bNewHidden && isBlockading())
+			{
+				setBlockading(false);
+			}
+			m_iHiddenNationalityCount += iChange;
+			if (bOldHidden != isHiddenNationality() && getGroup() != NULL && getGroup()->getNumUnits() > 1)
+			{
+				joinGroup(NULL, true);
+			}
+		}
+
 		changeExtraCityAttackPercent(GC.getPromotionInfo(eIndex).getCityAttackPercent() * iChange);
 		changeExtraCityDefensePercent(GC.getPromotionInfo(eIndex).getCityDefensePercent() * iChange);
 		changeExtraHillsAttackPercent(GC.getPromotionInfo(eIndex).getHillsAttackPercent() * iChange);
@@ -13525,12 +13563,14 @@ void CvUnit::read(FDataStreamBase* pStream)
 	// Not saved: the sum of iCombatPercentInBorders and the count of bNoDamagePenalty of the promotions (added by this mod)
 	m_iCombatPercentInBorders = 0;
 	m_iNoDamagePenaltyCount = 0;
+	m_iHiddenNationalityCount = 0;
 	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
 	{
 		if (m_pabHasPromotion[iI])
 		{
 			m_iCombatPercentInBorders += GC.getPromotionInfo((PromotionTypes)iI).getCombatPercentInBorders();
 			m_iNoDamagePenaltyCount += (GC.getPromotionInfo((PromotionTypes)iI).isNoDamagePenalty() ? 1 : 0);
+			m_iHiddenNationalityCount += (GC.getPromotionInfo((PromotionTypes)iI).isHiddenNationality() ? 1 : 0);
 		}
 	}
 
@@ -14714,7 +14754,8 @@ int CvUnit::getRenderPriority(UnitSubEntityTypes eUnitSubEntity, int iMeshGroupT
 
 bool CvUnit::isAlwaysHostile(const CvPlot* pPlot) const
 {
-	if (!m_pUnitInfo->isAlwaysHostile())
+	// A unit that hides its nationality is always hostile (added by this mod, as FFH2)
+	if (!m_pUnitInfo->isAlwaysHostile() && !isHiddenNationality())
 	{
 		return false;
 	}

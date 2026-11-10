@@ -186,6 +186,7 @@ void CyInfoPythonInterface1()
 		.def("getFeatureSpreadRange", &CvPromotionInfo::getFeatureSpreadRange, "int (int i)")
 		.def("isFeatureSpreadNotOwnPlot", &CvPromotionInfo::isFeatureSpreadNotOwnPlot, "bool (int i)")
 		.def("isFeatureSpreadForce", &CvPromotionInfo::isFeatureSpreadForce, "bool (int i)")
+		.def("isHiddenNationality", &CvPromotionInfo::isHiddenNationality, "bool ()")
 
 		.def("getSound", &CvPromotionInfo::getSound, "string ()")
 

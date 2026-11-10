@@ -972,6 +972,7 @@
 		<element type="bNoDamagePenalty" minOccurs="0"/>
 		<element type="bChooseGoody" minOccurs="0"/>
 		<element type="FeatureSpreads" minOccurs="0"/>
+		<element type="bHiddenNationality" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

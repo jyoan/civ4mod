@@ -1712,6 +1712,15 @@
 		<Spanish> (replaces features and improvements)</Spanish>
 		<Japanese>&#65288;&#22320;&#24418;&#12398;&#29305;&#24500;&#12392;&#26045;&#35373;&#12434;&#32622;&#12365;&#25563;&#12360;&#12427;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_HIDDEN_NATIONALITY</Tag>
+		<English>[ICON_BULLET]Hidden nationality: looks like a barbarian, attacks and is attacked without war, enters every territory, captures nothing</English>
+		<French>[ICON_BULLET]Hidden nationality: looks like a barbarian, attacks and is attacked without war, enters every territory, captures nothing</French>
+		<German>[ICON_BULLET]Hidden nationality: looks like a barbarian, attacks and is attacked without war, enters every territory, captures nothing</German>
+		<Italian>[ICON_BULLET]Hidden nationality: looks like a barbarian, attacks and is attacked without war, enters every territory, captures nothing</Italian>
+		<Spanish>[ICON_BULLET]Hidden nationality: looks like a barbarian, attacks and is attacked without war, enters every territory, captures nothing</Spanish>
+		<Japanese>[ICON_BULLET]&#22269;&#31821;&#31192;&#21311;: &#34542;&#26063;&#12395;&#35211;&#12360;&#12289;&#23459;&#25126;&#12379;&#12378;&#12395;&#25915;&#25731;&#12391;&#12365;&#12427;&#65288;&#25915;&#25731;&#12418;&#12373;&#12428;&#12427;&#65289;&#12290;&#12393;&#12398;&#22269;&#12398;&#38936;&#22303;&#12395;&#12418;&#20837;&#12428;&#12427;&#12290;&#12518;&#12491;&#12483;&#12488;&#12418;&#37117;&#24066;&#12418;&#25429;&#29554;&#12375;&#12394;&#12356;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
@@ -2783,5 +2792,14 @@
 		<Italian>Test Promotion (Features)</Italian>
 		<Spanish>Test Promotion (Features)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#22320;&#24418;&#12398;&#29305;&#24500;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_HIDDEN</Tag>
+		<English>Test Promotion (Hidden Nationality)</English>
+		<French>Test Promotion (Hidden Nationality)</French>
+		<German>Test Promotion (Hidden Nationality)</German>
+		<Italian>Test Promotion (Hidden Nationality)</Italian>
+		<Spanish>Test Promotion (Hidden Nationality)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#22269;&#31821;&#31192;&#21311;&#65289;</Japanese>
 	</TEXT>
 </Civ4GameText>

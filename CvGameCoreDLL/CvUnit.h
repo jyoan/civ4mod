@@ -408,6 +408,7 @@ public:
 	bool isNoDamagePenalty() const;	// added by this mod. Exposed to Python
 	bool isChooseGoody() const;	// added by this mod: bChooseGoody of the promotions
 	void doFeatureSpreads();	// added by this mod: FeatureSpreads of the promotions
+	bool isHiddenNationality() const;	// added by this mod: bHiddenNationality of the unit or of its promotions. Exposed to Python
 	bool canEnterImpassablePlot(const CvPlot* pPlot) const;	// added by this mod
 	bool canMoveImpassable() const;																										// Exposed to Python
 	bool canMoveAllTerrain() const;																										// Exposed to Python
@@ -860,6 +861,7 @@ protected:
 	int m_iExtraCombatPercent;
 	int m_iCombatPercentInBorders;		// added by this mod: iCombatPercentInBorders of the promotions (not saved)
 	int m_iNoDamagePenaltyCount;		// added by this mod: promotions with bNoDamagePenalty (not saved)
+	int m_iHiddenNationalityCount;		// added by this mod: promotions with bHiddenNationality (not saved)
 	int m_iExtraCityAttackPercent;
 	int m_iExtraCityDefensePercent;
 	int m_iExtraHillsAttackPercent;

@@ -1708,6 +1708,7 @@ m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
 m_bNoDamagePenalty(false),
 m_bChooseGoody(false),
+m_bHiddenNationality(false),
 m_bLeader(false),
 m_bBlitz(false),
 m_bAmphib(false),
@@ -2190,6 +2191,13 @@ bool CvPromotionInfo::isFeatureSpreadForce(int i) const
 	return (i > -1 && i < getNumFeatureSpreads()) ? (m_aiFeatureSpreadForce[i] != 0) : false;
 }
 
+// As bHiddenNationality of the units, and always hostile, entering every territory, capturing nothing (added by this mod,
+// as FFH2)
+bool CvPromotionInfo::isHiddenNationality() const
+{
+	return m_bHiddenNationality;
+}
+
 int CvPromotionInfo::getCombatPercentInBorders() const
 {
 	return m_iCombatPercentInBorders;
@@ -2536,13 +2544,20 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 			m_aiFeatureSpreadForce.push_back(iSpreadValue);
 		}
 	}
+
+	// uiFlag < 11: cache written before bHiddenNationality existed
+	m_bHiddenNationality = false;
+	if (uiFlag > 10)
+	{
+		stream->Read(&m_bHiddenNationality);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 10;
+	uint uiFlag = 11;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2658,6 +2673,8 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 		stream->Write(m_aiFeatureSpreadNotOwnPlot[iSpread]);
 		stream->Write(m_aiFeatureSpreadForce[iSpread]);
 	}
+
+	stream->Write(m_bHiddenNationality);
 }
 
 bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
@@ -2771,6 +2788,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iRiverCrossingDamagePercent, "iRiverCrossingDamagePercent");
 	pXML->GetChildXmlValByName(&m_bNoDamagePenalty, "bNoDamagePenalty");
 	pXML->GetChildXmlValByName(&m_bChooseGoody, "bChooseGoody");
+	pXML->GetChildXmlValByName(&m_bHiddenNationality, "bHiddenNationality");
 
 	// FeatureSpreads (added by this mod): the features are loaded before the promotions
 	m_aiFeatureSpreadFeature.clear();
