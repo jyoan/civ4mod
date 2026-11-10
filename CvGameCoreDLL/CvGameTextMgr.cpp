@@ -4020,6 +4020,26 @@ void CvGameTextMgr::parseTraitFeatureAndObsolescenceEffects(CvWStringBuffer& szH
 			}
 		}
 	}
+
+	// bIgnoreBonusObsolescence: "Resources never become obsolete". Otherwise NoObsoleteBonuses: "Never obsolete: Fur, Ivory"
+	if (kTrait.isIgnoreBonusObsolescence())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_IGNORE_BONUS_OBSOLESCENCE"));
+	}
+	else
+	{
+		bool bFirstBonus = true;
+		for (iI = 0; iI < GC.getNumBonusInfos(); ++iI)
+		{
+			if (kTrait.isNoObsoleteBonus(iI))
+			{
+				szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_NO_OBSOLETE_BONUSES").c_str());
+				szText = getLinkText(GC.getBonusInfo((BonusTypes)iI).getDescription());
+				setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstBonus);
+				bFirstBonus = false;
+			}
+		}
+	}
 }
 
 void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait, CivilizationTypes eCivilization, bool bDawnOfMan)

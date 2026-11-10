@@ -447,6 +447,10 @@
 			<NoObsoleteSpecialBuildings>
 				<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
 			</NoObsoleteSpecialBuildings>
+			<NoObsoleteBonuses>
+				<BonusType>BONUS_FUR</BonusType>
+				<BonusType>BONUS_IVORY</BonusType>
+			</NoObsoleteBonuses>
 			<PyOnGameStart>gainGold(pPlayer, scaleBySpeed(100 + 50 * startEra(), 'Train'))</PyOnGameStart>
 			<PyOnBeginTurn>isEveryTurns(5) and createUnits(pPlayer, 'UNITCLASS_WARRIOR', 1, capitalPlot(pPlayer))</PyOnBeginTurn>
 			<PyOnCityFounded>addBuilding(pCity, 'BUILDINGCLASS_WALLS')</PyOnCityFounded>

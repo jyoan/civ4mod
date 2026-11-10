@@ -2475,8 +2475,32 @@ bool CvTeam::isBonusObsolete(BonusTypes eBonus) const
 	TechTypes eObsoleteTech = (TechTypes) GC.getBonusInfo(eBonus).getTechObsolete();
 	if (eObsoleteTech != NO_TECH && isHasTech(eObsoleteTech))
 	{
-		return true;
+		// bIgnoreBonusObsolescence / NoObsoleteBonuses of the traits (added by this mod)
+		return !isBonusObsolescenceIgnored(eBonus);
 	}
+	return false;
+}
+
+// A living player of the team has a trait with bIgnoreBonusObsolescence, or the bonus in NoObsoleteBonuses (added by this mod)
+bool CvTeam::isBonusObsolescenceIgnored(BonusTypes eBonus) const
+{
+	int iI, iJ;
+
+	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
+		if (kPlayer.isAlive() && kPlayer.getTeam() == getID() && kPlayer.getLeaderType() != NO_LEADER)
+		{
+			for (iJ = 0; iJ < GC.getNumTraitInfos(); iJ++)
+			{
+				if (GC.getTraitInfo((TraitTypes)iJ).isBonusObsolescenceIgnored(eBonus) && kPlayer.hasTrait((TraitTypes)iJ))
+				{
+					return true;
+				}
+			}
+		}
+	}
+
 	return false;
 }
 

@@ -466,6 +466,10 @@
 	<ElementType name="NoObsoleteSpecialBuildings" content="eltOnly">
 		<element type="SpecialBuildingType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="bIgnoreBonusObsolescence" content="textOnly" dt:type="boolean"/>
+	<ElementType name="NoObsoleteBonuses" content="eltOnly">
+		<element type="BonusType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="PyOnGameStart" content="textOnly"/>
 	<ElementType name="PyOnBeginTurn" content="textOnly"/>
 	<ElementType name="PyOnCityFounded" content="textOnly"/>
@@ -615,6 +619,8 @@
 		<element type="bIgnoreBuildingObsolescence" minOccurs="0"/>
 		<element type="NoObsoleteBuildingClasses" minOccurs="0"/>
 		<element type="NoObsoleteSpecialBuildings" minOccurs="0"/>
+		<element type="bIgnoreBonusObsolescence" minOccurs="0"/>
+		<element type="NoObsoleteBonuses" minOccurs="0"/>
 		<element type="PyOnGameStart" minOccurs="0"/>
 		<element type="PyOnBeginTurn" minOccurs="0"/>
 		<element type="PyOnCityFounded" minOccurs="0"/>

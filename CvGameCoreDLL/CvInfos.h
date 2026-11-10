@@ -4740,6 +4740,9 @@ public:
 	bool isIgnoreBuildingObsolescence() const;		// Exposed to Python
 	bool isNoObsoleteBuildingClass(int i) const;	// Exposed to Python
 	bool isNoObsoleteSpecialBuilding(int i) const;	// Exposed to Python
+	bool isIgnoreBonusObsolescence() const;		// Exposed to Python
+	bool isNoObsoleteBonus(int i) const;			// Exposed to Python
+	bool isBonusObsolescenceIgnored(int iBonus) const;	// added by this mod: bIgnoreBonusObsolescence or NoObsoleteBonuses
 	const TCHAR* getPythonHook(TraitPythonHookTypes eHook) const;
 	const TCHAR* getPyOnGameStart() const;			// Exposed to Python
 	const TCHAR* getPyOnBeginTurn() const;			// Exposed to Python
@@ -4869,6 +4872,9 @@ protected:
 	bool m_bIgnoreBuildingObsolescence;
 	bool* m_pabNoObsoleteBuildingClass;				// NULL when not set
 	bool* m_pabNoObsoleteSpecialBuilding;			// NULL when not set
+	bool m_bIgnoreBonusObsolescence;
+	bool* m_pabNoObsoleteBonus;					// NULL when not set
+	std::vector<CvString> m_aszNoObsoleteBonusTypes;	// as strings until readPass3(): the bonuses are loaded after the traits
 	std::vector<CvString> m_aszNoObsoleteBuildingClassTypes;	// read() keeps the types as strings until readPass3(),
 	std::vector<CvString> m_aszNoObsoleteSpecialBuildingTypes;	// because building classes are loaded after traits
 	CvString m_aszPythonHook[NUM_TRAIT_PYHOOK_TYPES];
