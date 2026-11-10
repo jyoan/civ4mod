@@ -793,12 +793,13 @@ public:
 	bool hasPrereqOrSettledSpecialists(BuildingTypes eBuilding) const;	// added by this mod
 	bool hasPrereqOrBuildingClasses(BuildingTypes eBuilding) const;	// added by this mod
 	bool hasPrereqNotInCityBuildingClasses(BuildingTypes eBuilding) const;	// added by this mod
-	bool hasPrereqOrTerrains(BuildingTypes eBuilding) const;	// added by this mod
-	bool hasPrereqOrFeatures(BuildingTypes eBuilding) const;	// added by this mod
-	bool hasPrereqOrImprovements(BuildingTypes eBuilding) const;	// added by this mod
-	bool hasPrereqRawVicinityBonuses(BuildingTypes eBuilding) const;	// added by this mod
-	bool hasPrereqVicinityBonuses(BuildingTypes eBuilding) const;	// added by this mod
+	bool hasPrereqOrTerrains(const std::vector<int>& aiTerrains) const;	// added by this mod
+	bool hasPrereqOrFeatures(const std::vector<int>& aiFeatures) const;	// added by this mod
+	bool hasPrereqOrImprovements(const std::vector<int>& aiImprovements) const;	// added by this mod
+	bool hasPrereqRawVicinityBonuses(const std::vector<int>& aiBonuses) const;	// added by this mod
+	bool hasPrereqVicinityBonuses(const std::vector<int>& aiBonuses) const;	// added by this mod
 	bool hasVicinityBonus(BonusTypes eBonus) const;	// added by this mod
+	bool hasCityPrereqs(UnitTypes eUnit, bool bContinue, bool bTestVisible) const;	// added by this mod
 	int getAddedFreeSpecialistCount(SpecialistTypes eIndex) const;		// Exposed to Python
 
 	int getImprovementFreeSpecialists(ImprovementTypes eIndex) const;			// Exposed to Python

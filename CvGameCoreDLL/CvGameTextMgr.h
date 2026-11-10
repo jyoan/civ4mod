@@ -161,7 +161,8 @@ public:
 	void setFoodHelp(CvWStringBuffer &szBuffer, CvCity& city);
 	void buildPrereqSettledSpecialistsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bAnd);	// added by this mod
 	void buildPrereqBuildingClassesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, PlayerTypes ePlayer, bool bOr);	// added by this mod
-	void buildPrereqVicinityString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bCivilopediaText, const CvCity* pCity);	// added by this mod
+	void buildPrereqVicinityString(CvWStringBuffer& szBuffer, const std::vector<int>& aiOrTerrains, const std::vector<int>& aiOrFeatures, const std::vector<int>& aiRawVicinityBonuses, const std::vector<int>& aiVicinityBonuses, const std::vector<int>& aiOrImprovements, bool bCivilopediaText, const CvCity* pCity);	// added by this mod
+	void buildPrereqCityLevelString(CvWStringBuffer& szBuffer, int iPrereqPopulation, int iPrereqCultureLevel, bool bCivilopediaText, const CvCity* pCity);	// added by this mod
 	void buildPrereqCivicsString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bAnd);	// added by this mod
 	void appendPrereqVicinityItem(CvWStringBuffer& szBuffer, const char* szKey, const CvInfoBase& kInfo, bool& bFirst);	// added by this mod
 	void buildBuildingChangesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding);	// added by this mod

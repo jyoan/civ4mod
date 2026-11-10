@@ -1181,6 +1181,26 @@ public:
 	int getNumPrereqOrTraits() const;				// Exposed to Python
 	int getPrereqOrTraits(int i) const;				// Exposed to Python
 	const std::vector<int>& getPrereqOrTraitsVector() const;
+	// City prerequisites (added by this mod, the same as those of the buildings): iPrereqPopulation, PrereqCultureLevel and
+	// the city radius lists PrereqOrTerrains, PrereqOrFeatures, PrereqRawVicinityBonuses, PrereqVicinityBonuses and
+	// PrereqOrImprovements
+	int getPrereqPopulation() const;				// Exposed to Python
+	int getPrereqCultureLevel() const;				// Exposed to Python
+	int getNumPrereqOrTerrains() const;				// Exposed to Python
+	int getPrereqOrTerrain(int i) const;				// Exposed to Python
+	const std::vector<int>& getPrereqOrTerrainsVector() const;
+	int getNumPrereqOrFeatures() const;				// Exposed to Python
+	int getPrereqOrFeature(int i) const;				// Exposed to Python
+	const std::vector<int>& getPrereqOrFeaturesVector() const;
+	int getNumPrereqRawVicinityBonuses() const;				// Exposed to Python
+	int getPrereqRawVicinityBonus(int i) const;				// Exposed to Python
+	const std::vector<int>& getPrereqRawVicinityBonusesVector() const;
+	int getNumPrereqVicinityBonuses() const;				// Exposed to Python
+	int getPrereqVicinityBonus(int i) const;				// Exposed to Python
+	const std::vector<int>& getPrereqVicinityBonusesVector() const;
+	int getNumPrereqOrImprovements() const;				// Exposed to Python
+	int getPrereqOrImprovement(int i) const;				// Exposed to Python
+	const std::vector<int>& getPrereqOrImprovementsVector() const;
 	int getProductionTraits(int i) const;				// Exposed to Python
 	int getFlavorValue(int i) const;				// Exposed to Python
 	int getTerrainAttackModifier(int i) const;				// Exposed to Python
@@ -1364,6 +1384,13 @@ protected:
 	int* m_piPrereqAndTechs;
 	int* m_piPrereqOrBonuses;
 	std::vector<int> m_aiPrereqOrTraits;
+	std::vector<int> m_aiPrereqOrTerrains;	// added by this mod
+	std::vector<int> m_aiPrereqOrFeatures;	// added by this mod
+	std::vector<int> m_aiPrereqRawVicinityBonuses;	// added by this mod
+	std::vector<int> m_aiPrereqVicinityBonuses;	// added by this mod
+	std::vector<int> m_aiPrereqOrImprovements;	// added by this mod
+	int m_iPrereqPopulation;	// added by this mod
+	int m_iPrereqCultureLevel;	// added by this mod
 	int* m_piProductionTraits;
 	int* m_piFlavorValue;
 	int* m_piTerrainAttackModifier;
@@ -2085,6 +2112,11 @@ public:
 	int getPrereqRawVicinityBonus(int i) const;			// Exposed to Python
 	int getNumPrereqVicinityBonuses() const;			// Exposed to Python
 	int getPrereqVicinityBonus(int i) const;			// Exposed to Python
+	const std::vector<int>& getPrereqOrTerrainsVector() const;
+	const std::vector<int>& getPrereqOrFeaturesVector() const;
+	const std::vector<int>& getPrereqRawVicinityBonusesVector() const;
+	const std::vector<int>& getPrereqVicinityBonusesVector() const;
+	const std::vector<int>& getPrereqOrImprovementsVector() const;
 	// PrereqAndCivics and PrereqOrCivics (added by this mod): the player needs every civic / one of the civics
 	int getNumPrereqAndCivics() const;				// Exposed to Python
 	int getPrereqAndCivic(int i) const;				// Exposed to Python

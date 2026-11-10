@@ -93,3 +93,4 @@
 - 2026-11-10: リファクタリング第 3 段階（`CvTraitInfo::read` を 10 の関数に分割、テキストを分野ごとの 5 ファイルに分割、`docs/xml-tags.md` を Info の種類ごとの節に整理）。全志向と全昇進の説明文が変更前とバイト単位で一致し、ゲーム内の表示（呪文などを含む）も確認
 - 2026-11-10: Unofficial 3.19 Patch 1.6 の取り込み（国旗のマウスオーバーの版表示、氷河・トンネル・ポルダー・運河の要塞の移動、マルチプルプロダクションのあり・なしでの生産の余りの金とメッセージ、無料技術のポップアップ）をゲーム内で確認
 - 2026-11-10: 検証用ではないテキストキー 45 個を `CIV4GameText_ClaudeSample_Test.xml` から分野ごとのファイルへ移した後、建物の前提・観戦モード・志向の固有ユニットの表示をゲーム内で確認
+- 2026-11-10: ユニットの都市の前提（`iPrereqPopulation`・`PrereqCultureLevel`・`PrereqOrTerrains`・`PrereqOrFeatures`・`PrereqRawVicinityBonuses`・`PrereqVicinityBonuses`・`PrereqOrImprovements`）を検証用ユニット 2 つで確認（ペディア、生産の一覧の非表示・灰色、満たしていない条件だけの説明）。共通化した建物の前提の表示も確認

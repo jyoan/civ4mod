@@ -696,4 +696,22 @@
 		<Spanish>TBa</Spanish>
 		<Japanese>&#34542;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_PREREQ</Tag>
+		<English>Test unit (prerequisites)</English>
+		<French>Test unit (prerequisites)</French>
+		<German>Test unit (prerequisites)</German>
+		<Italian>Test unit (prerequisites)</Italian>
+		<Spanish>Test unit (prerequisites)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#12518;&#12491;&#12483;&#12488;&#65288;&#21069;&#25552;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_PREREQ_PLOT</Tag>
+		<English>Test unit (city radius prerequisites)</English>
+		<French>Test unit (city radius prerequisites)</French>
+		<German>Test unit (city radius prerequisites)</German>
+		<Italian>Test unit (city radius prerequisites)</Italian>
+		<Spanish>Test unit (city radius prerequisites)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#12518;&#12491;&#12483;&#12488;&#65288;&#37117;&#24066;&#22287;&#12398;&#21069;&#25552;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>
