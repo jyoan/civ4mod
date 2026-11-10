@@ -540,6 +540,7 @@ public:
 	int getFeatureSpreadRange(int i) const;		// Exposed to Python
 	bool isFeatureSpreadNotOwnPlot(int i) const;	// Exposed to Python
 	bool isFeatureSpreadForce(int i) const;		// Exposed to Python
+	bool isHiddenNationality() const;			// Exposed to Python
 
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
@@ -638,6 +639,7 @@ protected:
 	std::vector<int> m_aiFeatureSpreadRange;
 	std::vector<int> m_aiFeatureSpreadNotOwnPlot;	// 0 or 1
 	std::vector<int> m_aiFeatureSpreadForce;		// 0 or 1
+	bool m_bHiddenNationality;					// added by this mod (FFH2)
 
 	bool m_bLeader;
 	bool m_bBlitz;									
