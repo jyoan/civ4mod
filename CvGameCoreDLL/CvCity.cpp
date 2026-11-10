@@ -6505,13 +6505,16 @@ void CvCity::updateFeatureHealth()
 
 			if (eFeature != NO_FEATURE)
 			{
-				if (GC.getFeatureInfo(eFeature).getHealthPercent() > 0)
+				// With FeatureHealthChanges of the traits of the owner (added by this mod, from The History of Three Kingdoms)
+				int iHealthPercent = GC.getFeatureInfo(eFeature).getHealthPercent() + GET_PLAYER(getOwnerINLINE()).getFeatureHealthChange(eFeature);
+
+				if (iHealthPercent > 0)
 				{
-					iNewGoodHealth += GC.getFeatureInfo(eFeature).getHealthPercent();
+					iNewGoodHealth += iHealthPercent;
 				}
 				else
 				{
-					iNewBadHealth += GC.getFeatureInfo(eFeature).getHealthPercent();
+					iNewBadHealth += iHealthPercent;
 				}
 			}
 		}

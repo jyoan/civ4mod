@@ -2509,6 +2509,10 @@ int CvPlot::getFeatureProduction(BuildTypes eBuild, TeamTypes eTeam, CvCity** pp
 
 	iProduction = (GC.getBuildInfo(eBuild).getFeatureProduction(getFeatureType()) - (std::max(0, (plotDistance(getX_INLINE(), getY_INLINE(), (*ppCity)->getX_INLINE(), (*ppCity)->getY_INLINE()) - 2)) * 5));
 
+	// FeatureProductionChanges of the traits of the owner of the city (added by this mod, from The History of Three Kingdoms).
+	// Before the modifiers, so it also gives production for a feature the build gives none for (jungle)
+	iProduction += GET_PLAYER((*ppCity)->getOwnerINLINE()).getFeatureProductionChange(getFeatureType());
+
 	iProduction *= std::max(0, (GET_PLAYER((*ppCity)->getOwnerINLINE()).getFeatureProductionModifier() + 100));
 	iProduction /= 100;
 
@@ -8508,6 +8512,13 @@ void CvPlot::doFeature()
 										else
 										{
 											iProbability += GC.getImprovementInfo(pLoopPlot->getImprovementType()).getFeatureGrowthProbability();
+										}
+
+										// FeatureGrowthChanges of the traits of the owner of this plot (added by this mod, from The History of
+										// Three Kingdoms): only in a territory
+										if (isOwned())
+										{
+											iProbability += GET_PLAYER(getOwnerINLINE()).getFeatureGrowthChange((FeatureTypes)iI);
 										}
 									}
 								}

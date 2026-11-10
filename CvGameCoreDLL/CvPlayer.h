@@ -246,6 +246,9 @@ public:
 	int getConquestBuildingSurviveModifier() const;		// Exposed to Python (added by this mod)
 	bool isNoConquestPopulationLoss() const;			// Exposed to Python (added by this mod)
 	bool isNoAutoRaze() const;				// Exposed to Python (added by this mod)
+	int getFeatureProductionChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
+	int getFeatureGrowthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
+	int getFeatureHealthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	// Builds with an improvement keep the feature on the plots of this player (traits, added by this mod)
 	bool isMaintainFeatures(FeatureTypes eFeature) const;				// Exposed to Python
 	int getMaxCities() const;											// Exposed to Python

@@ -5725,6 +5725,44 @@ static void readSettledSpecialists(CvXMLLoadUtility* pXML, const TCHAR* szListTa
 	}
 }
 
+// Reads a list like <FeatureHealthChanges> (szListTag): any number of szItemTag with szTypeTag (an info type already loaded)
+// and the number szValueTag. aiValues gets one entry for each info of the class (iNumInfos), the values of the same type added
+// up, or stays empty when the list is missing or has no value. Added by this mod
+static void readTypeValueList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, const TCHAR* szValueTag, int iNumInfos, std::vector<int>& aiValues)
+{
+	CvString szTextVal;
+	int iType;
+	int iValue;
+
+	aiValues.clear();
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szListTag))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szItemTag))
+		{
+			do
+			{
+				pXML->GetChildXmlValByName(szTextVal, szTypeTag);
+				iType = pXML->FindInInfoClass(szTextVal);
+				pXML->GetChildXmlValByName(&iValue, szValueTag, 0);
+				if ((iType > -1) && (iType < iNumInfos) && (iValue != 0))
+				{
+					if (aiValues.empty())
+					{
+						aiValues.resize(iNumInfos, 0);
+					}
+					aiValues[iType] += iValue;
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), const_cast<TCHAR*>(szItemTag)));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
 // Reads a list of info types such as <PrereqOrTraits> (any number of <TraitType>) or <PrereqOrBuildingClasses> (any number
 // of <BuildingClassType>). The info class must already be loaded. NONE is skipped.
 static void readTypeList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, std::vector<int>& aiTypes)
@@ -20259,6 +20297,27 @@ int CvTraitInfo::getFeatureYieldChange(int iFeature, int iYield) const
 	return m_aaiFeatureYieldChange[iFeature][iYield];
 }
 
+int CvTraitInfo::getFeatureProductionChange(int iFeature) const
+{
+	FAssertMsg(iFeature < GC.getNumFeatureInfos(), "Index out of bounds");
+	FAssertMsg(iFeature > -1, "Index out of bounds");
+	return ((iFeature > -1) && (iFeature < (int)m_aiFeatureProductionChange.size())) ? m_aiFeatureProductionChange[iFeature] : 0;
+}
+
+int CvTraitInfo::getFeatureGrowthChange(int iFeature) const
+{
+	FAssertMsg(iFeature < GC.getNumFeatureInfos(), "Index out of bounds");
+	FAssertMsg(iFeature > -1, "Index out of bounds");
+	return ((iFeature > -1) && (iFeature < (int)m_aiFeatureGrowthChange.size())) ? m_aiFeatureGrowthChange[iFeature] : 0;
+}
+
+int CvTraitInfo::getFeatureHealthChange(int iFeature) const
+{
+	FAssertMsg(iFeature < GC.getNumFeatureInfos(), "Index out of bounds");
+	FAssertMsg(iFeature > -1, "Index out of bounds");
+	return ((iFeature > -1) && (iFeature < (int)m_aiFeatureHealthChange.size())) ? m_aiFeatureHealthChange[iFeature] : 0;
+}
+
 int CvTraitInfo::getImprovementYieldChanges(int iImprovement, int iYield) const
 {
 	FAssertMsg(iImprovement < GC.getNumImprovementInfos(), "Index out of bounds");
@@ -20980,6 +21039,10 @@ void CvTraitInfo::readPlotYieldChanges(CvXMLLoadUtility* pXML)
 	resolveYieldChanges("TerrainYieldChanges", aszTypes, aaiYields, GC.getNumTerrainInfos(), m_aaiTerrainYieldChange);
 	readYieldChanges(pXML, "FeatureYieldChanges", "FeatureYieldChange", "FeatureType", "Yields", aszTypes, aaiYields);
 	resolveYieldChanges("FeatureYieldChanges", aszTypes, aaiYields, GC.getNumFeatureInfos(), m_aaiFeatureYieldChange);
+	// The features are loaded before the traits
+	readTypeValueList(pXML, "FeatureProductionChanges", "FeatureProductionChange", "FeatureType", "iProductionChange", GC.getNumFeatureInfos(), m_aiFeatureProductionChange);
+	readTypeValueList(pXML, "FeatureGrowthChanges", "FeatureGrowthChange", "FeatureType", "iGrowthChange", GC.getNumFeatureInfos(), m_aiFeatureGrowthChange);
+	readTypeValueList(pXML, "FeatureHealthChanges", "FeatureHealthChange", "FeatureType", "iHealthPercent", GC.getNumFeatureInfos(), m_aiFeatureHealthChange);
 	// Same format as the civic ImprovementYieldChanges. Resolved in readPass3()
 	readYieldChanges(pXML, "ImprovementYieldChanges", "ImprovementYieldChange", "ImprovementType", "ImprovementYields", m_aszImprovementYieldChangeTypes, m_aaiImprovementYieldChangeValues);
 	// Same format as TerrainYieldChanges. Resolved in readPass3()

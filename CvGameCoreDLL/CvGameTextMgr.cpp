@@ -3938,6 +3938,34 @@ void CvGameTextMgr::parseTraitYieldEffects(CvWStringBuffer& szHelpString, TraitT
 		}
 	}
 
+	// FeatureProductionChanges, FeatureGrowthChanges, FeatureHealthChanges: one line per feature (added by this mod). The growth
+	// (1/10000) and the health (1/100) are shown as decimals
+	for (iJ = 0; iJ < GC.getNumFeatureInfos(); ++iJ)
+	{
+		CvWString szFeature = getLinkText(GC.getFeatureInfo((FeatureTypes)iJ).getDescription());
+		int iValue;
+
+		iValue = kTrait.getFeatureProductionChange(iJ);
+		if (iValue != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FEATURE_PRODUCTION_CHANGE", szFeature.GetCString(), iValue));
+		}
+
+		iValue = kTrait.getFeatureGrowthChange(iJ);
+		if (iValue != 0)
+		{
+			szTempBuffer.Format(L"%c%d.%02d", ((iValue > 0) ? L'+' : L'-'), abs(iValue) / 100, abs(iValue) % 100);
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FEATURE_GROWTH_CHANGE", szFeature.GetCString(), szTempBuffer.GetCString()));
+		}
+
+		iValue = kTrait.getFeatureHealthChange(iJ);
+		if (iValue != 0)
+		{
+			szTempBuffer.Format(L"%c%d.%02d", ((iValue > 0) ? L'+' : L'-'), abs(iValue) / 100, abs(iValue) % 100);
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FEATURE_HEALTH_CHANGE", szFeature.GetCString(), szTempBuffer.GetCString()));
+		}
+	}
+
 	// RiverPlotYieldChanges: "River Tiles: +1 food", with the building text key
 	if (kTrait.getRiverPlotYieldChangeArray() != NULL)
 	{
