@@ -5310,6 +5310,13 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_RIVER_CROSSING_DAMAGE", GC.getPromotionInfo(ePromotion).getRiverCrossingDamagePercent()));
 	}
 
+	// bChooseGoody (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).isChooseGoody())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_CHOOSE_GOODY"));
+	}
+
 	// bNoDamagePenalty (added by this mod)
 	if (GC.getPromotionInfo(ePromotion).isNoDamagePenalty())
 	{

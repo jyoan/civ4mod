@@ -187,6 +187,9 @@ public:
 
 	bool canReceiveGoody(CvPlot* pPlot, GoodyTypes eGoody, CvUnit* pUnit) const;													// Exposed to Python
 	void receiveGoody(CvPlot* pPlot, GoodyTypes eGoody, CvUnit* pUnit);															// Exposed to Python
+	void doRandomGoody(CvPlot* pPlot, CvUnit* pUnit);												// added by this mod
+	bool launchChooseGoodyPopup(CvPlot* pPlot, CvUnit* pUnit);									// added by this mod: bChooseGoody
+	void receiveChosenGoody(int iPlotIndex, int iUnitID, GoodyTypes eGoody);					// added by this mod: bChooseGoody
 	void doGoody(CvPlot* pPlot, CvUnit* pUnit);																											// Exposed to Python
 
 	DllExport bool canFound(int iX, int iY, bool bTestVisible = false) const;															// Exposed to Python			

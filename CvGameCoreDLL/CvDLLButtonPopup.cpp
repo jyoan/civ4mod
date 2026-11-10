@@ -405,6 +405,25 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 		break;
 
 	case BUTTONPOPUP_PYTHON:
+		// The popup of bChooseGoody (added by this mod): the choice goes to every computer, Python is not called
+		if (info.getOnClickedPythonCallback() == "claudeChooseGoody")
+		{
+			int iButton = 0;
+			for (int iGoody = 0; iGoody < GC.getNumGoodyInfos() && iGoody < 31; iGoody++)
+			{
+				if (info.getFlags() & (1 << iGoody))
+				{
+					if (iButton == pPopupReturn->getButtonClicked())
+					{
+						CvMessageControl::getInstance().sendModNetMessage(MOD_NET_MESSAGE_CHOOSE_GOODY, GC.getGameINLINE().getActivePlayer(), info.getData1(), info.getData2(), iGoody);
+						break;
+					}
+					iButton++;
+				}
+			}
+			break;
+		}
+
 		if (!info.getOnClickedPythonCallback().IsEmpty())
 		{
 			FAssertMsg(!GC.getGameINLINE().isNetworkMultiPlayer(), "Danger: Out of Sync");
