@@ -409,6 +409,16 @@
 					<iStartBias>100</iStartBias>
 				</StartBiasBonus>
 			</StartBiasBonuses>
+			<CityFoundedUnits>
+				<CityFoundedUnit>
+					<UnitClassType>UNITCLASS_GALLEY</UnitClassType>
+				</CityFoundedUnit>
+				<CityFoundedUnit>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
+					<iNumUnits>2</iNumUnits>
+					<bCoastalOnly>1</bCoastalOnly>
+				</CityFoundedUnit>
+			</CityFoundedUnits>
 			<iGoldInterestPercent>3</iGoldInterestPercent>
 			<iGoldInterestMax>25</iGoldInterestMax>
 			<iPeaceAngerPerTurn>50</iPeaceAngerPerTurn>

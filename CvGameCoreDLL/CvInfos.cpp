@@ -19514,6 +19514,27 @@ int CvTraitInfo::getStartBiasBonus(int i) const
 	return (m_piStartBiasBonuses != NULL && i > -1 && i < GC.getNumBonusInfos()) ? m_piStartBiasBonuses[i] : 0;
 }
 
+// CityFoundedUnits (added by this mod): units the player gets in each city it founds
+int CvTraitInfo::getNumCityFoundedUnits() const
+{
+	return (int)m_aiCityFoundedUnitClasses.size();
+}
+
+int CvTraitInfo::getCityFoundedUnitClass(int i) const
+{
+	return (i > -1 && i < getNumCityFoundedUnits()) ? m_aiCityFoundedUnitClasses[i] : NO_UNITCLASS;
+}
+
+int CvTraitInfo::getCityFoundedUnitNum(int i) const
+{
+	return (i > -1 && i < getNumCityFoundedUnits()) ? m_aiCityFoundedUnitNums[i] : 0;
+}
+
+bool CvTraitInfo::isCityFoundedUnitCoastalOnly(int i) const
+{
+	return (i > -1 && i < getNumCityFoundedUnits()) ? m_abCityFoundedUnitCoastalOnly[i] : false;
+}
+
 // The team of the player is at peace with the barbarians (added by this mod, as FFH2)
 bool CvTraitInfo::isBarbarianAlly() const
 {
@@ -20320,6 +20341,40 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iGoldenAgeSeaMovesChange, "iGoldenAgeSeaMovesChange");
 	pXML->GetChildXmlValByName(&m_bInlandCanals, "bInlandCanals");
 	pXML->GetChildXmlValByName(&m_bBarbarianAlly, "bBarbarianAlly");
+
+	// CityFoundedUnits (added by this mod): the unit classes are loaded before the traits
+	m_aiCityFoundedUnitClasses.clear();
+	m_aiCityFoundedUnitNums.clear();
+	m_abCityFoundedUnitCoastalOnly.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CityFoundedUnits"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CityFoundedUnit"))
+		{
+			do
+			{
+				int iFoundedUnitClass;
+				int iFoundedUnitNum = 1;
+				bool bFoundedUnitCoastalOnly = false;
+
+				pXML->GetChildXmlValByName(szTextVal, "UnitClassType");
+				iFoundedUnitClass = pXML->FindInInfoClass(szTextVal);
+				pXML->GetChildXmlValByName(&iFoundedUnitNum, "iNumUnits", 1);
+				pXML->GetChildXmlValByName(&bFoundedUnitCoastalOnly, "bCoastalOnly");
+
+				if (iFoundedUnitClass > -1 && iFoundedUnitNum > 0)
+				{
+					m_aiCityFoundedUnitClasses.push_back(iFoundedUnitClass);
+					m_aiCityFoundedUnitNums.push_back(iFoundedUnitNum);
+					m_abCityFoundedUnitCoastalOnly.push_back(bFoundedUnitCoastalOnly);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "CityFoundedUnit"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 
 	// Start bias (added by this mod). The terrains and features are loaded before the traits, the bonuses after them
 	pXML->GetChildXmlValByName(&m_iStartBiasCoastal, "iStartBiasCoastal");
