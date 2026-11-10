@@ -10393,6 +10393,22 @@ int CvUnit::getRiverCrossingDamagePercent() const
 	return iPercent;
 }
 
+// bChooseGoody of the promotions (added by this mod)
+bool CvUnit::isChooseGoody() const
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	{
+		if (isHasPromotion((PromotionTypes)iI) && GC.getPromotionInfo((PromotionTypes)iI).isChooseGoody())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 // bNoDamagePenalty of the promotions (added by this mod). Not for aircraft: their strength is airCurrCombatStr()
 bool CvUnit::isNoDamagePenalty() const
 {

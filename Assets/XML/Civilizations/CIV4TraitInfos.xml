@@ -698,6 +698,20 @@
 						</FreePromotionUnitCombat>
 					</FreePromotionUnitCombats>
 				</FreePromotionSet>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_TEST_CHOOSE_GOODY</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<FreePromotionUnitCombats>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_RECON</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+					</FreePromotionUnitCombats>
+				</FreePromotionSet>
 			</FreePromotionSets>
 		</TraitInfo>
 	</TraitInfos>

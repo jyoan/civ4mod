@@ -31,6 +31,9 @@
 
 #define MAX_CIV_TEAMS													(MAX_CIV_PLAYERS)
 #define MAX_PLAYERS														(MAX_CIV_PLAYERS + 1)
+
+// The ModNetMessage of bChooseGoody: the DLL handles it, Python does not see it (added by this mod)
+#define MOD_NET_MESSAGE_CHOOSE_GOODY								(-20261110)
 #define MAX_TEAMS															(MAX_PLAYERS)
 #define BARBARIAN_PLAYER											((PlayerTypes)MAX_CIV_PLAYERS)
 #define BARBARIAN_TEAM												((TeamTypes)MAX_CIV_TEAMS)

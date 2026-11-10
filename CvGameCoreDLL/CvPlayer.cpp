@@ -5366,25 +5366,180 @@ void CvPlayer::doGoody(CvPlot* pPlot, CvUnit* pUnit)
 	pPlot->removeGoody();
 	if (!isBarbarian())
 	{
-		for (int iI = 0; iI < GC.getDefineINT("NUM_DO_GOODY_ATTEMPTS"); iI++)
+		// bChooseGoody of the promotions of the unit (added by this mod): the human player picks the reward
+		if (pUnit != NULL && isHuman() && pUnit->isChooseGoody() && launchChooseGoodyPopup(pPlot, pUnit))
 		{
-			if (GC.getHandicapInfo(getHandicapType()).getNumGoodies() > 0)
+			return;
+		}
+
+		doRandomGoody(pPlot, pUnit);
+	}
+}
+
+// The reward of a goody hut, chosen at random from the list of the handicap (the loop of doGoody, moved here by this mod)
+void CvPlayer::doRandomGoody(CvPlot* pPlot, CvUnit* pUnit)
+{
+	for (int iI = 0; iI < GC.getDefineINT("NUM_DO_GOODY_ATTEMPTS"); iI++)
+	{
+		if (GC.getHandicapInfo(getHandicapType()).getNumGoodies() > 0)
+		{
+			GoodyTypes eGoody = (GoodyTypes)GC.getHandicapInfo(getHandicapType()).getGoodies(GC.getGameINLINE().getSorenRandNum(GC.getHandicapInfo(getHandicapType()).getNumGoodies(), "Goodies"));
+
+			FAssert(eGoody >= 0);
+			FAssert(eGoody < GC.getNumGoodyInfos());
+
+			if (canReceiveGoody(pPlot, eGoody, pUnit))
 			{
-				GoodyTypes eGoody = (GoodyTypes)GC.getHandicapInfo(getHandicapType()).getGoodies(GC.getGameINLINE().getSorenRandNum(GC.getHandicapInfo(getHandicapType()).getNumGoodies(), "Goodies"));
+				receiveGoody(pPlot, eGoody, pUnit);
 
-				FAssert(eGoody >= 0);
-				FAssert(eGoody < GC.getNumGoodyInfos());
-
-				if (canReceiveGoody(pPlot, eGoody, pUnit))
-				{
-					receiveGoody(pPlot, eGoody, pUnit);
-
-					// Python Event
-					CvEventReporter::getInstance().goodyReceived(getID(), pPlot, pUnit, eGoody);
-					break;
-				}
+				// Python Event
+				CvEventReporter::getInstance().goodyReceived(getID(), pPlot, pUnit, eGoody);
+				break;
 			}
 		}
+	}
+}
+
+// The text of a button of the popup of bChooseGoody (added by this mod): "12-52 gold", "Settler", "New technology"
+static CvWString getChooseGoodyText(const CvPlayer& kPlayer, GoodyTypes eGoody)
+{
+	CvGoodyInfo& kGoody = GC.getGoodyInfo(eGoody);
+	int iGrowthPercent = GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getGrowthPercent();
+	int iMinGold = (kGoody.getGold() * iGrowthPercent) / 100;
+	int iMaxGold = ((kGoody.getGold() + std::max(0, kGoody.getGoldRand1() - 1) + std::max(0, kGoody.getGoldRand2() - 1)) * iGrowthPercent) / 100;
+	CvWString szText;
+
+	if (iMaxGold > 0)
+	{
+		szText += gDLL->getText("TXT_KEY_CHOOSE_GOODY_GOLD", iMinGold, iMaxGold);
+	}
+	if (kGoody.getUnitClassType() != NO_UNITCLASS)
+	{
+		UnitTypes eUnit = (UnitTypes)kPlayer.getCivilizationUnit(kGoody.getUnitClassType());
+		if (eUnit != NO_UNIT)
+		{
+			szText += (szText.empty() ? L"" : L", ");
+			szText += GC.getUnitInfo(eUnit).getDescription();
+		}
+	}
+	if (kGoody.isTech())
+	{
+		szText += (szText.empty() ? L"" : L", ");
+		szText += gDLL->getText("TXT_KEY_CHOOSE_GOODY_TECH");
+	}
+	if (kGoody.getMapRange() > 0)
+	{
+		szText += (szText.empty() ? L"" : L", ");
+		szText += gDLL->getText("TXT_KEY_CHOOSE_GOODY_MAP");
+	}
+	if (kGoody.getExperience() > 0)
+	{
+		szText += (szText.empty() ? L"" : L", ");
+		szText += gDLL->getText("TXT_KEY_CHOOSE_GOODY_EXPERIENCE", kGoody.getExperience());
+	}
+	if (kGoody.getHealing() > 0)
+	{
+		szText += (szText.empty() ? L"" : L", ");
+		szText += gDLL->getText("TXT_KEY_CHOOSE_GOODY_HEALING");
+	}
+	if (szText.empty())
+	{
+		szText = kGoody.getDescription();
+	}
+
+	return szText;
+}
+
+// bChooseGoody (added by this mod): a popup with the rewards the player can receive here, without the bad ones. The flags
+// keep which goodies the buttons are, in their order. Only one: given at once. None: false, doGoody gives one at random
+bool CvPlayer::launchChooseGoodyPopup(CvPlot* pPlot, CvUnit* pUnit)
+{
+	CvPopupInfo* pInfo;
+	GoodyTypes eGoody;
+	GoodyTypes eOnlyGoody = NO_GOODY;
+	int iFlags = 0;
+	int iCount = 0;
+	int iI;
+
+	if (GC.getNumGoodyInfos() > 31)
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < GC.getHandicapInfo(getHandicapType()).getNumGoodies(); iI++)
+	{
+		eGoody = (GoodyTypes)GC.getHandicapInfo(getHandicapType()).getGoodies(iI);
+		if (!(iFlags & (1 << eGoody)) && !GC.getGoodyInfo(eGoody).isBad() && canReceiveGoody(pPlot, eGoody, pUnit))
+		{
+			iFlags |= (1 << eGoody);
+			eOnlyGoody = eGoody;
+			iCount++;
+		}
+	}
+
+	if (iCount == 0)
+	{
+		return false;
+	}
+
+	if (iCount == 1)
+	{
+		receiveGoody(pPlot, eOnlyGoody, pUnit);
+		CvEventReporter::getInstance().goodyReceived(getID(), pPlot, pUnit, eOnlyGoody);
+		return true;
+	}
+
+	// On every computer; the popup only shows for this player
+	pInfo = new CvPopupInfo(BUTTONPOPUP_PYTHON, GC.getMapINLINE().plotNumINLINE(pPlot->getX_INLINE(), pPlot->getY_INLINE()), pUnit->getID(), -1, iFlags);
+	pInfo->setText(gDLL->getText("TXT_KEY_POPUP_CHOOSE_GOODY"));
+	pInfo->setOnClickedPythonCallback("claudeChooseGoody");
+	for (iI = 0; iI < GC.getNumGoodyInfos(); iI++)
+	{
+		if (iFlags & (1 << iI))
+		{
+			pInfo->addPythonButton(getChooseGoodyText(*this, (GoodyTypes)iI), "");
+		}
+	}
+	gDLL->getInterfaceIFace()->addPopup(pInfo, getID());
+
+	return true;
+}
+
+// The reward chosen in the popup of bChooseGoody, sent to every computer as a ModNetMessage (added by this mod). If it
+// cannot be received any more (the unit died), one at random as usual
+void CvPlayer::receiveChosenGoody(int iPlotIndex, int iUnitID, GoodyTypes eGoody)
+{
+	CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(iPlotIndex);
+	CvUnit* pUnit = getUnit(iUnitID);
+	bool bOffered = false;
+	int iI;
+
+	if (pPlot == NULL || eGoody < 0 || eGoody >= GC.getNumGoodyInfos())
+	{
+		return;
+	}
+
+	if (pUnit != NULL && pUnit->isDelayedDeath())
+	{
+		pUnit = NULL;
+	}
+
+	for (iI = 0; iI < GC.getHandicapInfo(getHandicapType()).getNumGoodies(); iI++)
+	{
+		if (GC.getHandicapInfo(getHandicapType()).getGoodies(iI) == eGoody)
+		{
+			bOffered = true;
+		}
+	}
+
+	if (bOffered && !GC.getGoodyInfo(eGoody).isBad() && canReceiveGoody(pPlot, eGoody, pUnit))
+	{
+		receiveGoody(pPlot, eGoody, pUnit);
+		CvEventReporter::getInstance().goodyReceived(getID(), pPlot, pUnit, eGoody);
+	}
+	else
+	{
+		doRandomGoody(pPlot, pUnit);
 	}
 }
 

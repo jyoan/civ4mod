@@ -533,6 +533,7 @@ public:
 	bool isImpassablePlotPassageRemoveFeature(int i) const;	// Exposed to Python
 	int getRiverCrossingDamagePercent() const;		// Exposed to Python
 	bool isNoDamagePenalty() const;				// Exposed to Python
+	bool isChooseGoody() const;					// Exposed to Python
 
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
@@ -625,6 +626,7 @@ protected:
 	bool m_bRemovedByCombat;
 	bool m_bRemovedWhenHealed;
 	bool m_bNoDamagePenalty;
+	bool m_bChooseGoody;
 
 	bool m_bLeader;
 	bool m_bBlitz;									

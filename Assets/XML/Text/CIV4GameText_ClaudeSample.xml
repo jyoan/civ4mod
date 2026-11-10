@@ -1595,6 +1595,69 @@
 		<Spanish>[ICON_BULLET]%D1_Num%% chance for executives to spread their corporation</Spanish>
 		<Japanese>[ICON_BULLET]&#24185;&#37096;&#12395;&#12424;&#12427;&#20225;&#26989;&#12398;&#36914;&#20986;&#12398;&#25104;&#21151;&#29575;%D1_Num%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_CHOOSE_GOODY</Tag>
+		<English>[ICON_BULLET]Chooses the reward of goody huts</English>
+		<French>[ICON_BULLET]Chooses the reward of goody huts</French>
+		<German>[ICON_BULLET]Chooses the reward of goody huts</German>
+		<Italian>[ICON_BULLET]Chooses the reward of goody huts</Italian>
+		<Spanish>[ICON_BULLET]Chooses the reward of goody huts</Spanish>
+		<Japanese>[ICON_BULLET]&#37096;&#26063;&#38598;&#33853;&#12398;&#22577;&#37228;&#12434;&#36984;&#12409;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_POPUP_CHOOSE_GOODY</Tag>
+		<English>The villagers offer you a gift. What will you take?</English>
+		<French>The villagers offer you a gift. What will you take?</French>
+		<German>The villagers offer you a gift. What will you take?</German>
+		<Italian>The villagers offer you a gift. What will you take?</Italian>
+		<Spanish>The villagers offer you a gift. What will you take?</Spanish>
+		<Japanese>&#26449;&#20154;&#12364;&#36104;&#12426;&#29289;&#12434;&#12367;&#12428;&#12427;&#12381;&#12358;&#12391;&#12377;&#12290;&#20309;&#12434;&#21463;&#12369;&#21462;&#12426;&#12414;&#12377;&#12363;&#65311;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CHOOSE_GOODY_GOLD</Tag>
+		<English>%d1_Min-%d2_Max gold</English>
+		<French>%d1_Min-%d2_Max gold</French>
+		<German>%d1_Min-%d2_Max gold</German>
+		<Italian>%d1_Min-%d2_Max gold</Italian>
+		<Spanish>%d1_Min-%d2_Max gold</Spanish>
+		<Japanese>%d1_Min&#65374;%d2_Max&#12468;&#12540;&#12523;&#12489;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CHOOSE_GOODY_TECH</Tag>
+		<English>A new technology</English>
+		<French>A new technology</French>
+		<German>A new technology</German>
+		<Italian>A new technology</Italian>
+		<Spanish>A new technology</Spanish>
+		<Japanese>&#26032;&#12375;&#12356;&#12486;&#12463;&#12494;&#12525;&#12472;&#12540;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CHOOSE_GOODY_MAP</Tag>
+		<English>A map of the area</English>
+		<French>A map of the area</French>
+		<German>A map of the area</German>
+		<Italian>A map of the area</Italian>
+		<Spanish>A map of the area</Spanish>
+		<Japanese>&#21608;&#36794;&#12398;&#22320;&#22259;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CHOOSE_GOODY_EXPERIENCE</Tag>
+		<English>%d1_Num experience for the unit</English>
+		<French>%d1_Num experience for the unit</French>
+		<German>%d1_Num experience for the unit</German>
+		<Italian>%d1_Num experience for the unit</Italian>
+		<Spanish>%d1_Num experience for the unit</Spanish>
+		<Japanese>&#12518;&#12491;&#12483;&#12488;&#12395;&#32076;&#39443;&#20516;%d1_Num</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CHOOSE_GOODY_HEALING</Tag>
+		<English>Healing of the unit</English>
+		<French>Healing of the unit</French>
+		<German>Healing of the unit</German>
+		<Italian>Healing of the unit</Italian>
+		<Spanish>Healing of the unit</Spanish>
+		<Japanese>&#12518;&#12491;&#12483;&#12488;&#12398;&#22238;&#24489;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
@@ -2648,5 +2711,14 @@
 		<Italian>Build Test Fort</Italian>
 		<Spanish>Build Test Fort</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#30758;&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_CHOOSE_GOODY</Tag>
+		<English>Test Promotion (Goody Huts)</English>
+		<French>Test Promotion (Goody Huts)</French>
+		<German>Test Promotion (Goody Huts)</German>
+		<Italian>Test Promotion (Goody Huts)</Italian>
+		<Spanish>Test Promotion (Goody Huts)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#37096;&#26063;&#38598;&#33853;&#65289;</Japanese>
 	</TEXT>
 </Civ4GameText>

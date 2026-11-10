@@ -509,6 +509,16 @@ void CvNetModNetMessage::Debug(char* szAddendum)
 
 void CvNetModNetMessage::Execute()
 {
+	// bChooseGoody (added by this mod): player, plot index, unit ID, goody
+	if (m_iData1 == MOD_NET_MESSAGE_CHOOSE_GOODY)
+	{
+		if (m_iData2 >= 0 && m_iData2 < MAX_PLAYERS)
+		{
+			GET_PLAYER((PlayerTypes)m_iData2).receiveChosenGoody(m_iData3, m_iData4, (GoodyTypes)m_iData5);
+		}
+		return;
+	}
+
 	CvEventReporter::getInstance().reportModNetMessage(m_iData1, m_iData2, m_iData3, m_iData4, m_iData5);
 }
 

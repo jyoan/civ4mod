@@ -1707,6 +1707,7 @@ m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
 m_bNoDamagePenalty(false),
+m_bChooseGoody(false),
 m_bLeader(false),
 m_bBlitz(false),
 m_bAmphib(false),
@@ -2152,6 +2153,12 @@ bool CvPromotionInfo::isNoDamagePenalty() const
 	return m_bNoDamagePenalty;
 }
 
+// The human player picks the reward of the goody huts the unit enters (added by this mod)
+bool CvPromotionInfo::isChooseGoody() const
+{
+	return m_bChooseGoody;
+}
+
 int CvPromotionInfo::getCombatPercentInBorders() const
 {
 	return m_iCombatPercentInBorders;
@@ -2463,13 +2470,20 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_bNoDamagePenalty);
 	}
+
+	// uiFlag < 9: cache written before bChooseGoody existed
+	m_bChooseGoody = false;
+	if (uiFlag > 8)
+	{
+		stream->Read(&m_bChooseGoody);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 8;
+	uint uiFlag = 9;
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2573,6 +2587,7 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 
 	stream->Write(m_iRiverCrossingDamagePercent);
 	stream->Write(m_bNoDamagePenalty);
+	stream->Write(m_bChooseGoody);
 }
 
 bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
@@ -2685,6 +2700,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->GetChildXmlValByName(&m_iRiverCrossingDamagePercent, "iRiverCrossingDamagePercent");
 	pXML->GetChildXmlValByName(&m_bNoDamagePenalty, "bNoDamagePenalty");
+	pXML->GetChildXmlValByName(&m_bChooseGoody, "bChooseGoody");
 
 	// ImpassablePlotPassages: terrains and features are loaded before promotions
 	m_aiImpassablePlotPassageTerrain.clear();

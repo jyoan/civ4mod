@@ -406,6 +406,7 @@ public:
 	bool isImpassablePlotPassageRemoveFeature(const CvPlot* pPlot) const;	// added by this mod
 	int getRiverCrossingDamagePercent() const;	// added by this mod
 	bool isNoDamagePenalty() const;	// added by this mod. Exposed to Python
+	bool isChooseGoody() const;	// added by this mod: bChooseGoody of the promotions
 	bool canEnterImpassablePlot(const CvPlot* pPlot) const;	// added by this mod
 	bool canMoveImpassable() const;																										// Exposed to Python
 	bool canMoveAllTerrain() const;																										// Exposed to Python
