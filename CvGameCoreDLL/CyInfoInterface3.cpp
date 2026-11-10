@@ -384,6 +384,11 @@ void CyInfoPythonInterface3()
 		.def("isFreePromotionSetPromotion", &CvTraitInfo::isFreePromotionSetPromotion, "bool (int iSet, int iPromotion)")
 		.def("isFreePromotionSetUnitCombat", &CvTraitInfo::isFreePromotionSetUnitCombat, "bool (int iSet, int iUnitCombat)")
 		.def("isUnitCombatFreePromotion", &CvTraitInfo::isUnitCombatFreePromotion, "bool (int iUnitCombat, int iPromotion)")
+		.def("isFreePromotionSetUnitClass", &CvTraitInfo::isFreePromotionSetUnitClass, "bool (int iSet, int iUnitClass)")
+		.def("isFreePromotionSetNoUnitCombat", &CvTraitInfo::isFreePromotionSetNoUnitCombat, "bool (int iSet)")
+		.def("isFreePromotionSetDomain", &CvTraitInfo::isFreePromotionSetDomain, "bool (int iSet, int iDomain)")
+		.def("isFreePromotionSetUnit", &CvTraitInfo::isFreePromotionSetUnit, "bool (int iSet, int iUnit)")
+		.def("isUnitFreePromotion", &CvTraitInfo::isUnitFreePromotion, "bool (int iUnit, int iPromotion)")
 		;
 
 	// CvWorldInfo

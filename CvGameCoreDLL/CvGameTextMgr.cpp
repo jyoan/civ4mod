@@ -4263,6 +4263,40 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 						szHelpString.append(szTempBuffer);
 					}
 				}
+
+				// FreePromotionUnitClasses, bFreePromotionNoUnitCombat, FreePromotionDomains (added by this mod)
+				for (iJ = 0; iJ < GC.getNumUnitClassInfos(); iJ++)
+				{
+					if (GC.getTraitInfo(eTrait).isFreePromotionSetUnitClass(iSet, iJ))
+					{
+						szTempBuffer.Format(L"\n        %c<link=literal>%s</link>", gDLL->getSymbolID(BULLET_CHAR), GC.getUnitClassInfo((UnitClassTypes)iJ).getDescription());
+						szHelpString.append(szTempBuffer);
+					}
+				}
+				if (GC.getTraitInfo(eTrait).isFreePromotionSetNoUnitCombat(iSet))
+				{
+					szTempBuffer.Format(L"\n        %c%s", gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_FREE_PROMOTION_NO_UNIT_COMBAT").GetCString());
+					szHelpString.append(szTempBuffer);
+				}
+				CvWString szDomains;
+				bool bAllDomains = true;
+				for (iJ = 0; iJ < NUM_DOMAIN_TYPES; iJ++)
+				{
+					if (GC.getTraitInfo(eTrait).isFreePromotionSetDomain(iSet, iJ))
+					{
+						szDomains += (szDomains.empty() ? L"" : L", ");
+						szDomains += GC.getDomainInfo((DomainTypes)iJ).getDescription();
+					}
+					else
+					{
+						bAllDomains = false;
+					}
+				}
+				if (!bAllDomains)
+				{
+					szTempBuffer.Format(L"\n        %s", gDLL->getText("TXT_KEY_TRAIT_FREE_PROMOTION_DOMAINS", szDomains.GetCString()).GetCString());
+					szHelpString.append(szTempBuffer);
+				}
 			}
 		}
 

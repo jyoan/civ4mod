@@ -4758,6 +4758,11 @@ public:
 	bool isFreePromotionSetPromotion(int iSet, int iPromotion) const;				// Exposed to Python
 	bool isFreePromotionSetUnitCombat(int iSet, int iUnitCombat) const;				// Exposed to Python
 	bool isUnitCombatFreePromotion(int iUnitCombat, int iPromotion) const;				// Exposed to Python
+	bool isFreePromotionSetUnitClass(int iSet, int iUnitClass) const;	// added by this mod. Exposed to Python
+	bool isFreePromotionSetNoUnitCombat(int iSet) const;				// added by this mod. Exposed to Python
+	bool isFreePromotionSetDomain(int iSet, int iDomain) const;			// added by this mod: true for every domain without FreePromotionDomains. Exposed to Python
+	bool isFreePromotionSetUnit(int iSet, int iUnit) const;				// added by this mod. Exposed to Python
+	bool isUnitFreePromotion(int iUnit, int iPromotion) const;			// added by this mod: any set. Exposed to Python
 
 	bool read(CvXMLLoadUtility* pXML);
 	bool readPass3();
@@ -4885,6 +4890,9 @@ protected:
 
 	std::vector< std::vector<bool> > m_aabFreePromotionSetPromotion;		// [set][promotion]
 	std::vector< std::vector<bool> > m_aabFreePromotionSetUnitCombat;		// [set][unit combat]
+	std::vector< std::vector<int> > m_aaiFreePromotionSetUnitClasses;	// [set] FreePromotionUnitClasses (added by this mod)
+	std::vector<bool> m_abFreePromotionSetNoUnitCombat;				// [set] bFreePromotionNoUnitCombat
+	std::vector< std::vector<int> > m_aaiFreePromotionSetDomains;		// [set] FreePromotionDomains (empty: any)
 
 };
 

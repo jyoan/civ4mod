@@ -723,6 +723,29 @@
 						</FreePromotionUnitCombat>
 					</FreePromotionUnitCombats>
 				</FreePromotionSet>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_WOODSMAN2</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<bFreePromotionNoUnitCombat>1</bFreePromotionNoUnitCombat>
+					<FreePromotionDomains>
+						<DomainType>DOMAIN_LAND</DomainType>
+					</FreePromotionDomains>
+				</FreePromotionSet>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_NAVIGATION1</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<FreePromotionUnitClasses>
+						<UnitClassType>UNITCLASS_WORKBOAT</UnitClassType>
+					</FreePromotionUnitClasses>
+				</FreePromotionSet>
 			</FreePromotionSets>
 		</TraitInfo>
 		<TraitInfo>

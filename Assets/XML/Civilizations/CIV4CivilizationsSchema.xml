@@ -324,9 +324,20 @@
 	<ElementType name="FreePromotionUnitCombats" content="eltOnly">
 		<element type="FreePromotionUnitCombat" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="FreePromotionUnitClasses" content="eltOnly">
+		<element type="UnitClassType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="bFreePromotionNoUnitCombat" content="textOnly" dt:type="boolean"/>
+	<ElementType name="DomainType" content="textOnly"/>
+	<ElementType name="FreePromotionDomains" content="eltOnly">
+		<element type="DomainType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="FreePromotionSet" content="eltOnly">
 		<element type="FreePromotions"/>
-		<element type="FreePromotionUnitCombats"/>
+		<element type="FreePromotionUnitCombats" minOccurs="0"/>
+		<element type="FreePromotionUnitClasses" minOccurs="0"/>
+		<element type="bFreePromotionNoUnitCombat" minOccurs="0"/>
+		<element type="FreePromotionDomains" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="FreePromotionSets" content="eltOnly">
 		<element type="FreePromotionSet" minOccurs="0" maxOccurs="*"/>
