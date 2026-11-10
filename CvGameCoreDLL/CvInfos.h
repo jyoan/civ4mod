@@ -4784,6 +4784,16 @@ public:
 	bool isUnitFreePromotion(int iUnit, int iPromotion) const;			// added by this mod: any set. Exposed to Python
 
 	bool read(CvXMLLoadUtility* pXML);
+	void readModValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readCityFoundedUnits(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readStartBias(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readCityAndEconomyValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readYieldAndUnitArrays(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readFeatureRoutes(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readObsolescenceAndHooks(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readConditionalFreeTraits(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readFreePromotionSets(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readPlotYieldChanges(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	bool readPass3();
 	void readUniqueUnits();							// added by this mod: after the units are loaded
 

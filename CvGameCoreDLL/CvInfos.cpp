@@ -20286,28 +20286,9 @@ static void readUniqueTypes(CvXMLLoadUtility* pXML, const TCHAR* szListTag, cons
 	}
 }
 
-bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
+// The part of read() for the simple values of the mod (iWorkerSpeedModifier ... bBarbarianAlly) (added by this mod)
+void CvTraitInfo::readModValues(CvXMLLoadUtility* pXML)
 {
-	CvString szTextVal;
-	if (!CvInfoBase::read(pXML))
-	{
-		return false;
-	}
-
-	pXML->GetChildXmlValByName(szTextVal, "ShortDescription");
-	setShortDescription(szTextVal);
-
-	pXML->GetChildXmlValByName(&m_iHealth, "iHealth");
-	pXML->GetChildXmlValByName(&m_iHappiness, "iHappiness");
-	pXML->GetChildXmlValByName(&m_iMaxAnarchy, "iMaxAnarchy");
-	pXML->GetChildXmlValByName(&m_iUpkeepModifier, "iUpkeepModifier");
-	pXML->GetChildXmlValByName(&m_iLevelExperienceModifier, "iLevelExperienceModifier");
-	pXML->GetChildXmlValByName(&m_iGreatPeopleRateModifier, "iGreatPeopleRateModifier");
-	pXML->GetChildXmlValByName(&m_iGreatGeneralRateModifier, "iGreatGeneralRateModifier");
-	pXML->GetChildXmlValByName(&m_iDomesticGreatGeneralRateModifier, "iDomesticGreatGeneralRateModifier");
-	pXML->GetChildXmlValByName(&m_iMaxGlobalBuildingProductionModifier, "iMaxGlobalBuildingProductionModifier");
-	pXML->GetChildXmlValByName(&m_iMaxTeamBuildingProductionModifier, "iMaxTeamBuildingProductionModifier");
-	pXML->GetChildXmlValByName(&m_iMaxPlayerBuildingProductionModifier, "iMaxPlayerBuildingProductionModifier");
 	pXML->GetChildXmlValByName(&m_iWorkerSpeedModifier, "iWorkerSpeedModifier");
 	pXML->GetChildXmlValByName(&m_iFreeExperience, "iFreeExperience");
 	pXML->GetChildXmlValByName(&m_iMilitaryProductionModifier, "iMilitaryProductionModifier");
@@ -20341,6 +20322,12 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iGoldenAgeSeaMovesChange, "iGoldenAgeSeaMovesChange");
 	pXML->GetChildXmlValByName(&m_bInlandCanals, "bInlandCanals");
 	pXML->GetChildXmlValByName(&m_bBarbarianAlly, "bBarbarianAlly");
+}
+
+// The part of read() for CityFoundedUnits (added by this mod)
+void CvTraitInfo::readCityFoundedUnits(CvXMLLoadUtility* pXML)
+{
+	CvString szTextVal;
 
 	// CityFoundedUnits (added by this mod): the unit classes are loaded before the traits
 	m_aiCityFoundedUnitClasses.clear();
@@ -20375,7 +20362,11 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+}
 
+// The part of read() for the start bias (added by this mod)
+void CvTraitInfo::readStartBias(CvXMLLoadUtility* pXML)
+{
 	// Start bias (added by this mod). The terrains and features are loaded before the traits, the bonuses after them
 	pXML->GetChildXmlValByName(&m_iStartBiasCoastal, "iStartBiasCoastal");
 	pXML->GetChildXmlValByName(&m_iStartBiasRiver, "iStartBiasRiver");
@@ -20403,6 +20394,11 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+}
+
+// The part of read() for gold interest, peace anger, culture range, ForbiddenCivics and the new cities (added by this mod)
+void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
+{
 	pXML->GetChildXmlValByName(&m_iGoldInterestPercent, "iGoldInterestPercent");
 	pXML->GetChildXmlValByName(&m_iGoldInterestMax, "iGoldInterestMax");
 	pXML->GetChildXmlValByName(&m_iPeaceAngerPerTurn, "iPeaceAngerPerTurn");
@@ -20416,7 +20412,11 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iNewCityPopulation, "iNewCityPopulation");
 	pXML->GetChildXmlValByName(&m_bNewCityStateReligion, "bNewCityStateReligion");
 	pXML->GetChildXmlValByName(&m_iOccupationTimeModifier, "iOccupationTimeModifier");
+}
 
+// The part of read() for the yield and commerce arrays, the unit combat arrays, the free promotions and MaintainFeatures (added by this mod)
+void CvTraitInfo::readYieldAndUnitArrays(CvXMLLoadUtility* pXML)
+{
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ExtraYieldThresholds"))
 	{
 		pXML->SetYields(&m_paiExtraYieldThreshold);
@@ -20507,6 +20507,12 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_pabFreePromotionUnitCombat, "FreePromotionUnitCombats", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
 
 	pXML->SetVariableListTagPair(&m_pabMaintainFeatures, "MaintainFeatures", sizeof(GC.getFeatureInfo((FeatureTypes)0)), GC.getNumFeatureInfos());
+}
+
+// The part of read() for FeatureRoutes (added by this mod)
+void CvTraitInfo::readFeatureRoutes(CvXMLLoadUtility* pXML)
+{
+	CvString szTextVal;
 
 	// FeatureRoutes: <FeatureRoute> with a FeatureType and a RouteType. The route types are loaded after the traits, so
 	// readPass3() finds them
@@ -20537,7 +20543,11 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+}
 
+// The part of read() for the obsolescence lists and the Python hooks (added by this mod)
+void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
+{
 	// Building obsolescence: building classes are loaded after the traits, so readPass3() finds the types
 	pXML->GetChildXmlValByName(&m_bIgnoreBuildingObsolescence, "bIgnoreBuildingObsolescence");
 	readTypeList(pXML, "NoObsoleteBuildingClasses", m_aszNoObsoleteBuildingClassTypes);
@@ -20550,6 +20560,12 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_BEGIN_TURN], "PyOnBeginTurn");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_FOUNDED], "PyOnCityFounded");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_ACQUIRED], "PyOnCityAcquired");
+}
+
+// The part of read() for ConditionalFreeTraits (added by this mod)
+void CvTraitInfo::readConditionalFreeTraits(CvXMLLoadUtility* pXML)
+{
+	CvString szTextVal;
 
 	// ConditionalFreeTraits: <ConditionalFreeTrait> with a TraitType and the conditions. The traits after this one and the
 	// civics are loaded later, so readPass3() finds the types
@@ -20604,7 +20620,11 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+}
 
+// The part of read() for FreePromotionSets (added by this mod)
+void CvTraitInfo::readFreePromotionSets(CvXMLLoadUtility* pXML)
+{
 	// FreePromotionSets: any number of <FreePromotions> x <FreePromotionUnitCombats> pairs
 	m_aabFreePromotionSetPromotion.clear();
 	m_aabFreePromotionSetUnitCombat.clear();
@@ -20647,7 +20667,11 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+}
 
+// The part of read() for the plot yield changes and the changes per angry citizen and unhealthiness (added by this mod)
+void CvTraitInfo::readPlotYieldChanges(CvXMLLoadUtility* pXML)
+{
 	std::vector<CvString> aszTypes;
 	std::vector< std::vector<int> > aaiYields;
 	readYieldChanges(pXML, "TerrainYieldChanges", "TerrainYieldChange", "TerrainType", "Yields", aszTypes, aaiYields);
@@ -20683,6 +20707,41 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	readCommerceChanges(pXML, "AngryCommerceChanges", &m_paiAngryCommerceChange);
 	readYieldChanges(pXML, "UnhealthyYieldChanges", &m_paiUnhealthyYieldChange);
 	readCommerceChanges(pXML, "UnhealthyCommerceChanges", &m_paiUnhealthyCommerceChange);
+}
+
+bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
+{
+	CvString szTextVal;
+	if (!CvInfoBase::read(pXML))
+	{
+		return false;
+	}
+
+	pXML->GetChildXmlValByName(szTextVal, "ShortDescription");
+	setShortDescription(szTextVal);
+
+	pXML->GetChildXmlValByName(&m_iHealth, "iHealth");
+	pXML->GetChildXmlValByName(&m_iHappiness, "iHappiness");
+	pXML->GetChildXmlValByName(&m_iMaxAnarchy, "iMaxAnarchy");
+	pXML->GetChildXmlValByName(&m_iUpkeepModifier, "iUpkeepModifier");
+	pXML->GetChildXmlValByName(&m_iLevelExperienceModifier, "iLevelExperienceModifier");
+	pXML->GetChildXmlValByName(&m_iGreatPeopleRateModifier, "iGreatPeopleRateModifier");
+	pXML->GetChildXmlValByName(&m_iGreatGeneralRateModifier, "iGreatGeneralRateModifier");
+	pXML->GetChildXmlValByName(&m_iDomesticGreatGeneralRateModifier, "iDomesticGreatGeneralRateModifier");
+	pXML->GetChildXmlValByName(&m_iMaxGlobalBuildingProductionModifier, "iMaxGlobalBuildingProductionModifier");
+	pXML->GetChildXmlValByName(&m_iMaxTeamBuildingProductionModifier, "iMaxTeamBuildingProductionModifier");
+	pXML->GetChildXmlValByName(&m_iMaxPlayerBuildingProductionModifier, "iMaxPlayerBuildingProductionModifier");
+	// The rest, in parts in the order it was read before: the tags of the mod and some arrays of BtS (changed by this mod)
+	readModValues(pXML);
+	readCityFoundedUnits(pXML);
+	readStartBias(pXML);
+	readCityAndEconomyValues(pXML);
+	readYieldAndUnitArrays(pXML);
+	readFeatureRoutes(pXML);
+	readObsolescenceAndHooks(pXML);
+	readConditionalFreeTraits(pXML);
+	readFreePromotionSets(pXML);
+	readPlotYieldChanges(pXML);
 
 	return true;
 }

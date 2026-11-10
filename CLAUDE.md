@@ -121,7 +121,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - XML は `CvXMLLoadUtility::LoadPreMenuGlobals`（`CvXMLLoadUtilitySet.cpp`）に書かれた順に読み込まれ、`FindInInfoClass` で引けるのは**先に読み込まれた Info だけ**。例えば志向より後に読み込まれるのは施設・建物・社会制度・指導者・ユニット・文明など、先に読み込まれるのは地形・地形の特徴・昇進・兵科など。後に読み込まれる Info を参照するタグは、種類を文字列のまま持っておき、`readPass3()` で番号に変える（`CvTraitInfo::readPass3` が例）
 - Mod の XML は本体の同名ファイルを丸ごと置き換える（`ModularLoading = 0` のため）。`<BTS>` → `<WL>` → `<CIV4>` の順に探して最初に見つかったものを、同じ相対パスで `Assets\XML\...` にコピーしてから編集する（Schema も同様）
 - コピーした直後に**未改変のままコミット**し、編集は次のコミットにする（git の差分で Mod の変更だけが見えるように）
-- 新しいテキストキーは `Assets\XML\Text\CIV4GameText_ClaudeSample.xml` に追加する（`XML\Text\` の xml はすべて読み込まれる）
+- 新しいテキストキーは `Assets\XML\Text\` の分野ごとのファイルの末尾に足す（`XML\Text\` の xml はすべて読み込まれる）: 志向（`TXT_KEY_TRAIT_*`・`TXT_KEY_CONDITION_*`・`TXT_KEY_START_BIAS*`）は `CIV4GameText_ClaudeSample_Traits.xml`、昇進は `_Promotions.xml`、呪文は `_Spells.xml`、検証用の項目の名前は `_Test.xml`、それ以外（メッセージ、建物、社会制度、ゲームオプションなど）は `CIV4GameText_ClaudeSample.xml`
 - 元の XML はすべて ASCII・CRLF。Mod 側も ASCII・CRLF を保つ
 - テキスト XML（`XML\Text\`）は `encoding="ISO-8859-1"` 宣言の ASCII ファイル。日本語は `<Japanese>` の中に **10 進の数値文字参照**で書く（例: 「戦士」→ `&#25126;&#22763;`）。他の言語タグ（`<English>` など）も元ファイルに倣って残す
 - 日本語版の用語: Trait は「〜志向」（例: `TRAIT_INDUSTRIOUS` = 勤労志向）。ペディアの見出し `TXT_KEY_PEDIA_TRAITS` は「特性」
@@ -167,7 +167,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 
 ### 検証用データ
 
-**動作確認は検証用データで行い、既存の Info（日本・兵舎・専制政治など）には検証用の値を入れない。** 新しいタグを足したら、検証用の項目（`docs/test-data.md`）に値を入れて確かめる。検証用の項目はすべて各ファイルの末尾にあり、テキストは `CIV4GameText_ClaudeSample.xml`（説明文は共通の `TXT_KEY_CLAUDE_TEST_PEDIA`）。アイコン・グラフィックは複製元のものを使う。
+**動作確認は検証用データで行い、既存の Info（日本・兵舎・専制政治など）には検証用の値を入れない。** 新しいタグを足したら、検証用の項目（`docs/test-data.md`）に値を入れて確かめる。検証用の項目はすべて各ファイルの末尾にあり、テキストは `CIV4GameText_ClaudeSample_Test.xml`（説明文は共通の `TXT_KEY_CLAUDE_TEST_PEDIA`）。アイコン・グラフィックは複製元のものを使う。
 
 - 新しい志向・昇進などの Info は、既存の番号を変えないため常に各ファイルの末尾に足す。検証用の項目がある Info ファイルでは、末尾の目印のコメント（`Entries of the civ-design branch go below this line`）の**上**に足す（git の節）
 

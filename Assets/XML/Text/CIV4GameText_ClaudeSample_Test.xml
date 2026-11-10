@@ -1,0 +1,1104 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- claude_sample: text for the dedicated test entries -->
+<!-- Japanese text is written as decimal character references (ASCII file) -->
+<Civ4GameText xmlns="http://www.firaxis.com">
+	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
+	<TEXT>
+		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
+		<English>Test data for checking the mod's features.</English>
+		<French>Test data for checking the mod's features.</French>
+		<German>Test data for checking the mod's features.</German>
+		<Italian>Test data for checking the mod's features.</Italian>
+		<Spanish>Test data for checking the mod's features.</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#12487;&#12540;&#12479;&#12290;&#21205;&#20316;&#30906;&#35469;&#12398;&#12383;&#12417;&#12398;&#12418;&#12398;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_TEST_DESC</Tag>
+		<English>Test Civilization</English>
+		<French>Test Civilization</French>
+		<German>Test Civilization</German>
+		<Italian>Test Civilization</Italian>
+		<Spanish>Test Civilization</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#25991;&#26126;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_TEST_SHORT_DESC</Tag>
+		<English>Test</English>
+		<French>Test</French>
+		<German>Test</German>
+		<Italian>Test</Italian>
+		<Spanish>Test</Spanish>
+		<Japanese>&#26908;&#35388;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_TEST_ADJECTIVE</Tag>
+		<English>Test</English>
+		<French>Test</French>
+		<German>Test</German>
+		<Italian>Test</Italian>
+		<Spanish>Test</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TEST</Tag>
+		<English>Test Leader</English>
+		<French>Test Leader</French>
+		<German>Test Leader</German>
+		<Italian>Test Leader</Italian>
+		<Spanish>Test Leader</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#25351;&#23566;&#32773;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST</Tag>
+		<English>Test Trait</English>
+		<French>Test Trait</French>
+		<German>Test Trait</German>
+		<Italian>Test Trait</Italian>
+		<Spanish>Test Trait</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_SHORT</Tag>
+		<English>Tst</English>
+		<French>Tst</French>
+		<German>Tst</German>
+		<Italian>Tst</Italian>
+		<Spanish>Tst</Spanish>
+		<Japanese>&#26908;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#38283;&#22987;&#26178;&#12398;&#36039;&#37329; +100&#65288;&#38283;&#22987;&#26178;&#20195;&#12364; 1 &#12388;&#24460;&#12395;&#12394;&#12427;&#12372;&#12392;&#12395; +50&#12290;&#12466;&#12540;&#12512;&#36895;&#24230;&#12391;&#22793;&#12431;&#12427;&#65289;[NEWLINE][SPACE][SPACE][ICON_BULLET]5 &#12479;&#12540;&#12531;&#12372;&#12392;&#12395;&#39318;&#37117;&#12395;&#25126;&#22763;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#24314;&#35373;&#12375;&#12383;&#37117;&#24066;&#12395;&#22478;&#22721;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#29554;&#24471;&#12375;&#12383;&#37117;&#24066;&#12395;&#20853;&#33294;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIVIC_TEST</Tag>
+		<English>Test Civic</English>
+		<French>Test Civic</French>
+		<German>Test Civic</German>
+		<Italian>Test Civic</Italian>
+		<Spanish>Test Civic</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#31038;&#20250;&#21046;&#24230;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST</Tag>
+		<English>Test Building</English>
+		<French>Test Building</French>
+		<German>Test Building</German>
+		<Italian>Test Building</Italian>
+		<Spanish>Test Building</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_A</Tag>
+		<English>Test Unit A</English>
+		<French>Test Unit A</French>
+		<German>Test Unit A</German>
+		<Italian>Test Unit A</Italian>
+		<Spanish>Test Unit A</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#12518;&#12491;&#12483;&#12488;A</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_B</Tag>
+		<English>Test Unit B</English>
+		<French>Test Unit B</French>
+		<German>Test Unit B</German>
+		<Italian>Test Unit B</Italian>
+		<Spanish>Test Unit B</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#12518;&#12491;&#12483;&#12488;B</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST</Tag>
+		<English>Test Promotion</English>
+		<French>Test Promotion</French>
+		<German>Test Promotion</German>
+		<Italian>Test Promotion</Italian>
+		<Spanish>Test Promotion</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_STATE1</Tag>
+		<English>Test State I</English>
+		<French>Test State I</French>
+		<German>Test State I</German>
+		<Italian>Test State I</Italian>
+		<Spanish>Test State I</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#29366;&#24907;&#8544;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_STATE2</Tag>
+		<English>Test State II</English>
+		<French>Test State II</French>
+		<German>Test State II</German>
+		<Italian>Test State II</Italian>
+		<Spanish>Test State II</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#29366;&#24907;&#8545;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_POISON</Tag>
+		<English>Test Poison</English>
+		<French>Test Poison</French>
+		<German>Test Poison</German>
+		<Italian>Test Poison</Italian>
+		<Spanish>Test Poison</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#27602;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_RADIUS</Tag>
+		<English>Test Building (City Radius)</English>
+		<French>Test Building (City Radius)</French>
+		<German>Test Building (City Radius)</German>
+		<Italian>Test Building (City Radius)</Italian>
+		<Spanish>Test Building (City Radius)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#37117;&#24066;&#22287;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_GOLD</Tag>
+		<English>Test Spell (Gold)</English>
+		<French>Test Spell (Gold)</French>
+		<German>Test Spell (Gold)</German>
+		<Italian>Test Spell (Gold)</Italian>
+		<Spanish>Test Spell (Gold)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#36039;&#37329;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_GOLD_HELP</Tag>
+		<English>[ICON_BULLET]+25[ICON_GOLD]</English>
+		<French>[ICON_BULLET]+25[ICON_GOLD]</French>
+		<German>[ICON_BULLET]+25[ICON_GOLD]</German>
+		<Italian>[ICON_BULLET]+25[ICON_GOLD]</Italian>
+		<Spanish>[ICON_BULLET]+25[ICON_GOLD]</Spanish>
+		<Japanese>[ICON_BULLET]+25[ICON_GOLD]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_PROMOTION</Tag>
+		<English>Test Spell (Promotion)</English>
+		<French>Test Spell (Promotion)</French>
+		<German>Test Spell (Promotion)</German>
+		<Italian>Test Spell (Promotion)</Italian>
+		<Spanish>Test Spell (Promotion)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#26119;&#36914;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_PROMOTION_HELP</Tag>
+		<English>[ICON_BULLET]Gains Test State I (only without it)</English>
+		<French>[ICON_BULLET]Gains Test State I (only without it)</French>
+		<German>[ICON_BULLET]Gains Test State I (only without it)</German>
+		<Italian>[ICON_BULLET]Gains Test State I (only without it)</Italian>
+		<Spanish>[ICON_BULLET]Gains Test State I (only without it)</Spanish>
+		<Japanese>[ICON_BULLET]&#26908;&#35388;&#29992;&#29366;&#24907;&#8544;&#12434;&#24471;&#12427;&#65288;&#25345;&#12387;&#12390;&#12356;&#12394;&#12356;&#12392;&#12365;&#12384;&#12369;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_CONVERT</Tag>
+		<English>Test Spell (Convert)</English>
+		<French>Test Spell (Convert)</French>
+		<German>Test Spell (Convert)</German>
+		<Italian>Test Spell (Convert)</Italian>
+		<Spanish>Test Spell (Convert)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#22793;&#36523;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_CITY</Tag>
+		<English>Test Spell (City)</English>
+		<French>Test Spell (City)</French>
+		<German>Test Spell (City)</German>
+		<Italian>Test Spell (City)</Italian>
+		<Spanish>Test Spell (City)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#37117;&#24066;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_FOREST</Tag>
+		<English>Test Spell (Forest)</English>
+		<French>Test Spell (Forest)</French>
+		<German>Test Spell (Forest)</German>
+		<Italian>Test Spell (Forest)</Italian>
+		<Spanish>Test Spell (Forest)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#26862;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_FORT</Tag>
+		<English>Test Spell (Fort)</English>
+		<French>Test Spell (Fort)</French>
+		<German>Test Spell (Fort)</German>
+		<Italian>Test Spell (Fort)</Italian>
+		<Spanish>Test Spell (Fort)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#30758;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_REFRESH</Tag>
+		<English>Test Spell (Refresh)</English>
+		<French>Test Spell (Refresh)</French>
+		<German>Test Spell (Refresh)</German>
+		<Italian>Test Spell (Refresh)</Italian>
+		<Spanish>Test Spell (Refresh)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#20877;&#23455;&#34892;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_BLESS</Tag>
+		<English>Test Spell (Bless)</English>
+		<French>Test Spell (Bless)</French>
+		<German>Test Spell (Bless)</German>
+		<Italian>Test Spell (Bless)</Italian>
+		<Spanish>Test Spell (Bless)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#31069;&#31119;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_FIREBALL</Tag>
+		<English>Test Spell (Fireball)</English>
+		<French>Test Spell (Fireball)</French>
+		<German>Test Spell (Fireball)</German>
+		<Italian>Test Spell (Fireball)</Italian>
+		<Spanish>Test Spell (Fireball)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#28779;&#29699;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_SNARE</Tag>
+		<English>Test Spell (Snare)</English>
+		<French>Test Spell (Snare)</French>
+		<German>Test Spell (Snare)</German>
+		<Italian>Test Spell (Snare)</Italian>
+		<Spanish>Test Spell (Snare)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#36275;&#27490;&#12417;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_SUMMON</Tag>
+		<English>Test Spell (Summon)</English>
+		<French>Test Spell (Summon)</French>
+		<German>Test Spell (Summon)</German>
+		<Italian>Test Spell (Summon)</Italian>
+		<Spanish>Test Spell (Summon)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#21484;&#21914;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_PERMANENT</Tag>
+		<English>Test Spell (Permanent Summon)</English>
+		<French>Test Spell (Permanent Summon)</French>
+		<German>Test Spell (Permanent Summon)</German>
+		<Italian>Test Spell (Permanent Summon)</Italian>
+		<Spanish>Test Spell (Permanent Summon)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#27704;&#32154;&#21484;&#21914;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_WORLD</Tag>
+		<English>Test Spell (World)</English>
+		<French>Test Spell (World)</French>
+		<German>Test Spell (World)</German>
+		<Italian>Test Spell (World)</Italian>
+		<Spanish>Test Spell (World)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#19990;&#30028;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_TRAIT</Tag>
+		<English>Test Spell (Trait)</English>
+		<French>Test Spell (Trait)</French>
+		<German>Test Spell (Trait)</German>
+		<Italian>Test Spell (Trait)</Italian>
+		<Spanish>Test Spell (Trait)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#24535;&#21521;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_TRAIT_HELP</Tag>
+		<English>[ICON_BULLET]The owner of the unit gains the Test Trait (or loses it, if this spell gave it)</English>
+		<French>[ICON_BULLET]The owner of the unit gains the Test Trait (or loses it, if this spell gave it)</French>
+		<German>[ICON_BULLET]The owner of the unit gains the Test Trait (or loses it, if this spell gave it)</German>
+		<Italian>[ICON_BULLET]The owner of the unit gains the Test Trait (or loses it, if this spell gave it)</Italian>
+		<Spanish>[ICON_BULLET]The owner of the unit gains the Test Trait (or loses it, if this spell gave it)</Spanish>
+		<Japanese>[ICON_BULLET]&#20351;&#12387;&#12383;&#12518;&#12491;&#12483;&#12488;&#12398;&#25345;&#12385;&#20027;&#12395;&#26908;&#35388;&#29992;&#24535;&#21521;&#12434;&#19982;&#12360;&#12427;&#65288;&#19982;&#12360;&#12390;&#12354;&#12428;&#12400;&#21462;&#12426;&#19978;&#12370;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TECH_TEST</Tag>
+		<English>Test Tech</English>
+		<French>Test Tech</French>
+		<German>Test Tech</German>
+		<Italian>Test Tech</Italian>
+		<Spanish>Test Tech</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#25216;&#34899;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_CITY</Tag>
+		<English>Test Building (New City)</English>
+		<French>Test Building (New City)</French>
+		<German>Test Building (New City)</German>
+		<Italian>Test Building (New City)</Italian>
+		<Spanish>Test Building (New City)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#26032;&#12375;&#12356;&#37117;&#24066;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_GREAT_PEOPLE</Tag>
+		<English>Test Building (Great People)</English>
+		<French>Test Building (Great People)</French>
+		<German>Test Building (Great People)</German>
+		<Italian>Test Building (Great People)</Italian>
+		<Spanish>Test Building (Great People)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#20553;&#20154;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_COMBAT</Tag>
+		<English>Test Promotion (Combat Results)</English>
+		<French>Test Promotion (Combat Results)</French>
+		<German>Test Promotion (Combat Results)</German>
+		<Italian>Test Promotion (Combat Results)</Italian>
+		<Spanish>Test Promotion (Combat Results)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#25126;&#38360;&#32080;&#26524;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_NOT_IN_CITY</Tag>
+		<English>[COLOR_WARNING_TEXT]Cannot be built in a city with[SPACE]</English>
+		<French>[COLOR_WARNING_TEXT]Cannot be built in a city with[SPACE]</French>
+		<German>[COLOR_WARNING_TEXT]Cannot be built in a city with[SPACE]</German>
+		<Italian>[COLOR_WARNING_TEXT]Cannot be built in a city with[SPACE]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]Cannot be built in a city with[SPACE]</Spanish>
+		<Japanese>[COLOR_WARNING_TEXT]&#21516;&#12376;&#37117;&#24066;&#12395;&#24314;&#12390;&#12425;&#12428;&#12394;&#12356;: [SPACE]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PREREQ_POPULATION</Tag>
+		<English>[COLOR_WARNING_TEXT]Requires a city population of %d1_Pop or more[COLOR_REVERT]</English>
+		<French>[COLOR_WARNING_TEXT]Requires a city population of %d1_Pop or more[COLOR_REVERT]</French>
+		<German>[COLOR_WARNING_TEXT]Requires a city population of %d1_Pop or more[COLOR_REVERT]</German>
+		<Italian>[COLOR_WARNING_TEXT]Requires a city population of %d1_Pop or more[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]Requires a city population of %d1_Pop or more[COLOR_REVERT]</Spanish>
+		<Japanese>[COLOR_WARNING_TEXT]&#24517;&#35201;&#26465;&#20214;: &#20154;&#21475;%d1_Pop&#20197;&#19978;[COLOR_REVERT]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PREREQ_CULTURE_LEVEL</Tag>
+		<English>[COLOR_WARNING_TEXT]Requires %s1_Level culture or more[COLOR_REVERT]</English>
+		<French>[COLOR_WARNING_TEXT]Requires %s1_Level culture or more[COLOR_REVERT]</French>
+		<German>[COLOR_WARNING_TEXT]Requires %s1_Level culture or more[COLOR_REVERT]</German>
+		<Italian>[COLOR_WARNING_TEXT]Requires %s1_Level culture or more[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]Requires %s1_Level culture or more[COLOR_REVERT]</Spanish>
+		<Japanese>[COLOR_WARNING_TEXT]&#24517;&#35201;&#26465;&#20214;: &#25991;&#21270;&#12524;&#12505;&#12523;%s1_Level&#20197;&#19978;[COLOR_REVERT]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_PREREQ</Tag>
+		<English>Test Building (Prerequisites)</English>
+		<French>Test Building (Prerequisites)</French>
+		<German>Test Building (Prerequisites)</German>
+		<Italian>Test Building (Prerequisites)</Italian>
+		<Spanish>Test Building (Prerequisites)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#21069;&#25552;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PREREQ_VICINITY</Tag>
+		<English>[COLOR_WARNING_TEXT]Requires in the city radius:[SPACE]</English>
+		<French>[COLOR_WARNING_TEXT]Requires in the city radius:[SPACE]</French>
+		<German>[COLOR_WARNING_TEXT]Requires in the city radius:[SPACE]</German>
+		<Italian>[COLOR_WARNING_TEXT]Requires in the city radius:[SPACE]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]Requires in the city radius:[SPACE]</Spanish>
+		<Japanese>[COLOR_WARNING_TEXT]&#24517;&#35201;&#26465;&#20214;: &#37117;&#24066;&#22287;&#12395; [SPACE]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PREREQ_VICINITY_DEVELOPED</Tag>
+		<English>[COLOR_WARNING_TEXT]Requires developed in the city radius:[SPACE]</English>
+		<French>[COLOR_WARNING_TEXT]Requires developed in the city radius:[SPACE]</French>
+		<German>[COLOR_WARNING_TEXT]Requires developed in the city radius:[SPACE]</German>
+		<Italian>[COLOR_WARNING_TEXT]Requires developed in the city radius:[SPACE]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]Requires developed in the city radius:[SPACE]</Spanish>
+		<Japanese>[COLOR_WARNING_TEXT]&#24517;&#35201;&#26465;&#20214;: &#37117;&#24066;&#22287;&#12395;&#38283;&#30330;&#28168;&#12415;&#12398; [SPACE]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_PREREQ_PLOT</Tag>
+		<English>Test Building (City Radius Prerequisites)</English>
+		<French>Test Building (City Radius Prerequisites)</French>
+		<German>Test Building (City Radius Prerequisites)</German>
+		<Italian>Test Building (City Radius Prerequisites)</Italian>
+		<Spanish>Test Building (City Radius Prerequisites)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#37117;&#24066;&#22287;&#12398;&#21069;&#25552;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_PREREQ_CIVIC</Tag>
+		<English>Test Building (Civic Prerequisites)</English>
+		<French>Test Building (Civic Prerequisites)</French>
+		<German>Test Building (Civic Prerequisites)</German>
+		<Italian>Test Building (Civic Prerequisites)</Italian>
+		<Spanish>Test Building (Civic Prerequisites)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#31038;&#20250;&#21046;&#24230;&#12398;&#21069;&#25552;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_CHANGE_TECH</Tag>
+		<English>With [LINK=literal]%s1_Tech[\LINK]</English>
+		<French>With [LINK=literal]%s1_Tech[\LINK]</French>
+		<German>With [LINK=literal]%s1_Tech[\LINK]</German>
+		<Italian>With [LINK=literal]%s1_Tech[\LINK]</Italian>
+		<Spanish>With [LINK=literal]%s1_Tech[\LINK]</Spanish>
+		<Japanese>&#25216;&#34899;&#12300;[LINK=literal]%s1_Tech[\LINK]&#12301;&#12391;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_CHANGE_SPECIALIST</Tag>
+		<English>[ICON_BULLET]%s1_Source: [LINK=literal]%s2_Specialist[\LINK] slots %D3_Count</English>
+		<French>[ICON_BULLET]%s1_Source: [LINK=literal]%s2_Specialist[\LINK] slots %D3_Count</French>
+		<German>[ICON_BULLET]%s1_Source: [LINK=literal]%s2_Specialist[\LINK] slots %D3_Count</German>
+		<Italian>[ICON_BULLET]%s1_Source: [LINK=literal]%s2_Specialist[\LINK] slots %D3_Count</Italian>
+		<Spanish>[ICON_BULLET]%s1_Source: [LINK=literal]%s2_Specialist[\LINK] slots %D3_Count</Spanish>
+		<Japanese>[ICON_BULLET]%s1_Source: [LINK=literal]%s2_Specialist[\LINK]&#12398;&#26528;%D3_Count</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_GROWTH</Tag>
+		<English>Test Building (Growth)</English>
+		<French>Test Building (Growth)</French>
+		<German>Test Building (Growth)</German>
+		<Italian>Test Building (Growth)</Italian>
+		<Spanish>Test Building (Growth)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#25104;&#38263;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_CHANGE_BONUS</Tag>
+		<English>With [LINK=literal]%s1_Bonus[\LINK]</English>
+		<French>With [LINK=literal]%s1_Bonus[\LINK]</French>
+		<German>With [LINK=literal]%s1_Bonus[\LINK]</German>
+		<Italian>With [LINK=literal]%s1_Bonus[\LINK]</Italian>
+		<Spanish>With [LINK=literal]%s1_Bonus[\LINK]</Spanish>
+		<Japanese>&#36039;&#28304;&#12300;[LINK=literal]%s1_Bonus[\LINK]&#12301;&#12391;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_CHANGE_VICINITY_BONUS</Tag>
+		<English>With [LINK=literal]%s1_Bonus[\LINK] developed in the city radius</English>
+		<French>With [LINK=literal]%s1_Bonus[\LINK] developed in the city radius</French>
+		<German>With [LINK=literal]%s1_Bonus[\LINK] developed in the city radius</German>
+		<Italian>With [LINK=literal]%s1_Bonus[\LINK] developed in the city radius</Italian>
+		<Spanish>With [LINK=literal]%s1_Bonus[\LINK] developed in the city radius</Spanish>
+		<Japanese>&#37117;&#24066;&#22287;&#12395;&#38283;&#30330;&#28168;&#12415;&#12398;&#36039;&#28304;&#12300;[LINK=literal]%s1_Bonus[\LINK]&#12301;&#12391;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_GROWTH_BONUS</Tag>
+		<English>Test Building (Growth by Resources)</English>
+		<French>Test Building (Growth by Resources)</French>
+		<German>Test Building (Growth by Resources)</German>
+		<Italian>Test Building (Growth by Resources)</Italian>
+		<Spanish>Test Building (Growth by Resources)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#36039;&#28304;&#12391;&#25104;&#38263;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_PER_POPULATION</Tag>
+		<English>[ICON_BULLET]Per %d1_Pop population: %s2_Effect</English>
+		<French>[ICON_BULLET]Per %d1_Pop population: %s2_Effect</French>
+		<German>[ICON_BULLET]Per %d1_Pop population: %s2_Effect</German>
+		<Italian>[ICON_BULLET]Per %d1_Pop population: %s2_Effect</Italian>
+		<Spanish>[ICON_BULLET]Per %d1_Pop population: %s2_Effect</Spanish>
+		<Japanese>[ICON_BULLET]&#20154;&#21475;%d1_Pop&#12395;&#12388;&#12365;: %s2_Effect</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_GROWTH_POP</Tag>
+		<English>Test Building (Growth by Population)</English>
+		<French>Test Building (Growth by Population)</French>
+		<German>Test Building (Growth by Population)</German>
+		<Italian>Test Building (Growth by Population)</Italian>
+		<Spanish>Test Building (Growth by Population)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#20154;&#21475;&#12391;&#25104;&#38263;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_GLOBAL_EXTRA_COMMERCE</Tag>
+		<English>[LINK=literal]%s1_Building[\LINK] in all cities</English>
+		<French>[LINK=literal]%s1_Building[\LINK] in all cities</French>
+		<German>[LINK=literal]%s1_Building[\LINK] in all cities</German>
+		<Italian>[LINK=literal]%s1_Building[\LINK] in all cities</Italian>
+		<Spanish>[LINK=literal]%s1_Building[\LINK] in all cities</Spanish>
+		<Japanese>&#20840;&#37117;&#24066;&#12398;[LINK=literal]%s1_Building[\LINK]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_GROWTH_GLOBAL</Tag>
+		<English>Test Building (Global Commerce)</English>
+		<French>Test Building (Global Commerce)</French>
+		<German>Test Building (Global Commerce)</German>
+		<Italian>Test Building (Global Commerce)</Italian>
+		<Spanish>Test Building (Global Commerce)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#20840;&#37117;&#24066;&#12398;&#21830;&#26989;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE</Tag>
+		<English>[ICON_BULLET]Can enter %s1_Plot</English>
+		<French>[ICON_BULLET]Can enter %s1_Plot</French>
+		<German>[ICON_BULLET]Can enter %s1_Plot</German>
+		<Italian>[ICON_BULLET]Can enter %s1_Plot</Italian>
+		<Spanish>[ICON_BULLET]Can enter %s1_Plot</Spanish>
+		<Japanese>[ICON_BULLET]&#36890;&#34892;&#12391;&#12365;&#12427;: %s1_Plot</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_MOVE_COST</Tag>
+		<English> (+%d1 [NUM1:move:moves] to enter)</English>
+		<French> (+%d1 [NUM1:move:moves] to enter)</French>
+		<German> (+%d1 [NUM1:move:moves] to enter)</German>
+		<Italian> (+%d1 [NUM1:move:moves] to enter)</Italian>
+		<Spanish> (+%d1 [NUM1:move:moves] to enter)</Spanish>
+		<Japanese>&#65288;&#31227;&#21205;&#12467;&#12473;&#12488;+%d1&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_REMOVE</Tag>
+		<English> (removed when entered)</English>
+		<French> (removed when entered)</French>
+		<German> (removed when entered)</German>
+		<Italian> (removed when entered)</Italian>
+		<Spanish> (removed when entered)</Spanish>
+		<Japanese>&#65288;&#20837;&#12427;&#12392;&#28040;&#12360;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_RIVER_CROSSING_DAMAGE</Tag>
+		<English>[ICON_BULLET]%d1_Percent%% damage each time it crosses a river (does not die)</English>
+		<French>[ICON_BULLET]%d1_Percent%% damage each time it crosses a river (does not die)</French>
+		<German>[ICON_BULLET]%d1_Percent%% damage each time it crosses a river (does not die)</German>
+		<Italian>[ICON_BULLET]%d1_Percent%% damage each time it crosses a river (does not die)</Italian>
+		<Spanish>[ICON_BULLET]%d1_Percent%% damage each time it crosses a river (does not die)</Spanish>
+		<Japanese>[ICON_BULLET]&#24029;&#12434;&#28193;&#12427;&#12383;&#12403;&#12395;&#26368;&#22823;HP&#12398;%d1_Percent%%&#12398;&#12480;&#12513;&#12540;&#12472;&#65288;&#27515;&#12394;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_ICEBREAKER</Tag>
+		<English>Test Promotion (Icebreaker)</English>
+		<French>Test Promotion (Icebreaker)</French>
+		<German>Test Promotion (Icebreaker)</German>
+		<Italian>Test Promotion (Icebreaker)</Italian>
+		<Spanish>Test Promotion (Icebreaker)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#30741;&#27703;&#33337;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_DAMAGE</Tag>
+		<English>[ICON_BULLET]Can enter %s1_Plot (%d2_Damage%% damage each turn there)</English>
+		<French>[ICON_BULLET]Can enter %s1_Plot (%d2_Damage%% damage each turn there)</French>
+		<German>[ICON_BULLET]Can enter %s1_Plot (%d2_Damage%% damage each turn there)</German>
+		<Italian>[ICON_BULLET]Can enter %s1_Plot (%d2_Damage%% damage each turn there)</Italian>
+		<Spanish>[ICON_BULLET]Can enter %s1_Plot (%d2_Damage%% damage each turn there)</Spanish>
+		<Japanese>[ICON_BULLET]&#36890;&#34892;&#12391;&#12365;&#12427;: %s1_Plot&#65288;&#12381;&#12371;&#12391;&#12479;&#12540;&#12531;&#12434;&#36814;&#12360;&#12427;&#12392;&#26368;&#22823;HP&#12398;%d2_Damage%%&#12398;&#12480;&#12513;&#12540;&#12472;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_PASSAGE</Tag>
+		<English>Test Promotion (Impassable Plots)</English>
+		<French>Test Promotion (Impassable Plots)</French>
+		<German>Test Promotion (Impassable Plots)</German>
+		<Italian>Test Promotion (Impassable Plots)</Italian>
+		<Spanish>Test Promotion (Impassable Plots)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#36890;&#34892;&#19981;&#21487;&#12479;&#12452;&#12523;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT</Tag>
+		<English>Unique improvement: %s1_Name</English>
+		<French>Unique improvement: %s1_Name</French>
+		<German>Unique improvement: %s1_Name</German>
+		<Italian>Unique improvement: %s1_Name</Italian>
+		<Spanish>Unique improvement: %s1_Name</Spanish>
+		<Japanese>&#22266;&#26377;&#12398;&#26045;&#35373;: %s1_Name</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT_REPLACES</Tag>
+		<English>Unique improvement: %s1_Name (replaces %s2_Old)</English>
+		<French>Unique improvement: %s1_Name (replaces %s2_Old)</French>
+		<German>Unique improvement: %s1_Name (replaces %s2_Old)</German>
+		<Italian>Unique improvement: %s1_Name (replaces %s2_Old)</Italian>
+		<Spanish>Unique improvement: %s1_Name (replaces %s2_Old)</Spanish>
+		<Japanese>&#22266;&#26377;&#12398;&#26045;&#35373;: %s1_Name&#65288;%s2_Old &#12398;&#20195;&#12431;&#12426;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_REPLACES</Tag>
+		<English>Replaces %s1_Old</English>
+		<French>Replaces %s1_Old</French>
+		<German>Replaces %s1_Old</German>
+		<Italian>Replaces %s1_Old</Italian>
+		<Spanish>Replaces %s1_Old</Spanish>
+		<Japanese>%s1_Old &#12398;&#20195;&#12431;&#12426;&#12395;&#20316;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_FARM</Tag>
+		<English>Test Improvement (Strong Farm)</English>
+		<French>Test Improvement (Strong Farm)</French>
+		<German>Test Improvement (Strong Farm)</German>
+		<Italian>Test Improvement (Strong Farm)</Italian>
+		<Spanish>Test Improvement (Strong Farm)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#24375;&#21270;&#36786;&#22580;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_FARM</Tag>
+		<English>Build [LINK=IMPROVEMENT_TEST_FARM]Test Improvement (Strong Farm)[\LINK]</English>
+		<French>Build [LINK=IMPROVEMENT_TEST_FARM]Test Improvement (Strong Farm)[\LINK]</French>
+		<German>Build [LINK=IMPROVEMENT_TEST_FARM]Test Improvement (Strong Farm)[\LINK]</German>
+		<Italian>Build [LINK=IMPROVEMENT_TEST_FARM]Test Improvement (Strong Farm)[\LINK]</Italian>
+		<Spanish>Build [LINK=IMPROVEMENT_TEST_FARM]Test Improvement (Strong Farm)[\LINK]</Spanish>
+		<Japanese>[LINK=IMPROVEMENT_TEST_FARM]&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#24375;&#21270;&#36786;&#22580;&#65289;[\LINK]&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_TERRACE</Tag>
+		<English>Build [LINK=IMPROVEMENT_TEST_TERRACE]Test Improvement (Terrace)[\LINK]</English>
+		<French>Build [LINK=IMPROVEMENT_TEST_TERRACE]Test Improvement (Terrace)[\LINK]</French>
+		<German>Build [LINK=IMPROVEMENT_TEST_TERRACE]Test Improvement (Terrace)[\LINK]</German>
+		<Italian>Build [LINK=IMPROVEMENT_TEST_TERRACE]Test Improvement (Terrace)[\LINK]</Italian>
+		<Spanish>Build [LINK=IMPROVEMENT_TEST_TERRACE]Test Improvement (Terrace)[\LINK]</Spanish>
+		<Japanese>[LINK=IMPROVEMENT_TEST_TERRACE]&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#26842;&#30000;&#65289;[\LINK]&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_EVENT_TRIGGER_TEST_TRAIT</Tag>
+		<English>A test event of the test trait.</English>
+		<French>A test event of the test trait.</French>
+		<German>A test event of the test trait.</German>
+		<Italian>A test event of the test trait.</Italian>
+		<Spanish>A test event of the test trait.</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#12398;&#22266;&#26377;&#12452;&#12505;&#12531;&#12488;&#12391;&#12377;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_EVENT_TEST_TRAIT</Tag>
+		<English>Take the gold.</English>
+		<French>Take the gold.</French>
+		<German>Take the gold.</German>
+		<Italian>Take the gold.</Italian>
+		<Spanish>Take the gold.</Spanish>
+		<Japanese>&#36039;&#37329;&#12434;&#21463;&#12369;&#21462;&#12427;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PEACE_ANGER</Tag>
+		<English>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</English>
+		<French>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</French>
+		<German>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</German>
+		<Italian>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</Italian>
+		<Spanish>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</Spanish>
+		<Japanese>[ICON_BULLET]&#24179;&#21644;&#12364;&#32154;&#12367;&#12392;&#37117;&#24066;&#12364;&#19981;&#28288;&#12395;&#12394;&#12427;: &#27598;&#12479;&#12540;&#12531;&#20154;&#21475;&#12398; %s1%%&#65288;&#36890;&#24120;&#36895;&#24230;&#12290;&#19978;&#38480; %s2%%&#12290;&#25126;&#20105;&#20013;&#12399;&#27598;&#12479;&#12540;&#12531; %s3%% &#28187;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ANGER_PEACE</Tag>
+		<English>+%d1_Change[ICON_UNHAPPY]: &quot;Too long without a war!&quot;</English>
+		<French>+%d1_Change[ICON_UNHAPPY]: &quot;Too long without a war!&quot;</French>
+		<German>+%d1_Change[ICON_UNHAPPY]: &quot;Too long without a war!&quot;</German>
+		<Italian>+%d1_Change[ICON_UNHAPPY]: &quot;Too long without a war!&quot;</Italian>
+		<Spanish>+%d1_Change[ICON_UNHAPPY]: &quot;Too long without a war!&quot;</Spanish>
+		<Japanese>[ICON_UNHAPPY]+%d1_Change:&#12300;&#25126;&#12399;&#12414;&#12384;&#12363;&#65281;&#12301;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISERY_PER_ANGRY</Tag>
+		<English>Per angry citizen</English>
+		<French>Per angry citizen</French>
+		<German>Per angry citizen</German>
+		<Italian>Per angry citizen</Italian>
+		<Spanish>Per angry citizen</Spanish>
+		<Japanese>&#24594;&#12387;&#12390;&#12356;&#12427;&#24066;&#27665; 1 &#20154;&#12395;&#12388;&#12365;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISERY_PER_UNHEALTHY</Tag>
+		<English>Per point of unhealthiness</English>
+		<French>Per point of unhealthiness</French>
+		<German>Per point of unhealthiness</German>
+		<Italian>Per point of unhealthiness</Italian>
+		<Spanish>Per point of unhealthiness</Spanish>
+		<Japanese>&#19981;&#34907;&#29983; 1 &#12395;&#12388;&#12365;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_ANGRY</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Anger: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Anger: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Anger: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Anger: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Anger: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#24594;&#12426;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_UNHEALTHY</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Unhealthiness: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Unhealthiness: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Unhealthiness: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Unhealthiness: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Unhealthiness: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#19981;&#34907;&#29983;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_ANGRY_COMMERCE</Tag>
+		<English>[ICON_BULLET]%D1%F2 from anger</English>
+		<French>[ICON_BULLET]%D1%F2 from anger</French>
+		<German>[ICON_BULLET]%D1%F2 from anger</German>
+		<Italian>[ICON_BULLET]%D1%F2 from anger</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 from anger</Spanish>
+		<Japanese>[ICON_BULLET]&#24594;&#12426;&#12424;&#12426;%F2%D1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_UNHEALTHY_COMMERCE</Tag>
+		<English>[ICON_BULLET]%D1%F2 from unhealthiness</English>
+		<French>[ICON_BULLET]%D1%F2 from unhealthiness</French>
+		<German>[ICON_BULLET]%D1%F2 from unhealthiness</German>
+		<Italian>[ICON_BULLET]%D1%F2 from unhealthiness</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 from unhealthiness</Spanish>
+		<Japanese>[ICON_BULLET]&#19981;&#34907;&#29983;&#12424;&#12426;%F2%D1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_MISERY</Tag>
+		<English>Test Building (Misery)</English>
+		<French>Test Building (Misery)</French>
+		<German>Test Building (Misery)</German>
+		<Italian>Test Building (Misery)</Italian>
+		<Spanish>Test Building (Misery)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24314;&#29289;&#65288;&#24594;&#12426;&#12398;&#24681;&#24693;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CULTURE_RANGE_CHANGE</Tag>
+		<English>[ICON_BULLET]%D1_Change culture range of all cities</English>
+		<French>[ICON_BULLET]%D1_Change culture range of all cities</French>
+		<German>[ICON_BULLET]%D1_Change culture range of all cities</German>
+		<Italian>[ICON_BULLET]%D1_Change culture range of all cities</Italian>
+		<Spanish>[ICON_BULLET]%D1_Change culture range of all cities</Spanish>
+		<Japanese>[ICON_BULLET]&#20840;&#37117;&#24066;&#12398;&#25991;&#21270;&#22287;&#12398;&#24195;&#12364;&#12426;%D1_Change</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_OBSERVE_TITLE</Tag>
+		<English>AI Observe Mode</English>
+		<French>AI Observe Mode</French>
+		<German>AI Observe Mode</German>
+		<Italian>AI Observe Mode</Italian>
+		<Spanish>AI Observe Mode</Spanish>
+		<Japanese>AI &#35251;&#25126;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_OBSERVE_CONFIRM</Tag>
+		<English>Start watching the AI players? Your civilization will lose all its cities and units, and you cannot go back.</English>
+		<French>Start watching the AI players? Your civilization will lose all its cities and units, and you cannot go back.</French>
+		<German>Start watching the AI players? Your civilization will lose all its cities and units, and you cannot go back.</German>
+		<Italian>Start watching the AI players? Your civilization will lose all its cities and units, and you cannot go back.</Italian>
+		<Spanish>Start watching the AI players? Your civilization will lose all its cities and units, and you cannot go back.</Spanish>
+		<Japanese>AI &#21516;&#22763;&#12398;&#25126;&#12356;&#12398;&#35251;&#25126;&#12434;&#22987;&#12417;&#12414;&#12377;&#12363;&#65311; &#12354;&#12394;&#12383;&#12398;&#25991;&#26126;&#12399;&#37117;&#24066;&#12392;&#12518;&#12491;&#12483;&#12488;&#12434;&#12377;&#12409;&#12390;&#22833;&#12356;&#12289;&#20803;&#12395;&#12399;&#25147;&#12379;&#12414;&#12379;&#12435;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_OBSERVE_WAITING</Tag>
+		<English>AI Observe Mode: Enter plays one turn, Space plays continuously</English>
+		<French>AI Observe Mode: Enter plays one turn, Space plays continuously</French>
+		<German>AI Observe Mode: Enter plays one turn, Space plays continuously</German>
+		<Italian>AI Observe Mode: Enter plays one turn, Space plays continuously</Italian>
+		<Spanish>AI Observe Mode: Enter plays one turn, Space plays continuously</Spanish>
+		<Japanese>AI &#35251;&#25126;&#20013;: Enter &#12391; 1 &#12479;&#12540;&#12531;&#36914;&#12416; / Space &#12391;&#36899;&#32154;&#20877;&#29983;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_OBSERVE_RUNNING</Tag>
+		<English>AI Observe Mode: playing continuously, Space stops</English>
+		<French>AI Observe Mode: playing continuously, Space stops</French>
+		<German>AI Observe Mode: playing continuously, Space stops</German>
+		<Italian>AI Observe Mode: playing continuously, Space stops</Italian>
+		<Spanish>AI Observe Mode: playing continuously, Space stops</Spanish>
+		<Japanese>AI &#35251;&#25126;&#20013;: &#36899;&#32154;&#20877;&#29983;&#20013; / Space &#12391;&#27490;&#12417;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_GAME_OPTION_MULTIPLE_PRODUCTION</Tag>
+		<English>Multiple Production</English>
+		<French>Multiple Production</French>
+		<German>Multiple Production</German>
+		<Italian>Multiple Production</Italian>
+		<Spanish>Multiple Production</Spanish>
+		<Japanese>&#12510;&#12523;&#12481;&#12503;&#12523;&#12503;&#12525;&#12480;&#12463;&#12471;&#12519;&#12531;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_GAME_OPTION_MULTIPLE_PRODUCTION_HELP</Tag>
+		<English>When the production of a city is enough to finish more than one item of its queue, it finishes them in the same turn. Wonders, projects and units that use food are not included.</English>
+		<French>When the production of a city is enough to finish more than one item of its queue, it finishes them in the same turn. Wonders, projects and units that use food are not included.</French>
+		<German>When the production of a city is enough to finish more than one item of its queue, it finishes them in the same turn. Wonders, projects and units that use food are not included.</German>
+		<Italian>When the production of a city is enough to finish more than one item of its queue, it finishes them in the same turn. Wonders, projects and units that use food are not included.</Italian>
+		<Spanish>When the production of a city is enough to finish more than one item of its queue, it finishes them in the same turn. Wonders, projects and units that use food are not included.</Spanish>
+		<Japanese>&#29983;&#29987;&#21147;&#12364;&#36275;&#12426;&#12428;&#12400;&#12289;&#12461;&#12517;&#12540;&#12398;&#27425;&#12398;&#38917;&#30446;&#12418;&#21516;&#12376;&#12479;&#12540;&#12531;&#12395;&#23436;&#25104;&#12375;&#12414;&#12377;&#12290;&#36986;&#29987;&#12289;&#12503;&#12525;&#12472;&#12455;&#12463;&#12488;&#12289;&#39135;&#26009;&#12434;&#20351;&#12358;&#12518;&#12491;&#12483;&#12488;&#12399;&#23550;&#35937;&#22806;&#12391;&#12377;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_LOST_PROD_CONVERTED</Tag>
+		<English>%s1_CityName cannot carry over more [ICON_PRODUCTION]. The lost %d2_NumProduction[ICON_PRODUCTION] was converted into %d3_NumGold[ICON_GOLD]!</English>
+		<French>%s1_CityName cannot carry over more [ICON_PRODUCTION]. The lost %d2_NumProduction[ICON_PRODUCTION] was converted into %d3_NumGold[ICON_GOLD]!</French>
+		<German>%s1_CityName cannot carry over more [ICON_PRODUCTION]. The lost %d2_NumProduction[ICON_PRODUCTION] was converted into %d3_NumGold[ICON_GOLD]!</German>
+		<Italian>%s1_CityName cannot carry over more [ICON_PRODUCTION]. The lost %d2_NumProduction[ICON_PRODUCTION] was converted into %d3_NumGold[ICON_GOLD]!</Italian>
+		<Spanish>%s1_CityName cannot carry over more [ICON_PRODUCTION]. The lost %d2_NumProduction[ICON_PRODUCTION] was converted into %d3_NumGold[ICON_GOLD]!</Spanish>
+		<Japanese>%s1_CityName &#12399;&#20313;&#12387;&#12383;[ICON_PRODUCTION]&#12434;&#12371;&#12428;&#20197;&#19978;&#32368;&#12426;&#36234;&#12379;&#12414;&#12379;&#12435;&#12290;&#22833;&#12431;&#12428;&#12383;%d2_NumProduction[ICON_PRODUCTION]&#12399;%d3_NumGold[ICON_GOLD]&#12395;&#22793;&#12431;&#12426;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_MAKES_PASSABLE</Tag>
+		<English>[ICON_BULLET]Land units can move through this tile</English>
+		<French>[ICON_BULLET]Land units can move through this tile</French>
+		<German>[ICON_BULLET]Land units can move through this tile</German>
+		<Italian>[ICON_BULLET]Land units can move through this tile</Italian>
+		<Spanish>[ICON_BULLET]Land units can move through this tile</Spanish>
+		<Japanese>[ICON_BULLET]&#38520;&#19978;&#12518;&#12491;&#12483;&#12488;&#12364;&#12371;&#12398;&#12479;&#12452;&#12523;&#12434;&#36890;&#12428;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_PASSAGE_MOVE_COST</Tag>
+		<English>[ICON_BULLET]+%d1 movement cost</English>
+		<French>[ICON_BULLET]+%d1 movement cost</French>
+		<German>[ICON_BULLET]+%d1 movement cost</German>
+		<Italian>[ICON_BULLET]+%d1 movement cost</Italian>
+		<Spanish>[ICON_BULLET]+%d1 movement cost</Spanish>
+		<Japanese>[ICON_BULLET]&#31227;&#21205;&#12467;&#12473;&#12488; +%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_TUNNEL</Tag>
+		<English>Test Improvement (Tunnel)</English>
+		<French>Test Improvement (Tunnel)</French>
+		<German>Test Improvement (Tunnel)</German>
+		<Italian>Test Improvement (Tunnel)</Italian>
+		<Spanish>Test Improvement (Tunnel)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#12488;&#12531;&#12493;&#12523;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_TUNNEL</Tag>
+		<English>Build Test Improvement (Tunnel)</English>
+		<French>Build Test Improvement (Tunnel)</French>
+		<German>Build Test Improvement (Tunnel)</German>
+		<Italian>Build Test Improvement (Tunnel)</Italian>
+		<Spanish>Build Test Improvement (Tunnel)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#12488;&#12531;&#12493;&#12523;&#65289;&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_UNIT</Tag>
+		<English>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</English>
+		<French>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</French>
+		<German>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</German>
+		<Italian>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</Italian>
+		<Spanish>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#12518;&#12491;&#12483;&#12488;: %s1_Name&#65288;%s2_Name &#12398;&#20195;&#12431;&#12426;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_BUILDING</Tag>
+		<English>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</English>
+		<French>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</French>
+		<German>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</German>
+		<Italian>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</Italian>
+		<Spanish>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#24314;&#36896;&#29289;: %s1_Name&#65288;%s2_Name &#12398;&#20195;&#12431;&#12426;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_WARRIOR</Tag>
+		<English>Test Warrior</English>
+		<French>Test Warrior</French>
+		<German>Test Warrior</German>
+		<Italian>Test Warrior</Italian>
+		<Spanish>Test Warrior</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#25126;&#22763;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_GENERAL</Tag>
+		<English>Test Great General</English>
+		<French>Test Great General</French>
+		<German>Test Great General</German>
+		<Italian>Test Great General</Italian>
+		<Spanish>Test Great General</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#22823;&#23558;&#36557;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_SCIENTIST</Tag>
+		<English>Test Great Scientist</English>
+		<French>Test Great Scientist</French>
+		<German>Test Great Scientist</German>
+		<Italian>Test Great Scientist</Italian>
+		<Spanish>Test Great Scientist</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#22823;&#31185;&#23398;&#32773;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TEST_GRANARY</Tag>
+		<English>Test Granary</English>
+		<French>Test Granary</French>
+		<German>Test Granary</German>
+		<Italian>Test Granary</Italian>
+		<Spanish>Test Granary</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#31296;&#29289;&#24235;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_CIVIC</Tag>
+		<English>[ICON_BULLET]Unique civic: %s1_Name</English>
+		<French>[ICON_BULLET]Unique civic: %s1_Name</French>
+		<German>[ICON_BULLET]Unique civic: %s1_Name</German>
+		<Italian>[ICON_BULLET]Unique civic: %s1_Name</Italian>
+		<Spanish>[ICON_BULLET]Unique civic: %s1_Name</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#12398;&#31038;&#20250;&#21046;&#24230;: %s1_Name</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_CIVIC_REPLACES</Tag>
+		<English>[ICON_BULLET]Unique civic: %s1_Name (instead of %s2_Name)</English>
+		<French>[ICON_BULLET]Unique civic: %s1_Name (instead of %s2_Name)</French>
+		<German>[ICON_BULLET]Unique civic: %s1_Name (instead of %s2_Name)</German>
+		<Italian>[ICON_BULLET]Unique civic: %s1_Name (instead of %s2_Name)</Italian>
+		<Spanish>[ICON_BULLET]Unique civic: %s1_Name (instead of %s2_Name)</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#12398;&#31038;&#20250;&#21046;&#24230;: %s1_Name&#65288;%s2_Name &#12398;&#20195;&#12431;&#12426;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIVIC_REPLACES</Tag>
+		<English>[ICON_BULLET]Instead of %s1_Name</English>
+		<French>[ICON_BULLET]Instead of %s1_Name</French>
+		<German>[ICON_BULLET]Instead of %s1_Name</German>
+		<Italian>[ICON_BULLET]Instead of %s1_Name</Italian>
+		<Spanish>[ICON_BULLET]Instead of %s1_Name</Spanish>
+		<Japanese>[ICON_BULLET]%s1_Name &#12398;&#20195;&#12431;&#12426;&#12395;&#25505;&#29992;&#12377;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIVIC_TEST_DESPOTISM</Tag>
+		<English>Test Despotism</English>
+		<French>Test Despotism</French>
+		<German>Test Despotism</German>
+		<Italian>Test Despotism</Italian>
+		<Spanish>Test Despotism</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#23554;&#21046;&#25919;&#27835;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIVIC_TEST_HEREDITARY_RULE</Tag>
+		<English>Test Hereditary Rule</English>
+		<French>Test Hereditary Rule</French>
+		<German>Test Hereditary Rule</German>
+		<Italian>Test Hereditary Rule</Italian>
+		<Spanish>Test Hereditary Rule</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#19990;&#35186;&#32113;&#27835;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_BONUS</Tag>
+		<English>[ICON_BULLET]Unique resource: %s1_Name</English>
+		<French>[ICON_BULLET]Unique resource: %s1_Name</French>
+		<German>[ICON_BULLET]Unique resource: %s1_Name</German>
+		<Italian>[ICON_BULLET]Unique resource: %s1_Name</Italian>
+		<Spanish>[ICON_BULLET]Unique resource: %s1_Name</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#36039;&#28304;: %s1_Name</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_TEST</Tag>
+		<English>Test Resource</English>
+		<French>Test Resource</French>
+		<German>Test Resource</German>
+		<Italian>Test Resource</Italian>
+		<Spanish>Test Resource</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#36039;&#28304;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_UNIQUE</Tag>
+		<English>[ICON_BULLET]Only one in the world</English>
+		<French>[ICON_BULLET]Only one in the world</French>
+		<German>[ICON_BULLET]Only one in the world</German>
+		<Italian>[ICON_BULLET]Only one in the world</Italian>
+		<Spanish>[ICON_BULLET]Only one in the world</Spanish>
+		<Japanese>[ICON_BULLET]&#19990;&#30028;&#12395; 1 &#12388;&#12384;&#12369;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_IMPASSABLE</Tag>
+		<English>[ICON_BULLET]Units cannot enter this tile</English>
+		<French>[ICON_BULLET]Units cannot enter this tile</French>
+		<German>[ICON_BULLET]Units cannot enter this tile</German>
+		<Italian>[ICON_BULLET]Units cannot enter this tile</Italian>
+		<Spanish>[ICON_BULLET]Units cannot enter this tile</Spanish>
+		<Japanese>[ICON_BULLET]&#12518;&#12491;&#12483;&#12488;&#12399;&#12371;&#12398;&#12479;&#12452;&#12523;&#12395;&#20837;&#12428;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_LANDMARK</Tag>
+		<English>Test Landmark</English>
+		<French>Test Landmark</French>
+		<German>Test Landmark</German>
+		<Italian>Test Landmark</Italian>
+		<Spanish>Test Landmark</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21517;&#25152;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_WONDER</Tag>
+		<English>Test Natural Wonder</English>
+		<French>Test Natural Wonder</French>
+		<German>Test Natural Wonder</German>
+		<Italian>Test Natural Wonder</Italian>
+		<Spanish>Test Natural Wonder</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#33258;&#28982;&#36986;&#29987;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_PEAK_WONDER</Tag>
+		<English>Test Peak Wonder</English>
+		<French>Test Peak Wonder</French>
+		<German>Test Peak Wonder</German>
+		<Italian>Test Peak Wonder</Italian>
+		<Spanish>Test Peak Wonder</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21517;&#23792;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_POLDER</Tag>
+		<English>Test Improvement (Polder)</English>
+		<French>Test Improvement (Polder)</French>
+		<German>Test Improvement (Polder)</German>
+		<Italian>Test Improvement (Polder)</Italian>
+		<Spanish>Test Improvement (Polder)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#12509;&#12523;&#12480;&#12540;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_POLDER</Tag>
+		<English>Build Test Improvement (Polder)</English>
+		<French>Build Test Improvement (Polder)</French>
+		<German>Build Test Improvement (Polder)</German>
+		<Italian>Build Test Improvement (Polder)</Italian>
+		<Spanish>Build Test Improvement (Polder)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#12509;&#12523;&#12480;&#12540;&#65289;&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_NO_PENALTY</Tag>
+		<English>Test Promotion (No Damage Penalty)</English>
+		<French>Test Promotion (No Damage Penalty)</French>
+		<German>Test Promotion (No Damage Penalty)</German>
+		<Italian>Test Promotion (No Damage Penalty)</Italian>
+		<Spanish>Test Promotion (No Damage Penalty)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#20663;&#12398;&#24433;&#38911;&#12394;&#12375;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_CIV</Tag>
+		<English>Test Improvement (Civilization)</English>
+		<French>Test Improvement (Civilization)</French>
+		<German>Test Improvement (Civilization)</German>
+		<Italian>Test Improvement (Civilization)</Italian>
+		<Spanish>Test Improvement (Civilization)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#25991;&#26126;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_CIV</Tag>
+		<English>Build Test Improvement (Civilization)</English>
+		<French>Build Test Improvement (Civilization)</French>
+		<German>Build Test Improvement (Civilization)</German>
+		<Italian>Build Test Improvement (Civilization)</Italian>
+		<Spanish>Build Test Improvement (Civilization)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#25991;&#26126;&#65289;&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_TEST_FORT</Tag>
+		<English>Test Fort</English>
+		<French>Test Fort</French>
+		<German>Test Fort</German>
+		<Italian>Test Fort</Italian>
+		<Spanish>Test Fort</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#30758;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_CIV_FORT</Tag>
+		<English>Build Test Fort</English>
+		<French>Build Test Fort</French>
+		<German>Build Test Fort</German>
+		<Italian>Build Test Fort</Italian>
+		<Spanish>Build Test Fort</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#30758;&#12398;&#24314;&#35373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_CHOOSE_GOODY</Tag>
+		<English>Test Promotion (Goody Huts)</English>
+		<French>Test Promotion (Goody Huts)</French>
+		<German>Test Promotion (Goody Huts)</German>
+		<Italian>Test Promotion (Goody Huts)</Italian>
+		<Spanish>Test Promotion (Goody Huts)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#37096;&#26063;&#38598;&#33853;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_FEATURE</Tag>
+		<English>Test Promotion (Features)</English>
+		<French>Test Promotion (Features)</French>
+		<German>Test Promotion (Features)</German>
+		<Italian>Test Promotion (Features)</Italian>
+		<Spanish>Test Promotion (Features)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#22320;&#24418;&#12398;&#29305;&#24500;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_HIDDEN</Tag>
+		<English>Test Promotion (Hidden Nationality)</English>
+		<French>Test Promotion (Hidden Nationality)</French>
+		<German>Test Promotion (Hidden Nationality)</German>
+		<Italian>Test Promotion (Hidden Nationality)</Italian>
+		<Spanish>Test Promotion (Hidden Nationality)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#22269;&#31821;&#31192;&#21311;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_BARBARIAN</Tag>
+		<English>Test Trait (Barbarians)</English>
+		<French>Test Trait (Barbarians)</French>
+		<German>Test Trait (Barbarians)</German>
+		<Italian>Test Trait (Barbarians)</Italian>
+		<Spanish>Test Trait (Barbarians)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;&#34542;&#26063;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_BARBARIAN_SHORT</Tag>
+		<English>TBa</English>
+		<French>TBa</French>
+		<German>TBa</German>
+		<Italian>TBa</Italian>
+		<Spanish>TBa</Spanish>
+		<Japanese>&#34542;</Japanese>
+	</TEXT>
+</Civ4GameText>

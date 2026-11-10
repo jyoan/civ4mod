@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- claude_sample: text for the spells (TXT_KEY_SPELL_*) -->
+<!-- Japanese text is written as decimal character references (ASCII file) -->
+<Civ4GameText xmlns="http://www.firaxis.com">
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CIVILIZATION_PREREQ</Tag>
+		<English>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Civ[\LINK]</English>
+		<French>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Civ[\LINK]</French>
+		<German>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Civ[\LINK]</German>
+		<Italian>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Civ[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Civ[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s1_Civ[\LINK]&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TECH_PREREQ</Tag>
+		<English>[ICON_BULLET]Requires [LINK=literal]%s1_Tech[\LINK]</English>
+		<French>[ICON_BULLET]Requires [LINK=literal]%s1_Tech[\LINK]</French>
+		<German>[ICON_BULLET]Requires [LINK=literal]%s1_Tech[\LINK]</German>
+		<Italian>[ICON_BULLET]Requires [LINK=literal]%s1_Tech[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Requires [LINK=literal]%s1_Tech[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#24517;&#35201;&#26465;&#20214;: [LINK=literal]%s1_Tech[\LINK]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_UNIT_PREREQ</Tag>
+		<English>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Unit[\LINK]</English>
+		<French>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Unit[\LINK]</French>
+		<German>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Unit[\LINK]</German>
+		<Italian>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Unit[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Can only be used by [LINK=literal]%s1_Unit[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s1_Unit[\LINK]&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_PROMOTION_PREREQ</Tag>
+		<English>[ICON_BULLET]Requires [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]Requires [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]Requires [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]Requires [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Requires [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#24517;&#35201;&#26465;&#20214;: [LINK=literal]%s1_Promotion[\LINK]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CASTER_MIN_LEVEL</Tag>
+		<English>[ICON_BULLET]Requires level %d1_Level or higher</English>
+		<French>[ICON_BULLET]Requires level %d1_Level or higher</French>
+		<German>[ICON_BULLET]Requires level %d1_Level or higher</German>
+		<Italian>[ICON_BULLET]Requires level %d1_Level or higher</Italian>
+		<Spanish>[ICON_BULLET]Requires level %d1_Level or higher</Spanish>
+		<Japanese>[ICON_BULLET]&#24517;&#35201;&#26465;&#20214;: &#12524;&#12505;&#12523;%d1_Level&#20197;&#19978;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IN_CITY_ONLY</Tag>
+		<English>[ICON_BULLET]Can only be cast in cities</English>
+		<French>[ICON_BULLET]Can only be cast in cities</French>
+		<German>[ICON_BULLET]Can only be cast in cities</German>
+		<Italian>[ICON_BULLET]Can only be cast in cities</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast in cities</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IN_BORDERS_ONLY</Tag>
+		<English>[ICON_BULLET]Can only be cast within your borders</English>
+		<French>[ICON_BULLET]Can only be cast within your borders</French>
+		<German>[ICON_BULLET]Can only be cast within your borders</German>
+		<Italian>[ICON_BULLET]Can only be cast within your borders</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast within your borders</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IN_BORDERS_AND_CITY_ONLY</Tag>
+		<English>[ICON_BULLET]Can only be cast in your cities</English>
+		<French>[ICON_BULLET]Can only be cast in your cities</French>
+		<German>[ICON_BULLET]Can only be cast in your cities</German>
+		<Italian>[ICON_BULLET]Can only be cast in your cities</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast in your cities</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#37117;&#24066;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_STATE_RELIGION_PREREQ</Tag>
+		<English>[ICON_BULLET]Requires [LINK=literal]%s1_Religion[\LINK] as the state religion</English>
+		<French>[ICON_BULLET]Requires [LINK=literal]%s1_Religion[\LINK] as the state religion</French>
+		<German>[ICON_BULLET]Requires [LINK=literal]%s1_Religion[\LINK] as the state religion</German>
+		<Italian>[ICON_BULLET]Requires [LINK=literal]%s1_Religion[\LINK] as the state religion</Italian>
+		<Spanish>[ICON_BULLET]Requires [LINK=literal]%s1_Religion[\LINK] as the state religion</Spanish>
+		<Japanese>[ICON_BULLET]&#24517;&#35201;&#26465;&#20214;: &#22269;&#25945;&#12364;[LINK=literal]%s1_Religion[\LINK]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_BUILDINGCLASS_OWNED_PREREQ</Tag>
+		<English>[ICON_BULLET]Requires [LINK=literal]%s1_Building[\LINK] in one of your cities</English>
+		<French>[ICON_BULLET]Requires [LINK=literal]%s1_Building[\LINK] in one of your cities</French>
+		<German>[ICON_BULLET]Requires [LINK=literal]%s1_Building[\LINK] in one of your cities</German>
+		<Italian>[ICON_BULLET]Requires [LINK=literal]%s1_Building[\LINK] in one of your cities</Italian>
+		<Spanish>[ICON_BULLET]Requires [LINK=literal]%s1_Building[\LINK] in one of your cities</Spanish>
+		<Japanese>[ICON_BULLET]&#24517;&#35201;&#26465;&#20214;: &#33258;&#22269;&#12398;&#12393;&#12371;&#12363;&#12398;&#37117;&#24066;&#12395;[LINK=literal]%s1_Building[\LINK]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_BUILDING_PREREQ</Tag>
+		<English>[ICON_BULLET]Can only be cast in a city with [LINK=literal]%s1_Building[\LINK]</English>
+		<French>[ICON_BULLET]Can only be cast in a city with [LINK=literal]%s1_Building[\LINK]</French>
+		<German>[ICON_BULLET]Can only be cast in a city with [LINK=literal]%s1_Building[\LINK]</German>
+		<Italian>[ICON_BULLET]Can only be cast in a city with [LINK=literal]%s1_Building[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast in a city with [LINK=literal]%s1_Building[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s1_Building[\LINK]&#12398;&#12354;&#12427;&#37117;&#24066;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CORPORATION_PREREQ</Tag>
+		<English>[ICON_BULLET]Can only be cast in a city with [LINK=literal]%s1_Corporation[\LINK]</English>
+		<French>[ICON_BULLET]Can only be cast in a city with [LINK=literal]%s1_Corporation[\LINK]</French>
+		<German>[ICON_BULLET]Can only be cast in a city with [LINK=literal]%s1_Corporation[\LINK]</German>
+		<Italian>[ICON_BULLET]Can only be cast in a city with [LINK=literal]%s1_Corporation[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast in a city with [LINK=literal]%s1_Corporation[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s1_Corporation[\LINK]&#12398;&#12354;&#12427;&#37117;&#24066;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_FEATURE_PREREQ</Tag>
+		<English>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Feature[\LINK]</English>
+		<French>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Feature[\LINK]</French>
+		<German>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Feature[\LINK]</German>
+		<Italian>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Feature[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Feature[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s1_Feature[\LINK]&#12398;&#12479;&#12452;&#12523;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_FEATURE2_PREREQ</Tag>
+		<English>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Feature[\LINK] or [LINK=literal]%s2_Feature[\LINK]</English>
+		<French>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Feature[\LINK] or [LINK=literal]%s2_Feature[\LINK]</French>
+		<German>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Feature[\LINK] or [LINK=literal]%s2_Feature[\LINK]</German>
+		<Italian>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Feature[\LINK] or [LINK=literal]%s2_Feature[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Feature[\LINK] or [LINK=literal]%s2_Feature[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s1_Feature[\LINK]&#12363;[LINK=literal]%s2_Feature[\LINK]&#12398;&#12479;&#12452;&#12523;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IMPROVEMENT_PREREQ</Tag>
+		<English>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Improvement[\LINK]</English>
+		<French>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Improvement[\LINK]</French>
+		<German>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Improvement[\LINK]</German>
+		<Italian>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Improvement[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast on [LINK=literal]%s1_Improvement[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s1_Improvement[\LINK]&#12398;&#12479;&#12452;&#12523;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_PROMOTION_IN_STACK_PREREQ</Tag>
+		<English>[ICON_BULLET]Requires another of your units with [LINK=literal]%s1_Promotion[\LINK] on the same tile</English>
+		<French>[ICON_BULLET]Requires another of your units with [LINK=literal]%s1_Promotion[\LINK] on the same tile</French>
+		<German>[ICON_BULLET]Requires another of your units with [LINK=literal]%s1_Promotion[\LINK] on the same tile</German>
+		<Italian>[ICON_BULLET]Requires another of your units with [LINK=literal]%s1_Promotion[\LINK] on the same tile</Italian>
+		<Spanish>[ICON_BULLET]Requires another of your units with [LINK=literal]%s1_Promotion[\LINK] on the same tile</Spanish>
+		<Japanese>[ICON_BULLET]&#24517;&#35201;&#26465;&#20214;: &#21516;&#12376;&#12479;&#12452;&#12523;&#12395;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#25345;&#12388;&#33258;&#22269;&#12398;&#12411;&#12363;&#12398;&#12518;&#12491;&#12483;&#12488;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_UNIT_IN_STACK_PREREQ</Tag>
+		<English>[ICON_BULLET]Requires another of your [LINK=literal]%s1_Unit[\LINK] on the same tile</English>
+		<French>[ICON_BULLET]Requires another of your [LINK=literal]%s1_Unit[\LINK] on the same tile</French>
+		<German>[ICON_BULLET]Requires another of your [LINK=literal]%s1_Unit[\LINK] on the same tile</German>
+		<Italian>[ICON_BULLET]Requires another of your [LINK=literal]%s1_Unit[\LINK] on the same tile</Italian>
+		<Spanish>[ICON_BULLET]Requires another of your [LINK=literal]%s1_Unit[\LINK] on the same tile</Spanish>
+		<Japanese>[ICON_BULLET]&#24517;&#35201;&#26465;&#20214;: &#21516;&#12376;&#12479;&#12452;&#12523;&#12395;&#33258;&#22269;&#12398;&#12411;&#12363;&#12398;[LINK=literal]%s1_Unit[\LINK]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_ADJACENT_TO_WATER_ONLY</Tag>
+		<English>[ICON_BULLET]Can only be cast next to a sea or lake</English>
+		<French>[ICON_BULLET]Can only be cast next to a sea or lake</French>
+		<German>[ICON_BULLET]Can only be cast next to a sea or lake</German>
+		<Italian>[ICON_BULLET]Can only be cast next to a sea or lake</Italian>
+		<Spanish>[ICON_BULLET]Can only be cast next to a sea or lake</Spanish>
+		<Japanese>[ICON_BULLET]&#28023;&#12363;&#28246;&#12395;&#38563;&#25509;&#12375;&#12383;&#12479;&#12452;&#12523;&#12391;&#12398;&#12415;&#23455;&#34892;&#21487;&#33021;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_ADD_PROMOTION_CASTER</Tag>
+		<English>[ICON_BULLET]The caster gains [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]The caster gains [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]The caster gains [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]The caster gains [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]The caster gains [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#23455;&#34892;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12364;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_REMOVE_PROMOTION_CASTER</Tag>
+		<English>[ICON_BULLET]The caster loses [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]The caster loses [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]The caster loses [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]The caster loses [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]The caster loses [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#23455;&#34892;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12398;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#22806;&#12377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CONVERT_UNIT</Tag>
+		<English>[ICON_BULLET]The caster turns into [LINK=literal]%s1_Unit[\LINK]</English>
+		<French>[ICON_BULLET]The caster turns into [LINK=literal]%s1_Unit[\LINK]</French>
+		<German>[ICON_BULLET]The caster turns into [LINK=literal]%s1_Unit[\LINK]</German>
+		<Italian>[ICON_BULLET]The caster turns into [LINK=literal]%s1_Unit[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]The caster turns into [LINK=literal]%s1_Unit[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#23455;&#34892;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12364;[LINK=literal]%s1_Unit[\LINK]&#12395;&#22793;&#12431;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CREATE_BUILDING</Tag>
+		<English>[ICON_BULLET]Builds [LINK=literal]%s1_Building[\LINK] in the city</English>
+		<French>[ICON_BULLET]Builds [LINK=literal]%s1_Building[\LINK] in the city</French>
+		<German>[ICON_BULLET]Builds [LINK=literal]%s1_Building[\LINK] in the city</German>
+		<Italian>[ICON_BULLET]Builds [LINK=literal]%s1_Building[\LINK] in the city</Italian>
+		<Spanish>[ICON_BULLET]Builds [LINK=literal]%s1_Building[\LINK] in the city</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12395;[LINK=literal]%s1_Building[\LINK]&#12434;&#24314;&#12390;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CREATE_FEATURE</Tag>
+		<English>[ICON_BULLET]Creates [LINK=literal]%s1_Feature[\LINK] on the tile</English>
+		<French>[ICON_BULLET]Creates [LINK=literal]%s1_Feature[\LINK] on the tile</French>
+		<German>[ICON_BULLET]Creates [LINK=literal]%s1_Feature[\LINK] on the tile</German>
+		<Italian>[ICON_BULLET]Creates [LINK=literal]%s1_Feature[\LINK] on the tile</Italian>
+		<Spanish>[ICON_BULLET]Creates [LINK=literal]%s1_Feature[\LINK] on the tile</Spanish>
+		<Japanese>[ICON_BULLET]&#12479;&#12452;&#12523;&#12395;[LINK=literal]%s1_Feature[\LINK]&#12434;&#20316;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CREATE_IMPROVEMENT</Tag>
+		<English>[ICON_BULLET]Builds [LINK=literal]%s1_Improvement[\LINK] on the tile</English>
+		<French>[ICON_BULLET]Builds [LINK=literal]%s1_Improvement[\LINK] on the tile</French>
+		<German>[ICON_BULLET]Builds [LINK=literal]%s1_Improvement[\LINK] on the tile</German>
+		<Italian>[ICON_BULLET]Builds [LINK=literal]%s1_Improvement[\LINK] on the tile</Italian>
+		<Spanish>[ICON_BULLET]Builds [LINK=literal]%s1_Improvement[\LINK] on the tile</Spanish>
+		<Japanese>[ICON_BULLET]&#12479;&#12452;&#12523;&#12395;[LINK=literal]%s1_Improvement[\LINK]&#12434;&#20316;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_SPREAD_RELIGION</Tag>
+		<English>[ICON_BULLET]Spreads [LINK=literal]%s1_Religion[\LINK] to the city</English>
+		<French>[ICON_BULLET]Spreads [LINK=literal]%s1_Religion[\LINK] to the city</French>
+		<German>[ICON_BULLET]Spreads [LINK=literal]%s1_Religion[\LINK] to the city</German>
+		<Italian>[ICON_BULLET]Spreads [LINK=literal]%s1_Religion[\LINK] to the city</Italian>
+		<Spanish>[ICON_BULLET]Spreads [LINK=literal]%s1_Religion[\LINK] to the city</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12395;[LINK=literal]%s1_Religion[\LINK]&#12434;&#24195;&#12417;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CHANGE_POPULATION</Tag>
+		<English>[ICON_BULLET]%D1_Population population in the city</English>
+		<French>[ICON_BULLET]%D1_Population population in the city</French>
+		<German>[ICON_BULLET]%D1_Population population in the city</German>
+		<Italian>[ICON_BULLET]%D1_Population population in the city</Italian>
+		<Spanish>[ICON_BULLET]%D1_Population population in the city</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12398;&#20154;&#21475;%D1_Population</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_GAIN_GOLD</Tag>
+		<English>[ICON_BULLET]Gains %d1_Gold[ICON_GOLD]</English>
+		<French>[ICON_BULLET]Gains %d1_Gold[ICON_GOLD]</French>
+		<German>[ICON_BULLET]Gains %d1_Gold[ICON_GOLD]</German>
+		<Italian>[ICON_BULLET]Gains %d1_Gold[ICON_GOLD]</Italian>
+		<Spanish>[ICON_BULLET]Gains %d1_Gold[ICON_GOLD]</Spanish>
+		<Japanese>[ICON_BULLET]%d1_Gold[ICON_GOLD]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_REMOVE_HAS_CASTED</Tag>
+		<English>[ICON_BULLET]The caster can cast again this turn</English>
+		<French>[ICON_BULLET]The caster can cast again this turn</French>
+		<German>[ICON_BULLET]The caster can cast again this turn</German>
+		<Italian>[ICON_BULLET]The caster can cast again this turn</Italian>
+		<Spanish>[ICON_BULLET]The caster can cast again this turn</Spanish>
+		<Japanese>[ICON_BULLET]&#23455;&#34892;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12364;&#12289;&#12371;&#12398;&#12479;&#12540;&#12531;&#12395;&#12418;&#12358;&#19968;&#24230;&#23455;&#34892;&#12391;&#12365;&#12427;&#12424;&#12358;&#12395;&#12394;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_COST</Tag>
+		<English>[ICON_BULLET]Costs %d1_Gold[ICON_GOLD]</English>
+		<French>[ICON_BULLET]Costs %d1_Gold[ICON_GOLD]</French>
+		<German>[ICON_BULLET]Costs %d1_Gold[ICON_GOLD]</German>
+		<Italian>[ICON_BULLET]Costs %d1_Gold[ICON_GOLD]</Italian>
+		<Spanish>[ICON_BULLET]Costs %d1_Gold[ICON_GOLD]</Spanish>
+		<Japanese>[ICON_BULLET]%d1_Gold[ICON_GOLD]&#12434;&#28040;&#36027;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_SACRIFICE_CASTER</Tag>
+		<English>[ICON_BULLET]The caster is consumed</English>
+		<French>[ICON_BULLET]The caster is consumed</French>
+		<German>[ICON_BULLET]The caster is consumed</German>
+		<Italian>[ICON_BULLET]The caster is consumed</Italian>
+		<Spanish>[ICON_BULLET]The caster is consumed</Spanish>
+		<Japanese>[ICON_BULLET]&#23455;&#34892;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12399;&#28040;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_ADD_PROMOTION</Tag>
+		<English>[ICON_BULLET]Units on the same tile gain [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]Units on the same tile gain [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]Units on the same tile gain [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]Units on the same tile gain [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Units on the same tile gain [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#21516;&#12376;&#12479;&#12452;&#12523;&#12398;&#12518;&#12491;&#12483;&#12488;&#12364;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_ADD_PROMOTION_AT_RANGE</Tag>
+		<English>[ICON_BULLET]Units within %d2_Range tiles gain [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]Units within %d2_Range tiles gain [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]Units within %d2_Range tiles gain [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]Units within %d2_Range tiles gain [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Units within %d2_Range tiles gain [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]%d2_Range&#12479;&#12452;&#12523;&#20197;&#20869;&#12398;&#12518;&#12491;&#12483;&#12488;&#12364;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_REMOVE_PROMOTION</Tag>
+		<English>[ICON_BULLET]Units on the same tile lose [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]Units on the same tile lose [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]Units on the same tile lose [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]Units on the same tile lose [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Units on the same tile lose [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#21516;&#12376;&#12479;&#12452;&#12523;&#12398;&#12518;&#12491;&#12483;&#12488;&#12398;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#22806;&#12377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_REMOVE_PROMOTION_AT_RANGE</Tag>
+		<English>[ICON_BULLET]Units within %d2_Range tiles lose [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]Units within %d2_Range tiles lose [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]Units within %d2_Range tiles lose [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]Units within %d2_Range tiles lose [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Units within %d2_Range tiles lose [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]%d2_Range&#12479;&#12452;&#12523;&#20197;&#20869;&#12398;&#12518;&#12491;&#12483;&#12488;&#12398;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#22806;&#12377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_DAMAGE</Tag>
+		<English>[ICON_BULLET]About %d1_Damage%% damage (up to %d2_Limit%%) to units within %d3_Range tiles, except on this tile</English>
+		<French>[ICON_BULLET]About %d1_Damage%% damage (up to %d2_Limit%%) to units within %d3_Range tiles, except on this tile</French>
+		<German>[ICON_BULLET]About %d1_Damage%% damage (up to %d2_Limit%%) to units within %d3_Range tiles, except on this tile</German>
+		<Italian>[ICON_BULLET]About %d1_Damage%% damage (up to %d2_Limit%%) to units within %d3_Range tiles, except on this tile</Italian>
+		<Spanish>[ICON_BULLET]About %d1_Damage%% damage (up to %d2_Limit%%) to units within %d3_Range tiles, except on this tile</Spanish>
+		<Japanese>[ICON_BULLET]&#21608;&#22258;%d3_Range&#12479;&#12452;&#12523;&#65288;&#33258;&#20998;&#12398;&#12479;&#12452;&#12523;&#12434;&#38500;&#12367;&#65289;&#12398;&#12518;&#12491;&#12483;&#12488;&#12395;%d1_Damage%%&#21069;&#24460;&#12398;&#12480;&#12513;&#12540;&#12472;&#65288;%d2_Limit%%&#12414;&#12391;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_DAMAGE_LETHAL</Tag>
+		<English>[ICON_BULLET]About %d1_Damage%% damage (can kill) to units within %d2_Range tiles, except on this tile</English>
+		<French>[ICON_BULLET]About %d1_Damage%% damage (can kill) to units within %d2_Range tiles, except on this tile</French>
+		<German>[ICON_BULLET]About %d1_Damage%% damage (can kill) to units within %d2_Range tiles, except on this tile</German>
+		<Italian>[ICON_BULLET]About %d1_Damage%% damage (can kill) to units within %d2_Range tiles, except on this tile</Italian>
+		<Spanish>[ICON_BULLET]About %d1_Damage%% damage (can kill) to units within %d2_Range tiles, except on this tile</Spanish>
+		<Japanese>[ICON_BULLET]&#21608;&#22258;%d2_Range&#12479;&#12452;&#12523;&#65288;&#33258;&#20998;&#12398;&#12479;&#12452;&#12523;&#12434;&#38500;&#12367;&#65289;&#12398;&#12518;&#12491;&#12483;&#12488;&#12395;%d1_Damage%%&#21069;&#24460;&#12398;&#12480;&#12513;&#12540;&#12472;&#65288;&#20498;&#12377;&#12371;&#12392;&#12418;&#12354;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IMMOBILE_TURNS</Tag>
+		<English>[ICON_BULLET]Units within %d2_Range tiles, except on this tile, cannot move for %d1_Turns turns</English>
+		<French>[ICON_BULLET]Units within %d2_Range tiles, except on this tile, cannot move for %d1_Turns turns</French>
+		<German>[ICON_BULLET]Units within %d2_Range tiles, except on this tile, cannot move for %d1_Turns turns</German>
+		<Italian>[ICON_BULLET]Units within %d2_Range tiles, except on this tile, cannot move for %d1_Turns turns</Italian>
+		<Spanish>[ICON_BULLET]Units within %d2_Range tiles, except on this tile, cannot move for %d1_Turns turns</Spanish>
+		<Japanese>[ICON_BULLET]&#21608;&#22258;%d2_Range&#12479;&#12452;&#12523;&#65288;&#33258;&#20998;&#12398;&#12479;&#12452;&#12523;&#12434;&#38500;&#12367;&#65289;&#12398;&#12518;&#12491;&#12483;&#12488;&#12364;%d1_Turns&#12479;&#12540;&#12531;&#21205;&#12369;&#12394;&#12367;&#12394;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IMMUNE_TEAM</Tag>
+		<English>[ICON_BULLET]Does not affect the units of your team</English>
+		<French>[ICON_BULLET]Does not affect the units of your team</French>
+		<German>[ICON_BULLET]Does not affect the units of your team</German>
+		<Italian>[ICON_BULLET]Does not affect the units of your team</Italian>
+		<Spanish>[ICON_BULLET]Does not affect the units of your team</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#12481;&#12540;&#12512;&#12398;&#12518;&#12491;&#12483;&#12488;&#12395;&#12399;&#21177;&#12363;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IMMUNE_ENEMY</Tag>
+		<English>[ICON_BULLET]Does not affect the units of your enemies</English>
+		<French>[ICON_BULLET]Does not affect the units of your enemies</French>
+		<German>[ICON_BULLET]Does not affect the units of your enemies</German>
+		<Italian>[ICON_BULLET]Does not affect the units of your enemies</Italian>
+		<Spanish>[ICON_BULLET]Does not affect the units of your enemies</Spanish>
+		<Japanese>[ICON_BULLET]&#20132;&#25126;&#20013;&#12398;&#30456;&#25163;&#12398;&#12518;&#12491;&#12483;&#12488;&#12395;&#12399;&#21177;&#12363;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IMMUNE_NEUTRAL</Tag>
+		<English>[ICON_BULLET]Does not affect the units of others you are not at war with</English>
+		<French>[ICON_BULLET]Does not affect the units of others you are not at war with</French>
+		<German>[ICON_BULLET]Does not affect the units of others you are not at war with</German>
+		<Italian>[ICON_BULLET]Does not affect the units of others you are not at war with</Italian>
+		<Spanish>[ICON_BULLET]Does not affect the units of others you are not at war with</Spanish>
+		<Japanese>[ICON_BULLET]&#20132;&#25126;&#20013;&#12391;&#12394;&#12356;&#20182;&#22269;&#12398;&#12518;&#12491;&#12483;&#12488;&#12395;&#12399;&#21177;&#12363;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_IMMUNE_FLYING</Tag>
+		<English>[ICON_BULLET]Does not affect air units</English>
+		<French>[ICON_BULLET]Does not affect air units</French>
+		<German>[ICON_BULLET]Does not affect air units</German>
+		<Italian>[ICON_BULLET]Does not affect air units</Italian>
+		<Spanish>[ICON_BULLET]Does not affect air units</Spanish>
+		<Japanese>[ICON_BULLET]&#33322;&#31354;&#12518;&#12491;&#12483;&#12488;&#12395;&#12399;&#21177;&#12363;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_GLOBAL</Tag>
+		<English>[ICON_BULLET]World spell: can be cast only once a game (once for all your world spells)</English>
+		<French>[ICON_BULLET]World spell: can be cast only once a game (once for all your world spells)</French>
+		<German>[ICON_BULLET]World spell: can be cast only once a game (once for all your world spells)</German>
+		<Italian>[ICON_BULLET]World spell: can be cast only once a game (once for all your world spells)</Italian>
+		<Spanish>[ICON_BULLET]World spell: can be cast only once a game (once for all your world spells)</Spanish>
+		<Japanese>[ICON_BULLET]&#19990;&#30028;&#21610;&#25991;: &#12466;&#12540;&#12512;&#12434;&#36890;&#12376;&#12390;&#19968;&#24230;&#12384;&#12369;&#23455;&#34892;&#12391;&#12365;&#12427;&#65288;&#19990;&#30028;&#21610;&#25991;&#12377;&#12409;&#12390;&#12391;&#21512;&#12431;&#12379;&#12390;1&#22238;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CASTER_NO_DURATION</Tag>
+		<English>[ICON_BULLET]Cannot be cast by summoned units that disappear</English>
+		<French>[ICON_BULLET]Cannot be cast by summoned units that disappear</French>
+		<German>[ICON_BULLET]Cannot be cast by summoned units that disappear</German>
+		<Italian>[ICON_BULLET]Cannot be cast by summoned units that disappear</Italian>
+		<Spanish>[ICON_BULLET]Cannot be cast by summoned units that disappear</Spanish>
+		<Japanese>[ICON_BULLET]&#21484;&#21914;&#12375;&#12383;&#65288;&#12356;&#12378;&#12428;&#28040;&#12360;&#12427;&#65289;&#12518;&#12491;&#12483;&#12488;&#12399;&#23455;&#34892;&#12391;&#12365;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_SUMMON_UNIT</Tag>
+		<English>[ICON_BULLET]Summons [LINK=literal]%s1_Unit[\LINK]</English>
+		<French>[ICON_BULLET]Summons [LINK=literal]%s1_Unit[\LINK]</French>
+		<German>[ICON_BULLET]Summons [LINK=literal]%s1_Unit[\LINK]</German>
+		<Italian>[ICON_BULLET]Summons [LINK=literal]%s1_Unit[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Summons [LINK=literal]%s1_Unit[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s1_Unit[\LINK]&#12434;&#21484;&#21914;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_SUMMON_UNIT_MULTIPLE</Tag>
+		<English>[ICON_BULLET]Summons %d1_Num [LINK=literal]%s2_Unit[\LINK]</English>
+		<French>[ICON_BULLET]Summons %d1_Num [LINK=literal]%s2_Unit[\LINK]</French>
+		<German>[ICON_BULLET]Summons %d1_Num [LINK=literal]%s2_Unit[\LINK]</German>
+		<Italian>[ICON_BULLET]Summons %d1_Num [LINK=literal]%s2_Unit[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Summons %d1_Num [LINK=literal]%s2_Unit[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET][LINK=literal]%s2_Unit[\LINK]&#12434;%d1_Num&#20307;&#21484;&#21914;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_SUMMON_UNIT_PERMANENT</Tag>
+		<English> (permanent; cannot move this turn)</English>
+		<French> (permanent; cannot move this turn)</French>
+		<German> (permanent; cannot move this turn)</German>
+		<Italian> (permanent; cannot move this turn)</Italian>
+		<Spanish> (permanent; cannot move this turn)</Spanish>
+		<Japanese>&#65288;&#28040;&#12360;&#12394;&#12356;&#12290;&#12371;&#12398;&#12479;&#12540;&#12531;&#12399;&#21205;&#12369;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_SUMMON_UNIT_DURATION</Tag>
+		<English> (disappears in %d1_Turns [NUM1:turn:turns])</English>
+		<French> (disappears in %d1_Turns [NUM1:turn:turns])</French>
+		<German> (disappears in %d1_Turns [NUM1:turn:turns])</German>
+		<Italian> (disappears in %d1_Turns [NUM1:turn:turns])</Italian>
+		<Spanish> (disappears in %d1_Turns [NUM1:turn:turns])</Spanish>
+		<Japanese>&#65288;%d1_Turns&#12479;&#12540;&#12531;&#12391;&#28040;&#12360;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_COPY_CASTERS_PROMOTIONS</Tag>
+		<English>[ICON_BULLET]Summoned units gain all the promotions of the caster (except those of great generals)</English>
+		<French>[ICON_BULLET]Summoned units gain all the promotions of the caster (except those of great generals)</French>
+		<German>[ICON_BULLET]Summoned units gain all the promotions of the caster (except those of great generals)</German>
+		<Italian>[ICON_BULLET]Summoned units gain all the promotions of the caster (except those of great generals)</Italian>
+		<Spanish>[ICON_BULLET]Summoned units gain all the promotions of the caster (except those of great generals)</Spanish>
+		<Japanese>[ICON_BULLET]&#21484;&#21914;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12399;&#12289;&#23455;&#34892;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12398;&#26119;&#36914;&#12434;&#12377;&#12409;&#12390;&#24471;&#12427;&#65288;&#22823;&#23558;&#36557;&#12398;&#26119;&#36914;&#12434;&#38500;&#12367;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_CREATE_UNIT_PROMOTION</Tag>
+		<English>[ICON_BULLET]Summoned units gain [LINK=literal]%s1_Promotion[\LINK]</English>
+		<French>[ICON_BULLET]Summoned units gain [LINK=literal]%s1_Promotion[\LINK]</French>
+		<German>[ICON_BULLET]Summoned units gain [LINK=literal]%s1_Promotion[\LINK]</German>
+		<Italian>[ICON_BULLET]Summoned units gain [LINK=literal]%s1_Promotion[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Summoned units gain [LINK=literal]%s1_Promotion[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#21484;&#21914;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12364;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_DELAY</Tag>
+		<English>[ICON_BULLET]Takes effect at the start of your turn after %d1_Turns [NUM1:turn:turns] (the caster cannot move until then)</English>
+		<French>[ICON_BULLET]Takes effect at the start of your turn after %d1_Turns [NUM1:turn:turns] (the caster cannot move until then)</French>
+		<German>[ICON_BULLET]Takes effect at the start of your turn after %d1_Turns [NUM1:turn:turns] (the caster cannot move until then)</German>
+		<Italian>[ICON_BULLET]Takes effect at the start of your turn after %d1_Turns [NUM1:turn:turns] (the caster cannot move until then)</Italian>
+		<Spanish>[ICON_BULLET]Takes effect at the start of your turn after %d1_Turns [NUM1:turn:turns] (the caster cannot move until then)</Spanish>
+		<Japanese>[ICON_BULLET]&#21177;&#26524;&#12399;%d1_Turns&#12479;&#12540;&#12531;&#24460;&#12398;&#33258;&#20998;&#12398;&#12479;&#12540;&#12531;&#12398;&#21021;&#12417;&#12395;&#20986;&#12427;&#65288;&#12381;&#12428;&#12414;&#12391;&#23455;&#34892;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12399;&#21205;&#12369;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_MISCAST_CHANCE</Tag>
+		<English>[ICON_BULLET]%d1_Chance%% chance to be miscast (no effects and no cost)</English>
+		<French>[ICON_BULLET]%d1_Chance%% chance to be miscast (no effects and no cost)</French>
+		<German>[ICON_BULLET]%d1_Chance%% chance to be miscast (no effects and no cost)</German>
+		<Italian>[ICON_BULLET]%d1_Chance%% chance to be miscast (no effects and no cost)</Italian>
+		<Spanish>[ICON_BULLET]%d1_Chance%% chance to be miscast (no effects and no cost)</Spanish>
+		<Japanese>[ICON_BULLET]%d1_Chance%%&#12398;&#30906;&#29575;&#12391;&#22833;&#25943;&#12377;&#12427;&#65288;&#21177;&#26524;&#12399;&#20986;&#12378;&#12289;&#36039;&#37329;&#12418;&#28040;&#36027;&#12375;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+</Civ4GameText>
