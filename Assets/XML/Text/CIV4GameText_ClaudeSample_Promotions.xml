@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- claude_sample: text for the promotions (TXT_KEY_PROMOTION_*, goody hut choice) -->
+<!-- Japanese text is written as decimal character references (ASCII file) -->
+<Civ4GameText xmlns="http://www.firaxis.com">
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_EXPIRE_CHANCE</Tag>
+		<English>[ICON_BULLET]%d1_Chance%% chance to wear off each turn</English>
+		<French>[ICON_BULLET]%d1_Chance%% chance to wear off each turn</French>
+		<German>[ICON_BULLET]%d1_Chance%% chance to wear off each turn</German>
+		<Italian>[ICON_BULLET]%d1_Chance%% chance to wear off each turn</Italian>
+		<Spanish>[ICON_BULLET]%d1_Chance%% chance to wear off each turn</Spanish>
+		<Japanese>[ICON_BULLET]&#27598;&#12479;&#12540;&#12531;%d1_Chance%%&#12398;&#30906;&#29575;&#12391;&#28040;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_REMOVED_BY_COMBAT</Tag>
+		<English>[ICON_BULLET]Wears off after combat</English>
+		<French>[ICON_BULLET]Wears off after combat</French>
+		<German>[ICON_BULLET]Wears off after combat</German>
+		<Italian>[ICON_BULLET]Wears off after combat</Italian>
+		<Spanish>[ICON_BULLET]Wears off after combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12377;&#12427;&#12392;&#28040;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_VICTORY</Tag>
+		<English>[ICON_BULLET]Gains [LINK=literal]%s1_Promotion[\LINK] on winning a combat</English>
+		<French>[ICON_BULLET]Gains [LINK=literal]%s1_Promotion[\LINK] on winning a combat</French>
+		<German>[ICON_BULLET]Gains [LINK=literal]%s1_Promotion[\LINK] on winning a combat</German>
+		<Italian>[ICON_BULLET]Gains [LINK=literal]%s1_Promotion[\LINK] on winning a combat</Italian>
+		<Spanish>[ICON_BULLET]Gains [LINK=literal]%s1_Promotion[\LINK] on winning a combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_VICTORY_CHANCE</Tag>
+		<English>[ICON_BULLET]%d2_Chance%% chance to gain [LINK=literal]%s1_Promotion[\LINK] on winning a combat</English>
+		<French>[ICON_BULLET]%d2_Chance%% chance to gain [LINK=literal]%s1_Promotion[\LINK] on winning a combat</French>
+		<German>[ICON_BULLET]%d2_Chance%% chance to gain [LINK=literal]%s1_Promotion[\LINK] on winning a combat</German>
+		<Italian>[ICON_BULLET]%d2_Chance%% chance to gain [LINK=literal]%s1_Promotion[\LINK] on winning a combat</Italian>
+		<Spanish>[ICON_BULLET]%d2_Chance%% chance to gain [LINK=literal]%s1_Promotion[\LINK] on winning a combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d2_Chance%%&#12398;&#30906;&#29575;&#12391;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_REMOVED_WHEN_HEALED</Tag>
+		<English>[ICON_BULLET]Wears off when fully healed</English>
+		<French>[ICON_BULLET]Wears off when fully healed</French>
+		<German>[ICON_BULLET]Wears off when fully healed</German>
+		<Italian>[ICON_BULLET]Wears off when fully healed</Italian>
+		<Spanish>[ICON_BULLET]Wears off when fully healed</Spanish>
+		<Japanese>[ICON_BULLET]&#23436;&#20840;&#12395;&#22238;&#24489;&#12377;&#12427;&#12392;&#28040;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FREE_XP_PER_TURN</Tag>
+		<English>[ICON_BULLET]+%d1_XP experience each turn (up to %d2_Cap)</English>
+		<French>[ICON_BULLET]+%d1_XP experience each turn (up to %d2_Cap)</French>
+		<German>[ICON_BULLET]+%d1_XP experience each turn (up to %d2_Cap)</German>
+		<Italian>[ICON_BULLET]+%d1_XP experience each turn (up to %d2_Cap)</Italian>
+		<Spanish>[ICON_BULLET]+%d1_XP experience each turn (up to %d2_Cap)</Spanish>
+		<Japanese>[ICON_BULLET]&#27598;&#12479;&#12540;&#12531;&#32076;&#39443;&#20516;+%d1_XP&#65288;%d2_Cap&#12414;&#12391;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_APPLY</Tag>
+		<English>[ICON_BULLET]Gives [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</English>
+		<French>[ICON_BULLET]Gives [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</French>
+		<German>[ICON_BULLET]Gives [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</German>
+		<Italian>[ICON_BULLET]Gives [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</Italian>
+		<Spanish>[ICON_BULLET]Gives [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</Spanish>
+		<Japanese>[ICON_BULLET]&#29983;&#12365;&#27531;&#12387;&#12383;&#25126;&#38360;&#30456;&#25163;&#12395;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#19982;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_APPLY_CHANCE</Tag>
+		<English>[ICON_BULLET]%d2_Chance%% chance to give [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</English>
+		<French>[ICON_BULLET]%d2_Chance%% chance to give [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</French>
+		<German>[ICON_BULLET]%d2_Chance%% chance to give [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</German>
+		<Italian>[ICON_BULLET]%d2_Chance%% chance to give [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</Italian>
+		<Spanish>[ICON_BULLET]%d2_Chance%% chance to give [LINK=literal]%s1_Promotion[\LINK] to a combat opponent that survives</Spanish>
+		<Japanese>[ICON_BULLET]&#29983;&#12365;&#27531;&#12387;&#12383;&#25126;&#38360;&#30456;&#25163;&#12395;%d2_Chance%%&#12398;&#30906;&#29575;&#12391;[LINK=literal]%s1_Promotion[\LINK]&#12434;&#19982;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_GOLD_FROM_COMBAT</Tag>
+		<English>[ICON_BULLET]%D1_Gold[ICON_GOLD] on winning a combat</English>
+		<French>[ICON_BULLET]%D1_Gold[ICON_GOLD] on winning a combat</French>
+		<German>[ICON_BULLET]%D1_Gold[ICON_GOLD] on winning a combat</German>
+		<Italian>[ICON_BULLET]%D1_Gold[ICON_GOLD] on winning a combat</Italian>
+		<Spanish>[ICON_BULLET]%D1_Gold[ICON_GOLD] on winning a combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%D1_Gold[ICON_GOLD]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_CAPTURE</Tag>
+		<English>[ICON_BULLET]%d1_Chance%% chance to capture the defeated unit on winning a combat</English>
+		<French>[ICON_BULLET]%d1_Chance%% chance to capture the defeated unit on winning a combat</French>
+		<German>[ICON_BULLET]%d1_Chance%% chance to capture the defeated unit on winning a combat</German>
+		<Italian>[ICON_BULLET]%d1_Chance%% chance to capture the defeated unit on winning a combat</Italian>
+		<Spanish>[ICON_BULLET]%d1_Chance%% chance to capture the defeated unit on winning a combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d1_Chance%%&#12398;&#30906;&#29575;&#12391;&#20498;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12434;&#25429;&#29554;&#12377;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_HEAL_PERCENT</Tag>
+		<English>[ICON_BULLET]Heals %d1_Heal%% when it wins a combat</English>
+		<French>[ICON_BULLET]Heals %d1_Heal%% when it wins a combat</French>
+		<German>[ICON_BULLET]Heals %d1_Heal%% when it wins a combat</German>
+		<Italian>[ICON_BULLET]Heals %d1_Heal%% when it wins a combat</Italian>
+		<Spanish>[ICON_BULLET]Heals %d1_Heal%% when it wins a combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d1_Heal%%&#22238;&#24489;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_ENSLAVEMENT</Tag>
+		<English>[ICON_BULLET]%d1_Chance%% chance to capture a defeated unit as [LINK=literal]%s2_Unit[\LINK]</English>
+		<French>[ICON_BULLET]%d1_Chance%% chance to capture a defeated unit as [LINK=literal]%s2_Unit[\LINK]</French>
+		<German>[ICON_BULLET]%d1_Chance%% chance to capture a defeated unit as [LINK=literal]%s2_Unit[\LINK]</German>
+		<Italian>[ICON_BULLET]%d1_Chance%% chance to capture a defeated unit as [LINK=literal]%s2_Unit[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]%d1_Chance%% chance to capture a defeated unit as [LINK=literal]%s2_Unit[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d1_Chance%%&#12391;&#12289;&#20498;&#12375;&#12383;&#30456;&#25163;&#12434;[LINK=literal]%s2_Unit[\LINK]&#12392;&#12375;&#12390;&#25429;&#12425;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_ENSLAVEMENT_UNITCLASS</Tag>
+		<English>[ICON_BULLET]%d1_Chance%% chance to capture a defeated [LINK=literal]%s2_Loser[\LINK] as [LINK=literal]%s3_Unit[\LINK]</English>
+		<French>[ICON_BULLET]%d1_Chance%% chance to capture a defeated [LINK=literal]%s2_Loser[\LINK] as [LINK=literal]%s3_Unit[\LINK]</French>
+		<German>[ICON_BULLET]%d1_Chance%% chance to capture a defeated [LINK=literal]%s2_Loser[\LINK] as [LINK=literal]%s3_Unit[\LINK]</German>
+		<Italian>[ICON_BULLET]%d1_Chance%% chance to capture a defeated [LINK=literal]%s2_Loser[\LINK] as [LINK=literal]%s3_Unit[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]%d1_Chance%% chance to capture a defeated [LINK=literal]%s2_Loser[\LINK] as [LINK=literal]%s3_Unit[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d1_Chance%%&#12391;&#12289;&#20498;&#12375;&#12383;[LINK=literal]%s2_Loser[\LINK]&#12434;[LINK=literal]%s3_Unit[\LINK]&#12392;&#12375;&#12390;&#25429;&#12425;&#12360;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_ENSLAVEMENT_NOT</Tag>
+		<English>[ICON_BULLET]Does not capture a defeated [LINK=literal]%s1_Loser[\LINK]</English>
+		<French>[ICON_BULLET]Does not capture a defeated [LINK=literal]%s1_Loser[\LINK]</French>
+		<German>[ICON_BULLET]Does not capture a defeated [LINK=literal]%s1_Loser[\LINK]</German>
+		<Italian>[ICON_BULLET]Does not capture a defeated [LINK=literal]%s1_Loser[\LINK]</Italian>
+		<Spanish>[ICON_BULLET]Does not capture a defeated [LINK=literal]%s1_Loser[\LINK]</Spanish>
+		<Japanese>[ICON_BULLET]&#20498;&#12375;&#12383;[LINK=literal]%s1_Loser[\LINK]&#12399;&#25429;&#12425;&#12360;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_GOLD_STEAL</Tag>
+		<English>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat</English>
+		<French>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat</French>
+		<German>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat</German>
+		<Italian>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat</Italian>
+		<Spanish>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;&#12289;&#30456;&#25163;&#12398;&#22269;&#24235;&#12398;%d1_Percent%%&#12434;&#22890;&#12358;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_GOLD_STEAL_MAX</Tag>
+		<English>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat (up to %d2_Max[ICON_GOLD])</English>
+		<French>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat (up to %d2_Max[ICON_GOLD])</French>
+		<German>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat (up to %d2_Max[ICON_GOLD])</German>
+		<Italian>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat (up to %d2_Max[ICON_GOLD])</Italian>
+		<Spanish>[ICON_BULLET]Takes %d1_Percent%% of the enemy treasury when it wins a combat (up to %d2_Max[ICON_GOLD])</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;&#12289;&#30456;&#25163;&#12398;&#22269;&#24235;&#12398;%d1_Percent%%&#12434;&#22890;&#12358;&#65288;&#26368;&#22823;%d2_Max[ICON_GOLD]&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_PROMOTION_STEAL</Tag>
+		<English>[ICON_BULLET]%d1_Chance%% chance to take a promotion of the defeated unit (not those of great generals or status promotions)</English>
+		<French>[ICON_BULLET]%d1_Chance%% chance to take a promotion of the defeated unit (not those of great generals or status promotions)</French>
+		<German>[ICON_BULLET]%d1_Chance%% chance to take a promotion of the defeated unit (not those of great generals or status promotions)</German>
+		<Italian>[ICON_BULLET]%d1_Chance%% chance to take a promotion of the defeated unit (not those of great generals or status promotions)</Italian>
+		<Spanish>[ICON_BULLET]%d1_Chance%% chance to take a promotion of the defeated unit (not those of great generals or status promotions)</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#38360;&#12395;&#21213;&#21033;&#12377;&#12427;&#12392;%d1_Chance%%&#12391;&#12289;&#20498;&#12375;&#12383;&#30456;&#25163;&#12398;&#26119;&#36914;&#12434;1&#12388;&#24471;&#12427;&#65288;&#22823;&#23558;&#36557;&#12398;&#26119;&#36914;&#12392;&#29366;&#24907;&#12398;&#26119;&#36914;&#12434;&#38500;&#12367;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_PERCENT_IN_BORDERS</Tag>
+		<English>[ICON_BULLET]%D1_Bonus%% Strength in own territory</English>
+		<French>[ICON_BULLET]%D1_Bonus%% Strength in own territory</French>
+		<German>[ICON_BULLET]%D1_Bonus%% Strength in own territory</German>
+		<Italian>[ICON_BULLET]%D1_Bonus%% Strength in own territory</Italian>
+		<Spanish>[ICON_BULLET]%D1_Bonus%% Strength in own territory</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#25126;&#38360;&#21147;%D1_Bonus%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_NO_DAMAGE_PENALTY</Tag>
+		<English>[ICON_BULLET]Keeps full Strength when damaged</English>
+		<French>[ICON_BULLET]Keeps full Strength when damaged</French>
+		<German>[ICON_BULLET]Keeps full Strength when damaged</German>
+		<Italian>[ICON_BULLET]Keeps full Strength when damaged</Italian>
+		<Spanish>[ICON_BULLET]Keeps full Strength when damaged</Spanish>
+		<Japanese>[ICON_BULLET]&#20663;&#12434;&#36000;&#12387;&#12390;&#12418;&#25126;&#38360;&#21147;&#12364;&#19979;&#12364;&#12425;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_CHOOSE_GOODY</Tag>
+		<English>[ICON_BULLET]Chooses the reward of goody huts</English>
+		<French>[ICON_BULLET]Chooses the reward of goody huts</French>
+		<German>[ICON_BULLET]Chooses the reward of goody huts</German>
+		<Italian>[ICON_BULLET]Chooses the reward of goody huts</Italian>
+		<Spanish>[ICON_BULLET]Chooses the reward of goody huts</Spanish>
+		<Japanese>[ICON_BULLET]&#37096;&#26063;&#38598;&#33853;&#12398;&#22577;&#37228;&#12434;&#36984;&#12409;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_POPUP_CHOOSE_GOODY</Tag>
+		<English>The villagers offer you a gift. What will you take?</English>
+		<French>The villagers offer you a gift. What will you take?</French>
+		<German>The villagers offer you a gift. What will you take?</German>
+		<Italian>The villagers offer you a gift. What will you take?</Italian>
+		<Spanish>The villagers offer you a gift. What will you take?</Spanish>
+		<Japanese>&#26449;&#20154;&#12364;&#36104;&#12426;&#29289;&#12434;&#12367;&#12428;&#12427;&#12381;&#12358;&#12391;&#12377;&#12290;&#20309;&#12434;&#21463;&#12369;&#21462;&#12426;&#12414;&#12377;&#12363;&#65311;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CHOOSE_GOODY_GOLD</Tag>
+		<English>%d1_Min-%d2_Max gold</English>
+		<French>%d1_Min-%d2_Max gold</French>
+		<German>%d1_Min-%d2_Max gold</German>
+		<Italian>%d1_Min-%d2_Max gold</Italian>
+		<Spanish>%d1_Min-%d2_Max gold</Spanish>
+		<Japanese>%d1_Min&#65374;%d2_Max&#12468;&#12540;&#12523;&#12489;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CHOOSE_GOODY_TECH</Tag>
+		<English>A new technology</English>
+		<French>A new technology</French>
+		<German>A new technology</German>
+		<Italian>A new technology</Italian>
+		<Spanish>A new technology</Spanish>
+		<Japanese>&#26032;&#12375;&#12356;&#12486;&#12463;&#12494;&#12525;&#12472;&#12540;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CHOOSE_GOODY_MAP</Tag>
+		<English>A map of the area</English>
+		<French>A map of the area</French>
+		<German>A map of the area</German>
+		<Italian>A map of the area</Italian>
+		<Spanish>A map of the area</Spanish>
+		<Japanese>&#21608;&#36794;&#12398;&#22320;&#22259;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CHOOSE_GOODY_EXPERIENCE</Tag>
+		<English>%d1_Num experience for the unit</English>
+		<French>%d1_Num experience for the unit</French>
+		<German>%d1_Num experience for the unit</German>
+		<Italian>%d1_Num experience for the unit</Italian>
+		<Spanish>%d1_Num experience for the unit</Spanish>
+		<Japanese>&#12518;&#12491;&#12483;&#12488;&#12395;&#32076;&#39443;&#20516;%d1_Num</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CHOOSE_GOODY_HEALING</Tag>
+		<English>Healing of the unit</English>
+		<French>Healing of the unit</French>
+		<German>Healing of the unit</German>
+		<Italian>Healing of the unit</Italian>
+		<Spanish>Healing of the unit</Spanish>
+		<Japanese>&#12518;&#12491;&#12483;&#12488;&#12398;&#22238;&#24489;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FEATURE_SPREAD_PLOT</Tag>
+		<English>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot</English>
+		<French>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot</French>
+		<German>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot</German>
+		<Italian>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot</Italian>
+		<Spanish>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot</Spanish>
+		<Japanese>[ICON_BULLET]&#12479;&#12540;&#12531;&#32066;&#20102;&#26178;&#12289;%d1_Num%%&#12398;&#30906;&#29575;&#12391;&#12356;&#12427;&#12479;&#12452;&#12523;&#12395;%s2_Feature&#12434;&#32622;&#12367;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FEATURE_SPREAD_AROUND</Tag>
+		<English>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on each plot within %d3_Range tiles (not its own)</English>
+		<French>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on each plot within %d3_Range tiles (not its own)</French>
+		<German>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on each plot within %d3_Range tiles (not its own)</German>
+		<Italian>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on each plot within %d3_Range tiles (not its own)</Italian>
+		<Spanish>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on each plot within %d3_Range tiles (not its own)</Spanish>
+		<Japanese>[ICON_BULLET]&#12479;&#12540;&#12531;&#32066;&#20102;&#26178;&#12289;&#21608;&#22258;%d3_Range&#12510;&#12473;&#12398;&#21508;&#12479;&#12452;&#12523;&#12395;%d1_Num%%&#12398;&#30906;&#29575;&#12391;%s2_Feature&#12434;&#32622;&#12367;&#65288;&#12356;&#12427;&#12479;&#12452;&#12523;&#12399;&#38500;&#12367;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FEATURE_SPREAD_AREA</Tag>
+		<English>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot and each plot within %d3_Range tiles</English>
+		<French>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot and each plot within %d3_Range tiles</French>
+		<German>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot and each plot within %d3_Range tiles</German>
+		<Italian>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot and each plot within %d3_Range tiles</Italian>
+		<Spanish>[ICON_BULLET]At the end of the turn: %d1_Num%% chance of %s2_Feature on its plot and each plot within %d3_Range tiles</Spanish>
+		<Japanese>[ICON_BULLET]&#12479;&#12540;&#12531;&#32066;&#20102;&#26178;&#12289;&#12356;&#12427;&#12479;&#12452;&#12523;&#12392;&#21608;&#22258;%d3_Range&#12510;&#12473;&#12398;&#21508;&#12479;&#12452;&#12523;&#12395;%d1_Num%%&#12398;&#30906;&#29575;&#12391;%s2_Feature&#12434;&#32622;&#12367;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FEATURE_SPREAD_FORCE</Tag>
+		<English> (replaces features and improvements)</English>
+		<French> (replaces features and improvements)</French>
+		<German> (replaces features and improvements)</German>
+		<Italian> (replaces features and improvements)</Italian>
+		<Spanish> (replaces features and improvements)</Spanish>
+		<Japanese>&#65288;&#22320;&#24418;&#12398;&#29305;&#24500;&#12392;&#26045;&#35373;&#12434;&#32622;&#12365;&#25563;&#12360;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_HIDDEN_NATIONALITY</Tag>
+		<English>[ICON_BULLET]Hidden nationality: looks like a barbarian, attacks and is attacked without war, enters every territory, captures nothing</English>
+		<French>[ICON_BULLET]Hidden nationality: looks like a barbarian, attacks and is attacked without war, enters every territory, captures nothing</French>
+		<German>[ICON_BULLET]Hidden nationality: looks like a barbarian, attacks and is attacked without war, enters every territory, captures nothing</German>
+		<Italian>[ICON_BULLET]Hidden nationality: looks like a barbarian, attacks and is attacked without war, enters every territory, captures nothing</Italian>
+		<Spanish>[ICON_BULLET]Hidden nationality: looks like a barbarian, attacks and is attacked without war, enters every territory, captures nothing</Spanish>
+		<Japanese>[ICON_BULLET]&#22269;&#31821;&#31192;&#21311;: &#34542;&#26063;&#12395;&#35211;&#12360;&#12289;&#23459;&#25126;&#12379;&#12378;&#12395;&#25915;&#25731;&#12391;&#12365;&#12427;&#65288;&#25915;&#25731;&#12418;&#12373;&#12428;&#12427;&#65289;&#12290;&#12393;&#12398;&#22269;&#12398;&#38936;&#22303;&#12395;&#12418;&#20837;&#12428;&#12427;&#12290;&#12518;&#12491;&#12483;&#12488;&#12418;&#37117;&#24066;&#12418;&#25429;&#29554;&#12375;&#12394;&#12356;</Japanese>
+	</TEXT>
+</Civ4GameText>

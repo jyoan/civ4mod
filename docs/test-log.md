@@ -90,3 +90,4 @@
 - 2026-11-10: 志向の `CityFoundedUnits`（検証用志向でガレー船 1 隻と戦士 2 体（`bCoastalOnly`）。説明文、沿岸の都市で両方が出る、内陸と湖のほとりでは出ない、他の文明は出ない）をゲーム内で確認
 - 2026-11-10: リファクタリング第 1 段階（`CvPlayer::hasTraitFlag`・`CvTeam::hasPlayerTraitFlag`・`CvUnit::hasPromotionFlag` / `countPromotions` / `sumPromotionValues` / `updatePromotionCounts`）の後、関係する志向と昇進の効果（領内の略奪不可・他国の文化圏の都市・温暖化・内陸の運河・国教の伝播・蛮族と平和・資源の陳腐化・部族集落・川のダメージ、ロード後の傷・国籍秘匿・領内の戦闘力）をゲーム内で確認
 - 2026-11-10: リファクタリング第 2 段階（`parsePromotionHelp` の Mod の部分を 3 つ、`parseTraitEmpireEffects` を 4 つの関数に分割）。変更の前後で全志向（1064 組）と全昇進（130 組）の説明文を書き出し、バイト単位で一致することを確認
+- 2026-11-10: リファクタリング第 3 段階（`CvTraitInfo::read` を 10 の関数に分割、テキストを分野ごとの 5 ファイルに分割、`docs/xml-tags.md` を Info の種類ごとの節に整理）。全志向と全昇進の説明文が変更前とバイト単位で一致し、ゲーム内の表示（呪文などを含む）も確認

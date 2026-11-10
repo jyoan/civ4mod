@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- claude_sample: text for the traits (TXT_KEY_TRAIT_*, TXT_KEY_CONDITION_*, TXT_KEY_START_BIAS*) -->
+<!-- Japanese text is written as decimal character references (ASCII file) -->
+<Civ4GameText xmlns="http://www.firaxis.com">
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_WORKER_SPEED_MODIFIER</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Workers Build Improvements %D1_Mod%% Faster</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Vitesse de construction des am&#233;nagements : %D1_Mod%%</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Bautrupps errichten Modernisierungen %D1_Mod%% schneller</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]I lavoratori costruiscono i miglioramenti il %D1_Mod%% pi&#249; rapidamente</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Los trabajadores construyen mejoras un %D1_Mod%% m&#225;s r&#225;pido</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#21172;&#20685;&#32773;&#12398;&#36039;&#28304;&#27963;&#29992;&#26045;&#35373;&#12398;&#24314;&#35373;&#36895;&#24230;&#12364;%D1_Mod%%&#21521;&#19978;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MARITIME</Tag>
+		<English>Maritime</English>
+		<French>Maritime</French>
+		<German>Maritime</German>
+		<Italian>Maritime</Italian>
+		<Spanish>Maritime</Spanish>
+		<Japanese>&#28023;&#27915;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MARITIME_SHORT</Tag>
+		<English>Mar</English>
+		<French>Mar</French>
+		<German>Mar</German>
+		<Italian>Mar</Italian>
+		<Spanish>Mar</Spanish>
+		<Japanese>&#28023;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CITY_RADIUS_CHANGE</Tag>
+		<English>[ICON_BULLET]%D1_Change city radius (up to %d2_Max)</English>
+		<French>[ICON_BULLET]%D1_Change city radius (up to %d2_Max)</French>
+		<German>[ICON_BULLET]%D1_Change city radius (up to %d2_Max)</German>
+		<Italian>[ICON_BULLET]%D1_Change city radius (up to %d2_Max)</Italian>
+		<Spanish>[ICON_BULLET]%D1_Change city radius (up to %d2_Max)</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#22287;&#12398;&#21322;&#24452;%D1_Change&#65288;&#26368;&#22823;%d2_Max&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SUMMON_DURATION</Tag>
+		<English>[ICON_BULLET]%D1_Turns [NUM1:turn:turns] for summoned units to disappear</English>
+		<French>[ICON_BULLET]%D1_Turns [NUM1:turn:turns] for summoned units to disappear</French>
+		<German>[ICON_BULLET]%D1_Turns [NUM1:turn:turns] for summoned units to disappear</German>
+		<Italian>[ICON_BULLET]%D1_Turns [NUM1:turn:turns] for summoned units to disappear</Italian>
+		<Spanish>[ICON_BULLET]%D1_Turns [NUM1:turn:turns] for summoned units to disappear</Spanish>
+		<Japanese>[ICON_BULLET]&#21484;&#21914;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12364;&#28040;&#12360;&#12427;&#12414;&#12391;&#12398;&#12479;&#12540;&#12531;&#25968;%D1_Turns</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CITY_RADIUS_CHANGE_CULTURE</Tag>
+		<English>[ICON_BULLET]%D1_Change city radius (up to %d2_Max) in cities with %s3_Level culture or more</English>
+		<French>[ICON_BULLET]%D1_Change city radius (up to %d2_Max) in cities with %s3_Level culture or more</French>
+		<German>[ICON_BULLET]%D1_Change city radius (up to %d2_Max) in cities with %s3_Level culture or more</German>
+		<Italian>[ICON_BULLET]%D1_Change city radius (up to %d2_Max) in cities with %s3_Level culture or more</Italian>
+		<Spanish>[ICON_BULLET]%D1_Change city radius (up to %d2_Max) in cities with %s3_Level culture or more</Spanish>
+		<Japanese>[ICON_BULLET]&#25991;&#21270;&#12524;&#12505;&#12523;&#12364;%s3_Level&#20197;&#19978;&#12398;&#37117;&#24066;&#12391;&#37117;&#24066;&#22287;&#12398;&#21322;&#24452;%D1_Change&#65288;&#26368;&#22823;%d2_Max&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MAX_CITIES</Tag>
+		<English>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities]</English>
+		<French>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities]</French>
+		<German>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities]</German>
+		<Italian>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities]</Italian>
+		<Spanish>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities]</Spanish>
+		<Japanese>[ICON_BULLET]&#24314;&#35373;&#12391;&#12365;&#12427;&#37117;&#24066;&#12399; %d1 &#37117;&#24066;&#12414;&#12391;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MAX_CITIES_MAP</Tag>
+		<English>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities] (depends on the map size)</English>
+		<French>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities] (depends on the map size)</French>
+		<German>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities] (depends on the map size)</German>
+		<Italian>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities] (depends on the map size)</Italian>
+		<Spanish>[ICON_BULLET]Can found up to %d1 [NUM1:city:cities] (depends on the map size)</Spanish>
+		<Japanese>[ICON_BULLET]&#24314;&#35373;&#12391;&#12365;&#12427;&#37117;&#24066;&#12399; %d1 &#37117;&#24066;&#12414;&#12391;&#65288;&#12510;&#12483;&#12503;&#12398;&#22823;&#12365;&#12373;&#12391;&#22793;&#12431;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIT_COST_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% production cost of units</English>
+		<French>[ICON_BULLET]%D1_Percent%% production cost of units</French>
+		<German>[ICON_BULLET]%D1_Percent%% production cost of units</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% production cost of units</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% production cost of units</Spanish>
+		<Japanese>[ICON_BULLET]&#12518;&#12491;&#12483;&#12488;&#12398;&#29983;&#29987;&#12467;&#12473;&#12488;%D1_Percent%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BUILDING_COST_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% production cost of buildings</English>
+		<French>[ICON_BULLET]%D1_Percent%% production cost of buildings</French>
+		<German>[ICON_BULLET]%D1_Percent%% production cost of buildings</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% production cost of buildings</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% production cost of buildings</Spanish>
+		<Japanese>[ICON_BULLET]&#24314;&#36896;&#29289;&#12398;&#29983;&#29987;&#12467;&#12473;&#12488;%D1_Percent%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_PILLAGE_IN_BORDERS</Tag>
+		<English>[ICON_BULLET]Other civilizations cannot pillage in our territory</English>
+		<French>[ICON_BULLET]Other civilizations cannot pillage in our territory</French>
+		<German>[ICON_BULLET]Other civilizations cannot pillage in our territory</German>
+		<Italian>[ICON_BULLET]Other civilizations cannot pillage in our territory</Italian>
+		<Spanish>[ICON_BULLET]Other civilizations cannot pillage in our territory</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#12399;&#20182;&#22269;&#12398;&#12518;&#12491;&#12483;&#12488;&#12364;&#30053;&#22890;&#12391;&#12365;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LAKE_PLOTS</Tag>
+		<English>Lake Tiles</English>
+		<French>Lake Tiles</French>
+		<German>Lake Tiles</German>
+		<Italian>Lake Tiles</Italian>
+		<Spanish>Lake Tiles</Spanish>
+		<Japanese>&#28246;&#12473;&#12463;&#12456;&#12450;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLD_INTEREST</Tag>
+		<English>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn</English>
+		<French>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn</French>
+		<German>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn</German>
+		<Italian>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn</Italian>
+		<Spanish>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn</Spanish>
+		<Japanese>[ICON_BULLET]&#27598;&#12479;&#12540;&#12531;&#22269;&#24235;&#12398;%d1_Percent%%&#12398;[ICON_GOLD]&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLD_INTEREST_MAX</Tag>
+		<English>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn (at most %d2)</English>
+		<French>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn (at most %d2)</French>
+		<German>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn (at most %d2)</German>
+		<Italian>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn (at most %d2)</Italian>
+		<Spanish>[ICON_BULLET]%d1_Percent%% of the treasury as [ICON_GOLD] every turn (at most %d2)</Spanish>
+		<Japanese>[ICON_BULLET]&#27598;&#12479;&#12540;&#12531;&#22269;&#24235;&#12398;%d1_Percent%%&#12398;[ICON_GOLD]&#12434;&#24471;&#12427;&#65288;&#26368;&#22823;%d2&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FORBIDDEN_CIVICS</Tag>
+		<English>[ICON_BULLET]Cannot adopt: </English>
+		<French>[ICON_BULLET]Cannot adopt: </French>
+		<German>[ICON_BULLET]Cannot adopt: </German>
+		<Italian>[ICON_BULLET]Cannot adopt: </Italian>
+		<Spanish>[ICON_BULLET]Cannot adopt: </Spanish>
+		<Japanese>[ICON_BULLET]&#25505;&#29992;&#12391;&#12365;&#12394;&#12356;&#31038;&#20250;&#21046;&#24230;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MAINTAIN_FEATURES</Tag>
+		<English>[ICON_BULLET]Improvements keep: </English>
+		<French>[ICON_BULLET]Improvements keep: </French>
+		<German>[ICON_BULLET]Improvements keep: </German>
+		<Italian>[ICON_BULLET]Improvements keep: </Italian>
+		<Spanish>[ICON_BULLET]Improvements keep: </Spanish>
+		<Japanese>[ICON_BULLET]&#26045;&#35373;&#12434;&#20316;&#12387;&#12390;&#12418;&#27531;&#12427;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FEATURE_ROUTES</Tag>
+		<English>[ICON_BULLET]Counts as %s1_Route in our territory (movement and trade network): </English>
+		<French>[ICON_BULLET]Counts as %s1_Route in our territory (movement and trade network): </French>
+		<German>[ICON_BULLET]Counts as %s1_Route in our territory (movement and trade network): </German>
+		<Italian>[ICON_BULLET]Counts as %s1_Route in our territory (movement and trade network): </Italian>
+		<Spanish>[ICON_BULLET]Counts as %s1_Route in our territory (movement and trade network): </Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;%s1_Route&#12392;&#12375;&#12390;&#25201;&#12358;&#65288;&#31227;&#21205;&#12392;&#20132;&#26131;&#32178;&#65289;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_IGNORE_BUILDING_OBSOLESCENCE</Tag>
+		<English>[ICON_BULLET]Buildings never become obsolete</English>
+		<French>[ICON_BULLET]Buildings never become obsolete</French>
+		<German>[ICON_BULLET]Buildings never become obsolete</German>
+		<Italian>[ICON_BULLET]Buildings never become obsolete</Italian>
+		<Spanish>[ICON_BULLET]Buildings never become obsolete</Spanish>
+		<Japanese>[ICON_BULLET]&#24314;&#29289;&#12364;&#38515;&#33104;&#21270;&#12375;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_OBSOLETE_BUILDINGS</Tag>
+		<English>[ICON_BULLET]Never obsolete: </English>
+		<French>[ICON_BULLET]Never obsolete: </French>
+		<German>[ICON_BULLET]Never obsolete: </German>
+		<Italian>[ICON_BULLET]Never obsolete: </Italian>
+		<Spanish>[ICON_BULLET]Never obsolete: </Spanish>
+		<Japanese>[ICON_BULLET]&#38515;&#33104;&#21270;&#12375;&#12394;&#12356;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONDITIONAL_FREE_TRAIT</Tag>
+		<English>[ICON_BULLET]Gains %s1_Trait (%s2_Conditions)</English>
+		<French>[ICON_BULLET]Gains %s1_Trait (%s2_Conditions)</French>
+		<German>[ICON_BULLET]Gains %s1_Trait (%s2_Conditions)</German>
+		<Italian>[ICON_BULLET]Gains %s1_Trait (%s2_Conditions)</Italian>
+		<Spanish>[ICON_BULLET]Gains %s1_Trait (%s2_Conditions)</Spanish>
+		<Japanese>[ICON_BULLET]%s1_Trait&#12434;&#24471;&#12427;&#65288;%s2_Conditions&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONDITIONAL_FREE_TRAIT_ALWAYS</Tag>
+		<English>[ICON_BULLET]Gains %s1_Trait</English>
+		<French>[ICON_BULLET]Gains %s1_Trait</French>
+		<German>[ICON_BULLET]Gains %s1_Trait</German>
+		<Italian>[ICON_BULLET]Gains %s1_Trait</Italian>
+		<Spanish>[ICON_BULLET]Gains %s1_Trait</Spanish>
+		<Japanese>[ICON_BULLET]%s1_Trait&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_SEPARATOR</Tag>
+		<English>, </English>
+		<French>, </French>
+		<German>, </German>
+		<Italian>, </Italian>
+		<Spanish>, </Spanish>
+		<Japanese>&#12289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_AT_WAR</Tag>
+		<English>at war</English>
+		<French>at war</French>
+		<German>at war</German>
+		<Italian>at war</Italian>
+		<Spanish>at war</Spanish>
+		<Japanese>&#25126;&#26178;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_AT_PEACE</Tag>
+		<English>at peace</English>
+		<French>at peace</French>
+		<German>at peace</German>
+		<Italian>at peace</Italian>
+		<Spanish>at peace</Spanish>
+		<Japanese>&#24179;&#26178;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_STATE_RELIGION</Tag>
+		<English>%s1_Religion is the state religion</English>
+		<French>%s1_Religion is the state religion</French>
+		<German>%s1_Religion is the state religion</German>
+		<Italian>%s1_Religion is the state religion</Italian>
+		<Spanish>%s1_Religion is the state religion</Spanish>
+		<Japanese>&#22269;&#25945;&#12364;%s1_Religion</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_NO_STATE_RELIGION</Tag>
+		<English>no state religion</English>
+		<French>no state religion</French>
+		<German>no state religion</German>
+		<Italian>no state religion</Italian>
+		<Spanish>no state religion</Spanish>
+		<Japanese>&#22269;&#25945;&#12394;&#12375;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_ERA_RANGE</Tag>
+		<English>%s1_Era to %s2_Era</English>
+		<French>%s1_Era to %s2_Era</French>
+		<German>%s1_Era to %s2_Era</German>
+		<Italian>%s1_Era to %s2_Era</Italian>
+		<Spanish>%s1_Era to %s2_Era</Spanish>
+		<Japanese>%s1_Era&#65374;%s2_Era</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_ERA_MIN</Tag>
+		<English>%s1_Era or later</English>
+		<French>%s1_Era or later</French>
+		<German>%s1_Era or later</German>
+		<Italian>%s1_Era or later</Italian>
+		<Spanish>%s1_Era or later</Spanish>
+		<Japanese>%s1_Era&#20197;&#38477;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_ERA_MAX</Tag>
+		<English>until %s1_Era</English>
+		<French>until %s1_Era</French>
+		<German>until %s1_Era</German>
+		<Italian>until %s1_Era</Italian>
+		<Spanish>until %s1_Era</Spanish>
+		<Japanese>%s1_Era&#12414;&#12391;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_CIVIC</Tag>
+		<English>%s1_Civic adopted</English>
+		<French>%s1_Civic adopted</French>
+		<German>%s1_Civic adopted</German>
+		<Italian>%s1_Civic adopted</Italian>
+		<Spanish>%s1_Civic adopted</Spanish>
+		<Japanese>%s1_Civic&#12434;&#25505;&#29992;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_AGE_GREAT_PEOPLE</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</English>
+		<French>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</French>
+		<German>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] during Golden Ages</Spanish>
+		<Japanese>[ICON_BULLET]&#40644;&#37329;&#26178;&#20195;&#12395;[ICON_GREATPEOPLE]%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CAPITAL_BUILDING_PRODUCTION</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for buildings the capital has (other cities)</English>
+		<French>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for buildings the capital has (other cities)</French>
+		<German>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for buildings the capital has (other cities)</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for buildings the capital has (other cities)</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_PRODUCTION] for buildings the capital has (other cities)</Spanish>
+		<Japanese>[ICON_BULLET]&#39318;&#37117;&#12395;&#12354;&#12427;&#24314;&#36896;&#29289;&#12434;&#20182;&#12398;&#37117;&#24066;&#12391;&#24314;&#35373;&#12377;&#12427;&#12392;&#12365;[ICON_PRODUCTION]%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PILLAGE_GOLD</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_GOLD] from pillaging improvements</English>
+		<French>[ICON_BULLET]%D1%%[ICON_GOLD] from pillaging improvements</French>
+		<German>[ICON_BULLET]%D1%%[ICON_GOLD] from pillaging improvements</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_GOLD] from pillaging improvements</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_GOLD] from pillaging improvements</Spanish>
+		<Japanese>[ICON_BULLET]&#26045;&#35373;&#12398;&#30053;&#22890;&#12391;&#24471;&#12427;[ICON_GOLD]%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CITY_CAPTURE_GOLD</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_GOLD] from conquering cities</English>
+		<French>[ICON_BULLET]%D1%%[ICON_GOLD] from conquering cities</French>
+		<German>[ICON_BULLET]%D1%%[ICON_GOLD] from conquering cities</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_GOLD] from conquering cities</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_GOLD] from conquering cities</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12398;&#24449;&#26381;&#12391;&#24471;&#12427;[ICON_GOLD]%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_UNITS_KILLED</Tag>
+		<English>after killing %d1_Num enemy units</English>
+		<French>after killing %d1_Num enemy units</French>
+		<German>after killing %d1_Num enemy units</German>
+		<Italian>after killing %d1_Num enemy units</Italian>
+		<Spanish>after killing %d1_Num enemy units</Spanish>
+		<Japanese>&#25973;&#12518;&#12491;&#12483;&#12488;&#12434;&#32047;&#35336;%d1_Num&#20307;&#25731;&#30772;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_CITIES_CONQUERED</Tag>
+		<English>after conquering %d1_Num cities</English>
+		<French>after conquering %d1_Num cities</French>
+		<German>after conquering %d1_Num cities</German>
+		<Italian>after conquering %d1_Num cities</Italian>
+		<Spanish>after conquering %d1_Num cities</Spanish>
+		<Japanese>&#37117;&#24066;&#12434;&#32047;&#35336;%d1_Num&#20491;&#21344;&#38936;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_RECORD_NOW</Tag>
+		<English>: now %d1_Num</English>
+		<French>: now %d1_Num</French>
+		<German>: now %d1_Num</German>
+		<Italian>: now %d1_Num</Italian>
+		<Spanish>: now %d1_Num</Spanish>
+		<Japanese>&#65306;&#29694;&#22312;%d1_Num</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_FAVORITE_CIVIC</Tag>
+		<English>the favorite civic is adopted</English>
+		<French>the favorite civic is adopted</French>
+		<German>the favorite civic is adopted</German>
+		<Italian>the favorite civic is adopted</Italian>
+		<Spanish>the favorite civic is adopted</Spanish>
+		<Japanese>&#22909;&#12365;&#12394;&#31038;&#20250;&#21046;&#24230;&#12434;&#25505;&#29992;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_FAVORITE_CIVIC_NOW</Tag>
+		<English>: %s1_Civic</English>
+		<French>: %s1_Civic</French>
+		<German>: %s1_Civic</German>
+		<Italian>: %s1_Civic</Italian>
+		<Spanish>: %s1_Civic</Spanish>
+		<Japanese>&#65306;%s1_Civic</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MIN_CITY_RANGE</Tag>
+		<English>[ICON_BULLET]Can found cities with %d1_Num tiles between them (normally %d2_Num)</English>
+		<French>[ICON_BULLET]Can found cities with %d1_Num tiles between them (normally %d2_Num)</French>
+		<German>[ICON_BULLET]Can found cities with %d1_Num tiles between them (normally %d2_Num)</German>
+		<Italian>[ICON_BULLET]Can found cities with %d1_Num tiles between them (normally %d2_Num)</Italian>
+		<Spanish>[ICON_BULLET]Can found cities with %d1_Num tiles between them (normally %d2_Num)</Spanish>
+		<Japanese>[ICON_BULLET]&#12411;&#12363;&#12398;&#37117;&#24066;&#12392;&#12398;&#38291;&#12395;%d1_Num&#12510;&#12473;&#31354;&#12369;&#12428;&#12400;&#37117;&#24066;&#12434;&#24314;&#12390;&#12425;&#12428;&#12427;&#65288;&#36890;&#24120;&#12399;%d2_Num&#12510;&#12473;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MIN_CITY_RANGE_ZERO</Tag>
+		<English>[ICON_BULLET]Can found cities next to other cities (normally %d1_Num tiles between them)</English>
+		<French>[ICON_BULLET]Can found cities next to other cities (normally %d1_Num tiles between them)</French>
+		<German>[ICON_BULLET]Can found cities next to other cities (normally %d1_Num tiles between them)</German>
+		<Italian>[ICON_BULLET]Can found cities next to other cities (normally %d1_Num tiles between them)</Italian>
+		<Spanish>[ICON_BULLET]Can found cities next to other cities (normally %d1_Num tiles between them)</Spanish>
+		<Japanese>[ICON_BULLET]&#12411;&#12363;&#12398;&#37117;&#24066;&#12398;&#38563;&#12395;&#12418;&#37117;&#24066;&#12434;&#24314;&#12390;&#12425;&#12428;&#12427;&#65288;&#36890;&#24120;&#12399;&#38291;&#12395;%d1_Num&#12510;&#12473;&#24517;&#35201;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOUND_IN_FOREIGN_TERRITORY</Tag>
+		<English>[ICON_BULLET]Can found cities in the territory of other civilizations</English>
+		<French>[ICON_BULLET]Can found cities in the territory of other civilizations</French>
+		<German>[ICON_BULLET]Can found cities in the territory of other civilizations</German>
+		<Italian>[ICON_BULLET]Can found cities in the territory of other civilizations</Italian>
+		<Spanish>[ICON_BULLET]Can found cities in the territory of other civilizations</Spanish>
+		<Japanese>[ICON_BULLET]&#20182;&#22269;&#12398;&#25991;&#21270;&#22287;&#12395;&#12418;&#37117;&#24066;&#12434;&#24314;&#12390;&#12425;&#12428;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_GLOBAL_WARMING_IN_BORDERS</Tag>
+		<English>[ICON_BULLET]No damage from global warming in own territory</English>
+		<French>[ICON_BULLET]No damage from global warming in own territory</French>
+		<German>[ICON_BULLET]No damage from global warming in own territory</German>
+		<Italian>[ICON_BULLET]No damage from global warming in own territory</Italian>
+		<Spanish>[ICON_BULLET]No damage from global warming in own territory</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#25991;&#21270;&#22287;&#12399;&#22320;&#29699;&#28201;&#26262;&#21270;&#12398;&#34987;&#23475;&#12434;&#21463;&#12369;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RELIGION_SPREAD_ALWAYS</Tag>
+		<English>[ICON_BULLET]Missionaries always spread their religion</English>
+		<French>[ICON_BULLET]Missionaries always spread their religion</French>
+		<German>[ICON_BULLET]Missionaries always spread their religion</German>
+		<Italian>[ICON_BULLET]Missionaries always spread their religion</Italian>
+		<Spanish>[ICON_BULLET]Missionaries always spread their religion</Spanish>
+		<Japanese>[ICON_BULLET]&#23459;&#25945;&#24107;&#12398;&#24067;&#25945;&#12364;&#24517;&#12378;&#25104;&#21151;&#12377;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RELIGION_SPREAD_CHANGE</Tag>
+		<English>[ICON_BULLET]%D1_Num%% chance for missionaries to spread their religion</English>
+		<French>[ICON_BULLET]%D1_Num%% chance for missionaries to spread their religion</French>
+		<German>[ICON_BULLET]%D1_Num%% chance for missionaries to spread their religion</German>
+		<Italian>[ICON_BULLET]%D1_Num%% chance for missionaries to spread their religion</Italian>
+		<Spanish>[ICON_BULLET]%D1_Num%% chance for missionaries to spread their religion</Spanish>
+		<Japanese>[ICON_BULLET]&#23459;&#25945;&#24107;&#12398;&#24067;&#25945;&#12398;&#25104;&#21151;&#29575;%D1_Num%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CORPORATION_SPREAD_ALWAYS</Tag>
+		<English>[ICON_BULLET]Executives always spread their corporation</English>
+		<French>[ICON_BULLET]Executives always spread their corporation</French>
+		<German>[ICON_BULLET]Executives always spread their corporation</German>
+		<Italian>[ICON_BULLET]Executives always spread their corporation</Italian>
+		<Spanish>[ICON_BULLET]Executives always spread their corporation</Spanish>
+		<Japanese>[ICON_BULLET]&#24185;&#37096;&#12395;&#12424;&#12427;&#20225;&#26989;&#12398;&#36914;&#20986;&#12364;&#24517;&#12378;&#25104;&#21151;&#12377;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CORPORATION_SPREAD_CHANGE</Tag>
+		<English>[ICON_BULLET]%D1_Num%% chance for executives to spread their corporation</English>
+		<French>[ICON_BULLET]%D1_Num%% chance for executives to spread their corporation</French>
+		<German>[ICON_BULLET]%D1_Num%% chance for executives to spread their corporation</German>
+		<Italian>[ICON_BULLET]%D1_Num%% chance for executives to spread their corporation</Italian>
+		<Spanish>[ICON_BULLET]%D1_Num%% chance for executives to spread their corporation</Spanish>
+		<Japanese>[ICON_BULLET]&#24185;&#37096;&#12395;&#12424;&#12427;&#20225;&#26989;&#12398;&#36914;&#20986;&#12398;&#25104;&#21151;&#29575;%D1_Num%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_AGE_LAND_MOVES</Tag>
+		<English>[ICON_BULLET]%D1_Num[ICON_MOVES] for land units during a golden age</English>
+		<French>[ICON_BULLET]%D1_Num[ICON_MOVES] for land units during a golden age</French>
+		<German>[ICON_BULLET]%D1_Num[ICON_MOVES] for land units during a golden age</German>
+		<Italian>[ICON_BULLET]%D1_Num[ICON_MOVES] for land units during a golden age</Italian>
+		<Spanish>[ICON_BULLET]%D1_Num[ICON_MOVES] for land units during a golden age</Spanish>
+		<Japanese>[ICON_BULLET]&#40644;&#37329;&#26399;&#12398;&#38291;&#12289;&#38520;&#19978;&#12518;&#12491;&#12483;&#12488;&#12398;&#31227;&#21205;&#21147;%D1_Num[ICON_MOVES]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_AGE_SEA_MOVES</Tag>
+		<English>[ICON_BULLET]%D1_Num[ICON_MOVES] for naval units during a golden age</English>
+		<French>[ICON_BULLET]%D1_Num[ICON_MOVES] for naval units during a golden age</French>
+		<German>[ICON_BULLET]%D1_Num[ICON_MOVES] for naval units during a golden age</German>
+		<Italian>[ICON_BULLET]%D1_Num[ICON_MOVES] for naval units during a golden age</Italian>
+		<Spanish>[ICON_BULLET]%D1_Num[ICON_MOVES] for naval units during a golden age</Spanish>
+		<Japanese>[ICON_BULLET]&#40644;&#37329;&#26399;&#12398;&#38291;&#12289;&#33382;&#33337;&#12398;&#31227;&#21205;&#21147;%D1_Num[ICON_MOVES]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INLAND_CANALS</Tag>
+		<English>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</English>
+		<French>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</French>
+		<German>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</German>
+		<Italian>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</Italian>
+		<Spanish>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</Spanish>
+		<Japanese>[ICON_BULLET]&#33382;&#33337;&#12364;&#12289;&#27700;&#12395;&#25509;&#12375;&#12390;&#12356;&#12394;&#12356;&#35201;&#22622;&#12420;&#37117;&#24066;&#12395;&#12418;&#20837;&#12428;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BARBARIAN_ALLY</Tag>
+		<English>[ICON_BULLET]At peace with the barbarians; both enter the territory of the other</English>
+		<French>[ICON_BULLET]At peace with the barbarians; both enter the territory of the other</French>
+		<German>[ICON_BULLET]At peace with the barbarians; both enter the territory of the other</German>
+		<Italian>[ICON_BULLET]At peace with the barbarians; both enter the territory of the other</Italian>
+		<Spanish>[ICON_BULLET]At peace with the barbarians; both enter the territory of the other</Spanish>
+		<Japanese>[ICON_BULLET]&#34542;&#26063;&#12392;&#24179;&#21644;&#65288;&#12362;&#20114;&#12356;&#12398;&#38936;&#22303;&#12395;&#20837;&#12428;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_IGNORE_BONUS_OBSOLESCENCE</Tag>
+		<English>[ICON_BULLET]Resources never become obsolete</English>
+		<French>[ICON_BULLET]Resources never become obsolete</French>
+		<German>[ICON_BULLET]Resources never become obsolete</German>
+		<Italian>[ICON_BULLET]Resources never become obsolete</Italian>
+		<Spanish>[ICON_BULLET]Resources never become obsolete</Spanish>
+		<Japanese>[ICON_BULLET]&#36039;&#28304;&#12364;&#38515;&#33104;&#21270;&#12375;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_OBSOLETE_BONUSES</Tag>
+		<English>[ICON_BULLET]Resources that never become obsolete: </English>
+		<French>[ICON_BULLET]Resources that never become obsolete: </French>
+		<German>[ICON_BULLET]Resources that never become obsolete: </German>
+		<Italian>[ICON_BULLET]Resources that never become obsolete: </Italian>
+		<Spanish>[ICON_BULLET]Resources that never become obsolete: </Spanish>
+		<Japanese>[ICON_BULLET]&#38515;&#33104;&#21270;&#12375;&#12394;&#12356;&#36039;&#28304;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FREE_PROMOTION_NO_UNIT_COMBAT</Tag>
+		<English>Units without a unit combat (workers, settlers, missionaries...)</English>
+		<French>Units without a unit combat (workers, settlers, missionaries...)</French>
+		<German>Units without a unit combat (workers, settlers, missionaries...)</German>
+		<Italian>Units without a unit combat (workers, settlers, missionaries...)</Italian>
+		<Spanish>Units without a unit combat (workers, settlers, missionaries...)</Spanish>
+		<Japanese>&#20853;&#31185;&#12398;&#12394;&#12356;&#12518;&#12491;&#12483;&#12488;&#65288;&#21172;&#20685;&#32773;&#12289;&#38283;&#25299;&#32773;&#12289;&#23459;&#25945;&#24107;&#12394;&#12393;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FREE_PROMOTION_DOMAINS</Tag>
+		<English>(only %s1_Domains)</English>
+		<French>(only %s1_Domains)</French>
+		<German>(only %s1_Domains)</German>
+		<Italian>(only %s1_Domains)</Italian>
+		<Spanish>(only %s1_Domains)</Spanish>
+		<Japanese>&#65288;%s1_Domains&#12398;&#12415;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_START_BIAS</Tag>
+		<English>[ICON_BULLET]Start bias: %s1_List</English>
+		<French>[ICON_BULLET]Start bias: %s1_List</French>
+		<German>[ICON_BULLET]Start bias: %s1_List</German>
+		<Italian>[ICON_BULLET]Start bias: %s1_List</Italian>
+		<Spanish>[ICON_BULLET]Start bias: %s1_List</Spanish>
+		<Japanese>[ICON_BULLET]&#38283;&#22987;&#20301;&#32622;&#12398;&#22909;&#12415;: %s1_List</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_START_BIAS_HEADING</Tag>
+		<English>Start Bias</English>
+		<French>Start Bias</French>
+		<German>Start Bias</German>
+		<Italian>Start Bias</Italian>
+		<Spanish>Start Bias</Spanish>
+		<Japanese>&#38283;&#22987;&#20301;&#32622;&#12398;&#22909;&#12415;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_START_BIAS_COASTAL</Tag>
+		<English>Coast %D1_Num%%</English>
+		<French>Coast %D1_Num%%</French>
+		<German>Coast %D1_Num%%</German>
+		<Italian>Coast %D1_Num%%</Italian>
+		<Spanish>Coast %D1_Num%%</Spanish>
+		<Japanese>&#27839;&#23736;%D1_Num%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_START_BIAS_RIVER</Tag>
+		<English>River %D1_Num%%</English>
+		<French>River %D1_Num%%</French>
+		<German>River %D1_Num%%</German>
+		<Italian>River %D1_Num%%</Italian>
+		<Spanish>River %D1_Num%%</Spanish>
+		<Japanese>&#24029;&#27839;&#12356;%D1_Num%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_START_BIAS_PLOT</Tag>
+		<English>%s1_Name %D2_Num%% per tile</English>
+		<French>%s1_Name %D2_Num%% per tile</French>
+		<German>%s1_Name %D2_Num%% per tile</German>
+		<Italian>%s1_Name %D2_Num%% per tile</Italian>
+		<Spanish>%s1_Name %D2_Num%% per tile</Spanish>
+		<Japanese>%s1_Name1&#12479;&#12452;&#12523;&#12372;&#12392;&#12395;%D2_Num%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CITY_FOUNDED_UNIT</Tag>
+		<English>[ICON_BULLET]Each city founded gets %d2_Num %s1_Unit</English>
+		<French>[ICON_BULLET]Each city founded gets %d2_Num %s1_Unit</French>
+		<German>[ICON_BULLET]Each city founded gets %d2_Num %s1_Unit</German>
+		<Italian>[ICON_BULLET]Each city founded gets %d2_Num %s1_Unit</Italian>
+		<Spanish>[ICON_BULLET]Each city founded gets %d2_Num %s1_Unit</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12434;&#24314;&#35373;&#12377;&#12427;&#12392;%s1_Unit&#12434;%d2_Num&#20307;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CITY_FOUNDED_UNIT_COASTAL</Tag>
+		<English> (cities on the coast only)</English>
+		<French> (cities on the coast only)</French>
+		<German> (cities on the coast only)</German>
+		<Italian> (cities on the coast only)</Italian>
+		<Spanish> (cities on the coast only)</Spanish>
+		<Japanese>&#65288;&#27839;&#23736;&#12398;&#37117;&#24066;&#12398;&#12415;&#65289;</Japanese>
+	</TEXT>
+</Civ4GameText>
