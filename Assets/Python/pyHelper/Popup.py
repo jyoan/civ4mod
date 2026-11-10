@@ -169,7 +169,9 @@ class PyPopup:
 	
 	def addPythonButtonXY( self, strFunctionName, strButtonText, strHelpText, strArtPointer = "Art\Interface\Popups\PopupRadioButton.kfm", iData1 = -1, iData2 = -1, bOption = True, iX = -1, iY = -1 ):
 		"adds a python button at XY"
-		self.popup.addPythonButtonXY( strFunctionName, strButtonText, strHelpText, strArtPointer, iData1, iData2, bOption, X, iY )	
+		# Unofficial Patch begin
+		self.popup.addPythonButtonXY( strFunctionName, strButtonText, strHelpText, strArtPointer, iData1, iData2, bOption, iX, iY )	
+		# Unofficial Patch end
 
 	# Graphics		
 	def	addDDS( self, strImageLocation, iX, iY, iWidth, iHeight ):
@@ -243,8 +245,11 @@ class PyPopup:
 				strFileLocation = titleName #file location is the 2nd entry
 				
 				if titleType == DDS:
-					data = loopTitle[3]
-					iX, iY, iWidth, iHeight = data
+					# Unoffical Patch start
+					#data = loopTitle[3]
+					#iX, iY, iWidth, iHeight = data
+					iX, iY, iWidth, iHeight = titleSize
+					# Unoffical Patch end
 					self.addTableCellDDS(0, i, strFileLocation, iX, iY, iWidth, iHeight)
 				
 				elif titleType == IMG:

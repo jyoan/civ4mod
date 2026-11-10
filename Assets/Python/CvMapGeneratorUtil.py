@@ -1064,7 +1064,7 @@ class TerrainGenerator:
 		This function can be overridden to change the latitudes; for example,
 		to make an entire map have temperate terrain, or to make terrain change from east to west
 		instead of from north to south"""
-		lat = abs((self.iHeight / 2) - iY)/float(self.iHeight/2) # 0.0 = equator, 1.0 = pole
+		lat = abs(float((self.iHeight-1)/2 - iY)/float((self.iHeight-1)/2)) # 0.0 = equator, 1.0 = pole
 
 		# Adjust latitude using self.variation fractal, to mix things up:
 		lat += (128 - self.variation.getHeight(iX, iY))/(255.0 * 5.0)
@@ -1168,7 +1168,7 @@ class FeatureGenerator:
 
 	def getLatitudeAtPlot(self, iX, iY):
 		"returns a value in the range of 0.0 (tropical) to 1.0 (polar)"
-		return abs((self.iGridH/2) - iY)/float(self.iGridH/2) # 0.0 = equator, 1.0 = pole
+		return abs(float((self.iGridH-1)/2) - iY)/float((self.iGridH-1)/2) # 0.0 = equator, 1.0 = pole
 
 	def addFeaturesAtPlot(self, iX, iY):
 		"adds any appropriate features at the plot (iX, iY) where (0,0) is in the SW"

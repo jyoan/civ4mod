@@ -468,7 +468,28 @@ void CvUnit::convert(CvUnit* pUnit)
 	pUnit->getCargoUnits(aCargoUnits);
 	for (uint i = 0; i < aCargoUnits.size(); ++i)
 	{
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       10/30/09                     Mongoose & jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original BTS code
 		aCargoUnits[i]->setTransportUnit(this);
+*/
+		// From Mongoose SDK
+		// Check cargo types and capacity when upgrading transports
+		if (cargoSpaceAvailable(aCargoUnits[i]->getSpecialUnitType(), aCargoUnits[i]->getDomainType()) > 0)
+		{
+			aCargoUnits[i]->setTransportUnit(this);
+		}
+		else
+		{
+			aCargoUnits[i]->setTransportUnit(NULL);
+			aCargoUnits[i]->jumpToNearestValidPlot();
+		}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 	}
 
 	pUnit->kill(true);
@@ -4101,9 +4122,19 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 				}
 			}
 		}
-		// ImpassablePlotPassages (added by this mod): a passable feature is no way around the terrain below it, an icebreaking
-		// galley stays off the ocean
-		if (pPlot->getFeatureType() == NO_FEATURE || canEnterImpassablePlot(pPlot))
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       09/17/09                         TC01 & jdog5000      */
+/*                                                                                              */
+/* Bugfix				                                                                         */
+/************************************************************************************************/
+/* original bts code
+		else
+*/
+		// always check terrain also (this also covers ImpassablePlotPassages of this mod: a passable feature is
+		// no way around the terrain below it, an icebreaking galley stays off the ocean)
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 		{
 			if (m_pUnitInfo->getTerrainImpassable(pPlot->getTerrainType()))
 			{
@@ -4224,6 +4255,12 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 		}
 	}
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       07/23/09                                jdog5000      */
+/*                                                                                              */
+/* Consistency                                                                                  */
+/************************************************************************************************/
+/* original bts code
 	if (bAttack)
 	{
 		if (isMadeAttack() && !isBlitz())
@@ -4231,6 +4268,31 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 			return false;
 		}
 	}
+*/
+	// The following change makes capturing an undefended city like a attack action, it
+	// cannot be done after another attack or a paradrop
+	/*
+	if (bAttack || (pPlot->isEnemyCity(*this) && !canCoexistWithEnemyUnit(NO_TEAM)) )
+	{
+		if (isMadeAttack() && !isBlitz())
+		{
+			return false;
+		}
+	}
+	*/
+
+	// The following change makes it possible to capture defenseless units after having 
+	// made a previous attack or paradrop
+	if( bAttack )
+	{
+		if (isMadeAttack() && !isBlitz() && (pPlot->getNumVisibleEnemyDefenders(this) > 0))
+		{
+			return false;
+		}
+	}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 	if (getDomainType() == DOMAIN_AIR)
 	{
@@ -4865,6 +4927,20 @@ bool CvUnit::canLoadUnit(const CvUnit* pUnit, const CvPlot* pPlot) const
 		return false;
 	}
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       06/23/10                     Mongoose & jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+	// From Mongoose SDK
+	if (isCargo() && getTransportUnit() == pUnit)
+	{
+		return false;
+	}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
+
 	if (getCargo() > 0)
 	{
 		return false;
@@ -4926,10 +5002,22 @@ bool CvUnit::shouldLoadOnMove(const CvPlot* pPlot) const
 	switch (getDomainType())
 	{
 	case DOMAIN_LAND:
-		if (pPlot->isWater() && !canEnterImpassablePlot(pPlot))
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       10/30/09                     Mongoose & jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
+		if (pPlot->isWater())
+*/
+		// From Mongoose SDK
+		if (pPlot->isWater() && !canMoveAllTerrain() && !canEnterImpassablePlot(pPlot))	// canEnterImpassablePlot: added by this mod
 		{
 			return true;
 		}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 		break;
 	case DOMAIN_AIR:
 		if (!pPlot->isFriendlyCity(*this, true))
@@ -5239,6 +5327,20 @@ bool CvUnit::canHeal(const CvPlot* pPlot) const
 		return false;
 	}
 
+/*************************************************************************************************/
+/* UNOFFICIAL_PATCH                       06/10/10                           LunarMongoose       */
+/*                                                                                               */
+/* Bugfix                                                                                        */
+/*************************************************************************************************/
+	// Mongoose FeatureDamageFix
+	if (healTurns(pPlot) == MAX_INT)
+	{
+		return false;
+	}
+/*************************************************************************************************/
+/* UNOFFICIAL_PATCH                         END                                                  */
+/*************************************************************************************************/
+
 	if (healRate(pPlot) <= 0)
 	{
 		return false;
@@ -5376,6 +5478,21 @@ int CvUnit::healTurns(const CvPlot* pPlot) const
 	}
 
 	iHeal = healRate(pPlot);
+
+/*************************************************************************************************/
+/* UNOFFICIAL_PATCH                       06/02/10                           LunarMongoose       */
+/*                                                                                               */
+/* Bugfix                                                                                        */
+/*************************************************************************************************/
+	// Mongoose FeatureDamageFix
+	FeatureTypes eFeature = pPlot->getFeatureType();
+	if (eFeature != NO_FEATURE)
+	{
+		iHeal -= GC.getFeatureInfo(eFeature).getTurnDamage();
+	}
+/*************************************************************************************************/
+/* UNOFFICIAL_PATCH                         END                                                  */
+/*************************************************************************************************/
 
 	if (iHeal > 0)
 	{
@@ -6257,6 +6374,20 @@ bool CvUnit::canPillage(const CvPlot* pPlot) const
 		return false;
 	}
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       06/23/10                     Mongoose & jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+	// From Mongoose SDK
+	if (isCargo())
+	{
+		return false;
+	}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
+
 	if (pPlot->getImprovementType() == NO_IMPROVEMENT)
 	{
 		if (!(pPlot->isRoute()))
@@ -7060,6 +7191,12 @@ bool CvUnit::canSpread(const CvPlot* pPlot, ReligionTypes eReligion, bool bTestV
 {
 	CvCity* pCity;
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       08/19/09                                jdog5000      */
+/*                                                                                              */
+/* Efficiency                                                                                   */
+/************************************************************************************************/
+/* orginal bts code
 	if (GC.getUSE_USE_CANNOT_SPREAD_RELIGION_CALLBACK())
 	{
 		CyArgsList argsList;
@@ -7075,6 +7212,11 @@ bool CvUnit::canSpread(const CvPlot* pPlot, ReligionTypes eReligion, bool bTestV
 			return false;
 		}
 	}
+*/
+				// UP efficiency: Moved below faster calls
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 	if (eReligion == NO_RELIGION)
 	{
@@ -7116,6 +7258,30 @@ bool CvUnit::canSpread(const CvPlot* pPlot, ReligionTypes eReligion, bool bTestV
 			}
 		}
 	}
+
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       08/19/09                                jdog5000      */
+/*                                                                                              */
+/* Efficiency                                                                                   */
+/************************************************************************************************/
+	if (GC.getUSE_USE_CANNOT_SPREAD_RELIGION_CALLBACK())
+	{
+		CyArgsList argsList;
+		argsList.add(getOwnerINLINE());
+		argsList.add(getID());
+		argsList.add((int) eReligion);
+		argsList.add(pPlot->getX());
+		argsList.add(pPlot->getY());
+		long lResult=0;
+		gDLL->getPythonIFace()->callFunction(PYGameModule, "cannotSpreadReligion", argsList.makeFunctionArgs(), &lResult);
+		if (lResult > 0)
+		{
+			return false;
+		}
+	}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 	return true;
 }
@@ -8112,7 +8278,11 @@ bool CvUnit::isIntruding() const
 		return false;
 	}
 
-	if (GET_TEAM(eLocalTeam).isVassal(getTeam()))
+	// UNOFFICIAL_PATCH Start
+	// * Vassal's spies no longer caught in master's territory
+	//if (GET_TEAM(eLocalTeam).isVassal(getTeam()))
+	if (GET_TEAM(eLocalTeam).isVassal(getTeam()) || GET_TEAM(getTeam()).isVassal(eLocalTeam))
+	// UNOFFICIAL_PATCH End
 	{
 		return false;
 	}
@@ -9537,7 +9707,18 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 	}
 
 	// calc attacker bonueses
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       09/20/09                                jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original code
 	if (pAttacker != NULL)
+*/
+	if (pAttacker != NULL && pAttackedPlot != NULL)
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 	{
 		int iTempModifier = 0;		
 
@@ -9976,7 +10157,20 @@ bool CvUnit::canAirDefend(const CvPlot* pPlot) const
 
 	if (getDomainType() != DOMAIN_AIR)
 	{
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       10/30/09                     Mongoose & jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 		if (!pPlot->isValidDomainForLocation(*this))
+*/
+		// From Mongoose SDK
+		// Land units which are cargo cannot intercept
+		if (!pPlot->isValidDomainForLocation(*this) || isCargo())
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 		{
 			return false;
 		}
@@ -13764,7 +13958,10 @@ void CvUnit::collateralCombat(const CvPlot* pPlot, CvUnit* pSkipUnit)
 	std::map<CvUnit*, int>::iterator it;
 
 	int iCollateralStrength = (getDomainType() == DOMAIN_AIR ? airBaseCombatStr() : baseCombatStr()) * collateralDamage() / 100;
-	if (iCollateralStrength == 0)
+	// UNOFFICIAL_PATCH Start
+	// * Barrage promotions made working again on Tanks and other units with no base collateral ability
+	if (iCollateralStrength == 0 && getExtraCollateralDamage() == 0)
+	// UNOFFICIAL_PATCH End
 	{
 		return;
 	}
@@ -14134,6 +14331,20 @@ bool CvUnit::canRangeStrikeAt(const CvPlot* pPlot, int iX, int iY) const
 		return false;
 	}
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       05/10/10                             jdog5000         */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+	// Need to check target plot too
+	if (!pTargetPlot->isVisible(getTeam(), false))
+	{
+		return false;
+	}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
+
 	if (plotDistance(pPlot->getX_INLINE(), pPlot->getY_INLINE(), pTargetPlot->getX_INLINE(), pTargetPlot->getY_INLINE()) > airRange())
 	{
 		return false;
@@ -14167,10 +14378,24 @@ bool CvUnit::rangeStrike(int iX, int iY)
 		return false;
 	}
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       05/10/10                             jdog5000         */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 	if (!canRangeStrikeAt(pPlot, iX, iY))
 	{
 		return false;
 	}
+*/
+	if (!canRangeStrikeAt(plot(), iX, iY))
+	{
+		return false;
+	}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 	pDefender = airStrikeTarget(pPlot);
 
@@ -14213,7 +14438,20 @@ bool CvUnit::rangeStrike(int iX, int iY)
 		gDLL->getEntityIFace()->AddMission(&kDefiniton);
 
 		//delay death
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       05/10/10                             jdog5000         */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 		pDefender->getGroup()->setMissionTimer(GC.getMissionInfo(MISSION_RANGE_ATTACK).getTime());
+*/
+		// mission timer is not used like this in any other part of code, so it might cause OOS
+		// issues ... at worst I think unit dies before animation is complete, so no real
+		// harm in commenting it out.
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 	}
 
 	return true;

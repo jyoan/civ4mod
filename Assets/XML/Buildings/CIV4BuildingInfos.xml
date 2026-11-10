@@ -5775,7 +5775,7 @@
 			<FreeSpecialistCounts/>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners/>
-			<ConstructSound/>
+			<ConstructSound>AS2D_BUILD_PLANTCOAL</ConstructSound>
 			<BonusHealthChanges/>
 			<BonusHappinessChanges/>
 			<BonusProductionModifiers/>
@@ -11649,7 +11649,7 @@
 			<FreeSpecialistCounts/>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners/>
-			<ConstructSound>AS2D_BUILD_GROCERY</ConstructSound>
+			<ConstructSound>AS2D_BUILD_SUPERMARKET</ConstructSound>
 			<BonusHealthChanges>
 				<BonusHealthChange>
 					<BonusType>BONUS_COW</BonusType>

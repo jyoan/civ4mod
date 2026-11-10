@@ -19520,7 +19520,7 @@
 			<iCultureGarrison>0</iCultureGarrison>
 			<iExtraCost>0</iExtraCost>
 			<iAsset>6</iAsset>
-			<iPower>14</iPower>
+			<iPower>42</iPower>
 			<UnitMeshGroups>
 				<iGroupSize>1</iGroupSize>
 				<fMaxSpeed>2.25</fMaxSpeed>
@@ -19605,10 +19605,6 @@
 				</UnitAI>
 				<UnitAI>
 					<UnitAIType>UNITAI_RESERVE_SEA</UnitAIType>
-					<bUnitAI>1</bUnitAI>
-				</UnitAI>
-				<UnitAI>
-					<UnitAIType>UNITAI_ESCORT_SEA</UnitAIType>
 					<bUnitAI>1</bUnitAI>
 				</UnitAI>
 				<UnitAI>

@@ -223,6 +223,15 @@ public:
 	int getNumBuilding(BuildingTypes eIndex) const;									// Exposed to Python					
 	int getNumActiveBuilding(BuildingTypes eIndex) const;						// Exposed to Python
 	bool hasActiveWorldWonder() const;																			// Exposed to Python
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       03/04/10                                jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+	int getNumActiveWorldWonders() const;
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 	int getReligionCount() const;																						// Exposed to Python  
 	int getCorporationCount() const;																						// Exposed to Python  
@@ -459,7 +468,7 @@ public:
 
 	int getOverflowProduction() const;																		// Exposed to Python
 	void doMultipleProduction(bool bWasFoodProduction);					// added by this mod
-	int doOverflowGold(int iLostOverflow, int iOverflowOverGoldLimit, int iGoldPercent);	// added by this mod
+	int doOverflowGold(int iLostProduction, int iItemProductionModifier, int iGoldPercent);	// added by this mod
 	void setOverflowProduction(int iNewValue);											// Exposed to Python
 	void changeOverflowProduction(int iChange, int iProductionModifier);
 
@@ -1069,6 +1078,15 @@ protected:
 	bool m_bInfoDirty;
 	bool m_bLayoutDirty;
 	bool m_bPlundered;
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       12/07/09                         denev & jdog5000     */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+	bool m_bPopProductionProcess;
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 	PlayerTypes m_eOwner;
 	PlayerTypes m_ePreviousOwner;

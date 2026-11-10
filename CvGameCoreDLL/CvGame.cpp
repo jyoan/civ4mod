@@ -5844,9 +5844,22 @@ void CvGame::doTurn()
 			{
 				kTeam.setTurnActive(true);
 				FAssert(getNumGameTurnActive() == kTeam.getAliveCount());
+/*************************************************************************************************/
+/* UNOFFICIAL_PATCH                       06/10/10                       snarko & jdog5000       */
+/*                                                                                               */
+/* Bugfix                                                                                        */
+/*************************************************************************************************/
+/* original bts code
 			}
 
 			break;
+*/
+				// Break only after first found alive player
+				break;
+			}
+/*************************************************************************************************/
+/* UNOFFICIAL_PATCH                         END                                                  */
+/*************************************************************************************************/
 		}
 	}
 	else
@@ -8264,11 +8277,40 @@ bool CvGame::hasSkippedSaveChecksum() const
 
 void CvGame::addPlayer(PlayerTypes eNewPlayer, LeaderHeadTypes eLeader, CivilizationTypes eCiv)
 {
+	// UNOFFICIAL_PATCH Start
+	// * Fixed bug with colonies who occupy recycled player slots showing the old leader or civ names.
+	CvWString szEmptyString = L"";
+	LeaderHeadTypes eOldLeader = GET_PLAYER(eNewPlayer).getLeaderType();
+	if ( (eOldLeader != NO_LEADER) && (eOldLeader != eLeader) ) 
+	{
+		GC.getInitCore().setLeaderName(eNewPlayer, szEmptyString);
+	}
+	CivilizationTypes eOldCiv = GET_PLAYER(eNewPlayer).getCivilizationType();
+	if ( (eOldCiv != NO_CIVILIZATION) && (eOldCiv != eCiv) ) 
+	{
+		GC.getInitCore().setCivAdjective(eNewPlayer, szEmptyString);
+		GC.getInitCore().setCivDescription(eNewPlayer, szEmptyString);
+		GC.getInitCore().setCivShortDesc(eNewPlayer, szEmptyString);
+	}
+	// UNOFFICIAL_PATCH End
 	PlayerColorTypes eColor = (PlayerColorTypes)GC.getCivilizationInfo(eCiv).getDefaultPlayerColor();
 
 	for (int iI = 0; iI < MAX_CIV_PLAYERS; iI++)
 	{
+
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       12/30/08                                jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 		if (eColor == NO_PLAYERCOLOR || GET_PLAYER((PlayerTypes)iI).getPlayerColor() == eColor)
+*/
+		// Don't invalidate color choice if it's taken by this player
+		if (eColor == NO_PLAYERCOLOR || (GET_PLAYER((PlayerTypes)iI).getPlayerColor() == eColor && (PlayerTypes)iI != eNewPlayer) )
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 		{
 			for (int iK = 0; iK < GC.getNumPlayerColorInfos(); iK++)
 			{

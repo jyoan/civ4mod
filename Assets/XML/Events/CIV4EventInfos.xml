@@ -23402,10 +23402,10 @@
 					<iEventChance>100</iEventChance>
 				</EventChance>
 			</ClearEvents>
-			<PythonCallback>applyOverwhelmDone1</PythonCallback>
+			<PythonCallback/>
 			<PythonExpireCheck/>
-			<PythonCanDo>canApplyOverwhelmDone1</PythonCanDo>
-			<PythonHelp>getHelpOverwhelmDone1</PythonHelp>
+			<PythonCanDo/>
+			<PythonHelp/>
 			<Button>,Art/Interface/Buttons/Process/Blank.dds,Art/Interface/Buttons/Beyond_the_Sword_Atlas.dds,8,5</Button>
 			<iAIValue>1000</iAIValue>
 		</EventInfo>

@@ -71,8 +71,11 @@ class CvDomesticAdvisor:
 		(loopCity, iter) = player.firstCity(false)
 		while(loopCity):
 			if loopCity.getLiberationPlayer(false) != -1:
-				bCanLiberate = true
-				break
+				# UNOFFICIAL_PATCH begin
+				if not gc.getTeam(gc.getPlayer(loopCity.getLiberationPlayer(false)).getTeam()).isAtWar(CyGame().getActiveTeam()) :
+					bCanLiberate = true
+					break
+				# UNOFFICIAL_PATCH end
 			(loopCity, iter) = player.nextCity(iter, false)
 		
 		if (bCanLiberate or gc.getPlayer(gc.getGame().getActivePlayer()).canSplitEmpire()):
@@ -287,9 +290,11 @@ class CvDomesticAdvisor:
 		screen.setTableText( "CityListBackground", 15, i, pLoopCity.getProductionName() + " (" + str(pLoopCity.getGeneralProductionTurnsLeft()) + ")", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 
 		# Liberation
-		if pLoopCity.getLiberationPlayer(false) != -1:			
-			screen.setTableText( "CityListBackground", 16, i, "<font=2>" + (u"%c" % CyGame().getSymbolID(FontSymbols.OCCUPATION_CHAR)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
-		
+		if pLoopCity.getLiberationPlayer(false) != -1:
+			# UNOFFICIAL_PATCH begin
+			if not gc.getTeam(gc.getPlayer(pLoopCity.getLiberationPlayer(false)).getTeam()).isAtWar(CyGame().getActiveTeam()) :
+				screen.setTableText( "CityListBackground", 16, i, "<font=2>" + (u"%c" % CyGame().getSymbolID(FontSymbols.OCCUPATION_CHAR)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
+			# UNOFFICIAL_PATCH end
 		
 	# Draw the specialist and their increase and decrease buttons
 	def drawSpecialists(self):

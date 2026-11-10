@@ -16157,8 +16157,12 @@
 			<MinDifficulty>NONE</MinDifficulty>
 			<iAngry>0</iAngry>
 			<iUnhealthy>0</iUnhealthy>
-			<UnitsRequired/>
-			<iNumUnits>0</iNumUnits>
+			<!-- Unofficial Patch begin - force event to trigger only when espionage is enabled -->
+			<UnitsRequired>
+				<UnitClass>UNITCLASS_SPY</UnitClass>
+			</UnitsRequired>
+			<iNumUnits>1</iNumUnits>
+			<!-- Unofficial Patch end -->
 			<iNumUnitsGlobal>0</iNumUnitsGlobal>
 			<iUnitDamagedWeight>0</iUnitDamagedWeight>
 			<iUnitDistanceWeight>0</iUnitDistanceWeight>
