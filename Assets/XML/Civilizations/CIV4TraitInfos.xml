@@ -636,6 +636,36 @@
 					</Yields>
 				</FeatureYieldChange>
 			</FeatureYieldChanges>
+			<FeatureProductionChanges>
+				<FeatureProductionChange>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<iProductionChange>10</iProductionChange>
+				</FeatureProductionChange>
+				<FeatureProductionChange>
+					<FeatureType>FEATURE_JUNGLE</FeatureType>
+					<iProductionChange>30</iProductionChange>
+				</FeatureProductionChange>
+			</FeatureProductionChanges>
+			<FeatureGrowthChanges>
+				<FeatureGrowthChange>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<iGrowthChange>200</iGrowthChange>
+				</FeatureGrowthChange>
+				<FeatureGrowthChange>
+					<FeatureType>FEATURE_JUNGLE</FeatureType>
+					<iGrowthChange>200</iGrowthChange>
+				</FeatureGrowthChange>
+			</FeatureGrowthChanges>
+			<FeatureHealthChanges>
+				<FeatureHealthChange>
+					<FeatureType>FEATURE_JUNGLE</FeatureType>
+					<iHealthPercent>25</iHealthPercent>
+				</FeatureHealthChange>
+				<FeatureHealthChange>
+					<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
+					<iHealthPercent>40</iHealthPercent>
+				</FeatureHealthChange>
+			</FeatureHealthChanges>
 			<ImprovementYieldChanges>
 				<ImprovementYieldChange>
 					<ImprovementType>IMPROVEMENT_FARM</ImprovementType>

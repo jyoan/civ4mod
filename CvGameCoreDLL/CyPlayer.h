@@ -490,6 +490,9 @@ public:
 	int getConquestBuildingSurviveModifier();
 	bool isNoConquestPopulationLoss();
 	bool isNoAutoRaze();
+	int getFeatureProductionChange(int /*FeatureTypes*/ eFeature);
+	int getFeatureGrowthChange(int /*FeatureTypes*/ eFeature);
+	int getFeatureHealthChange(int /*FeatureTypes*/ eFeature);
 	CyUnit* getUnit(int iID);
 	python::tuple firstSelectionGroup(bool bRev);	// returns tuple of (CySelectionGroup, iterOut)
 	python::tuple nextSelectionGroup(int iterIn, bool bRev);	// returns tuple of (CySelectionGroup, iterOut)

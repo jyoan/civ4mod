@@ -2183,6 +2183,21 @@ bool CyPlayer::isNoAutoRaze()
 	return m_pPlayer ? m_pPlayer->isNoAutoRaze() : false;
 }
 
+int CyPlayer::getFeatureProductionChange(int /*FeatureTypes*/ eFeature)
+{
+	return m_pPlayer ? m_pPlayer->getFeatureProductionChange((FeatureTypes)eFeature) : 0;
+}
+
+int CyPlayer::getFeatureGrowthChange(int /*FeatureTypes*/ eFeature)
+{
+	return m_pPlayer ? m_pPlayer->getFeatureGrowthChange((FeatureTypes)eFeature) : 0;
+}
+
+int CyPlayer::getFeatureHealthChange(int /*FeatureTypes*/ eFeature)
+{
+	return m_pPlayer ? m_pPlayer->getFeatureHealthChange((FeatureTypes)eFeature) : 0;
+}
+
 CyUnit* CyPlayer::getUnit(int iID)
 {
 	return m_pPlayer ? new CyUnit(m_pPlayer->getUnit(iID)) : NULL;

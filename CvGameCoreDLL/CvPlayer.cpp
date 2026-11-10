@@ -2805,6 +2805,12 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 	// Trade network (FeatureRoutes). Traits rarely change, so this is not limited to the traits with FeatureRoutes.
 	updatePlotGroups();
 
+	// Feature health in the city radius (FeatureHealthChanges)
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		pLoopCity->updateFeatureHealth();
+	}
+
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
 		pLoopCity->AI_setAssignWorkDirty(true);
@@ -7776,6 +7782,24 @@ bool CvPlayer::isNoConquestPopulationLoss() const
 bool CvPlayer::isNoAutoRaze() const
 {
 	return hasTraitFlag(&CvTraitInfo::isNoAutoRaze);
+}
+
+// FeatureProductionChanges of the traits (added by this mod): production added when a worker removes the feature
+int CvPlayer::getFeatureProductionChange(FeatureTypes eFeature) const
+{
+	return sumTraitValues(&CvTraitInfo::getFeatureProductionChange, (int)eFeature);
+}
+
+// FeatureGrowthChanges of the traits (added by this mod): growth chance (1/10000 per turn) for each adjacent plot with the feature
+int CvPlayer::getFeatureGrowthChange(FeatureTypes eFeature) const
+{
+	return sumTraitValues(&CvTraitInfo::getFeatureGrowthChange, (int)eFeature);
+}
+
+// FeatureHealthChanges of the traits (added by this mod): added to iHealthPercent of the feature in the city radius
+int CvPlayer::getFeatureHealthChange(FeatureTypes eFeature) const
+{
+	return sumTraitValues(&CvTraitInfo::getFeatureHealthChange, (int)eFeature);
 }
 
 // True if a trait, current civic or owned building lets eUnitCombat units upgrade outside the team's territory.

@@ -539,6 +539,30 @@
 		<element type="FeatureType"/>
 		<element type="Yields"/>
 	</ElementType>
+	<ElementType name="iProductionChange" content="textOnly" dt:type="int"/>
+	<ElementType name="FeatureProductionChange" content="eltOnly">
+		<element type="FeatureType"/>
+		<element type="iProductionChange"/>
+	</ElementType>
+	<ElementType name="FeatureProductionChanges" content="eltOnly">
+		<element type="FeatureProductionChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iGrowthChange" content="textOnly" dt:type="int"/>
+	<ElementType name="FeatureGrowthChange" content="eltOnly">
+		<element type="FeatureType"/>
+		<element type="iGrowthChange"/>
+	</ElementType>
+	<ElementType name="FeatureGrowthChanges" content="eltOnly">
+		<element type="FeatureGrowthChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iHealthPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="FeatureHealthChange" content="eltOnly">
+		<element type="FeatureType"/>
+		<element type="iHealthPercent"/>
+	</ElementType>
+	<ElementType name="FeatureHealthChanges" content="eltOnly">
+		<element type="FeatureHealthChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="FeatureYieldChanges" content="eltOnly">
 		<element type="FeatureYieldChange" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -699,6 +723,9 @@
 		<element type="UpgradeAnywhereUnitCombats" minOccurs="0"/>
 		<element type="TerrainYieldChanges" minOccurs="0"/>
 		<element type="FeatureYieldChanges" minOccurs="0"/>
+		<element type="FeatureProductionChanges" minOccurs="0"/>
+		<element type="FeatureGrowthChanges" minOccurs="0"/>
+		<element type="FeatureHealthChanges" minOccurs="0"/>
 		<element type="ImprovementYieldChanges" minOccurs="0"/>
 		<element type="RiverPlotYieldChanges" minOccurs="0"/>
 		<element type="LakePlotYieldChanges" minOccurs="0"/>
