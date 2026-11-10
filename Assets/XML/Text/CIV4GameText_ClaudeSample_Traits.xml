@@ -560,4 +560,85 @@
 		<Spanish> (cities on the coast only)</Spanish>
 		<Japanese>&#65288;&#27839;&#23736;&#12398;&#37117;&#24066;&#12398;&#12415;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT</Tag>
+		<English>Unique improvement: %s1_Name</English>
+		<French>Unique improvement: %s1_Name</French>
+		<German>Unique improvement: %s1_Name</German>
+		<Italian>Unique improvement: %s1_Name</Italian>
+		<Spanish>Unique improvement: %s1_Name</Spanish>
+		<Japanese>&#22266;&#26377;&#12398;&#26045;&#35373;: %s1_Name</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT_REPLACES</Tag>
+		<English>Unique improvement: %s1_Name (replaces %s2_Old)</English>
+		<French>Unique improvement: %s1_Name (replaces %s2_Old)</French>
+		<German>Unique improvement: %s1_Name (replaces %s2_Old)</German>
+		<Italian>Unique improvement: %s1_Name (replaces %s2_Old)</Italian>
+		<Spanish>Unique improvement: %s1_Name (replaces %s2_Old)</Spanish>
+		<Japanese>&#22266;&#26377;&#12398;&#26045;&#35373;: %s1_Name&#65288;%s2_Old &#12398;&#20195;&#12431;&#12426;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PEACE_ANGER</Tag>
+		<English>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</English>
+		<French>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</French>
+		<German>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</German>
+		<Italian>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</Italian>
+		<Spanish>[ICON_BULLET]Cities grow angry in peace: +%s1%% of the population per turn at normal speed, at most %s2%%; -%s3%% per turn at war</Spanish>
+		<Japanese>[ICON_BULLET]&#24179;&#21644;&#12364;&#32154;&#12367;&#12392;&#37117;&#24066;&#12364;&#19981;&#28288;&#12395;&#12394;&#12427;: &#27598;&#12479;&#12540;&#12531;&#20154;&#21475;&#12398; %s1%%&#65288;&#36890;&#24120;&#36895;&#24230;&#12290;&#19978;&#38480; %s2%%&#12290;&#25126;&#20105;&#20013;&#12399;&#27598;&#12479;&#12540;&#12531; %s3%% &#28187;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CULTURE_RANGE_CHANGE</Tag>
+		<English>[ICON_BULLET]%D1_Change culture range of all cities</English>
+		<French>[ICON_BULLET]%D1_Change culture range of all cities</French>
+		<German>[ICON_BULLET]%D1_Change culture range of all cities</German>
+		<Italian>[ICON_BULLET]%D1_Change culture range of all cities</Italian>
+		<Spanish>[ICON_BULLET]%D1_Change culture range of all cities</Spanish>
+		<Japanese>[ICON_BULLET]&#20840;&#37117;&#24066;&#12398;&#25991;&#21270;&#22287;&#12398;&#24195;&#12364;&#12426;%D1_Change</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_UNIT</Tag>
+		<English>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</English>
+		<French>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</French>
+		<German>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</German>
+		<Italian>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</Italian>
+		<Spanish>[ICON_BULLET]Unique unit: %s1_Name (instead of %s2_Name)</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#12518;&#12491;&#12483;&#12488;: %s1_Name&#65288;%s2_Name &#12398;&#20195;&#12431;&#12426;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_BUILDING</Tag>
+		<English>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</English>
+		<French>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</French>
+		<German>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</German>
+		<Italian>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</Italian>
+		<Spanish>[ICON_BULLET]Unique building: %s1_Name (instead of %s2_Name)</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#24314;&#36896;&#29289;: %s1_Name&#65288;%s2_Name &#12398;&#20195;&#12431;&#12426;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_CIVIC</Tag>
+		<English>[ICON_BULLET]Unique civic: %s1_Name</English>
+		<French>[ICON_BULLET]Unique civic: %s1_Name</French>
+		<German>[ICON_BULLET]Unique civic: %s1_Name</German>
+		<Italian>[ICON_BULLET]Unique civic: %s1_Name</Italian>
+		<Spanish>[ICON_BULLET]Unique civic: %s1_Name</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#12398;&#31038;&#20250;&#21046;&#24230;: %s1_Name</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_CIVIC_REPLACES</Tag>
+		<English>[ICON_BULLET]Unique civic: %s1_Name (instead of %s2_Name)</English>
+		<French>[ICON_BULLET]Unique civic: %s1_Name (instead of %s2_Name)</French>
+		<German>[ICON_BULLET]Unique civic: %s1_Name (instead of %s2_Name)</German>
+		<Italian>[ICON_BULLET]Unique civic: %s1_Name (instead of %s2_Name)</Italian>
+		<Spanish>[ICON_BULLET]Unique civic: %s1_Name (instead of %s2_Name)</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#12398;&#31038;&#20250;&#21046;&#24230;: %s1_Name&#65288;%s2_Name &#12398;&#20195;&#12431;&#12426;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_BONUS</Tag>
+		<English>[ICON_BULLET]Unique resource: %s1_Name</English>
+		<French>[ICON_BULLET]Unique resource: %s1_Name</French>
+		<German>[ICON_BULLET]Unique resource: %s1_Name</German>
+		<Italian>[ICON_BULLET]Unique resource: %s1_Name</Italian>
+		<Spanish>[ICON_BULLET]Unique resource: %s1_Name</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#36039;&#28304;: %s1_Name</Japanese>
+	</TEXT>
 </Civ4GameText>
