@@ -19100,6 +19100,8 @@ m_paiFeatureRoute(NULL),
 m_bIgnoreBuildingObsolescence(false),
 m_pabNoObsoleteBuildingClass(NULL),
 m_pabNoObsoleteSpecialBuilding(NULL),
+m_bIgnoreBonusObsolescence(false),
+m_pabNoObsoleteBonus(NULL),
 m_pabForbiddenCivic(NULL)
 {
 }
@@ -19138,6 +19140,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_paiFeatureRoute);
 	SAFE_DELETE_ARRAY(m_pabNoObsoleteBuildingClass);
 	SAFE_DELETE_ARRAY(m_pabNoObsoleteSpecialBuilding);
+	SAFE_DELETE_ARRAY(m_pabNoObsoleteBonus);
 	SAFE_DELETE_ARRAY(m_pabForbiddenCivic);
 }
 
@@ -19620,6 +19623,24 @@ bool CvTraitInfo::isNoObsoleteBuildingClass(int i) const
 }
 
 // The buildings of the special building type (monasteries) do not become obsolete for the player (added by this mod)
+// bIgnoreBonusObsolescence / NoObsoleteBonuses (added by this mod): the bonuses of the team do not become obsolete
+bool CvTraitInfo::isIgnoreBonusObsolescence() const
+{
+	return m_bIgnoreBonusObsolescence;
+}
+
+bool CvTraitInfo::isNoObsoleteBonus(int i) const
+{
+	FAssertMsg(i < GC.getNumBonusInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_pabNoObsoleteBonus ? m_pabNoObsoleteBonus[i] : false;
+}
+
+bool CvTraitInfo::isBonusObsolescenceIgnored(int iBonus) const
+{
+	return (m_bIgnoreBonusObsolescence || isNoObsoleteBonus(iBonus));
+}
+
 bool CvTraitInfo::isNoObsoleteSpecialBuilding(int i) const
 {
 	FAssertMsg(i < GC.getNumSpecialBuildingInfos(), "Index out of bounds");
@@ -20271,6 +20292,8 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bIgnoreBuildingObsolescence, "bIgnoreBuildingObsolescence");
 	readTypeList(pXML, "NoObsoleteBuildingClasses", m_aszNoObsoleteBuildingClassTypes);
 	readTypeList(pXML, "NoObsoleteSpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes);
+	pXML->GetChildXmlValByName(&m_bIgnoreBonusObsolescence, "bIgnoreBonusObsolescence");
+	readTypeList(pXML, "NoObsoleteBonuses", m_aszNoObsoleteBonusTypes);
 
 	// Python hooks: expressions evaluated in CvTraitInterface.py
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_GAME_START], "PyOnGameStart");
@@ -20551,6 +20574,8 @@ bool CvTraitInfo::readPass3()
 	m_aszNoObsoleteBuildingClassTypes.clear();
 	resolveTypeList("NoObsoleteSpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabNoObsoleteSpecialBuilding);
 	m_aszNoObsoleteSpecialBuildingTypes.clear();
+	resolveTypeList("NoObsoleteBonuses", m_aszNoObsoleteBonusTypes, GC.getNumBonusInfos(), &m_pabNoObsoleteBonus);
+	m_aszNoObsoleteBonusTypes.clear();
 
 	return true;
 }

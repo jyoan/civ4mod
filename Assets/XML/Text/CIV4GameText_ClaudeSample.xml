@@ -1757,6 +1757,24 @@
 		<Spanish>[ICON_BULLET]With %s1_Source: gains %s2_Trait (%s3_Conditions)</Spanish>
 		<Japanese>[ICON_BULLET]%s1_Source&#12364;&#12354;&#12428;&#12400;%s2_Trait&#12434;&#24471;&#12427;&#65288;%s3_Conditions&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_IGNORE_BONUS_OBSOLESCENCE</Tag>
+		<English>[ICON_BULLET]Resources never become obsolete</English>
+		<French>[ICON_BULLET]Resources never become obsolete</French>
+		<German>[ICON_BULLET]Resources never become obsolete</German>
+		<Italian>[ICON_BULLET]Resources never become obsolete</Italian>
+		<Spanish>[ICON_BULLET]Resources never become obsolete</Spanish>
+		<Japanese>[ICON_BULLET]&#36039;&#28304;&#12364;&#38515;&#33104;&#21270;&#12375;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_OBSOLETE_BONUSES</Tag>
+		<English>[ICON_BULLET]Resources that never become obsolete: </English>
+		<French>[ICON_BULLET]Resources that never become obsolete: </French>
+		<German>[ICON_BULLET]Resources that never become obsolete: </German>
+		<Italian>[ICON_BULLET]Resources that never become obsolete: </Italian>
+		<Spanish>[ICON_BULLET]Resources that never become obsolete: </Spanish>
+		<Japanese>[ICON_BULLET]&#38515;&#33104;&#21270;&#12375;&#12394;&#12356;&#36039;&#28304;: </Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

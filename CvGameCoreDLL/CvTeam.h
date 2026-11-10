@@ -90,6 +90,7 @@ public:
 	bool hasHeadquarters(CorporationTypes eCorporation) const;																		// Exposed to Python
 	bool hasBonus(BonusTypes eBonus) const;
 	bool isBonusObsolete(BonusTypes eBonus) const;
+	bool isBonusObsolescenceIgnored(BonusTypes eBonus) const;	// added by this mod: a trait of a player of the team keeps the bonus
 
 	bool isHuman() const;																																// Exposed to Python
 	bool isBarbarian() const;																														// Exposed to Python

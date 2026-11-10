@@ -6939,7 +6939,8 @@ int CvPlayer::getGoldInterest() const
 }
 
 // PrereqOrTraits of the bonuses (added by this mod): the plots with the bonuses of the trait count for the team only while a
-// player of the team has it. bAdd false before the trait changes, true after it
+// player of the team has it. Also the obsolete bonuses the trait keeps (bIgnoreBonusObsolescence, NoObsoleteBonuses). bAdd
+// false before the trait changes, true after it
 void CvPlayer::updateTraitBonusPlots(TraitTypes eTrait, bool bAdd)
 {
 	std::vector<int> aiBonuses;
@@ -6947,6 +6948,12 @@ void CvPlayer::updateTraitBonusPlots(TraitTypes eTrait, bool bAdd)
 
 	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
 	{
+		if (GC.getBonusInfo((BonusTypes)iI).getTechObsolete() != NO_TECH && GC.getTraitInfo(eTrait).isBonusObsolescenceIgnored(iI))
+		{
+			aiBonuses.push_back(iI);
+			continue;
+		}
+
 		for (iJ = 0; iJ < GC.getBonusInfo((BonusTypes)iI).getNumPrereqOrTraits(); iJ++)
 		{
 			if (GC.getBonusInfo((BonusTypes)iI).getPrereqOrTraits(iJ) == eTrait)
