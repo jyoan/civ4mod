@@ -18930,6 +18930,8 @@ m_bFoundInForeignTerritory(false),
 m_bNoGlobalWarmingInBorders(false),
 m_iReligionSpreadChange(0),
 m_iCorporationSpreadChange(0),
+m_iGoldenAgeLandMovesChange(0),
+m_iGoldenAgeSeaMovesChange(0),
 m_iGoldInterestPercent(0),
 m_iGoldInterestMax(0),
 m_iPeaceAngerPerTurn(0),
@@ -19244,6 +19246,17 @@ int CvTraitInfo::getReligionSpreadChange() const
 int CvTraitInfo::getCorporationSpreadChange() const
 {
 	return m_iCorporationSpreadChange;
+}
+
+// Added to the moves of the land and sea units of the player during a golden age (added by this mod)
+int CvTraitInfo::getGoldenAgeLandMovesChange() const
+{
+	return m_iGoldenAgeLandMovesChange;
+}
+
+int CvTraitInfo::getGoldenAgeSeaMovesChange() const
+{
+	return m_iGoldenAgeSeaMovesChange;
 }
 
 bool CvTraitInfo::isNoPillageInBorders() const
@@ -19971,6 +19984,8 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bNoGlobalWarmingInBorders, "bNoGlobalWarmingInBorders");
 	pXML->GetChildXmlValByName(&m_iReligionSpreadChange, "iReligionSpreadChange");
 	pXML->GetChildXmlValByName(&m_iCorporationSpreadChange, "iCorporationSpreadChange");
+	pXML->GetChildXmlValByName(&m_iGoldenAgeLandMovesChange, "iGoldenAgeLandMovesChange");
+	pXML->GetChildXmlValByName(&m_iGoldenAgeSeaMovesChange, "iGoldenAgeSeaMovesChange");
 	pXML->GetChildXmlValByName(&m_iGoldInterestPercent, "iGoldInterestPercent");
 	pXML->GetChildXmlValByName(&m_iGoldInterestMax, "iGoldInterestMax");
 	pXML->GetChildXmlValByName(&m_iPeaceAngerPerTurn, "iPeaceAngerPerTurn");

@@ -387,6 +387,8 @@
 			<bNoGlobalWarmingInBorders>1</bNoGlobalWarmingInBorders>
 			<iReligionSpreadChange>100</iReligionSpreadChange>
 			<iCorporationSpreadChange>100</iCorporationSpreadChange>
+			<iGoldenAgeLandMovesChange>1</iGoldenAgeLandMovesChange>
+			<iGoldenAgeSeaMovesChange>2</iGoldenAgeSeaMovesChange>
 			<iGoldInterestPercent>3</iGoldInterestPercent>
 			<iGoldInterestMax>25</iGoldInterestMax>
 			<iPeaceAngerPerTurn>50</iPeaceAngerPerTurn>

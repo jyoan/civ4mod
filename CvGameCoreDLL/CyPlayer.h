@@ -455,6 +455,7 @@ public:
 	int getMinCityRange();
 	bool isFoundInForeignTerritory();
 	bool isNoGlobalWarmingInBorders();
+	int getGoldenAgeMovesChange(int /*DomainTypes*/ eDomain);
 	int getGoldInterest();
 	int getPeaceAngerPercentAnger();
 	int getCultureRangeChange();

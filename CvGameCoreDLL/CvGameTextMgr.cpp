@@ -3598,6 +3598,16 @@ void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, Trait
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CORPORATION_SPREAD_CHANGE", kTrait.getCorporationSpreadChange()));
 	}
 
+	// iGoldenAgeLandMovesChange / iGoldenAgeSeaMovesChange (added by this mod)
+	if (kTrait.getGoldenAgeLandMovesChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_LAND_MOVES", kTrait.getGoldenAgeLandMovesChange()));
+	}
+	if (kTrait.getGoldenAgeSeaMovesChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_SEA_MOVES", kTrait.getGoldenAgeSeaMovesChange()));
+	}
+
 	// bNoGlobalWarmingInBorders (added by this mod)
 	if (kTrait.isNoGlobalWarmingInBorders())
 	{

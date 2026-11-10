@@ -8933,7 +8933,16 @@ int CvUnit::visibilityRange() const
 
 int CvUnit::baseMoves() const
 {
-	return (m_pUnitInfo->getMoves() + getExtraMoves() + GET_TEAM(getTeam()).getExtraMoves(getDomainType()));
+	int iMoves = (m_pUnitInfo->getMoves() + getExtraMoves() + GET_TEAM(getTeam()).getExtraMoves(getDomainType()));
+
+	// iGoldenAgeLandMovesChange / iGoldenAgeSeaMovesChange of the traits of the owner (added by this mod). The moves used are
+	// counted, so this counts from the start of the golden age to its end, also in the middle of a turn
+	if (m_pUnitInfo->getMoves() > 0 && GET_PLAYER(getOwnerINLINE()).isGoldenAge())
+	{
+		iMoves += GET_PLAYER(getOwnerINLINE()).getGoldenAgeMovesChange(getDomainType());
+	}
+
+	return iMoves;
 }
 
 
