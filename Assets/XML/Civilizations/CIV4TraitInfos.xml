@@ -390,6 +390,25 @@
 			<iGoldenAgeLandMovesChange>1</iGoldenAgeLandMovesChange>
 			<iGoldenAgeSeaMovesChange>2</iGoldenAgeSeaMovesChange>
 			<bInlandCanals>1</bInlandCanals>
+			<iStartBiasRiver>50</iStartBiasRiver>
+			<StartBiasTerrains>
+				<StartBiasTerrain>
+					<TerrainType>TERRAIN_DESERT</TerrainType>
+					<iStartBias>40</iStartBias>
+				</StartBiasTerrain>
+			</StartBiasTerrains>
+			<StartBiasFeatures>
+				<StartBiasFeature>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<iStartBias>20</iStartBias>
+				</StartBiasFeature>
+			</StartBiasFeatures>
+			<StartBiasBonuses>
+				<StartBiasBonus>
+					<BonusType>BONUS_HORSE</BonusType>
+					<iStartBias>100</iStartBias>
+				</StartBiasBonus>
+			</StartBiasBonuses>
 			<iGoldInterestPercent>3</iGoldInterestPercent>
 			<iGoldInterestMax>25</iGoldInterestMax>
 			<iPeaceAngerPerTurn>50</iPeaceAngerPerTurn>

@@ -1793,6 +1793,51 @@
 		<Spanish>(only %s1_Domains)</Spanish>
 		<Japanese>&#65288;%s1_Domains&#12398;&#12415;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_START_BIAS</Tag>
+		<English>[ICON_BULLET]Start bias: %s1_List</English>
+		<French>[ICON_BULLET]Start bias: %s1_List</French>
+		<German>[ICON_BULLET]Start bias: %s1_List</German>
+		<Italian>[ICON_BULLET]Start bias: %s1_List</Italian>
+		<Spanish>[ICON_BULLET]Start bias: %s1_List</Spanish>
+		<Japanese>[ICON_BULLET]&#38283;&#22987;&#20301;&#32622;&#12398;&#22909;&#12415;: %s1_List</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_START_BIAS_HEADING</Tag>
+		<English>Start Bias</English>
+		<French>Start Bias</French>
+		<German>Start Bias</German>
+		<Italian>Start Bias</Italian>
+		<Spanish>Start Bias</Spanish>
+		<Japanese>&#38283;&#22987;&#20301;&#32622;&#12398;&#22909;&#12415;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_START_BIAS_COASTAL</Tag>
+		<English>Coast %D1_Num%%</English>
+		<French>Coast %D1_Num%%</French>
+		<German>Coast %D1_Num%%</German>
+		<Italian>Coast %D1_Num%%</Italian>
+		<Spanish>Coast %D1_Num%%</Spanish>
+		<Japanese>&#27839;&#23736;%D1_Num%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_START_BIAS_RIVER</Tag>
+		<English>River %D1_Num%%</English>
+		<French>River %D1_Num%%</French>
+		<German>River %D1_Num%%</German>
+		<Italian>River %D1_Num%%</Italian>
+		<Spanish>River %D1_Num%%</Spanish>
+		<Japanese>&#24029;&#27839;&#12356;%D1_Num%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_START_BIAS_PLOT</Tag>
+		<English>%s1_Name %D2_Num%% per tile</English>
+		<French>%s1_Name %D2_Num%% per tile</French>
+		<German>%s1_Name %D2_Num%% per tile</German>
+		<Italian>%s1_Name %D2_Num%% per tile</Italian>
+		<Spanish>%s1_Name %D2_Num%% per tile</Spanish>
+		<Japanese>%s1_Name1&#12479;&#12452;&#12523;&#12372;&#12392;&#12395;%D2_Num%%</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>

@@ -2605,6 +2605,11 @@ public:
 	bool isUniqueBuild(int i) const;			// Exposed to Python: UniqueBuilds (added by this mod)
 	bool isBuildOfCivilization(int i) const;	// Exposed to Python: UniqueBuilds or PrereqOrTraits with a trait of the civilization
 	void updateCivilizationUniqueBuilds();
+	int getStartBiasCoastal() const;				// Exposed to Python: start bias (added by this mod)
+	int getStartBiasRiver() const;					// Exposed to Python
+	int getStartBiasTerrain(int i) const;			// Exposed to Python
+	int getStartBiasFeature(int i) const;			// Exposed to Python
+	int getStartBiasBonus(int i) const;				// Exposed to Python
 
 	DllExport std::string getCityNames(int i) const;				// Exposed to Python
 
@@ -2651,6 +2656,11 @@ protected:
 	bool* m_pbCivilizationDisableTechs;
 	bool* m_pbTraits;
 	bool* m_pbUniqueBuilds;
+	int m_iStartBiasCoastal;				// start bias (added by this mod)
+	int m_iStartBiasRiver;
+	int* m_piStartBiasTerrains;
+	int* m_piStartBiasFeatures;
+	int* m_piStartBiasBonuses;
 
 	CvString* m_paszCityNames;
 
@@ -4676,6 +4686,11 @@ public:
 	int getGoldenAgeSeaMovesChange() const;		// Exposed to Python
 	bool isInlandCanals() const;					// Exposed to Python
 	bool isBarbarianAlly() const;				// Exposed to Python
+	int getStartBiasCoastal() const;				// Exposed to Python: start bias (added by this mod)
+	int getStartBiasRiver() const;					// Exposed to Python
+	int getStartBiasTerrain(int i) const;			// Exposed to Python
+	int getStartBiasFeature(int i) const;			// Exposed to Python
+	int getStartBiasBonus(int i) const;				// Exposed to Python
 	int getGoldInterestPercent() const;				// Exposed to Python
 	int getGoldInterestMax() const;					// Exposed to Python
 	int getPeaceAngerPerTurn() const;				// Exposed to Python
@@ -4814,6 +4829,13 @@ protected:
 	int m_iGoldenAgeSeaMovesChange;
 	bool m_bInlandCanals;
 	bool m_bBarbarianAlly;
+	int m_iStartBiasCoastal;				// start bias (added by this mod)
+	int m_iStartBiasRiver;
+	int* m_piStartBiasTerrains;
+	int* m_piStartBiasFeatures;
+	int* m_piStartBiasBonuses;
+	std::vector<CvString> m_aszStartBiasBonusTypes;	// as strings until readPass3(): the bonuses are loaded after the traits
+	std::vector<int> m_aiStartBiasBonusValues;
 	int m_iGoldInterestPercent;
 	int m_iGoldInterestMax;
 	int m_iPeaceAngerPerTurn;

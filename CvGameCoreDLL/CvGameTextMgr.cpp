@@ -3314,6 +3314,50 @@ static void appendConditionText(CvWString& szConditions, const CvWString& szCond
 	szConditions += szCondition;
 }
 
+// The start bias of a civilization or a trait as a list: "Coast +200%, Desert +40% per tile" (added by this mod)
+template <class T>
+static CvWString getStartBiasText(const T& kInfo)
+{
+	CvWString szList;
+	int iI;
+
+	if (kInfo.getStartBiasCoastal() != 0)
+	{
+		szList += gDLL->getText("TXT_KEY_START_BIAS_COASTAL", kInfo.getStartBiasCoastal());
+	}
+	if (kInfo.getStartBiasRiver() != 0)
+	{
+		szList += (szList.empty() ? L"" : L", ");
+		szList += gDLL->getText("TXT_KEY_START_BIAS_RIVER", kInfo.getStartBiasRiver());
+	}
+	for (iI = 0; iI < GC.getNumTerrainInfos(); iI++)
+	{
+		if (kInfo.getStartBiasTerrain(iI) != 0)
+		{
+			szList += (szList.empty() ? L"" : L", ");
+			szList += gDLL->getText("TXT_KEY_START_BIAS_PLOT", GC.getTerrainInfo((TerrainTypes)iI).getTextKeyWide(), kInfo.getStartBiasTerrain(iI));
+		}
+	}
+	for (iI = 0; iI < GC.getNumFeatureInfos(); iI++)
+	{
+		if (kInfo.getStartBiasFeature(iI) != 0)
+		{
+			szList += (szList.empty() ? L"" : L", ");
+			szList += gDLL->getText("TXT_KEY_START_BIAS_PLOT", GC.getFeatureInfo((FeatureTypes)iI).getTextKeyWide(), kInfo.getStartBiasFeature(iI));
+		}
+	}
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		if (kInfo.getStartBiasBonus(iI) != 0)
+		{
+			szList += (szList.empty() ? L"" : L", ");
+			szList += gDLL->getText("TXT_KEY_START_BIAS_PLOT", GC.getBonusInfo((BonusTypes)iI).getTextKeyWide(), kInfo.getStartBiasBonus(iI));
+		}
+	}
+
+	return szList;
+}
+
 // One line of the help of a trait, with the newline and the indent of the trait (added by this mod)
 static void appendTraitLine(CvWStringBuffer& szHelpString, const CvWString& szLine)
 {
@@ -3617,6 +3661,13 @@ void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, Trait
 	if (kTrait.getGoldenAgeSeaMovesChange() != 0)
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_SEA_MOVES", kTrait.getGoldenAgeSeaMovesChange()));
+	}
+
+	// Start bias (added by this mod)
+	CvWString szStartBias = getStartBiasText(kTrait);
+	if (!szStartBias.empty())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_START_BIAS", szStartBias.GetCString()));
 	}
 
 	// bBarbarianAlly (added by this mod)
@@ -4820,6 +4871,16 @@ void CvGameTextMgr::parseCivInfos(CvWStringBuffer &szInfoText, CivilizationTypes
 				szInfoText.append(szBuffer);
 				bFound = true;
 			}
+		}
+
+		// Start bias (added by this mod): not on the screen at the start of the game
+		CvWString szCivStartBias = getStartBiasText(GC.getCivilizationInfo(eCivilization));
+		if (!bDawnOfMan && !szCivStartBias.empty())
+		{
+			szTempString.Format(NEWLINE SETCOLR L"%s" ENDCOLR , TEXT_COLOR("COLOR_ALT_HIGHLIGHT_TEXT"), gDLL->getText("TXT_KEY_START_BIAS_HEADING").GetCString());
+			szInfoText.append(szTempString);
+			szTempString.Format(L"\n  %c%s", gDLL->getSymbolID(BULLET_CHAR), szCivStartBias.GetCString());
+			szInfoText.append(szTempString);
 		}
 	}
 	else

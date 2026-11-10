@@ -4777,6 +4777,7 @@
 					<bUniqueBuild>1</bUniqueBuild>
 				</UniqueBuild>
 			</UniqueBuilds>
+			<iStartBiasCoastal>200</iStartBiasCoastal>
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_JAPAN_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_JAPAN_ORDER</CivilizationActionSound>
