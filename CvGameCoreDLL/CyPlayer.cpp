@@ -2069,6 +2069,12 @@ int CyPlayer::getGoldenAgeMovesChange(int /*DomainTypes*/ eDomain)
 	return m_pPlayer ? m_pPlayer->getGoldenAgeMovesChange((DomainTypes)eDomain) : 0;
 }
 
+// bInlandCanals of the traits (added by this mod)
+bool CyPlayer::isInlandCanals()
+{
+	return m_pPlayer ? m_pPlayer->isInlandCanals() : false;
+}
+
 // bNoGlobalWarmingInBorders of the traits (added by this mod)
 bool CyPlayer::isNoGlobalWarmingInBorders()
 {

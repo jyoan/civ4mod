@@ -4674,6 +4674,7 @@ public:
 	int getCorporationSpreadChange() const;		// Exposed to Python
 	int getGoldenAgeLandMovesChange() const;		// Exposed to Python
 	int getGoldenAgeSeaMovesChange() const;		// Exposed to Python
+	bool isInlandCanals() const;					// Exposed to Python
 	int getGoldInterestPercent() const;				// Exposed to Python
 	int getGoldInterestMax() const;					// Exposed to Python
 	int getPeaceAngerPerTurn() const;				// Exposed to Python
@@ -4802,6 +4803,7 @@ protected:
 	int m_iCorporationSpreadChange;
 	int m_iGoldenAgeLandMovesChange;
 	int m_iGoldenAgeSeaMovesChange;
+	bool m_bInlandCanals;
 	int m_iGoldInterestPercent;
 	int m_iGoldInterestMax;
 	int m_iPeaceAngerPerTurn;

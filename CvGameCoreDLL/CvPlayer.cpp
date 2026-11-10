@@ -6845,6 +6845,27 @@ int CvPlayer::getGoldenAgeMovesChange(DomainTypes eDomain) const
 	}
 }
 
+// bInlandCanals of the traits (added by this mod)
+bool CvPlayer::isInlandCanals() const
+{
+	int iI;
+
+	if (getLeaderType() == NO_LEADER)
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI) && GC.getTraitInfo((TraitTypes)iI).isInlandCanals())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 // bNoGlobalWarmingInBorders of the traits (added by this mod)
 bool CvPlayer::isNoGlobalWarmingInBorders() const
 {
