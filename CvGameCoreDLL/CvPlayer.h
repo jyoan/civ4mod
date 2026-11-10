@@ -243,6 +243,7 @@ public:
 	bool isFoundInForeignTerritory() const;							// Exposed to Python: bFoundInForeignTerritory of the traits
 	bool isNoGlobalWarmingInBorders() const;							// Exposed to Python: bNoGlobalWarmingInBorders of the traits
 	int getGoldenAgeMovesChange(DomainTypes eDomain) const;				// Exposed to Python: iGoldenAgeLandMovesChange / iGoldenAgeSeaMovesChange of the traits
+	bool isInlandCanals() const;										// Exposed to Python: bInlandCanals of the traits
 	int getGoldInterest() const;									// Exposed to Python: gold of this turn from the traits
 	int getPeaceAngerPercentAnger() const;						// Exposed to Python: anger from iPeaceAngerPerTurn of the traits
 	void doPeaceAnger();										// added by this mod

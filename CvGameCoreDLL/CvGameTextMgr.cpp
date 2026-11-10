@@ -3608,6 +3608,12 @@ void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, Trait
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_SEA_MOVES", kTrait.getGoldenAgeSeaMovesChange()));
 	}
 
+	// bInlandCanals (added by this mod)
+	if (kTrait.isInlandCanals())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_INLAND_CANALS"));
+	}
+
 	// bNoGlobalWarmingInBorders (added by this mod)
 	if (kTrait.isNoGlobalWarmingInBorders())
 	{

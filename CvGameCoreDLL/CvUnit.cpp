@@ -4119,7 +4119,8 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 	case DOMAIN_SEA:
 		if (!pPlot->isWater() && !canMoveAllTerrain())
 		{
-			if (!pPlot->isFriendlyCity(*this, true) || !pPlot->isCoastalLand()) 
+			// bInlandCanals of the traits of the owner (added by this mod): also forts and cities that do not touch water
+			if (!pPlot->isFriendlyCity(*this, true) || (!pPlot->isCoastalLand() && !GET_PLAYER(getOwnerINLINE()).isInlandCanals()))
 			{
 				return false;
 			}

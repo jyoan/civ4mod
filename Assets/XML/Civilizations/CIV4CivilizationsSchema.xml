@@ -353,6 +353,7 @@
 	<ElementType name="iCorporationSpreadChange" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldenAgeLandMovesChange" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldenAgeSeaMovesChange" content="textOnly" dt:type="int"/>
+	<ElementType name="bInlandCanals" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iGoldInterestPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldInterestMax" content="textOnly" dt:type="int"/>
 	<ElementType name="iPeaceAngerPerTurn" content="textOnly" dt:type="int"/>
@@ -596,6 +597,7 @@
 		<element type="iCorporationSpreadChange" minOccurs="0"/>
 		<element type="iGoldenAgeLandMovesChange" minOccurs="0"/>
 		<element type="iGoldenAgeSeaMovesChange" minOccurs="0"/>
+		<element type="bInlandCanals" minOccurs="0"/>
 		<element type="iGoldInterestPercent" minOccurs="0"/>
 		<element type="iGoldInterestMax" minOccurs="0"/>
 		<element type="iPeaceAngerPerTurn" minOccurs="0"/>

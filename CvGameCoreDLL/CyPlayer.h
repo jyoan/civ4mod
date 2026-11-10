@@ -456,6 +456,7 @@ public:
 	bool isFoundInForeignTerritory();
 	bool isNoGlobalWarmingInBorders();
 	int getGoldenAgeMovesChange(int /*DomainTypes*/ eDomain);
+	bool isInlandCanals();
 	int getGoldInterest();
 	int getPeaceAngerPercentAnger();
 	int getCultureRangeChange();
