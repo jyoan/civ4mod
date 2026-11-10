@@ -6679,6 +6679,47 @@ int CvPlayer::getProductionModifier(UnitTypes eUnit) const
 	return iMultiplier;
 }
 
+// A trait the player has says yes (added by this mod). False for an unused player slot (no leader)
+bool CvPlayer::hasTraitFlag(bool (CvTraitInfo::*pGetter)() const) const
+{
+	int iI;
+
+	if (getLeaderType() == NO_LEADER)
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if ((GC.getTraitInfo((TraitTypes)iI).*pGetter)() && hasTrait((TraitTypes)iI))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool CvPlayer::hasTraitFlag(bool (CvTraitInfo::*pGetter)(int) const, int iArg) const
+{
+	int iI;
+
+	if (getLeaderType() == NO_LEADER)
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if ((GC.getTraitInfo((TraitTypes)iI).*pGetter)(iArg) && hasTrait((TraitTypes)iI))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 // The sum of a value of the traits the player has (added by this mod)
 int CvPlayer::sumTraitValues(int (CvTraitInfo::*pGetter)() const) const
 {
@@ -7001,22 +7042,7 @@ int CvPlayer::getMinCityRange() const
 // bFoundInForeignTerritory of the traits (added by this mod)
 bool CvPlayer::isFoundInForeignTerritory() const
 {
-	int iI;
-
-	if (getLeaderType() == NO_LEADER)
-	{
-		return false;
-	}
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI) && GC.getTraitInfo((TraitTypes)iI).isFoundInForeignTerritory())
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return hasTraitFlag(&CvTraitInfo::isFoundInForeignTerritory);
 }
 
 // iGoldenAgeLandMovesChange / iGoldenAgeSeaMovesChange of the traits (added by this mod): the moves the units of the domain get
@@ -7042,59 +7068,19 @@ int CvPlayer::getGoldenAgeMovesChange(DomainTypes eDomain) const
 // bInlandCanals of the traits (added by this mod)
 bool CvPlayer::isInlandCanals() const
 {
-	int iI;
-
-	if (getLeaderType() == NO_LEADER)
-	{
-		return false;
-	}
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI) && GC.getTraitInfo((TraitTypes)iI).isInlandCanals())
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return hasTraitFlag(&CvTraitInfo::isInlandCanals);
 }
 
 // bNoGlobalWarmingInBorders of the traits (added by this mod)
 bool CvPlayer::isNoGlobalWarmingInBorders() const
 {
-	int iI;
-
-	if (getLeaderType() == NO_LEADER)
-	{
-		return false;
-	}
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI) && GC.getTraitInfo((TraitTypes)iI).isNoGlobalWarmingInBorders())
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return hasTraitFlag(&CvTraitInfo::isNoGlobalWarmingInBorders);
 }
 
 // bNoPillageInBorders of the traits (added by this mod)
 bool CvPlayer::isNoPillageInBorders() const
 {
-	int iI;
-
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (hasTrait((TraitTypes)iI) && GC.getTraitInfo((TraitTypes)iI).isNoPillageInBorders())
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return hasTraitFlag(&CvTraitInfo::isNoPillageInBorders);
 }
 
 // Gold this turn from iGoldInterestPercent / iGoldInterestMax of the traits (added by this mod): each trait gives its %
@@ -7578,15 +7564,9 @@ bool CvPlayer::isNewCityStateReligion() const
 {
 	int iI;
 
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	if (hasTraitFlag(&CvTraitInfo::isNewCityStateReligion))
 	{
-		if (hasTrait((TraitTypes)iI))
-		{
-			if (GC.getTraitInfo((TraitTypes)iI).isNewCityStateReligion())
-			{
-				return true;
-			}
-		}
+		return true;
 	}
 
 	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)

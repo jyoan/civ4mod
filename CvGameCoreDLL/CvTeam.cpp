@@ -2481,27 +2481,41 @@ bool CvTeam::isBonusObsolete(BonusTypes eBonus) const
 	return false;
 }
 
-// A living player of the team has a trait with bIgnoreBonusObsolescence, or the bonus in NoObsoleteBonuses (added by this mod)
-bool CvTeam::isBonusObsolescenceIgnored(BonusTypes eBonus) const
+// A living player of the team has a trait that says yes (CvPlayer::hasTraitFlag; added by this mod)
+bool CvTeam::hasPlayerTraitFlag(bool (CvTraitInfo::*pGetter)() const) const
 {
-	int iI, iJ;
+	int iI;
 
 	for (iI = 0; iI < MAX_PLAYERS; iI++)
 	{
-		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
-		if (kPlayer.isAlive() && kPlayer.getTeam() == getID() && kPlayer.getLeaderType() != NO_LEADER)
+		if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == getID() && GET_PLAYER((PlayerTypes)iI).hasTraitFlag(pGetter))
 		{
-			for (iJ = 0; iJ < GC.getNumTraitInfos(); iJ++)
-			{
-				if (GC.getTraitInfo((TraitTypes)iJ).isBonusObsolescenceIgnored(eBonus) && kPlayer.hasTrait((TraitTypes)iJ))
-				{
-					return true;
-				}
-			}
+			return true;
 		}
 	}
 
 	return false;
+}
+
+bool CvTeam::hasPlayerTraitFlag(bool (CvTraitInfo::*pGetter)(int) const, int iArg) const
+{
+	int iI;
+
+	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == getID() && GET_PLAYER((PlayerTypes)iI).hasTraitFlag(pGetter, iArg))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// A living player of the team has a trait with bIgnoreBonusObsolescence, or the bonus in NoObsoleteBonuses (added by this mod)
+bool CvTeam::isBonusObsolescenceIgnored(BonusTypes eBonus) const
+{
+	return hasPlayerTraitFlag(&CvTraitInfo::isBonusObsolescenceIgnored, eBonus);
 }
 
 
@@ -2535,29 +2549,12 @@ bool CvTeam::isBarbarian() const
 // bBarbarianAlly of the traits (added by this mod, as FFH2): a living player of the team has such a trait
 bool CvTeam::isBarbarianAlly() const
 {
-	int iI;
-
 	if (isBarbarian())
 	{
 		return false;
 	}
 
-	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
-	{
-		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
-		if (kPlayer.isAlive() && kPlayer.getTeam() == getID() && kPlayer.getLeaderType() != NO_LEADER)
-		{
-			for (int iTrait = 0; iTrait < GC.getNumTraitInfos(); iTrait++)
-			{
-				if (GC.getTraitInfo((TraitTypes)iTrait).isBarbarianAlly() && kPlayer.hasTrait((TraitTypes)iTrait))
-				{
-					return true;
-				}
-			}
-		}
-	}
-
-	return false;
+	return hasPlayerTraitFlag(&CvTraitInfo::isBarbarianAlly);
 }
 
 // After a player of the team gains or loses a trait with bBarbarianAlly (added by this mod): peace with the barbarians, or

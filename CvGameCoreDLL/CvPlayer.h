@@ -250,6 +250,8 @@ public:
 	int sumTraitValues(int (CvTraitInfo::*pGetter)() const) const;								// added by this mod
 	int sumTraitValues(int (CvTraitInfo::*pGetter)(int) const, int iArg) const;				// added by this mod
 	int sumTraitValues(int (CvTraitInfo::*pGetter)(int, int) const, int iArg1, int iArg2) const;	// added by this mod
+	bool hasTraitFlag(bool (CvTraitInfo::*pGetter)() const) const;						// added by this mod
+	bool hasTraitFlag(bool (CvTraitInfo::*pGetter)(int) const, int iArg) const;			// added by this mod
 	int getCultureRangeChange() const;							// Exposed to Python: iCultureRangeChange of the traits
 	bool isObserver() const;										// added by this mod: the player watching in the AI observe mode
 	void updateTraitBonusPlots(TraitTypes eTrait, bool bAdd);		// added by this mod: PrereqOrTraits of the bonuses

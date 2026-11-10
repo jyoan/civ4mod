@@ -10411,18 +10411,7 @@ bool CvUnit::isImpassablePlotPassageRemoveFeature(const CvPlot* pPlot) const
 // iRiverCrossingDamagePercent of the promotions, the sum (added by this mod)
 int CvUnit::getRiverCrossingDamagePercent() const
 {
-	int iPercent = 0;
-	int iI;
-
-	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
-	{
-		if (isHasPromotion((PromotionTypes)iI))
-		{
-			iPercent += GC.getPromotionInfo((PromotionTypes)iI).getRiverCrossingDamagePercent();
-		}
-	}
-
-	return iPercent;
+	return sumPromotionValues(&CvPromotionInfo::getRiverCrossingDamagePercent);
 }
 
 // FeatureSpreads (added by this mod): the plot can get the feature. Without bForce, as the features that grow by themselves
@@ -10530,20 +10519,69 @@ bool CvUnit::isHiddenNationality() const
 	return (m_pUnitInfo->isHiddenNationality() || m_iHiddenNationalityCount > 0);
 }
 
-// bChooseGoody of the promotions (added by this mod)
-bool CvUnit::isChooseGoody() const
+// A promotion of the unit says yes (added by this mod)
+bool CvUnit::hasPromotionFlag(bool (CvPromotionInfo::*pGetter)() const) const
 {
 	int iI;
 
 	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
 	{
-		if (isHasPromotion((PromotionTypes)iI) && GC.getPromotionInfo((PromotionTypes)iI).isChooseGoody())
+		if ((GC.getPromotionInfo((PromotionTypes)iI).*pGetter)() && isHasPromotion((PromotionTypes)iI))
 		{
 			return true;
 		}
 	}
 
 	return false;
+}
+
+// The promotions of the unit that say yes (added by this mod)
+int CvUnit::countPromotions(bool (CvPromotionInfo::*pGetter)() const) const
+{
+	int iCount = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	{
+		if ((GC.getPromotionInfo((PromotionTypes)iI).*pGetter)() && isHasPromotion((PromotionTypes)iI))
+		{
+			iCount++;
+		}
+	}
+
+	return iCount;
+}
+
+// The sum of a value of the promotions of the unit (added by this mod)
+int CvUnit::sumPromotionValues(int (CvPromotionInfo::*pGetter)() const) const
+{
+	int iSum = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	{
+		if (isHasPromotion((PromotionTypes)iI))
+		{
+			iSum += (GC.getPromotionInfo((PromotionTypes)iI).*pGetter)();
+		}
+	}
+
+	return iSum;
+}
+
+// The values of the promotions that setHasPromotion keeps up to date but the saves do not hold (added by this mod): after
+// loading
+void CvUnit::updatePromotionCounts()
+{
+	m_iCombatPercentInBorders = sumPromotionValues(&CvPromotionInfo::getCombatPercentInBorders);
+	m_iNoDamagePenaltyCount = countPromotions(&CvPromotionInfo::isNoDamagePenalty);
+	m_iHiddenNationalityCount = countPromotions(&CvPromotionInfo::isHiddenNationality);
+}
+
+// bChooseGoody of the promotions (added by this mod)
+bool CvUnit::isChooseGoody() const
+{
+	return hasPromotionFlag(&CvPromotionInfo::isChooseGoody);
 }
 
 // bNoDamagePenalty of the promotions (added by this mod). Not for aircraft: their strength is airCurrCombatStr()
@@ -13453,8 +13491,6 @@ bool CvUnit::potentialWarAction(const CvPlot* pPlot) const
 
 void CvUnit::read(FDataStreamBase* pStream)
 {
-	int iI;
-
 	// Init data before load
 	reset();
 
@@ -13569,19 +13605,8 @@ void CvUnit::read(FDataStreamBase* pStream)
 
 	pStream->Read(GC.getNumPromotionInfos(), m_pabHasPromotion);
 
-	// Not saved: the sum of iCombatPercentInBorders and the count of bNoDamagePenalty of the promotions (added by this mod)
-	m_iCombatPercentInBorders = 0;
-	m_iNoDamagePenaltyCount = 0;
-	m_iHiddenNationalityCount = 0;
-	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
-	{
-		if (m_pabHasPromotion[iI])
-		{
-			m_iCombatPercentInBorders += GC.getPromotionInfo((PromotionTypes)iI).getCombatPercentInBorders();
-			m_iNoDamagePenaltyCount += (GC.getPromotionInfo((PromotionTypes)iI).isNoDamagePenalty() ? 1 : 0);
-			m_iHiddenNationalityCount += (GC.getPromotionInfo((PromotionTypes)iI).isHiddenNationality() ? 1 : 0);
-		}
-	}
+	// Not saved: the values of the promotions that setHasPromotion keeps (added by this mod)
+	updatePromotionCounts();
 
 	pStream->Read(GC.getNumTerrainInfos(), m_paiTerrainDoubleMoveCount);
 	pStream->Read(GC.getNumFeatureInfos(), m_paiFeatureDoubleMoveCount);
