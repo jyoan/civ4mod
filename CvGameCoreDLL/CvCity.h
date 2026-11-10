@@ -650,6 +650,7 @@ public:
 	int getCommerceFromPercent(CommerceTypes eIndex, int iYieldRate) const;			// Exposed to Python
 	int getBaseCommerceRate(CommerceTypes eIndex) const;												// Exposed to Python
 	int getBaseCommerceRateTimes100(CommerceTypes eIndex) const;												// Exposed to Python
+	int getSpecialistTypeExtraCommerce(CommerceTypes eIndex) const;	// added by this mod
 	int getTotalCommerceRateModifier(CommerceTypes eIndex) const;								// Exposed to Python
 	void updateCommerce(CommerceTypes eIndex);
 	void updateCommerce();

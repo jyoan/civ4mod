@@ -8783,10 +8783,32 @@ int CvCity::getBaseCommerceRateTimes100(CommerceTypes eIndex) const
 	iBaseCommerceRate = getCommerceFromPercent(eIndex, getYieldRate(YIELD_COMMERCE) * 100);
 
 	iBaseCommerceRate += 100 * ((getSpecialistPopulation() + getNumGreatPeople()) * GET_PLAYER(getOwnerINLINE()).getSpecialistExtraCommerce(eIndex));
+	iBaseCommerceRate += 100 * getSpecialistTypeExtraCommerce(eIndex);	// SpecialistCommerceChanges of the traits (added by this mod)
 	iBaseCommerceRate += 100 * (getBuildingCommerce(eIndex) + getSpecialistCommerce(eIndex) + getReligionCommerce(eIndex) + getCorporationCommerce(eIndex) + GET_PLAYER(getOwnerINLINE()).getFreeCityCommerce(eIndex));
 	iBaseCommerceRate += 100 * (getAngryCommerce(eIndex) + getUnhealthyCommerce(eIndex));	// added by this mod
 
 	return iBaseCommerceRate;
+}
+
+// SpecialistCommerceChanges of the traits of the owner (added by this mod): for each specialist type, the specialists and
+// settled great people of the type times what the owner adds to one of them
+int CvCity::getSpecialistTypeExtraCommerce(CommerceTypes eIndex) const
+{
+	CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+	int iCommerce = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
+	{
+		int iExtra = kOwner.getSpecialistTypeExtraCommerce((SpecialistTypes)iI, eIndex);
+
+		if (iExtra != 0)
+		{
+			iCommerce += (getSpecialistCount((SpecialistTypes)iI) + getFreeSpecialistCount((SpecialistTypes)iI)) * iExtra;
+		}
+	}
+
+	return iCommerce;
 }
 
 

@@ -257,6 +257,8 @@ public:
 	void updateBuildingChangeEffects();									// added by this mod
 	int getBuildingClassExtraCommerce(BuildingClassTypes eBuildingClass, CommerceTypes eCommerce) const;	// added by this mod
 	void changeBuildingClassExtraCommerce(BuildingClassTypes eBuildingClass, CommerceTypes eCommerce, int iChange);	// added by this mod
+	int getSpecialistTypeExtraCommerce(SpecialistTypes eSpecialist, CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
+	void changeSpecialistTypeExtraCommerce(SpecialistTypes eSpecialist, CommerceTypes eCommerce, int iChange);	// added by this mod
 	bool isNoPillageInBorders() const;								// Exposed to Python
 	int getMinCityRange() const;									// Exposed to Python: MIN_CITY_RANGE with iMinCityRangeChange of the traits
 	bool isFoundInForeignTerritory() const;							// Exposed to Python: bFoundInForeignTerritory of the traits
@@ -1315,6 +1317,7 @@ protected:
 	int* m_paiImprovementCount;
 	int* m_paiFreeTraitCount;				// traits given during the game (added by this mod)
 	int* m_paiBuildingClassExtraCommerce;	// GlobalBuildingExtraCommerces of the buildings the player has, per building class and commerce (added by this mod)
+	int* m_paiSpecialistTypeExtraCommerce;	// SpecialistCommerceChanges of the traits, per specialist type and commerce (added by this mod)
 	int* m_paiConditionalTraitCount;		// the part of m_paiFreeTraitCount given by ConditionalFreeTraits (added by this mod)
 	int* m_paiFreeBuildingCount;
 	int* m_paiExtraBuildingHappiness;

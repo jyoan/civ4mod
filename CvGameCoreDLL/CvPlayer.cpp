@@ -62,6 +62,7 @@ CvPlayer::CvPlayer()
 	m_paiFreeTraitCount = NULL;
 	m_paiConditionalTraitCount = NULL;
 	m_paiBuildingClassExtraCommerce = NULL;
+	m_paiSpecialistTypeExtraCommerce = NULL;
 	m_paiFreeBuildingCount = NULL;
 	m_paiExtraBuildingHappiness = NULL;
 	m_paiExtraBuildingHealth = NULL;
@@ -278,6 +279,7 @@ void CvPlayer::uninit()
 	SAFE_DELETE_ARRAY(m_paiFreeTraitCount);
 	SAFE_DELETE_ARRAY(m_paiConditionalTraitCount);
 	SAFE_DELETE_ARRAY(m_paiBuildingClassExtraCommerce);
+	SAFE_DELETE_ARRAY(m_paiSpecialistTypeExtraCommerce);
 	SAFE_DELETE_ARRAY(m_paiFreeBuildingCount);
 	SAFE_DELETE_ARRAY(m_paiExtraBuildingHappiness);
 	SAFE_DELETE_ARRAY(m_paiExtraBuildingHealth);
@@ -592,6 +594,13 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		for (iI = 0; iI < GC.getNumBuildingClassInfos() * NUM_COMMERCE_TYPES; iI++)
 		{
 			m_paiBuildingClassExtraCommerce[iI] = 0;
+		}
+
+		FAssertMsg(m_paiSpecialistTypeExtraCommerce==NULL, "about to leak memory, CvPlayer::m_paiSpecialistTypeExtraCommerce");
+		m_paiSpecialistTypeExtraCommerce = new int [GC.getNumSpecialistInfos() * NUM_COMMERCE_TYPES];
+		for (iI = 0; iI < GC.getNumSpecialistInfos() * NUM_COMMERCE_TYPES; iI++)
+		{
+			m_paiSpecialistTypeExtraCommerce[iI] = 0;
 		}
 
 		FAssertMsg(m_paiFreeBuildingCount==NULL, "about to leak memory, CvPlayer::m_paiFreeBuildingCount");
@@ -7156,6 +7165,25 @@ void CvPlayer::changeBuildingClassExtraCommerce(BuildingClassTypes eBuildingClas
 	}
 }
 
+// SpecialistCommerceChanges of the traits (added by this mod): commerce each specialist of the type adds, as
+// getSpecialistExtraCommerce does for all specialists. The cities add it to their base commerce.
+int CvPlayer::getSpecialistTypeExtraCommerce(SpecialistTypes eSpecialist, CommerceTypes eCommerce) const
+{
+	FAssertMsg(eSpecialist >= 0 && eSpecialist < GC.getNumSpecialistInfos(), "eSpecialist out of range");
+	FAssertMsg(eCommerce >= 0 && eCommerce < NUM_COMMERCE_TYPES, "eCommerce out of range");
+	return ((m_paiSpecialistTypeExtraCommerce != NULL) ? m_paiSpecialistTypeExtraCommerce[eSpecialist * NUM_COMMERCE_TYPES + eCommerce] : 0);
+}
+
+void CvPlayer::changeSpecialistTypeExtraCommerce(SpecialistTypes eSpecialist, CommerceTypes eCommerce, int iChange)
+{
+	if (iChange != 0 && m_paiSpecialistTypeExtraCommerce != NULL)
+	{
+		m_paiSpecialistTypeExtraCommerce[eSpecialist * NUM_COMMERCE_TYPES + eCommerce] += iChange;
+		updateCommerce(eCommerce);
+		AI_makeAssignWorkDirty();
+	}
+}
+
 // Recalculates the tech changes of buildings in all the cities (added by this mod)
 void CvPlayer::updateBuildingChangeEffects()
 {
@@ -9721,7 +9749,7 @@ int CvPlayer::specialistYield(SpecialistTypes eSpecialist, YieldTypes eYield) co
 
 int CvPlayer::specialistCommerce(SpecialistTypes eSpecialist, CommerceTypes eCommerce) const
 {
-	return (GC.getSpecialistInfo(eSpecialist).getCommerceChange(eCommerce) + getSpecialistExtraCommerce(eCommerce));
+	return (GC.getSpecialistInfo(eSpecialist).getCommerceChange(eCommerce) + getSpecialistExtraCommerce(eCommerce) + getSpecialistTypeExtraCommerce(eSpecialist, eCommerce));	// SpecialistCommerceChanges: added by this mod
 }
 
 
@@ -17792,6 +17820,7 @@ void CvPlayer::processCivics(CivicTypes eCivic, int iChange)
 // traits of the leader and the civilization. The other trait effects are summed up when used (CvPlayer::hasTrait).
 void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 {
+	int iI;
 	int iJ;
 
 	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
@@ -17839,6 +17868,20 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 		changeCommerceRateModifier(((CommerceTypes)iJ), kTrait.getCommerceModifier(iJ) * iChange);
 		changeCapitalCommerceRateModifier(((CommerceTypes)iJ), kTrait.getCapitalCommerceModifier(iJ) * iChange);
 		changeSpecialistExtraCommerce(((CommerceTypes)iJ), kTrait.getSpecialistExtraCommerce(iJ) * iChange);
+	}
+
+	// SpecialistYieldChanges (as the buildings) and SpecialistCommerceChanges (added by this mod)
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
+	{
+		for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
+		{
+			changeSpecialistExtraYield(((SpecialistTypes)iI), ((YieldTypes)iJ), kTrait.getSpecialistYieldChange(iI, iJ) * iChange);
+		}
+
+		for (iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)
+		{
+			changeSpecialistTypeExtraCommerce(((SpecialistTypes)iI), ((CommerceTypes)iJ), kTrait.getSpecialistCommerceChange(iI, iJ) * iChange);
+		}
 	}
 
 	for (iJ = 0; iJ < GC.getNumCivicOptionInfos(); iJ++)
@@ -18368,6 +18411,12 @@ void CvPlayer::read(FDataStreamBase* pStream)
 		pStream->Read(GC.getNumBuildingClassInfos() * NUM_COMMERCE_TYPES, m_paiBuildingClassExtraCommerce);
 	}
 
+	// SpecialistCommerceChanges of the traits (uiFlag 8). Older saves have none (the traits of the start are not processed again)
+	if (uiFlag > 7)
+	{
+		pStream->Read(GC.getNumSpecialistInfos() * NUM_COMMERCE_TYPES, m_paiSpecialistTypeExtraCommerce);
+	}
+
 	// iPeaceAngerPerTurn of the traits (uiFlag 6)
 	if (uiFlag > 5)
 	{
@@ -18390,7 +18439,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 7;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered (added by this mod)
+	uint uiFlag = 8;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -18802,6 +18851,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(GC.getNumTraitInfos(), m_paiFreeTraitCount);
 	pStream->Write(GC.getNumTraitInfos(), m_paiConditionalTraitCount);
 	pStream->Write(GC.getNumBuildingClassInfos() * NUM_COMMERCE_TYPES, m_paiBuildingClassExtraCommerce);
+	pStream->Write(GC.getNumSpecialistInfos() * NUM_COMMERCE_TYPES, m_paiSpecialistTypeExtraCommerce);
 	pStream->Write(m_iPeaceAngerTimes100);
 	pStream->Write(m_iNumUnitsKilled);
 	pStream->Write(m_iNumCitiesConquered);

@@ -2183,6 +2183,11 @@ bool CyPlayer::isNoAutoRaze()
 	return m_pPlayer ? m_pPlayer->isNoAutoRaze() : false;
 }
 
+int CyPlayer::getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce)
+{
+	return m_pPlayer ? m_pPlayer->getSpecialistTypeExtraCommerce((SpecialistTypes)eSpecialist, (CommerceTypes)eCommerce) : 0;
+}
+
 int CyPlayer::getFeatureProductionChange(int /*FeatureTypes*/ eFeature)
 {
 	return m_pPlayer ? m_pPlayer->getFeatureProductionChange((FeatureTypes)eFeature) : 0;

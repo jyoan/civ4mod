@@ -20318,6 +20318,43 @@ int CvTraitInfo::getFeatureHealthChange(int iFeature) const
 	return ((iFeature > -1) && (iFeature < (int)m_aiFeatureHealthChange.size())) ? m_aiFeatureHealthChange[iFeature] : 0;
 }
 
+int CvTraitInfo::getSpecialistYieldChange(int iSpecialist, int iYield) const
+{
+	if ((iSpecialist < 0) || (iSpecialist >= (int)m_aaiSpecialistYieldChange.size()) || (iYield < 0) || (iYield >= NUM_YIELD_TYPES))
+	{
+		return 0;
+	}
+	return m_aaiSpecialistYieldChange[iSpecialist][iYield];
+}
+
+int CvTraitInfo::getSpecialistCommerceChange(int iSpecialist, int iCommerce) const
+{
+	if ((iSpecialist < 0) || (iSpecialist >= (int)m_aaiSpecialistCommerceChange.size()) || (iCommerce < 0) || (iCommerce >= NUM_COMMERCE_TYPES))
+	{
+		return 0;
+	}
+	return m_aaiSpecialistCommerceChange[iSpecialist][iCommerce];
+}
+
+// The yields of one specialist type, or NULL when the trait has none (for the help text)
+int* CvTraitInfo::getSpecialistYieldChangeArray(int iSpecialist) const
+{
+	if ((iSpecialist < 0) || (iSpecialist >= (int)m_aaiSpecialistYieldChange.size()))
+	{
+		return NULL;
+	}
+	return const_cast<int*>(&m_aaiSpecialistYieldChange[iSpecialist][0]);
+}
+
+int* CvTraitInfo::getSpecialistCommerceChangeArray(int iSpecialist) const
+{
+	if ((iSpecialist < 0) || (iSpecialist >= (int)m_aaiSpecialistCommerceChange.size()))
+	{
+		return NULL;
+	}
+	return const_cast<int*>(&m_aaiSpecialistCommerceChange[iSpecialist][0]);
+}
+
 int CvTraitInfo::getImprovementYieldChanges(int iImprovement, int iYield) const
 {
 	FAssertMsg(iImprovement < GC.getNumImprovementInfos(), "Index out of bounds");
@@ -20468,7 +20505,7 @@ int* CvTraitInfo::getUnhealthyCommerceChangeArray() const
 
 // Reads a list of yield changes such as <TerrainYieldChanges>: each item has the type tag (TerrainType) and
 // the yields tag (Yields). The types are kept as strings, because some (improvements) are loaded after traits.
-static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, const TCHAR* szYieldsTag, std::vector<CvString>& aszTypes, std::vector< std::vector<int> >& aaiYields)
+static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, const TCHAR* szYieldsTag, std::vector<CvString>& aszTypes, std::vector< std::vector<int> >& aaiYields, bool bCommerce = false)
 {
 	CvString szTextVal;
 	int* paiYields;
@@ -20487,11 +20524,19 @@ static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, con
 				if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szYieldsTag))
 				{
 					paiYields = NULL;
-					pXML->SetYields(&paiYields);
+					// bCommerce: a list of commerce (<CommerceChanges>) instead of yields (added by this mod)
+					if (bCommerce)
+					{
+						pXML->SetCommerce(&paiYields);
+					}
+					else
+					{
+						pXML->SetYields(&paiYields);
+					}
 					if (paiYields != NULL)
 					{
 						aszTypes.push_back(szTextVal);
-						aaiYields.push_back(std::vector<int>(paiYields, paiYields + NUM_YIELD_TYPES));
+						aaiYields.push_back(std::vector<int>(paiYields, paiYields + (bCommerce ? NUM_COMMERCE_TYPES : NUM_YIELD_TYPES)));
 						SAFE_DELETE_ARRAY(paiYields);
 					}
 
@@ -20509,7 +20554,7 @@ static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, con
 
 // Turns the types and yields from readYieldChanges() into one row per info (iNumInfos), or an empty result when
 // nothing is set. An unknown type shows the same message as FindInInfoClass.
-static void resolveYieldChanges(const TCHAR* szListTag, const std::vector<CvString>& aszTypes, const std::vector< std::vector<int> >& aaiYields, int iNumInfos, std::vector< std::vector<int> >& aaiYieldChanges)
+static void resolveYieldChanges(const TCHAR* szListTag, const std::vector<CvString>& aszTypes, const std::vector< std::vector<int> >& aaiYields, int iNumInfos, std::vector< std::vector<int> >& aaiYieldChanges, int iNumValues = NUM_YIELD_TYPES)
 {
 	char szMessage[1024];
 	int iIndex;
@@ -20532,7 +20577,7 @@ static void resolveYieldChanges(const TCHAR* szListTag, const std::vector<CvStri
 
 		if (aaiYieldChanges.empty())
 		{
-			aaiYieldChanges.resize(iNumInfos, std::vector<int>(NUM_YIELD_TYPES, 0));
+			aaiYieldChanges.resize(iNumInfos, std::vector<int>(iNumValues, 0));
 		}
 		aaiYieldChanges[iIndex] = aaiYields[i];
 	}
@@ -21043,6 +21088,11 @@ void CvTraitInfo::readPlotYieldChanges(CvXMLLoadUtility* pXML)
 	readTypeValueList(pXML, "FeatureProductionChanges", "FeatureProductionChange", "FeatureType", "iProductionChange", GC.getNumFeatureInfos(), m_aiFeatureProductionChange);
 	readTypeValueList(pXML, "FeatureGrowthChanges", "FeatureGrowthChange", "FeatureType", "iGrowthChange", GC.getNumFeatureInfos(), m_aiFeatureGrowthChange);
 	readTypeValueList(pXML, "FeatureHealthChanges", "FeatureHealthChange", "FeatureType", "iHealthPercent", GC.getNumFeatureInfos(), m_aiFeatureHealthChange);
+	// The same format as the building SpecialistYieldChanges. The specialists are loaded before the traits
+	readYieldChanges(pXML, "SpecialistYieldChanges", "SpecialistYieldChange", "SpecialistType", "YieldChanges", aszTypes, aaiYields);
+	resolveYieldChanges("SpecialistYieldChanges", aszTypes, aaiYields, GC.getNumSpecialistInfos(), m_aaiSpecialistYieldChange);
+	readYieldChanges(pXML, "SpecialistCommerceChanges", "SpecialistCommerceChange", "SpecialistType", "CommerceChanges", aszTypes, aaiYields, true);
+	resolveYieldChanges("SpecialistCommerceChanges", aszTypes, aaiYields, GC.getNumSpecialistInfos(), m_aaiSpecialistCommerceChange, NUM_COMMERCE_TYPES);
 	// Same format as the civic ImprovementYieldChanges. Resolved in readPass3()
 	readYieldChanges(pXML, "ImprovementYieldChanges", "ImprovementYieldChange", "ImprovementType", "ImprovementYields", m_aszImprovementYieldChangeTypes, m_aaiImprovementYieldChangeValues);
 	// Same format as TerrainYieldChanges. Resolved in readPass3()

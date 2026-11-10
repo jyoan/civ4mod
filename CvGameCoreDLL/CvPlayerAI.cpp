@@ -15328,6 +15328,7 @@ void CvPlayerAI::AI_calculateAverages() const
 		for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
 		{
 			iExtraCommerce +=((pLoopCity->getSpecialistPopulation() + pLoopCity->getNumGreatPeople()) * getSpecialistExtraCommerce((CommerceTypes)iI));
+			iExtraCommerce += pLoopCity->getSpecialistTypeExtraCommerce((CommerceTypes)iI);	// SpecialistCommerceChanges: added by this mod
 			iExtraCommerce += (pLoopCity->getBuildingCommerce((CommerceTypes)iI) + pLoopCity->getSpecialistCommerce((CommerceTypes)iI) + pLoopCity->getReligionCommerce((CommerceTypes)iI) + getFreeCityCommerce((CommerceTypes)iI));
 		}
 		iTotalCommerce += iExtraCommerce;

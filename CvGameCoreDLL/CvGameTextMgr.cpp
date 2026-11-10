@@ -3912,6 +3912,21 @@ void CvGameTextMgr::parseTraitYieldEffects(CvWStringBuffer& szHelpString, TraitT
 	setCommerceChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_IN_CAPITAL"), kTrait.getCapitalCommerceModifierArray(), true, false);
 	setCommerceChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_PER_SPECIALIST"), kTrait.getSpecialistExtraCommerceArray(), false, false);
 
+	// SpecialistYieldChanges / SpecialistCommerceChanges: "Scientist: +1 food, +2 gold" (added by this mod)
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); ++iI)
+	{
+		CvWString szStart;
+		szStart.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), getLinkText(GC.getSpecialistInfo((SpecialistTypes)iI).getDescription()).GetCString());
+		if (kTrait.getSpecialistYieldChangeArray(iI) != NULL)
+		{
+			setYieldChangeHelp(szHelpString, szStart, L": ", L"", kTrait.getSpecialistYieldChangeArray(iI), false, false);
+		}
+		if (kTrait.getSpecialistCommerceChangeArray(iI) != NULL)
+		{
+			setCommerceChangeHelp(szHelpString, szStart, L": ", L"", kTrait.getSpecialistCommerceChangeArray(iI), false, false);
+		}
+	}
+
 	// TerrainYieldChanges / FeatureYieldChanges: one line per yield and value, like the civic improvement yields
 	for (iI = 0; iI < NUM_YIELD_TYPES; ++iI)
 	{
@@ -14479,7 +14494,7 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_SLIDER_PERCENT_FLOAT", owner.getCommercePercent(eCommerceType), city.getYieldRate(YIELD_COMMERCE), szRate.GetCString(), info.getChar()));
 	szBuffer.append(NEWLINE);
 
-	int iSpecialistCommerce = city.getSpecialistCommerce(eCommerceType) + (city.getSpecialistPopulation() + city.getNumGreatPeople()) * owner.getSpecialistExtraCommerce(eCommerceType);
+	int iSpecialistCommerce = city.getSpecialistCommerce(eCommerceType) + (city.getSpecialistPopulation() + city.getNumGreatPeople()) * owner.getSpecialistExtraCommerce(eCommerceType) + city.getSpecialistTypeExtraCommerce(eCommerceType);	// SpecialistCommerceChanges: added by this mod
 	if (0 != iSpecialistCommerce)
 	{
 		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_SPECIALIST_COMMERCE", iSpecialistCommerce, info.getChar(), L"TXT_KEY_CONCEPT_SPECIALISTS"));

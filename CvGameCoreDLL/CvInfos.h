@@ -4793,6 +4793,12 @@ public:
 	int getFeatureProductionChange(int iFeature) const;				// Exposed to Python
 	int getFeatureGrowthChange(int iFeature) const;				// Exposed to Python
 	int getFeatureHealthChange(int iFeature) const;				// Exposed to Python
+	// SpecialistYieldChanges and SpecialistCommerceChanges (added by this mod, from The History of Three Kingdoms): per
+	// specialist type, the yields and commerce each such specialist (and settled great person) adds
+	int getSpecialistYieldChange(int iSpecialist, int iYield) const;		// Exposed to Python
+	int getSpecialistCommerceChange(int iSpecialist, int iCommerce) const;	// Exposed to Python
+	int* getSpecialistYieldChangeArray(int iSpecialist) const;
+	int* getSpecialistCommerceChangeArray(int iSpecialist) const;
 	int getImprovementYieldChanges(int iImprovement, int iYield) const;				// Exposed to Python
 	int getRiverPlotYieldChange(int i) const;				// Exposed to Python
 	int* getRiverPlotYieldChangeArray() const;
@@ -4958,6 +4964,8 @@ protected:
 	std::vector<int> m_aiFeatureProductionChange;		// [feature], empty when not set (added by this mod)
 	std::vector<int> m_aiFeatureGrowthChange;		// [feature], empty when not set (added by this mod)
 	std::vector<int> m_aiFeatureHealthChange;		// [feature], empty when not set (added by this mod)
+	std::vector< std::vector<int> > m_aaiSpecialistYieldChange;		// [specialist][yield], empty when not set (added by this mod)
+	std::vector< std::vector<int> > m_aaiSpecialistCommerceChange;	// [specialist][commerce], empty when not set (added by this mod)
 	std::vector< std::vector<int> > m_aaiImprovementYieldChange;		// [improvement][yield], empty when not set
 	CvString m_szCityRadiusCultureLevel;		// read() keeps the type as a string until readPass3()
 	std::vector<CvString> m_aszImprovementYieldChangeTypes;		// read() keeps the types as strings until readPass3(),
