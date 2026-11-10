@@ -143,7 +143,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - `Assets\Python\` に置いたファイルは本体の同名ファイルを置き換える。`<BTS>\Assets\Python\` から同じ相対パス（`EntryPoints\`、`Screens\` など）でコピーしてから編集する
 - 元の Python はすべて ASCII・CRLF。日本語を書く必要があるなら、ファイル先頭に coding 宣言を入れる
 - DLL の機能を Python に公開するには `Cy*.cpp` と `Cy*Interface*.cpp`（boost::python）に追加する
-- Mod に入れている Python: `Screens\CvPediaMain.py`・`Screens\CvPediaCivilization.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`・`Screens\CvVictoryScreen.py`・`Screens\CvMainInterface.py`・`Screens\CvTechChooser.py`・`CvEventManager.py`（BtS(J) のコピーに追記）、`Screens\CvCivicsScreen.py`（無印 Civ4(J) のコピーに追記。BtS(J)・Warlords(J) には無く、無印のものが使われている）、`Screens\CvFinanceAdvisor.py`（Warlords(J) のコピーに追記。BtS(J) には無い）、`Screens\CvPediaTrait.py`・`Screens\CvPediaSpell.py`・`EntryPoints\CvSpellInterface.py`・`EntryPoints\CvTraitInterface.py`（新規）
+- Mod に入れている Python: `Screens\CvPediaMain.py`・`Screens\CvPediaCivilization.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`・`Screens\CvVictoryScreen.py`・`Screens\CvMainInterface.py`・`Screens\CvTechChooser.py`・`CvEventManager.py`（BtS(J) のコピーに追記）、`Screens\CvCivicsScreen.py`（無印 Civ4(J) のコピーに追記。BtS(J)・Warlords(J) には無く、無印のものが使われている）、`Screens\CvFinanceAdvisor.py`（Warlords(J) のコピーに追記。BtS(J) には無い）、`CvAdvisorUtils.py`・`Screens\CvDomesticAdvisor.py`・`EntryPoints\CvRandomEventInterface.py`（BtS(J) のコピーに Unofficial Patch の修正）、`CvMapGeneratorUtil.py`（Warlords(J) のコピーに同じ）、`pyHelper\Popup.py`（無印 Civ4(J) のコピーに同じ）、`Screens\CvPediaTrait.py`・`Screens\CvPediaSpell.py`・`EntryPoints\CvSpellInterface.py`・`EntryPoints\CvTraitInterface.py`（新規）
 - 文法チェック: Python 3.14 が入っている（`python -I`）。Python 2.4 そのものではないが、インデントや括弧の誤りは見つかる。BtS のファイルには Python 2 の `print` 文があって途中で止まるので、`print` 行を `pass` に置き換えた複製で、**編集前と編集後の両方**をチェックして比べる
 
 ## Mod の設計方針
@@ -179,7 +179,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
   - コミットの前に今のブランチを確かめる。`build.bat` が配置するのは**今のブランチ**の `Assets\` なので、ブランチを切り替えたら配置し直し、Info の数が違うのでキャッシュも消す
   - `civ-design` のテキストは `CIV4GameText_ClaudeCivs.xml`、記録は `docs/civ-design.md` に書く（`master` の追記と衝突しないように）。`docs/test-log.md` は `.gitattributes` の `merge=union` で両方の追記が残る
   - 志向や昇進などの Info は両方のブランチで各ファイルの末尾に足すので、末尾の閉じタグの前に目印のコメント `<!-- Entries of the civ-design branch go below this line, entries of master above it -->` を置いてある。**`master` の項目は目印の上、`civ-design` の項目は目印の下**に足す。両方の変更の間に目印の行が挟まるので、マージが自動で済む。目印のないファイルに `civ-design` で項目を足すときは、先に `master` で目印を置く。それでも衝突したら、`master` のファイルに `civ-design` の項目を目印の下に足して作り直す。`master` の Info が増えると `civ-design` の Info の番号がずれるので、古いセーブは使えなくなることがある。マージ後はキャッシュを消す
-- `2b1bf36` が無改造の公式ソース。改造の全差分は `git diff 2b1bf36 -- CvGameCoreDLL` で見られる
+- `2b1bf36` が無改造の公式ソース。改造の全差分は `git diff 2b1bf36 -- CvGameCoreDLL` で見られる。Unofficial 3.19 Patch 1.6 を取り込んである（`UNOFFICIAL_PATCH` の印。取り込まなかった部分と、この Mod の改変と重なった箇所は `docs/xml-tags.md` の「BtS 本体の修正」）
 - Edit ツールは、書き換えた既存行の**行末の空白・タブを消す**ことがある。編集後は `git diff` で意図しない削除行（`-` で始まる行）がないか確認し、あれば元に戻す
 - `Assets/CvGameCoreDLL.dll` も git で管理する。DLL を作り直したら、元になったソース変更と同じコミットに含める
 - `core.autocrlf=false`（ファイルはそのまま保存される）。既存ファイルは CRLF なので、新しいテキストファイルも CRLF で作る

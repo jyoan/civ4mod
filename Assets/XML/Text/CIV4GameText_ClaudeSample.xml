@@ -561,4 +561,32 @@
 		<Spanish>[ICON_BULLET]With %s1_Source: gains %s2_Trait (%s3_Conditions)</Spanish>
 		<Japanese>[ICON_BULLET]%s1_Source&#12364;&#12354;&#12428;&#12400;%s2_Trait&#12434;&#24471;&#12427;&#65288;%s3_Conditions&#65289;</Japanese>
 	</TEXT>
+	<!-- Unofficial 3.19 Patch (jdog5000): the keys of CIV4GameText_UnofficialPatch.xml and the key it uses without text -->
+	<TEXT>
+		<Tag>TXT_KEY_TERRAIN_TURN_DAMAGE</Tag>
+		<English>[NEWLINE][ICON_BULLET]%D1%% damage/turn</English>
+		<French>[NEWLINE][ICON_BULLET]%D1%% dommage/tour</French>
+		<German>[NEWLINE][ICON_BULLET]%D1%% schaden/runde</German>
+		<Italian>[NEWLINE][ICON_BULLET]%D1%% danni/turno</Italian>
+		<Spanish>[NEWLINE][ICON_BULLET]%D1%% da&#241;o/turno</Spanish>
+		<Japanese>[NEWLINE][ICON_BULLET]&#27598;&#12479;&#12540;&#12531;%D1%%&#12398;&#12480;&#12513;&#12540;&#12472;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TERRAIN_TURN_HEALING</Tag>
+		<English>[NEWLINE][ICON_BULLET]%D1%% healing/turn</English>
+		<French>[NEWLINE][ICON_BULLET]%D1%% soigner/tour</French>
+		<German>[NEWLINE][ICON_BULLET]%D1%% heilen/runde</German>
+		<Italian>[NEWLINE][ICON_BULLET]%D1%% cura/turno</Italian>
+		<Spanish>[NEWLINE][ICON_BULLET]%D1%% cura/turno</Spanish>
+		<Japanese>[NEWLINE][ICON_BULLET]&#27598;&#12479;&#12540;&#12531;%D1%%&#12398;&#22238;&#24489;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CHEATERS_NEVER_PROSPER</Tag>
+		<English>You cannot choose a free tech now.</English>
+		<French>You cannot choose a free tech now.</French>
+		<German>You cannot choose a free tech now.</German>
+		<Italian>You cannot choose a free tech now.</Italian>
+		<Spanish>You cannot choose a free tech now.</Spanish>
+		<Japanese>&#20170;&#12399;&#28961;&#26009;&#12398;&#25216;&#34899;&#12434;&#36984;&#12409;&#12414;&#12379;&#12435;&#12290;</Japanese>
+	</TEXT>
 </Civ4GameText>
