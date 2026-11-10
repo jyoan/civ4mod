@@ -4675,6 +4675,7 @@ public:
 	int getGoldenAgeLandMovesChange() const;		// Exposed to Python
 	int getGoldenAgeSeaMovesChange() const;		// Exposed to Python
 	bool isInlandCanals() const;					// Exposed to Python
+	bool isBarbarianAlly() const;				// Exposed to Python
 	int getGoldInterestPercent() const;				// Exposed to Python
 	int getGoldInterestMax() const;					// Exposed to Python
 	int getPeaceAngerPerTurn() const;				// Exposed to Python
@@ -4804,6 +4805,7 @@ protected:
 	int m_iGoldenAgeLandMovesChange;
 	int m_iGoldenAgeSeaMovesChange;
 	bool m_bInlandCanals;
+	bool m_bBarbarianAlly;
 	int m_iGoldInterestPercent;
 	int m_iGoldInterestMax;
 	int m_iPeaceAngerPerTurn;

@@ -19063,6 +19063,7 @@ m_iCorporationSpreadChange(0),
 m_iGoldenAgeLandMovesChange(0),
 m_iGoldenAgeSeaMovesChange(0),
 m_bInlandCanals(false),
+m_bBarbarianAlly(false),
 m_iGoldInterestPercent(0),
 m_iGoldInterestMax(0),
 m_iPeaceAngerPerTurn(0),
@@ -19394,6 +19395,12 @@ int CvTraitInfo::getGoldenAgeSeaMovesChange() const
 bool CvTraitInfo::isInlandCanals() const
 {
 	return m_bInlandCanals;
+}
+
+// The team of the player is at peace with the barbarians (added by this mod, as FFH2)
+bool CvTraitInfo::isBarbarianAlly() const
+{
+	return m_bBarbarianAlly;
 }
 
 bool CvTraitInfo::isNoPillageInBorders() const
@@ -20124,6 +20131,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iGoldenAgeLandMovesChange, "iGoldenAgeLandMovesChange");
 	pXML->GetChildXmlValByName(&m_iGoldenAgeSeaMovesChange, "iGoldenAgeSeaMovesChange");
 	pXML->GetChildXmlValByName(&m_bInlandCanals, "bInlandCanals");
+	pXML->GetChildXmlValByName(&m_bBarbarianAlly, "bBarbarianAlly");
 	pXML->GetChildXmlValByName(&m_iGoldInterestPercent, "iGoldInterestPercent");
 	pXML->GetChildXmlValByName(&m_iGoldInterestMax, "iGoldInterestMax");
 	pXML->GetChildXmlValByName(&m_iPeaceAngerPerTurn, "iPeaceAngerPerTurn");

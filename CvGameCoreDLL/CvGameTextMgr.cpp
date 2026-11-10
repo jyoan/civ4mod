@@ -3439,6 +3439,81 @@ void CvGameTextMgr::parseTraitCivicEffects(CvWStringBuffer& szHelpString, TraitT
 	}
 }
 
+// The conditions of an item of ConditionalFreeTraits as text: "at war, Buddhism is the state religion" (added by this mod).
+// bShowRecord: with the record and the favorite civic of eActivePlayer. iSkipCivic: a PrereqCivic not to name (the help of
+// that civic lists the item)
+static CvWString getConditionalFreeTraitConditions(const ConditionalFreeTrait& kCondition, bool bShowRecord, PlayerTypes eActivePlayer, int iSkipCivic)
+{
+	CvWString szConditions;
+	CvWString szText;
+
+	if (kCondition.bAtWar)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_AT_WAR"));
+	}
+	if (kCondition.bAtPeace)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_AT_PEACE"));
+	}
+	if (kCondition.iStateReligion != NO_RELIGION)
+	{
+		szText = getLinkText(GC.getReligionInfo((ReligionTypes)kCondition.iStateReligion).getDescription());
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_STATE_RELIGION", szText.GetCString()));
+	}
+	if (kCondition.bNoStateReligion)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_NO_STATE_RELIGION"));
+	}
+	if (kCondition.iEraMin != NO_ERA && kCondition.iEraMin == kCondition.iEraMax)
+	{
+		appendConditionText(szConditions, GC.getEraInfo((EraTypes)kCondition.iEraMin).getDescription());
+	}
+	else if (kCondition.iEraMin != NO_ERA && kCondition.iEraMax != NO_ERA)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_RANGE", GC.getEraInfo((EraTypes)kCondition.iEraMin).getTextKeyWide(), GC.getEraInfo((EraTypes)kCondition.iEraMax).getTextKeyWide()));
+	}
+	else if (kCondition.iEraMin != NO_ERA)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_MIN", GC.getEraInfo((EraTypes)kCondition.iEraMin).getTextKeyWide()));
+	}
+	else if (kCondition.iEraMax != NO_ERA)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_MAX", GC.getEraInfo((EraTypes)kCondition.iEraMax).getTextKeyWide()));
+	}
+	if (kCondition.iPrereqCivic != NO_CIVIC && kCondition.iPrereqCivic != iSkipCivic)
+	{
+		szText = getLinkText(GC.getCivicInfo((CivicTypes)kCondition.iPrereqCivic).getDescription());
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_CIVIC", szText.GetCString()));
+	}
+	if (kCondition.bFavoriteCivic)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_FAVORITE_CIVIC"));
+		if (bShowRecord && GC.getLeaderHeadInfo(GET_PLAYER(eActivePlayer).getLeaderType()).getFavoriteCivic() != NO_CIVIC)
+		{
+			szText = getLinkText(GC.getCivicInfo((CivicTypes)GC.getLeaderHeadInfo(GET_PLAYER(eActivePlayer).getLeaderType()).getFavoriteCivic()).getDescription());
+			szConditions += gDLL->getText("TXT_KEY_CONDITION_FAVORITE_CIVIC_NOW", szText.GetCString());
+		}
+	}
+	if (kCondition.iMinUnitsKilled > 0)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_UNITS_KILLED", kCondition.iMinUnitsKilled));
+		if (bShowRecord)
+		{
+			szConditions += gDLL->getText("TXT_KEY_CONDITION_RECORD_NOW", GET_PLAYER(eActivePlayer).getNumUnitsKilled());
+		}
+	}
+	if (kCondition.iMinCitiesConquered > 0)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_CITIES_CONQUERED", kCondition.iMinCitiesConquered));
+		if (bShowRecord)
+		{
+			szConditions += gDLL->getText("TXT_KEY_CONDITION_RECORD_NOW", GET_PLAYER(eActivePlayer).getNumCitiesConquered());
+		}
+	}
+
+	return szConditions;
+}
+
 void CvGameTextMgr::parseTraitConditionalFreeTraits(CvWStringBuffer& szHelpString, TraitTypes eTrait)
 {
 	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
@@ -3454,71 +3529,7 @@ void CvGameTextMgr::parseTraitConditionalFreeTraits(CvWStringBuffer& szHelpStrin
 	for (iI = 0; iI < kTrait.getNumConditionalFreeTraits(); iI++)
 	{
 		const ConditionalFreeTrait& kCondition = kTrait.getConditionalFreeTrait(iI);
-		CvWString szConditions;
-
-		if (kCondition.bAtWar)
-		{
-			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_AT_WAR"));
-		}
-		if (kCondition.bAtPeace)
-		{
-			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_AT_PEACE"));
-		}
-		if (kCondition.iStateReligion != NO_RELIGION)
-		{
-			szText = getLinkText(GC.getReligionInfo((ReligionTypes)kCondition.iStateReligion).getDescription());
-			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_STATE_RELIGION", szText.GetCString()));
-		}
-		if (kCondition.bNoStateReligion)
-		{
-			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_NO_STATE_RELIGION"));
-		}
-		if (kCondition.iEraMin != NO_ERA && kCondition.iEraMin == kCondition.iEraMax)
-		{
-			appendConditionText(szConditions, GC.getEraInfo((EraTypes)kCondition.iEraMin).getDescription());
-		}
-		else if (kCondition.iEraMin != NO_ERA && kCondition.iEraMax != NO_ERA)
-		{
-			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_RANGE", GC.getEraInfo((EraTypes)kCondition.iEraMin).getTextKeyWide(), GC.getEraInfo((EraTypes)kCondition.iEraMax).getTextKeyWide()));
-		}
-		else if (kCondition.iEraMin != NO_ERA)
-		{
-			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_MIN", GC.getEraInfo((EraTypes)kCondition.iEraMin).getTextKeyWide()));
-		}
-		else if (kCondition.iEraMax != NO_ERA)
-		{
-			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ERA_MAX", GC.getEraInfo((EraTypes)kCondition.iEraMax).getTextKeyWide()));
-		}
-		if (kCondition.iPrereqCivic != NO_CIVIC)
-		{
-			szText = getLinkText(GC.getCivicInfo((CivicTypes)kCondition.iPrereqCivic).getDescription());
-			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_CIVIC", szText.GetCString()));
-		}
-		if (kCondition.bFavoriteCivic)
-		{
-			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_FAVORITE_CIVIC"));
-			if (bShowRecord && GC.getLeaderHeadInfo(GET_PLAYER(eActivePlayer).getLeaderType()).getFavoriteCivic() != NO_CIVIC)
-			{
-				szText = getLinkText(GC.getCivicInfo((CivicTypes)GC.getLeaderHeadInfo(GET_PLAYER(eActivePlayer).getLeaderType()).getFavoriteCivic()).getDescription());
-				szConditions += gDLL->getText("TXT_KEY_CONDITION_FAVORITE_CIVIC_NOW", szText.GetCString());
-			}
-		}
-		if (kCondition.iMinUnitsKilled > 0)
-		{
-			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_UNITS_KILLED", kCondition.iMinUnitsKilled));
-			if (bShowRecord)
-			{
-				szConditions += gDLL->getText("TXT_KEY_CONDITION_RECORD_NOW", GET_PLAYER(eActivePlayer).getNumUnitsKilled());
-			}
-		}
-		if (kCondition.iMinCitiesConquered > 0)
-		{
-			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_CITIES_CONQUERED", kCondition.iMinCitiesConquered));
-			if (bShowRecord)
-			{
-				szConditions += gDLL->getText("TXT_KEY_CONDITION_RECORD_NOW", GET_PLAYER(eActivePlayer).getNumCitiesConquered());
-			}
-		}
+		CvWString szConditions = getConditionalFreeTraitConditions(kCondition, bShowRecord, eActivePlayer, NO_CIVIC);
 
 		szText = getLinkText(GC.getTraitInfo((TraitTypes)kCondition.iTrait).getDescription());
 		if (szConditions.empty())
@@ -3606,6 +3617,12 @@ void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, Trait
 	if (kTrait.getGoldenAgeSeaMovesChange() != 0)
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_SEA_MOVES", kTrait.getGoldenAgeSeaMovesChange()));
+	}
+
+	// bBarbarianAlly (added by this mod)
+	if (kTrait.isBarbarianAlly())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_BARBARIAN_ALLY"));
 	}
 
 	// bInlandCanals (added by this mod)
@@ -5842,6 +5859,52 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		{
 			szHelpText.append(NEWLINE);
 			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_FAVORITE_GIVES_TRAIT", GC.getTraitInfo(aeFavoriteTraits[iI]).getTextKeyWide()));
+		}
+	}
+
+	// ConditionalFreeTraits with this civic, or a civic it replaces, as PrereqCivic (added by this mod): "With Test Trait: gains
+	// Test Trait (Barbarians) (at peace)". In the game, for the traits of the active player
+	{
+		bool bOnlyActive = (bPlayerContext && !bCivilopediaText && GC.getGameINLINE().isFinalInitialized() && GC.getGameINLINE().getActivePlayer() != NO_PLAYER);
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (bOnlyActive && !GET_PLAYER(GC.getGameINLINE().getActivePlayer()).hasTrait((TraitTypes)iI))
+			{
+				continue;
+			}
+
+			for (iJ = 0; iJ < GC.getTraitInfo((TraitTypes)iI).getNumConditionalFreeTraits(); iJ++)
+			{
+				const ConditionalFreeTrait& kCondition = GC.getTraitInfo((TraitTypes)iI).getConditionalFreeTrait(iJ);
+				if (kCondition.iPrereqCivic == NO_CIVIC)
+				{
+					continue;
+				}
+
+				// A civic can only replace an earlier one, so this ends
+				int iLoopCivic = eCivic;
+				while (iLoopCivic != NO_CIVIC && iLoopCivic != kCondition.iPrereqCivic)
+				{
+					iLoopCivic = GC.getCivicInfo((CivicTypes)iLoopCivic).getReplacedCivic();
+				}
+				if (iLoopCivic == NO_CIVIC)
+				{
+					continue;
+				}
+
+				CvWString szConditions = getConditionalFreeTraitConditions(kCondition, false, NO_PLAYER, kCondition.iPrereqCivic);
+				CvWString szSource = getLinkText(GC.getTraitInfo((TraitTypes)iI).getDescription());
+				CvWString szGained = getLinkText(GC.getTraitInfo((TraitTypes)kCondition.iTrait).getDescription());
+				szHelpText.append(NEWLINE);
+				if (szConditions.empty())
+				{
+					szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_CONDITIONAL_FREE_TRAIT", szSource.GetCString(), szGained.GetCString()));
+				}
+				else
+				{
+					szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_CONDITIONAL_FREE_TRAIT_IF", szSource.GetCString(), szGained.GetCString(), szConditions.GetCString()));
+				}
+			}
 		}
 	}
 

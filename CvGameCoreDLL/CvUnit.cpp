@@ -3943,6 +3943,13 @@ bool CvUnit::canEnterTerritory(TeamTypes eTeam, bool bIgnoreRightOfPassage) cons
 		return true;
 	}
 
+	// The barbarians and the teams at peace with them (bBarbarianAlly) enter each other's territory (added by this mod, as
+	// FFH2). Against everyone else the barbarians are at war, so this changes nothing there
+	if (GET_TEAM(eTeam).isBarbarian() || GET_TEAM(getTeam()).isBarbarian())
+	{
+		return true;
+	}
+
 	if (!bIgnoreRightOfPassage)
 	{
 		if (GET_TEAM(getTeam()).isOpenBorders(eTeam))

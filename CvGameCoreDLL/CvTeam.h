@@ -94,6 +94,8 @@ public:
 	bool isHuman() const;																																// Exposed to Python
 	bool isBarbarian() const;																														// Exposed to Python
 	bool isMinorCiv() const;																														// Exposed to Python
+	bool isBarbarianAlly() const;		// added by this mod: a player of the team has a trait with bBarbarianAlly. Exposed to Python
+	void updateBarbarianAlly();			// added by this mod: peace or war with the barbarians as isBarbarianAlly says
 	PlayerTypes getLeaderID() const;																										// Exposed to Python
 	PlayerTypes getSecretaryID() const;																									// Exposed to Python
 	HandicapTypes getHandicapType() const;																							// Exposed to Python

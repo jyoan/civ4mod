@@ -223,6 +223,12 @@ bool CyTeam::isBarbarian()
 	return m_pTeam ? m_pTeam->isBarbarian() : false;
 }
 
+// bBarbarianAlly of the traits (added by this mod)
+bool CyTeam::isBarbarianAlly()
+{
+	return m_pTeam ? m_pTeam->isBarbarianAlly() : false;
+}
+
 bool CyTeam::isMinorCiv()
 {
 	return m_pTeam ? m_pTeam->isMinorCiv() : false;

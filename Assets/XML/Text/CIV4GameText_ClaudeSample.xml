@@ -1730,6 +1730,33 @@
 		<Spanish>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</Spanish>
 		<Japanese>[ICON_BULLET]&#33382;&#33337;&#12364;&#12289;&#27700;&#12395;&#25509;&#12375;&#12390;&#12356;&#12394;&#12356;&#35201;&#22622;&#12420;&#37117;&#24066;&#12395;&#12418;&#20837;&#12428;&#12427;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BARBARIAN_ALLY</Tag>
+		<English>[ICON_BULLET]At peace with the barbarians; both enter the territory of the other</English>
+		<French>[ICON_BULLET]At peace with the barbarians; both enter the territory of the other</French>
+		<German>[ICON_BULLET]At peace with the barbarians; both enter the territory of the other</German>
+		<Italian>[ICON_BULLET]At peace with the barbarians; both enter the territory of the other</Italian>
+		<Spanish>[ICON_BULLET]At peace with the barbarians; both enter the territory of the other</Spanish>
+		<Japanese>[ICON_BULLET]&#34542;&#26063;&#12392;&#24179;&#21644;&#65288;&#12362;&#20114;&#12356;&#12398;&#38936;&#22303;&#12395;&#20837;&#12428;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIVIC_CONDITIONAL_FREE_TRAIT</Tag>
+		<English>[ICON_BULLET]With %s1_Source: gains %s2_Trait</English>
+		<French>[ICON_BULLET]With %s1_Source: gains %s2_Trait</French>
+		<German>[ICON_BULLET]With %s1_Source: gains %s2_Trait</German>
+		<Italian>[ICON_BULLET]With %s1_Source: gains %s2_Trait</Italian>
+		<Spanish>[ICON_BULLET]With %s1_Source: gains %s2_Trait</Spanish>
+		<Japanese>[ICON_BULLET]%s1_Source&#12364;&#12354;&#12428;&#12400;%s2_Trait&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIVIC_CONDITIONAL_FREE_TRAIT_IF</Tag>
+		<English>[ICON_BULLET]With %s1_Source: gains %s2_Trait (%s3_Conditions)</English>
+		<French>[ICON_BULLET]With %s1_Source: gains %s2_Trait (%s3_Conditions)</French>
+		<German>[ICON_BULLET]With %s1_Source: gains %s2_Trait (%s3_Conditions)</German>
+		<Italian>[ICON_BULLET]With %s1_Source: gains %s2_Trait (%s3_Conditions)</Italian>
+		<Spanish>[ICON_BULLET]With %s1_Source: gains %s2_Trait (%s3_Conditions)</Spanish>
+		<Japanese>[ICON_BULLET]%s1_Source&#12364;&#12354;&#12428;&#12400;%s2_Trait&#12434;&#24471;&#12427;&#65288;%s3_Conditions&#65289;</Japanese>
+	</TEXT>
 	<!-- Dedicated test entries (CIVILIZATION_TEST, LEADER_TEST, TRAIT_TEST, CIVIC_TEST, BUILDING_TEST, BUILDING_TEST_RADIUS, BUILDING_TEST_CITY, BUILDING_TEST_GREAT_PEOPLE, UNIT_TEST_A/B, PROMOTION_TEST, PROMOTION_TEST_STATE1/2, PROMOTION_TEST_POISON, PROMOTION_TEST_COMBAT, SPELL_TEST_GOLD, SPELL_TEST_PROMOTION, SPELL_TEST_CONVERT, SPELL_TEST_CITY, SPELL_TEST_FOREST, SPELL_TEST_FORT, SPELL_TEST_REFRESH, SPELL_TEST_BLESS, SPELL_TEST_FIREBALL, SPELL_TEST_SNARE, SPELL_TEST_SUMMON, SPELL_TEST_PERMANENT, SPELL_TEST_WORLD, SPELL_TEST_TRAIT, TECH_TEST, IMPROVEMENT_TEST_TERRACE, PROMOTION_TEST_ICEBREAKER) -->
 	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_PEDIA</Tag>
@@ -2810,5 +2837,23 @@
 		<Italian>Test Promotion (Hidden Nationality)</Italian>
 		<Spanish>Test Promotion (Hidden Nationality)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#22269;&#31821;&#31192;&#21311;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_BARBARIAN</Tag>
+		<English>Test Trait (Barbarians)</English>
+		<French>Test Trait (Barbarians)</French>
+		<German>Test Trait (Barbarians)</German>
+		<Italian>Test Trait (Barbarians)</Italian>
+		<Spanish>Test Trait (Barbarians)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;&#34542;&#26063;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_BARBARIAN_SHORT</Tag>
+		<English>TBa</English>
+		<French>TBa</French>
+		<German>TBa</German>
+		<Italian>TBa</Italian>
+		<Spanish>TBa</Spanish>
+		<Japanese>&#34542;</Japanese>
 	</TEXT>
 </Civ4GameText>
