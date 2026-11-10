@@ -825,5 +825,6 @@
 			<iInstanceCostModifier>0</iInstanceCostModifier>
 			<DefaultUnit>UNIT_TEST_B</DefaultUnit>
 		</UnitClassInfo>
+	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</UnitClassInfos>
 </Civ4UnitClassInfos>

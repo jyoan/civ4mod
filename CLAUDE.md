@@ -168,7 +168,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 
 **動作確認は検証用データで行い、既存の Info（日本・兵舎・専制政治など）には検証用の値を入れない。** 新しいタグを足したら、検証用の項目（`docs/test-data.md`）に値を入れて確かめる。検証用の項目はすべて各ファイルの末尾にあり、テキストは `CIV4GameText_ClaudeSample.xml`（説明文は共通の `TXT_KEY_CLAUDE_TEST_PEDIA`）。アイコン・グラフィックは複製元のものを使う。
 
-- 新しい志向・昇進などの Info は、既存の番号を変えないため常に各ファイルの末尾に足す
+- 新しい志向・昇進などの Info は、既存の番号を変えないため常に各ファイルの末尾に足す。検証用の項目がある Info ファイルでは、末尾の目印のコメント（`Entries of the civ-design branch go below this line`）の**上**に足す（git の節）
 
 ## git
 
@@ -177,7 +177,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
   - `civ-design` では `CvGameCoreDLL/`・Schema・`Assets/CvGameCoreDLL.dll` を変更しない（DLL の衝突を防ぐ）
   - コミットの前に今のブランチを確かめる。`build.bat` が配置するのは**今のブランチ**の `Assets\` なので、ブランチを切り替えたら配置し直し、Info の数が違うのでキャッシュも消す
   - `civ-design` のテキストは `CIV4GameText_ClaudeCivs.xml`、記録は `docs/civ-design.md` に書く（`master` の追記と衝突しないように）。`docs/test-log.md` は `.gitattributes` の `merge=union` で両方の追記が残る
-  - 志向や昇進などの Info は両方のブランチで各ファイルの末尾に足すので、マージで衝突することがある。両方の項目を残し、`master` の項目を先にする。Info の順番が変わるので、古いセーブは使えなくなることがある。マージ後はキャッシュを消す
+  - 志向や昇進などの Info は両方のブランチで各ファイルの末尾に足すので、末尾の閉じタグの前に目印のコメント `<!-- Entries of the civ-design branch go below this line, entries of master above it -->` を置いてある。**`master` の項目は目印の上、`civ-design` の項目は目印の下**に足す。両方の変更の間に目印の行が挟まるので、マージが自動で済む。目印のないファイルに `civ-design` で項目を足すときは、先に `master` で目印を置く。それでも衝突したら、`master` のファイルに `civ-design` の項目を目印の下に足して作り直す。`master` の Info が増えると `civ-design` の Info の番号がずれるので、古いセーブは使えなくなることがある。マージ後はキャッシュを消す
 - `2b1bf36` が無改造の公式ソース。改造の全差分は `git diff 2b1bf36 -- CvGameCoreDLL` で見られる
 - Edit ツールは、書き換えた既存行の**行末の空白・タブを消す**ことがある。編集後は `git diff` で意図しない削除行（`-` で始まる行）がないか確認し、あれば元に戻す
 - `Assets/CvGameCoreDLL.dll` も git で管理する。DLL を作り直したら、元になったソース変更と同じコミットに含める

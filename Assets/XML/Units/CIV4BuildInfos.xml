@@ -840,5 +840,6 @@
 			<Button>,Art/Interface/Buttons/Builds/BuildFort.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,7,9</Button>
 			<ReplacedBuild>BUILD_FORT</ReplacedBuild>
 		</BuildInfo>
+	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</BuildInfos>
 </Civ4BuildInfos>

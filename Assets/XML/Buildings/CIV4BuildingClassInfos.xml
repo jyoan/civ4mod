@@ -1650,5 +1650,6 @@
 			<DefaultBuilding>BUILDING_TEST_MISERY</DefaultBuilding>
 			<VictoryThresholds/>
 		</BuildingClassInfo>
+	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</BuildingClassInfos>
 </Civ4BuildingClassInfos>

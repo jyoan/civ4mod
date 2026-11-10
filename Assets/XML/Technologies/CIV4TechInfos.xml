@@ -6783,5 +6783,6 @@
 				<TraitType>TRAIT_TEST</TraitType>
 			</FreeTraits>
 		</TechInfo>
+	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</TechInfos>
 </Civ4TechInfos>
