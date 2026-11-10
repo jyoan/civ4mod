@@ -46,6 +46,23 @@
 	<ElementType name="PrereqOrTraits" content="eltOnly">
 		<element type="TraitType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="iPrereqPopulation" content="textOnly" dt:type="int"/>
+	<ElementType name="PrereqCultureLevel" content="textOnly"/>
+	<ElementType name="PrereqOrTerrains" content="eltOnly">
+		<element type="TerrainType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="PrereqOrFeatures" content="eltOnly">
+		<element type="FeatureType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="PrereqRawVicinityBonuses" content="eltOnly">
+		<element type="BonusType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="PrereqVicinityBonuses" content="eltOnly">
+		<element type="BonusType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="PrereqOrImprovements" content="eltOnly">
+		<element type="ImprovementType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="ReplacedBuild" content="textOnly"/>
 	<ElementType name="UnitsFromBuild" content="textOnly"/>
 	<ElementType name="BuildInfo" content="eltOnly">
@@ -596,6 +613,13 @@
 		<element type="BonusType"/>
 		<element type="PrereqBonuses"/>
 		<element type="PrereqOrTraits" minOccurs="0"/>
+		<element type="iPrereqPopulation" minOccurs="0"/>
+		<element type="PrereqCultureLevel" minOccurs="0"/>
+		<element type="PrereqOrTerrains" minOccurs="0"/>
+		<element type="PrereqOrFeatures" minOccurs="0"/>
+		<element type="PrereqRawVicinityBonuses" minOccurs="0"/>
+		<element type="PrereqVicinityBonuses" minOccurs="0"/>
+		<element type="PrereqOrImprovements" minOccurs="0"/>
 		<element type="ProductionTraits"/>
 		<element type="Flavors"/>
 		<element type="iAIWeight"/>

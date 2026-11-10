@@ -4287,6 +4287,8 @@ m_iPrereqCorporation(NO_CORPORATION),
 m_iPrereqBuilding(NO_BUILDING),
 m_iPrereqAndTech(NO_TECH),
 m_iPrereqAndBonus(NO_BONUS),
+m_iPrereqPopulation(0),
+m_iPrereqCultureLevel(NO_CULTURELEVEL),
 m_iGroupSize(0),
 m_iGroupDefinitions(0),
 m_iUnitMeleeWaveSize(0),
@@ -5041,6 +5043,101 @@ int CvUnitInfo::getPrereqOrTraits(int i) const
 const std::vector<int>& CvUnitInfo::getPrereqOrTraitsVector() const
 {
 	return m_aiPrereqOrTraits;
+}
+
+int CvUnitInfo::getPrereqPopulation() const
+{
+	return m_iPrereqPopulation;
+}
+
+int CvUnitInfo::getPrereqCultureLevel() const
+{
+	return m_iPrereqCultureLevel;
+}
+
+int CvUnitInfo::getNumPrereqOrTerrains() const
+{
+	return (int)m_aiPrereqOrTerrains.size();
+}
+
+int CvUnitInfo::getPrereqOrTerrain(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrTerrains(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrTerrains()) ? m_aiPrereqOrTerrains[i] : -1;
+}
+
+const std::vector<int>& CvUnitInfo::getPrereqOrTerrainsVector() const
+{
+	return m_aiPrereqOrTerrains;
+}
+
+int CvUnitInfo::getNumPrereqOrFeatures() const
+{
+	return (int)m_aiPrereqOrFeatures.size();
+}
+
+int CvUnitInfo::getPrereqOrFeature(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrFeatures(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrFeatures()) ? m_aiPrereqOrFeatures[i] : -1;
+}
+
+const std::vector<int>& CvUnitInfo::getPrereqOrFeaturesVector() const
+{
+	return m_aiPrereqOrFeatures;
+}
+
+int CvUnitInfo::getNumPrereqRawVicinityBonuses() const
+{
+	return (int)m_aiPrereqRawVicinityBonuses.size();
+}
+
+int CvUnitInfo::getPrereqRawVicinityBonus(int i) const
+{
+	FAssertMsg(i < getNumPrereqRawVicinityBonuses(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqRawVicinityBonuses()) ? m_aiPrereqRawVicinityBonuses[i] : -1;
+}
+
+const std::vector<int>& CvUnitInfo::getPrereqRawVicinityBonusesVector() const
+{
+	return m_aiPrereqRawVicinityBonuses;
+}
+
+int CvUnitInfo::getNumPrereqVicinityBonuses() const
+{
+	return (int)m_aiPrereqVicinityBonuses.size();
+}
+
+int CvUnitInfo::getPrereqVicinityBonus(int i) const
+{
+	FAssertMsg(i < getNumPrereqVicinityBonuses(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqVicinityBonuses()) ? m_aiPrereqVicinityBonuses[i] : -1;
+}
+
+const std::vector<int>& CvUnitInfo::getPrereqVicinityBonusesVector() const
+{
+	return m_aiPrereqVicinityBonuses;
+}
+
+int CvUnitInfo::getNumPrereqOrImprovements() const
+{
+	return (int)m_aiPrereqOrImprovements.size();
+}
+
+int CvUnitInfo::getPrereqOrImprovement(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrImprovements(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return (i > -1 && i < getNumPrereqOrImprovements()) ? m_aiPrereqOrImprovements[i] : -1;
+}
+
+const std::vector<int>& CvUnitInfo::getPrereqOrImprovementsVector() const
+{
+	return m_aiPrereqOrImprovements;
 }
 
 int CvUnitInfo::getProductionTraits(int i) const			
@@ -5983,6 +6080,25 @@ void CvUnitInfo::read(FDataStreamBase* stream)
 		m_aiPrereqOrTraits.clear();
 	}
 
+	// uiFlag < 2: cache written before the city prerequisites existed
+	m_iPrereqPopulation = 0;
+	m_iPrereqCultureLevel = NO_CULTURELEVEL;
+	m_aiPrereqOrTerrains.clear();
+	m_aiPrereqOrFeatures.clear();
+	m_aiPrereqRawVicinityBonuses.clear();
+	m_aiPrereqVicinityBonuses.clear();
+	m_aiPrereqOrImprovements.clear();
+	if (uiFlag > 1)
+	{
+		stream->Read(&m_iPrereqPopulation);
+		stream->Read(&m_iPrereqCultureLevel);
+		readPrereqOrTraits(stream, m_aiPrereqOrTerrains);
+		readPrereqOrTraits(stream, m_aiPrereqOrFeatures);
+		readPrereqOrTraits(stream, m_aiPrereqRawVicinityBonuses);
+		readPrereqOrTraits(stream, m_aiPrereqVicinityBonuses);
+		readPrereqOrTraits(stream, m_aiPrereqOrImprovements);
+	}
+
 	updateArtDefineButton();
 }
 
@@ -5990,7 +6106,7 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=1;
+	uint uiFlag=2;	// 1: PrereqOrTraits, 2: city prerequisites (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAIWeight);
@@ -6162,6 +6278,13 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 	stream->WriteString(m_szFormationType);
 
 	writePrereqOrTraits(stream, m_aiPrereqOrTraits);
+	stream->Write(m_iPrereqPopulation);
+	stream->Write(m_iPrereqCultureLevel);
+	writePrereqOrTraits(stream, m_aiPrereqOrTerrains);
+	writePrereqOrTraits(stream, m_aiPrereqOrFeatures);
+	writePrereqOrTraits(stream, m_aiPrereqRawVicinityBonuses);
+	writePrereqOrTraits(stream, m_aiPrereqVicinityBonuses);
+	writePrereqOrTraits(stream, m_aiPrereqOrImprovements);
 }
 
 //
@@ -6392,6 +6515,17 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
+
+	// City prerequisites (added by this mod). The terrains, features, bonuses, improvements and culture levels are loaded
+	// before the units
+	pXML->GetChildXmlValByName(&m_iPrereqPopulation, "iPrereqPopulation");
+	pXML->GetChildXmlValByName(szTextVal, "PrereqCultureLevel");
+	m_iPrereqCultureLevel = pXML->FindInInfoClass(szTextVal);
+	readTypeList(pXML, "PrereqOrTerrains", m_aiPrereqOrTerrains);
+	readTypeList(pXML, "PrereqOrFeatures", m_aiPrereqOrFeatures);
+	readTypeList(pXML, "PrereqRawVicinityBonuses", m_aiPrereqRawVicinityBonuses);
+	readTypeList(pXML, "PrereqVicinityBonuses", m_aiPrereqVicinityBonuses);
+	readTypeList(pXML, "PrereqOrImprovements", m_aiPrereqOrImprovements);
 
 	pXML->SetVariableListTagPair(&m_piProductionTraits, "ProductionTraits", sizeof(GC.getTraitInfo((TraitTypes)0)), GC.getNumTraitInfos());
 
@@ -9662,6 +9796,31 @@ int CvBuildingInfo::getPrereqVicinityBonus(int i) const
 	FAssertMsg(i < getNumPrereqVicinityBonuses(), "Index out of bounds");
 	FAssertMsg(i > -1, "Index out of bounds");
 	return (i > -1 && i < getNumPrereqVicinityBonuses()) ? m_aiPrereqVicinityBonuses[i] : -1;
+}
+
+const std::vector<int>& CvBuildingInfo::getPrereqOrTerrainsVector() const
+{
+	return m_aiPrereqOrTerrains;
+}
+
+const std::vector<int>& CvBuildingInfo::getPrereqOrFeaturesVector() const
+{
+	return m_aiPrereqOrFeatures;
+}
+
+const std::vector<int>& CvBuildingInfo::getPrereqRawVicinityBonusesVector() const
+{
+	return m_aiPrereqRawVicinityBonuses;
+}
+
+const std::vector<int>& CvBuildingInfo::getPrereqVicinityBonusesVector() const
+{
+	return m_aiPrereqVicinityBonuses;
+}
+
+const std::vector<int>& CvBuildingInfo::getPrereqOrImprovementsVector() const
+{
+	return m_aiPrereqOrImprovements;
 }
 
 int CvBuildingInfo::getNumPrereqAndCivics() const

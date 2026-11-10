@@ -1990,6 +1990,11 @@ bool CvCity::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool b
 		return false;
 	}
 
+	if (!hasCityPrereqs(eUnit, bContinue, bTestVisible))
+	{
+		return false;
+	}
+
 	if(GC.getUSE_CANNOT_TRAIN_CALLBACK())
 	{
 		CyCity *pyCity = new CyCity((CvCity*)this);
@@ -2004,6 +2009,40 @@ bool CvCity::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool b
 		gDLL->getPythonIFace()->callFunction(PYGameModule, "cannotTrain", argsList2.makeFunctionArgs(), &lResult);
 		delete pyCity;	// python fxn must not hold on to this pointer 
 		if (lResult == 1)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+// The city prerequisites of a unit (added by this mod), the same as for the buildings. The terrains, features and resources
+// of the city radius, which a city can do little about, are checked before bTestVisible, so the unit is not listed. The
+// population is only checked when the unit is started, as for the buildings.
+bool CvCity::hasCityPrereqs(UnitTypes eUnit, bool bContinue, bool bTestVisible) const
+{
+	CvUnitInfo& kUnit = GC.getUnitInfo(eUnit);
+
+	if (!hasPrereqOrTerrains(kUnit.getPrereqOrTerrainsVector()) || !hasPrereqOrFeatures(kUnit.getPrereqOrFeaturesVector()) ||
+		!hasPrereqRawVicinityBonuses(kUnit.getPrereqRawVicinityBonusesVector()))
+	{
+		return false;
+	}
+
+	if (!bTestVisible)
+	{
+		if (!hasPrereqOrImprovements(kUnit.getPrereqOrImprovementsVector()) || !hasPrereqVicinityBonuses(kUnit.getPrereqVicinityBonusesVector()))
+		{
+			return false;
+		}
+
+		if (getCultureLevel() < kUnit.getPrereqCultureLevel())
+		{
+			return false;
+		}
+
+		if (!bContinue && (getPopulation() < kUnit.getPrereqPopulation()))
 		{
 			return false;
 		}
@@ -2136,7 +2175,9 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 
 	// City radius prerequisites a city can do little about (added by this mod): checked before bTestVisible, as bRiver, so
 	// the building is not listed. Not part of isValidBuildingLocation, which also decides what survives a conquest.
-	if (!hasPrereqOrTerrains(eBuilding) || !hasPrereqOrFeatures(eBuilding) || !hasPrereqRawVicinityBonuses(eBuilding))
+	CvBuildingInfo& kPrereqBuilding = GC.getBuildingInfo(eBuilding);
+	if (!hasPrereqOrTerrains(kPrereqBuilding.getPrereqOrTerrainsVector()) || !hasPrereqOrFeatures(kPrereqBuilding.getPrereqOrFeaturesVector()) ||
+		!hasPrereqRawVicinityBonuses(kPrereqBuilding.getPrereqRawVicinityBonusesVector()))
 	{
 		return false;
 	}
@@ -2300,7 +2341,8 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 			return false;
 		}
 
-		if (!hasPrereqOrImprovements(eBuilding) || !hasPrereqVicinityBonuses(eBuilding))
+		if (!hasPrereqOrImprovements(GC.getBuildingInfo(eBuilding).getPrereqOrImprovementsVector()) ||
+			!hasPrereqVicinityBonuses(GC.getBuildingInfo(eBuilding).getPrereqVicinityBonusesVector()))
 		{
 			return false;
 		}
@@ -10391,19 +10433,18 @@ bool CvCity::hasPrereqNotInCityBuildingClasses(BuildingTypes eBuilding) const
 	return true;
 }
 
-// PrereqOrTerrains of the building: a plot of this team in the city radius has one of the terrains. TERRAIN_HILL and
+// PrereqOrTerrains of a building or a unit: a plot of this team in the city radius has one of the terrains. TERRAIN_HILL and
 // TERRAIN_PEAK stand for hill and peak plots, as for the trait TerrainYieldChanges. A hill plot has both its terrain and
 // TERRAIN_HILL, a peak plot only TERRAIN_PEAK.
-bool CvCity::hasPrereqOrTerrains(BuildingTypes eBuilding) const
+bool CvCity::hasPrereqOrTerrains(const std::vector<int>& aiTerrains) const
 {
-	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
 	CvPlot* pLoopPlot;
 	TerrainTypes eHillTerrain;
 	TerrainTypes ePeakTerrain;
 	int iI;
 	int iJ;
 
-	if (kBuilding.getNumPrereqOrTerrains() == 0)
+	if ((int)aiTerrains.size() == 0)
 	{
 		return true;
 	}
@@ -10417,9 +10458,9 @@ bool CvCity::hasPrereqOrTerrains(BuildingTypes eBuilding) const
 
 		if ((pLoopPlot != NULL) && (pLoopPlot->getTeam() == getTeam()))
 		{
-			for (iJ = 0; iJ < kBuilding.getNumPrereqOrTerrains(); iJ++)
+			for (iJ = 0; iJ < (int)aiTerrains.size(); iJ++)
 			{
-				TerrainTypes eTerrain = (TerrainTypes)kBuilding.getPrereqOrTerrain(iJ);
+				TerrainTypes eTerrain = (TerrainTypes)aiTerrains[iJ];
 
 				if (pLoopPlot->isPeak())
 				{
@@ -10439,15 +10480,14 @@ bool CvCity::hasPrereqOrTerrains(BuildingTypes eBuilding) const
 	return false;
 }
 
-// PrereqOrFeatures of the building: a plot of this team in the city radius has one of the features
-bool CvCity::hasPrereqOrFeatures(BuildingTypes eBuilding) const
+// PrereqOrFeatures of a building or a unit: a plot of this team in the city radius has one of the features
+bool CvCity::hasPrereqOrFeatures(const std::vector<int>& aiFeatures) const
 {
-	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
 	CvPlot* pLoopPlot;
 	int iI;
 	int iJ;
 
-	if (kBuilding.getNumPrereqOrFeatures() == 0)
+	if ((int)aiFeatures.size() == 0)
 	{
 		return true;
 	}
@@ -10458,9 +10498,9 @@ bool CvCity::hasPrereqOrFeatures(BuildingTypes eBuilding) const
 
 		if ((pLoopPlot != NULL) && (pLoopPlot->getTeam() == getTeam()))
 		{
-			for (iJ = 0; iJ < kBuilding.getNumPrereqOrFeatures(); iJ++)
+			for (iJ = 0; iJ < (int)aiFeatures.size(); iJ++)
 			{
-				if (pLoopPlot->getFeatureType() == kBuilding.getPrereqOrFeature(iJ))
+				if (pLoopPlot->getFeatureType() == aiFeatures[iJ])
 				{
 					return true;
 				}
@@ -10471,15 +10511,14 @@ bool CvCity::hasPrereqOrFeatures(BuildingTypes eBuilding) const
 	return false;
 }
 
-// PrereqOrImprovements of the building: a plot of this team in the city radius has one of the improvements
-bool CvCity::hasPrereqOrImprovements(BuildingTypes eBuilding) const
+// PrereqOrImprovements of a building or a unit: a plot of this team in the city radius has one of the improvements
+bool CvCity::hasPrereqOrImprovements(const std::vector<int>& aiImprovements) const
 {
-	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
 	CvPlot* pLoopPlot;
 	int iI;
 	int iJ;
 
-	if (kBuilding.getNumPrereqOrImprovements() == 0)
+	if ((int)aiImprovements.size() == 0)
 	{
 		return true;
 	}
@@ -10490,9 +10529,9 @@ bool CvCity::hasPrereqOrImprovements(BuildingTypes eBuilding) const
 
 		if ((pLoopPlot != NULL) && (pLoopPlot->getTeam() == getTeam()))
 		{
-			for (iJ = 0; iJ < kBuilding.getNumPrereqOrImprovements(); iJ++)
+			for (iJ = 0; iJ < (int)aiImprovements.size(); iJ++)
 			{
-				if (pLoopPlot->isImprovementOrReplacing((ImprovementTypes)kBuilding.getPrereqOrImprovement(iJ)))
+				if (pLoopPlot->isImprovementOrReplacing((ImprovementTypes)aiImprovements[iJ]))
 				{
 					return true;
 				}
@@ -10503,16 +10542,15 @@ bool CvCity::hasPrereqOrImprovements(BuildingTypes eBuilding) const
 	return false;
 }
 
-// PrereqRawVicinityBonuses of the building: a plot of this team in the city radius has one of the resources, improved or
+// PrereqRawVicinityBonuses of a building or a unit: a plot of this team in the city radius has one of the resources, improved or
 // not. Only resources this team can see count, so the building list does not give away hidden resources.
-bool CvCity::hasPrereqRawVicinityBonuses(BuildingTypes eBuilding) const
+bool CvCity::hasPrereqRawVicinityBonuses(const std::vector<int>& aiBonuses) const
 {
-	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
 	CvPlot* pLoopPlot;
 	int iI;
 	int iJ;
 
-	if (kBuilding.getNumPrereqRawVicinityBonuses() == 0)
+	if ((int)aiBonuses.size() == 0)
 	{
 		return true;
 	}
@@ -10523,9 +10561,9 @@ bool CvCity::hasPrereqRawVicinityBonuses(BuildingTypes eBuilding) const
 
 		if ((pLoopPlot != NULL) && (pLoopPlot->getTeam() == getTeam()))
 		{
-			for (iJ = 0; iJ < kBuilding.getNumPrereqRawVicinityBonuses(); iJ++)
+			for (iJ = 0; iJ < (int)aiBonuses.size(); iJ++)
 			{
-				if (pLoopPlot->getBonusType(getTeam()) == kBuilding.getPrereqRawVicinityBonus(iJ))
+				if (pLoopPlot->getBonusType(getTeam()) == aiBonuses[iJ])
 				{
 					return true;
 				}
@@ -10536,20 +10574,19 @@ bool CvCity::hasPrereqRawVicinityBonuses(BuildingTypes eBuilding) const
 	return false;
 }
 
-// PrereqVicinityBonuses of the building: one of the resources is developed in the city radius
-bool CvCity::hasPrereqVicinityBonuses(BuildingTypes eBuilding) const
+// PrereqVicinityBonuses of a building or a unit: one of the resources is developed in the city radius
+bool CvCity::hasPrereqVicinityBonuses(const std::vector<int>& aiBonuses) const
 {
-	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
 	int iI;
 
-	if (kBuilding.getNumPrereqVicinityBonuses() == 0)
+	if ((int)aiBonuses.size() == 0)
 	{
 		return true;
 	}
 
-	for (iI = 0; iI < kBuilding.getNumPrereqVicinityBonuses(); iI++)
+	for (iI = 0; iI < (int)aiBonuses.size(); iI++)
 	{
-		if (hasVicinityBonus((BonusTypes)kBuilding.getPrereqVicinityBonus(iI)))
+		if (hasVicinityBonus((BonusTypes)aiBonuses[iI]))
 		{
 			return true;
 		}
