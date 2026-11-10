@@ -3630,6 +3630,26 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_OCCUPATION_TIME_MODIFIER", kTrait.getOccupationTimeModifier()));
 	}
 
+	if (kTrait.getConquestCulturePercent() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_CULTURE", kTrait.getConquestCulturePercent()));
+	}
+
+	if (kTrait.getConquestBuildingSurviveModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_BUILDING_SURVIVE", kTrait.getConquestBuildingSurviveModifier()));
+	}
+
+	if (kTrait.isNoConquestPopulationLoss())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_CONQUEST_POPULATION_LOSS"));
+	}
+
+	if (kTrait.isNoAutoRaze())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_AUTO_RAZE"));
+	}
+
 	// iMinCityRangeChange: the range of this trait alone (added by this mod)
 	if (kTrait.getMinCityRangeChange() != 0)
 	{

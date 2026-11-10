@@ -19432,6 +19432,10 @@ m_iCultureRangeChange(0),
 m_iNewCityCultureLevel(NO_CULTURELEVEL),
 m_iNewCityPopulation(0),
 m_iOccupationTimeModifier(0),
+m_iConquestCulturePercent(0),
+m_iConquestBuildingSurviveModifier(0),
+m_bNoConquestPopulationLoss(false),
+m_bNoAutoRaze(false),
 m_bNewCityStateReligion(false),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
@@ -19884,6 +19888,26 @@ bool CvTraitInfo::isNewCityStateReligion() const
 int CvTraitInfo::getOccupationTimeModifier() const
 {
 	return m_iOccupationTimeModifier;
+}
+
+int CvTraitInfo::getConquestCulturePercent() const
+{
+	return m_iConquestCulturePercent;
+}
+
+int CvTraitInfo::getConquestBuildingSurviveModifier() const
+{
+	return m_iConquestBuildingSurviveModifier;
+}
+
+bool CvTraitInfo::isNoConquestPopulationLoss() const
+{
+	return m_bNoConquestPopulationLoss;
+}
+
+bool CvTraitInfo::isNoAutoRaze() const
+{
+	return m_bNoAutoRaze;
 }
 
 const TCHAR* CvTraitInfo::getShortDescription() const
@@ -20686,6 +20710,10 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iNewCityPopulation, "iNewCityPopulation");
 	pXML->GetChildXmlValByName(&m_bNewCityStateReligion, "bNewCityStateReligion");
 	pXML->GetChildXmlValByName(&m_iOccupationTimeModifier, "iOccupationTimeModifier");
+	pXML->GetChildXmlValByName(&m_iConquestCulturePercent, "iConquestCulturePercent");
+	pXML->GetChildXmlValByName(&m_iConquestBuildingSurviveModifier, "iConquestBuildingSurviveModifier");
+	pXML->GetChildXmlValByName(&m_bNoConquestPopulationLoss, "bNoConquestPopulationLoss");
+	pXML->GetChildXmlValByName(&m_bNoAutoRaze, "bNoAutoRaze");
 }
 
 // The part of read() for the yield and commerce arrays, the unit combat arrays, the free promotions and MaintainFeatures (added by this mod)

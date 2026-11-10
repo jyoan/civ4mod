@@ -2163,6 +2163,26 @@ int CyPlayer::getOccupationTimeModifier()
 	return m_pPlayer ? m_pPlayer->getOccupationTimeModifier() : -1;
 }
 
+int CyPlayer::getConquestCulturePercent()
+{
+	return m_pPlayer ? m_pPlayer->getConquestCulturePercent() : -1;
+}
+
+int CyPlayer::getConquestBuildingSurviveModifier()
+{
+	return m_pPlayer ? m_pPlayer->getConquestBuildingSurviveModifier() : -1;
+}
+
+bool CyPlayer::isNoConquestPopulationLoss()
+{
+	return m_pPlayer ? m_pPlayer->isNoConquestPopulationLoss() : false;
+}
+
+bool CyPlayer::isNoAutoRaze()
+{
+	return m_pPlayer ? m_pPlayer->isNoAutoRaze() : false;
+}
+
 CyUnit* CyPlayer::getUnit(int iID)
 {
 	return m_pPlayer ? new CyUnit(m_pPlayer->getUnit(iID)) : NULL;

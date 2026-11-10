@@ -14963,7 +14963,8 @@ bool CvCity::isAutoRaze() const
 {
 	if (!GC.getGameINLINE().isOption(GAMEOPTION_NO_CITY_RAZING))
 	{
-		if (getHighestPopulation() == 1)
+		// Not with bNoAutoRaze of the traits of the owner (the conqueror) (added by this mod)
+		if ((getHighestPopulation() == 1) && !GET_PLAYER(getOwnerINLINE()).isNoAutoRaze())
 		{
 			return true;
 		}

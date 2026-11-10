@@ -374,6 +374,10 @@
 			<iNewCityPopulation>1</iNewCityPopulation>
 			<bNewCityStateReligion>1</bNewCityStateReligion>
 			<iOccupationTimeModifier>-50</iOccupationTimeModifier>
+			<iConquestCulturePercent>50</iConquestCulturePercent>
+			<iConquestBuildingSurviveModifier>100</iConquestBuildingSurviveModifier>
+			<bNoConquestPopulationLoss>1</bNoConquestPopulationLoss>
+			<bNoAutoRaze>1</bNoAutoRaze>
 			<iGoldenAgeModifier>50</iGoldenAgeModifier>
 			<iGoldenAgeGreatPeopleRateModifier>50</iGoldenAgeGreatPeopleRateModifier>
 			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>

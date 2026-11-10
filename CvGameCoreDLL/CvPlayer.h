@@ -242,6 +242,10 @@ public:
 	int getNewCityPopulation() const;				// Exposed to Python
 	bool isNewCityStateReligion() const;				// Exposed to Python
 	int getOccupationTimeModifier() const;				// Exposed to Python
+	int getConquestCulturePercent() const;				// Exposed to Python (added by this mod)
+	int getConquestBuildingSurviveModifier() const;		// Exposed to Python (added by this mod)
+	bool isNoConquestPopulationLoss() const;			// Exposed to Python (added by this mod)
+	bool isNoAutoRaze() const;				// Exposed to Python (added by this mod)
 	// Builds with an improvement keep the feature on the plots of this player (traits, added by this mod)
 	bool isMaintainFeatures(FeatureTypes eFeature) const;				// Exposed to Python
 	int getMaxCities() const;											// Exposed to Python
