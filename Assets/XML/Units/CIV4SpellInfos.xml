@@ -209,5 +209,6 @@
 			<PyResult>spellToggleFreeTrait(pCaster, 'TRAIT_TEST')</PyResult>
 			<Button>Art/Interface/Buttons/Process/ProcessResearch.dds</Button>
 		</SpellInfo>
+	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</SpellInfos>
 </Civ4SpellInfos>

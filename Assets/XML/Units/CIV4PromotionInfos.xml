@@ -5167,6 +5167,7 @@
 			<iHotKeyPriority>0</iHotKeyPriority>
 			<Button>,Art/Interface/Buttons/Promotions/Commando.dds,Art/Interface/Buttons/Promotions_Atlas.dds,1,3</Button>
 		</PromotionInfo>
+	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 		<PromotionInfo>
 			<Type>PROMOTION_BUSHIDO</Type>
 			<Description>TXT_KEY_PROMOTION_BUSHIDO</Description>

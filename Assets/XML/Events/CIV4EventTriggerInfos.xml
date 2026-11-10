@@ -17331,5 +17331,6 @@
 				<TraitType>TRAIT_TEST</TraitType>
 			</PrereqOrTraits>
 		</EventTriggerInfo>
+	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</EventTriggerInfos>
 </Civ4EventTriggerInfos>

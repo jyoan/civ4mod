@@ -1999,5 +1999,6 @@
 			<WeLoveTheKing>TXT_KEY_CIVIC_WE_LOVE_MONARCH</WeLoveTheKing>
 			<ReplacedCivic>CIVIC_HEREDITARY_RULE</ReplacedCivic>
 		</CivicInfo>
+	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</CivicInfos>
 </Civ4CivicInfos>

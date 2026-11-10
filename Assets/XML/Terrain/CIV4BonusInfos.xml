@@ -2008,5 +2008,6 @@
 				<TraitType>TRAIT_TEST</TraitType>
 			</PrereqOrTraits>
 		</BonusInfo>
+	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</BonusInfos>
 </Civ4BonusInfos>

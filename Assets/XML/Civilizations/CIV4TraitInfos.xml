@@ -716,6 +716,7 @@
 				</FreePromotionSet>
 			</FreePromotionSets>
 		</TraitInfo>
+	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 		<TraitInfo>
 			<Type>TRAIT_BUSHIDO</Type>
 			<Description>TXT_KEY_TRAIT_BUSHIDO</Description>
