@@ -70,6 +70,9 @@ public:
 	DllExport void parseSpecialistHelp(CvWStringBuffer &szHelpString, SpecialistTypes eSpecialist, CvCity* pCity, bool bCivilopediaText = false);
 	DllExport void parseFreeSpecialistHelp(CvWStringBuffer &szHelpString, const CvCity& kCity);
 	DllExport void parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes ePromotion, const wchar* pcNewline = NEWLINE);
+	void parsePromotionStatusEffects(CvWStringBuffer& szBuffer, PromotionTypes ePromotion, const wchar* pcNewline);	// added by this mod
+	void parsePromotionMapEffects(CvWStringBuffer& szBuffer, PromotionTypes ePromotion, const wchar* pcNewline);	// added by this mod
+	void parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, PromotionTypes ePromotion, const wchar* pcNewline);	// added by this mod
 	void parseSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell, const wchar* pcNewline = NEWLINE);	// added by this mod (spells)
 	void setSpellHelp(CvWStringBuffer &szBuffer, SpellTypes eSpell, bool bCivilopediaText = false);	// added by this mod (spells)
 	DllExport void parseCivicInfo(CvWStringBuffer &szBuffer, CivicTypes eCivic, bool bCivilopediaText = false, bool bPlayerContext = false, bool bSkipName = false);
@@ -166,7 +169,10 @@ public:
 	void buildGlobalBuildingExtraCommercesString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding);	// added by this mod
 	void parseTraitCivicEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitConditionalFreeTraits(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
-	void parseTraitEmpireEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitSpreadAndUnitEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitTerritoryEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitEconomyEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitUnitCombatEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitYieldEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitUniqueElements(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod

@@ -3587,12 +3587,10 @@ void CvGameTextMgr::parseTraitConditionalFreeTraits(CvWStringBuffer& szHelpStrin
 	}
 }
 
-void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+// The part of the trait help for the cities and their founding (iMaxCities, new cities, occupation, iMinCityRangeChange, bFoundInForeignTerritory) (added by this mod)
+void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
 {
 	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
-	CvWString szTempBuffer;
-	CvWString szText;
-	int iI;
 
 	// iMaxCities / iMaxCitiesPercent: "Can found up to 5 cities" on the map size of the game (added by this mod)
 	if (kTrait.getMaxCitiesLimit(GC.getMapINLINE().getWorldSize()) >= 0)
@@ -3634,6 +3632,15 @@ void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, Trait
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FOUND_IN_FOREIGN_TERRITORY"));
 	}
+}
+
+// The part of the trait help for spreads and units (iReligionSpreadChange, golden age moves, CityFoundedUnits) (added by this mod)
+void CvGameTextMgr::parseTraitSpreadAndUnitEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szTempBuffer;
+	CvWString szText;
+	int iI;
 
 	// iReligionSpreadChange / iCorporationSpreadChange (added by this mod)
 	if (kTrait.getReligionSpreadChange() >= 100)
@@ -3679,6 +3686,12 @@ void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, Trait
 		}
 		appendTraitLine(szHelpString, szTempBuffer);
 	}
+}
+
+// The part of the trait help for the territory (start bias, bBarbarianAlly, bInlandCanals, global warming, pillage) (added by this mod)
+void CvGameTextMgr::parseTraitTerritoryEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
 
 	// Start bias (added by this mod)
 	CvWString szStartBias = getStartBiasText(kTrait);
@@ -3710,6 +3723,15 @@ void CvGameTextMgr::parseTraitEmpireEffects(CvWStringBuffer& szHelpString, Trait
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_PILLAGE_IN_BORDERS"));
 	}
+}
+
+// The part of the trait help for the economy and the rest (interest, culture range, peace anger, ForbiddenCivics, costs, Civ5 abilities) (added by this mod)
+void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szTempBuffer;
+	CvWString szText;
+	int iI;
 
 	// iGoldInterestPercent / iGoldInterestMax: "3% of the treasury as gold every turn (at most 25)" (added by this mod)
 	if (kTrait.getGoldInterestPercent() > 0)
@@ -4204,7 +4226,10 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		// The parts of the mod (added by this mod)
 		parseTraitCivicEffects(szHelpString, eTrait);
 		parseTraitConditionalFreeTraits(szHelpString, eTrait);
-		parseTraitEmpireEffects(szHelpString, eTrait);
+		parseTraitCityFoundingEffects(szHelpString, eTrait);
+		parseTraitSpreadAndUnitEffects(szHelpString, eTrait);
+		parseTraitTerritoryEffects(szHelpString, eTrait);
+		parseTraitEconomyEffects(szHelpString, eTrait);
 		parseTraitUnitCombatEffects(szHelpString, eTrait);
 		parseTraitYieldEffects(szHelpString, eTrait);
 		parseTraitUniqueElements(szHelpString, eTrait);
@@ -5026,6 +5051,213 @@ void CvGameTextMgr::parseFreeSpecialistHelp(CvWStringBuffer &szHelpString, const
 }
 
 
+// The part of parsePromotionHelp for status promotions and combat results (iExpireChance, PromotionCombatApply, capture, enslavement...) (added by this mod)
+void CvGameTextMgr::parsePromotionStatusEffects(CvWStringBuffer& szBuffer, PromotionTypes ePromotion, const wchar* pcNewline)
+{
+	int iI;
+
+	// Status and combat result tags (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getExpireChance() > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_EXPIRE_CHANCE", GC.getPromotionInfo(ePromotion).getExpireChance()));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).isRemovedByCombat())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_REMOVED_BY_COMBAT"));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).isRemovedWhenHealed())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_REMOVED_WHEN_HEALED"));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getFreeXPPerTurn() > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_FREE_XP_PER_TURN", GC.getPromotionInfo(ePromotion).getFreeXPPerTurn(), GC.getPromotionInfo(ePromotion).getFreeXPCap()));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getPromotionCombatApply() != NO_PROMOTION)
+	{
+		szBuffer.append(pcNewline);
+		if (GC.getPromotionInfo(ePromotion).getPromotionCombatApplyChance() >= 100)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_APPLY", GC.getPromotionInfo((PromotionTypes)GC.getPromotionInfo(ePromotion).getPromotionCombatApply()).getTextKeyWide()));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_APPLY_CHANCE", GC.getPromotionInfo((PromotionTypes)GC.getPromotionInfo(ePromotion).getPromotionCombatApply()).getTextKeyWide(), GC.getPromotionInfo(ePromotion).getPromotionCombatApplyChance()));
+		}
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getGoldFromCombat() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_GOLD_FROM_COMBAT", GC.getPromotionInfo(ePromotion).getGoldFromCombat()));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getCombatCapturePercent() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_CAPTURE", GC.getPromotionInfo(ePromotion).getCombatCapturePercent()));
+	}
+
+	// Combat results (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getCombatHealPercent() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_HEAL_PERCENT", GC.getPromotionInfo(ePromotion).getCombatHealPercent()));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getEnslavementChance() > 0)
+	{
+		if (GC.getPromotionInfo(ePromotion).getEnslavedUnitClass() != NO_UNITCLASS)
+		{
+			szBuffer.append(pcNewline);
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ENSLAVEMENT", GC.getPromotionInfo(ePromotion).getEnslavementChance(), GC.getUnitClassInfo((UnitClassTypes)GC.getPromotionInfo(ePromotion).getEnslavedUnitClass()).getTextKeyWide()));
+		}
+
+		for (iI = 0; iI < GC.getPromotionInfo(ePromotion).getNumEnslavementUnitClasses(); iI++)
+		{
+			szBuffer.append(pcNewline);
+			if (GC.getPromotionInfo(ePromotion).getEnslavementUnitClassEnslaved(iI) == NO_UNITCLASS)
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ENSLAVEMENT_NOT", GC.getUnitClassInfo((UnitClassTypes)GC.getPromotionInfo(ePromotion).getEnslavementUnitClassType(iI)).getTextKeyWide()));
+			}
+			else
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ENSLAVEMENT_UNITCLASS", GC.getPromotionInfo(ePromotion).getEnslavementChance(), GC.getUnitClassInfo((UnitClassTypes)GC.getPromotionInfo(ePromotion).getEnslavementUnitClassType(iI)).getTextKeyWide(), GC.getUnitClassInfo((UnitClassTypes)GC.getPromotionInfo(ePromotion).getEnslavementUnitClassEnslaved(iI)).getTextKeyWide()));
+			}
+		}
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getCombatGoldStealPercent() > 0)
+	{
+		szBuffer.append(pcNewline);
+		if (GC.getPromotionInfo(ePromotion).getCombatGoldStealMax() > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_GOLD_STEAL_MAX", GC.getPromotionInfo(ePromotion).getCombatGoldStealPercent(), GC.getPromotionInfo(ePromotion).getCombatGoldStealMax()));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_GOLD_STEAL", GC.getPromotionInfo(ePromotion).getCombatGoldStealPercent()));
+		}
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getCombatPromotionStealChance() > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_PROMOTION_STEAL", GC.getPromotionInfo(ePromotion).getCombatPromotionStealChance()));
+	}
+}
+
+// The part of parsePromotionHelp for the map (ImpassablePlotPassages, iRiverCrossingDamagePercent, FeatureSpreads) (added by this mod)
+void CvGameTextMgr::parsePromotionMapEffects(CvWStringBuffer& szBuffer, PromotionTypes ePromotion, const wchar* pcNewline)
+{
+	int iI;
+
+	// ImpassablePlotPassages (added by this mod)
+	for (iI = 0; iI < GC.getPromotionInfo(ePromotion).getNumImpassablePlotPassages(); ++iI)
+	{
+		int iPassageTerrain = GC.getPromotionInfo(ePromotion).getImpassablePlotPassageTerrain(iI);
+		int iPassageFeature = GC.getPromotionInfo(ePromotion).getImpassablePlotPassageFeature(iI);
+		int iPassageDamage = GC.getPromotionInfo(ePromotion).getImpassablePlotPassageDamage(iI);
+		CvWString szPassage = (iPassageFeature != NO_FEATURE) ? GC.getFeatureInfo((FeatureTypes)iPassageFeature).getDescription() : GC.getTerrainInfo((TerrainTypes)iPassageTerrain).getDescription();
+
+		szBuffer.append(pcNewline);
+		if (iPassageDamage > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_DAMAGE", szPassage.GetCString(), iPassageDamage));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE", szPassage.GetCString()));
+		}
+
+		if (GC.getPromotionInfo(ePromotion).getImpassablePlotPassageMoveCost(iI) > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_MOVE_COST", GC.getPromotionInfo(ePromotion).getImpassablePlotPassageMoveCost(iI)));
+		}
+
+		if (GC.getPromotionInfo(ePromotion).isImpassablePlotPassageRemoveFeature(iI))
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_REMOVE"));
+		}
+	}
+
+	// iRiverCrossingDamagePercent (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getRiverCrossingDamagePercent() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_RIVER_CROSSING_DAMAGE", GC.getPromotionInfo(ePromotion).getRiverCrossingDamagePercent()));
+	}
+
+	// FeatureSpreads (added by this mod)
+	for (iI = 0; iI < GC.getPromotionInfo(ePromotion).getNumFeatureSpreads(); iI++)
+	{
+		CvPromotionInfo& kSpreadPromotion = GC.getPromotionInfo(ePromotion);
+		const char* szSpreadKey = "TXT_KEY_PROMOTION_FEATURE_SPREAD_PLOT";
+		if (kSpreadPromotion.getFeatureSpreadRange(iI) > 0)
+		{
+			szSpreadKey = (kSpreadPromotion.isFeatureSpreadNotOwnPlot(iI) ? "TXT_KEY_PROMOTION_FEATURE_SPREAD_AROUND" : "TXT_KEY_PROMOTION_FEATURE_SPREAD_AREA");
+		}
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText(szSpreadKey, kSpreadPromotion.getFeatureSpreadChance(iI), GC.getFeatureInfo((FeatureTypes)kSpreadPromotion.getFeatureSpreadFeature(iI)).getTextKeyWide(), kSpreadPromotion.getFeatureSpreadRange(iI)));
+		if (kSpreadPromotion.isFeatureSpreadForce(iI))
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_FEATURE_SPREAD_FORCE"));
+		}
+	}
+}
+
+// The part of parsePromotionHelp for special abilities (bHiddenNationality, bChooseGoody, bNoDamagePenalty, iCombatPercentInBorders, PromotionVictory) (added by this mod)
+void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, PromotionTypes ePromotion, const wchar* pcNewline)
+{
+	// bHiddenNationality (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).isHiddenNationality())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_HIDDEN_NATIONALITY"));
+	}
+
+	// bChooseGoody (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).isChooseGoody())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_CHOOSE_GOODY"));
+	}
+
+	// bNoDamagePenalty (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).isNoDamagePenalty())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_NO_DAMAGE_PENALTY"));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getCombatPercentInBorders() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_PERCENT_IN_BORDERS", GC.getPromotionInfo(ePromotion).getCombatPercentInBorders()));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getPromotionVictory() != NO_PROMOTION)
+	{
+		szBuffer.append(pcNewline);
+		if (GC.getPromotionInfo(ePromotion).getPromotionVictoryChance() >= 100)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_VICTORY", GC.getPromotionInfo((PromotionTypes)GC.getPromotionInfo(ePromotion).getPromotionVictory()).getTextKeyWide()));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_VICTORY_CHANCE", GC.getPromotionInfo((PromotionTypes)GC.getPromotionInfo(ePromotion).getPromotionVictory()).getTextKeyWide(), GC.getPromotionInfo(ePromotion).getPromotionVictoryChance()));
+		}
+	}
+}
+
 //
 // Promotion Help
 //
@@ -5341,196 +5573,10 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 		}
 	}
 
-	// Status and combat result tags (added by this mod)
-	if (GC.getPromotionInfo(ePromotion).getExpireChance() > 0)
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_EXPIRE_CHANCE", GC.getPromotionInfo(ePromotion).getExpireChance()));
-	}
-
-	if (GC.getPromotionInfo(ePromotion).isRemovedByCombat())
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_REMOVED_BY_COMBAT"));
-	}
-
-	if (GC.getPromotionInfo(ePromotion).isRemovedWhenHealed())
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_REMOVED_WHEN_HEALED"));
-	}
-
-	if (GC.getPromotionInfo(ePromotion).getFreeXPPerTurn() > 0)
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_FREE_XP_PER_TURN", GC.getPromotionInfo(ePromotion).getFreeXPPerTurn(), GC.getPromotionInfo(ePromotion).getFreeXPCap()));
-	}
-
-	if (GC.getPromotionInfo(ePromotion).getPromotionCombatApply() != NO_PROMOTION)
-	{
-		szBuffer.append(pcNewline);
-		if (GC.getPromotionInfo(ePromotion).getPromotionCombatApplyChance() >= 100)
-		{
-			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_APPLY", GC.getPromotionInfo((PromotionTypes)GC.getPromotionInfo(ePromotion).getPromotionCombatApply()).getTextKeyWide()));
-		}
-		else
-		{
-			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_APPLY_CHANCE", GC.getPromotionInfo((PromotionTypes)GC.getPromotionInfo(ePromotion).getPromotionCombatApply()).getTextKeyWide(), GC.getPromotionInfo(ePromotion).getPromotionCombatApplyChance()));
-		}
-	}
-
-	if (GC.getPromotionInfo(ePromotion).getGoldFromCombat() != 0)
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_GOLD_FROM_COMBAT", GC.getPromotionInfo(ePromotion).getGoldFromCombat()));
-	}
-
-	if (GC.getPromotionInfo(ePromotion).getCombatCapturePercent() != 0)
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_CAPTURE", GC.getPromotionInfo(ePromotion).getCombatCapturePercent()));
-	}
-
-	// Combat results (added by this mod)
-	if (GC.getPromotionInfo(ePromotion).getCombatHealPercent() != 0)
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_HEAL_PERCENT", GC.getPromotionInfo(ePromotion).getCombatHealPercent()));
-	}
-
-	if (GC.getPromotionInfo(ePromotion).getEnslavementChance() > 0)
-	{
-		if (GC.getPromotionInfo(ePromotion).getEnslavedUnitClass() != NO_UNITCLASS)
-		{
-			szBuffer.append(pcNewline);
-			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ENSLAVEMENT", GC.getPromotionInfo(ePromotion).getEnslavementChance(), GC.getUnitClassInfo((UnitClassTypes)GC.getPromotionInfo(ePromotion).getEnslavedUnitClass()).getTextKeyWide()));
-		}
-
-		for (iI = 0; iI < GC.getPromotionInfo(ePromotion).getNumEnslavementUnitClasses(); iI++)
-		{
-			szBuffer.append(pcNewline);
-			if (GC.getPromotionInfo(ePromotion).getEnslavementUnitClassEnslaved(iI) == NO_UNITCLASS)
-			{
-				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ENSLAVEMENT_NOT", GC.getUnitClassInfo((UnitClassTypes)GC.getPromotionInfo(ePromotion).getEnslavementUnitClassType(iI)).getTextKeyWide()));
-			}
-			else
-			{
-				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ENSLAVEMENT_UNITCLASS", GC.getPromotionInfo(ePromotion).getEnslavementChance(), GC.getUnitClassInfo((UnitClassTypes)GC.getPromotionInfo(ePromotion).getEnslavementUnitClassType(iI)).getTextKeyWide(), GC.getUnitClassInfo((UnitClassTypes)GC.getPromotionInfo(ePromotion).getEnslavementUnitClassEnslaved(iI)).getTextKeyWide()));
-			}
-		}
-	}
-
-	if (GC.getPromotionInfo(ePromotion).getCombatGoldStealPercent() > 0)
-	{
-		szBuffer.append(pcNewline);
-		if (GC.getPromotionInfo(ePromotion).getCombatGoldStealMax() > 0)
-		{
-			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_GOLD_STEAL_MAX", GC.getPromotionInfo(ePromotion).getCombatGoldStealPercent(), GC.getPromotionInfo(ePromotion).getCombatGoldStealMax()));
-		}
-		else
-		{
-			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_GOLD_STEAL", GC.getPromotionInfo(ePromotion).getCombatGoldStealPercent()));
-		}
-	}
-
-	if (GC.getPromotionInfo(ePromotion).getCombatPromotionStealChance() > 0)
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_PROMOTION_STEAL", GC.getPromotionInfo(ePromotion).getCombatPromotionStealChance()));
-	}
-
-	// ImpassablePlotPassages (added by this mod)
-	for (iI = 0; iI < GC.getPromotionInfo(ePromotion).getNumImpassablePlotPassages(); ++iI)
-	{
-		int iPassageTerrain = GC.getPromotionInfo(ePromotion).getImpassablePlotPassageTerrain(iI);
-		int iPassageFeature = GC.getPromotionInfo(ePromotion).getImpassablePlotPassageFeature(iI);
-		int iPassageDamage = GC.getPromotionInfo(ePromotion).getImpassablePlotPassageDamage(iI);
-		CvWString szPassage = (iPassageFeature != NO_FEATURE) ? GC.getFeatureInfo((FeatureTypes)iPassageFeature).getDescription() : GC.getTerrainInfo((TerrainTypes)iPassageTerrain).getDescription();
-
-		szBuffer.append(pcNewline);
-		if (iPassageDamage > 0)
-		{
-			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_DAMAGE", szPassage.GetCString(), iPassageDamage));
-		}
-		else
-		{
-			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE", szPassage.GetCString()));
-		}
-
-		if (GC.getPromotionInfo(ePromotion).getImpassablePlotPassageMoveCost(iI) > 0)
-		{
-			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_MOVE_COST", GC.getPromotionInfo(ePromotion).getImpassablePlotPassageMoveCost(iI)));
-		}
-
-		if (GC.getPromotionInfo(ePromotion).isImpassablePlotPassageRemoveFeature(iI))
-		{
-			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_REMOVE"));
-		}
-	}
-
-	// iRiverCrossingDamagePercent (added by this mod)
-	if (GC.getPromotionInfo(ePromotion).getRiverCrossingDamagePercent() != 0)
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_RIVER_CROSSING_DAMAGE", GC.getPromotionInfo(ePromotion).getRiverCrossingDamagePercent()));
-	}
-
-	// FeatureSpreads (added by this mod)
-	for (iI = 0; iI < GC.getPromotionInfo(ePromotion).getNumFeatureSpreads(); iI++)
-	{
-		CvPromotionInfo& kSpreadPromotion = GC.getPromotionInfo(ePromotion);
-		const char* szSpreadKey = "TXT_KEY_PROMOTION_FEATURE_SPREAD_PLOT";
-		if (kSpreadPromotion.getFeatureSpreadRange(iI) > 0)
-		{
-			szSpreadKey = (kSpreadPromotion.isFeatureSpreadNotOwnPlot(iI) ? "TXT_KEY_PROMOTION_FEATURE_SPREAD_AROUND" : "TXT_KEY_PROMOTION_FEATURE_SPREAD_AREA");
-		}
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText(szSpreadKey, kSpreadPromotion.getFeatureSpreadChance(iI), GC.getFeatureInfo((FeatureTypes)kSpreadPromotion.getFeatureSpreadFeature(iI)).getTextKeyWide(), kSpreadPromotion.getFeatureSpreadRange(iI)));
-		if (kSpreadPromotion.isFeatureSpreadForce(iI))
-		{
-			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_FEATURE_SPREAD_FORCE"));
-		}
-	}
-
-	// bHiddenNationality (added by this mod)
-	if (GC.getPromotionInfo(ePromotion).isHiddenNationality())
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_HIDDEN_NATIONALITY"));
-	}
-
-	// bChooseGoody (added by this mod)
-	if (GC.getPromotionInfo(ePromotion).isChooseGoody())
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_CHOOSE_GOODY"));
-	}
-
-	// bNoDamagePenalty (added by this mod)
-	if (GC.getPromotionInfo(ePromotion).isNoDamagePenalty())
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_NO_DAMAGE_PENALTY"));
-	}
-
-	if (GC.getPromotionInfo(ePromotion).getCombatPercentInBorders() != 0)
-	{
-		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_PERCENT_IN_BORDERS", GC.getPromotionInfo(ePromotion).getCombatPercentInBorders()));
-	}
-
-	if (GC.getPromotionInfo(ePromotion).getPromotionVictory() != NO_PROMOTION)
-	{
-		szBuffer.append(pcNewline);
-		if (GC.getPromotionInfo(ePromotion).getPromotionVictoryChance() >= 100)
-		{
-			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_VICTORY", GC.getPromotionInfo((PromotionTypes)GC.getPromotionInfo(ePromotion).getPromotionVictory()).getTextKeyWide()));
-		}
-		else
-		{
-			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_VICTORY_CHANCE", GC.getPromotionInfo((PromotionTypes)GC.getPromotionInfo(ePromotion).getPromotionVictory()).getTextKeyWide(), GC.getPromotionInfo(ePromotion).getPromotionVictoryChance()));
-		}
-	}
+	// The parts of the mod (added by this mod)
+	parsePromotionStatusEffects(szBuffer, ePromotion, pcNewline);
+	parsePromotionMapEffects(szBuffer, ePromotion, pcNewline);
+	parsePromotionSpecialEffects(szBuffer, ePromotion, pcNewline);
 
 	if (wcslen(GC.getPromotionInfo(ePromotion).getHelp()) > 0)
 	{
