@@ -96,3 +96,4 @@
 - 2026-11-10: ユニットの都市の前提（`iPrereqPopulation`・`PrereqCultureLevel`・`PrereqOrTerrains`・`PrereqOrFeatures`・`PrereqRawVicinityBonuses`・`PrereqVicinityBonuses`・`PrereqOrImprovements`）を検証用ユニット 2 つで確認（ペディア、生産の一覧の非表示・灰色、満たしていない条件だけの説明）。共通化した建物の前提の表示も確認
 - 2026-11-10: 占領の志向（`iConquestCulturePercent`・`iConquestBuildingSurviveModifier`・`bNoConquestPopulationLoss`・`bNoAutoRaze`、引き継いだ反乱への `iOccupationTimeModifier`）を検証用志向で確認（人口 4 のまま、反乱 1 ターン、確率 66% の建物がすべて残る、人口 1 の都市が自動で破壊されずポップアップ、志向のない文明は BtS のまま）
 - 2026-11-10: 地形の特徴の志向（`FeatureProductionChanges`・`FeatureGrowthChanges`・`FeatureHealthChanges`）を検証用志向で確認（標準速度・数学なしで森の伐採 26・ジャングルの伐採 20、ジャングルと氾濫原の不衛生なし、領土内で森・ジャングルが広がる、説明文）
+- 2026-11-10: 専門家の種類ごとの産出・商業（`SpecialistYieldChanges`・`SpecialistCommerceChanges`）を検証用志向で確認（科学者 +1 食料・+2 金、定住した大預言者 +3 文化、専門家のマウスオーバー、商業の内訳の合計、志向のない文明は BtS のまま、説明文）
