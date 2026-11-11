@@ -945,6 +945,20 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szString, const CvUnit* pUnit, 
 			szString.append(gDLL->getText("TXT_KEY_PROMOTION_STRENGTH_TEXT", pUnit->getExtraCombatPercent()));
 		}
 
+		// BonusAffinities (added by this mod): per copy, and what the owner has now
+		if (pUnit->getUnitInfo().getCombat() > 0)
+		{
+			for (iI = 0; iI < GC.getNumBonusInfos(); ++iI)
+			{
+				if (pUnit->getBonusAffinity((BonusTypes)iI) != 0)
+				{
+					szString.append(NEWLINE);
+					szString.append(gDLL->getText("TXT_KEY_UNIT_BONUS_AFFINITY_NOW", pUnit->getBonusAffinity((BonusTypes)iI), GC.getBonusInfo((BonusTypes)iI).getTextKeyWide(),
+						pUnit->getBonusAffinity((BonusTypes)iI) * GET_PLAYER(pUnit->getOwnerINLINE()).getNumAvailableBonuses((BonusTypes)iI)));
+				}
+			}
+		}
+
 		if (pUnit->cityAttackModifier() == pUnit->cityDefenseModifier())
 		{
 			if (pUnit->cityAttackModifier() != 0)
@@ -5297,6 +5311,16 @@ void CvGameTextMgr::parsePromotionMapEffects(CvWStringBuffer& szBuffer, Promotio
 // The part of parsePromotionHelp for special abilities (bHiddenNationality, bChooseGoody, bNoDamagePenalty, iCombatPercentInBorders, PromotionVictory) (added by this mod)
 void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, PromotionTypes ePromotion, const wchar* pcNewline)
 {
+	// BonusAffinities (added by this mod)
+	for (int iAffinityBonus = 0; iAffinityBonus < GC.getNumBonusInfos(); ++iAffinityBonus)
+	{
+		if (GC.getPromotionInfo(ePromotion).getBonusAffinity(iAffinityBonus) != 0)
+		{
+			szBuffer.append(pcNewline);
+			szBuffer.append(gDLL->getText("TXT_KEY_BONUS_AFFINITY", GC.getPromotionInfo(ePromotion).getBonusAffinity(iAffinityBonus), getLinkText(GC.getBonusInfo((BonusTypes)iAffinityBonus).getDescription()).GetCString()));
+		}
+	}
+
 	// bHiddenNationality (added by this mod)
 	if (GC.getPromotionInfo(ePromotion).isHiddenNationality())
 	{
@@ -8134,6 +8158,16 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool
 	}
 
 	setBasicUnitHelp(szBuffer, eUnit, bCivilopediaText);
+
+	// BonusAffinities (added by this mod)
+	for (int iAffinityBonus = 0; iAffinityBonus < GC.getNumBonusInfos(); ++iAffinityBonus)
+	{
+		if (GC.getUnitInfo(eUnit).getBonusAffinity(iAffinityBonus) != 0)
+		{
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText("TXT_KEY_BONUS_AFFINITY", GC.getUnitInfo(eUnit).getBonusAffinity(iAffinityBonus), getLinkText(GC.getBonusInfo((BonusTypes)iAffinityBonus).getDescription()).GetCString()));
+		}
+	}
 
 	if ((pCity == NULL) || !(pCity->canTrain(eUnit)))
 	{

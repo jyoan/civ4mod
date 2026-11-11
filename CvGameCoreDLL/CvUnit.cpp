@@ -358,6 +358,16 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_eUnitType = eUnit;
 	m_pUnitInfo = (NO_UNIT != m_eUnitType) ? &GC.getUnitInfo(m_eUnitType) : NULL;
 	m_iBaseCombat = (NO_UNIT != m_eUnitType) ? m_pUnitInfo->getCombat() : 0;
+
+	// BonusAffinities of the unit type (added by this mod); setHasPromotion adds those of the promotions
+	m_aiBonusAffinity.clear();
+	if (NO_UNIT != m_eUnitType)
+	{
+		for (int iAffinityBonus = 0; iAffinityBonus < GC.getNumBonusInfos(); iAffinityBonus++)
+		{
+			changeBonusAffinity((BonusTypes)iAffinityBonus, m_pUnitInfo->getBonusAffinity(iAffinityBonus));
+		}
+	}
 	m_eLeaderUnitType = NO_UNIT;
 	m_iCargoCapacity = (NO_UNIT != m_eUnitType) ? m_pUnitInfo->getCargoSpace() : 0;
 
@@ -9459,6 +9469,12 @@ void CvUnit::setBaseCombatStr(int iCombat)
 
 int CvUnit::baseCombatStr() const
 {
+	// BonusAffinities (added by this mod, FFH2): only for units with a strength, which keep at least 1
+	if (m_iBaseCombat > 0 && !m_aiBonusAffinity.empty())
+	{
+		return std::max(1, m_iBaseCombat + getBonusAffinityStrength());
+	}
+
 	return m_iBaseCombat;
 }
 
@@ -10777,6 +10793,67 @@ void CvUnit::updatePromotionCounts()
 	m_iCombatPercentInBorders = sumPromotionValues(&CvPromotionInfo::getCombatPercentInBorders);
 	m_iNoDamagePenaltyCount = countPromotions(&CvPromotionInfo::isNoDamagePenalty);
 	m_iHiddenNationalityCount = countPromotions(&CvPromotionInfo::isHiddenNationality);
+
+	// BonusAffinities of the unit type and the promotions it has
+	int iBonus;
+	int iPromotion;
+	m_aiBonusAffinity.clear();
+	for (iBonus = 0; iBonus < GC.getNumBonusInfos(); iBonus++)
+	{
+		if (m_pUnitInfo != NULL)
+		{
+			changeBonusAffinity((BonusTypes)iBonus, m_pUnitInfo->getBonusAffinity(iBonus));
+		}
+
+		for (iPromotion = 0; iPromotion < GC.getNumPromotionInfos(); iPromotion++)
+		{
+			if (isHasPromotion((PromotionTypes)iPromotion))
+			{
+				changeBonusAffinity((BonusTypes)iBonus, GC.getPromotionInfo((PromotionTypes)iPromotion).getBonusAffinity(iBonus));
+			}
+		}
+	}
+}
+
+// BonusAffinities of the unit type and its promotions (added by this mod, FFH2)
+int CvUnit::getBonusAffinity(BonusTypes eBonus) const
+{
+	return ((eBonus > -1) && (eBonus < (int)m_aiBonusAffinity.size())) ? m_aiBonusAffinity[eBonus] : 0;
+}
+
+void CvUnit::changeBonusAffinity(BonusTypes eBonus, int iChange)
+{
+	if (iChange != 0)
+	{
+		if (m_aiBonusAffinity.empty())
+		{
+			m_aiBonusAffinity.resize(GC.getNumBonusInfos(), 0);
+		}
+		m_aiBonusAffinity[eBonus] += iChange;
+	}
+}
+
+// The strength from BonusAffinities: for each bonus, the affinity times the copies the owner has (in the trade network of the
+// capital, CvPlayer::getNumAvailableBonuses). Worked out each time, so it follows the bonuses at once (added by this mod)
+int CvUnit::getBonusAffinityStrength() const
+{
+	int iStrength = 0;
+	int iI;
+
+	if (m_aiBonusAffinity.empty() || getOwnerINLINE() == NO_PLAYER)
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < (int)m_aiBonusAffinity.size(); iI++)
+	{
+		if (m_aiBonusAffinity[iI] != 0)
+		{
+			iStrength += m_aiBonusAffinity[iI] * GET_PLAYER(getOwnerINLINE()).getNumAvailableBonuses((BonusTypes)iI);
+		}
+	}
+
+	return iStrength;
 }
 
 // bChooseGoody of the promotions (added by this mod)
@@ -13577,6 +13654,12 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		changeExtraCombatPercent(GC.getPromotionInfo(eIndex).getCombatPercent() * iChange);
 		m_iCombatPercentInBorders += GC.getPromotionInfo(eIndex).getCombatPercentInBorders() * iChange;
 		m_iNoDamagePenaltyCount += (GC.getPromotionInfo(eIndex).isNoDamagePenalty() ? iChange : 0);
+
+		// BonusAffinities (added by this mod)
+		for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+		{
+			changeBonusAffinity((BonusTypes)iI, GC.getPromotionInfo(eIndex).getBonusAffinity(iI) * iChange);
+		}
 
 		// bHiddenNationality (added by this mod, as FFH2). A unit that shows or hides its nationality stops blockading first (the
 		// blockade counts its enemies) and leaves its group (the units of a group all hide it or all show it)

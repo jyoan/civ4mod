@@ -4543,6 +4543,12 @@
 			<iGoldFromCombat>5</iGoldFromCombat>
 			<iCombatCapturePercent>50</iCombatCapturePercent>
 			<iCombatPercentInBorders>15</iCombatPercentInBorders>
+			<BonusAffinities>
+				<BonusAffinity>
+					<BonusType>BONUS_TEST</BonusType>
+					<iAffinity>1</iAffinity>
+				</BonusAffinity>
+			</BonusAffinities>
 			<HotKey/>
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>
