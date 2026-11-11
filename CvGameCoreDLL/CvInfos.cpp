@@ -1303,6 +1303,8 @@ const std::vector<int>& CvTechInfo::getFreeTraitsVector() const
 }
 
 static void readTypeList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, std::vector<CvString>& aszTypes);
+static void readPrereqOrTraits(FDataStreamBase* stream, std::vector<int>& aiPrereqOrTraits);	// added by this mod
+static void writePrereqOrTraits(FDataStreamBase* stream, const std::vector<int>& aiPrereqOrTraits);	// added by this mod
 
 void CvTechInfo::read(FDataStreamBase* stream)
 {
@@ -2198,6 +2200,52 @@ bool CvPromotionInfo::isHiddenNationality() const
 	return m_bHiddenNationality;
 }
 
+int CvPromotionInfo::getBonusAffinity(int iBonus) const
+{
+	return ((iBonus > -1) && (iBonus < (int)m_aiBonusAffinity.size())) ? m_aiBonusAffinity[iBonus] : 0;
+}
+
+// BonusAffinities: the bonuses are loaded after the promotions (added by this mod). Nothing to do for infos from the cache
+bool CvPromotionInfo::readPass3()
+{
+	char szMessage[1024];
+	int iBonus;
+	int i;
+
+	if (m_aszBonusAffinityTypes.empty())
+	{
+		return true;
+	}
+
+	m_aiBonusAffinity.clear();
+
+	for (i = 0; i < (int)m_aszBonusAffinityTypes.size(); i++)
+	{
+		iBonus = GC.getInfoTypeForString(m_aszBonusAffinityTypes[i].GetCString(), true);
+
+		if (iBonus < 0)
+		{
+			if (m_aszBonusAffinityTypes[i] != "NONE")
+			{
+				sprintf(szMessage, "Tag: %s in BonusAffinities of CIV4PromotionInfos.xml was incorrect", m_aszBonusAffinityTypes[i].GetCString());
+				gDLL->MessageBox(szMessage, "XML Error");
+			}
+			continue;
+		}
+
+		if (m_aiBonusAffinity.empty())
+		{
+			m_aiBonusAffinity.resize(GC.getNumBonusInfos(), 0);
+		}
+		m_aiBonusAffinity[iBonus] += m_aiBonusAffinityValues[i];
+	}
+
+	m_aszBonusAffinityTypes.clear();
+	m_aiBonusAffinityValues.clear();
+
+	return true;
+}
+
 int CvPromotionInfo::getCombatPercentInBorders() const
 {
 	return m_iCombatPercentInBorders;
@@ -2551,13 +2599,20 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_bHiddenNationality);
 	}
+
+	// uiFlag < 12: cache written before BonusAffinities existed
+	m_aiBonusAffinity.clear();
+	if (uiFlag > 11)
+	{
+		readPrereqOrTraits(stream, m_aiBonusAffinity);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 11;
+	uint uiFlag = 12;	// 12: BonusAffinities (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2675,6 +2730,41 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	}
 
 	stream->Write(m_bHiddenNationality);
+	writePrereqOrTraits(stream, m_aiBonusAffinity);
+}
+
+// Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
+// types are kept as strings, for infos loaded later (added by this mod)
+static void readTypeStringValueList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, const TCHAR* szValueTag, std::vector<CvString>& aszTypes, std::vector<int>& aiValues)
+{
+	CvString szTextVal;
+	int iValue;
+
+	aszTypes.clear();
+	aiValues.clear();
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szListTag))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), szItemTag))
+		{
+			do
+			{
+				szTextVal = "";
+				pXML->GetChildXmlValByName(szTextVal, szTypeTag);
+				pXML->GetChildXmlValByName(&iValue, szValueTag, 0);
+				if (!szTextVal.empty() && iValue != 0)
+				{
+					aszTypes.push_back(szTextVal);
+					aiValues.push_back(iValue);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), const_cast<TCHAR*>(szItemTag)));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 }
 
 bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
@@ -2789,6 +2879,8 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bNoDamagePenalty, "bNoDamagePenalty");
 	pXML->GetChildXmlValByName(&m_bChooseGoody, "bChooseGoody");
 	pXML->GetChildXmlValByName(&m_bHiddenNationality, "bHiddenNationality");
+	// BonusAffinities (added by this mod): resolved in readPass3(), after the bonuses are loaded
+	readTypeStringValueList(pXML, "BonusAffinities", "BonusAffinity", "BonusType", "iAffinity", m_aszBonusAffinityTypes, m_aiBonusAffinityValues);
 
 	// FeatureSpreads (added by this mod): the features are loaded before the promotions
 	m_aiFeatureSpreadFeature.clear();
@@ -5140,6 +5232,11 @@ const std::vector<int>& CvUnitInfo::getPrereqOrImprovementsVector() const
 	return m_aiPrereqOrImprovements;
 }
 
+int CvUnitInfo::getBonusAffinity(int iBonus) const
+{
+	return ((iBonus > -1) && (iBonus < (int)m_aiBonusAffinity.size())) ? m_aiBonusAffinity[iBonus] : 0;
+}
+
 int CvUnitInfo::getProductionTraits(int i) const			
 {
 	FAssertMsg(i < GC.getNumTraitInfos(), "Index out of bounds");
@@ -6137,6 +6234,13 @@ void CvUnitInfo::read(FDataStreamBase* stream)
 		readPrereqOrTraits(stream, m_aiPrereqOrImprovements);
 	}
 
+	// uiFlag < 3: cache written before BonusAffinities existed
+	m_aiBonusAffinity.clear();
+	if (uiFlag > 2)
+	{
+		readPrereqOrTraits(stream, m_aiBonusAffinity);
+	}
+
 	updateArtDefineButton();
 }
 
@@ -6144,7 +6248,7 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=2;	// 1: PrereqOrTraits, 2: city prerequisites (added by this mod)
+	uint uiFlag=3;	// 1: PrereqOrTraits, 2: city prerequisites, 3: BonusAffinities (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAIWeight);
@@ -6323,6 +6427,7 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 	writePrereqOrTraits(stream, m_aiPrereqRawVicinityBonuses);
 	writePrereqOrTraits(stream, m_aiPrereqVicinityBonuses);
 	writePrereqOrTraits(stream, m_aiPrereqOrImprovements);
+	writePrereqOrTraits(stream, m_aiBonusAffinity);
 }
 
 //
@@ -6564,6 +6669,8 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	readTypeList(pXML, "PrereqRawVicinityBonuses", m_aiPrereqRawVicinityBonuses);
 	readTypeList(pXML, "PrereqVicinityBonuses", m_aiPrereqVicinityBonuses);
 	readTypeList(pXML, "PrereqOrImprovements", m_aiPrereqOrImprovements);
+	// BonusAffinities (added by this mod): the bonuses are loaded before the units
+	readTypeValueList(pXML, "BonusAffinities", "BonusAffinity", "BonusType", "iAffinity", GC.getNumBonusInfos(), m_aiBonusAffinity);
 
 	pXML->SetVariableListTagPair(&m_piProductionTraits, "ProductionTraits", sizeof(GC.getTraitInfo((TraitTypes)0)), GC.getNumTraitInfos());
 

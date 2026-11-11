@@ -23340,6 +23340,12 @@
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
+			<BonusAffinities>
+				<BonusAffinity>
+					<BonusType>BONUS_TEST</BonusType>
+					<iAffinity>1</iAffinity>
+				</BonusAffinity>
+			</BonusAffinities>
 			<ProductionTraits/>
 			<Flavors/>
 			<iAIWeight>-10000</iAIWeight>

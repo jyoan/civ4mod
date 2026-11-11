@@ -535,6 +535,14 @@
 	</ElementType>
 	<ElementType name="LeaderPromotion" content="textOnly"/>
 	<ElementType name="iLeaderExperience" content="textOnly" dt:type="int"/>
+	<ElementType name="iAffinity" content="textOnly" dt:type="int"/>
+	<ElementType name="BonusAffinity" content="eltOnly">
+		<element type="BonusType"/>
+		<element type="iAffinity"/>
+	</ElementType>
+	<ElementType name="BonusAffinities" content="eltOnly">
+		<element type="BonusAffinity" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="UnitInfo" content="eltOnly">
 		<element type="Class"/>
 		<element type="Type"/>
@@ -620,6 +628,7 @@
 		<element type="PrereqRawVicinityBonuses" minOccurs="0"/>
 		<element type="PrereqVicinityBonuses" minOccurs="0"/>
 		<element type="PrereqOrImprovements" minOccurs="0"/>
+		<element type="BonusAffinities" minOccurs="0"/>
 		<element type="ProductionTraits"/>
 		<element type="Flavors"/>
 		<element type="iAIWeight"/>
@@ -997,6 +1006,7 @@
 		<element type="bChooseGoody" minOccurs="0"/>
 		<element type="FeatureSpreads" minOccurs="0"/>
 		<element type="bHiddenNationality" minOccurs="0"/>
+		<element type="BonusAffinities" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

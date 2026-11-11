@@ -914,6 +914,24 @@
 		<Japanese>[ICON_BULLET]&#36039;&#28304;&#12395;&#12424;&#12426;[ICON_GREATPEOPLE]%D1%%</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_BONUS_AFFINITY</Tag>
+		<English>[ICON_BULLET]%D1[ICON_STRENGTH] for each %s2_Bonus you have</English>
+		<French>[ICON_BULLET]%D1[ICON_STRENGTH] for each %s2_Bonus you have</French>
+		<German>[ICON_BULLET]%D1[ICON_STRENGTH] for each %s2_Bonus you have</German>
+		<Italian>[ICON_BULLET]%D1[ICON_STRENGTH] for each %s2_Bonus you have</Italian>
+		<Spanish>[ICON_BULLET]%D1[ICON_STRENGTH] for each %s2_Bonus you have</Spanish>
+		<Japanese>[ICON_BULLET]&#25345;&#12387;&#12390;&#12356;&#12427;%s2_Bonus 1&#12388;&#12395;&#12388;&#12365;[ICON_STRENGTH]%D1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_BONUS_AFFINITY_NOW</Tag>
+		<English>%D1[ICON_STRENGTH] for each %s2_Bonus (now %D3)</English>
+		<French>%D1[ICON_STRENGTH] for each %s2_Bonus (now %D3)</French>
+		<German>%D1[ICON_STRENGTH] for each %s2_Bonus (now %D3)</German>
+		<Italian>%D1[ICON_STRENGTH] for each %s2_Bonus (now %D3)</Italian>
+		<Spanish>%D1[ICON_STRENGTH] for each %s2_Bonus (now %D3)</Spanish>
+		<Japanese>%s2_Bonus 1&#12388;&#12395;&#12388;&#12365;[ICON_STRENGTH]%D1&#65288;&#20170;%D3&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_BONUS_MODIFIER_PER_BONUS</Tag>
 		<English>The effects count once for each copy</English>
 		<French>The effects count once for each copy</French>

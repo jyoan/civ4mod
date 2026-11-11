@@ -541,6 +541,9 @@ public:
 	bool isFeatureSpreadNotOwnPlot(int i) const;	// Exposed to Python
 	bool isFeatureSpreadForce(int i) const;		// Exposed to Python
 	bool isHiddenNationality() const;			// Exposed to Python
+	// BonusAffinities (added by this mod, FFH2): strength for each copy of the bonus the owner has
+	int getBonusAffinity(int iBonus) const;			// Exposed to Python
+	bool readPass3();					// added by this mod: the bonuses are loaded after the promotions
 
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
@@ -640,6 +643,9 @@ protected:
 	std::vector<int> m_aiFeatureSpreadNotOwnPlot;	// 0 or 1
 	std::vector<int> m_aiFeatureSpreadForce;		// 0 or 1
 	bool m_bHiddenNationality;					// added by this mod (FFH2)
+	std::vector<int> m_aiBonusAffinity;		// BonusAffinities, [bonus], empty when not set (added by this mod)
+	std::vector<CvString> m_aszBonusAffinityTypes;	// as strings until readPass3()
+	std::vector<int> m_aiBonusAffinityValues;
 
 	bool m_bLeader;
 	bool m_bBlitz;									
@@ -1201,6 +1207,8 @@ public:
 	int getNumPrereqOrImprovements() const;				// Exposed to Python
 	int getPrereqOrImprovement(int i) const;				// Exposed to Python
 	const std::vector<int>& getPrereqOrImprovementsVector() const;
+	// BonusAffinities (added by this mod, FFH2): strength for each copy of the bonus the owner has
+	int getBonusAffinity(int iBonus) const;			// Exposed to Python
 	int getProductionTraits(int i) const;				// Exposed to Python
 	int getFlavorValue(int i) const;				// Exposed to Python
 	int getTerrainAttackModifier(int i) const;				// Exposed to Python
@@ -1391,6 +1399,7 @@ protected:
 	std::vector<int> m_aiPrereqOrImprovements;	// added by this mod
 	int m_iPrereqPopulation;	// added by this mod
 	int m_iPrereqCultureLevel;	// added by this mod
+	std::vector<int> m_aiBonusAffinity;	// [bonus], empty when not set (added by this mod)
 	int* m_piProductionTraits;
 	int* m_piFlavorValue;
 	int* m_piTerrainAttackModifier;

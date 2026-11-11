@@ -412,6 +412,9 @@ public:
 	int countPromotions(bool (CvPromotionInfo::*pGetter)() const) const;		// added by this mod: the promotions of the unit that say yes
 	int sumPromotionValues(int (CvPromotionInfo::*pGetter)() const) const;	// added by this mod: the sum over the promotions of the unit
 	void updatePromotionCounts();												// added by this mod: the values of the promotions that are not saved
+	int getBonusAffinity(BonusTypes eBonus) const;	// added by this mod: BonusAffinities of the unit and its promotions
+	void changeBonusAffinity(BonusTypes eBonus, int iChange);	// added by this mod
+	int getBonusAffinityStrength() const;	// added by this mod
 	void doFeatureSpreads();	// added by this mod: FeatureSpreads of the promotions
 	bool isHiddenNationality() const;	// added by this mod: bHiddenNationality of the unit or of its promotions. Exposed to Python
 	bool canEnterImpassablePlot(const CvPlot* pPlot) const;	// added by this mod
@@ -865,6 +868,7 @@ protected:
 	int m_iAdjacentTileHeal;
 	int m_iExtraCombatPercent;
 	int m_iCombatPercentInBorders;		// added by this mod: iCombatPercentInBorders of the promotions (not saved)
+	std::vector<int> m_aiBonusAffinity;	// added by this mod: BonusAffinities of the unit and its promotions, [bonus], empty when none (not saved)
 	int m_iNoDamagePenaltyCount;		// added by this mod: promotions with bNoDamagePenalty (not saved)
 	int m_iHiddenNationalityCount;		// added by this mod: promotions with bHiddenNationality (not saved)
 	int m_iExtraCityAttackPercent;
