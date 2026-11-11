@@ -11572,6 +11572,61 @@ void CvGameTextMgr::setCommerceChangeHelp(CvWStringBuffer &szBuffer, const CvWSt
 	}
 }
 
+// The effects of FFH2 a bonus can have (added by this mod): the city modifiers, the free promotion, the player effects through
+// the capital, and whether they count once per copy (bModifierPerBonus)
+void CvGameTextMgr::buildBonusEffectsString(CvWStringBuffer& szBuffer, BonusTypes eBonus)
+{
+	CvBonusInfo& kBonus = GC.getBonusInfo(eBonus);
+	CvWString szTempBuffer;
+
+	szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_BONUS_CITY_MODIFIERS").c_str());
+	setYieldChangeHelp(szBuffer, szTempBuffer, L" ", L"", kBonus.getYieldModifierArray(), true, false);
+	setCommerceChangeHelp(szBuffer, szTempBuffer, L" ", L"", kBonus.getCommerceModifierArray(), true, false);
+
+	if (kBonus.getGreatPeopleRateModifier() != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_BONUS_GREAT_PEOPLE_RATE_MODIFIER", kBonus.getGreatPeopleRateModifier()));
+	}
+
+	if (kBonus.getMaintenanceModifier() != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_BONUS_MAINTENANCE_MODIFIER", kBonus.getMaintenanceModifier()));
+	}
+
+	if (kBonus.getFreePromotion() != NO_PROMOTION)
+	{
+		szTempBuffer.Format(L"<link=literal>%s</link>", GC.getPromotionInfo((PromotionTypes)kBonus.getFreePromotion()).getDescription());
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_BONUS_FREE_PROMOTION", szTempBuffer.GetCString()));
+	}
+
+	if (kBonus.getHealChange() != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_BONUS_HEAL_CHANGE", kBonus.getHealChange()));
+	}
+
+	if (kBonus.getHealChangeEnemy() != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_BONUS_HEAL_CHANGE_ENEMY", kBonus.getHealChangeEnemy()));
+	}
+
+	if (kBonus.getDiscoverRandModifier() != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_BONUS_DISCOVER_RAND_MODIFIER", kBonus.getDiscoverRandModifier()));
+	}
+
+	if (kBonus.isModifierPerBonus())
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_BONUS_MODIFIER_PER_BONUS"));
+	}
+}
+
 void CvGameTextMgr::setBonusHelp(CvWStringBuffer &szBuffer, BonusTypes eBonus, bool bCivilopediaText)
 {
 	if (NO_BONUS == eBonus)
@@ -11680,6 +11735,9 @@ void CvGameTextMgr::setBonusHelp(CvWStringBuffer &szBuffer, BonusTypes eBonus, b
 			szBuffer.append(gDLL->getText("TXT_KEY_BONUS_WITH_IMPROVEMENT", GC.getImprovementInfo(eImprovement).getTextKeyWide()));
 		}
 	}
+
+	// The effects of FFH2 (added by this mod)
+	buildBonusEffectsString(szBuffer, eBonus);
 
 	CivilizationTypes eCivilization = GC.getGameINLINE().getActiveCivilizationType();
 
@@ -14597,6 +14655,15 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 	}
 
 
+	// Resources: CommerceModifiers of the bonuses (added by this mod)
+	int iBonusCommerceMod = city.getBonusCommerceRateModifier(eCommerceType);
+	if (0 != iBonusCommerceMod)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_BONUS", iBonusCommerceMod, info.getChar()));
+		szBuffer.append(NEWLINE);
+		iModifier += iBonusCommerceMod;
+	}
+
 	// Trait
 	for (int i = 0; i < GC.getNumTraitInfos(); i++)
 	{
@@ -15133,6 +15200,15 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_GREATPEOPLE_BUILDINGS", iBuildingMod));
 		szBuffer.append(NEWLINE);
 		iModifier += iBuildingMod;
+	}
+
+	// Resources: iGreatPeopleRateModifier of the bonuses (added by this mod)
+	int iBonusGreatPeopleMod = city.getBonusGreatPeopleRateModifier();
+	if (0 != iBonusGreatPeopleMod)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_GREATPEOPLE_BONUS", iBonusGreatPeopleMod));
+		szBuffer.append(NEWLINE);
+		iModifier += iBonusGreatPeopleMod;
 	}
 
 	// Civics

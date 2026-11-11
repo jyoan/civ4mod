@@ -7184,6 +7184,51 @@ void CvPlayer::changeSpecialistTypeExtraCommerce(SpecialistTypes eSpecialist, Co
 	}
 }
 
+// The player effects of the bonuses (added by this mod, FFH2 applies them in the capital): the value of each bonus the capital
+// has, counted once, or once per copy with bModifierPerBonus. 0 without a capital
+int CvPlayer::getCapitalBonusEffect(int (CvBonusInfo::*pGetter)() const) const
+{
+	CvCity* pCapital = getCapitalCity();
+	int iTotal = 0;
+	int iValue;
+	int iI;
+
+	if (pCapital == NULL)
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		iValue = (GC.getBonusInfo((BonusTypes)iI).*pGetter)();
+
+		if (iValue != 0)
+		{
+			iTotal += iValue * pCapital->getBonusEffectCount((BonusTypes)iI);
+		}
+	}
+
+	return iTotal;
+}
+
+// iHealChange of the bonuses (FFH2): heal of the player's units in friendly territory, % per turn
+int CvPlayer::getBonusHealChange() const
+{
+	return getCapitalBonusEffect(&CvBonusInfo::getHealChange);
+}
+
+// iHealChangeEnemy of the bonuses (FFH2): heal of enemy units in the player's territory, % per turn
+int CvPlayer::getBonusHealChangeEnemy() const
+{
+	return getCapitalBonusEffect(&CvBonusInfo::getHealChangeEnemy);
+}
+
+// iDiscoverRandModifier of the bonuses (FFH2): % to the chance an improvement of the player discovers a bonus
+int CvPlayer::getBonusDiscoverRandModifier() const
+{
+	return getCapitalBonusEffect(&CvBonusInfo::getDiscoverRandModifier);
+}
+
 // Recalculates the tech changes of buildings in all the cities (added by this mod)
 void CvPlayer::updateBuildingChangeEffects()
 {

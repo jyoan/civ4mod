@@ -2007,6 +2007,24 @@
 			<PrereqOrTraits>
 				<TraitType>TRAIT_TEST</TraitType>
 			</PrereqOrTraits>
+			<bModifierPerBonus>1</bModifierPerBonus>
+			<YieldModifiers>
+				<iYield>0</iYield>
+				<iYield>10</iYield>
+				<iYield>0</iYield>
+			</YieldModifiers>
+			<CommerceModifiers>
+				<iCommerce>0</iCommerce>
+				<iCommerce>10</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+			</CommerceModifiers>
+			<iGreatPeopleRateModifier>10</iGreatPeopleRateModifier>
+			<iMaintenanceModifier>-10</iMaintenanceModifier>
+			<FreePromotion>PROMOTION_COMBAT1</FreePromotion>
+			<iHealChange>10</iHealChange>
+			<iHealChangeEnemy>-10</iHealChangeEnemy>
+			<iDiscoverRandModifier>100</iDiscoverRandModifier>
 		</BonusInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</BonusInfos>

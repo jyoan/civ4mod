@@ -15641,6 +15641,15 @@ m_bHills(false),
 m_bFlatlands(false),
 m_bNoRiverSide(false),
 m_bNormalize(false),
+m_bModifierPerBonus(false),
+m_iGreatPeopleRateModifier(0),
+m_iMaintenanceModifier(0),
+m_iHealChange(0),
+m_iHealChangeEnemy(0),
+m_iDiscoverRandModifier(0),
+m_iFreePromotion(NO_PROMOTION),
+m_piYieldModifier(NULL),
+m_piCommerceModifier(NULL),
 m_piYieldChange(NULL),
 m_piImprovementChange(NULL),
 m_pbTerrain(NULL),
@@ -15663,6 +15672,8 @@ CvBonusInfo::~CvBonusInfo()
 	SAFE_DELETE_ARRAY(m_pbTerrain);
 	SAFE_DELETE_ARRAY(m_pbFeature);
 	SAFE_DELETE_ARRAY(m_pbFeatureTerrain);	// free memory - MT
+	SAFE_DELETE_ARRAY(m_piYieldModifier);
+	SAFE_DELETE_ARRAY(m_piCommerceModifier);
 }
 
 int CvBonusInfo::getBonusClassType() const
@@ -15700,6 +15711,65 @@ int CvBonusInfo::getPrereqOrTraits(int i) const
 const std::vector<int>& CvBonusInfo::getPrereqOrTraitsVector() const
 {
 	return m_aiPrereqOrTraits;
+}
+
+bool CvBonusInfo::isModifierPerBonus() const
+{
+	return m_bModifierPerBonus;
+}
+
+int CvBonusInfo::getGreatPeopleRateModifier() const
+{
+	return m_iGreatPeopleRateModifier;
+}
+
+int CvBonusInfo::getMaintenanceModifier() const
+{
+	return m_iMaintenanceModifier;
+}
+
+int CvBonusInfo::getHealChange() const
+{
+	return m_iHealChange;
+}
+
+int CvBonusInfo::getHealChangeEnemy() const
+{
+	return m_iHealChangeEnemy;
+}
+
+int CvBonusInfo::getDiscoverRandModifier() const
+{
+	return m_iDiscoverRandModifier;
+}
+
+int CvBonusInfo::getYieldModifier(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piYieldModifier ? m_piYieldModifier[i] : 0;
+}
+
+int* CvBonusInfo::getYieldModifierArray() const
+{
+	return m_piYieldModifier;
+}
+
+int CvBonusInfo::getCommerceModifier(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piCommerceModifier ? m_piCommerceModifier[i] : 0;
+}
+
+int* CvBonusInfo::getCommerceModifierArray() const
+{
+	return m_piCommerceModifier;
+}
+
+int CvBonusInfo::getFreePromotion() const
+{
+	return m_iFreePromotion;
 }
 
 int CvBonusInfo::getTechCityTrade() const
@@ -15969,13 +16039,50 @@ void CvBonusInfo::read(FDataStreamBase* stream)
 	{
 		m_aiPrereqOrTraits.clear();
 	}
+
+	// uiFlag < 2: cache written before the effects of FFH2 existed
+	m_bModifierPerBonus = false;
+	m_iGreatPeopleRateModifier = 0;
+	m_iMaintenanceModifier = 0;
+	m_iHealChange = 0;
+	m_iHealChangeEnemy = 0;
+	m_iDiscoverRandModifier = 0;
+	m_iFreePromotion = NO_PROMOTION;
+	SAFE_DELETE_ARRAY(m_piYieldModifier);
+	m_piYieldModifier = new int[NUM_YIELD_TYPES];
+	SAFE_DELETE_ARRAY(m_piCommerceModifier);
+	m_piCommerceModifier = new int[NUM_COMMERCE_TYPES];
+	if (uiFlag > 1)
+	{
+		stream->Read(&m_bModifierPerBonus);
+		stream->Read(&m_iGreatPeopleRateModifier);
+		stream->Read(&m_iMaintenanceModifier);
+		stream->Read(&m_iHealChange);
+		stream->Read(&m_iHealChangeEnemy);
+		stream->Read(&m_iDiscoverRandModifier);
+		stream->Read(&m_iFreePromotion);
+		stream->Read(NUM_YIELD_TYPES, m_piYieldModifier);
+		stream->Read(NUM_COMMERCE_TYPES, m_piCommerceModifier);
+	}
+	else
+	{
+		int iI;
+		for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+		{
+			m_piYieldModifier[iI] = 0;
+		}
+		for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+		{
+			m_piCommerceModifier[iI] = 0;
+		}
+	}
 }
 
 void CvBonusInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=1;	// 1: PrereqOrTraits (added by this mod)
+	uint uiFlag=2;	// 1: PrereqOrTraits, 2: the effects of FFH2 (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBonusClassType);
@@ -16019,6 +16126,15 @@ void CvBonusInfo::write(FDataStreamBase* stream)
 	stream->Write(GC.getNumFeatureInfos(), m_pbFeature);
 	stream->Write(GC.getNumTerrainInfos(), m_pbFeatureTerrain);
 	writePrereqOrTraits(stream, m_aiPrereqOrTraits);
+	stream->Write(m_bModifierPerBonus);
+	stream->Write(m_iGreatPeopleRateModifier);
+	stream->Write(m_iMaintenanceModifier);
+	stream->Write(m_iHealChange);
+	stream->Write(m_iHealChangeEnemy);
+	stream->Write(m_iDiscoverRandModifier);
+	stream->Write(m_iFreePromotion);
+	stream->Write(NUM_YIELD_TYPES, m_piYieldModifier);
+	stream->Write(NUM_COMMERCE_TYPES, m_piCommerceModifier);
 }
 
 bool CvBonusInfo::read(CvXMLLoadUtility* pXML)
@@ -16037,6 +16153,34 @@ bool CvBonusInfo::read(CvXMLLoadUtility* pXML)
 
 	// PrereqOrTraits (added by this mod): the traits are loaded before the bonuses
 	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
+
+	// The effects of FFH2 (added by this mod). The promotions are loaded before the bonuses
+	pXML->GetChildXmlValByName(&m_bModifierPerBonus, "bModifierPerBonus");
+	pXML->GetChildXmlValByName(&m_iGreatPeopleRateModifier, "iGreatPeopleRateModifier");
+	pXML->GetChildXmlValByName(&m_iMaintenanceModifier, "iMaintenanceModifier");
+	pXML->GetChildXmlValByName(&m_iHealChange, "iHealChange");
+	pXML->GetChildXmlValByName(&m_iHealChangeEnemy, "iHealChangeEnemy");
+	pXML->GetChildXmlValByName(&m_iDiscoverRandModifier, "iDiscoverRandModifier");
+	pXML->GetChildXmlValByName(szTextVal, "FreePromotion");
+	m_iFreePromotion = pXML->FindInInfoClass(szTextVal);
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "YieldModifiers"))
+	{
+		pXML->SetYields(&m_piYieldModifier);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_piYieldModifier, NUM_YIELD_TYPES);
+	}
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CommerceModifiers"))
+	{
+		pXML->SetCommerce(&m_piCommerceModifier);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_piCommerceModifier, NUM_COMMERCE_TYPES);
+	}
 
 	pXML->GetChildXmlValByName( szTextVal, "TechReveal");
 	m_iTechReveal = pXML->FindInInfoClass(szTextVal);

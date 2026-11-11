@@ -241,6 +241,20 @@
 	<ElementType name="PrereqOrTraits" content="eltOnly">
 		<element type="TraitType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="iCommerce" content="textOnly" dt:type="int"/>
+	<ElementType name="bModifierPerBonus" content="textOnly" dt:type="boolean"/>
+	<ElementType name="YieldModifiers" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="CommerceModifiers" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iGreatPeopleRateModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iMaintenanceModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iHealChange" content="textOnly" dt:type="int"/>
+	<ElementType name="iHealChangeEnemy" content="textOnly" dt:type="int"/>
+	<ElementType name="iDiscoverRandModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="FreePromotion" content="textOnly"/>
 	<ElementType name="BonusInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -278,6 +292,15 @@
 		<element type="FeatureTerrainBooleans"/>
 		<element type="bUseLSystem" minOccurs="0"/>
 		<element type="PrereqOrTraits" minOccurs="0"/>
+		<element type="bModifierPerBonus" minOccurs="0"/>
+		<element type="YieldModifiers" minOccurs="0"/>
+		<element type="CommerceModifiers" minOccurs="0"/>
+		<element type="iGreatPeopleRateModifier" minOccurs="0"/>
+		<element type="iMaintenanceModifier" minOccurs="0"/>
+		<element type="FreePromotion" minOccurs="0"/>
+		<element type="iHealChange" minOccurs="0"/>
+		<element type="iHealChangeEnemy" minOccurs="0"/>
+		<element type="iDiscoverRandModifier" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="BonusInfos" content="eltOnly">
 		<element type="BonusInfo" maxOccurs="*"/>

@@ -840,6 +840,88 @@
 		<Spanish>[ICON_BULLET]Units cannot enter this tile</Spanish>
 		<Japanese>[ICON_BULLET]&#12518;&#12491;&#12483;&#12488;&#12399;&#12371;&#12398;&#12479;&#12452;&#12523;&#12395;&#20837;&#12428;&#12394;&#12356;</Japanese>
 	</TEXT>
+	<!-- Bonus effects from FFH2 (added by this mod) -->
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_CITY_MODIFIERS</Tag>
+		<English>City:</English>
+		<French>City:</French>
+		<German>City:</German>
+		<Italian>City:</Italian>
+		<Spanish>City:</Spanish>
+		<Japanese>&#37117;&#24066;:</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_GREAT_PEOPLE_RATE_MODIFIER</Tag>
+		<English>Great People: %D1%%[ICON_GREATPEOPLE] in the city</English>
+		<French>Great People: %D1%%[ICON_GREATPEOPLE] in the city</French>
+		<German>Great People: %D1%%[ICON_GREATPEOPLE] in the city</German>
+		<Italian>Great People: %D1%%[ICON_GREATPEOPLE] in the city</Italian>
+		<Spanish>Great People: %D1%%[ICON_GREATPEOPLE] in the city</Spanish>
+		<Japanese>&#20553;&#20154;&#12509;&#12452;&#12531;&#12488;: [ICON_GREATPEOPLE]%D1%%&#65288;&#37117;&#24066;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_MAINTENANCE_MODIFIER</Tag>
+		<English>Maintenance: %D1%% in the city</English>
+		<French>Maintenance: %D1%% in the city</French>
+		<German>Maintenance: %D1%% in the city</German>
+		<Italian>Maintenance: %D1%% in the city</Italian>
+		<Spanish>Maintenance: %D1%% in the city</Spanish>
+		<Japanese>&#32173;&#25345;&#36027;: %D1%%&#65288;&#37117;&#24066;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_FREE_PROMOTION</Tag>
+		<English>Units trained in the city get %s1_Promotion</English>
+		<French>Units trained in the city get %s1_Promotion</French>
+		<German>Units trained in the city get %s1_Promotion</German>
+		<Italian>Units trained in the city get %s1_Promotion</Italian>
+		<Spanish>Units trained in the city get %s1_Promotion</Spanish>
+		<Japanese>&#12371;&#12398;&#36039;&#28304;&#12434;&#25345;&#12388;&#37117;&#24066;&#12391;&#20316;&#12387;&#12383;&#12518;&#12491;&#12483;&#12488;&#12399;%s1_Promotion&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_HEAL_CHANGE</Tag>
+		<English>Heal in your territory: %D1%% per turn (with it in the capital)</English>
+		<French>Heal in your territory: %D1%% per turn (with it in the capital)</French>
+		<German>Heal in your territory: %D1%% per turn (with it in the capital)</German>
+		<Italian>Heal in your territory: %D1%% per turn (with it in the capital)</Italian>
+		<Spanish>Heal in your territory: %D1%% per turn (with it in the capital)</Spanish>
+		<Japanese>&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#12398;&#22238;&#24489;: 1&#12479;&#12540;&#12531;&#12395;%D1%%&#65288;&#39318;&#37117;&#12364;&#25345;&#12388;&#12392;&#12365;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_HEAL_CHANGE_ENEMY</Tag>
+		<English>Heal of enemies in your territory: %D1%% per turn (with it in the capital)</English>
+		<French>Heal of enemies in your territory: %D1%% per turn (with it in the capital)</French>
+		<German>Heal of enemies in your territory: %D1%% per turn (with it in the capital)</German>
+		<Italian>Heal of enemies in your territory: %D1%% per turn (with it in the capital)</Italian>
+		<Spanish>Heal of enemies in your territory: %D1%% per turn (with it in the capital)</Spanish>
+		<Japanese>&#33258;&#22269;&#12398;&#38936;&#22303;&#12395;&#12356;&#12427;&#25973;&#12398;&#22238;&#24489;: 1&#12479;&#12540;&#12531;&#12395;%D1%%&#65288;&#39318;&#37117;&#12364;&#25345;&#12388;&#12392;&#12365;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_DISCOVER_RAND_MODIFIER</Tag>
+		<English>Chance to discover resources with improvements: %D1%% (with it in the capital)</English>
+		<French>Chance to discover resources with improvements: %D1%% (with it in the capital)</French>
+		<German>Chance to discover resources with improvements: %D1%% (with it in the capital)</German>
+		<Italian>Chance to discover resources with improvements: %D1%% (with it in the capital)</Italian>
+		<Spanish>Chance to discover resources with improvements: %D1%% (with it in the capital)</Spanish>
+		<Japanese>&#26045;&#35373;&#12391;&#36039;&#28304;&#12364;&#35211;&#12388;&#12363;&#12427;&#30906;&#29575;: %D1%%&#65288;&#39318;&#37117;&#12364;&#25345;&#12388;&#12392;&#12365;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_GREATPEOPLE_BONUS</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] from Resources</English>
+		<French>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] from Resources</French>
+		<German>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] from Resources</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] from Resources</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] from Resources</Spanish>
+		<Japanese>[ICON_BULLET]&#36039;&#28304;&#12395;&#12424;&#12426;[ICON_GREATPEOPLE]%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_MODIFIER_PER_BONUS</Tag>
+		<English>The effects count once for each copy</English>
+		<French>The effects count once for each copy</French>
+		<German>The effects count once for each copy</German>
+		<Italian>The effects count once for each copy</Italian>
+		<Spanish>The effects count once for each copy</Spanish>
+		<Japanese>&#21177;&#26524;&#12399;&#25345;&#12387;&#12390;&#12356;&#12427;&#25968;&#12384;&#12369;&#37325;&#12394;&#12427;</Japanese>
+	</TEXT>
 	<!-- Unofficial 3.19 Patch (jdog5000): the keys of CIV4GameText_UnofficialPatch.xml and the key it uses without text -->
 	<TEXT>
 		<Tag>TXT_KEY_TERRAIN_TURN_DAMAGE</Tag>

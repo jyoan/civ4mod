@@ -491,6 +491,9 @@ public:
 	bool isNoConquestPopulationLoss();
 	bool isNoAutoRaze();
 	int getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce);
+	int getBonusHealChange();
+	int getBonusHealChangeEnemy();
+	int getBonusDiscoverRandModifier();
 	int getFeatureProductionChange(int /*FeatureTypes*/ eFeature);
 	int getFeatureGrowthChange(int /*FeatureTypes*/ eFeature);
 	int getFeatureHealthChange(int /*FeatureTypes*/ eFeature);
