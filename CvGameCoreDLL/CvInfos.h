@@ -3526,6 +3526,20 @@ public:
 	int getNumPrereqOrTraits() const;			// Exposed to Python: PrereqOrTraits (added by this mod)
 	int getPrereqOrTraits(int i) const;			// Exposed to Python
 	const std::vector<int>& getPrereqOrTraitsVector() const;
+	// Effects of FFH2 (added by this mod): bModifierPerBonus makes the effects of the bonus (also happiness and health)
+	// count once per copy the city has. The city effects apply in each city with the bonus, the player effects
+	// (heal, discovery) through the capital
+	bool isModifierPerBonus() const;				// Exposed to Python
+	int getGreatPeopleRateModifier() const;				// Exposed to Python
+	int getMaintenanceModifier() const;				// Exposed to Python
+	int getHealChange() const;				// Exposed to Python
+	int getHealChangeEnemy() const;				// Exposed to Python
+	int getDiscoverRandModifier() const;				// Exposed to Python
+	int getYieldModifier(int i) const;			// Exposed to Python
+	int* getYieldModifierArray() const;
+	int getCommerceModifier(int i) const;			// Exposed to Python
+	int* getCommerceModifierArray() const;
+	int getFreePromotion() const;				// Exposed to Python
 	int getTechCityTrade() const;				// Exposed to Python
 	int getTechObsolete() const;				// Exposed to Python
 	int getAITradeModifier() const;			// Exposed to Python
@@ -3585,6 +3599,15 @@ protected:
 	int m_iChar;
 	int m_iTechReveal;
 	std::vector<int> m_aiPrereqOrTraits;
+	bool m_bModifierPerBonus;	// added by this mod
+	int m_iGreatPeopleRateModifier;	// added by this mod
+	int m_iMaintenanceModifier;	// added by this mod
+	int m_iHealChange;	// added by this mod
+	int m_iHealChangeEnemy;	// added by this mod
+	int m_iDiscoverRandModifier;	// added by this mod
+	int m_iFreePromotion;	// added by this mod
+	int* m_piYieldModifier;	// added by this mod
+	int* m_piCommerceModifier;	// added by this mod
 	int m_iTechCityTrade;
 	int m_iTechObsolete;
 	int m_iAITradeModifier;

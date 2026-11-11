@@ -3978,6 +3978,36 @@ void CvCity::processBonus(BonusTypes eBonus, int iChange)
 	{
 		changeBonusYieldRateModifier(((YieldTypes)iI), (getBonusYieldRateModifier(((YieldTypes)iI), eBonus) * iChange));
 	}
+
+	// The city effects of FFH2 (added by this mod)
+	CvBonusInfo& kBonus = GC.getBonusInfo(eBonus);
+
+	if (kBonus.getGreatPeopleRateModifier() != 0)
+	{
+		changeGreatPeopleRateModifier(kBonus.getGreatPeopleRateModifier() * iChange);
+	}
+
+	if (kBonus.getMaintenanceModifier() != 0)
+	{
+		changeMaintenanceModifier(kBonus.getMaintenanceModifier() * iChange);
+	}
+
+	// With the yield modifiers of the buildings for bonuses (BonusYieldModifiers), so the city help shows them as from resources
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		if (kBonus.getYieldModifier(iI) != 0)
+		{
+			changeBonusYieldRateModifier(((YieldTypes)iI), (kBonus.getYieldModifier(iI) * iChange));
+		}
+	}
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		if (kBonus.getCommerceModifier(iI) != 0)
+		{
+			changeCommerceRateModifier(((CommerceTypes)iI), (kBonus.getCommerceModifier(iI) * iChange));
+		}
+	}
 }
 
 
@@ -4097,33 +4127,36 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 		FAssertMsg((0 < GC.getNumBonusInfos()) && "GC.getNumBonusInfos() is not greater than zero but an array is being allocated in CvPlotGroup::reset", "GC.getNumBonusInfos() is not greater than zero but an array is being allocated in CvPlotGroup::reset");
 		for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
 		{
-			if (hasBonus((BonusTypes)iI))
+			// As many times as processBonus counts the bonus: once per copy with bModifierPerBonus (changed by this mod)
+			int iBonusCount = getBonusEffectCount((BonusTypes)iI);
+
+			if (iBonusCount > 0)
 			{
 				if (GC.getBuildingInfo(eBuilding).getBonusHealthChanges(iI) > 0)
 				{
-					changeBonusGoodHealth(GC.getBuildingInfo(eBuilding).getBonusHealthChanges(iI) * iChange);
+					changeBonusGoodHealth(GC.getBuildingInfo(eBuilding).getBonusHealthChanges(iI) * iChange * iBonusCount);
 				}
 				else
 				{
-					changeBonusBadHealth(GC.getBuildingInfo(eBuilding).getBonusHealthChanges(iI) * iChange);
+					changeBonusBadHealth(GC.getBuildingInfo(eBuilding).getBonusHealthChanges(iI) * iChange * iBonusCount);
 				}
 				if (GC.getBuildingInfo(eBuilding).getBonusHappinessChanges(iI) > 0)
 				{
-					changeBonusGoodHappiness(GC.getBuildingInfo(eBuilding).getBonusHappinessChanges(iI) * iChange);
+					changeBonusGoodHappiness(GC.getBuildingInfo(eBuilding).getBonusHappinessChanges(iI) * iChange * iBonusCount);
 				}
 				else
 				{
-					changeBonusBadHappiness(GC.getBuildingInfo(eBuilding).getBonusHappinessChanges(iI) * iChange);
+					changeBonusBadHappiness(GC.getBuildingInfo(eBuilding).getBonusHappinessChanges(iI) * iChange * iBonusCount);
 				}
 
 				if (GC.getBuildingInfo(eBuilding).getPowerBonus() == iI)
 				{
-					changePowerCount(iChange, GC.getBuildingInfo(eBuilding).isDirtyPower());
+					changePowerCount(iChange * iBonusCount, GC.getBuildingInfo(eBuilding).isDirtyPower());
 				}
 
 				for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
 				{
-					changeBonusYieldRateModifier(((YieldTypes)iJ), (GC.getBuildingInfo(eBuilding).getBonusYieldModifier(iI, iJ) * iChange));
+					changeBonusYieldRateModifier(((YieldTypes)iJ), (GC.getBuildingInfo(eBuilding).getBonusYieldModifier(iI, iJ) * iChange * iBonusCount));
 				}
 			}
 		}
@@ -9227,10 +9260,12 @@ void CvCity::updateCorporationBonus()
 	std::vector<int> aiExtraCorpProducedBonuses;
 	std::vector<int> aiLastCorpProducedBonuses;
 	std::vector<bool> abHadBonuses;
+	std::vector<int> aiOldEffectCounts;	// added by this mod
 
 	for (int iI = 0; iI < GC.getNumBonusInfos(); ++iI)
 	{
 		abHadBonuses.push_back(hasBonus((BonusTypes)iI));
+		aiOldEffectCounts.push_back(getBonusEffectCount((BonusTypes)iI));	// added by this mod
 		m_paiNumCorpProducedBonuses[iI] = 0; 
 		aiLastCorpProducedBonuses.push_back(getNumBonuses((BonusTypes)iI));
 		aiExtraCorpProducedBonuses.push_back(0);
@@ -9289,17 +9324,15 @@ void CvCity::updateCorporationBonus()
 
 	for (int iI = 0; iI < GC.getNumBonusInfos(); ++iI)
 	{
+		// The effects count once, or once per copy with bModifierPerBonus (changed by this mod)
+		if (getBonusEffectCount((BonusTypes)iI) != aiOldEffectCounts[iI])
+		{
+			processBonus((BonusTypes)iI, getBonusEffectCount((BonusTypes)iI) - aiOldEffectCounts[iI]);
+		}
+
 		if (abHadBonuses[iI] != hasBonus((BonusTypes)iI))
 		{
-			if (hasBonus((BonusTypes)iI))
-			{
-				processBonus((BonusTypes)iI, 1);
-			}
-			else
-			{
-				processBonus((BonusTypes)iI, -1);
-			}
-
+			processBonusPresence((BonusTypes)iI, (hasBonus((BonusTypes)iI) ? 1 : -1));	// added by this mod
 			updateBuildingChangesForBonus((BonusTypes)iI);	// added by this mod
 		}
 	}			
@@ -9811,17 +9844,21 @@ void CvCity::changeNoBonusCount(BonusTypes eIndex, int iChange)
 
 	if (iChange != 0)
 	{
-		if (getNumBonuses(eIndex) > 0)
-		{
-			processBonus(eIndex, -1);
-		}
+		// The effects count once, or once per copy with bModifierPerBonus (changed by this mod)
+		bool bOldHasBonus = hasBonus(eIndex);
+		int iOldEffectCount = getBonusEffectCount(eIndex);
 
 		m_paiNoBonus[eIndex] += iChange;
 		FAssert(getNoBonusCount(eIndex) >= 0);
 
-		if (getNumBonuses(eIndex) > 0)
+		if (getBonusEffectCount(eIndex) != iOldEffectCount)
 		{
-			processBonus(eIndex, 1);
+			processBonus(eIndex, getBonusEffectCount(eIndex) - iOldEffectCount);
+		}
+
+		if (bOldHasBonus != hasBonus(eIndex))
+		{
+			processBonusPresence(eIndex, (hasBonus(eIndex) ? 1 : -1));
 		}
 
 		updateBuildingChangesForBonus(eIndex);	// added by this mod
@@ -9876,6 +9913,62 @@ bool CvCity::hasBonus(BonusTypes eIndex) const
 	return (getNumBonuses(eIndex) > 0);
 }
 
+// How many times the effects of the bonus count in the city (added by this mod): 0 without it, the number of copies the
+// city has with bModifierPerBonus (FFH2), else 1
+int CvCity::getBonusEffectCount(BonusTypes eIndex) const
+{
+	if (!hasBonus(eIndex))
+	{
+		return 0;
+	}
+
+	return (GC.getBonusInfo(eIndex).isModifierPerBonus() ? getNumBonuses(eIndex) : 1);
+}
+
+// The commerce and great people modifiers the bonuses give the city (added by this mod), for the city help: the city keeps
+// them in its total modifiers
+int CvCity::getBonusCommerceRateModifier(CommerceTypes eIndex) const
+{
+	int iModifier = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		if (GC.getBonusInfo((BonusTypes)iI).getCommerceModifier(eIndex) != 0)
+		{
+			iModifier += GC.getBonusInfo((BonusTypes)iI).getCommerceModifier(eIndex) * getBonusEffectCount((BonusTypes)iI);
+		}
+	}
+
+	return iModifier;
+}
+
+int CvCity::getBonusGreatPeopleRateModifier() const
+{
+	int iModifier = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		if (GC.getBonusInfo((BonusTypes)iI).getGreatPeopleRateModifier() != 0)
+		{
+			iModifier += GC.getBonusInfo((BonusTypes)iI).getGreatPeopleRateModifier() * getBonusEffectCount((BonusTypes)iI);
+		}
+	}
+
+	return iModifier;
+}
+
+// The effects that count once whatever the number of copies (added by this mod): FreePromotion of FFH2. iChange is 1 when the
+// city gets the bonus, -1 when it loses it
+void CvCity::processBonusPresence(BonusTypes eBonus, int iChange)
+{
+	if (GC.getBonusInfo(eBonus).getFreePromotion() != NO_PROMOTION)
+	{
+		changeFreePromotionCount((PromotionTypes)GC.getBonusInfo(eBonus).getFreePromotion(), iChange);
+	}
+}
+
 
 void CvCity::changeNumBonuses(BonusTypes eIndex, int iChange)
 {
@@ -9885,20 +9978,19 @@ void CvCity::changeNumBonuses(BonusTypes eIndex, int iChange)
 	if (iChange != 0)
 	{
 		bool bOldHasBonus = hasBonus(eIndex);
+		int iOldEffectCount = getBonusEffectCount(eIndex);	// added by this mod
 
 		m_paiNumBonuses[eIndex] += iChange;
 
+		// The effects count once, or once per copy with bModifierPerBonus (changed by this mod)
+		if (getBonusEffectCount(eIndex) != iOldEffectCount)
+		{
+			processBonus(eIndex, getBonusEffectCount(eIndex) - iOldEffectCount);
+		}
+
 		if (bOldHasBonus != hasBonus(eIndex))
 		{
-			if (hasBonus(eIndex))
-			{
-				processBonus(eIndex, 1);
-			}
-			else
-			{
-				processBonus(eIndex, -1);
-			}
-
+			processBonusPresence(eIndex, (hasBonus(eIndex) ? 1 : -1));	// added by this mod
 			updateBuildingChangesForBonus(eIndex);	// added by this mod
 		}
 

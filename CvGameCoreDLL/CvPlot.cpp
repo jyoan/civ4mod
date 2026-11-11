@@ -446,6 +446,13 @@ void CvPlot::doImprovement()
 						iOdds *= GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getVictoryDelayPercent();
 						iOdds /= 100;
 
+						// iDiscoverRandModifier of the bonuses of the owner (added by this mod, FFH2): +100 halves the odds
+						int iDiscoverModifier = GET_PLAYER(getOwnerINLINE()).getBonusDiscoverRandModifier();
+						if (iDiscoverModifier != 0)
+						{
+							iOdds = std::max(1, (iOdds * 100) / std::max(1, 100 + iDiscoverModifier));
+						}
+
 						if( GC.getGameINLINE().getSorenRandNum(iOdds, "Bonus Discovery") == 0)
 						{
 /************************************************************************************************/

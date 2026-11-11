@@ -5398,6 +5398,12 @@ int CvUnit::healRate(const CvPlot* pPlot) const
 			if (isEnemy(pPlot->getTeam(), pPlot))
 			{
 				iTotalHeal += (GC.getDefineINT("ENEMY_HEAL_RATE") + getExtraEnemyHeal());
+
+				// iHealChangeEnemy of the bonuses of the owner of the plot (added by this mod, FFH2)
+				if (pPlot->isOwned())
+				{
+					iTotalHeal += GET_PLAYER(pPlot->getOwnerINLINE()).getBonusHealChangeEnemy();
+				}
 			}
 			else
 			{
@@ -5407,6 +5413,7 @@ int CvUnit::healRate(const CvPlot* pPlot) const
 		else
 		{
 			iTotalHeal += (GC.getDefineINT("FRIENDLY_HEAL_RATE") + getExtraFriendlyHeal());
+			iTotalHeal += GET_PLAYER(getOwnerINLINE()).getBonusHealChange();	// iHealChange of the bonuses (added by this mod, FFH2)
 		}
 	}
 

@@ -28,6 +28,7 @@ typedef std::vector< std::pair<CivilizationTypes, LeaderHeadTypes> > CivLeaderAr
 struct ConditionalFreeTrait;		// CvInfos.h (added by this mod)
 
 class CvTraitInfo;
+class CvBonusInfo;	// added by this mod
 
 class CvPlayer
 {
@@ -258,6 +259,10 @@ public:
 	int getBuildingClassExtraCommerce(BuildingClassTypes eBuildingClass, CommerceTypes eCommerce) const;	// added by this mod
 	void changeBuildingClassExtraCommerce(BuildingClassTypes eBuildingClass, CommerceTypes eCommerce, int iChange);	// added by this mod
 	int getSpecialistTypeExtraCommerce(SpecialistTypes eSpecialist, CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
+	int getCapitalBonusEffect(int (CvBonusInfo::*pGetter)() const) const;	// added by this mod
+	int getBonusHealChange() const;			// Exposed to Python (added by this mod)
+	int getBonusHealChangeEnemy() const;		// Exposed to Python (added by this mod)
+	int getBonusDiscoverRandModifier() const;	// Exposed to Python (added by this mod)
 	void changeSpecialistTypeExtraCommerce(SpecialistTypes eSpecialist, CommerceTypes eCommerce, int iChange);	// added by this mod
 	bool isNoPillageInBorders() const;								// Exposed to Python
 	int getMinCityRange() const;									// Exposed to Python: MIN_CITY_RANGE with iMinCityRangeChange of the traits

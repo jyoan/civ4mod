@@ -736,6 +736,10 @@ public:
 
 	int getNumBonuses(BonusTypes eIndex) const;																		// Exposed to Python
 	bool hasBonus(BonusTypes eIndex) const;															// Exposed to Python
+	int getBonusEffectCount(BonusTypes eIndex) const;	// added by this mod
+	int getBonusCommerceRateModifier(CommerceTypes eIndex) const;	// added by this mod
+	int getBonusGreatPeopleRateModifier() const;	// added by this mod
+	void processBonusPresence(BonusTypes eBonus, int iChange);	// added by this mod
 	void changeNumBonuses(BonusTypes eIndex, int iChange);
 
 	int getNumCorpProducedBonuses(BonusTypes eIndex) const;
