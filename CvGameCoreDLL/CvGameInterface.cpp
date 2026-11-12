@@ -1877,6 +1877,14 @@ void CvGame::getGlobeLayers(std::vector<CvGlobeLayerData>& aLayers) const
 	kReligion.m_iNumOptions = GC.getNumReligionInfos();
 	kReligion.m_bShouldCitiesZoom = true;
 	aLayers.push_back(kReligion);
+
+	// Regions (added by this mod). The button has the look of the strategy layer, which BtS does not show
+	CvGlobeLayerData kRegion(GLOBE_LAYER_REGION);
+	kRegion.m_strName = "REGIONS";
+	kRegion.m_strButtonHelpTag = "TXT_KEY_GLOBELAYER_REGIONS";
+	kRegion.m_strButtonStyle = "Button_HUDGlobeStrategy_Style";
+	kRegion.m_iNumOptions = NUM_REGION_OPTION_TYPES;
+	aLayers.push_back(kRegion);
 }
 
 void CvGame::startFlyoutMenu(const CvPlot* pPlot, std::vector<CvFlyoutMenuData>& aFlyoutItems) const

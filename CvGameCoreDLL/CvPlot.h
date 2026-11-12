@@ -91,6 +91,11 @@ public:
 
 	DllExport bool isLake() const;																															// Exposed to Python
 	bool isFreshWater() const;																												// Exposed to Python
+	// Regions (added by this mod): see CvMap::calculateRegions
+	int getRegion() const;																			// Exposed to Python
+	bool isNewWorld() const;																		// Exposed to Python
+	bool isOverseas(PlayerTypes ePlayer) const;														// Exposed to Python
+	bool isDistant(PlayerTypes ePlayer) const;														// Exposed to Python
 	bool isPotentialIrrigation() const;																													// Exposed to Python
 	bool canHavePotentialIrrigation() const;																										// Exposed to Python
 	DllExport bool isIrrigationAvailable(bool bIgnoreSelf = false) const;												// Exposed to Python

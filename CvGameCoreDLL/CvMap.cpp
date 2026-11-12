@@ -193,6 +193,11 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 
 	m_iNextRiverID = 0;
 
+	// Regions (added by this mod)
+	m_bRegionsCalculated = false;
+	m_aiPlotRegion.clear();
+	m_abRegionNewWorld.clear();
+
 	//
 	// set wrapping
 	//
@@ -1214,6 +1219,274 @@ void CvMap::recalculateAreas()
 }
 
 
+// Regions (added by this mod). A region is land joined with the shallow water around it (coast and lakes), bounded by deep
+// water (ocean, DEEP_WATER_TERRAIN) and impassable water (ice). The early ships cannot enter the ocean, so a region the
+// player does not start in is a place the player cannot reach before the ocean-going ships. Islands joined by shallow
+// water are one region. A region with fewer land plots than REGION_MIN_LAND_PLOTS joins the nearest large region (the
+// fewest steps from its plots; on a tie the larger region, then the region found first). A region is New World when no
+// player (other than the barbarians) has a starting plot in it.
+// Computed once at the start of the game (CvGame::setInitialItems, after the starting plots are normalized) and saved,
+// so later changes of the terrain do not move the regions. Saves made before this mod computed them are done on first use.
+static bool isRegionPlot(const CvPlot* pPlot)
+{
+	if (!pPlot->isWater())
+	{
+		return true;
+	}
+
+	if (pPlot->getTerrainType() == ((TerrainTypes)(GC.getDefineINT("DEEP_WATER_TERRAIN"))))
+	{
+		return false;
+	}
+
+	if (pPlot->getTerrainType() != NO_TERRAIN && GC.getTerrainInfo(pPlot->getTerrainType()).isImpassable())
+	{
+		return false;
+	}
+
+	if (pPlot->getFeatureType() != NO_FEATURE && GC.getFeatureInfo(pPlot->getFeatureType()).isImpassable())
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void CvMap::calculateRegions()
+{
+	PROFILE_FUNC();
+
+	CvPlot* pPlot;
+	CvPlot* pAdjacentPlot;
+	int iNumPlots = numPlotsINLINE();
+	int iNumRawRegions = 0;
+	int iMinLandPlots = GC.getDefineINT("REGION_MIN_LAND_PLOTS");
+	bool bAnyLarge = false;
+	int iAdjacent;
+	int iRegion;
+	int iBest;
+	int iBestDistance;
+	int iI;
+	int iJ;
+	size_t iHead;
+
+	if (iNumPlots <= 0)
+	{
+		return;
+	}
+
+	// The regions before joining the small ones, numbered in the order of their first plot
+	std::vector<int> aiRawRegion(iNumPlots, -1);
+	std::vector<int> aiRawLandPlots;
+	std::vector<int> aiQueue;
+	aiQueue.reserve(iNumPlots);
+
+	for (iI = 0; iI < iNumPlots; iI++)
+	{
+		if (aiRawRegion[iI] != -1 || !isRegionPlot(plotByIndexINLINE(iI)))
+		{
+			continue;
+		}
+
+		aiRawRegion[iI] = iNumRawRegions;
+		aiRawLandPlots.push_back(0);
+		aiQueue.clear();
+		aiQueue.push_back(iI);
+
+		for (iHead = 0; iHead < aiQueue.size(); iHead++)
+		{
+			pPlot = plotByIndexINLINE(aiQueue[iHead]);
+			if (!pPlot->isWater())
+			{
+				aiRawLandPlots[iNumRawRegions]++;
+			}
+
+			for (iJ = 0; iJ < NUM_DIRECTION_TYPES; iJ++)
+			{
+				pAdjacentPlot = plotDirection(pPlot->getX_INLINE(), pPlot->getY_INLINE(), ((DirectionTypes)iJ));
+				if (pAdjacentPlot != NULL)
+				{
+					iAdjacent = plotNumINLINE(pAdjacentPlot->getX_INLINE(), pAdjacentPlot->getY_INLINE());
+					if (aiRawRegion[iAdjacent] == -1 && isRegionPlot(pAdjacentPlot))
+					{
+						aiRawRegion[iAdjacent] = iNumRawRegions;
+						aiQueue.push_back(iAdjacent);
+					}
+				}
+			}
+		}
+
+		iNumRawRegions++;
+	}
+
+	// The large region each region joins (itself for the large ones)
+	std::vector<int> aiTarget(iNumRawRegions);
+	for (iI = 0; iI < iNumRawRegions; iI++)
+	{
+		aiTarget[iI] = iI;
+		if (aiRawLandPlots[iI] >= iMinLandPlots)
+		{
+			bAnyLarge = true;
+		}
+	}
+
+	if (bAnyLarge)
+	{
+		// Breadth-first search from all plots of the large regions over all plots. A plot reached in the same step from
+		// two large regions belongs to the larger one (the queue keeps the steps in order, so a plot is settled before it
+		// is expanded).
+		std::vector<int> aiOwner(iNumPlots, -1);
+		std::vector<int> aiDistance(iNumPlots, -1);
+		aiQueue.clear();
+
+		for (iI = 0; iI < iNumPlots; iI++)
+		{
+			iRegion = aiRawRegion[iI];
+			if (iRegion != -1 && aiRawLandPlots[iRegion] >= iMinLandPlots)
+			{
+				aiOwner[iI] = iRegion;
+				aiDistance[iI] = 0;
+				aiQueue.push_back(iI);
+			}
+		}
+
+		for (iHead = 0; iHead < aiQueue.size(); iHead++)
+		{
+			pPlot = plotByIndexINLINE(aiQueue[iHead]);
+			iRegion = aiOwner[aiQueue[iHead]];
+
+			for (iJ = 0; iJ < NUM_DIRECTION_TYPES; iJ++)
+			{
+				pAdjacentPlot = plotDirection(pPlot->getX_INLINE(), pPlot->getY_INLINE(), ((DirectionTypes)iJ));
+				if (pAdjacentPlot != NULL)
+				{
+					iAdjacent = plotNumINLINE(pAdjacentPlot->getX_INLINE(), pAdjacentPlot->getY_INLINE());
+					if (aiDistance[iAdjacent] == -1)
+					{
+						aiDistance[iAdjacent] = aiDistance[aiQueue[iHead]] + 1;
+						aiOwner[iAdjacent] = iRegion;
+						aiQueue.push_back(iAdjacent);
+					}
+					else if (aiDistance[iAdjacent] == aiDistance[aiQueue[iHead]] + 1 && aiOwner[iAdjacent] != iRegion)
+					{
+						if (aiRawLandPlots[iRegion] > aiRawLandPlots[aiOwner[iAdjacent]] ||
+							(aiRawLandPlots[iRegion] == aiRawLandPlots[aiOwner[iAdjacent]] && iRegion < aiOwner[iAdjacent]))
+						{
+							aiOwner[iAdjacent] = iRegion;
+						}
+					}
+				}
+			}
+		}
+
+		// Each small region joins the large region nearest to its plots
+		std::vector<int> aiBest(iNumRawRegions, -1);
+		std::vector<int> aiBestDistance(iNumRawRegions, -1);
+		for (iI = 0; iI < iNumPlots; iI++)
+		{
+			iRegion = aiRawRegion[iI];
+			if (iRegion == -1 || aiRawLandPlots[iRegion] >= iMinLandPlots || aiOwner[iI] == -1)
+			{
+				continue;
+			}
+
+			iBest = aiBest[iRegion];
+			iBestDistance = aiBestDistance[iRegion];
+			if (iBest == -1 || aiDistance[iI] < iBestDistance ||
+				(aiDistance[iI] == iBestDistance && (aiRawLandPlots[aiOwner[iI]] > aiRawLandPlots[iBest] ||
+				(aiRawLandPlots[aiOwner[iI]] == aiRawLandPlots[iBest] && aiOwner[iI] < iBest))))
+			{
+				aiBest[iRegion] = aiOwner[iI];
+				aiBestDistance[iRegion] = aiDistance[iI];
+			}
+		}
+
+		for (iI = 0; iI < iNumRawRegions; iI++)
+		{
+			if (aiBest[iI] != -1)
+			{
+				aiTarget[iI] = aiBest[iI];
+			}
+		}
+	}
+
+	// Number the final regions in the order of their first plot
+	std::vector<int> aiFinal(iNumRawRegions, -1);
+	int iNumRegions = 0;
+	m_aiPlotRegion.assign(iNumPlots, -1);
+	for (iI = 0; iI < iNumPlots; iI++)
+	{
+		if (aiRawRegion[iI] != -1)
+		{
+			iRegion = aiTarget[aiRawRegion[iI]];
+			if (aiFinal[iRegion] == -1)
+			{
+				aiFinal[iRegion] = iNumRegions;
+				iNumRegions++;
+			}
+			m_aiPlotRegion[iI] = aiFinal[iRegion];
+		}
+	}
+
+	// New World: no player started in it
+	m_abRegionNewWorld.assign(iNumRegions, true);
+	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
+		if (kPlayer.isAlive() && !kPlayer.isBarbarian())
+		{
+			pPlot = kPlayer.getStartingPlot();
+			if (pPlot != NULL)
+			{
+				iRegion = m_aiPlotRegion[plotNumINLINE(pPlot->getX_INLINE(), pPlot->getY_INLINE())];
+				if (iRegion != -1)
+				{
+					m_abRegionNewWorld[iRegion] = false;
+				}
+			}
+		}
+	}
+
+	m_bRegionsCalculated = true;
+}
+
+// Saves made before this mod computed the regions compute them on first use (the map and the starting plots are saved, so
+// every computer gets the same regions)
+void CvMap::ensureRegions() const
+{
+	if (!m_bRegionsCalculated)
+	{
+		const_cast<CvMap*>(this)->calculateRegions();
+	}
+}
+
+int CvMap::getNumRegions() const
+{
+	ensureRegions();
+	return (int)m_abRegionNewWorld.size();
+}
+
+int CvMap::getPlotRegion(int iPlotIndex) const
+{
+	ensureRegions();
+	if (iPlotIndex < 0 || iPlotIndex >= (int)m_aiPlotRegion.size())
+	{
+		return -1;
+	}
+	return m_aiPlotRegion[iPlotIndex];
+}
+
+bool CvMap::isRegionNewWorld(int iRegion) const
+{
+	ensureRegions();
+	if (iRegion < 0 || iRegion >= (int)m_abRegionNewWorld.size())
+	{
+		return false;
+	}
+	return m_abRegionNewWorld[iRegion];
+}
+
+
 void CvMap::resetPathDistance()
 {
 	gDLL->getFAStarIFace()->ForceReset(&GC.getStepFinder());
@@ -1284,6 +1557,36 @@ void CvMap::read(FDataStreamBase* pStream)
 	// call the read of the free list CvArea class allocations
 	ReadStreamableFFreeListTrashArray(m_areas, pStream);
 
+	// Regions (added by this mod). Saves without them compute them on first use
+	if (uiFlag > 0)
+	{
+		int iNum;
+		int iI;
+		bool bNewWorld;
+
+		pStream->Read(&m_bRegionsCalculated);
+		if (m_bRegionsCalculated)
+		{
+			pStream->Read(&iNum);
+			m_aiPlotRegion.resize(iNum);
+			if (iNum > 0)
+			{
+				pStream->Read(iNum, &m_aiPlotRegion[0]);
+			}
+			pStream->Read(&iNum);
+			m_abRegionNewWorld.resize(iNum);
+			for (iI = 0; iI < iNum; iI++)
+			{
+				pStream->Read(&bNewWorld);
+				m_abRegionNewWorld[iI] = bNewWorld;
+			}
+			if ((int)m_aiPlotRegion.size() != numPlotsINLINE())
+			{
+				m_bRegionsCalculated = false;
+			}
+		}
+	}
+
 	setup();
 }
 
@@ -1292,7 +1595,7 @@ void CvMap::read(FDataStreamBase* pStream)
 //
 void CvMap::write(FDataStreamBase* pStream)
 {
-	uint uiFlag=0;
+	uint uiFlag=1;	// 1: regions (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iGridWidth);
@@ -1318,6 +1621,22 @@ void CvMap::write(FDataStreamBase* pStream)
 
 	// call the read of the free list CvArea class allocations
 	WriteStreamableFFreeListTrashArray(m_areas, pStream);
+
+	// Regions (added by this mod)
+	pStream->Write(m_bRegionsCalculated);
+	if (m_bRegionsCalculated)
+	{
+		pStream->Write((int)m_aiPlotRegion.size());
+		if (!m_aiPlotRegion.empty())
+		{
+			pStream->Write((int)m_aiPlotRegion.size(), &m_aiPlotRegion[0]);
+		}
+		pStream->Write((int)m_abRegionNewWorld.size());
+		for (iI = 0; iI < (int)m_abRegionNewWorld.size(); iI++)
+		{
+			pStream->Write((bool)m_abRegionNewWorld[iI]);
+		}
+	}
 }
 
 

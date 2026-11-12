@@ -243,6 +243,17 @@ int CyMap::getNumAreas()
 	return m_pMap ? m_pMap->getNumAreas() : -1;
 }
 
+// Regions (added by this mod)
+int CyMap::getNumRegions()
+{
+	return m_pMap ? m_pMap->getNumRegions() : -1;
+}
+
+bool CyMap::isRegionNewWorld(int iRegion)
+{
+	return m_pMap ? m_pMap->isRegionNewWorld(iRegion) : false;
+}
+
 int CyMap::getNumLandAreas()
 {
 	return m_pMap ? m_pMap->getNumLandAreas() : -1;

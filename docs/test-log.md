@@ -99,3 +99,4 @@
 - 2026-11-10: 専門家の種類ごとの産出・商業（`SpecialistYieldChanges`・`SpecialistCommerceChanges`）を検証用志向で確認（科学者 +1 食料・+2 金、定住した大預言者 +3 文化、専門家のマウスオーバー、商業の内訳の合計、志向のない文明は BtS のまま、説明文）
 - 2026-11-12: FFH2 のマナ資源の効果（`bModifierPerBonus`・`YieldModifiers`・`CommerceModifiers`・`iGreatPeopleRateModifier`・`iMaintenanceModifier`・`FreePromotion`・`iHealChange`・`iHealChangeEnemy`・`iDiscoverRandModifier`）を検証用資源で確認（都市画面の内訳の「資源により」、持つ数による累積、維持費、幸福、昇進、回復）
 - 2026-11-12: ユニット・昇進の `BonusAffinities` を検証用ユニット A と検証用昇進で確認（資源の数に応じた戦闘力、マウスオーバーの「今」の値、道路を切ったときの即時の反映、戦闘のオッズ、ペディア）
+- 2026-11-12: 地域区分（`CvMap::calculateRegions`。新世界・海外・首都から遠い）と地球儀ビューの「地域」レイヤーを確認（6 つ目のボタンの表示、4 つの切り替え、未探索のタイルを塗らないこと、タイルの説明）

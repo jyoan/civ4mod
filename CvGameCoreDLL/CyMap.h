@@ -72,6 +72,8 @@ public:
 	CyPlot* pointToPlot(float fX, float fY);
 	int getIndexAfterLastArea();
 	int getNumAreas();
+	int getNumRegions();	// added by this mod
+	bool isRegionNewWorld(int iRegion);	// added by this mod
 	int getNumLandAreas();
 	CyArea* getArea(int iID);
 	void recalculateAreas();
