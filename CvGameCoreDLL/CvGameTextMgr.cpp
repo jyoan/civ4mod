@@ -13288,6 +13288,31 @@ void CvGameTextMgr::setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTyp
 		szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_MAX_PER_PLAYER", info.getMaxPerPlayer()));
 	}
 
+	// iRange, iHealRateChange, iRangeDefenseModifier, iPlotVisibilityChange (added by this mod)
+	if (info.getHealRateChange() > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText(((info.getRange() > 0) ? "TXT_KEY_IMPROVEMENT_RANGE_HEAL" : "TXT_KEY_IMPROVEMENT_PLOT_HEAL"), info.getHealRateChange(), info.getRange()));
+	}
+
+	if (info.getRangeDefenseModifier() > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText(((info.getRange() > 0) ? "TXT_KEY_IMPROVEMENT_RANGE_DEFENSE" : "TXT_KEY_IMPROVEMENT_PLOT_DEFENSE"), info.getRangeDefenseModifier(), info.getRange()));
+	}
+
+	if (info.getHealRateChange() > 0 || info.getRangeDefenseModifier() > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_RANGE_NOTE"));
+	}
+
+	if (info.getPlotVisibilityChange() != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_PLOT_VISIBILITY", info.getPlotVisibilityChange()));
+	}
+
 	// ReplacedImprovement and the PrereqOrTraits of its build (added by this mod)
 	// iUniqueChance, bImpassable (added by this mod)
 	if (info.getUniqueChance() > 0)

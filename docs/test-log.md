@@ -102,3 +102,4 @@
 - 2026-11-12: 地域区分（`CvMap::calculateRegions`。新世界・海外・首都から遠い）と地球儀ビューの「地域」レイヤーを確認（6 つ目のボタンの表示、4 つの切り替え、未探索のタイルを塗らないこと、タイルの説明）
 - 2026-11-12: 地域を使う志向のタグ（`iNewWorldCityPopulation`・`iOverseasCityPopulation`・`iOverseasMaintenanceModifier`・`iDistantTradeRouteModifier`）と昇進の `iCombatPercentOverseas` を検証用志向・検証用昇進で確認（建てた都市の人口、海外の都市の維持費とその説明、遠く離れた都市との交易路とその説明、海外での戦闘力）
 - 2026-11-12: 施設の隣接の産出（`AdjacentImprovementYieldChanges`・`AdjacentFeatureYieldChanges`）を検証用施設（棚田）で、数の制限（`iUniqueRange`・`iMaxPerCity`・`iMaxPerPlayer`）を検証用施設（文明）で確認（産出と作業の予測、押せない作業のボタンの赤字の理由）
+- 2026-11-12: 施設の範囲の効果（`iRange`・`iHealRateChange`・`iRangeDefenseModifier`）と持ち主の視界（`iPlotVisibilityChange`）を検証用砦で確認（説明、視界の広がりと撤去で元に戻ること、範囲内の防御と回復）

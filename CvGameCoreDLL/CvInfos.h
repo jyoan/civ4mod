@@ -3365,6 +3365,11 @@ public:
 	int getUniqueRange() const;	// Exposed to Python
 	int getMaxPerCity() const;	// Exposed to Python
 	int getMaxPerPlayer() const;	// Exposed to Python
+	// iRange, iHealRateChange, iRangeDefenseModifier (as FFH2), iPlotVisibilityChange (added by this mod)
+	int getRange() const;	// Exposed to Python
+	int getHealRateChange() const;	// Exposed to Python
+	int getRangeDefenseModifier() const;	// Exposed to Python
+	int getPlotVisibilityChange() const;	// Exposed to Python
 	bool isMakesPassable() const;					// Exposed to Python: bMakesPassable (added by this mod)
 	int getPassageMoveCost() const;				// Exposed to Python: iPassageMoveCost (added by this mod)
 	int getReplacedImprovement() const;				// Exposed to Python: ReplacedImprovement (added by this mod)
@@ -3459,6 +3464,10 @@ protected:
 	int m_iUniqueRange;	// added by this mod
 	int m_iMaxPerCity;	// added by this mod
 	int m_iMaxPerPlayer;	// added by this mod
+	int m_iRange;	// added by this mod
+	int m_iHealRateChange;	// added by this mod
+	int m_iRangeDefenseModifier;	// added by this mod
+	int m_iPlotVisibilityChange;	// added by this mod
 
 	bool m_bActsAsCity;				
 	bool m_bHillsMakesValid;				

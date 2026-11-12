@@ -5481,6 +5481,9 @@ int CvUnit::healRate(const CvPlot* pPlot) const
 	iTotalHeal += iBestHeal;
 	// XXX
 
+	// iHealRateChange of the improvements of our team around (added by this mod)
+	iTotalHeal += pPlot->getImprovementRangeValue(getTeam(), &CvImprovementInfo::getHealRateChange);
+
 	return iTotalHeal;
 }
 
