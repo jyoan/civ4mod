@@ -28,7 +28,7 @@
 		<iDefineIntVal>10</iDefineIntVal>
 	</Define>
 	<!-- Added by this mod: a plot is distant from the capital when its distance is at least this percent of the largest
-		distance of the map. -->
+		distance of the map. Also the length of a long trade route (iDistantTradeRouteModifier of the traits). -->
 	<Define>
 		<DefineName>REGION_DISTANT_PERCENT</DefineName>
 		<iDefineIntVal>30</iDefineIntVal>

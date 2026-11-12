@@ -349,6 +349,7 @@ public:
 	int calculateCorporationMaintenanceTimes100(CorporationTypes eCorporation) const;									// Exposed to Python
 	int calculateCorporationMaintenanceTimes100() const;									// Exposed to Python
 	int calculateBaseMaintenanceTimes100() const;
+	bool isDistantTradeRoute(const CvCity* pOtherCity) const;	// added by this mod
 	int getMaintenanceModifier() const;													// Exposed to Python
 	void changeMaintenanceModifier(int iChange);													
 

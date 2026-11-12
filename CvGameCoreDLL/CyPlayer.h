@@ -490,6 +490,10 @@ public:
 	int getConquestBuildingSurviveModifier();
 	bool isNoConquestPopulationLoss();
 	bool isNoAutoRaze();
+	int getNewWorldCityPopulation();	// added by this mod
+	int getOverseasCityPopulation();	// added by this mod
+	int getOverseasMaintenanceModifier();	// added by this mod
+	int getDistantTradeRouteModifier();	// added by this mod
 	int getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce);
 	int getBonusHealChange();
 	int getBonusHealChangeEnemy();

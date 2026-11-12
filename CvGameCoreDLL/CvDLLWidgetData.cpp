@@ -3691,6 +3691,17 @@ void CvDLLWidgetData::parseMaintenanceHelp(CvWidgetDataStruct &widgetDataStruct,
 				swprintf(szTempBuffer, L" (%s%d%%)", ((iMaintenanceValue > 0) ? L"+" : L""), iMaintenanceValue);
 				szBuffer.append(szTempBuffer);
 			}
+
+			// iOverseasMaintenanceModifier of the traits (added by this mod): a part of the modifier above
+			if (pHeadSelectedCity->plot()->isOverseas(pHeadSelectedCity->getOwnerINLINE()))
+			{
+				iMaintenanceValue = GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getOverseasMaintenanceModifier();
+				if (iMaintenanceValue != 0)
+				{
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_MISC_OVERSEAS_MAINT_MODIFIER", iMaintenanceValue));
+				}
+			}
 		}
 	}
 }

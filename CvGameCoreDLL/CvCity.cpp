@@ -6354,8 +6354,15 @@ int CvCity::calculateBaseMaintenanceTimes100() const
 }
 
 
+// With iOverseasMaintenanceModifier of the traits in an overseas city (added by this mod), so the maintenance, the city help and
+// the finance advisor all include it. The saves keep only m_iMaintenanceModifier
 int CvCity::getMaintenanceModifier() const
 {
+	if (plot()->isOverseas(getOwnerINLINE()))
+	{
+		return m_iMaintenanceModifier + GET_PLAYER(getOwnerINLINE()).getOverseasMaintenanceModifier();
+	}
+
 	return m_iMaintenanceModifier;
 }
 
@@ -8614,6 +8621,12 @@ int CvCity::totalTradeModifier(CvCity* pOtherCity) const
 			iModifier += GC.getDefineINT("OVERSEAS_TRADE_MODIFIER");
 		}
 
+		// iDistantTradeRouteModifier of the traits (added by this mod): with a city far from this one
+		if (isDistantTradeRoute(pOtherCity))
+		{
+			iModifier += GET_PLAYER(getOwnerINLINE()).getDistantTradeRouteModifier();
+		}
+
 		if (getTeam() != pOtherCity->getTeam())
 		{
 			iModifier += getForeignTradeRouteModifier();
@@ -8623,6 +8636,18 @@ int CvCity::totalTradeModifier(CvCity* pOtherCity) const
 	}
 
 	return iModifier;
+}
+
+// A long trade route (added by this mod, for iDistantTradeRouteModifier of the traits): the two cities are at least
+// REGION_DISTANT_PERCENT of the largest distance of the map apart, the measure of CvPlot::isDistant
+bool CvCity::isDistantTradeRoute(const CvCity* pOtherCity) const
+{
+	if (pOtherCity == NULL)
+	{
+		return false;
+	}
+
+	return (plotDistance(getX_INLINE(), getY_INLINE(), pOtherCity->getX_INLINE(), pOtherCity->getY_INLINE()) * 100 >= GC.getMapINLINE().maxPlotDistance() * GC.getDefineINT("REGION_DISTANT_PERCENT"));
 }
 
 int CvCity::getPopulationTradeModifier() const

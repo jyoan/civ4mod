@@ -2820,6 +2820,11 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 		pLoopCity->updateFeatureHealth();
 	}
 
+	// Maintenance of the overseas cities (iOverseasMaintenanceModifier) and trade routes with distant cities
+	// (iDistantTradeRouteModifier)
+	updateMaintenance();
+	updateTradeRoutes();
+
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
 		pLoopCity->AI_setAssignWorkDirty(true);
@@ -6077,10 +6082,21 @@ void CvPlayer::found(int iX, int iY)
 		}
 	}
 
-	// Traits and buildings for new cities (added by this mod): extra population, and the state religion
-	if (getNewCityPopulation() != 0)
+	// Traits and buildings for new cities (added by this mod): extra population, and the state religion. With the regions:
+	// iNewWorldCityPopulation in the New World, iOverseasCityPopulation in another region than the capital (the first city
+	// is the capital, so it is never overseas)
+	int iExtraPopulation = getNewCityPopulation();
+	if (pCity->plot()->isNewWorld())
 	{
-		pCity->setPopulation(std::max(1, pCity->getPopulation() + getNewCityPopulation()));
+		iExtraPopulation += getNewWorldCityPopulation();
+	}
+	if (pCity->plot()->isOverseas(getID()))
+	{
+		iExtraPopulation += getOverseasCityPopulation();
+	}
+	if (iExtraPopulation != 0)
+	{
+		pCity->setPopulation(std::max(1, pCity->getPopulation() + iExtraPopulation));
 	}
 
 	if (getStateReligion() != NO_RELIGION && isNewCityStateReligion())
@@ -7855,6 +7871,30 @@ bool CvPlayer::isNoConquestPopulationLoss() const
 bool CvPlayer::isNoAutoRaze() const
 {
 	return hasTraitFlag(&CvTraitInfo::isNoAutoRaze);
+}
+
+// iNewWorldCityPopulation of the traits (added by this mod): population of the cities the player founds in the New World
+int CvPlayer::getNewWorldCityPopulation() const
+{
+	return sumTraitValues(&CvTraitInfo::getNewWorldCityPopulation);
+}
+
+// iOverseasCityPopulation of the traits (added by this mod): population of the cities the player founds overseas
+int CvPlayer::getOverseasCityPopulation() const
+{
+	return sumTraitValues(&CvTraitInfo::getOverseasCityPopulation);
+}
+
+// iOverseasMaintenanceModifier of the traits (added by this mod): maintenance % of the overseas cities
+int CvPlayer::getOverseasMaintenanceModifier() const
+{
+	return sumTraitValues(&CvTraitInfo::getOverseasMaintenanceModifier);
+}
+
+// iDistantTradeRouteModifier of the traits (added by this mod): trade route yield % with cities far from the capital
+int CvPlayer::getDistantTradeRouteModifier() const
+{
+	return sumTraitValues(&CvTraitInfo::getDistantTradeRouteModifier);
 }
 
 // FeatureProductionChanges of the traits (added by this mod): production added when a worker removes the feature

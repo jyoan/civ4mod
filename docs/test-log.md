@@ -100,3 +100,4 @@
 - 2026-11-12: FFH2 のマナ資源の効果（`bModifierPerBonus`・`YieldModifiers`・`CommerceModifiers`・`iGreatPeopleRateModifier`・`iMaintenanceModifier`・`FreePromotion`・`iHealChange`・`iHealChangeEnemy`・`iDiscoverRandModifier`）を検証用資源で確認（都市画面の内訳の「資源により」、持つ数による累積、維持費、幸福、昇進、回復）
 - 2026-11-12: ユニット・昇進の `BonusAffinities` を検証用ユニット A と検証用昇進で確認（資源の数に応じた戦闘力、マウスオーバーの「今」の値、道路を切ったときの即時の反映、戦闘のオッズ、ペディア）
 - 2026-11-12: 地域区分（`CvMap::calculateRegions`。新世界・海外・首都から遠い）と地球儀ビューの「地域」レイヤーを確認（6 つ目のボタンの表示、4 つの切り替え、未探索のタイルを塗らないこと、タイルの説明）
+- 2026-11-12: 地域を使う志向のタグ（`iNewWorldCityPopulation`・`iOverseasCityPopulation`・`iOverseasMaintenanceModifier`・`iDistantTradeRouteModifier`）と昇進の `iCombatPercentOverseas` を検証用志向・検証用昇進で確認（建てた都市の人口、海外の都市の維持費とその説明、遠く離れた都市との交易路とその説明、海外での戦闘力）

@@ -704,4 +704,40 @@
 		<Spanish>[ICON_BULLET]%s1_Feature in the city radius: %s2_Health[ICON_HEALTHY] each</Spanish>
 		<Japanese>[ICON_BULLET]&#37117;&#24066;&#22287;&#12398;%s1_Feature 1&#12388;&#12395;&#12388;&#12365;%s2_Health[ICON_HEALTHY]</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NEW_WORLD_CITY_POPULATION</Tag>
+		<English>[ICON_BULLET]%D1_Pop population in cities founded in the New World</English>
+		<French>[ICON_BULLET]%D1_Pop population in cities founded in the New World</French>
+		<German>[ICON_BULLET]%D1_Pop population in cities founded in the New World</German>
+		<Italian>[ICON_BULLET]%D1_Pop population in cities founded in the New World</Italian>
+		<Spanish>[ICON_BULLET]%D1_Pop population in cities founded in the New World</Spanish>
+		<Japanese>[ICON_BULLET]&#26032;&#19990;&#30028;&#12395;&#24314;&#12390;&#12383;&#37117;&#24066;&#12398;&#20154;&#21475;%D1_Pop</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_OVERSEAS_CITY_POPULATION</Tag>
+		<English>[ICON_BULLET]%D1_Pop population in cities founded overseas</English>
+		<French>[ICON_BULLET]%D1_Pop population in cities founded overseas</French>
+		<German>[ICON_BULLET]%D1_Pop population in cities founded overseas</German>
+		<Italian>[ICON_BULLET]%D1_Pop population in cities founded overseas</Italian>
+		<Spanish>[ICON_BULLET]%D1_Pop population in cities founded overseas</Spanish>
+		<Japanese>[ICON_BULLET]&#28023;&#22806;&#12395;&#24314;&#12390;&#12383;&#37117;&#24066;&#12398;&#20154;&#21475;%D1_Pop</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_OVERSEAS_MAINTENANCE</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% maintenance in overseas cities</English>
+		<French>[ICON_BULLET]%D1_Percent%% maintenance in overseas cities</French>
+		<German>[ICON_BULLET]%D1_Percent%% maintenance in overseas cities</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% maintenance in overseas cities</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% maintenance in overseas cities</Spanish>
+		<Japanese>[ICON_BULLET]&#28023;&#22806;&#12398;&#37117;&#24066;&#12398;&#32173;&#25345;&#36027;%D1_Percent%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DISTANT_TRADE_ROUTE</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% trade route yield with distant cities</English>
+		<French>[ICON_BULLET]%D1_Percent%% trade route yield with distant cities</French>
+		<German>[ICON_BULLET]%D1_Percent%% trade route yield with distant cities</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% trade route yield with distant cities</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% trade route yield with distant cities</Spanish>
+		<Japanese>[ICON_BULLET]&#36960;&#12367;&#38626;&#12428;&#12383;&#37117;&#24066;&#12392;&#12398;&#20132;&#26131;&#36335;&#12398;&#21454;&#20837;%D1_Percent%%</Japanese>
+	</TEXT>
 </Civ4GameText>

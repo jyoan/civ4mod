@@ -1013,6 +1013,24 @@
 		<Spanish>Distant from the capital</Spanish>
 		<Japanese>&#39318;&#37117;&#12363;&#12425;&#36960;&#12356;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRADE_ROUTE_MOD_DISTANT</Tag>
+		<English>%D1%%: for a distant city</English>
+		<French>%D1%%: for a distant city</French>
+		<German>%D1%%: for a distant city</German>
+		<Italian>%D1%%: for a distant city</Italian>
+		<Spanish>%D1%%: for a distant city</Spanish>
+		<Japanese>%D1%%&#65306;&#36960;&#12367;&#38626;&#12428;&#12383;&#37117;&#24066;&#12395;&#12424;&#12426;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_OVERSEAS_MAINT_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1%% maintenance of overseas cities (traits)</English>
+		<French>[ICON_BULLET]%D1%% maintenance of overseas cities (traits)</French>
+		<German>[ICON_BULLET]%D1%% maintenance of overseas cities (traits)</German>
+		<Italian>[ICON_BULLET]%D1%% maintenance of overseas cities (traits)</Italian>
+		<Spanish>[ICON_BULLET]%D1%% maintenance of overseas cities (traits)</Spanish>
+		<Japanese>[ICON_BULLET]&#28023;&#22806;&#12398;&#37117;&#24066;&#12398;&#32173;&#25345;&#36027;%D1%%&#65288;&#24535;&#21521;&#65289;</Japanese>
+	</TEXT>
 	<!-- Unofficial 3.19 Patch (jdog5000): the keys of CIV4GameText_UnofficialPatch.xml and the key it uses without text -->
 	<TEXT>
 		<Tag>TXT_KEY_TERRAIN_TURN_DAMAGE</Tag>
