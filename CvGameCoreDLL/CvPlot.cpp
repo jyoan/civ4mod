@@ -2380,6 +2380,12 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 					return false;
 				}
 			}
+
+			// iUniqueRange, iMaxPerCity, iMaxPerPlayer (added by this mod)
+			if (getImprovementLimit(eImprovement, ePlayer) != NO_IMPROVEMENT_LIMIT)
+			{
+				return false;
+			}
 		}
 
 		bValid = true;
@@ -5344,6 +5350,9 @@ void CvPlot::setFeatureType(FeatureTypes eNewValue, int iVariety)
 
 		updateYield();
 
+		// The improvements around that count this feature (AdjacentFeatureYieldChanges, added by this mod)
+		updateAdjacentImprovementYields();
+
 		if (bUpdateSight)
 		{
 			updateSeeFromSight(true, true);
@@ -5590,6 +5599,9 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 
 		updateIrrigated();
 		updateYield();
+
+		// The improvements around that count this one (AdjacentImprovementYieldChanges, added by this mod)
+		updateAdjacentImprovementYields();
 
 		// isTradeNetworkImpassable depends on it (added by this mod)
 		if ((eOldImprovement != NO_IMPROVEMENT && GC.getImprovementInfo(eOldImprovement).isMakesPassable()) || isImprovementPassable())
@@ -6105,6 +6117,194 @@ int CvPlot::getNumAdjacentPeaks() const
 	return iCount;
 }
 
+// The improvement, or an improvement it upgrades into, such as a hamlet for a cottage (added by this mod)
+static bool isImprovementOrUpgrade(ImprovementTypes eImprovement, ImprovementTypes eBase)
+{
+	int iCount = 0;
+
+	while (eBase != NO_IMPROVEMENT && iCount <= GC.getNumImprovementInfos())
+	{
+		if (eBase == eImprovement)
+		{
+			return true;
+		}
+		eBase = (ImprovementTypes)GC.getImprovementInfo(eBase).getImprovementUpgrade();
+		iCount++;
+	}
+
+	return false;
+}
+
+// The same line of improvements: the same final upgrade, as canBuild compares the improvement already on the plot
+// (added by this mod)
+static bool isSameImprovementLine(ImprovementTypes eImprovement, ImprovementTypes eOther)
+{
+	ImprovementTypes eFinal;
+
+	if (eImprovement == NO_IMPROVEMENT || eOther == NO_IMPROVEMENT)
+	{
+		return false;
+	}
+
+	if (eImprovement == eOther)
+	{
+		return true;
+	}
+
+	eFinal = finalImprovementUpgrade(eImprovement);
+
+	return (eFinal != NO_IMPROVEMENT && eFinal == finalImprovementUpgrade(eOther));
+}
+
+// AdjacentImprovementYieldChanges and AdjacentFeatureYieldChanges of the improvement (added by this mod): for each of the
+// 8 adjacent plots, the yields of the improvement on it (or of an improvement it upgrades into: a listed cottage counts a
+// hamlet too) and of its feature. Whoever owns the adjacent plots
+int CvPlot::getImprovementAdjacentYieldChange(ImprovementTypes eImprovement, YieldTypes eYield) const
+{
+	CvImprovementInfo& kImprovement = GC.getImprovementInfo(eImprovement);
+	CvPlot* pAdjacentPlot;
+	ImprovementTypes eAdjacentImprovement;
+	int iYield = 0;
+	int iI;
+	int iJ;
+
+	for (iI = 0; iI < NUM_DIRECTION_TYPES; iI++)
+	{
+		pAdjacentPlot = plotDirection(getX_INLINE(), getY_INLINE(), ((DirectionTypes)iI));
+		if (pAdjacentPlot == NULL)
+		{
+			continue;
+		}
+
+		eAdjacentImprovement = pAdjacentPlot->getImprovementType();
+		if (eAdjacentImprovement != NO_IMPROVEMENT)
+		{
+			for (iJ = 0; iJ < GC.getNumImprovementInfos(); iJ++)
+			{
+				if (kImprovement.getAdjacentImprovementYieldChange(iJ, eYield) != 0 && isImprovementOrUpgrade(eAdjacentImprovement, (ImprovementTypes)iJ))
+				{
+					iYield += kImprovement.getAdjacentImprovementYieldChange(iJ, eYield);
+				}
+			}
+		}
+
+		if (pAdjacentPlot->getFeatureType() != NO_FEATURE)
+		{
+			iYield += kImprovement.getAdjacentFeatureYieldChange(pAdjacentPlot->getFeatureType(), eYield);
+		}
+	}
+
+	return iYield;
+}
+
+// The yields of the improvements around that count this plot (AdjacentImprovementYieldChanges, AdjacentFeatureYieldChanges.
+// Added by this mod): when the improvement or the feature of this plot changes
+void CvPlot::updateAdjacentImprovementYields()
+{
+	CvPlot* pAdjacentPlot;
+	int iI;
+
+	for (iI = 0; iI < NUM_DIRECTION_TYPES; iI++)
+	{
+		pAdjacentPlot = plotDirection(getX_INLINE(), getY_INLINE(), ((DirectionTypes)iI));
+		if (pAdjacentPlot != NULL && pAdjacentPlot->getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(pAdjacentPlot->getImprovementType()).isAdjacentYieldChanges())
+		{
+			pAdjacentPlot->updateYield();
+		}
+	}
+}
+
+// The limits on the number of an improvement (added by this mod), checked when a build starts and each turn of it
+// (CvPlot::canBuild without bTestVisible; upgrades of improvements are not checked). The same line counts: a hamlet for a
+// cottage.
+// - iUniqueRange: no improvement of the same line within this distance (plotDistance; 1 is the 8 adjacent plots)
+// - iMaxPerCity: in the radius of each city of ePlayer that can work this plot, fewer than this many of the same line
+// - iMaxPerPlayer: fewer than this many of the same line in the territory of ePlayer (CvPlayer::getImprovementCount, which
+//   counts the plots the player owns)
+ImprovementLimitTypes CvPlot::getImprovementLimit(ImprovementTypes eImprovement, PlayerTypes ePlayer) const
+{
+	CvImprovementInfo& kImprovement = GC.getImprovementInfo(eImprovement);
+	CvPlot* pLoopPlot;
+	CvPlot* pCityPlot;
+	CvCity* pLoopCity;
+	int iRange = kImprovement.getUniqueRange();
+	int iCount;
+	int iDX;
+	int iDY;
+	int iI;
+	int iJ;
+
+	if (iRange > 0)
+	{
+		for (iDX = -iRange; iDX <= iRange; iDX++)
+		{
+			for (iDY = -iRange; iDY <= iRange; iDY++)
+			{
+				pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+				if (pLoopPlot != NULL && pLoopPlot != this && plotDistance(getX_INLINE(), getY_INLINE(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE()) <= iRange)
+				{
+					if (isSameImprovementLine(pLoopPlot->getImprovementType(), eImprovement))
+					{
+						return IMPROVEMENT_LIMIT_RANGE;
+					}
+				}
+			}
+		}
+	}
+
+	if (kImprovement.getMaxPerCity() > 0 && ePlayer != NO_PLAYER)
+	{
+		for (iI = 0; iI < NUM_MAX_CITY_PLOTS; iI++)
+		{
+			pLoopPlot = plotCity(getX_INLINE(), getY_INLINE(), iI);
+			if (pLoopPlot == NULL)
+			{
+				continue;
+			}
+
+			pLoopCity = pLoopPlot->getPlotCity();
+			if (pLoopCity == NULL || pLoopCity->getOwnerINLINE() != ePlayer || iI >= pLoopCity->getNumCityPlots())
+			{
+				continue;
+			}
+
+			iCount = 0;
+			for (iJ = 0; iJ < pLoopCity->getNumCityPlots(); iJ++)
+			{
+				pCityPlot = pLoopCity->getCityIndexPlot(iJ);
+				if (pCityPlot != NULL && pCityPlot != this && isSameImprovementLine(pCityPlot->getImprovementType(), eImprovement))
+				{
+					iCount++;
+				}
+			}
+
+			if (iCount >= kImprovement.getMaxPerCity())
+			{
+				return IMPROVEMENT_LIMIT_CITY;
+			}
+		}
+	}
+
+	if (kImprovement.getMaxPerPlayer() > 0 && ePlayer != NO_PLAYER)
+	{
+		iCount = 0;
+		for (iI = 0; iI < GC.getNumImprovementInfos(); iI++)
+		{
+			if (isSameImprovementLine((ImprovementTypes)iI, eImprovement))
+			{
+				iCount += GET_PLAYER(ePlayer).getImprovementCount((ImprovementTypes)iI);
+			}
+		}
+
+		if (iCount >= kImprovement.getMaxPerPlayer())
+		{
+			return IMPROVEMENT_LIMIT_PLAYER;
+		}
+	}
+
+	return NO_IMPROVEMENT_LIMIT;
+}
+
 int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield, PlayerTypes ePlayer, bool bOptimal) const
 {
 	PROFILE_FUNC();
@@ -6134,6 +6334,12 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 	if (GC.getImprovementInfo(eImprovement).getAdjacentPeakYieldChange(eYield) != 0)
 	{
 		iYield += GC.getImprovementInfo(eImprovement).getAdjacentPeakYieldChange(eYield) * getNumAdjacentPeaks();
+	}
+
+	// AdjacentImprovementYieldChanges, AdjacentFeatureYieldChanges (added by this mod)
+	if (GC.getImprovementInfo(eImprovement).isAdjacentYieldChanges())
+	{
+		iYield += getImprovementAdjacentYieldChange(eImprovement, eYield);
 	}
 
 	if ((bOptimal) ? true : isIrrigationAvailable())

@@ -2893,6 +2893,32 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 						szBuffer.append(NEWLINE);
 						szBuffer.append(gDLL->getText("TXT_KEY_BUILD_COST", GET_PLAYER(pHeadSelectedUnit->getOwnerINLINE()).getBuildCost(pMissionPlot, eBuild)));
 					}
+
+					// Limits on the number of the improvement (added by this mod): why the build cannot start here
+					if (eImprovement != NO_IMPROVEMENT)
+					{
+						CvWString szLimit;
+						switch (pMissionPlot->getImprovementLimit(eImprovement, pHeadSelectedUnit->getOwnerINLINE()))
+						{
+						case IMPROVEMENT_LIMIT_RANGE:
+							szLimit = gDLL->getText("TXT_KEY_IMPROVEMENT_UNIQUE_RANGE", GC.getImprovementInfo(eImprovement).getUniqueRange());
+							break;
+						case IMPROVEMENT_LIMIT_CITY:
+							szLimit = gDLL->getText("TXT_KEY_IMPROVEMENT_MAX_PER_CITY", GC.getImprovementInfo(eImprovement).getMaxPerCity());
+							break;
+						case IMPROVEMENT_LIMIT_PLAYER:
+							szLimit = gDLL->getText("TXT_KEY_IMPROVEMENT_MAX_PER_PLAYER", GC.getImprovementInfo(eImprovement).getMaxPerPlayer());
+							break;
+						default:
+							break;
+						}
+
+						if (!szLimit.empty())
+						{
+							szBuffer.append(NEWLINE);
+							szBuffer.append(CvWString::format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_WARNING_TEXT"), szLimit.GetCString()));
+						}
+					}
 				}
 
 				while (pSelectedUnitNode != NULL)

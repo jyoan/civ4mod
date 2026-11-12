@@ -13251,6 +13251,43 @@ void CvGameTextMgr::setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTyp
 		}
 	}
 
+	// AdjacentImprovementYieldChanges, AdjacentFeatureYieldChanges (added by this mod), also in the Civilopedia
+	int iAdjacent;
+	for (iAdjacent = 0; iAdjacent < GC.getNumImprovementInfos(); iAdjacent++)
+	{
+		if (info.getAdjacentImprovementYieldChangeArray(iAdjacent) != NULL)
+		{
+			setYieldChangeHelp(szBuffer, L"", L"", gDLL->getText(((GC.getImprovementInfo((ImprovementTypes)iAdjacent).getImprovementUpgrade() != NO_IMPROVEMENT) ? "TXT_KEY_MISC_PER_ADJACENT_TYPE_LINE" : "TXT_KEY_MISC_PER_ADJACENT_TYPE"), GC.getImprovementInfo((ImprovementTypes)iAdjacent).getTextKeyWide()), info.getAdjacentImprovementYieldChangeArray(iAdjacent));
+		}
+	}
+
+	for (iAdjacent = 0; iAdjacent < GC.getNumFeatureInfos(); iAdjacent++)
+	{
+		if (info.getAdjacentFeatureYieldChangeArray(iAdjacent) != NULL)
+		{
+			setYieldChangeHelp(szBuffer, L"", L"", gDLL->getText("TXT_KEY_MISC_PER_ADJACENT_TYPE", GC.getFeatureInfo((FeatureTypes)iAdjacent).getTextKeyWide()), info.getAdjacentFeatureYieldChangeArray(iAdjacent));
+		}
+	}
+
+	// iUniqueRange, iMaxPerCity, iMaxPerPlayer (added by this mod)
+	if (info.getUniqueRange() > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_UNIQUE_RANGE", info.getUniqueRange()));
+	}
+
+	if (info.getMaxPerCity() > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_MAX_PER_CITY", info.getMaxPerCity()));
+	}
+
+	if (info.getMaxPerPlayer() > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_MAX_PER_PLAYER", info.getMaxPerPlayer()));
+	}
+
 	// ReplacedImprovement and the PrereqOrTraits of its build (added by this mod)
 	// iUniqueChance, bImpassable (added by this mod)
 	if (info.getUniqueChance() > 0)

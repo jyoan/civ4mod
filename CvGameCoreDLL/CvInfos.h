@@ -3356,6 +3356,15 @@ public:
 	int getImprovementUpgrade() const;				// Exposed to Python
 	int getUniqueChance() const;					// Exposed to Python: iUniqueChance (added by this mod)
 	bool isImpassable() const;					// Exposed to Python: bImpassable (added by this mod)
+	// AdjacentImprovementYieldChanges, AdjacentFeatureYieldChanges, iUniqueRange, iMaxPerCity, iMaxPerPlayer (added by this mod)
+	int getAdjacentImprovementYieldChange(int iImprovement, int iYield) const;	// Exposed to Python
+	const int* getAdjacentImprovementYieldChangeArray(int iImprovement) const;	// NULL when not set
+	int getAdjacentFeatureYieldChange(int iFeature, int iYield) const;	// Exposed to Python
+	const int* getAdjacentFeatureYieldChangeArray(int iFeature) const;	// NULL when not set
+	bool isAdjacentYieldChanges() const;
+	int getUniqueRange() const;	// Exposed to Python
+	int getMaxPerCity() const;	// Exposed to Python
+	int getMaxPerPlayer() const;	// Exposed to Python
 	bool isMakesPassable() const;					// Exposed to Python: bMakesPassable (added by this mod)
 	int getPassageMoveCost() const;				// Exposed to Python: iPassageMoveCost (added by this mod)
 	int getReplacedImprovement() const;				// Exposed to Python: ReplacedImprovement (added by this mod)
@@ -3445,6 +3454,11 @@ protected:
 	int m_iPassageMoveCost;
 	int m_iUniqueChance;
 	bool m_bImpassable;
+	std::vector< std::vector<int> > m_aaiAdjacentImprovementYieldChange;	// [improvement][yield], empty when not set (added by this mod)
+	std::vector< std::vector<int> > m_aaiAdjacentFeatureYieldChange;	// [feature][yield], empty when not set (added by this mod)
+	int m_iUniqueRange;	// added by this mod
+	int m_iMaxPerCity;	// added by this mod
+	int m_iMaxPerPlayer;	// added by this mod
 
 	bool m_bActsAsCity;				
 	bool m_bHillsMakesValid;				

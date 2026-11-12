@@ -23,11 +23,11 @@
 | `BUILDING_TEST_MISERY` / `BUILDINGCLASS_TEST_MISERY`（検証用建物（怒りの恩恵）） | 検証用建物（全都市の商業） | 前提なし・費用 20。怒っている市民 1 人につき生産 +1（`AngryYieldChanges`）、不衛生 1 につき金 +2（`UnhealthyCommerceChanges`） |
 | `BUILDING_TEST_GRANARY`（検証用穀物庫） | 穀物庫 | クラスは穀物庫のまま。費用 30。検証用志向の固有建造物 |
 | `TECH_TEST`（検証用技術） | 神秘主義 | 技術ツリーの 1 列目の空き（`iGridX` 1・`iGridY` 9）。前提なし・費用 10・古代。交換できない・小屋から出ない（`bTrade` / `bGoodyTech` 0）・AI 評価 -10000。チームが持つ間、検証用志向を得る（`FreeTraits`）。日本などで研究すると検証用志向の効果がすべて付く（検証用文明は元から持つので変わらない） |
-| `IMPROVEMENT_TEST_TERRACE`（検証用施設（棚田）） | 農場 | 隣接する山岳 1 つにつき食料 +1・生産 +1（`AdjacentPeakYieldChanges`）。作業は `BUILD_TEST_TERRACE` |
+| `IMPROVEMENT_TEST_TERRACE`（検証用施設（棚田）） | 農場 | 隣接する山岳 1 つにつき食料 +1・生産 +1（`AdjacentPeakYieldChanges`）。隣接する棚田 1 つにつき商業 +1、隣接するコテージ（集落・村・町も）1 つにつき食料 +1（`AdjacentImprovementYieldChanges`）、隣接する森 1 つにつき生産 +1（`AdjacentFeatureYieldChanges`）。作業は `BUILD_TEST_TERRACE` |
 | `IMPROVEMENT_TEST_FARM`（検証用施設（強化農場）） | 農場 | 灌漑で食料 +2（農場は +1）。ほかは農場と同じ。`ReplacedImprovement` が農場なので、検証用志向の「農場に生産 +1」を受ける |
 | `IMPROVEMENT_TEST_TUNNEL`（検証用施設（トンネル）） | 検証用施設（棚田） | 山岳だけに作れる（`TerrainMakesValids`）。`bMakesPassable` 1、`iPassageMoveCost` 1。産出なし。作業は `BUILD_TEST_TUNNEL` |
 | `IMPROVEMENT_TEST_POLDER`（検証用施設（ポルダー）） | 検証用施設（トンネル） | 湖と沿岸（`bWater` 1、`TerrainMakesValids` が `TERRAIN_COAST`）。`bMakesPassable` 1。食料 +2・生産 +1。見た目は漁船。作業は `BUILD_TEST_POLDER` |
-| `IMPROVEMENT_TEST_CIV`（検証用施設（文明）） | 検証用施設（棚田） | 効果は棚田と同じ。作業は `BUILD_TEST_CIV` |
+| `IMPROVEMENT_TEST_CIV`（検証用施設（文明）） | 検証用施設（棚田） | 効果は棚田と同じ（隣接の産出は書いていない）。同じ施設と隣接できない（`iUniqueRange` 1）、1 つの都市圏に 2 つまで（`iMaxPerCity`）、自国の領土に 3 つまで（`iMaxPerPlayer`）。作業は `BUILD_TEST_CIV` |
 | `IMPROVEMENT_TEST_FORT`（検証用砦） | 砦 | 効果は砦と同じ。`ReplacedImprovement` が砦。作業は `BUILD_TEST_CIV_FORT` |
 | `IMPROVEMENT_TEST_LANDMARK`・`IMPROVEMENT_TEST_WONDER`・`IMPROVEMENT_TEST_PEAK_WONDER`（検証用名所・検証用自然遺産・検証用名峰） | 検証用施設（トンネル） | どれも `iUniqueChance` 100、`bPermanent` 1。名所は草原と平原で食料 +2・商業 +3（砦の見た目）。自然遺産は草原と平原で `bImpassable`、生産 +2・商業 +4（風車の見た目）。名峰は山岳で商業 +6（水車の見た目） |
 | `BONUS_TEST`（検証用資源） | 銀 | 前提の志向 `TRAIT_TEST`。平地の草原と平原。技術なし。`iPlacementOrder` 7、`iTilesPer` 16、`bNormalize` 0。検証用施設（棚田）で幸福 +1 の資源として得られ、商業 +2。マナ資源の効果（累積 `bModifierPerBonus`）: 持つ都市の生産 +10%・研究 +10%、偉人ポイント +10%、維持費 -10%、作ったユニットに戦闘力Ⅰ（`FreePromotion`）、首都が持つと自国の領土での回復 +10%・敵の回復 -10%・施設で資源が見つかる確率 +100%。幸福 +1 も持つ数だけ重なる |

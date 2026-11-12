@@ -2784,6 +2784,15 @@ enum CivilopediaWidgetShowTypes
 	CIVILOPEDIA_WIDGET_SHOW_WATER,
 };
 
+// Why an improvement cannot be built because of its limits (added by this mod): iUniqueRange, iMaxPerCity, iMaxPerPlayer
+enum ImprovementLimitTypes
+{
+	NO_IMPROVEMENT_LIMIT,
+	IMPROVEMENT_LIMIT_RANGE,
+	IMPROVEMENT_LIMIT_CITY,
+	IMPROVEMENT_LIMIT_PLAYER,
+};
+
 // Python hooks of traits (added by this mod): Python expressions of CIV4TraitInfos.xml, evaluated in CvTraitInterface.py
 enum TraitPythonHookTypes
 {
