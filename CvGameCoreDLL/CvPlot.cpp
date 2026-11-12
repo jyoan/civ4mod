@@ -379,6 +379,9 @@ void CvPlot::doTurn()
 
 	doCulture();
 
+	// iCulture and iCultureRange of the improvement (added by this mod)
+	doImprovementCulture();
+
 	verifyUnitValidPlot();
 
 	/*
@@ -2137,6 +2140,108 @@ int CvPlot::getImprovementRangeValue(TeamTypes eTeam, int (CvImprovementInfo::*p
 	return iBest;
 }
 
+// The largest iCultureRange of the improvements with iCulture, -1 when there are none (added by this mod). The infos do not
+// change during a game, so it is computed once
+static int getMaxImprovementCultureRange()
+{
+	static int iMaxRange = -2;
+	int iI;
+
+	if (iMaxRange == -2 && GC.getNumImprovementInfos() > 0)
+	{
+		iMaxRange = -1;
+		for (iI = 0; iI < GC.getNumImprovementInfos(); iI++)
+		{
+			if (GC.getImprovementInfo((ImprovementTypes)iI).getCulture() > 0)
+			{
+				iMaxRange = std::max(iMaxRange, std::max(0, GC.getImprovementInfo((ImprovementTypes)iI).getCultureRange()));
+			}
+		}
+	}
+
+	return iMaxRange;
+}
+
+// iCultureRange of the improvements (added by this mod): this plot is within iCultureRange (plotDistance) of an improvement
+// with iCulture on a plot ePlayer owns. Such plots count as within the culture range of ePlayer (isWithinCultureRange), so
+// the culture the improvements give them (doImprovementCulture) can bring them into the borders. Nothing is saved: the
+// improvements and the owners of their plots decide it
+bool CvPlot::isImprovementCultureRange(PlayerTypes ePlayer) const
+{
+	CvPlot* pLoopPlot;
+	ImprovementTypes eImprovement;
+	int iMaxRange = getMaxImprovementCultureRange();
+	int iDX;
+	int iDY;
+
+	if (iMaxRange < 0 || ePlayer == NO_PLAYER)
+	{
+		return false;
+	}
+
+	for (iDX = -iMaxRange; iDX <= iMaxRange; iDX++)
+	{
+		for (iDY = -iMaxRange; iDY <= iMaxRange; iDY++)
+		{
+			pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+			if (pLoopPlot == NULL || pLoopPlot->getOwnerINLINE() != ePlayer)
+			{
+				continue;
+			}
+
+			eImprovement = pLoopPlot->getImprovementType();
+			if (eImprovement != NO_IMPROVEMENT && GC.getImprovementInfo(eImprovement).getCulture() > 0)
+			{
+				if (plotDistance(getX_INLINE(), getY_INLINE(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE()) <= std::max(0, GC.getImprovementInfo(eImprovement).getCultureRange()))
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+// iCulture of the improvement (added by this mod): each turn the owner of this plot gets iCulture culture on every plot
+// within iCultureRange (plotDistance), also on plots of others (it pushes their borders back). Improvements outside the
+// borders (no owner) give nothing
+void CvPlot::doImprovementCulture()
+{
+	CvPlot* pLoopPlot;
+	PlayerTypes eOwner;
+	int iCulture;
+	int iRange;
+	int iDX;
+	int iDY;
+
+	if (!isOwned() || getImprovementType() == NO_IMPROVEMENT)
+	{
+		return;
+	}
+
+	iCulture = GC.getImprovementInfo(getImprovementType()).getCulture();
+	if (iCulture <= 0)
+	{
+		return;
+	}
+
+	eOwner = getOwnerINLINE();
+	iRange = std::max(0, GC.getImprovementInfo(getImprovementType()).getCultureRange());
+
+	for (iDX = -iRange; iDX <= iRange; iDX++)
+	{
+		for (iDY = -iRange; iDY <= iRange; iDY++)
+		{
+			pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+			if (pLoopPlot != NULL && plotDistance(getX_INLINE(), getY_INLINE(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE()) <= iRange)
+			{
+				pLoopPlot->changeCulture(eOwner, iCulture, true);
+			}
+		}
+	}
+}
+
 // The sight range of the owner from this plot (added by this mod): PLOT_VISIBILITY_RANGE and iPlotVisibilityChange of the
 // improvement. Every change of the owner's sight of the plot uses it, so the counts stay balanced
 int CvPlot::getOwnerVisibilityRange() const
@@ -3094,6 +3199,12 @@ bool CvPlot::isWithinCultureRange(PlayerTypes ePlayer) const
 		{
 			return true;
 		}
+	}
+
+	// iCultureRange of the improvements of ePlayer around (added by this mod)
+	if (isImprovementCultureRange(ePlayer))
+	{
+		return true;
 	}
 
 	return false;
@@ -5792,6 +5903,27 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 		}
 
 		gDLL->getInterfaceIFace()->setDirty(CitizenButtons_DIRTY_BIT, true);
+
+		// iCulture and iCultureRange (added by this mod): the plots only the old improvement kept within the culture range of
+		// the owner may leave the borders. Last, as it can change the owner of this plot too
+		if (eOldImprovement != NO_IMPROVEMENT && GC.getImprovementInfo(eOldImprovement).getCulture() > 0)
+		{
+			int iCultureRange = std::max(0, GC.getImprovementInfo(eOldImprovement).getCultureRange());
+			int iDX;
+			int iDY;
+
+			for (iDX = -iCultureRange; iDX <= iCultureRange; iDX++)
+			{
+				for (iDY = -iCultureRange; iDY <= iCultureRange; iDY++)
+				{
+					CvPlot* pCulturePlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+					if (pCulturePlot != NULL && plotDistance(getX_INLINE(), getY_INLINE(), pCulturePlot->getX_INLINE(), pCulturePlot->getY_INLINE()) <= iCultureRange)
+					{
+						pCulturePlot->updateCulture(true, true);
+					}
+				}
+			}
+		}
 	}
 }
 

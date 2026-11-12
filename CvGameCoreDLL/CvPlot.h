@@ -109,6 +109,8 @@ public:
 	ImprovementLimitTypes getImprovementLimit(ImprovementTypes eImprovement, PlayerTypes ePlayer) const;	// added by this mod
 	int getImprovementRangeValue(TeamTypes eTeam, int (CvImprovementInfo::*pfValue)() const) const;	// added by this mod
 	int getOwnerVisibilityRange() const;	// added by this mod
+	bool isImprovementCultureRange(PlayerTypes ePlayer) const;	// added by this mod
+	void doImprovementCulture();	// added by this mod
 	bool isRiverSide() const;																																		// Exposed to Python
 	bool isRiver() const;																																				// Exposed to Python
 	bool isRiverConnection(DirectionTypes eDirection) const;																		// Exposed to Python

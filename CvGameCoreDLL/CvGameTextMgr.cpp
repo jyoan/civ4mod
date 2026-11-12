@@ -13313,6 +13313,13 @@ void CvGameTextMgr::setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTyp
 		szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_PLOT_VISIBILITY", info.getPlotVisibilityChange()));
 	}
 
+	// iCulture, iCultureRange (added by this mod)
+	if (info.getCulture() > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText(((info.getCultureRange() > 0) ? "TXT_KEY_IMPROVEMENT_CULTURE" : "TXT_KEY_IMPROVEMENT_CULTURE_PLOT"), info.getCulture(), info.getCultureRange()));
+	}
+
 	// ReplacedImprovement and the PrereqOrTraits of its build (added by this mod)
 	// iUniqueChance, bImpassable (added by this mod)
 	if (info.getUniqueChance() > 0)

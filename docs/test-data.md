@@ -28,7 +28,7 @@
 | `IMPROVEMENT_TEST_TUNNEL`（検証用施設（トンネル）） | 検証用施設（棚田） | 山岳だけに作れる（`TerrainMakesValids`）。`bMakesPassable` 1、`iPassageMoveCost` 1。産出なし。作業は `BUILD_TEST_TUNNEL` |
 | `IMPROVEMENT_TEST_POLDER`（検証用施設（ポルダー）） | 検証用施設（トンネル） | 湖と沿岸（`bWater` 1、`TerrainMakesValids` が `TERRAIN_COAST`）。`bMakesPassable` 1。食料 +2・生産 +1。見た目は漁船。作業は `BUILD_TEST_POLDER` |
 | `IMPROVEMENT_TEST_CIV`（検証用施設（文明）） | 検証用施設（棚田） | 効果は棚田と同じ（隣接の産出は書いていない）。同じ施設と隣接できない（`iUniqueRange` 1）、1 つの都市圏に 2 つまで（`iMaxPerCity`）、自国の領土に 3 つまで（`iMaxPerPlayer`）。作業は `BUILD_TEST_CIV` |
-| `IMPROVEMENT_TEST_FORT`（検証用砦） | 砦 | 効果は砦と同じ。2 タイル以内の自チームのユニットの回復 +20%・防御 +25%（`iRange` 2、`iHealRateChange`・`iRangeDefenseModifier`）、持ち主の視界 +2（`iPlotVisibilityChange`。このタイルから 3 タイル先まで）。`ReplacedImprovement` が砦。作業は `BUILD_TEST_CIV_FORT` |
+| `IMPROVEMENT_TEST_FORT`（検証用砦） | 砦 | 効果は砦と同じ。2 タイル以内の自チームのユニットの回復 +20%・防御 +25%（`iRange` 2、`iHealRateChange`・`iRangeDefenseModifier`）、持ち主の視界 +2（`iPlotVisibilityChange`。このタイルから 3 タイル先まで）。2 タイル以内の各タイルに持ち主の文化 +10/ターン、そこまで国境が広がる（`iCulture`・`iCultureRange`）。`ReplacedImprovement` が砦。作業は `BUILD_TEST_CIV_FORT` |
 | `IMPROVEMENT_TEST_LANDMARK`・`IMPROVEMENT_TEST_WONDER`・`IMPROVEMENT_TEST_PEAK_WONDER`（検証用名所・検証用自然遺産・検証用名峰） | 検証用施設（トンネル） | どれも `iUniqueChance` 100、`bPermanent` 1。名所は草原と平原で食料 +2・商業 +3（砦の見た目）。自然遺産は草原と平原で `bImpassable`、生産 +2・商業 +4（風車の見た目）。名峰は山岳で商業 +6（水車の見た目） |
 | `BONUS_TEST`（検証用資源） | 銀 | 前提の志向 `TRAIT_TEST`。平地の草原と平原。技術なし。`iPlacementOrder` 7、`iTilesPer` 16、`bNormalize` 0。検証用施設（棚田）で幸福 +1 の資源として得られ、商業 +2。マナ資源の効果（累積 `bModifierPerBonus`）: 持つ都市の生産 +10%・研究 +10%、偉人ポイント +10%、維持費 -10%、作ったユニットに戦闘力Ⅰ（`FreePromotion`）、首都が持つと自国の領土での回復 +10%・敵の回復 -10%・施設で資源が見つかる確率 +100%。幸福 +1 も持つ数だけ重なる |
 | `BUILD_TEST_FARM`（検証用施設（強化農場）の建設） | 農場の建設 | 前提の志向 `TRAIT_TEST`、`ReplacedBuild` が農場の建設（置換のパターン）。検証用志向を持つと農場の建設の代わりに出る。前提技術は農業のまま |
