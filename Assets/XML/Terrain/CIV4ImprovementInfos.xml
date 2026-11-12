@@ -2438,6 +2438,8 @@
 			<iHealRateChange>20</iHealRateChange>
 			<iRangeDefenseModifier>25</iRangeDefenseModifier>
 			<iPlotVisibilityChange>2</iPlotVisibilityChange>
+			<iCulture>10</iCulture>
+			<iCultureRange>2</iCultureRange>
 			<TechYieldChanges/>
 			<RouteYieldChanges/>
 			<bGraphicalOnly>0</bGraphicalOnly>

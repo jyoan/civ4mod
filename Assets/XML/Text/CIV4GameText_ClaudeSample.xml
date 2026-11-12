@@ -1131,6 +1131,24 @@
 		<Spanish>[ICON_BULLET]%D1 sight range from this tile for its owner</Spanish>
 		<Japanese>[ICON_BULLET]&#12371;&#12398;&#12479;&#12452;&#12523;&#12398;&#25345;&#12385;&#20027;&#12398;&#35222;&#30028; %D1&#65288;&#12371;&#12398;&#12479;&#12452;&#12523;&#12363;&#12425;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_CULTURE</Tag>
+		<English>[ICON_BULLET]+%d1[ICON_CULTURE] per turn for its owner on each tile within %d2 tiles; the borders reach them (in your territory only)</English>
+		<French>[ICON_BULLET]+%d1[ICON_CULTURE] per turn for its owner on each tile within %d2 tiles; the borders reach them (in your territory only)</French>
+		<German>[ICON_BULLET]+%d1[ICON_CULTURE] per turn for its owner on each tile within %d2 tiles; the borders reach them (in your territory only)</German>
+		<Italian>[ICON_BULLET]+%d1[ICON_CULTURE] per turn for its owner on each tile within %d2 tiles; the borders reach them (in your territory only)</Italian>
+		<Spanish>[ICON_BULLET]+%d1[ICON_CULTURE] per turn for its owner on each tile within %d2 tiles; the borders reach them (in your territory only)</Spanish>
+		<Japanese>[ICON_BULLET]%d2&#12479;&#12452;&#12523;&#20197;&#20869;&#12398;&#21508;&#12479;&#12452;&#12523;&#12395;&#25345;&#12385;&#20027;&#12398;&#25991;&#21270; +%d1[ICON_CULTURE]&#65288;&#12479;&#12540;&#12531;&#12372;&#12392;&#65289;&#12290;&#22269;&#22659;&#12364;&#12381;&#12371;&#12414;&#12391;&#24195;&#12364;&#12427;&#65288;&#33258;&#22269;&#12398;&#38936;&#22303;&#12398;&#26045;&#35373;&#12384;&#12369;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_CULTURE_PLOT</Tag>
+		<English>[ICON_BULLET]+%d1[ICON_CULTURE] per turn for its owner on this tile (in your territory only)</English>
+		<French>[ICON_BULLET]+%d1[ICON_CULTURE] per turn for its owner on this tile (in your territory only)</French>
+		<German>[ICON_BULLET]+%d1[ICON_CULTURE] per turn for its owner on this tile (in your territory only)</German>
+		<Italian>[ICON_BULLET]+%d1[ICON_CULTURE] per turn for its owner on this tile (in your territory only)</Italian>
+		<Spanish>[ICON_BULLET]+%d1[ICON_CULTURE] per turn for its owner on this tile (in your territory only)</Spanish>
+		<Japanese>[ICON_BULLET]&#12371;&#12398;&#12479;&#12452;&#12523;&#12395;&#25345;&#12385;&#20027;&#12398;&#25991;&#21270; +%d1[ICON_CULTURE]&#65288;&#12479;&#12540;&#12531;&#12372;&#12392;&#12290;&#33258;&#22269;&#12398;&#38936;&#22303;&#12398;&#26045;&#35373;&#12384;&#12369;&#65289;</Japanese>
+	</TEXT>
 	<!-- Unofficial 3.19 Patch (jdog5000): the keys of CIV4GameText_UnofficialPatch.xml and the key it uses without text -->
 	<TEXT>
 		<Tag>TXT_KEY_TERRAIN_TURN_DAMAGE</Tag>

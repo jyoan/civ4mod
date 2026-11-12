@@ -14790,6 +14790,8 @@ m_iRange(0),
 m_iHealRateChange(0),
 m_iRangeDefenseModifier(0),
 m_iPlotVisibilityChange(0),
+m_iCulture(0),
+m_iCultureRange(0),
 m_bActsAsCity(true),				
 m_bHillsMakesValid(false),				
 m_bFreshWaterMakesValid(false),	
@@ -15041,6 +15043,18 @@ int CvImprovementInfo::getRangeDefenseModifier() const
 int CvImprovementInfo::getPlotVisibilityChange() const
 {
 	return m_iPlotVisibilityChange;
+}
+
+// iCulture (added by this mod): culture per turn for the owner of the plot on each plot within iCultureRange
+int CvImprovementInfo::getCulture() const
+{
+	return m_iCulture;
+}
+
+// iCultureRange (added by this mod): the plots within this distance get iCulture and count as within the culture range of the owner
+int CvImprovementInfo::getCultureRange() const
+{
+	return m_iCultureRange;
 }
 
 int CvImprovementInfo::getImprovementUpgrade() const			
@@ -15511,13 +15525,22 @@ void CvImprovementInfo::read(FDataStreamBase* stream)
 		stream->Read(&m_iRangeDefenseModifier);
 		stream->Read(&m_iPlotVisibilityChange);
 	}
+
+	// uiFlag < 7: cache written before iCulture and iCultureRange existed
+	m_iCulture = 0;
+	m_iCultureRange = 0;
+	if (uiFlag > 6)
+	{
+		stream->Read(&m_iCulture);
+		stream->Read(&m_iCultureRange);
+	}
 }
 
 void CvImprovementInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=6;	// 1: AdjacentPeakYieldChanges, 2: ReplacedImprovement, 3: bMakesPassable, iPassageMoveCost, 4: iUniqueChance, bImpassable, 5: adjacent yields, iUniqueRange, iMaxPerCity, iMaxPerPlayer, 6: iRange, iHealRateChange, iRangeDefenseModifier, iPlotVisibilityChange (added by this mod)
+	uint uiFlag=7;	// 1: AdjacentPeakYieldChanges, 2: ReplacedImprovement, 3: bMakesPassable, iPassageMoveCost, 4: iUniqueChance, bImpassable, 5: adjacent yields, iUniqueRange, iMaxPerCity, iMaxPerPlayer, 6: iRange, iHealRateChange, iRangeDefenseModifier, iPlotVisibilityChange, 7: iCulture, iCultureRange (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAdvancedStartCost);
@@ -15594,6 +15617,8 @@ void CvImprovementInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iHealRateChange);
 	stream->Write(m_iRangeDefenseModifier);
 	stream->Write(m_iPlotVisibilityChange);
+	stream->Write(m_iCulture);
+	stream->Write(m_iCultureRange);
 }
 bool CvImprovementInfo::read(CvXMLLoadUtility* pXML)
 {
@@ -15852,6 +15877,8 @@ bool CvImprovementInfo::readPass2(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iHealRateChange, "iHealRateChange");
 	pXML->GetChildXmlValByName(&m_iRangeDefenseModifier, "iRangeDefenseModifier");
 	pXML->GetChildXmlValByName(&m_iPlotVisibilityChange, "iPlotVisibilityChange");
+	pXML->GetChildXmlValByName(&m_iCulture, "iCulture");
+	pXML->GetChildXmlValByName(&m_iCultureRange, "iCultureRange");
 
 	return true;
 }

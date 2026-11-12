@@ -3370,6 +3370,9 @@ public:
 	int getHealRateChange() const;	// Exposed to Python
 	int getRangeDefenseModifier() const;	// Exposed to Python
 	int getPlotVisibilityChange() const;	// Exposed to Python
+	// iCulture, iCultureRange (added by this mod, names as C2C)
+	int getCulture() const;	// Exposed to Python
+	int getCultureRange() const;	// Exposed to Python
 	bool isMakesPassable() const;					// Exposed to Python: bMakesPassable (added by this mod)
 	int getPassageMoveCost() const;				// Exposed to Python: iPassageMoveCost (added by this mod)
 	int getReplacedImprovement() const;				// Exposed to Python: ReplacedImprovement (added by this mod)
@@ -3468,6 +3471,8 @@ protected:
 	int m_iHealRateChange;	// added by this mod
 	int m_iRangeDefenseModifier;	// added by this mod
 	int m_iPlotVisibilityChange;	// added by this mod
+	int m_iCulture;	// added by this mod
+	int m_iCultureRange;	// added by this mod
 
 	bool m_bActsAsCity;				
 	bool m_bHillsMakesValid;				
