@@ -3663,6 +3663,27 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_NEW_CITY_POPULATION", kTrait.getNewCityPopulation()));
 	}
 
+	// Regions (added by this mod)
+	if (kTrait.getNewWorldCityPopulation() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NEW_WORLD_CITY_POPULATION", kTrait.getNewWorldCityPopulation()));
+	}
+
+	if (kTrait.getOverseasCityPopulation() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_OVERSEAS_CITY_POPULATION", kTrait.getOverseasCityPopulation()));
+	}
+
+	if (kTrait.getOverseasMaintenanceModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_OVERSEAS_MAINTENANCE", kTrait.getOverseasMaintenanceModifier()));
+	}
+
+	if (kTrait.getDistantTradeRouteModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DISTANT_TRADE_ROUTE", kTrait.getDistantTradeRouteModifier()));
+	}
+
 	if (kTrait.isNewCityStateReligion())
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_NEW_CITY_STATE_RELIGION"));
@@ -5375,6 +5396,13 @@ void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, Prom
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_PERCENT_IN_BORDERS", GC.getPromotionInfo(ePromotion).getCombatPercentInBorders()));
+	}
+
+	// iCombatPercentOverseas (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getCombatPercentOverseas() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_PERCENT_OVERSEAS", GC.getPromotionInfo(ePromotion).getCombatPercentOverseas()));
 	}
 
 	if (GC.getPromotionInfo(ePromotion).getPromotionVictory() != NO_PROMOTION)
@@ -16494,6 +16522,18 @@ void CvGameTextMgr::setTradeRouteHelp(CvWStringBuffer &szBuffer, int iRoute, CvC
 					{
 						szBuffer.append(NEWLINE);
 						szBuffer.append(gDLL->getText("TXT_KEY_TRADE_ROUTE_MOD_OVERSEAS", iNewMod));
+						iModifier += iNewMod;
+					}
+				}
+
+				// iDistantTradeRouteModifier of the traits (added by this mod)
+				if (pCity->isDistantTradeRoute(pOtherCity))
+				{
+					iNewMod = GET_PLAYER(pCity->getOwnerINLINE()).getDistantTradeRouteModifier();
+					if (0 != iNewMod)
+					{
+						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_TRADE_ROUTE_MOD_DISTANT", iNewMod));
 						iModifier += iNewMod;
 					}
 				}

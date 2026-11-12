@@ -326,6 +326,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iAdjacentTileHeal = 0;
 	m_iExtraCombatPercent = 0;
 	m_iCombatPercentInBorders = 0;
+	m_iCombatPercentOverseas = 0;
 	m_iNoDamagePenaltyCount = 0;
 	m_iHiddenNationalityCount = 0;
 	m_iExtraCityAttackPercent = 0;
@@ -10791,6 +10792,7 @@ int CvUnit::sumPromotionValues(int (CvPromotionInfo::*pGetter)() const) const
 void CvUnit::updatePromotionCounts()
 {
 	m_iCombatPercentInBorders = sumPromotionValues(&CvPromotionInfo::getCombatPercentInBorders);
+	m_iCombatPercentOverseas = sumPromotionValues(&CvPromotionInfo::getCombatPercentOverseas);
 	m_iNoDamagePenaltyCount = countPromotions(&CvPromotionInfo::isNoDamagePenalty);
 	m_iHiddenNationalityCount = countPromotions(&CvPromotionInfo::isHiddenNationality);
 
@@ -12632,15 +12634,24 @@ void CvUnit::changeAdjacentTileHeal(int iChange)
 	FAssert(getAdjacentTileHeal() >= 0);
 }
 
-// With iCombatPercentInBorders of the promotions on the plots of the owner (added by this mod, as FFH2)
+// With iCombatPercentInBorders of the promotions on the plots of the owner (added by this mod, as FFH2), and
+// iCombatPercentOverseas in another region than the capital of the owner (added by this mod). The plot of the unit, as an
+// attacker too
 int CvUnit::getExtraCombatPercent() const
 {
+	int iPercent = m_iExtraCombatPercent;
+
 	if (m_iCombatPercentInBorders != 0 && plot()->getOwnerINLINE() == getOwnerINLINE())
 	{
-		return m_iExtraCombatPercent + m_iCombatPercentInBorders;
+		iPercent += m_iCombatPercentInBorders;
 	}
 
-	return m_iExtraCombatPercent;
+	if (m_iCombatPercentOverseas != 0 && plot()->isOverseas(getOwnerINLINE()))
+	{
+		iPercent += m_iCombatPercentOverseas;
+	}
+
+	return iPercent;
 }
 
 void CvUnit::changeExtraCombatPercent(int iChange)
@@ -13653,6 +13664,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		changeAdjacentTileHeal(GC.getPromotionInfo(eIndex).getAdjacentTileHealChange() * iChange);
 		changeExtraCombatPercent(GC.getPromotionInfo(eIndex).getCombatPercent() * iChange);
 		m_iCombatPercentInBorders += GC.getPromotionInfo(eIndex).getCombatPercentInBorders() * iChange;
+		m_iCombatPercentOverseas += GC.getPromotionInfo(eIndex).getCombatPercentOverseas() * iChange;
 		m_iNoDamagePenaltyCount += (GC.getPromotionInfo(eIndex).isNoDamagePenalty() ? iChange : 0);
 
 		// BonusAffinities (added by this mod)

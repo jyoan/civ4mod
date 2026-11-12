@@ -326,4 +326,13 @@
 		<Spanish>[ICON_BULLET]Can enter %s1_Plot (%d2_Damage%% damage each turn there)</Spanish>
 		<Japanese>[ICON_BULLET]&#36890;&#34892;&#12391;&#12365;&#12427;: %s1_Plot&#65288;&#12381;&#12371;&#12391;&#12479;&#12540;&#12531;&#12434;&#36814;&#12360;&#12427;&#12392;&#26368;&#22823;HP&#12398;%d2_Damage%%&#12398;&#12480;&#12513;&#12540;&#12472;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_PERCENT_OVERSEAS</Tag>
+		<English>[ICON_BULLET]%D1_Bonus%% Strength overseas</English>
+		<French>[ICON_BULLET]%D1_Bonus%% Strength overseas</French>
+		<German>[ICON_BULLET]%D1_Bonus%% Strength overseas</German>
+		<Italian>[ICON_BULLET]%D1_Bonus%% Strength overseas</Italian>
+		<Spanish>[ICON_BULLET]%D1_Bonus%% Strength overseas</Spanish>
+		<Japanese>[ICON_BULLET]&#28023;&#22806;&#12391;&#25126;&#38360;&#21147;%D1_Bonus%%</Japanese>
+	</TEXT>
 </Civ4GameText>

@@ -1705,6 +1705,7 @@ m_iCombatGoldStealPercent(0),
 m_iCombatGoldStealMax(0),
 m_iCombatPromotionStealChance(0),
 m_iCombatPercentInBorders(0),
+m_iCombatPercentOverseas(0),
 m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
@@ -2251,6 +2252,12 @@ int CvPromotionInfo::getCombatPercentInBorders() const
 	return m_iCombatPercentInBorders;
 }
 
+// iCombatPercentOverseas (added by this mod): combat strength % in another region than the capital of the owner
+int CvPromotionInfo::getCombatPercentOverseas() const
+{
+	return m_iCombatPercentOverseas;
+}
+
 const TCHAR* CvPromotionInfo::getSound() const										
 {
 	return m_szSound;
@@ -2606,13 +2613,20 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	{
 		readPrereqOrTraits(stream, m_aiBonusAffinity);
 	}
+
+	// uiFlag < 13: cache written before iCombatPercentOverseas existed
+	m_iCombatPercentOverseas = 0;
+	if (uiFlag > 12)
+	{
+		stream->Read(&m_iCombatPercentOverseas);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 12;	// 12: BonusAffinities (added by this mod)
+	uint uiFlag = 13;	// 12: BonusAffinities, 13: iCombatPercentOverseas (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2731,6 +2745,7 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 
 	stream->Write(m_bHiddenNationality);
 	writePrereqOrTraits(stream, m_aiBonusAffinity);
+	stream->Write(m_iCombatPercentOverseas);
 }
 
 // Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
@@ -2874,6 +2889,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCombatGoldStealMax, "iCombatGoldStealMax");
 	pXML->GetChildXmlValByName(&m_iCombatPromotionStealChance, "iCombatPromotionStealChance");
 	pXML->GetChildXmlValByName(&m_iCombatPercentInBorders, "iCombatPercentInBorders");
+	pXML->GetChildXmlValByName(&m_iCombatPercentOverseas, "iCombatPercentOverseas");
 
 	pXML->GetChildXmlValByName(&m_iRiverCrossingDamagePercent, "iRiverCrossingDamagePercent");
 	pXML->GetChildXmlValByName(&m_bNoDamagePenalty, "bNoDamagePenalty");
@@ -19725,6 +19741,10 @@ m_iConquestCulturePercent(0),
 m_iConquestBuildingSurviveModifier(0),
 m_bNoConquestPopulationLoss(false),
 m_bNoAutoRaze(false),
+m_iNewWorldCityPopulation(0),
+m_iOverseasCityPopulation(0),
+m_iOverseasMaintenanceModifier(0),
+m_iDistantTradeRouteModifier(0),
 m_bNewCityStateReligion(false),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
@@ -20197,6 +20217,30 @@ bool CvTraitInfo::isNoConquestPopulationLoss() const
 bool CvTraitInfo::isNoAutoRaze() const
 {
 	return m_bNoAutoRaze;
+}
+
+// iNewWorldCityPopulation (added by this mod): population of the cities the player founds in the New World
+int CvTraitInfo::getNewWorldCityPopulation() const
+{
+	return m_iNewWorldCityPopulation;
+}
+
+// iOverseasCityPopulation (added by this mod): population of the cities the player founds overseas
+int CvTraitInfo::getOverseasCityPopulation() const
+{
+	return m_iOverseasCityPopulation;
+}
+
+// iOverseasMaintenanceModifier (added by this mod): maintenance % of the overseas cities
+int CvTraitInfo::getOverseasMaintenanceModifier() const
+{
+	return m_iOverseasMaintenanceModifier;
+}
+
+// iDistantTradeRouteModifier (added by this mod): trade route yield % with cities far from the capital
+int CvTraitInfo::getDistantTradeRouteModifier() const
+{
+	return m_iDistantTradeRouteModifier;
 }
 
 const TCHAR* CvTraitInfo::getShortDescription() const
@@ -21069,6 +21113,10 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iConquestBuildingSurviveModifier, "iConquestBuildingSurviveModifier");
 	pXML->GetChildXmlValByName(&m_bNoConquestPopulationLoss, "bNoConquestPopulationLoss");
 	pXML->GetChildXmlValByName(&m_bNoAutoRaze, "bNoAutoRaze");
+	pXML->GetChildXmlValByName(&m_iNewWorldCityPopulation, "iNewWorldCityPopulation");
+	pXML->GetChildXmlValByName(&m_iOverseasCityPopulation, "iOverseasCityPopulation");
+	pXML->GetChildXmlValByName(&m_iOverseasMaintenanceModifier, "iOverseasMaintenanceModifier");
+	pXML->GetChildXmlValByName(&m_iDistantTradeRouteModifier, "iDistantTradeRouteModifier");
 }
 
 // The part of read() for the yield and commerce arrays, the unit combat arrays, the free promotions and MaintainFeatures (added by this mod)

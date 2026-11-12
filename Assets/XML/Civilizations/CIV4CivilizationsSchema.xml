@@ -395,6 +395,10 @@
 	<ElementType name="iConquestBuildingSurviveModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="bNoConquestPopulationLoss" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoAutoRaze" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iNewWorldCityPopulation" content="textOnly" dt:type="int"/>
+	<ElementType name="iOverseasCityPopulation" content="textOnly" dt:type="int"/>
+	<ElementType name="iOverseasMaintenanceModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iDistantTradeRouteModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldenAgeModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldenAgeGreatPeopleRateModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iCapitalBuildingProductionModifier" content="textOnly" dt:type="int"/>
@@ -682,6 +686,10 @@
 		<element type="iConquestBuildingSurviveModifier" minOccurs="0"/>
 		<element type="bNoConquestPopulationLoss" minOccurs="0"/>
 		<element type="bNoAutoRaze" minOccurs="0"/>
+		<element type="iNewWorldCityPopulation" minOccurs="0"/>
+		<element type="iOverseasCityPopulation" minOccurs="0"/>
+		<element type="iOverseasMaintenanceModifier" minOccurs="0"/>
+		<element type="iDistantTradeRouteModifier" minOccurs="0"/>
 		<element type="iGoldenAgeModifier" minOccurs="0"/>
 		<element type="iGoldenAgeGreatPeopleRateModifier" minOccurs="0"/>
 		<element type="iCapitalBuildingProductionModifier" minOccurs="0"/>

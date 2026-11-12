@@ -368,8 +368,6 @@
 			<iExpInBorderModifier>50</iExpInBorderModifier>
 			<iCityRadiusChange>1</iCityRadiusChange>
 			<CityRadiusCultureLevel>CULTURELEVEL_FLEDGLING</CityRadiusCultureLevel>
-			<iMaxCities>1</iMaxCities>
-			<iMaxCitiesPercent>40</iMaxCitiesPercent>
 			<iSummonDuration>1</iSummonDuration>
 			<iNewCityPopulation>1</iNewCityPopulation>
 			<bNewCityStateReligion>1</bNewCityStateReligion>
@@ -378,6 +376,10 @@
 			<iConquestBuildingSurviveModifier>100</iConquestBuildingSurviveModifier>
 			<bNoConquestPopulationLoss>1</bNoConquestPopulationLoss>
 			<bNoAutoRaze>1</bNoAutoRaze>
+			<iNewWorldCityPopulation>2</iNewWorldCityPopulation>
+			<iOverseasCityPopulation>1</iOverseasCityPopulation>
+			<iOverseasMaintenanceModifier>-50</iOverseasMaintenanceModifier>
+			<iDistantTradeRouteModifier>100</iDistantTradeRouteModifier>
 			<iGoldenAgeModifier>50</iGoldenAgeModifier>
 			<iGoldenAgeGreatPeopleRateModifier>50</iGoldenAgeGreatPeopleRateModifier>
 			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>

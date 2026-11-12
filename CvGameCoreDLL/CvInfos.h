@@ -523,6 +523,7 @@ public:
 	int getCombatGoldStealMax() const;				// Exposed to Python
 	int getCombatPromotionStealChance() const;		// Exposed to Python
 	int getCombatPercentInBorders() const;			// Exposed to Python
+	int getCombatPercentOverseas() const;			// Exposed to Python (added by this mod)
 	// ImpassablePlotPassages (added by this mod): the impassable terrain or feature the unit can enter (the other is -1) and
 	// the damage percent at the start of its turn there
 	int getNumImpassablePlotPassages() const;		// Exposed to Python
@@ -625,6 +626,7 @@ protected:
 	int m_iCombatGoldStealMax;
 	int m_iCombatPromotionStealChance;
 	int m_iCombatPercentInBorders;
+	int m_iCombatPercentOverseas;	// added by this mod
 	std::vector<int> m_aiImpassablePlotPassageTerrain;
 	std::vector<int> m_aiImpassablePlotPassageFeature;
 	std::vector<int> m_aiImpassablePlotPassageDamage;
@@ -4795,6 +4797,11 @@ public:
 	int getConquestBuildingSurviveModifier() const;		// Exposed to Python
 	bool isNoConquestPopulationLoss() const;			// Exposed to Python
 	bool isNoAutoRaze() const;				// Exposed to Python (added by this mod)
+	// Regions (added by this mod): see CvMap::calculateRegions
+	int getNewWorldCityPopulation() const;			// Exposed to Python
+	int getOverseasCityPopulation() const;			// Exposed to Python
+	int getOverseasMaintenanceModifier() const;			// Exposed to Python
+	int getDistantTradeRouteModifier() const;			// Exposed to Python
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -4972,6 +4979,10 @@ protected:
 	int m_iConquestBuildingSurviveModifier;	// added by this mod
 	bool m_bNoConquestPopulationLoss;	// added by this mod
 	bool m_bNoAutoRaze;	// added by this mod
+	int m_iNewWorldCityPopulation;	// added by this mod
+	int m_iOverseasCityPopulation;	// added by this mod
+	int m_iOverseasMaintenanceModifier;	// added by this mod
+	int m_iDistantTradeRouteModifier;	// added by this mod
 	bool m_bNewCityStateReligion;
 
 	CvString m_szShortDescription;

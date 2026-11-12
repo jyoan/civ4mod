@@ -2183,6 +2183,26 @@ bool CyPlayer::isNoAutoRaze()
 	return m_pPlayer ? m_pPlayer->isNoAutoRaze() : false;
 }
 
+int CyPlayer::getNewWorldCityPopulation()
+{
+	return m_pPlayer ? m_pPlayer->getNewWorldCityPopulation() : 0;
+}
+
+int CyPlayer::getOverseasCityPopulation()
+{
+	return m_pPlayer ? m_pPlayer->getOverseasCityPopulation() : 0;
+}
+
+int CyPlayer::getOverseasMaintenanceModifier()
+{
+	return m_pPlayer ? m_pPlayer->getOverseasMaintenanceModifier() : 0;
+}
+
+int CyPlayer::getDistantTradeRouteModifier()
+{
+	return m_pPlayer ? m_pPlayer->getDistantTradeRouteModifier() : 0;
+}
+
 int CyPlayer::getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce)
 {
 	return m_pPlayer ? m_pPlayer->getSpecialistTypeExtraCommerce((SpecialistTypes)eSpecialist, (CommerceTypes)eCommerce) : 0;

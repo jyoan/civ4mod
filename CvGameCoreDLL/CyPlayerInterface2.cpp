@@ -115,5 +115,9 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("isIgnoreObsoleteBuilding", &CyPlayer::isIgnoreObsoleteBuilding, "bool (int /*BuildingTypes*/ eBuilding) - a trait keeps the building from becoming obsolete (added by this mod)")
 		.def("isObsoleteBuilding", &CyPlayer::isObsoleteBuilding, "bool (int /*BuildingTypes*/ eBuilding) - obsolete for the team and not kept by a trait (added by this mod)")
 		.def("canBuildByTraits", &CyPlayer::canBuildByTraits, "bool (int /*BuildTypes*/ eBuild) - PrereqOrTraits and ReplacedBuild of the builds (added by this mod)")
+		.def("getNewWorldCityPopulation", &CyPlayer::getNewWorldCityPopulation, "int () - population of the cities the player founds in the New World (traits, added by this mod)")
+		.def("getOverseasCityPopulation", &CyPlayer::getOverseasCityPopulation, "int () - population of the cities the player founds overseas (traits, added by this mod)")
+		.def("getOverseasMaintenanceModifier", &CyPlayer::getOverseasMaintenanceModifier, "int () - maintenance % of the overseas cities (traits, added by this mod)")
+		.def("getDistantTradeRouteModifier", &CyPlayer::getDistantTradeRouteModifier, "int () - trade route yield % with cities far from the capital (traits, added by this mod)")
 		;
 }

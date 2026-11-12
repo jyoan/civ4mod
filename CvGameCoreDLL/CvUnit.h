@@ -868,6 +868,7 @@ protected:
 	int m_iAdjacentTileHeal;
 	int m_iExtraCombatPercent;
 	int m_iCombatPercentInBorders;		// added by this mod: iCombatPercentInBorders of the promotions (not saved)
+	int m_iCombatPercentOverseas;		// added by this mod: iCombatPercentOverseas of the promotions (not saved)
 	std::vector<int> m_aiBonusAffinity;	// added by this mod: BonusAffinities of the unit and its promotions, [bonus], empty when none (not saved)
 	int m_iNoDamagePenaltyCount;		// added by this mod: promotions with bNoDamagePenalty (not saved)
 	int m_iHiddenNationalityCount;		// added by this mod: promotions with bHiddenNationality (not saved)

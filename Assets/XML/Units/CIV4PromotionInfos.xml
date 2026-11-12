@@ -4543,6 +4543,7 @@
 			<iGoldFromCombat>5</iGoldFromCombat>
 			<iCombatCapturePercent>50</iCombatCapturePercent>
 			<iCombatPercentInBorders>15</iCombatPercentInBorders>
+			<iCombatPercentOverseas>25</iCombatPercentOverseas>
 			<BonusAffinities>
 				<BonusAffinity>
 					<BonusType>BONUS_TEST</BonusType>
