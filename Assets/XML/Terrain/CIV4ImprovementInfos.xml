@@ -1705,6 +1705,34 @@
 			</BonusTypeStructs>
 			<ImprovementPillage/>
 			<ImprovementUpgrade/>
+			<AdjacentImprovementYieldChanges>
+				<AdjacentImprovementYieldChange>
+					<ImprovementType>IMPROVEMENT_TEST_TERRACE</ImprovementType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+					</Yields>
+				</AdjacentImprovementYieldChange>
+				<AdjacentImprovementYieldChange>
+					<ImprovementType>IMPROVEMENT_COTTAGE</ImprovementType>
+					<Yields>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</AdjacentImprovementYieldChange>
+			</AdjacentImprovementYieldChanges>
+			<AdjacentFeatureYieldChanges>
+				<AdjacentFeatureYieldChange>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</AdjacentFeatureYieldChange>
+			</AdjacentFeatureYieldChanges>
 			<TechYieldChanges>
 				<TechYieldChange>
 					<PrereqTech>TECH_BIOLOGY</PrereqTech>
@@ -2333,6 +2361,9 @@
 			</BonusTypeStructs>
 			<ImprovementPillage/>
 			<ImprovementUpgrade/>
+			<iUniqueRange>1</iUniqueRange>
+			<iMaxPerCity>2</iMaxPerCity>
+			<iMaxPerPlayer>3</iMaxPerPlayer>
 			<TechYieldChanges>
 				<TechYieldChange>
 					<PrereqTech>TECH_BIOLOGY</PrereqTech>

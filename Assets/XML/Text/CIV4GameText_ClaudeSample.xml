@@ -1031,6 +1031,52 @@
 		<Spanish>[ICON_BULLET]%D1%% maintenance of overseas cities (traits)</Spanish>
 		<Japanese>[ICON_BULLET]&#28023;&#22806;&#12398;&#37117;&#24066;&#12398;&#32173;&#25345;&#36027;%D1%%&#65288;&#24535;&#21521;&#65289;</Japanese>
 	</TEXT>
+	<!-- Improvements (added by this mod): adjacent yields and limits on the number -->
+	<TEXT>
+		<Tag>TXT_KEY_MISC_PER_ADJACENT_TYPE</Tag>
+		<English>[SPACE]per adjacent %s1</English>
+		<French>[SPACE]per adjacent %s1</French>
+		<German>[SPACE]per adjacent %s1</German>
+		<Italian>[SPACE]per adjacent %s1</Italian>
+		<Spanish>[SPACE]per adjacent %s1</Spanish>
+		<Japanese>[SPACE](&#38563;&#25509;&#12377;&#12427;%s1 1&#12388;&#12395;&#12388;&#12365;)</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_PER_ADJACENT_TYPE_LINE</Tag>
+		<English>[SPACE]per adjacent %s1 or an upgrade of it</English>
+		<French>[SPACE]per adjacent %s1 or an upgrade of it</French>
+		<German>[SPACE]per adjacent %s1 or an upgrade of it</German>
+		<Italian>[SPACE]per adjacent %s1 or an upgrade of it</Italian>
+		<Spanish>[SPACE]per adjacent %s1 or an upgrade of it</Spanish>
+		<Japanese>[SPACE](&#38563;&#25509;&#12377;&#12427;%s1&#65288;&#19978;&#20301;&#12398;&#26045;&#35373;&#12434;&#21547;&#12416;&#65289;1&#12388;&#12395;&#12388;&#12365;)</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_UNIQUE_RANGE</Tag>
+		<English>[ICON_BULLET]Cannot be built within %d1 tiles of the same improvement line</English>
+		<French>[ICON_BULLET]Cannot be built within %d1 tiles of the same improvement line</French>
+		<German>[ICON_BULLET]Cannot be built within %d1 tiles of the same improvement line</German>
+		<Italian>[ICON_BULLET]Cannot be built within %d1 tiles of the same improvement line</Italian>
+		<Spanish>[ICON_BULLET]Cannot be built within %d1 tiles of the same improvement line</Spanish>
+		<Japanese>[ICON_BULLET]&#21516;&#12376;&#31995;&#32113;&#12398;&#26045;&#35373;&#12363;&#12425;%d1&#12479;&#12452;&#12523;&#20197;&#20869;&#12395;&#12399;&#20316;&#12428;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_MAX_PER_CITY</Tag>
+		<English>[ICON_BULLET]Up to %d1 of its line in the radius of a city</English>
+		<French>[ICON_BULLET]Up to %d1 of its line in the radius of a city</French>
+		<German>[ICON_BULLET]Up to %d1 of its line in the radius of a city</German>
+		<Italian>[ICON_BULLET]Up to %d1 of its line in the radius of a city</Italian>
+		<Spanish>[ICON_BULLET]Up to %d1 of its line in the radius of a city</Spanish>
+		<Japanese>[ICON_BULLET]1&#12388;&#12398;&#37117;&#24066;&#22287;&#12395;&#21516;&#12376;&#31995;&#32113;&#12398;&#26045;&#35373;&#12399;%d1&#12388;&#12414;&#12391;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_MAX_PER_PLAYER</Tag>
+		<English>[ICON_BULLET]Up to %d1 of its line in your territory</English>
+		<French>[ICON_BULLET]Up to %d1 of its line in your territory</French>
+		<German>[ICON_BULLET]Up to %d1 of its line in your territory</German>
+		<Italian>[ICON_BULLET]Up to %d1 of its line in your territory</Italian>
+		<Spanish>[ICON_BULLET]Up to %d1 of its line in your territory</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12395;&#21516;&#12376;&#31995;&#32113;&#12398;&#26045;&#35373;&#12399;%d1&#12388;&#12414;&#12391;</Japanese>
+	</TEXT>
 	<!-- Unofficial 3.19 Patch (jdog5000): the keys of CIV4GameText_UnofficialPatch.xml and the key it uses without text -->
 	<TEXT>
 		<Tag>TXT_KEY_TERRAIN_TURN_DAMAGE</Tag>

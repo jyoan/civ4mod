@@ -103,6 +103,9 @@ public:
 	DllExport bool isRiverMask() const;
 	DllExport bool isRiverCrossingFlowClockwise(DirectionTypes eDirection) const;
 	int getNumAdjacentPeaks() const;		// added by this mod
+	int getImprovementAdjacentYieldChange(ImprovementTypes eImprovement, YieldTypes eYield) const;	// added by this mod
+	void updateAdjacentImprovementYields();	// added by this mod
+	ImprovementLimitTypes getImprovementLimit(ImprovementTypes eImprovement, PlayerTypes ePlayer) const;	// added by this mod
 	bool isRiverSide() const;																																		// Exposed to Python
 	bool isRiver() const;																																				// Exposed to Python
 	bool isRiverConnection(DirectionTypes eDirection) const;																		// Exposed to Python

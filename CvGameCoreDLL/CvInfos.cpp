@@ -1305,6 +1305,8 @@ const std::vector<int>& CvTechInfo::getFreeTraitsVector() const
 static void readTypeList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, std::vector<CvString>& aszTypes);
 static void readPrereqOrTraits(FDataStreamBase* stream, std::vector<int>& aiPrereqOrTraits);	// added by this mod
 static void writePrereqOrTraits(FDataStreamBase* stream, const std::vector<int>& aiPrereqOrTraits);	// added by this mod
+static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, const TCHAR* szYieldsTag, std::vector<CvString>& aszTypes, std::vector< std::vector<int> >& aaiYields, bool bCommerce = false);	// added by this mod
+static void resolveYieldChanges(const TCHAR* szListTag, const std::vector<CvString>& aszTypes, const std::vector< std::vector<int> >& aaiYields, int iNumInfos, std::vector< std::vector<int> >& aaiYieldChanges, int iNumValues = NUM_YIELD_TYPES, const TCHAR* szFile = "CIV4TraitInfos.xml");	// added by this mod
 
 void CvTechInfo::read(FDataStreamBase* stream)
 {
@@ -14781,6 +14783,9 @@ m_bMakesPassable(false),
 m_iPassageMoveCost(0),
 m_iUniqueChance(0),
 m_bImpassable(false),
+m_iUniqueRange(0),
+m_iMaxPerCity(0),
+m_iMaxPerPlayer(0),
 m_bActsAsCity(true),				
 m_bHillsMakesValid(false),				
 m_bFreshWaterMakesValid(false),	
@@ -14946,6 +14951,68 @@ int CvImprovementInfo::getUniqueChance() const
 bool CvImprovementInfo::isImpassable() const
 {
 	return m_bImpassable;
+}
+
+// AdjacentImprovementYieldChanges (added by this mod): the yields for each adjacent plot with the improvement, or with an
+// improvement it upgrades into (CvPlot::getImprovementAdjacentYieldChange)
+int CvImprovementInfo::getAdjacentImprovementYieldChange(int iImprovement, int iYield) const
+{
+	if (iImprovement < 0 || iImprovement >= (int)m_aaiAdjacentImprovementYieldChange.size() || iYield < 0 || iYield >= NUM_YIELD_TYPES)
+	{
+		return 0;
+	}
+	return m_aaiAdjacentImprovementYieldChange[iImprovement][iYield];
+}
+
+const int* CvImprovementInfo::getAdjacentImprovementYieldChangeArray(int iImprovement) const
+{
+	if (iImprovement < 0 || iImprovement >= (int)m_aaiAdjacentImprovementYieldChange.size())
+	{
+		return NULL;
+	}
+	return &m_aaiAdjacentImprovementYieldChange[iImprovement][0];
+}
+
+// AdjacentFeatureYieldChanges (added by this mod): the yields for each adjacent plot with the feature
+int CvImprovementInfo::getAdjacentFeatureYieldChange(int iFeature, int iYield) const
+{
+	if (iFeature < 0 || iFeature >= (int)m_aaiAdjacentFeatureYieldChange.size() || iYield < 0 || iYield >= NUM_YIELD_TYPES)
+	{
+		return 0;
+	}
+	return m_aaiAdjacentFeatureYieldChange[iFeature][iYield];
+}
+
+const int* CvImprovementInfo::getAdjacentFeatureYieldChangeArray(int iFeature) const
+{
+	if (iFeature < 0 || iFeature >= (int)m_aaiAdjacentFeatureYieldChange.size())
+	{
+		return NULL;
+	}
+	return &m_aaiAdjacentFeatureYieldChange[iFeature][0];
+}
+
+bool CvImprovementInfo::isAdjacentYieldChanges() const
+{
+	return (!m_aaiAdjacentImprovementYieldChange.empty() || !m_aaiAdjacentFeatureYieldChange.empty());
+}
+
+// iUniqueRange (added by this mod, as C2C): no improvement of the same line within this distance (CvPlot::getImprovementLimit)
+int CvImprovementInfo::getUniqueRange() const
+{
+	return m_iUniqueRange;
+}
+
+// iMaxPerCity (added by this mod): at most this many of the same line in the radius of each city of the builder
+int CvImprovementInfo::getMaxPerCity() const
+{
+	return m_iMaxPerCity;
+}
+
+// iMaxPerPlayer (added by this mod): at most this many of the same line in the territory of the builder
+int CvImprovementInfo::getMaxPerPlayer() const
+{
+	return m_iMaxPerPlayer;
 }
 
 int CvImprovementInfo::getImprovementUpgrade() const			
@@ -15210,6 +15277,35 @@ void CvArtInfoImprovement::setShaderNIF(const TCHAR* szDesc)
 	m_szShaderNIF = szDesc; 
 }
 
+// A table such as [improvement][yield] (added by this mod): the number of rows (0 when empty), then each row
+static void readIntTable(FDataStreamBase* stream, std::vector< std::vector<int> >& aaiTable, int iNumColumns)
+{
+	int iNumRows;
+	int i;
+
+	aaiTable.clear();
+	stream->Read(&iNumRows);
+	if (iNumRows > 0)
+	{
+		aaiTable.resize(iNumRows, std::vector<int>(iNumColumns, 0));
+		for (i = 0; i < iNumRows; i++)
+		{
+			stream->Read(iNumColumns, &aaiTable[i][0]);
+		}
+	}
+}
+
+static void writeIntTable(FDataStreamBase* stream, const std::vector< std::vector<int> >& aaiTable, int iNumColumns)
+{
+	int i;
+
+	stream->Write((int)aaiTable.size());
+	for (i = 0; i < (int)aaiTable.size(); i++)
+	{
+		stream->Write(iNumColumns, &aaiTable[i][0]);
+	}
+}
+
 void CvImprovementInfo::read(FDataStreamBase* stream)
 {
 	CvInfoBase::read(stream);
@@ -15359,13 +15455,28 @@ void CvImprovementInfo::read(FDataStreamBase* stream)
 		stream->Read(&m_iUniqueChance);
 		stream->Read(&m_bImpassable);
 	}
+
+	// uiFlag < 5: cache written before the adjacent yields and the limits existed
+	m_aaiAdjacentImprovementYieldChange.clear();
+	m_aaiAdjacentFeatureYieldChange.clear();
+	m_iUniqueRange = 0;
+	m_iMaxPerCity = 0;
+	m_iMaxPerPlayer = 0;
+	if (uiFlag > 4)
+	{
+		readIntTable(stream, m_aaiAdjacentImprovementYieldChange, NUM_YIELD_TYPES);
+		readIntTable(stream, m_aaiAdjacentFeatureYieldChange, NUM_YIELD_TYPES);
+		stream->Read(&m_iUniqueRange);
+		stream->Read(&m_iMaxPerCity);
+		stream->Read(&m_iMaxPerPlayer);
+	}
 }
 
 void CvImprovementInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=4;	// 1: AdjacentPeakYieldChanges, 2: ReplacedImprovement, 3: bMakesPassable, iPassageMoveCost, 4: iUniqueChance, bImpassable (added by this mod)
+	uint uiFlag=5;	// 1: AdjacentPeakYieldChanges, 2: ReplacedImprovement, 3: bMakesPassable, iPassageMoveCost, 4: iUniqueChance, bImpassable, 5: adjacent yields, iUniqueRange, iMaxPerCity, iMaxPerPlayer (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAdvancedStartCost);
@@ -15433,6 +15544,11 @@ void CvImprovementInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iPassageMoveCost);
 	stream->Write(m_iUniqueChance);
 	stream->Write(m_bImpassable);
+	writeIntTable(stream, m_aaiAdjacentImprovementYieldChange, NUM_YIELD_TYPES);
+	writeIntTable(stream, m_aaiAdjacentFeatureYieldChange, NUM_YIELD_TYPES);
+	stream->Write(m_iUniqueRange);
+	stream->Write(m_iMaxPerCity);
+	stream->Write(m_iMaxPerPlayer);
 }
 bool CvImprovementInfo::read(CvXMLLoadUtility* pXML)
 {
@@ -15675,6 +15791,18 @@ bool CvImprovementInfo::readPass2(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iPassageMoveCost, "iPassageMoveCost");
 	pXML->GetChildXmlValByName(&m_iUniqueChance, "iUniqueChance");
 	pXML->GetChildXmlValByName(&m_bImpassable, "bImpassable");
+
+	// AdjacentImprovementYieldChanges (here, because it can name improvements later in the file), AdjacentFeatureYieldChanges,
+	// iUniqueRange, iMaxPerCity, iMaxPerPlayer (added by this mod)
+	std::vector<CvString> aszAdjacentTypes;
+	std::vector< std::vector<int> > aaiAdjacentYields;
+	readYieldChanges(pXML, "AdjacentImprovementYieldChanges", "AdjacentImprovementYieldChange", "ImprovementType", "Yields", aszAdjacentTypes, aaiAdjacentYields);
+	resolveYieldChanges("AdjacentImprovementYieldChanges", aszAdjacentTypes, aaiAdjacentYields, GC.getNumImprovementInfos(), m_aaiAdjacentImprovementYieldChange, NUM_YIELD_TYPES, "CIV4ImprovementInfos.xml");
+	readYieldChanges(pXML, "AdjacentFeatureYieldChanges", "AdjacentFeatureYieldChange", "FeatureType", "Yields", aszAdjacentTypes, aaiAdjacentYields);
+	resolveYieldChanges("AdjacentFeatureYieldChanges", aszAdjacentTypes, aaiAdjacentYields, GC.getNumFeatureInfos(), m_aaiAdjacentFeatureYieldChange, NUM_YIELD_TYPES, "CIV4ImprovementInfos.xml");
+	pXML->GetChildXmlValByName(&m_iUniqueRange, "iUniqueRange");
+	pXML->GetChildXmlValByName(&m_iMaxPerCity, "iMaxPerCity");
+	pXML->GetChildXmlValByName(&m_iMaxPerPlayer, "iMaxPerPlayer");
 
 	return true;
 }
@@ -20800,7 +20928,7 @@ int* CvTraitInfo::getUnhealthyCommerceChangeArray() const
 
 // Reads a list of yield changes such as <TerrainYieldChanges>: each item has the type tag (TerrainType) and
 // the yields tag (Yields). The types are kept as strings, because some (improvements) are loaded after traits.
-static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, const TCHAR* szYieldsTag, std::vector<CvString>& aszTypes, std::vector< std::vector<int> >& aaiYields, bool bCommerce = false)
+static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, const TCHAR* szYieldsTag, std::vector<CvString>& aszTypes, std::vector< std::vector<int> >& aaiYields, bool bCommerce)
 {
 	CvString szTextVal;
 	int* paiYields;
@@ -20848,8 +20976,8 @@ static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, con
 }
 
 // Turns the types and yields from readYieldChanges() into one row per info (iNumInfos), or an empty result when
-// nothing is set. An unknown type shows the same message as FindInInfoClass.
-static void resolveYieldChanges(const TCHAR* szListTag, const std::vector<CvString>& aszTypes, const std::vector< std::vector<int> >& aaiYields, int iNumInfos, std::vector< std::vector<int> >& aaiYieldChanges, int iNumValues = NUM_YIELD_TYPES)
+// nothing is set. An unknown type shows the same message as FindInInfoClass (szFile: the file for the message).
+static void resolveYieldChanges(const TCHAR* szListTag, const std::vector<CvString>& aszTypes, const std::vector< std::vector<int> >& aaiYields, int iNumInfos, std::vector< std::vector<int> >& aaiYieldChanges, int iNumValues, const TCHAR* szFile)
 {
 	char szMessage[1024];
 	int iIndex;
@@ -20864,7 +20992,7 @@ static void resolveYieldChanges(const TCHAR* szListTag, const std::vector<CvStri
 		{
 			if (aszTypes[i] != "NONE" && !aszTypes[i].empty())
 			{
-				sprintf(szMessage, "Tag: %s in %s of CIV4TraitInfos.xml was incorrect", aszTypes[i].GetCString(), szListTag);
+				sprintf(szMessage, "Tag: %s in %s of %s was incorrect", aszTypes[i].GetCString(), szListTag, szFile);
 				gDLL->MessageBox(szMessage, "XML Error");
 			}
 			continue;
