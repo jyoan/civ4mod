@@ -2009,10 +2009,10 @@ void CvPlot::updateSight(bool bIncrement, bool bUpdatePlotGroups)
 		}
 	}
 
-	// Owned
+	// Owned (with iPlotVisibilityChange of the improvement, added by this mod)
 	if (isOwned())
 	{
-		changeAdjacentSight(getTeam(), GC.getDefineINT("PLOT_VISIBILITY_RANGE"), bIncrement, NULL, bUpdatePlotGroups);
+		changeAdjacentSight(getTeam(), getOwnerVisibilityRange(), bIncrement, NULL, bUpdatePlotGroups);
 	}
 
 	pUnitNode = headUnitNode();
@@ -2044,6 +2044,113 @@ void CvPlot::updateSight(bool bIncrement, bool bUpdatePlotGroups)
 }
 
 
+// The largest iRange of the improvements with iHealRateChange or iRangeDefenseModifier, -1 when there are none (added by
+// this mod). The infos do not change during a game, so it is computed once
+static int getMaxImprovementRange()
+{
+	static int iMaxRange = -2;
+	int iI;
+
+	if (iMaxRange == -2 && GC.getNumImprovementInfos() > 0)
+	{
+		iMaxRange = -1;
+		for (iI = 0; iI < GC.getNumImprovementInfos(); iI++)
+		{
+			if (GC.getImprovementInfo((ImprovementTypes)iI).getHealRateChange() != 0 || GC.getImprovementInfo((ImprovementTypes)iI).getRangeDefenseModifier() != 0)
+			{
+				iMaxRange = std::max(iMaxRange, std::max(0, GC.getImprovementInfo((ImprovementTypes)iI).getRange()));
+			}
+		}
+	}
+
+	return iMaxRange;
+}
+
+// The largest iPlotVisibilityChange of the improvements (added by this mod), for updateSeeFromSight
+static int getMaxImprovementPlotVisibilityChange()
+{
+	static int iMaxChange = -1;
+	int iI;
+
+	if (iMaxChange == -1 && GC.getNumImprovementInfos() > 0)
+	{
+		iMaxChange = 0;
+		for (iI = 0; iI < GC.getNumImprovementInfos(); iI++)
+		{
+			iMaxChange = std::max(iMaxChange, GC.getImprovementInfo((ImprovementTypes)iI).getPlotVisibilityChange());
+		}
+	}
+
+	return std::max(0, iMaxChange);
+}
+
+// iHealRateChange and iRangeDefenseModifier of the improvements (added by this mod, as FFH2): the best value (pfValue)
+// among the improvements within their iRange of this plot (plotDistance) whose plot eTeam owns and has no enemy unit on it.
+// They do not add up, and only positive values count
+int CvPlot::getImprovementRangeValue(TeamTypes eTeam, int (CvImprovementInfo::*pfValue)() const) const
+{
+	CvPlot* pLoopPlot;
+	ImprovementTypes eImprovement;
+	int iMaxRange = getMaxImprovementRange();
+	int iBest = 0;
+	int iValue;
+	int iDX;
+	int iDY;
+
+	if (iMaxRange < 0 || eTeam == NO_TEAM)
+	{
+		return 0;
+	}
+
+	for (iDX = -iMaxRange; iDX <= iMaxRange; iDX++)
+	{
+		for (iDY = -iMaxRange; iDY <= iMaxRange; iDY++)
+		{
+			pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+			if (pLoopPlot == NULL || pLoopPlot->getTeam() != eTeam)
+			{
+				continue;
+			}
+
+			eImprovement = pLoopPlot->getImprovementType();
+			if (eImprovement == NO_IMPROVEMENT)
+			{
+				continue;
+			}
+
+			CvImprovementInfo& kImprovement = GC.getImprovementInfo(eImprovement);
+			iValue = (kImprovement.*pfValue)();
+			if (iValue <= iBest || plotDistance(getX_INLINE(), getY_INLINE(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE()) > kImprovement.getRange())
+			{
+				continue;
+			}
+
+			if (pLoopPlot->plotCheck(PUF_isEnemy, pLoopPlot->getOwnerINLINE(), false, NO_PLAYER, NO_TEAM, NULL) != NULL)
+			{
+				continue;
+			}
+
+			iBest = iValue;
+		}
+	}
+
+	return iBest;
+}
+
+// The sight range of the owner from this plot (added by this mod): PLOT_VISIBILITY_RANGE and iPlotVisibilityChange of the
+// improvement. Every change of the owner's sight of the plot uses it, so the counts stay balanced
+int CvPlot::getOwnerVisibilityRange() const
+{
+	int iRange = GC.getDefineINT("PLOT_VISIBILITY_RANGE");
+
+	if (getImprovementType() != NO_IMPROVEMENT)
+	{
+		iRange += GC.getImprovementInfo(getImprovementType()).getPlotVisibilityChange();
+	}
+
+	return std::max(0, iRange);
+}
+
 void CvPlot::updateSeeFromSight(bool bIncrement, bool bUpdatePlotGroups)
 {
 	CvPlot* pLoopPlot;
@@ -2056,6 +2163,8 @@ void CvPlot::updateSeeFromSight(bool bIncrement, bool bUpdatePlotGroups)
 	}
 
 	iRange = std::max(GC.getDefineINT("RECON_VISIBILITY_RANGE") + 1, iRange);
+	// The sight of the owners from improvements with iPlotVisibilityChange (added by this mod)
+	iRange = std::max(GC.getDefineINT("PLOT_VISIBILITY_RANGE") + getMaxImprovementPlotVisibilityChange() + 1, iRange);
 	
 	for (iDX = -iRange; iDX <= iRange; iDX++)
 	{
@@ -2774,6 +2883,9 @@ int CvPlot::defenseModifier(TeamTypes eDefender, bool bIgnoreBuilding, bool bHel
 			iModifier += pCity->getDefenseModifier(bIgnoreBuilding);
 		}
 	}
+
+	// iRangeDefenseModifier of the improvements of eDefender around (added by this mod)
+	iModifier += getImprovementRangeValue(eDefender, &CvImprovementInfo::getRangeDefenseModifier);
 
 	return iModifier;
 }
@@ -4804,7 +4916,7 @@ void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotG
 
 			if (isOwned())
 			{
-				changeAdjacentSight(getTeam(), GC.getDefineINT("PLOT_VISIBILITY_RANGE"), false, NULL, bUpdatePlotGroup);
+				changeAdjacentSight(getTeam(), getOwnerVisibilityRange(), false, NULL, bUpdatePlotGroup);	// with iPlotVisibilityChange (added by this mod)
 
 				if (area())
 				{
@@ -4858,7 +4970,7 @@ void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotG
 
 			if (isOwned())
 			{
-				changeAdjacentSight(getTeam(), GC.getDefineINT("PLOT_VISIBILITY_RANGE"), true, NULL, bUpdatePlotGroup);
+				changeAdjacentSight(getTeam(), getOwnerVisibilityRange(), true, NULL, bUpdatePlotGroup);	// with iPlotVisibilityChange (added by this mod)
 
 				if (area())
 				{
@@ -5563,9 +5675,22 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 			}
 		}
 
+		// iPlotVisibilityChange (added by this mod): the owner's sight from the plot changes with the improvement
+		bool bVisibilityChange = (isOwned() && ((eOldImprovement != NO_IMPROVEMENT && GC.getImprovementInfo(eOldImprovement).getPlotVisibilityChange() != 0) ||
+			(eNewValue != NO_IMPROVEMENT && GC.getImprovementInfo(eNewValue).getPlotVisibilityChange() != 0)));
+		if (bVisibilityChange)
+		{
+			changeAdjacentSight(getTeam(), getOwnerVisibilityRange(), false, NULL, true);
+		}
+
 		updatePlotGroupBonus(false);
 		m_eImprovementType = eNewValue;
 		updatePlotGroupBonus(true);
+
+		if (bVisibilityChange)
+		{
+			changeAdjacentSight(getTeam(), getOwnerVisibilityRange(), true, NULL, true);
+		}
 
 		if (getImprovementType() == NO_IMPROVEMENT)
 		{

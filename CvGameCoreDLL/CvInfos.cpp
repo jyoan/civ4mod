@@ -14786,6 +14786,10 @@ m_bImpassable(false),
 m_iUniqueRange(0),
 m_iMaxPerCity(0),
 m_iMaxPerPlayer(0),
+m_iRange(0),
+m_iHealRateChange(0),
+m_iRangeDefenseModifier(0),
+m_iPlotVisibilityChange(0),
 m_bActsAsCity(true),				
 m_bHillsMakesValid(false),				
 m_bFreshWaterMakesValid(false),	
@@ -15013,6 +15017,30 @@ int CvImprovementInfo::getMaxPerCity() const
 int CvImprovementInfo::getMaxPerPlayer() const
 {
 	return m_iMaxPerPlayer;
+}
+
+// iRange (added by this mod): the distance of iHealRateChange and iRangeDefenseModifier (0: the plot of the improvement only)
+int CvImprovementInfo::getRange() const
+{
+	return m_iRange;
+}
+
+// iHealRateChange (added by this mod): heal per turn for the units of the team within iRange
+int CvImprovementInfo::getHealRateChange() const
+{
+	return m_iHealRateChange;
+}
+
+// iRangeDefenseModifier (added by this mod): defense for the units of the team within iRange
+int CvImprovementInfo::getRangeDefenseModifier() const
+{
+	return m_iRangeDefenseModifier;
+}
+
+// iPlotVisibilityChange (added by this mod): sight range from the plot for its owner, added to PLOT_VISIBILITY_RANGE
+int CvImprovementInfo::getPlotVisibilityChange() const
+{
+	return m_iPlotVisibilityChange;
 }
 
 int CvImprovementInfo::getImprovementUpgrade() const			
@@ -15470,13 +15498,26 @@ void CvImprovementInfo::read(FDataStreamBase* stream)
 		stream->Read(&m_iMaxPerCity);
 		stream->Read(&m_iMaxPerPlayer);
 	}
+
+	// uiFlag < 6: cache written before iRange, iHealRateChange, iRangeDefenseModifier and iPlotVisibilityChange existed
+	m_iRange = 0;
+	m_iHealRateChange = 0;
+	m_iRangeDefenseModifier = 0;
+	m_iPlotVisibilityChange = 0;
+	if (uiFlag > 5)
+	{
+		stream->Read(&m_iRange);
+		stream->Read(&m_iHealRateChange);
+		stream->Read(&m_iRangeDefenseModifier);
+		stream->Read(&m_iPlotVisibilityChange);
+	}
 }
 
 void CvImprovementInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=5;	// 1: AdjacentPeakYieldChanges, 2: ReplacedImprovement, 3: bMakesPassable, iPassageMoveCost, 4: iUniqueChance, bImpassable, 5: adjacent yields, iUniqueRange, iMaxPerCity, iMaxPerPlayer (added by this mod)
+	uint uiFlag=6;	// 1: AdjacentPeakYieldChanges, 2: ReplacedImprovement, 3: bMakesPassable, iPassageMoveCost, 4: iUniqueChance, bImpassable, 5: adjacent yields, iUniqueRange, iMaxPerCity, iMaxPerPlayer, 6: iRange, iHealRateChange, iRangeDefenseModifier, iPlotVisibilityChange (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAdvancedStartCost);
@@ -15549,6 +15590,10 @@ void CvImprovementInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iUniqueRange);
 	stream->Write(m_iMaxPerCity);
 	stream->Write(m_iMaxPerPlayer);
+	stream->Write(m_iRange);
+	stream->Write(m_iHealRateChange);
+	stream->Write(m_iRangeDefenseModifier);
+	stream->Write(m_iPlotVisibilityChange);
 }
 bool CvImprovementInfo::read(CvXMLLoadUtility* pXML)
 {
@@ -15803,6 +15848,10 @@ bool CvImprovementInfo::readPass2(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iUniqueRange, "iUniqueRange");
 	pXML->GetChildXmlValByName(&m_iMaxPerCity, "iMaxPerCity");
 	pXML->GetChildXmlValByName(&m_iMaxPerPlayer, "iMaxPerPlayer");
+	pXML->GetChildXmlValByName(&m_iRange, "iRange");
+	pXML->GetChildXmlValByName(&m_iHealRateChange, "iHealRateChange");
+	pXML->GetChildXmlValByName(&m_iRangeDefenseModifier, "iRangeDefenseModifier");
+	pXML->GetChildXmlValByName(&m_iPlotVisibilityChange, "iPlotVisibilityChange");
 
 	return true;
 }

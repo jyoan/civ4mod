@@ -1077,6 +1077,60 @@
 		<Spanish>[ICON_BULLET]Up to %d1 of its line in your territory</Spanish>
 		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12395;&#21516;&#12376;&#31995;&#32113;&#12398;&#26045;&#35373;&#12399;%d1&#12388;&#12414;&#12391;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_RANGE_HEAL</Tag>
+		<English>[ICON_BULLET]+%d1%% heal per turn for the units of your team within %d2 tiles</English>
+		<French>[ICON_BULLET]+%d1%% heal per turn for the units of your team within %d2 tiles</French>
+		<German>[ICON_BULLET]+%d1%% heal per turn for the units of your team within %d2 tiles</German>
+		<Italian>[ICON_BULLET]+%d1%% heal per turn for the units of your team within %d2 tiles</Italian>
+		<Spanish>[ICON_BULLET]+%d1%% heal per turn for the units of your team within %d2 tiles</Spanish>
+		<Japanese>[ICON_BULLET]%d2&#12479;&#12452;&#12523;&#20197;&#20869;&#12398;&#33258;&#12481;&#12540;&#12512;&#12398;&#12518;&#12491;&#12483;&#12488;&#12398;&#22238;&#24489; +%d1%%&#65288;&#12479;&#12540;&#12531;&#12372;&#12392;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_PLOT_HEAL</Tag>
+		<English>[ICON_BULLET]+%d1%% heal per turn for the units of your team on it</English>
+		<French>[ICON_BULLET]+%d1%% heal per turn for the units of your team on it</French>
+		<German>[ICON_BULLET]+%d1%% heal per turn for the units of your team on it</German>
+		<Italian>[ICON_BULLET]+%d1%% heal per turn for the units of your team on it</Italian>
+		<Spanish>[ICON_BULLET]+%d1%% heal per turn for the units of your team on it</Spanish>
+		<Japanese>[ICON_BULLET]&#12371;&#12398;&#26045;&#35373;&#12398;&#19978;&#12398;&#33258;&#12481;&#12540;&#12512;&#12398;&#12518;&#12491;&#12483;&#12488;&#12398;&#22238;&#24489; +%d1%%&#65288;&#12479;&#12540;&#12531;&#12372;&#12392;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_RANGE_DEFENSE</Tag>
+		<English>[ICON_BULLET]+%d1%% defense for the units of your team within %d2 tiles</English>
+		<French>[ICON_BULLET]+%d1%% defense for the units of your team within %d2 tiles</French>
+		<German>[ICON_BULLET]+%d1%% defense for the units of your team within %d2 tiles</German>
+		<Italian>[ICON_BULLET]+%d1%% defense for the units of your team within %d2 tiles</Italian>
+		<Spanish>[ICON_BULLET]+%d1%% defense for the units of your team within %d2 tiles</Spanish>
+		<Japanese>[ICON_BULLET]%d2&#12479;&#12452;&#12523;&#20197;&#20869;&#12398;&#33258;&#12481;&#12540;&#12512;&#12398;&#12518;&#12491;&#12483;&#12488;&#12398;&#38450;&#24481; +%d1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_PLOT_DEFENSE</Tag>
+		<English>[ICON_BULLET]+%d1%% defense for the units of your team on it</English>
+		<French>[ICON_BULLET]+%d1%% defense for the units of your team on it</French>
+		<German>[ICON_BULLET]+%d1%% defense for the units of your team on it</German>
+		<Italian>[ICON_BULLET]+%d1%% defense for the units of your team on it</Italian>
+		<Spanish>[ICON_BULLET]+%d1%% defense for the units of your team on it</Spanish>
+		<Japanese>[ICON_BULLET]&#12371;&#12398;&#26045;&#35373;&#12398;&#19978;&#12398;&#33258;&#12481;&#12540;&#12512;&#12398;&#12518;&#12491;&#12483;&#12488;&#12398;&#38450;&#24481; +%d1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_RANGE_NOTE</Tag>
+		<English>[ICON_BULLET](In your territory, with no enemy on the improvement. Several improvements do not add up)</English>
+		<French>[ICON_BULLET](In your territory, with no enemy on the improvement. Several improvements do not add up)</French>
+		<German>[ICON_BULLET](In your territory, with no enemy on the improvement. Several improvements do not add up)</German>
+		<Italian>[ICON_BULLET](In your territory, with no enemy on the improvement. Several improvements do not add up)</Italian>
+		<Spanish>[ICON_BULLET](In your territory, with no enemy on the improvement. Several improvements do not add up)</Spanish>
+		<Japanese>[ICON_BULLET]&#65288;&#33258;&#12481;&#12540;&#12512;&#12398;&#38936;&#22303;&#12398;&#26045;&#35373;&#12391;&#12289;&#26045;&#35373;&#12398;&#19978;&#12395;&#25973;&#12364;&#12356;&#12394;&#12356;&#12392;&#12365;&#12290;&#35079;&#25968;&#12398;&#26045;&#35373;&#12398;&#21177;&#26524;&#12399;&#37325;&#12394;&#12425;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_IMPROVEMENT_PLOT_VISIBILITY</Tag>
+		<English>[ICON_BULLET]%D1 sight range from this tile for its owner</English>
+		<French>[ICON_BULLET]%D1 sight range from this tile for its owner</French>
+		<German>[ICON_BULLET]%D1 sight range from this tile for its owner</German>
+		<Italian>[ICON_BULLET]%D1 sight range from this tile for its owner</Italian>
+		<Spanish>[ICON_BULLET]%D1 sight range from this tile for its owner</Spanish>
+		<Japanese>[ICON_BULLET]&#12371;&#12398;&#12479;&#12452;&#12523;&#12398;&#25345;&#12385;&#20027;&#12398;&#35222;&#30028; %D1&#65288;&#12371;&#12398;&#12479;&#12452;&#12523;&#12363;&#12425;&#65289;</Japanese>
+	</TEXT>
 	<!-- Unofficial 3.19 Patch (jdog5000): the keys of CIV4GameText_UnofficialPatch.xml and the key it uses without text -->
 	<TEXT>
 		<Tag>TXT_KEY_TERRAIN_TURN_DAMAGE</Tag>

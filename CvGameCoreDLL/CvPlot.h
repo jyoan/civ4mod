@@ -18,6 +18,7 @@ class CvRoute;
 class CvRiver;
 class CvCity;
 class CvPlotGroup;
+class CvImprovementInfo;	// added by this mod
 class CvFeature;
 class CvUnit;
 class CvSymbol;
@@ -106,6 +107,8 @@ public:
 	int getImprovementAdjacentYieldChange(ImprovementTypes eImprovement, YieldTypes eYield) const;	// added by this mod
 	void updateAdjacentImprovementYields();	// added by this mod
 	ImprovementLimitTypes getImprovementLimit(ImprovementTypes eImprovement, PlayerTypes ePlayer) const;	// added by this mod
+	int getImprovementRangeValue(TeamTypes eTeam, int (CvImprovementInfo::*pfValue)() const) const;	// added by this mod
+	int getOwnerVisibilityRange() const;	// added by this mod
 	bool isRiverSide() const;																																		// Exposed to Python
 	bool isRiver() const;																																				// Exposed to Python
 	bool isRiverConnection(DirectionTypes eDirection) const;																		// Exposed to Python

@@ -2434,6 +2434,10 @@
 			<ImprovementPillage/>
 			<ImprovementUpgrade/>
 			<ReplacedImprovement>IMPROVEMENT_FORT</ReplacedImprovement>
+			<iRange>2</iRange>
+			<iHealRateChange>20</iHealRateChange>
+			<iRangeDefenseModifier>25</iRangeDefenseModifier>
+			<iPlotVisibilityChange>2</iPlotVisibilityChange>
 			<TechYieldChanges/>
 			<RouteYieldChanges/>
 			<bGraphicalOnly>0</bGraphicalOnly>
