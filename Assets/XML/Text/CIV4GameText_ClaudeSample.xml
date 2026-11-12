@@ -940,6 +940,79 @@
 		<Spanish>The effects count once for each copy</Spanish>
 		<Japanese>&#21177;&#26524;&#12399;&#25345;&#12387;&#12390;&#12356;&#12427;&#25968;&#12384;&#12369;&#37325;&#12394;&#12427;</Japanese>
 	</TEXT>
+	<!-- Regions (added by this mod): the globe layer and the plot help -->
+	<TEXT>
+		<Tag>TXT_KEY_GLOBELAYER_REGIONS</Tag>
+		<English>Toggles display of regions (lands joined by shallow water, bounded by the ocean)</English>
+		<French>Toggles display of regions (lands joined by shallow water, bounded by the ocean)</French>
+		<German>Toggles display of regions (lands joined by shallow water, bounded by the ocean)</German>
+		<Italian>Toggles display of regions (lands joined by shallow water, bounded by the ocean)</Italian>
+		<Spanish>Toggles display of regions (lands joined by shallow water, bounded by the ocean)</Spanish>
+		<Japanese>&#22320;&#22495;&#65288;&#22806;&#27915;&#12391;&#21306;&#20999;&#12425;&#12428;&#12383;&#12289;&#38520;&#22320;&#12392;&#27973;&#12356;&#28023;&#12398;&#12414;&#12392;&#12414;&#12426;&#65289;&#12398;&#34920;&#31034;&#12434;&#20999;&#12426;&#26367;&#12360;&#12414;&#12377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_GLOBELAYER_REGIONS_ALL</Tag>
+		<English>Regions</English>
+		<French>Regions</French>
+		<German>Regions</German>
+		<Italian>Regions</Italian>
+		<Spanish>Regions</Spanish>
+		<Japanese>&#22320;&#22495;&#12372;&#12392;&#12398;&#33394;&#20998;&#12369;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_GLOBELAYER_REGIONS_NEW_WORLD</Tag>
+		<English>New World and Old World</English>
+		<French>New World and Old World</French>
+		<German>New World and Old World</German>
+		<Italian>New World and Old World</Italian>
+		<Spanish>New World and Old World</Spanish>
+		<Japanese>&#26032;&#19990;&#30028;&#12392;&#26087;&#19990;&#30028;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_GLOBELAYER_REGIONS_OVERSEAS</Tag>
+		<English>Home and Overseas</English>
+		<French>Home and Overseas</French>
+		<German>Home and Overseas</German>
+		<Italian>Home and Overseas</Italian>
+		<Spanish>Home and Overseas</Spanish>
+		<Japanese>&#26412;&#22269;&#12392;&#28023;&#22806;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_GLOBELAYER_REGIONS_DISTANT</Tag>
+		<English>Distant from the Capital</English>
+		<French>Distant from the Capital</French>
+		<German>Distant from the Capital</German>
+		<Italian>Distant from the Capital</Italian>
+		<Spanish>Distant from the Capital</Spanish>
+		<Japanese>&#39318;&#37117;&#12363;&#12425;&#36960;&#12356;&#22580;&#25152;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PLOT_NEW_WORLD</Tag>
+		<English>New World</English>
+		<French>New World</French>
+		<German>New World</German>
+		<Italian>New World</Italian>
+		<Spanish>New World</Spanish>
+		<Japanese>&#26032;&#19990;&#30028;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PLOT_OVERSEAS</Tag>
+		<English>Overseas</English>
+		<French>Overseas</French>
+		<German>Overseas</German>
+		<Italian>Overseas</Italian>
+		<Spanish>Overseas</Spanish>
+		<Japanese>&#28023;&#22806;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PLOT_DISTANT</Tag>
+		<English>Distant from the capital</English>
+		<French>Distant from the capital</French>
+		<German>Distant from the capital</German>
+		<Italian>Distant from the capital</Italian>
+		<Spanish>Distant from the capital</Spanish>
+		<Japanese>&#39318;&#37117;&#12363;&#12425;&#36960;&#12356;</Japanese>
+	</TEXT>
 	<!-- Unofficial 3.19 Patch (jdog5000): the keys of CIV4GameText_UnofficialPatch.xml and the key it uses without text -->
 	<TEXT>
 		<Tag>TXT_KEY_TERRAIN_TURN_DAMAGE</Tag>

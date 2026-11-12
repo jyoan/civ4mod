@@ -108,6 +108,27 @@ bool CyPlot::isFreshWater()
 	return m_pPlot ? m_pPlot->isFreshWater() : false;
 }
 
+// Regions (added by this mod)
+int CyPlot::getRegion()
+{
+	return m_pPlot ? m_pPlot->getRegion() : -1;
+}
+
+bool CyPlot::isNewWorld()
+{
+	return m_pPlot ? m_pPlot->isNewWorld() : false;
+}
+
+bool CyPlot::isOverseas(int /*PlayerTypes*/ ePlayer)
+{
+	return m_pPlot ? m_pPlot->isOverseas((PlayerTypes)ePlayer) : false;
+}
+
+bool CyPlot::isDistant(int /*PlayerTypes*/ ePlayer)
+{
+	return m_pPlot ? m_pPlot->isDistant((PlayerTypes)ePlayer) : false;
+}
+
 bool CyPlot::isPotentialIrrigation()
 {
 	return m_pPlot ? m_pPlot->isPotentialIrrigation() : false;

@@ -2980,6 +2980,35 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 			szString.append(gDLL->getText("TXT_KEY_PLOT_IMPASSABLE"));
 		}
 
+		// Regions (added by this mod): New World, overseas and distant for the active player. The regions are known
+		// once the game has started
+		if (GC.getGameINLINE().isFinalInitialized())
+		{
+			if (pPlot->isNewWorld())
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_PLOT_NEW_WORLD"));
+			}
+
+			if (pPlot->isOverseas(GC.getGameINLINE().getActivePlayer()))
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_PLOT_OVERSEAS"));
+			}
+
+			if (pPlot->isDistant(GC.getGameINLINE().getActivePlayer()))
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_PLOT_DISTANT"));
+			}
+
+			if (GC.getGameINLINE().isDebugMode() && pPlot->getRegion() != -1)
+			{
+				szString.append(NEWLINE);
+				szString.append(CvWString::format(L"Region %d", pPlot->getRegion()));
+			}
+		}
+
 		if (GC.getGameINLINE().isDebugMode())
 		{
 			eBonus = pPlot->getBonusType();
@@ -17030,6 +17059,23 @@ void CvGameTextMgr::getGlobeLayerName(GlobeLayerTypes eType, int iOption, CvWStr
 	case GLOBE_LAYER_TRADE:
 		// these have no sub-options
 		strName.clear();
+		break;
+	case GLOBE_LAYER_REGION:	// added by this mod
+		switch(iOption)
+		{
+		case SHOW_REGIONS:
+			strName = gDLL->getText("TXT_KEY_GLOBELAYER_REGIONS_ALL");
+			break;
+		case SHOW_NEW_WORLD:
+			strName = gDLL->getText("TXT_KEY_GLOBELAYER_REGIONS_NEW_WORLD");
+			break;
+		case SHOW_OVERSEAS:
+			strName = gDLL->getText("TXT_KEY_GLOBELAYER_REGIONS_OVERSEAS");
+			break;
+		case SHOW_DISTANT:
+			strName = gDLL->getText("TXT_KEY_GLOBELAYER_REGIONS_DISTANT");
+			break;
+		}
 		break;
 	}
 }

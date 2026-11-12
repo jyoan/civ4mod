@@ -9804,6 +9804,21 @@ CvPlot* CvPlayer::getStartingPlot() const
 }
 
 
+// The plot whose region is the home of the player (added by this mod): the capital, or the starting plot before the first
+// city. Moving the capital moves the home
+CvPlot* CvPlayer::getHomePlot() const
+{
+	CvCity* pCapitalCity = getCapitalCity();
+
+	if (pCapitalCity != NULL)
+	{
+		return pCapitalCity->plot();
+	}
+
+	return getStartingPlot();
+}
+
+
 void CvPlayer::setStartingPlot(CvPlot* pNewValue, bool bUpdateStartDist)
 {
 	CvPlot* pOldStartingPlot;
@@ -23519,6 +23534,9 @@ void CvPlayer::getGlobeLayerColors(GlobeLayerTypes eGlobeLayerType, int iOption,
 	case GLOBE_LAYER_CULTURE:
 		getCultureLayerColors(aColors, aIndicators);
 		break;
+	case GLOBE_LAYER_REGION:	// added by this mod
+		getRegionLayerColors((GlobeLayerRegionOptionTypes) iOption, aColors, aIndicators);
+		break;
 	default:
 		FAssertMsg(false, "Unknown globe layer type");
 		break;
@@ -23864,6 +23882,85 @@ void CvPlayer::getReligionLayerColors(ReligionTypes eSelectedReligion, std::vect
 					}
 				}
 			}
+		}
+	}
+}
+
+// A color for each region (added by this mod): the hue goes round by the golden ratio, so close numbers get far hues
+static NiColorA getRegionLayerColor(int iRegion)
+{
+	float fHue = iRegion * 0.618034f;
+	fHue = (fHue - (int)fHue) * 6.0f;
+	int iSector = (int)fHue;
+	float fPart = fHue - iSector;
+	float fValue = 0.95f;
+	float fSaturation = 0.75f;
+	float fLow = fValue * (1.0f - fSaturation);
+	float fDown = fValue * (1.0f - fSaturation * fPart);
+	float fUp = fValue * (1.0f - fSaturation * (1.0f - fPart));
+
+	switch (iSector)
+	{
+	case 0: return NiColorA(fValue, fUp, fLow, 0.8f);
+	case 1: return NiColorA(fDown, fValue, fLow, 0.8f);
+	case 2: return NiColorA(fLow, fValue, fUp, 0.8f);
+	case 3: return NiColorA(fLow, fDown, fValue, 0.8f);
+	case 4: return NiColorA(fUp, fLow, fValue, 0.8f);
+	default: return NiColorA(fValue, fLow, fDown, 0.8f);
+	}
+}
+
+// The globe layer of the regions (added by this mod). Only the plots the player has seen, so it does not show the shape
+// of unexplored lands. Display only: no game state and no game random numbers
+void CvPlayer::getRegionLayerColors(GlobeLayerRegionOptionTypes eOption, std::vector<NiColorA>& aColors, std::vector<CvPlotIndicatorData>& aIndicators) const
+{
+	CvPlot* pLoopPlot;
+	CvPlot* pHomePlot = getHomePlot();
+	int iHomeRegion = ((pHomePlot != NULL) ? pHomePlot->getRegion() : -1);
+	int iRegion;
+	int iI;
+
+	aColors.resize(GC.getMapINLINE().numPlotsINLINE(), NiColorA(0, 0, 0, 0));
+	aIndicators.clear();
+
+	for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
+	{
+		pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
+		if (!pLoopPlot->isRevealed(getTeam(), true))
+		{
+			continue;
+		}
+
+		iRegion = pLoopPlot->getRegion();
+
+		switch (eOption)
+		{
+		case SHOW_REGIONS:
+			if (iRegion != -1)
+			{
+				aColors[iI] = getRegionLayerColor(iRegion);
+			}
+			break;
+		case SHOW_NEW_WORLD:
+			if (iRegion != -1)
+			{
+				aColors[iI] = (GC.getMapINLINE().isRegionNewWorld(iRegion) ? NiColorA(0.2f, 0.85f, 0.3f, 0.8f) : NiColorA(0.85f, 0.6f, 0.25f, 0.8f));
+			}
+			break;
+		case SHOW_OVERSEAS:
+			if (iRegion != -1 && iHomeRegion != -1)
+			{
+				aColors[iI] = ((iRegion == iHomeRegion) ? NiColorA(0.25f, 0.45f, 1.0f, 0.8f) : NiColorA(1.0f, 0.3f, 0.25f, 0.8f));
+			}
+			break;
+		case SHOW_DISTANT:
+			if (pLoopPlot->isDistant(getID()))
+			{
+				aColors[iI] = NiColorA(1.0f, 0.85f, 0.1f, 0.8f);
+			}
+			break;
+		default:
+			break;
 		}
 	}
 }

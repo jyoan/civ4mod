@@ -131,6 +131,7 @@
 | ファイル | タグ | 内容 |
 |---|---|---|
 | （タグなし） | AI 観戦 | ゲーム中に Ctrl+Shift+O で確認のポップアップを出し、「はい」で始める（シングルプレイのみ。元に戻せない）。操作中の文明は都市とユニットをすべて失い、戦争・従属・取引もなくなるが、**生きたまま**残る（`CvPlayer::isObserver`。BtS の AI 自動プレイのように滅ぼすと、exe が地図のクリックやホイールを受け付けなくなる）。手番はユニットがないので Enter（ふつうのターン終了）を待って止まる。Space で連続再生と停止を切り替える（`CvEventManager.py`。連続再生は `CvGame::update` が手番を自動で終える）。観戦者は外交・宣戦の対象にならず（`canContact`・`canDeclareWar`）、イベントと志向の Python フック、定期的な文明のランキング（`CvTopCivs`）も動かない。滅びない（`verifyAlive`）。地図はデバッグモードで全表示する（`updateDebugModeCache` が観戦中はチートなしでも通す。保存されないので `CvGame::update` で戻す）。案内は `CvMainInterface.py` の `EndTurnText`（`TXT_KEY_OBSERVE_*`）。勝者が決まると連続再生が止まり、ふつうのゲームと同じ終了画面になる。セーブに入る（`CvGame` の `uiFlag` 2） |
+| （タグなし） | 地域区分 | 陸地と、外洋でない水タイル（沿岸・湖）を 8 方向につないだまとまり（`CvMap::calculateRegions`）。境界は外洋（`DEEP_WATER_TERRAIN`）と通れない水タイル（極地の氷）。初期の船（ガレー船など）は外洋に入れないので、別の地域は外洋船がないと渡れない場所になる。浅い海でつながった島々は 1 つの地域。BtS の `CvArea`（陸塊。島ごとに別）とは別物で、`CvArea` を使う既存の効果（ノートルダムなど）は変えていない。陸地が `REGION_MIN_LAND_PLOTS` 未満の地域は、いちばん近い（歩数が最小の）大きな地域にまとめる（同点なら陸地の多い方）。大きな地域が 1 つもなければまとめない。ゲーム開始時（`CvGame::setInitialItems` の開始地点の調整の後）に 1 回計算してセーブする（`CvMap` の `uiFlag=1`）ので、後で地形が変わっても地域は動かない。地域の機能より前のセーブは、最初に使うときに計算する。判定: `CvPlot::isNewWorld`（開始時にどのプレイヤー（蛮族以外）の開始地点もない地域）、`isOverseas(ePlayer)`（そのプレイヤーの本国と別の地域。本国は首都の地域で、首都がなければ開始地点の地域。遷都すると本国も移る。`CvPlayer::getHomePlot`）、`isDistant(ePlayer)`（首都（なければ開始地点）からの距離が、マップの最大距離（`maxPlotDistance`）の `REGION_DISTANT_PERCENT`% 以上。地域は使わず、外洋も含む）。外洋と通れない水タイルはどの地域にも属さず（`getRegion` が -1）、新世界・海外にもならない。Python: `CyPlot.getRegion` / `isNewWorld` / `isOverseas` / `isDistant`、`CyMap.getNumRegions` / `isRegionNewWorld`。表示は「画面の表示の追加」の地球儀ビューのレイヤー。**今は判定だけで、使う効果のタグはまだない** |
 
 ## 志向の付け外し（仕組み）
 
@@ -139,6 +140,8 @@
 ## ゲームルール（`GlobalDefinesAlt.xml`）
 
 - `RIVER_CROSSING_MOVE_COST`: 陸上ユニットが川を渡るときの追加の移動コスト（移動力。0 で BtS と同じ）。`CvPlot::movementCost` で地形のコストに足し、ユニットの移動力が上限（大きな値にすると渡河で移動が終わる。移動力 1 のユニットはもともと 1 タイルで止まるので変わらない）。経路探索も同じ関数なので、AI も避ける。払わないのは、川の戦闘ペナルティを無視するユニット（`isRiver`。水陸両用）、地形のコストを無視するユニット（`ignoreTerrainCost`）、橋梁建設を持ち道路でつながっている移動（道路のコストが優先）
+- `REGION_MIN_LAND_PLOTS`（10）: 地域区分で、陸地がこの数未満の地域を近くの大きな地域にまとめる（`CvMap::calculateRegions`）。ゲーム開始時の計算に使うので、途中で変えても既存のゲームの地域は変わらない
+- `REGION_DISTANT_PERCENT`（30）: 首都からの距離が、マップの最大距離のこの % 以上のタイルを「首都から遠い」とする（`CvPlot::isDistant`）
 
 ## BtS 本体の修正
 
@@ -151,6 +154,7 @@
 ## 画面の表示の追加
 
 - 都市画面の産出の内訳: 生産力の説明（`setProductionHelp`）・商業の内訳の説明（`setCommerceHelp`）・人口のバーの説明（食料。`CvDLLWidgetData::parsePopulationHelp`）で、「基本○○」の下に出元の小計を出す（`CvGameTextMgr::setBaseYieldBreakdownHelp`。`setYieldHelp` から呼ぶ）: タイル（働いているタイル。都市の中心を含む）、専門家（専門家・無償の専門家の産出と、社会制度・志向による追加分）、建造物（建物の産出とイベントによる増減、世界遺産の数に比例する分）、交易路、企業。0 の小計は出さない（タイルは常に出す）。これらは `CvCity` が基本値に足すものすべてなので合計は基本値と一致し、合わない分（Python で直接変えた場合など）があるときだけ「その他」を出す。食料はさらに、補正があれば補正後の食料、人口による消費（人口 × 2）、不衛生による消費、余剰（`CvCity::foodDifference`。暴動中は 0、食料を生産に回している間は 0 以下）を出す（`CvGameTextMgr::setFoodHelp`）。表示だけでゲーム状態は変えない
+- 地球儀ビューの「地域」レイヤー（`GLOBE_LAYER_REGION`。一覧は `CvGame::getGlobeLayers`、色は `CvPlayer::getRegionLayerColors`）: 地球儀ビューのボタンの列の 6 つ目。ボタンの見た目は、BtS が使っていない戦略レイヤーのもの（`Button_HUDGlobeStrategy_Style`）。ボタンの列は `CvMainInterface.py` がレイヤーの一覧から作るので、Python は変えていない。切り替え（`GlobeLayerRegionOptionTypes`）: 地域ごとの色分け（色相を黄金比ずつ回す）、新世界（緑）と旧世界（橙）、本国（青）と海外（赤）、首都から遠い場所（黄）。プレイヤーが見たことのあるタイルだけを塗る（未探索の大陸の形を見せない）。表示だけでゲーム状態にも乱数にも触れない。タイルの説明（`setPlotHelp`）にも「新世界」「海外」「首都から遠い」を出す（ゲーム開始後のみ。デバッグモードでは地域の番号も）
 
 ## この Mod で追加した志向
 

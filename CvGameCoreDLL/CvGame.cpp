@@ -275,6 +275,8 @@ void CvGame::setInitialItems()
 	initFreeState();
 	assignStartingPlots();
 	normalizeStartingPlots();
+	// Regions (added by this mod): after the starting plots and the lakes and hills the normalization may add
+	GC.getMapINLINE().calculateRegions();
 	initFreeUnits();
 
 	// PyOnGameStart of the traits (added by this mod): after the starting gold and units. ConditionalFreeTraits first.

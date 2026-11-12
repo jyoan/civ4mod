@@ -21,4 +21,16 @@
 		<DefineName>RIVER_CROSSING_MOVE_COST</DefineName>
 		<iDefineIntVal>0</iDefineIntVal>
 	</Define>
+	<!-- Added by this mod: regions (land joined by shallow water, bounded by deep water). A region with fewer land plots than
+		this joins the nearest large region. -->
+	<Define>
+		<DefineName>REGION_MIN_LAND_PLOTS</DefineName>
+		<iDefineIntVal>10</iDefineIntVal>
+	</Define>
+	<!-- Added by this mod: a plot is distant from the capital when its distance is at least this percent of the largest
+		distance of the map. -->
+	<Define>
+		<DefineName>REGION_DISTANT_PERCENT</DefineName>
+		<iDefineIntVal>30</iDefineIntVal>
+	</Define>
 </Civ4Defines>

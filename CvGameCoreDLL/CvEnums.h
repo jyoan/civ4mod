@@ -2715,6 +2715,7 @@ enum GlobeLayerTypes
 	GLOBE_LAYER_RESOURCE,
 	GLOBE_LAYER_RELIGION,
 	GLOBE_LAYER_CULTURE,
+	GLOBE_LAYER_REGION,		// added by this mod
 
 #ifdef _USRDLL
 	NUM_GLOBE_LAYER_TYPES
@@ -2743,6 +2744,19 @@ enum GlobeLayerResourceOptionTypes
 
 #ifdef _USRDLL
 	NUM_RESOURCE_OPTION_TYPES
+#endif
+};
+
+// Options of the globe layer of the regions (added by this mod)
+enum GlobeLayerRegionOptionTypes
+{
+	SHOW_REGIONS,
+	SHOW_NEW_WORLD,
+	SHOW_OVERSEAS,
+	SHOW_DISTANT,
+
+#ifdef _USRDLL
+	NUM_REGION_OPTION_TYPES
 #endif
 };
 

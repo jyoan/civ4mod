@@ -1299,6 +1299,62 @@ bool CvPlot::isLake() const
 
 // XXX if this changes need to call updateIrrigated() and pCity->updateFreshWaterHealth()
 // XXX precalculate this???
+// Regions (added by this mod): see CvMap::calculateRegions. Deep water and impassable water are in no region (-1)
+int CvPlot::getRegion() const
+{
+	return GC.getMapINLINE().getPlotRegion(GC.getMapINLINE().plotNumINLINE(getX_INLINE(), getY_INLINE()));
+}
+
+// In a region where no player started
+bool CvPlot::isNewWorld() const
+{
+	int iRegion = getRegion();
+
+	return (iRegion != -1 && GC.getMapINLINE().isRegionNewWorld(iRegion));
+}
+
+// In another region than the home of the player (the region of the capital, or of the starting plot before the first city)
+bool CvPlot::isOverseas(PlayerTypes ePlayer) const
+{
+	CvPlot* pHomePlot;
+	int iRegion;
+
+	if (ePlayer == NO_PLAYER)
+	{
+		return false;
+	}
+
+	pHomePlot = GET_PLAYER(ePlayer).getHomePlot();
+	if (pHomePlot == NULL)
+	{
+		return false;
+	}
+
+	iRegion = getRegion();
+
+	return (iRegion != -1 && pHomePlot->getRegion() != -1 && iRegion != pHomePlot->getRegion());
+}
+
+// At least REGION_DISTANT_PERCENT of the largest distance of the map from the capital (or the starting plot before the
+// first city). Any plot, also deep water; it does not use the regions
+bool CvPlot::isDistant(PlayerTypes ePlayer) const
+{
+	CvPlot* pHomePlot;
+
+	if (ePlayer == NO_PLAYER)
+	{
+		return false;
+	}
+
+	pHomePlot = GET_PLAYER(ePlayer).getHomePlot();
+	if (pHomePlot == NULL)
+	{
+		return false;
+	}
+
+	return (plotDistance(pHomePlot->getX_INLINE(), pHomePlot->getY_INLINE(), getX_INLINE(), getY_INLINE()) * 100 >= GC.getMapINLINE().maxPlotDistance() * GC.getDefineINT("REGION_DISTANT_PERCENT"));
+}
+
 bool CvPlot::isFreshWater() const
 {
 	CvPlot* pLoopPlot;

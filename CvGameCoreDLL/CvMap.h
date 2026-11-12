@@ -258,6 +258,12 @@ public:
 
 	void recalculateAreas();																		// Exposed to Python
 
+	// Regions (added by this mod): land joined by shallow water, bounded by deep water. See calculateRegions
+	void calculateRegions();
+	int getNumRegions() const;																		// Exposed to Python
+	int getPlotRegion(int iPlotIndex) const;
+	bool isRegionNewWorld(int iRegion) const;														// Exposed to Python
+
 	void resetPathDistance();																		// Exposed to Python
 	int calculatePathDistance(CvPlot *pSource, CvPlot *pDest);	// Exposed to Python
 
@@ -287,7 +293,13 @@ protected:
 
 	FFreeListTrashArray<CvArea> m_areas;
 
+	// Regions (added by this mod). At the end of the class, so the members the exe may read keep their offsets
+	bool m_bRegionsCalculated;
+	std::vector<int> m_aiPlotRegion;	// region of each plot, -1 for deep water and impassable water
+	std::vector<bool> m_abRegionNewWorld;	// one entry per region
+
 	void calculateAreas();
+	void ensureRegions() const;
 
 };
 
