@@ -4544,6 +4544,8 @@
 			<iCombatCapturePercent>50</iCombatCapturePercent>
 			<iCombatPercentInBorders>15</iCombatPercentInBorders>
 			<iCombatPercentOverseas>25</iCombatPercentOverseas>
+			<iOtherReligionCombatPercent>20</iOtherReligionCombatPercent>
+			<iStateReligionCityAttack>30</iStateReligionCityAttack>
 			<BonusAffinities>
 				<BonusAffinity>
 					<BonusType>BONUS_TEST</BonusType>

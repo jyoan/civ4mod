@@ -335,4 +335,22 @@
 		<Spanish>[ICON_BULLET]%D1_Bonus%% Strength overseas</Spanish>
 		<Japanese>[ICON_BULLET]&#28023;&#22806;&#12391;&#25126;&#38360;&#21147;%D1_Bonus%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_OTHER_RELIGION_COMBAT</Tag>
+		<English>[ICON_BULLET]%D1_Bonus%% Strength against civilizations without your state religion</English>
+		<French>[ICON_BULLET]%D1_Bonus%% Strength against civilizations without your state religion</French>
+		<German>[ICON_BULLET]%D1_Bonus%% Strength against civilizations without your state religion</German>
+		<Italian>[ICON_BULLET]%D1_Bonus%% Strength against civilizations without your state religion</Italian>
+		<Spanish>[ICON_BULLET]%D1_Bonus%% Strength against civilizations without your state religion</Spanish>
+		<Japanese>[ICON_BULLET]&#22269;&#25945;&#12364;&#36949;&#12358;&#25991;&#26126;&#12392;&#12398;&#25126;&#38360;&#12391;&#25126;&#38360;&#21147;%D1_Bonus%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_STATE_RELIGION_CITY_ATTACK</Tag>
+		<English>[ICON_BULLET]%D1_Bonus%% City Attack against cities with your state religion</English>
+		<French>[ICON_BULLET]%D1_Bonus%% City Attack against cities with your state religion</French>
+		<German>[ICON_BULLET]%D1_Bonus%% City Attack against cities with your state religion</German>
+		<Italian>[ICON_BULLET]%D1_Bonus%% City Attack against cities with your state religion</Italian>
+		<Spanish>[ICON_BULLET]%D1_Bonus%% City Attack against cities with your state religion</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#22269;&#25945;&#12364;&#24195;&#12414;&#12387;&#12383;&#37117;&#24066;&#12408;&#12398;&#25915;&#25731;%D1_Bonus%%</Japanese>
+	</TEXT>
 </Civ4GameText>

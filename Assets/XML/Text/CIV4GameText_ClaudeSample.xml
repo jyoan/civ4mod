@@ -1222,6 +1222,24 @@
 		<Spanish>[ICON_BULLET]+%d1[ICON_UNHEALTHY] in the city</Spanish>
 		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12395;[ICON_UNHEALTHY]+%d1</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_COMBAT_PLOT_OTHER_RELIGION_MOD</Tag>
+		<English>[ICON_BULLET]%D1%% vs. Another State Religion</English>
+		<French>[ICON_BULLET]%D1%% vs. Another State Religion</French>
+		<German>[ICON_BULLET]%D1%% vs. Another State Religion</German>
+		<Italian>[ICON_BULLET]%D1%% vs. Another State Religion</Italian>
+		<Spanish>[ICON_BULLET]%D1%% vs. Another State Religion</Spanish>
+		<Japanese>[ICON_BULLET]&#22269;&#25945;&#12364;&#36949;&#12358;&#30456;&#25163;: %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_COMBAT_PLOT_STATE_RELIGION_CITY_MOD</Tag>
+		<English>[ICON_BULLET]%D1%% City Attack (your state religion there)</English>
+		<French>[ICON_BULLET]%D1%% City Attack (your state religion there)</French>
+		<German>[ICON_BULLET]%D1%% City Attack (your state religion there)</German>
+		<Italian>[ICON_BULLET]%D1%% City Attack (your state religion there)</Italian>
+		<Spanish>[ICON_BULLET]%D1%% City Attack (your state religion there)</Spanish>
+		<Japanese>[ICON_BULLET]&#22269;&#25945;&#12364;&#24195;&#12414;&#12387;&#12383;&#37117;&#24066;&#12408;&#12398;&#25915;&#25731;: %D1%%</Japanese>
+	</TEXT>
 	<!-- Unofficial 3.19 Patch (jdog5000): the keys of CIV4GameText_UnofficialPatch.xml and the key it uses without text -->
 	<TEXT>
 		<Tag>TXT_KEY_TERRAIN_TURN_DAMAGE</Tag>

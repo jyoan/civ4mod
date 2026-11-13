@@ -1725,6 +1725,8 @@ m_iCombatGoldStealMax(0),
 m_iCombatPromotionStealChance(0),
 m_iCombatPercentInBorders(0),
 m_iCombatPercentOverseas(0),
+m_iOtherReligionCombatPercent(0),
+m_iStateReligionCityAttack(0),
 m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
@@ -2277,6 +2279,20 @@ int CvPromotionInfo::getCombatPercentOverseas() const
 	return m_iCombatPercentOverseas;
 }
 
+// iOtherReligionCombatPercent (added by this mod): combat % against the units of players without the state religion of the
+// owner (CvUnit::getOtherReligionCombatModifier)
+int CvPromotionInfo::getOtherReligionCombatPercent() const
+{
+	return m_iOtherReligionCombatPercent;
+}
+
+// iStateReligionCityAttack (added by this mod): city attack % against cities with the state religion of the owner
+// (CvUnit::getStateReligionCityAttackModifier)
+int CvPromotionInfo::getStateReligionCityAttack() const
+{
+	return m_iStateReligionCityAttack;
+}
+
 const TCHAR* CvPromotionInfo::getSound() const										
 {
 	return m_szSound;
@@ -2639,13 +2655,22 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iCombatPercentOverseas);
 	}
+
+	// uiFlag < 14: cache written before iOtherReligionCombatPercent and iStateReligionCityAttack existed
+	m_iOtherReligionCombatPercent = 0;
+	m_iStateReligionCityAttack = 0;
+	if (uiFlag > 13)
+	{
+		stream->Read(&m_iOtherReligionCombatPercent);
+		stream->Read(&m_iStateReligionCityAttack);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 13;	// 12: BonusAffinities, 13: iCombatPercentOverseas (added by this mod)
+	uint uiFlag = 14;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2765,6 +2790,8 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_bHiddenNationality);
 	writePrereqOrTraits(stream, m_aiBonusAffinity);
 	stream->Write(m_iCombatPercentOverseas);
+	stream->Write(m_iOtherReligionCombatPercent);
+	stream->Write(m_iStateReligionCityAttack);
 }
 
 // Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
@@ -2909,6 +2936,8 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCombatPromotionStealChance, "iCombatPromotionStealChance");
 	pXML->GetChildXmlValByName(&m_iCombatPercentInBorders, "iCombatPercentInBorders");
 	pXML->GetChildXmlValByName(&m_iCombatPercentOverseas, "iCombatPercentOverseas");
+	pXML->GetChildXmlValByName(&m_iOtherReligionCombatPercent, "iOtherReligionCombatPercent");
+	pXML->GetChildXmlValByName(&m_iStateReligionCityAttack, "iStateReligionCityAttack");
 
 	pXML->GetChildXmlValByName(&m_iRiverCrossingDamagePercent, "iRiverCrossingDamagePercent");
 	pXML->GetChildXmlValByName(&m_bNoDamagePenalty, "bNoDamagePenalty");

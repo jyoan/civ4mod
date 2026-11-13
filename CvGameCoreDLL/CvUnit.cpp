@@ -327,6 +327,8 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iExtraCombatPercent = 0;
 	m_iCombatPercentInBorders = 0;
 	m_iCombatPercentOverseas = 0;
+	m_iOtherReligionCombatPercent = 0;
+	m_iStateReligionCityAttack = 0;
 	m_iNoDamagePenaltyCount = 0;
 	m_iHiddenNationalityCount = 0;
 	m_iExtraCityAttackPercent = 0;
@@ -9758,6 +9760,9 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 				pCombatDetails->iCityAttackModifier = iExtraModifier;
 			}
 
+			// iStateReligionCityAttack of the promotions of the attacker (added by this mod)
+			iTempModifier -= pAttacker->getStateReligionCityAttackModifier(pAttackedPlot->getPlotCity());
+
 			if (pAttacker->isBarbarian())
 			{
 				iExtraModifier = GC.getDefineINT("CITY_BARBARIAN_DEFENSE_MODIFIER");
@@ -9849,6 +9854,10 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 			{
 				pCombatDetails->iDomainModifierT = iExtraModifier;
 			}
+
+			// iOtherReligionCombatPercent of the promotions of both units (added by this mod)
+			iTempModifier += getOtherReligionCombatModifier(pAttacker->getOwnerINLINE());
+			iTempModifier -= pAttacker->getOtherReligionCombatModifier(getOwnerINLINE());
 
 			if (pAttacker->isAnimal())
 			{
@@ -10796,6 +10805,8 @@ void CvUnit::updatePromotionCounts()
 {
 	m_iCombatPercentInBorders = sumPromotionValues(&CvPromotionInfo::getCombatPercentInBorders);
 	m_iCombatPercentOverseas = sumPromotionValues(&CvPromotionInfo::getCombatPercentOverseas);
+	m_iOtherReligionCombatPercent = sumPromotionValues(&CvPromotionInfo::getOtherReligionCombatPercent);
+	m_iStateReligionCityAttack = sumPromotionValues(&CvPromotionInfo::getStateReligionCityAttack);
 	m_iNoDamagePenaltyCount = countPromotions(&CvPromotionInfo::isNoDamagePenalty);
 	m_iHiddenNationalityCount = countPromotions(&CvPromotionInfo::isHiddenNationality);
 
@@ -12637,6 +12648,45 @@ void CvUnit::changeAdjacentTileHeal(int iChange)
 	FAssert(getAdjacentTileHeal() >= 0);
 }
 
+// iOtherReligionCombatPercent of the promotions (added by this mod): against the units of ePlayer, when the owner of this
+// unit has a state religion and ePlayer does not have the same one (no state religion is another one: barbarians too)
+int CvUnit::getOtherReligionCombatModifier(PlayerTypes ePlayer) const
+{
+	ReligionTypes eReligion;
+
+	if (m_iOtherReligionCombatPercent == 0 || ePlayer == NO_PLAYER)
+	{
+		return 0;
+	}
+
+	eReligion = GET_PLAYER(getOwnerINLINE()).getStateReligion();
+	if (eReligion == NO_RELIGION || GET_PLAYER(ePlayer).getStateReligion() == eReligion)
+	{
+		return 0;
+	}
+
+	return m_iOtherReligionCombatPercent;
+}
+
+// iStateReligionCityAttack of the promotions (added by this mod): attacking a city that has the state religion of the owner
+int CvUnit::getStateReligionCityAttackModifier(const CvCity* pCity) const
+{
+	ReligionTypes eReligion;
+
+	if (m_iStateReligionCityAttack == 0 || pCity == NULL)
+	{
+		return 0;
+	}
+
+	eReligion = GET_PLAYER(getOwnerINLINE()).getStateReligion();
+	if (eReligion == NO_RELIGION || !pCity->isHasReligion(eReligion))
+	{
+		return 0;
+	}
+
+	return m_iStateReligionCityAttack;
+}
+
 // With iCombatPercentInBorders of the promotions on the plots of the owner (added by this mod, as FFH2), and
 // iCombatPercentOverseas in another region than the capital of the owner (added by this mod). The plot of the unit, as an
 // attacker too
@@ -13668,6 +13718,8 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		changeExtraCombatPercent(GC.getPromotionInfo(eIndex).getCombatPercent() * iChange);
 		m_iCombatPercentInBorders += GC.getPromotionInfo(eIndex).getCombatPercentInBorders() * iChange;
 		m_iCombatPercentOverseas += GC.getPromotionInfo(eIndex).getCombatPercentOverseas() * iChange;
+		m_iOtherReligionCombatPercent += GC.getPromotionInfo(eIndex).getOtherReligionCombatPercent() * iChange;
+		m_iStateReligionCityAttack += GC.getPromotionInfo(eIndex).getStateReligionCityAttack() * iChange;
 		m_iNoDamagePenaltyCount += (GC.getPromotionInfo(eIndex).isNoDamagePenalty() ? iChange : 0);
 
 		// BonusAffinities (added by this mod)
