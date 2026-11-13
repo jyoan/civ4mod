@@ -528,6 +528,8 @@ public:
 	int getCombatPromotionStealChance() const;		// Exposed to Python
 	int getCombatPercentInBorders() const;			// Exposed to Python
 	int getCombatPercentOverseas() const;			// Exposed to Python (added by this mod)
+	int getOtherReligionCombatPercent() const;			// Exposed to Python (added by this mod)
+	int getStateReligionCityAttack() const;			// Exposed to Python (added by this mod)
 	// ImpassablePlotPassages (added by this mod): the impassable terrain or feature the unit can enter (the other is -1) and
 	// the damage percent at the start of its turn there
 	int getNumImpassablePlotPassages() const;		// Exposed to Python
@@ -631,6 +633,8 @@ protected:
 	int m_iCombatPromotionStealChance;
 	int m_iCombatPercentInBorders;
 	int m_iCombatPercentOverseas;	// added by this mod
+	int m_iOtherReligionCombatPercent;	// added by this mod
+	int m_iStateReligionCityAttack;	// added by this mod
 	std::vector<int> m_aiImpassablePlotPassageTerrain;
 	std::vector<int> m_aiImpassablePlotPassageFeature;
 	std::vector<int> m_aiImpassablePlotPassageDamage;

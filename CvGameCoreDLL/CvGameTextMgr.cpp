@@ -1869,6 +1869,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_MOD_VS_TYPE", iModifier, GC.getDomainInfo(pDefender->getDomainType()).getTextKeyWide()));
 			}
 
+			// iOtherReligionCombatPercent (added by this mod)
+			iModifier = pAttacker->getOtherReligionCombatModifier(pDefender->getOwnerINLINE());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_OTHER_RELIGION_MOD", iModifier));
+			}
+
 			if (pPlot->isCity(true, pDefender->getTeam()))
 			{
 				iModifier = pAttacker->cityAttackModifier();
@@ -1877,6 +1886,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 				{
 					szString.append(NEWLINE);
 					szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_CITY_MOD", iModifier));
+				}
+
+				// iStateReligionCityAttack (added by this mod)
+				iModifier = pAttacker->getStateReligionCityAttackModifier(pPlot->getPlotCity());
+
+				if (iModifier != 0)
+				{
+					szString.append(NEWLINE);
+					szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_STATE_RELIGION_CITY_MOD", iModifier));
 				}
 			}
 
@@ -2035,6 +2053,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 					szString.append(NEWLINE);
 					szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_MOD_VS_TYPE", iModifier, GC.getUnitCombatInfo(pAttacker->getUnitCombatType()).getTextKeyWide()));
 				}
+			}
+
+			// iOtherReligionCombatPercent (added by this mod)
+			iModifier = pDefender->getOtherReligionCombatModifier(pAttacker->getOwnerINLINE());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_OTHER_RELIGION_MOD", iModifier));
 			}
 
 			iModifier = pDefender->domainModifier(pAttacker->getDomainType());
@@ -5435,6 +5462,19 @@ void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, Prom
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_PERCENT_OVERSEAS", GC.getPromotionInfo(ePromotion).getCombatPercentOverseas()));
+	}
+
+	// iOtherReligionCombatPercent, iStateReligionCityAttack (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getOtherReligionCombatPercent() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_OTHER_RELIGION_COMBAT", GC.getPromotionInfo(ePromotion).getOtherReligionCombatPercent()));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getStateReligionCityAttack() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_STATE_RELIGION_CITY_ATTACK", GC.getPromotionInfo(ePromotion).getStateReligionCityAttack()));
 	}
 
 	if (GC.getPromotionInfo(ePromotion).getPromotionVictory() != NO_PROMOTION)
