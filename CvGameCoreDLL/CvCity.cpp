@@ -4649,6 +4649,49 @@ int CvCity::getVassalUnhappiness() const
 }
 
 
+// iHappiness and iHealth of the specialists (added by this mod): for each specialist, assigned or free (settled great
+// people and the free specialists of buildings). The good ones are positive, the bad ones negative, as the bonuses.
+// Computed when asked, so nothing is saved
+static int getSpecialistTotal(const CvCity* pCity, int (CvSpecialistInfo::*pfValue)() const, bool bGood)
+{
+	int iTotal = 0;
+	int iValue;
+	int iCount;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
+	{
+		iValue = (GC.getSpecialistInfo((SpecialistTypes)iI).*pfValue)();
+		if ((bGood && iValue > 0) || (!bGood && iValue < 0))
+		{
+			iCount = pCity->getSpecialistCount((SpecialistTypes)iI) + pCity->getFreeSpecialistCount((SpecialistTypes)iI);
+			iTotal += iValue * iCount;
+		}
+	}
+
+	return iTotal;
+}
+
+int CvCity::getSpecialistGoodHappiness() const
+{
+	return getSpecialistTotal(this, &CvSpecialistInfo::getHappiness, true);
+}
+
+int CvCity::getSpecialistBadHappiness() const
+{
+	return getSpecialistTotal(this, &CvSpecialistInfo::getHappiness, false);
+}
+
+int CvCity::getSpecialistGoodHealth() const
+{
+	return getSpecialistTotal(this, &CvSpecialistInfo::getHealth, true);
+}
+
+int CvCity::getSpecialistBadHealth() const
+{
+	return getSpecialistTotal(this, &CvSpecialistInfo::getHealth, false);
+}
+
 int CvCity::unhappyLevel(int iExtra) const
 {
 	int iAngerPercent;
@@ -4685,6 +4728,7 @@ int CvCity::unhappyLevel(int iExtra) const
 		iUnhappiness -= std::min(0, getExtraBuildingBadHappiness());
 		iUnhappiness -= std::min(0, getFeatureBadHappiness());
 		iUnhappiness -= std::min(0, getBonusBadHappiness());
+		iUnhappiness -= std::min(0, getSpecialistBadHappiness());	// added by this mod
 		iUnhappiness -= std::min(0, getReligionBadHappiness());
 		iUnhappiness -= std::min(0, getCommerceHappiness());
 		iUnhappiness -= std::min(0, area()->getBuildingHappiness(getOwnerINLINE()));
@@ -4712,6 +4756,7 @@ int CvCity::happyLevel() const
 	iHappiness += std::max(0, getExtraBuildingGoodHappiness());
 	iHappiness += std::max(0, getFeatureGoodHappiness());
 	iHappiness += std::max(0, getBonusGoodHappiness());
+	iHappiness += std::max(0, getSpecialistGoodHappiness());	// added by this mod
 	iHappiness += std::max(0, getReligionGoodHappiness());
 	iHappiness += std::max(0, getCommerceHappiness());
 	iHappiness += std::max(0, area()->getBuildingHappiness(getOwnerINLINE()));
@@ -4844,6 +4889,13 @@ int CvCity::goodHealth() const
 		iTotalHealth += iHealth;
 	}
 
+	// iHealth of the specialists (added by this mod)
+	iHealth = getSpecialistGoodHealth();
+	if (iHealth > 0)
+	{
+		iTotalHealth += iHealth;
+	}
+
 	iHealth = totalGoodBuildingHealth();
 	if (iHealth > 0)
 	{
@@ -4898,6 +4950,13 @@ int CvCity::badHealth(bool bNoAngry, int iExtra) const
 	}
 
 	iHealth = getBonusBadHealth();
+	if (iHealth < 0)
+	{
+		iTotalHealth += iHealth;
+	}
+
+	// iHealth of the specialists (added by this mod)
+	iHealth = getSpecialistBadHealth();
 	if (iHealth < 0)
 	{
 		iTotalHealth += iHealth;

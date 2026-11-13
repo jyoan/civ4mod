@@ -824,7 +824,9 @@ m_bVisible(false),
 m_piYieldChange(NULL), 
 m_piCommerceChange(NULL), 
 m_piFlavorValue(NULL),
-m_iExperience(0)
+m_iExperience(0),
+m_iHappiness(0),
+m_iHealth(0)
 {
 }
 
@@ -870,6 +872,19 @@ bool CvSpecialistInfo::isVisible() const
 int CvSpecialistInfo::getExperience() const
 {
 	return m_iExperience;
+}
+
+// iHappiness (added by this mod): happiness (unhappiness when negative) of the city for each specialist of this type,
+// assigned or free (settled great people too). See CvCity::getSpecialistGoodHappiness
+int CvSpecialistInfo::getHappiness() const
+{
+	return m_iHappiness;
+}
+
+// iHealth (added by this mod): health (unhealthiness when negative) of the city for each specialist of this type
+int CvSpecialistInfo::getHealth() const
+{
+	return m_iHealth;
 }
 
 // Arrays
@@ -952,6 +967,8 @@ bool CvSpecialistInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	pXML->GetChildXmlValByName(&m_iExperience, "iExperience");
+	pXML->GetChildXmlValByName(&m_iHappiness, "iHappiness");
+	pXML->GetChildXmlValByName(&m_iHealth, "iHealth");
 
 	pXML->SetVariableListTagPair(&m_piFlavorValue, "Flavors", GC.getFlavorTypes(), GC.getNumFlavorTypes());
 

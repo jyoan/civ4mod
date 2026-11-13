@@ -714,4 +714,13 @@
 		<Spanish>Test unit (city radius prerequisites)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#12518;&#12491;&#12483;&#12488;&#65288;&#37117;&#24066;&#22287;&#12398;&#21069;&#25552;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_TEST</Tag>
+		<English>Test Settled Great Person</English>
+		<French>Test Settled Great Person</French>
+		<German>Test Settled Great Person</German>
+		<Italian>Test Settled Great Person</Italian>
+		<Spanish>Test Settled Great Person</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#23450;&#20303;&#20553;&#20154;</Japanese>
+	</TEXT>
 </Civ4GameText>
