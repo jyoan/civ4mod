@@ -3684,6 +3684,19 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DISTANT_TRADE_ROUTE", kTrait.getDistantTradeRouteModifier()));
 	}
 
+	// iEnemyAttritionInBorders, iEnemyAttritionLimit (added by this mod)
+	if (kTrait.getEnemyAttritionInBorders() > 0)
+	{
+		if (kTrait.getEnemyAttritionLimit() < 100)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ENEMY_ATTRITION_LIMIT", kTrait.getEnemyAttritionInBorders(), std::max(0, 100 - kTrait.getEnemyAttritionLimit())));
+		}
+		else
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ENEMY_ATTRITION", kTrait.getEnemyAttritionInBorders()));
+		}
+	}
+
 	if (kTrait.isNewCityStateReligion())
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_NEW_CITY_STATE_RELIGION"));

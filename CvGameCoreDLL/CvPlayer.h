@@ -251,6 +251,9 @@ public:
 	int getOverseasCityPopulation() const;			// Exposed to Python (added by this mod)
 	int getOverseasMaintenanceModifier() const;			// Exposed to Python (added by this mod)
 	int getDistantTradeRouteModifier() const;			// Exposed to Python (added by this mod)
+	int getEnemyAttritionInBorders() const;			// Exposed to Python (added by this mod)
+	int getEnemyAttritionLimit() const;			// Exposed to Python (added by this mod)
+	void doEnemyAttrition();	// added by this mod
 	int getFeatureProductionChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	int getFeatureGrowthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	int getFeatureHealthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)

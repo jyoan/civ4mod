@@ -3203,6 +3203,7 @@ void CvPlayer::doTurn()
 	CvEventReporter::getInstance().beginPlayerTurn( GC.getGameINLINE().getGameTurn(),  getID());
 	updateConditionalTraits();	// ConditionalFreeTraits, also for changes the other calls miss (added by this mod)
 	doTraitPythonHook(TRAIT_PYHOOK_BEGIN_TURN);	// PyOnBeginTurn (added by this mod)
+	doEnemyAttrition();	// iEnemyAttritionInBorders of the traits (added by this mod)
 
 	doUpdateCacheOnTurn();
 
@@ -7895,6 +7896,90 @@ int CvPlayer::getOverseasMaintenanceModifier() const
 int CvPlayer::getDistantTradeRouteModifier() const
 {
 	return sumTraitValues(&CvTraitInfo::getDistantTradeRouteModifier);
+}
+
+// iEnemyAttritionInBorders of the traits (added by this mod): see doEnemyAttrition
+int CvPlayer::getEnemyAttritionInBorders() const
+{
+	return sumTraitValues(&CvTraitInfo::getEnemyAttritionInBorders);
+}
+
+// iEnemyAttritionLimit of the traits with iEnemyAttritionInBorders (added by this mod): the largest one, 0 to 100
+int CvPlayer::getEnemyAttritionLimit() const
+{
+	int iLimit = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (GC.getTraitInfo((TraitTypes)iI).getEnemyAttritionInBorders() != 0 && hasTrait((TraitTypes)iI))
+		{
+			iLimit = std::max(iLimit, GC.getTraitInfo((TraitTypes)iI).getEnemyAttritionLimit());
+		}
+	}
+
+	return range(iLimit, 0, 100);
+}
+
+// iEnemyAttritionInBorders of the traits (added by this mod, as the Russian power of Rhye's and Fall of Civilization): at the
+// start of the turn of this player, the units of the players at war with it in its territory lose that % of their max HP,
+// down to iEnemyAttritionLimit (a unit that reaches its max HP dies, killed by this player). All domains
+void CvPlayer::doEnemyAttrition()
+{
+	std::vector<IDInfo> aUnits;
+	CLLNode<IDInfo>* pUnitNode;
+	CvUnit* pLoopUnit;
+	CvPlot* pLoopPlot;
+	int iDamage = getEnemyAttritionInBorders();
+	int iLimit;
+	int iMaxDamage;
+	int iNewDamage;
+	int iI;
+
+	if (iDamage <= 0)
+	{
+		return;
+	}
+
+	iLimit = getEnemyAttritionLimit();
+
+	// The units first: a unit that dies can take others (its cargo) with it
+	for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
+	{
+		pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
+		if (pLoopPlot->getOwnerINLINE() != getID())
+		{
+			continue;
+		}
+
+		pUnitNode = pLoopPlot->headUnitNode();
+		while (pUnitNode != NULL)
+		{
+			pLoopUnit = ::getUnit(pUnitNode->m_data);
+			pUnitNode = pLoopPlot->nextUnitNode(pUnitNode);
+
+			if (pLoopUnit != NULL && GET_TEAM(getTeam()).isAtWar(pLoopUnit->getTeam()))
+			{
+				aUnits.push_back(pLoopUnit->getIDInfo());
+			}
+		}
+	}
+
+	for (iI = 0; iI < (int)aUnits.size(); iI++)
+	{
+		pLoopUnit = ::getUnit(aUnits[iI]);
+		if (pLoopUnit == NULL || pLoopUnit->maxHitPoints() <= 0)
+		{
+			continue;
+		}
+
+		iMaxDamage = (pLoopUnit->maxHitPoints() * iLimit) / 100;
+		iNewDamage = std::min(iMaxDamage, pLoopUnit->getDamage() + ((pLoopUnit->maxHitPoints() * iDamage) / 100));
+		if (iNewDamage > pLoopUnit->getDamage())
+		{
+			pLoopUnit->setDamage(iNewDamage, getID());
+		}
+	}
 }
 
 // FeatureProductionChanges of the traits (added by this mod): production added when a worker removes the feature

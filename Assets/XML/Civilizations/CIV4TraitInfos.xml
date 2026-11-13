@@ -380,6 +380,8 @@
 			<iOverseasCityPopulation>1</iOverseasCityPopulation>
 			<iOverseasMaintenanceModifier>-50</iOverseasMaintenanceModifier>
 			<iDistantTradeRouteModifier>100</iDistantTradeRouteModifier>
+			<iEnemyAttritionInBorders>10</iEnemyAttritionInBorders>
+			<iEnemyAttritionLimit>50</iEnemyAttritionLimit>
 			<iGoldenAgeModifier>50</iGoldenAgeModifier>
 			<iGoldenAgeGreatPeopleRateModifier>50</iGoldenAgeGreatPeopleRateModifier>
 			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>

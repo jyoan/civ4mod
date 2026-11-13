@@ -119,5 +119,7 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("getOverseasCityPopulation", &CyPlayer::getOverseasCityPopulation, "int () - population of the cities the player founds overseas (traits, added by this mod)")
 		.def("getOverseasMaintenanceModifier", &CyPlayer::getOverseasMaintenanceModifier, "int () - maintenance % of the overseas cities (traits, added by this mod)")
 		.def("getDistantTradeRouteModifier", &CyPlayer::getDistantTradeRouteModifier, "int () - trade route yield % with cities far from the capital (traits, added by this mod)")
+		.def("getEnemyAttritionInBorders", &CyPlayer::getEnemyAttritionInBorders, "int () - damage % each turn to enemy units in the territory (traits, added by this mod)")
+		.def("getEnemyAttritionLimit", &CyPlayer::getEnemyAttritionLimit, "int () - the attrition does not go beyond this % of the max HP (traits, added by this mod)")
 		;
 }

@@ -399,6 +399,8 @@
 	<ElementType name="iOverseasCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasMaintenanceModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iDistantTradeRouteModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iEnemyAttritionInBorders" content="textOnly" dt:type="int"/>
+	<ElementType name="iEnemyAttritionLimit" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldenAgeModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldenAgeGreatPeopleRateModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iCapitalBuildingProductionModifier" content="textOnly" dt:type="int"/>
@@ -690,6 +692,8 @@
 		<element type="iOverseasCityPopulation" minOccurs="0"/>
 		<element type="iOverseasMaintenanceModifier" minOccurs="0"/>
 		<element type="iDistantTradeRouteModifier" minOccurs="0"/>
+		<element type="iEnemyAttritionInBorders" minOccurs="0"/>
+		<element type="iEnemyAttritionLimit" minOccurs="0"/>
 		<element type="iGoldenAgeModifier" minOccurs="0"/>
 		<element type="iGoldenAgeGreatPeopleRateModifier" minOccurs="0"/>
 		<element type="iCapitalBuildingProductionModifier" minOccurs="0"/>
