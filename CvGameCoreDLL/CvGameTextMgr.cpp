@@ -3684,6 +3684,12 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DISTANT_TRADE_ROUTE", kTrait.getDistantTradeRouteModifier()));
 	}
 
+	// iAnarchyGoldenAgePercent (added by this mod)
+	if (kTrait.getAnarchyGoldenAgePercent() > 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ANARCHY_GOLDEN_AGE", kTrait.getAnarchyGoldenAgePercent()));
+	}
+
 	// iEnemyAttritionInBorders, iEnemyAttritionLimit (added by this mod)
 	if (kTrait.getEnemyAttritionInBorders() > 0)
 	{

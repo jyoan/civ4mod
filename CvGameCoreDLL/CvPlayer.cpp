@@ -424,6 +424,8 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_iLargestCityHappiness = 0;
 	m_iWarWearinessPercentAnger = 0;
 	m_iPeaceAngerTimes100 = 0;
+	m_iRevolutionAnarchyTurns = 0;
+	m_iAnarchyTurnsSpent = 0;
 	m_iNumUnitsKilled = 0;
 	m_iNumCitiesConquered = 0;
 	m_iWarWearinessModifier = 0;
@@ -3250,6 +3252,7 @@ void CvPlayer::doTurn()
 
 	if (getAnarchyTurns() > 0)
 	{
+		m_iAnarchyTurnsSpent++;	// iAnarchyGoldenAgePercent (added by this mod)
 		changeAnarchyTurns(-1);
 	}
 
@@ -7904,6 +7907,12 @@ int CvPlayer::getEnemyAttritionInBorders() const
 	return sumTraitValues(&CvTraitInfo::getEnemyAttritionInBorders);
 }
 
+// iAnarchyGoldenAgePercent of the traits (added by this mod): see changeAnarchyTurns
+int CvPlayer::getAnarchyGoldenAgePercent() const
+{
+	return sumTraitValues(&CvTraitInfo::getAnarchyGoldenAgePercent);
+}
+
 // iEnemyAttritionLimit of the traits with iEnemyAttritionInBorders (added by this mod): the largest one, 0 to 100
 int CvPlayer::getEnemyAttritionLimit() const
 {
@@ -9277,6 +9286,7 @@ void CvPlayer::revolution(CivicTypes* paeNewCivics, bool bForce)
 
 	if (iAnarchyLength > 0)
 	{
+		m_iRevolutionAnarchyTurns += iAnarchyLength;	// iAnarchyGoldenAgePercent (added by this mod)
 		changeAnarchyTurns(iAnarchyLength);
 
 		for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
@@ -9422,6 +9432,7 @@ void CvPlayer::convert(ReligionTypes eReligion)
 
 	iAnarchyLength = getReligionAnarchyLength();
 
+	m_iRevolutionAnarchyTurns += std::max(0, iAnarchyLength);	// iAnarchyGoldenAgePercent (added by this mod)
 	changeAnarchyTurns(iAnarchyLength);
 
 	setLastStateReligion(eReligion);
@@ -10272,6 +10283,23 @@ void CvPlayer::changeAnarchyTurns(int iChange)
 			else
 			{
 				gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(), gDLL->getText("TXT_KEY_MISC_REVOLUTION_OVER").GetCString(), "AS2D_REVOLTEND", MESSAGE_TYPE_MINOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"));
+
+				// iAnarchyGoldenAgePercent of the traits (added by this mod): a golden age after the anarchy of a change of
+				// civics or religion, from the turns spent in it (not more than those changes gave: the anarchy from
+				// espionage does not count). No anarchy, no golden age (Spiritual, Christo Redentor). The game speed scales
+				// golden ages as BtS does: the anarchy turns lose iAnarchyPercent of the speed and get its iGoldenAgePercent
+				// (in hundredths of turns, rounded at the end)
+				int iAnarchyTurns = std::min(m_iRevolutionAnarchyTurns, m_iAnarchyTurnsSpent);
+				m_iRevolutionAnarchyTurns = 0;
+				m_iAnarchyTurnsSpent = 0;
+				if (iAnarchyTurns > 0 && getAnarchyGoldenAgePercent() > 0)
+				{
+					CvGameSpeedInfo& kSpeed = GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType());
+					int iGoldenAgeTimes100 = iAnarchyTurns * getAnarchyGoldenAgePercent();
+					iGoldenAgeTimes100 = (iGoldenAgeTimes100 * kSpeed.getGoldenAgePercent()) / std::max(1, kSpeed.getAnarchyPercent());
+					iGoldenAgeTimes100 = (iGoldenAgeTimes100 * std::max(0, 100 + getGoldenAgeModifier())) / 100;
+					changeGoldenAgeTurns(std::max(1, (iGoldenAgeTimes100 + 50) / 100));
+				}
 			}
 
 			if (getID() == GC.getGameINLINE().getActivePlayer())
@@ -18614,6 +18642,13 @@ void CvPlayer::read(FDataStreamBase* pStream)
 		pStream->Read(&m_iNumUnitsKilled);
 		pStream->Read(&m_iNumCitiesConquered);
 	}
+
+	// iAnarchyGoldenAgePercent of the traits (uiFlag 9)
+	if (uiFlag > 8)
+	{
+		pStream->Read(&m_iRevolutionAnarchyTurns);
+		pStream->Read(&m_iAnarchyTurnsSpent);
+	}
 }
 
 //
@@ -18624,7 +18659,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 8;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce (added by this mod)
+	uint uiFlag = 9;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -19040,6 +19075,8 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(m_iPeaceAngerTimes100);
 	pStream->Write(m_iNumUnitsKilled);
 	pStream->Write(m_iNumCitiesConquered);
+	pStream->Write(m_iRevolutionAnarchyTurns);
+	pStream->Write(m_iAnarchyTurnsSpent);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

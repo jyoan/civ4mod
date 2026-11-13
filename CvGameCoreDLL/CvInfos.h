@@ -4832,6 +4832,7 @@ public:
 	int getDistantTradeRouteModifier() const;			// Exposed to Python
 	int getEnemyAttritionInBorders() const;			// Exposed to Python (added by this mod)
 	int getEnemyAttritionLimit() const;			// Exposed to Python (added by this mod)
+	int getAnarchyGoldenAgePercent() const;			// Exposed to Python (added by this mod)
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -5015,6 +5016,7 @@ protected:
 	int m_iDistantTradeRouteModifier;	// added by this mod
 	int m_iEnemyAttritionInBorders;	// added by this mod
 	int m_iEnemyAttritionLimit;	// added by this mod
+	int m_iAnarchyGoldenAgePercent;	// added by this mod
 	bool m_bNewCityStateReligion;
 
 	CvString m_szShortDescription;
