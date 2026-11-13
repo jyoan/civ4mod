@@ -19949,6 +19949,8 @@ m_iNewWorldCityPopulation(0),
 m_iOverseasCityPopulation(0),
 m_iOverseasMaintenanceModifier(0),
 m_iDistantTradeRouteModifier(0),
+m_iEnemyAttritionInBorders(0),
+m_iEnemyAttritionLimit(100),
 m_bNewCityStateReligion(false),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
@@ -20445,6 +20447,20 @@ int CvTraitInfo::getOverseasMaintenanceModifier() const
 int CvTraitInfo::getDistantTradeRouteModifier() const
 {
 	return m_iDistantTradeRouteModifier;
+}
+
+// iEnemyAttritionInBorders (added by this mod): damage (% of the max HP) at the start of each turn of the player to the units
+// of the players at war with it in its territory (CvPlayer::doEnemyAttrition)
+int CvTraitInfo::getEnemyAttritionInBorders() const
+{
+	return m_iEnemyAttritionInBorders;
+}
+
+// iEnemyAttritionLimit (added by this mod): the attrition does not damage a unit beyond this % of its max HP (100, the
+// default: it can kill)
+int CvTraitInfo::getEnemyAttritionLimit() const
+{
+	return m_iEnemyAttritionLimit;
 }
 
 const TCHAR* CvTraitInfo::getShortDescription() const
@@ -21321,6 +21337,8 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iOverseasCityPopulation, "iOverseasCityPopulation");
 	pXML->GetChildXmlValByName(&m_iOverseasMaintenanceModifier, "iOverseasMaintenanceModifier");
 	pXML->GetChildXmlValByName(&m_iDistantTradeRouteModifier, "iDistantTradeRouteModifier");
+	pXML->GetChildXmlValByName(&m_iEnemyAttritionInBorders, "iEnemyAttritionInBorders");
+	pXML->GetChildXmlValByName(&m_iEnemyAttritionLimit, "iEnemyAttritionLimit", 100);
 }
 
 // The part of read() for the yield and commerce arrays, the unit combat arrays, the free promotions and MaintainFeatures (added by this mod)

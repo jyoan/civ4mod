@@ -740,4 +740,22 @@
 		<Spanish>[ICON_BULLET]%D1_Percent%% trade route yield with distant cities</Spanish>
 		<Japanese>[ICON_BULLET]&#36960;&#12367;&#38626;&#12428;&#12383;&#37117;&#24066;&#12392;&#12398;&#20132;&#26131;&#36335;&#12398;&#21454;&#20837;%D1_Percent%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ENEMY_ATTRITION</Tag>
+		<English>[ICON_BULLET]Enemy units in your territory lose %d1%% of their HP each turn</English>
+		<French>[ICON_BULLET]Enemy units in your territory lose %d1%% of their HP each turn</French>
+		<German>[ICON_BULLET]Enemy units in your territory lose %d1%% of their HP each turn</German>
+		<Italian>[ICON_BULLET]Enemy units in your territory lose %d1%% of their HP each turn</Italian>
+		<Spanish>[ICON_BULLET]Enemy units in your territory lose %d1%% of their HP each turn</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12395;&#12356;&#12427;&#20132;&#25126;&#20013;&#12398;&#25973;&#12518;&#12491;&#12483;&#12488;&#12399;&#12289;&#27598;&#12479;&#12540;&#12531;&#26368;&#22823;HP&#12398;%d1%%&#12434;&#22833;&#12358;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ENEMY_ATTRITION_LIMIT</Tag>
+		<English>[ICON_BULLET]Enemy units in your territory lose %d1%% of their HP each turn, down to %d2%%</English>
+		<French>[ICON_BULLET]Enemy units in your territory lose %d1%% of their HP each turn, down to %d2%%</French>
+		<German>[ICON_BULLET]Enemy units in your territory lose %d1%% of their HP each turn, down to %d2%%</German>
+		<Italian>[ICON_BULLET]Enemy units in your territory lose %d1%% of their HP each turn, down to %d2%%</Italian>
+		<Spanish>[ICON_BULLET]Enemy units in your territory lose %d1%% of their HP each turn, down to %d2%%</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12395;&#12356;&#12427;&#20132;&#25126;&#20013;&#12398;&#25973;&#12518;&#12491;&#12483;&#12488;&#12399;&#12289;&#27598;&#12479;&#12540;&#12531;&#26368;&#22823;HP&#12398;%d1%%&#12434;&#22833;&#12358;&#65288;HP %d2%%&#12414;&#12391;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

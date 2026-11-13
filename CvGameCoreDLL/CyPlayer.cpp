@@ -2203,6 +2203,16 @@ int CyPlayer::getDistantTradeRouteModifier()
 	return m_pPlayer ? m_pPlayer->getDistantTradeRouteModifier() : 0;
 }
 
+int CyPlayer::getEnemyAttritionInBorders()
+{
+	return m_pPlayer ? m_pPlayer->getEnemyAttritionInBorders() : 0;
+}
+
+int CyPlayer::getEnemyAttritionLimit()
+{
+	return m_pPlayer ? m_pPlayer->getEnemyAttritionLimit() : 0;
+}
+
 int CyPlayer::getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce)
 {
 	return m_pPlayer ? m_pPlayer->getSpecialistTypeExtraCommerce((SpecialistTypes)eSpecialist, (CommerceTypes)eCommerce) : 0;
