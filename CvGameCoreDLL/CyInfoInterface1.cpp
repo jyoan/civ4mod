@@ -43,6 +43,8 @@ void CyInfoPythonInterface1()
 		.def("getYieldChange", &CvSpecialistInfo::getYieldChange, "int (int i)")
 		.def("getCommerceChange", &CvSpecialistInfo::getCommerceChange, "int (int i)")
 		.def("getExperience", &CvSpecialistInfo::getExperience, "int ()")
+		.def("getHappiness", &CvSpecialistInfo::getHappiness, "int ()")
+		.def("getHealth", &CvSpecialistInfo::getHealth, "int ()")
 		.def("getFlavorValue", &CvSpecialistInfo::getFlavorValue, "int (int i)")
 
 		.def("getTexture", &CvSpecialistInfo::getTexture, "string ()")

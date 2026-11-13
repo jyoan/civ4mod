@@ -416,6 +416,10 @@ public:
 	void updateFeatureHappiness();
 
 	int getBonusGoodHappiness() const;																		// Exposed to Python  
+	int getSpecialistGoodHappiness() const;	// added by this mod
+	int getSpecialistBadHappiness() const;	// added by this mod
+	int getSpecialistGoodHealth() const;	// added by this mod
+	int getSpecialistBadHealth() const;	// added by this mod
 	int getBonusBadHappiness() const;																			// Exposed to Python  
 	void changeBonusGoodHappiness(int iChange);
 	void changeBonusBadHappiness(int iChange);

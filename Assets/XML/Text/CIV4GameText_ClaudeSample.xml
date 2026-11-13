@@ -1149,6 +1149,79 @@
 		<Spanish>[ICON_BULLET]+%d1[ICON_CULTURE] per turn for its owner on this tile (in your territory only)</Spanish>
 		<Japanese>[ICON_BULLET]&#12371;&#12398;&#12479;&#12452;&#12523;&#12395;&#25345;&#12385;&#20027;&#12398;&#25991;&#21270; +%d1[ICON_CULTURE]&#65288;&#12479;&#12540;&#12531;&#12372;&#12392;&#12290;&#33258;&#22269;&#12398;&#38936;&#22303;&#12398;&#26045;&#35373;&#12384;&#12369;&#65289;</Japanese>
 	</TEXT>
+	<!-- Happiness and health of the specialists (added by this mod) -->
+	<TEXT>
+		<Tag>TXT_KEY_HAPPY_SPECIALISTS</Tag>
+		<English>+%d1_Change[ICON_HAPPY] from Specialists</English>
+		<French>+%d1_Change[ICON_HAPPY] from Specialists</French>
+		<German>+%d1_Change[ICON_HAPPY] from Specialists</German>
+		<Italian>+%d1_Change[ICON_HAPPY] from Specialists</Italian>
+		<Spanish>+%d1_Change[ICON_HAPPY] from Specialists</Spanish>
+		<Japanese>[ICON_HAPPY]+%d1_Change:&#23554;&#38272;&#23478;&#12395;&#12424;&#12426;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ANGER_SPECIALISTS</Tag>
+		<English>+%d1_Change[ICON_UNHAPPY] from Specialists</English>
+		<French>+%d1_Change[ICON_UNHAPPY] from Specialists</French>
+		<German>+%d1_Change[ICON_UNHAPPY] from Specialists</German>
+		<Italian>+%d1_Change[ICON_UNHAPPY] from Specialists</Italian>
+		<Spanish>+%d1_Change[ICON_UNHAPPY] from Specialists</Spanish>
+		<Japanese>[ICON_UNHAPPY]+%d1_Change:&#23554;&#38272;&#23478;&#12395;&#12424;&#12426;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_GOOD_HEALTH_FROM_SPECIALISTS</Tag>
+		<English>%D1_Change[ICON_HEALTHY] from Specialists</English>
+		<French>%D1_Change[ICON_HEALTHY] from Specialists</French>
+		<German>%D1_Change[ICON_HEALTHY] from Specialists</German>
+		<Italian>%D1_Change[ICON_HEALTHY] from Specialists</Italian>
+		<Spanish>%D1_Change[ICON_HEALTHY] from Specialists</Spanish>
+		<Japanese>&#23554;&#38272;&#23478;&#12395;&#12424;&#12426;[ICON_HEALTHY]%D1_Change</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HEALTH_FROM_SPECIALISTS</Tag>
+		<English>%D1_Change[ICON_UNHEALTHY] from Specialists</English>
+		<French>%D1_Change[ICON_UNHEALTHY] from Specialists</French>
+		<German>%D1_Change[ICON_UNHEALTHY] from Specialists</German>
+		<Italian>%D1_Change[ICON_UNHEALTHY] from Specialists</Italian>
+		<Spanish>%D1_Change[ICON_UNHEALTHY] from Specialists</Spanish>
+		<Japanese>&#23554;&#38272;&#23478;&#12395;&#12424;&#12426;[ICON_UNHEALTHY]%D1_Change</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_HAPPY</Tag>
+		<English>[ICON_BULLET]+%d1[ICON_HAPPY] in the city</English>
+		<French>[ICON_BULLET]+%d1[ICON_HAPPY] in the city</French>
+		<German>[ICON_BULLET]+%d1[ICON_HAPPY] in the city</German>
+		<Italian>[ICON_BULLET]+%d1[ICON_HAPPY] in the city</Italian>
+		<Spanish>[ICON_BULLET]+%d1[ICON_HAPPY] in the city</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12395;[ICON_HAPPY]+%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_UNHAPPY</Tag>
+		<English>[ICON_BULLET]+%d1[ICON_UNHAPPY] in the city</English>
+		<French>[ICON_BULLET]+%d1[ICON_UNHAPPY] in the city</French>
+		<German>[ICON_BULLET]+%d1[ICON_UNHAPPY] in the city</German>
+		<Italian>[ICON_BULLET]+%d1[ICON_UNHAPPY] in the city</Italian>
+		<Spanish>[ICON_BULLET]+%d1[ICON_UNHAPPY] in the city</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12395;[ICON_UNHAPPY]+%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_HEALTHY</Tag>
+		<English>[ICON_BULLET]+%d1[ICON_HEALTHY] in the city</English>
+		<French>[ICON_BULLET]+%d1[ICON_HEALTHY] in the city</French>
+		<German>[ICON_BULLET]+%d1[ICON_HEALTHY] in the city</German>
+		<Italian>[ICON_BULLET]+%d1[ICON_HEALTHY] in the city</Italian>
+		<Spanish>[ICON_BULLET]+%d1[ICON_HEALTHY] in the city</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12395;[ICON_HEALTHY]+%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_UNHEALTHY</Tag>
+		<English>[ICON_BULLET]+%d1[ICON_UNHEALTHY] in the city</English>
+		<French>[ICON_BULLET]+%d1[ICON_UNHEALTHY] in the city</French>
+		<German>[ICON_BULLET]+%d1[ICON_UNHEALTHY] in the city</German>
+		<Italian>[ICON_BULLET]+%d1[ICON_UNHEALTHY] in the city</Italian>
+		<Spanish>[ICON_BULLET]+%d1[ICON_UNHEALTHY] in the city</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12395;[ICON_UNHEALTHY]+%d1</Japanese>
+	</TEXT>
 	<!-- Unofficial 3.19 Patch (jdog5000): the keys of CIV4GameText_UnofficialPatch.xml and the key it uses without text -->
 	<TEXT>
 		<Tag>TXT_KEY_TERRAIN_TURN_DAMAGE</Tag>

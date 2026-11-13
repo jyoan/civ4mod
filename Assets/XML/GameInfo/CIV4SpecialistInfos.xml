@@ -382,5 +382,37 @@
 			<iHotKeyPriority>0</iHotKeyPriority>
 			<Button>,Art/Interface/Buttons/TechTree/Corporation.dds,Art/Interface/Buttons/Beyond_the_Sword_Atlas.dds,6,14</Button>
 		</SpecialistInfo>
+		<SpecialistInfo>
+			<Type>SPECIALIST_TEST</Type>
+			<Description>TXT_KEY_SPECIALIST_TEST</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<Strategy>TXT_KEY_SPECIALIST_GREAT_SCIENTIST_STRATEGY</Strategy>
+			<Help/>
+			<Texture>Art/Interface/MainScreen/CityScreen/Great_Scientist.dds</Texture>
+			<bVisible>0</bVisible>
+			<GreatPeopleUnitClass>NONE</GreatPeopleUnitClass>
+			<iGreatPeopleRateChange>0</iGreatPeopleRateChange>
+			<Yields>
+				<iYield>0</iYield>
+				<iYield>1</iYield>
+				<iYield>0</iYield>
+			</Yields>
+			<Commerces>
+				<iCommerce>0</iCommerce>
+				<iCommerce>6</iCommerce>
+				<iCommerce>0</iCommerce>
+			</Commerces>
+			<iExperience>0</iExperience>
+			<iHappiness>2</iHappiness>
+			<iHealth>-1</iHealth>
+			<Flavors/>
+			<HotKey/>
+			<bAltDown>0</bAltDown>
+			<bShiftDown>0</bShiftDown>
+			<bCtrlDown>0</bCtrlDown>
+			<iHotKeyPriority>0</iHotKeyPriority>
+			<Button>Art/Interface/MainScreen/CityScreen/Great_Scientist.dds</Button>
+		</SpecialistInfo>
+		<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</SpecialistInfos>
 </Civ4SpecialistInfos>

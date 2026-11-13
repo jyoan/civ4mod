@@ -5148,6 +5148,19 @@ void CvGameTextMgr::parseSpecialistHelp(CvWStringBuffer &szHelpString, Specialis
 			szHelpString.append(gDLL->getText("TXT_KEY_SPECIALIST_EXPERIENCE", GC.getSpecialistInfo(eSpecialist).getExperience()));
 		}
 
+		// iHappiness, iHealth (added by this mod)
+		if (GC.getSpecialistInfo(eSpecialist).getHappiness() != 0)
+		{
+			szHelpString.append(NEWLINE);
+			szHelpString.append(gDLL->getText(((GC.getSpecialistInfo(eSpecialist).getHappiness() > 0) ? "TXT_KEY_SPECIALIST_HAPPY" : "TXT_KEY_SPECIALIST_UNHAPPY"), abs(GC.getSpecialistInfo(eSpecialist).getHappiness())));
+		}
+
+		if (GC.getSpecialistInfo(eSpecialist).getHealth() != 0)
+		{
+			szHelpString.append(NEWLINE);
+			szHelpString.append(gDLL->getText(((GC.getSpecialistInfo(eSpecialist).getHealth() > 0) ? "TXT_KEY_SPECIALIST_HEALTHY" : "TXT_KEY_SPECIALIST_UNHEALTHY"), abs(GC.getSpecialistInfo(eSpecialist).getHealth())));
+		}
+
 		if (GC.getSpecialistInfo(eSpecialist).getGreatPeopleRateChange() != 0)
 		{
 			szHelpString.append(NEWLINE);
@@ -11055,6 +11068,14 @@ void CvGameTextMgr::setBadHealthHelp(CvWStringBuffer &szBuffer, CvCity& city)
 			szBuffer.append(NEWLINE);
 		}
 
+		// iHealth of the specialists (added by this mod)
+		iHealth = -(city.getSpecialistBadHealth());
+		if (iHealth > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HEALTH_FROM_SPECIALISTS", iHealth));
+			szBuffer.append(NEWLINE);
+		}
+
 		iHealth = -(city.totalBadBuildingHealth());
 		if (iHealth > 0)
 		{
@@ -11156,6 +11177,14 @@ void CvGameTextMgr::setGoodHealthHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		if (iHealth > 0)
 		{
 			szBuffer.append(gDLL->getText("TXT_KEY_MISC_GOOD_HEALTH_FROM_BONUSES", iHealth));
+			szBuffer.append(NEWLINE);
+		}
+
+		// iHealth of the specialists (added by this mod)
+		iHealth = city.getSpecialistGoodHealth();
+		if (iHealth > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_GOOD_HEALTH_FROM_SPECIALISTS", iHealth));
 			szBuffer.append(NEWLINE);
 		}
 
@@ -11405,6 +11434,16 @@ void CvGameTextMgr::setAngerHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		}
 		iOldAnger = iNewAnger;
 
+		// iHappiness of the specialists (added by this mod)
+		iNewAnger -= std::min(0, city.getSpecialistBadHappiness());
+		iAnger = ((iNewAnger - iOldAnger) + std::min(0, iOldAnger));
+		if (iAnger > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_ANGER_SPECIALISTS", iAnger));
+			szBuffer.append(NEWLINE);
+		}
+		iOldAnger = iNewAnger;
+
 		iNewAnger -= std::min(0, city.getReligionBadHappiness());
 		iAnger = ((iNewAnger - iOldAnger) + std::min(0, iOldAnger));
 		if (iAnger > 0)
@@ -11532,6 +11571,15 @@ void CvGameTextMgr::setHappyHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		{
 			iTotalHappy += iHappy;
 			szBuffer.append(gDLL->getText("TXT_KEY_HAPPY_BONUS", iHappy));
+			szBuffer.append(NEWLINE);
+		}
+
+		// iHappiness of the specialists (added by this mod)
+		iHappy = city.getSpecialistGoodHappiness();
+		if (iHappy > 0)
+		{
+			iTotalHappy += iHappy;
+			szBuffer.append(gDLL->getText("TXT_KEY_HAPPY_SPECIALISTS", iHappy));
 			szBuffer.append(NEWLINE);
 		}
 
