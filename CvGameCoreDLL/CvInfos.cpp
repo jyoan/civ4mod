@@ -19951,6 +19951,7 @@ m_iOverseasMaintenanceModifier(0),
 m_iDistantTradeRouteModifier(0),
 m_iEnemyAttritionInBorders(0),
 m_iEnemyAttritionLimit(100),
+m_iAnarchyGoldenAgePercent(0),
 m_bNewCityStateReligion(false),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
@@ -20461,6 +20462,13 @@ int CvTraitInfo::getEnemyAttritionInBorders() const
 int CvTraitInfo::getEnemyAttritionLimit() const
 {
 	return m_iEnemyAttritionLimit;
+}
+
+// iAnarchyGoldenAgePercent (added by this mod): when the anarchy of a change of civics or religion ends, a golden age of
+// this % of the turns spent in that anarchy (CvPlayer::changeAnarchyTurns)
+int CvTraitInfo::getAnarchyGoldenAgePercent() const
+{
+	return m_iAnarchyGoldenAgePercent;
 }
 
 const TCHAR* CvTraitInfo::getShortDescription() const
@@ -21339,6 +21347,7 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iDistantTradeRouteModifier, "iDistantTradeRouteModifier");
 	pXML->GetChildXmlValByName(&m_iEnemyAttritionInBorders, "iEnemyAttritionInBorders");
 	pXML->GetChildXmlValByName(&m_iEnemyAttritionLimit, "iEnemyAttritionLimit", 100);
+	pXML->GetChildXmlValByName(&m_iAnarchyGoldenAgePercent, "iAnarchyGoldenAgePercent");
 }
 
 // The part of read() for the yield and commerce arrays, the unit combat arrays, the free promotions and MaintainFeatures (added by this mod)

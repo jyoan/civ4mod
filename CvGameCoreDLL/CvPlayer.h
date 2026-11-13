@@ -253,6 +253,7 @@ public:
 	int getDistantTradeRouteModifier() const;			// Exposed to Python (added by this mod)
 	int getEnemyAttritionInBorders() const;			// Exposed to Python (added by this mod)
 	int getEnemyAttritionLimit() const;			// Exposed to Python (added by this mod)
+	int getAnarchyGoldenAgePercent() const;			// Exposed to Python (added by this mod)
 	void doEnemyAttrition();	// added by this mod
 	int getFeatureProductionChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	int getFeatureGrowthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
@@ -1241,6 +1242,8 @@ protected:
 	int m_iPeaceAngerTimes100;
 	int m_iNumUnitsKilled;		// added by this mod: iMinUnitsKilled of ConditionalFreeTraits
 	int m_iNumCitiesConquered;	// added by this mod: iMinCitiesConquered of ConditionalFreeTraits
+	int m_iRevolutionAnarchyTurns;	// added by this mod: anarchy turns from changes of civics or religion in this anarchy (iAnarchyGoldenAgePercent)
+	int m_iAnarchyTurnsSpent;	// added by this mod: turns spent in this anarchy (iAnarchyGoldenAgePercent)
 	int m_iWarWearinessModifier;
 	int m_iFreeSpecialist;
 	int m_iNoForeignTradeCount;

@@ -121,5 +121,6 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("getDistantTradeRouteModifier", &CyPlayer::getDistantTradeRouteModifier, "int () - trade route yield % with cities far from the capital (traits, added by this mod)")
 		.def("getEnemyAttritionInBorders", &CyPlayer::getEnemyAttritionInBorders, "int () - damage % each turn to enemy units in the territory (traits, added by this mod)")
 		.def("getEnemyAttritionLimit", &CyPlayer::getEnemyAttritionLimit, "int () - the attrition does not go beyond this % of the max HP (traits, added by this mod)")
+		.def("getAnarchyGoldenAgePercent", &CyPlayer::getAnarchyGoldenAgePercent, "int () - golden age turns in % of the anarchy of a change of civics or religion (traits, added by this mod)")
 		;
 }
