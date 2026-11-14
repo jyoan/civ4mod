@@ -20023,6 +20023,7 @@ m_pabConquestReligionBuilding(NULL),
 m_pabNoTechCivic(NULL),
 m_iMaxNationalWondersPerCity(0),
 m_iMaxNationalWondersPerCityForOCC(0),
+m_bHumanCanBeVassal(false),
 m_bNewCityStateReligion(false),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
@@ -20600,6 +20601,13 @@ int CvTraitInfo::getMaxNationalWondersPerCity() const
 int CvTraitInfo::getMaxNationalWondersPerCityForOCC() const
 {
 	return m_iMaxNationalWondersPerCityForOCC;
+}
+
+// bHumanCanBeVassal (added by this mod): a human player with the trait can become the vassal of an AI player (BtS allows
+// human vassals only of humans: CvPlayer::canTradeItem)
+bool CvTraitInfo::isHumanCanBeVassal() const
+{
+	return m_bHumanCanBeVassal;
 }
 
 const TCHAR* CvTraitInfo::getShortDescription() const
@@ -21487,6 +21495,7 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	readTypeList(pXML, "NoTechCivics", m_aszNoTechCivicTypes);	// civics are loaded later: readPass3()
 	pXML->GetChildXmlValByName(&m_iMaxNationalWondersPerCity, "iMaxNationalWondersPerCity");
 	pXML->GetChildXmlValByName(&m_iMaxNationalWondersPerCityForOCC, "iMaxNationalWondersPerCityForOCC");
+	pXML->GetChildXmlValByName(&m_bHumanCanBeVassal, "bHumanCanBeVassal");
 }
 
 // The part of read() for the yield and commerce arrays, the unit combat arrays, the free promotions and MaintainFeatures (added by this mod)
@@ -21664,6 +21673,17 @@ void CvTraitInfo::readConditionalFreeTraits(CvXMLLoadUtility* pXML)
 				kCondition.bFavoriteCivic = false;
 				kCondition.iMinUnitsKilled = 0;
 				kCondition.iMinCitiesConquered = 0;
+				kCondition.bGoldenAge = false;
+				kCondition.bNoGoldenAge = false;
+				kCondition.bAnarchy = false;
+				kCondition.bNoAnarchy = false;
+				kCondition.iMinCities = 0;
+				kCondition.iMaxCities = 0;
+				kCondition.iPrereqBonus = NO_BONUS;
+				kCondition.iPrereqBuildingClass = NO_BUILDINGCLASS;
+				kCondition.bVassal = false;
+				kCondition.bHasVassal = false;
+				kCondition.iMinScoreRank = 0;
 				// PrereqTech (added by this mod): the techs are loaded before the traits
 				szTextVal = "";
 				pXML->GetChildXmlValByName(szTextVal, "PrereqTech");
@@ -21674,6 +21694,15 @@ void CvTraitInfo::readConditionalFreeTraits(CvXMLLoadUtility* pXML)
 				pXML->GetChildXmlValByName(&kCondition.bFavoriteCivic, "bFavoriteCivic");
 				pXML->GetChildXmlValByName(&kCondition.iMinUnitsKilled, "iMinUnitsKilled");
 				pXML->GetChildXmlValByName(&kCondition.iMinCitiesConquered, "iMinCitiesConquered");
+				pXML->GetChildXmlValByName(&kCondition.bGoldenAge, "bGoldenAge");
+				pXML->GetChildXmlValByName(&kCondition.bNoGoldenAge, "bNoGoldenAge");
+				pXML->GetChildXmlValByName(&kCondition.bAnarchy, "bAnarchy");
+				pXML->GetChildXmlValByName(&kCondition.bNoAnarchy, "bNoAnarchy");
+				pXML->GetChildXmlValByName(&kCondition.iMinCities, "iMinCities");
+				pXML->GetChildXmlValByName(&kCondition.iMaxCities, "iMaxCities");
+				pXML->GetChildXmlValByName(&kCondition.bVassal, "bVassal");
+				pXML->GetChildXmlValByName(&kCondition.bHasVassal, "bHasVassal");
+				pXML->GetChildXmlValByName(&kCondition.iMinScoreRank, "iMinScoreRank");
 				m_aConditionalFreeTraits.push_back(kCondition);
 
 				szTextVal = "";
@@ -21690,6 +21719,12 @@ void CvTraitInfo::readConditionalFreeTraits(CvXMLLoadUtility* pXML)
 				m_aszConditionalFreeTraitTypes.push_back(szTextVal);
 				szTextVal = "";
 				pXML->GetChildXmlValByName(szTextVal, "PrereqCivic");
+				m_aszConditionalFreeTraitTypes.push_back(szTextVal);
+				szTextVal = "";
+				pXML->GetChildXmlValByName(szTextVal, "PrereqBonus");
+				m_aszConditionalFreeTraitTypes.push_back(szTextVal);
+				szTextVal = "";
+				pXML->GetChildXmlValByName(szTextVal, "PrereqBuildingClass");
 				m_aszConditionalFreeTraitTypes.push_back(szTextVal);
 			}
 			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "ConditionalFreeTrait"));
@@ -21983,16 +22018,19 @@ bool CvTraitInfo::readPass3()
 		}
 	}
 
-	// ConditionalFreeTraits: items without a valid trait are removed
+	// ConditionalFreeTraits: items without a valid trait are removed. readConditionalFreeTraits keeps 7 types per item
+	const int iNumTypes = 7;
 	std::vector<ConditionalFreeTrait> aConditions;
-	for (i = 0; i < (int)m_aConditionalFreeTraits.size() && (i * 5 + 4) < (int)m_aszConditionalFreeTraitTypes.size(); i++)
+	for (i = 0; i < (int)m_aConditionalFreeTraits.size() && (i * iNumTypes + iNumTypes - 1) < (int)m_aszConditionalFreeTraitTypes.size(); i++)
 	{
 		ConditionalFreeTrait kCondition = m_aConditionalFreeTraits[i];
-		kCondition.iTrait = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * 5], GC.getNumTraitInfos());
-		kCondition.iStateReligion = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * 5 + 1], GC.getNumReligionInfos());
-		kCondition.iEraMin = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * 5 + 2], GC.getNumEraInfos());
-		kCondition.iEraMax = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * 5 + 3], GC.getNumEraInfos());
-		kCondition.iPrereqCivic = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * 5 + 4], GC.getNumCivicInfos());
+		kCondition.iTrait = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * iNumTypes], GC.getNumTraitInfos());
+		kCondition.iStateReligion = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * iNumTypes + 1], GC.getNumReligionInfos());
+		kCondition.iEraMin = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * iNumTypes + 2], GC.getNumEraInfos());
+		kCondition.iEraMax = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * iNumTypes + 3], GC.getNumEraInfos());
+		kCondition.iPrereqCivic = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * iNumTypes + 4], GC.getNumCivicInfos());
+		kCondition.iPrereqBonus = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * iNumTypes + 5], GC.getNumBonusInfos());	// added by this mod
+		kCondition.iPrereqBuildingClass = resolveConditionalType(m_aszConditionalFreeTraitTypes[i * iNumTypes + 6], GC.getNumBuildingClassInfos());	// added by this mod
 		if (kCondition.iTrait != NO_TRAIT)
 		{
 			aConditions.push_back(kCondition);

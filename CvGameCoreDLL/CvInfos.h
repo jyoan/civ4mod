@@ -4746,6 +4746,17 @@ struct ConditionalFreeTrait
 	int iMinUnitsKilled;		// 0: no limit. Enemy units the player has killed in the whole game
 	int iMinCitiesConquered;	// 0: no limit. Cities the player has conquered in the whole game
 	int iPrereqTech;			// NO_TECH: any. The team of the player has the tech (added by this mod)
+	bool bGoldenAge;			// in a golden age (added by this mod)
+	bool bNoGoldenAge;
+	bool bAnarchy;			// in anarchy (added by this mod)
+	bool bNoAnarchy;
+	int iMinCities;			// 0: no limit. The number of cities of the player (added by this mod)
+	int iMaxCities;			// 0: no limit
+	int iPrereqBonus;			// NO_BONUS: any. The player has the bonus (the plot group of the capital) (added by this mod)
+	int iPrereqBuildingClass;	// NO_BUILDINGCLASS: any. A city of the player has a building of the class (added by this mod)
+	bool bVassal;				// the team of the player is a vassal (added by this mod)
+	bool bHasVassal;			// the team of the player has a vassal
+	int iMinScoreRank;		// 0: no limit. The score rank of the player is this or lower (1: the top) (added by this mod)
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -4852,6 +4863,7 @@ public:
 	bool isNoTechCivic(int i) const;		// Exposed to Python (added by this mod)
 	int getMaxNationalWondersPerCity() const;	// Exposed to Python (added by this mod)
 	int getMaxNationalWondersPerCityForOCC() const;	// Exposed to Python (added by this mod)
+	bool isHumanCanBeVassal() const;	// Exposed to Python (added by this mod)
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -5046,6 +5058,7 @@ protected:
 	std::vector<CvString> m_aszNoTechCivicTypes;	// read() keeps the types as strings until readPass3() (civics are loaded later)
 	int m_iMaxNationalWondersPerCity;	// added by this mod: 0 = not set, -1 = no limit
 	int m_iMaxNationalWondersPerCityForOCC;	// added by this mod: 0 = not set, -1 = no limit
+	bool m_bHumanCanBeVassal;	// added by this mod
 	bool m_bNewCityStateReligion;
 
 	CvString m_szShortDescription;

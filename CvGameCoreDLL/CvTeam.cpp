@@ -4030,6 +4030,16 @@ void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 			}
 		}
 
+		// bVassal, bHasVassal of ConditionalFreeTraits of the players of both teams (added by this mod)
+		for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
+		{
+			CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
+			if (kLoopPlayer.isAlive() && (kLoopPlayer.getTeam() == getID() || kLoopPlayer.getTeam() == eIndex))
+			{
+				kLoopPlayer.updateConditionalTraits();
+			}
+		}
+
 		if (GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()))
 		{
 			CvEventReporter::getInstance().vassalState(eIndex, getID(), bNewValue);

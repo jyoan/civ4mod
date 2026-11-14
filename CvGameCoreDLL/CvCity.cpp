@@ -12189,6 +12189,8 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 				GET_PLAYER(getOwnerINLINE()).changeGold(iProductionGold);
 			}
 
+			GET_PLAYER(getOwnerINLINE()).updateConditionalTraits();	// PrereqBuildingClass of ConditionalFreeTraits (added by this mod)
+
 			CvEventReporter::getInstance().buildingBuilt(this, eConstructBuilding);
 		}
 		break;

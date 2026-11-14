@@ -2253,6 +2253,11 @@ int CyPlayer::getMaxNationalWondersPerCity()
 	return m_pPlayer ? m_pPlayer->getMaxNationalWondersPerCity() : -1;
 }
 
+bool CyPlayer::isHumanCanBeVassal()
+{
+	return m_pPlayer ? m_pPlayer->isHumanCanBeVassal() : false;
+}
+
 int CyPlayer::getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce)
 {
 	return m_pPlayer ? m_pPlayer->getSpecialistTypeExtraCommerce((SpecialistTypes)eSpecialist, (CommerceTypes)eCommerce) : 0;

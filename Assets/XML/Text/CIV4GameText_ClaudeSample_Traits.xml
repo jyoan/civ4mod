@@ -857,4 +857,121 @@
 		<Spanish>no limit</Spanish>
 		<Japanese>&#28961;&#21046;&#38480;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_GOLDEN_AGE</Tag>
+		<English>in a golden age</English>
+		<French>in a golden age</French>
+		<German>in a golden age</German>
+		<Italian>in a golden age</Italian>
+		<Spanish>in a golden age</Spanish>
+		<Japanese>&#40644;&#37329;&#26178;&#20195;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_NO_GOLDEN_AGE</Tag>
+		<English>not in a golden age</English>
+		<French>not in a golden age</French>
+		<German>not in a golden age</German>
+		<Italian>not in a golden age</Italian>
+		<Spanish>not in a golden age</Spanish>
+		<Japanese>&#40644;&#37329;&#26178;&#20195;&#12391;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_ANARCHY</Tag>
+		<English>in anarchy</English>
+		<French>in anarchy</French>
+		<German>in anarchy</German>
+		<Italian>in anarchy</Italian>
+		<Spanish>in anarchy</Spanish>
+		<Japanese>&#28961;&#25919;&#24220;&#29366;&#24907;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_NO_ANARCHY</Tag>
+		<English>not in anarchy</English>
+		<French>not in anarchy</French>
+		<German>not in anarchy</German>
+		<Italian>not in anarchy</Italian>
+		<Spanish>not in anarchy</Spanish>
+		<Japanese>&#28961;&#25919;&#24220;&#29366;&#24907;&#12391;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_CITIES_RANGE</Tag>
+		<English>%d1_Min to %d2_Max cities</English>
+		<French>%d1_Min to %d2_Max cities</French>
+		<German>%d1_Min to %d2_Max cities</German>
+		<Italian>%d1_Min to %d2_Max cities</Italian>
+		<Spanish>%d1_Min to %d2_Max cities</Spanish>
+		<Japanese>&#37117;&#24066;&#12364;%d1_Min&#65374;%d2_Max</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_MIN_CITIES</Tag>
+		<English>%d1_Num or more cities</English>
+		<French>%d1_Num or more cities</French>
+		<German>%d1_Num or more cities</German>
+		<Italian>%d1_Num or more cities</Italian>
+		<Spanish>%d1_Num or more cities</Spanish>
+		<Japanese>&#37117;&#24066;&#12364;%d1_Num&#20197;&#19978;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_MAX_CITIES</Tag>
+		<English>%d1_Num or fewer cities</English>
+		<French>%d1_Num or fewer cities</French>
+		<German>%d1_Num or fewer cities</German>
+		<Italian>%d1_Num or fewer cities</Italian>
+		<Spanish>%d1_Num or fewer cities</Spanish>
+		<Japanese>&#37117;&#24066;&#12364;%d1_Num&#20197;&#19979;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_BONUS</Tag>
+		<English>with %s1_Bonus</English>
+		<French>with %s1_Bonus</French>
+		<German>with %s1_Bonus</German>
+		<Italian>with %s1_Bonus</Italian>
+		<Spanish>with %s1_Bonus</Spanish>
+		<Japanese>%s1_Bonus&#12434;&#20445;&#26377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_BUILDING</Tag>
+		<English>with %s1_Building</English>
+		<French>with %s1_Building</French>
+		<German>with %s1_Building</German>
+		<Italian>with %s1_Building</Italian>
+		<Spanish>with %s1_Building</Spanish>
+		<Japanese>%s1_Building&#12434;&#20445;&#26377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_VASSAL</Tag>
+		<English>a vassal</English>
+		<French>a vassal</French>
+		<German>a vassal</German>
+		<Italian>a vassal</Italian>
+		<Spanish>a vassal</Spanish>
+		<Japanese>&#23646;&#22269;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_HAS_VASSAL</Tag>
+		<English>with a vassal</English>
+		<French>with a vassal</French>
+		<German>with a vassal</German>
+		<Italian>with a vassal</Italian>
+		<Spanish>with a vassal</Spanish>
+		<Japanese>&#23646;&#22269;&#12434;&#25345;&#12388;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_SCORE_RANK</Tag>
+		<English>score rank %d1_Num or lower</English>
+		<French>score rank %d1_Num or lower</French>
+		<German>score rank %d1_Num or lower</German>
+		<Italian>score rank %d1_Num or lower</Italian>
+		<Spanish>score rank %d1_Num or lower</Spanish>
+		<Japanese>&#12473;&#12467;&#12450;&#12364;%d1_Num&#20301;&#20197;&#19979;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HUMAN_CAN_BE_VASSAL</Tag>
+		<English>[ICON_BULLET]Can become the vassal of an AI civilization, also as a human player</English>
+		<French>[ICON_BULLET]Can become the vassal of an AI civilization, also as a human player</French>
+		<German>[ICON_BULLET]Can become the vassal of an AI civilization, also as a human player</German>
+		<Italian>[ICON_BULLET]Can become the vassal of an AI civilization, also as a human player</Italian>
+		<Spanish>[ICON_BULLET]Can become the vassal of an AI civilization, also as a human player</Spanish>
+		<Japanese>[ICON_BULLET]&#20154;&#38291;&#12398;&#12503;&#12524;&#12452;&#12516;&#12540;&#12391;&#12418;AI&#12398;&#25991;&#26126;&#12398;&#23646;&#22269;&#12395;&#12394;&#12428;&#12427;</Japanese>
+	</TEXT>
 </Civ4GameText>

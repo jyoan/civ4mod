@@ -112,3 +112,4 @@
 - 2026-11-14: RFC 由来の 4 つ（`ConditionalFreeTraits` の `PrereqTech`、志向の `iTechCostModifier`・`iAttitudeChange`、昇進の `bRivalTerritory`）を検証用データで確認（採鉱で勤労志向、研究コスト -40%、外交画面の態度の行、国境を開いていない領土への進入）
 - 2026-11-14: RFC 由来の 3 つ（志向の `iRouteMovementModifierInBorders`・`bConquestStateReligion`・`ConquestReligionBuildings`・`NoTechCivics`）を検証用志向で確認（自国の領土の道路で 4 タイル、占領した都市の国教と条件を満たす寺院・大聖堂、技術なしの社会制度）
 - 2026-11-14: 国家遺産の上限（志向の `iMaxNationalWondersPerCity`・`iMaxNationalWondersPerCityForOCC`）を検証用志向で確認（ペディアの 2 行、1 都市 4 つで 5 つ目が建設候補から消える、1つの都市でチャレンジでは無制限）
+- 2026-11-14: `ConditionalFreeTraits` の追加の条件（`bGoldenAge`・`bNoGoldenAge`・`bAnarchy`・`bNoAnarchy`・`iMinCities`・`iMaxCities`・`PrereqBonus`・`PrereqBuildingClass`・`bVassal`・`bHasVassal`・`iMinScoreRank`）と志向の `bHumanCanBeVassal` を検証用条件の志向で確認（人間のプレイヤーが AI の属国になる）。AI の宗主国の資源の要求が交易網のある資源だけになる修正も確認

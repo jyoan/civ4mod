@@ -732,4 +732,94 @@
 		<Spanish>Test Spy</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#12473;&#12497;&#12452;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_COND_GOLDEN_AGE</Tag>
+		<English>Test Condition (golden age)</English>
+		<French>Test Condition (golden age)</French>
+		<German>Test Condition (golden age)</German>
+		<Italian>Test Condition (golden age)</Italian>
+		<Spanish>Test Condition (golden age)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26465;&#20214;&#65288;&#40644;&#37329;&#26178;&#20195;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_COND_ANARCHY</Tag>
+		<English>Test Condition (anarchy)</English>
+		<French>Test Condition (anarchy)</French>
+		<German>Test Condition (anarchy)</German>
+		<Italian>Test Condition (anarchy)</Italian>
+		<Spanish>Test Condition (anarchy)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26465;&#20214;&#65288;&#28961;&#25919;&#24220;&#29366;&#24907;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_COND_NORMAL</Tag>
+		<English>Test Condition (no golden age, no anarchy)</English>
+		<French>Test Condition (no golden age, no anarchy)</French>
+		<German>Test Condition (no golden age, no anarchy)</German>
+		<Italian>Test Condition (no golden age, no anarchy)</Italian>
+		<Spanish>Test Condition (no golden age, no anarchy)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26465;&#20214;&#65288;&#40644;&#37329;&#26178;&#20195;&#12391;&#12418;&#28961;&#25919;&#24220;&#29366;&#24907;&#12391;&#12418;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_COND_CITIES</Tag>
+		<English>Test Condition (3 to 4 cities)</English>
+		<French>Test Condition (3 to 4 cities)</French>
+		<German>Test Condition (3 to 4 cities)</German>
+		<Italian>Test Condition (3 to 4 cities)</Italian>
+		<Spanish>Test Condition (3 to 4 cities)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26465;&#20214;&#65288;&#37117;&#24066;3&#65374;4&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_COND_BONUS</Tag>
+		<English>Test Condition (horse)</English>
+		<French>Test Condition (horse)</French>
+		<German>Test Condition (horse)</German>
+		<Italian>Test Condition (horse)</Italian>
+		<Spanish>Test Condition (horse)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26465;&#20214;&#65288;&#39340;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_COND_BUILDING</Tag>
+		<English>Test Condition (barracks)</English>
+		<French>Test Condition (barracks)</French>
+		<German>Test Condition (barracks)</German>
+		<Italian>Test Condition (barracks)</Italian>
+		<Spanish>Test Condition (barracks)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26465;&#20214;&#65288;&#20853;&#33294;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_COND_VASSAL</Tag>
+		<English>Test Condition (vassal)</English>
+		<French>Test Condition (vassal)</French>
+		<German>Test Condition (vassal)</German>
+		<Italian>Test Condition (vassal)</Italian>
+		<Spanish>Test Condition (vassal)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26465;&#20214;&#65288;&#23646;&#22269;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_COND_MASTER</Tag>
+		<English>Test Condition (has a vassal)</English>
+		<French>Test Condition (has a vassal)</French>
+		<German>Test Condition (has a vassal)</German>
+		<Italian>Test Condition (has a vassal)</Italian>
+		<Spanish>Test Condition (has a vassal)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26465;&#20214;&#65288;&#23646;&#22269;&#12434;&#25345;&#12388;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_COND_RANK</Tag>
+		<English>Test Condition (score rank 2 or lower)</English>
+		<French>Test Condition (score rank 2 or lower)</French>
+		<German>Test Condition (score rank 2 or lower)</German>
+		<Italian>Test Condition (score rank 2 or lower)</Italian>
+		<Spanish>Test Condition (score rank 2 or lower)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26465;&#20214;&#65288;&#12473;&#12467;&#12450;2&#20301;&#20197;&#19979;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_COND_SHORT</Tag>
+		<English>TC</English>
+		<French>TC</French>
+		<German>TC</German>
+		<Italian>TC</Italian>
+		<Spanish>TC</Spanish>
+		<Japanese>TC</Japanese>
+	</TEXT>
 </Civ4GameText>
