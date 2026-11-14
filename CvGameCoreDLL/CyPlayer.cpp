@@ -2228,6 +2228,26 @@ int CyPlayer::getAttitudeChange()
 	return m_pPlayer ? m_pPlayer->getAttitudeChange() : 0;
 }
 
+int CyPlayer::getRouteMovementModifierInBorders()
+{
+	return m_pPlayer ? m_pPlayer->getRouteMovementModifierInBorders() : 0;
+}
+
+bool CyPlayer::isConquestStateReligion()
+{
+	return m_pPlayer ? m_pPlayer->isConquestStateReligion() : false;
+}
+
+bool CyPlayer::isConquestReligionBuilding(int /*SpecialBuildingTypes*/ eSpecialBuilding)
+{
+	return m_pPlayer ? m_pPlayer->isConquestReligionBuilding((SpecialBuildingTypes)eSpecialBuilding) : false;
+}
+
+bool CyPlayer::isNoTechCivic(int /*CivicTypes*/ eCivic)
+{
+	return m_pPlayer ? m_pPlayer->isNoTechCivic((CivicTypes)eCivic) : false;
+}
+
 int CyPlayer::getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce)
 {
 	return m_pPlayer ? m_pPlayer->getSpecialistTypeExtraCommerce((SpecialistTypes)eSpecialist, (CommerceTypes)eCommerce) : 0;

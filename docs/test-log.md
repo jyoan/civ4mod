@@ -110,3 +110,4 @@
 - 2026-11-14: 異教徒との戦闘ボーナス（`iOtherReligionCombatPercent`・`iStateReligionCityAttack`）を検証用昇進で確認（国教が違う相手との戦闘のオッズ、国教が広まった都市への攻撃、昇進の説明）
 - 2026-11-14: 旧スパイの行動（`bSabotage`・`bDestroy`・`bStealPlans`・`bInvestigate`・`bCounterSpy`）を検証用スパイで確認
 - 2026-11-14: RFC 由来の 4 つ（`ConditionalFreeTraits` の `PrereqTech`、志向の `iTechCostModifier`・`iAttitudeChange`、昇進の `bRivalTerritory`）を検証用データで確認（採鉱で勤労志向、研究コスト -40%、外交画面の態度の行、国境を開いていない領土への進入）
+- 2026-11-14: RFC 由来の 3 つ（志向の `iRouteMovementModifierInBorders`・`bConquestStateReligion`・`ConquestReligionBuildings`・`NoTechCivics`）を検証用志向で確認（自国の領土の道路で 4 タイル、占領した都市の国教と条件を満たす寺院・大聖堂、技術なしの社会制度）

@@ -3096,6 +3096,17 @@ int CvPlot::movementCost(const CvUnit* pUnit, const CvPlot* pFromPlot) const
 			               (GC.getRouteInfo(eToRoute).getMovementCost() + GET_TEAM(pUnit->getTeam()).getRouteChange(eToRoute)));
 		iRouteFlatCost = std::max((GC.getRouteInfo(eFromRoute).getFlatMovementCost() * pUnit->baseMoves()),
 			                   (GC.getRouteInfo(eToRoute).getFlatMovementCost() * pUnit->baseMoves()));
+
+		// iRouteMovementModifierInBorders of the traits of the owner of the unit (added by this mod): both plots in the
+		// territory of its team
+		if (pFromPlot->getTeam() == pUnit->getTeam() && getTeam() == pUnit->getTeam())
+		{
+			int iRouteModifier = GET_PLAYER(pUnit->getOwnerINLINE()).getRouteMovementModifierInBorders();
+			if (iRouteModifier != 0)
+			{
+				iRouteCost = std::max(1, (iRouteCost * std::max(0, 100 + iRouteModifier)) / 100);
+			}
+		}
 	}
 	else
 	{

@@ -385,6 +385,16 @@
 			<iAnarchyGoldenAgePercent>200</iAnarchyGoldenAgePercent>
 			<iTechCostModifier>-40</iTechCostModifier>
 			<iAttitudeChange>3</iAttitudeChange>
+			<iRouteMovementModifierInBorders>-50</iRouteMovementModifierInBorders>
+			<bConquestStateReligion>1</bConquestStateReligion>
+			<ConquestReligionBuildings>
+				<SpecialBuildingType>SPECIALBUILDING_TEMPLE</SpecialBuildingType>
+				<SpecialBuildingType>SPECIALBUILDING_CATHEDRAL</SpecialBuildingType>
+			</ConquestReligionBuildings>
+			<NoTechCivics>
+				<CivicType>CIVIC_CASTE_SYSTEM</CivicType>
+				<CivicType>CIVIC_ORGANIZED_RELIGION</CivicType>
+			</NoTechCivics>
 			<iGoldenAgeModifier>50</iGoldenAgeModifier>
 			<iGoldenAgeGreatPeopleRateModifier>50</iGoldenAgeGreatPeopleRateModifier>
 			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>
