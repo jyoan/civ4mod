@@ -1325,6 +1325,12 @@ static void writePrereqOrTraits(FDataStreamBase* stream, const std::vector<int>&
 static void readYieldChanges(CvXMLLoadUtility* pXML, const TCHAR* szListTag, const TCHAR* szItemTag, const TCHAR* szTypeTag, const TCHAR* szYieldsTag, std::vector<CvString>& aszTypes, std::vector< std::vector<int> >& aaiYields, bool bCommerce = false);	// added by this mod
 static void resolveYieldChanges(const TCHAR* szListTag, const std::vector<CvString>& aszTypes, const std::vector< std::vector<int> >& aaiYields, int iNumInfos, std::vector< std::vector<int> >& aaiYieldChanges, int iNumValues = NUM_YIELD_TYPES, const TCHAR* szFile = "CIV4TraitInfos.xml");	// added by this mod
 
+// PyOnDiscovered: each player of the team, when the team gets the tech (CvTeam::setHasTech) (added by this mod)
+const TCHAR* CvTechInfo::getPyOnDiscovered() const
+{
+	return m_szPyOnDiscovered;
+}
+
 void CvTechInfo::read(FDataStreamBase* stream)
 {
 	CvInfoBase::read(stream);
@@ -1414,6 +1420,13 @@ void CvTechInfo::read(FDataStreamBase* stream)
 			m_aszFreeTraitTypes.push_back(szType);
 		}
 	}
+
+	// uiFlag < 2: cache written before the Python hooks existed (added by this mod)
+	m_szPyOnDiscovered = "";
+	if (uiFlag > 1)
+	{
+		stream->ReadString(m_szPyOnDiscovered);
+	}
 }
 
 void CvTechInfo::write(FDataStreamBase* stream)
@@ -1422,7 +1435,7 @@ void CvTechInfo::write(FDataStreamBase* stream)
 
 	CvInfoBase::write(stream);
 
-	uint uiFlag=1;	// 1: FreeTraits (added by this mod)
+	uint uiFlag=2;	// 1: FreeTraits, 2: PyOnDiscovered (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAdvisorType);
@@ -1479,10 +1492,14 @@ void CvTechInfo::write(FDataStreamBase* stream)
 	{
 		stream->WriteString(m_aszFreeTraitTypes[iType]);
 	}
+	stream->WriteString(m_szPyOnDiscovered);
 }
 
 bool CvTechInfo::read(CvXMLLoadUtility* pXML)
 {
+	// Python hooks (added by this mod)
+	pXML->GetChildXmlValByName(m_szPyOnDiscovered, "PyOnDiscovered");
+
 	CvString szTextVal;
 	if (!CvInfoBase::read(pXML))
 	{
@@ -2376,6 +2393,24 @@ bool CvPromotionInfo::getUnitCombat(int i) const
 	return m_pbUnitCombat ? m_pbUnitCombat[i] : false;
 }
 
+// PyOnCombatWin: the unit with the promotion won a normal combat (CvUnit::doCombatPythonHooks) (added by this mod)
+const TCHAR* CvPromotionInfo::getPyOnCombatWin() const
+{
+	return m_szPyOnCombatWin;
+}
+
+// PyOnCombatLoss: the unit with the promotion lost a normal combat; it is killed afterwards (added by this mod)
+const TCHAR* CvPromotionInfo::getPyOnCombatLoss() const
+{
+	return m_szPyOnCombatLoss;
+}
+
+// PyOnBeginTurn: each unit with the promotion, at the start of its turn (CvUnit::doTurnPromotions) (added by this mod)
+const TCHAR* CvPromotionInfo::getPyOnBeginTurn() const
+{
+	return m_szPyOnBeginTurn;
+}
+
 void CvPromotionInfo::read(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::read(stream);
@@ -2679,13 +2714,24 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_bRivalTerritory);
 	}
+
+	// uiFlag < 16: cache written before the Python hooks existed (added by this mod)
+	m_szPyOnCombatWin = "";
+	m_szPyOnCombatLoss = "";
+	m_szPyOnBeginTurn = "";
+	if (uiFlag > 15)
+	{
+		stream->ReadString(m_szPyOnCombatWin);
+		stream->ReadString(m_szPyOnCombatLoss);
+		stream->ReadString(m_szPyOnBeginTurn);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 15;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory (added by this mod)
+	uint uiFlag = 16;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2808,6 +2854,9 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iOtherReligionCombatPercent);
 	stream->Write(m_iStateReligionCityAttack);
 	stream->Write(m_bRivalTerritory);
+	stream->WriteString(m_szPyOnCombatWin);
+	stream->WriteString(m_szPyOnCombatLoss);
+	stream->WriteString(m_szPyOnBeginTurn);
 }
 
 // Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
@@ -2846,6 +2895,11 @@ static void readTypeStringValueList(CvXMLLoadUtility* pXML, const TCHAR* szListT
 
 bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 {
+	// Python hooks (added by this mod)
+	pXML->GetChildXmlValByName(m_szPyOnCombatWin, "PyOnCombatWin");
+	pXML->GetChildXmlValByName(m_szPyOnCombatLoss, "PyOnCombatLoss");
+	pXML->GetChildXmlValByName(m_szPyOnBeginTurn, "PyOnBeginTurn");
+
 	CvString szTextVal;
 	if (!CvHotkeyInfo::read(pXML))
 	{
@@ -5990,6 +6044,18 @@ static void readPrereqOrTraits(CvXMLLoadUtility* pXML, std::vector<int>& aiPrere
 	readTypeList(pXML,"PrereqOrTraits", aiPrereqOrTraits);
 }
 
+// PyOnCreated: a unit of the type is created (CvUnit::init); not for an upgrade or a gift (CvUnit::convert) (added by this mod)
+const TCHAR* CvUnitInfo::getPyOnCreated() const
+{
+	return m_szPyOnCreated;
+}
+
+// PyOnDeath: a unit of the type dies (CvUnit::kill); not for an upgrade or a gift (added by this mod)
+const TCHAR* CvUnitInfo::getPyOnDeath() const
+{
+	return m_szPyOnDeath;
+}
+
 void CvUnitInfo::read(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::read(stream);
@@ -6323,13 +6389,22 @@ void CvUnitInfo::read(FDataStreamBase* stream)
 	}
 
 	updateArtDefineButton();
+
+	// uiFlag < 4: cache written before the Python hooks existed (added by this mod)
+	m_szPyOnCreated = "";
+	m_szPyOnDeath = "";
+	if (uiFlag > 3)
+	{
+		stream->ReadString(m_szPyOnCreated);
+		stream->ReadString(m_szPyOnDeath);
+	}
 }
 
 void CvUnitInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=3;	// 1: PrereqOrTraits, 2: city prerequisites, 3: BonusAffinities (added by this mod)
+	uint uiFlag=4;	// 1: PrereqOrTraits, 2: city prerequisites, 3: BonusAffinities, 4: Python hooks (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAIWeight);
@@ -6509,6 +6584,8 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 	writePrereqOrTraits(stream, m_aiPrereqVicinityBonuses);
 	writePrereqOrTraits(stream, m_aiPrereqOrImprovements);
 	writePrereqOrTraits(stream, m_aiBonusAffinity);
+	stream->WriteString(m_szPyOnCreated);
+	stream->WriteString(m_szPyOnDeath);
 }
 
 //
@@ -6516,6 +6593,10 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 //
 bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 {
+	// Python hooks (added by this mod)
+	pXML->GetChildXmlValByName(m_szPyOnCreated, "PyOnCreated");
+	pXML->GetChildXmlValByName(m_szPyOnDeath, "PyOnDeath");
+
 	CvString szTextVal;
 	if (!CvHotkeyInfo::read(pXML))
 	{
@@ -7804,6 +7885,18 @@ int CvCivicInfo::getImprovementYieldChanges(int i, int j) const
 	return m_ppiImprovementYieldChanges[i][j];
 }
 
+// PyOnAdopt: the player adopts the civic (CvPlayer::setCivics) (added by this mod)
+const TCHAR* CvCivicInfo::getPyOnAdopt() const
+{
+	return m_szPyOnAdopt;
+}
+
+// PyOnRevoke: the player stops the civic (added by this mod)
+const TCHAR* CvCivicInfo::getPyOnRevoke() const
+{
+	return m_szPyOnRevoke;
+}
+
 void CvCivicInfo::read(FDataStreamBase* stream)
 {
 	CvInfoBase::read(stream);
@@ -8010,13 +8103,22 @@ void CvCivicInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iReplacedCivic);
 	}
+
+	// uiFlag < 8: cache written before the Python hooks existed (added by this mod)
+	m_szPyOnAdopt = "";
+	m_szPyOnRevoke = "";
+	if (uiFlag > 7)
+	{
+		stream->ReadString(m_szPyOnAdopt);
+		stream->ReadString(m_szPyOnRevoke);
+	}
 }
 
 void CvCivicInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=7;	// 5: FreeTraits, 6: changes per angry citizen and per unhealthiness, 7: ReplacedCivic (added by this mod)
+	uint uiFlag=8;	// 5: FreeTraits, 6: changes per angry citizen and per unhealthiness, 7: ReplacedCivic, 8: Python hooks (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iCivicOptionType);
@@ -8099,6 +8201,8 @@ void CvCivicInfo::write(FDataStreamBase* stream)
 	stream->Write(NUM_YIELD_TYPES, m_piUnhealthyYieldChange);
 	stream->Write(NUM_COMMERCE_TYPES, m_piUnhealthyCommerceChange);
 	stream->Write(m_iReplacedCivic);
+	stream->WriteString(m_szPyOnAdopt);
+	stream->WriteString(m_szPyOnRevoke);
 }
 
 // Reads <UpgradeAnywhereUnitCombats> (used by traits, civics and buildings). Each <UpgradeAnywhereUnitCombat>
@@ -8139,6 +8243,10 @@ static void readUpgradeAnywhereUnitCombats(CvXMLLoadUtility* pXML, bool** ppabUp
 
 bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 {
+	// Python hooks (added by this mod)
+	pXML->GetChildXmlValByName(m_szPyOnAdopt, "PyOnAdopt");
+	pXML->GetChildXmlValByName(m_szPyOnRevoke, "PyOnRevoke");
+
 	CvString szTextVal;
 	if (!CvInfoBase::read(pXML))
 	{
@@ -10357,6 +10465,18 @@ const TCHAR* CvBuildingInfo::getMovie() const
 //
 // serialization
 //
+// PyOnBuilt: a city completes the building by production (CvCity::popOrder) (added by this mod)
+const TCHAR* CvBuildingInfo::getPyOnBuilt() const
+{
+	return m_szPyOnBuilt;
+}
+
+// PyOnBeginTurn: each city with the building (not obsolete), at the start of its turn (CvCity::doTurn) (added by this mod)
+const TCHAR* CvBuildingInfo::getPyOnBeginTurn() const
+{
+	return m_szPyOnBeginTurn;
+}
+
 void CvBuildingInfo::read(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::read(stream);
@@ -10943,6 +11063,15 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 /************************************************************************************************/
 /* UNOFFICIAL_PATCH                        END                                                  */
 /************************************************************************************************/
+
+	// uiFlag < 18: cache written before the Python hooks existed (added by this mod)
+	m_szPyOnBuilt = "";
+	m_szPyOnBeginTurn = "";
+	if (uiFlag > 17)
+	{
+		stream->ReadString(m_szPyOnBuilt);
+		stream->ReadString(m_szPyOnBeginTurn);
+	}
 }
 
 //
@@ -10952,7 +11081,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=17;	// 9: FreeTraits, 10: world wonder changes, 11: city prerequisites, 12: city radius prerequisites, 13: civic prerequisites, 14: building changes, 15: changes per population, 16: GlobalBuildingExtraCommerces, 17: changes per angry citizen and per unhealthiness (added by this mod)
+	uint uiFlag=18;	// 9: FreeTraits, 10: world wonder changes, 11: city prerequisites, 12: city radius prerequisites, 13: civic prerequisites, 14: building changes, 15: changes per population, 16: GlobalBuildingExtraCommerces, 17: changes per angry citizen and per unhealthiness, 18: Python hooks (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBuildingClassType);
@@ -11166,6 +11295,8 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	stream->Write(NUM_COMMERCE_TYPES, m_piAngryCommerceChange);
 	stream->Write(NUM_YIELD_TYPES, m_piUnhealthyYieldChange);
 	stream->Write(NUM_COMMERCE_TYPES, m_piUnhealthyCommerceChange);
+	stream->WriteString(m_szPyOnBuilt);
+	stream->WriteString(m_szPyOnBeginTurn);
 }
 
 // Turns the civic types of a building list into numbers. A wrong name shows an XML Error message.
@@ -11210,6 +11341,10 @@ bool CvBuildingInfo::readPass3()
 //
 bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 {
+	// Python hooks (added by this mod)
+	pXML->GetChildXmlValByName(m_szPyOnBuilt, "PyOnBuilt");
+	pXML->GetChildXmlValByName(m_szPyOnBeginTurn, "PyOnBeginTurn");
+
 	CvString szTextVal;
 	if (!CvHotkeyInfo::read(pXML))
 	{
@@ -21703,6 +21838,8 @@ void CvTraitInfo::readConditionalFreeTraits(CvXMLLoadUtility* pXML)
 				pXML->GetChildXmlValByName(&kCondition.bVassal, "bVassal");
 				pXML->GetChildXmlValByName(&kCondition.bHasVassal, "bHasVassal");
 				pXML->GetChildXmlValByName(&kCondition.iMinScoreRank, "iMinScoreRank");
+				pXML->GetChildXmlValByName(kCondition.szPyCondition, "PyCondition");
+				pXML->GetChildXmlValByName(kCondition.szPyConditionText, "PyConditionText");
 				m_aConditionalFreeTraits.push_back(kCondition);
 
 				szTextVal = "";

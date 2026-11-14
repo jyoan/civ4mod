@@ -28489,6 +28489,7 @@
 					<bUpgradeAnywhere>1</bUpgradeAnywhere>
 				</UpgradeAnywhereUnitCombat>
 			</UpgradeAnywhereUnitCombats>
+			<PyOnBeginTurn>isEveryTurns(5) and addCulture(pCity, 10)</PyOnBeginTurn>
 		</BuildingInfo>
 		<BuildingInfo>
 			<BuildingClass>BUILDINGCLASS_TEST_RADIUS</BuildingClass>
@@ -29716,6 +29717,7 @@
 					<iSpecialistCount>1</iSpecialistCount>
 				</TechSpecialistChange>
 			</TechSpecialistChanges>
+			<PyOnBuilt>gainGold(pPlayer, 30)</PyOnBuilt>
 		</BuildingInfo>
 		<BuildingInfo>
 			<BuildingClass>BUILDINGCLASS_TEST_GROWTH_BONUS</BuildingClass>

@@ -5239,6 +5239,9 @@
 			<bCtrlDown>0</bCtrlDown>
 			<iHotKeyPriority>0</iHotKeyPriority>
 			<Button>,Art/Interface/Buttons/Promotions/Commando.dds,Art/Interface/Buttons/Promotions_Atlas.dds,1,3</Button>
+			<PyOnCombatWin>gainGold(pPlayer, 10)</PyOnCombatWin>
+			<PyOnCombatLoss>gainGold(pPlayer, 5)</PyOnCombatLoss>
+			<PyOnBeginTurn>isOnFeature(pUnit, 'FEATURE_FOREST') and healUnit(pUnit, 10)</PyOnBeginTurn>
 		</PromotionInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</PromotionInfos>

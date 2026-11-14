@@ -688,12 +688,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_FEATURE_GROWTH_CHANGE</Tag>
-		<English>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s1_Feature</English>
-		<French>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s1_Feature</French>
-		<German>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s1_Feature</German>
-		<Italian>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s1_Feature</Italian>
-		<Spanish>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s1_Feature</Spanish>
-		<Japanese>[ICON_BULLET]&#38936;&#22303;&#20869;&#12391;%s1_Feature&#12364;&#24195;&#12364;&#12427;&#30906;&#29575;&#65306;&#38563;&#12398;%s1_Feature 1&#12388;&#12395;&#12388;&#12365;1&#12479;&#12540;&#12531;&#12354;&#12383;&#12426;%s2_Chance%%</Japanese>
+		<English>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s3_Feature</English>
+		<French>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s3_Feature</French>
+		<German>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s3_Feature</German>
+		<Italian>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s3_Feature</Italian>
+		<Spanish>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s3_Feature</Spanish>
+		<Japanese>[ICON_BULLET]&#38936;&#22303;&#20869;&#12391;%s1_Feature&#12364;&#24195;&#12364;&#12427;&#30906;&#29575;&#65306;&#38563;&#12398;%s3_Feature 1&#12388;&#12395;&#12388;&#12365;1&#12479;&#12540;&#12531;&#12354;&#12383;&#12426;%s2_Chance%%</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_FEATURE_HEALTH_CHANGE</Tag>
@@ -973,5 +973,14 @@
 		<Italian>[ICON_BULLET]Can become the vassal of an AI civilization, also as a human player</Italian>
 		<Spanish>[ICON_BULLET]Can become the vassal of an AI civilization, also as a human player</Spanish>
 		<Japanese>[ICON_BULLET]&#20154;&#38291;&#12398;&#12503;&#12524;&#12452;&#12516;&#12540;&#12391;&#12418;AI&#12398;&#25991;&#26126;&#12398;&#23646;&#22269;&#12395;&#12394;&#12428;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_PYTHON</Tag>
+		<English>a special condition</English>
+		<French>a special condition</French>
+		<German>a special condition</German>
+		<Italian>a special condition</Italian>
+		<Spanish>a special condition</Spanish>
+		<Japanese>&#29305;&#21029;&#12394;&#26465;&#20214;</Japanese>
 	</TEXT>
 </Civ4GameText>

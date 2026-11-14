@@ -822,4 +822,22 @@
 		<Spanish>TC</Spanish>
 		<Japanese>TC</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_COND_PYTHON</Tag>
+		<English>Test Condition (Python)</English>
+		<French>Test Condition (Python)</French>
+		<German>Test Condition (Python)</German>
+		<Italian>Test Condition (Python)</Italian>
+		<Spanish>Test Condition (Python)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26465;&#20214;&#65288;Python&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_TEST_GOLD</Tag>
+		<English>200 gold or more</English>
+		<French>200 gold or more</French>
+		<German>200 gold or more</German>
+		<Italian>200 gold or more</Italian>
+		<Spanish>200 gold or more</Spanish>
+		<Japanese>&#36039;&#37329;&#12364;200&#20197;&#19978;</Japanese>
+	</TEXT>
 </Civ4GameText>

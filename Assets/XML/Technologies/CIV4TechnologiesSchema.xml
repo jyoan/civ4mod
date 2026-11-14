@@ -98,6 +98,7 @@
 	<ElementType name="FreeTraits" content="eltOnly">
 		<element type="TraitType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="PyOnDiscovered" content="textOnly"/>
 	<ElementType name="TechInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -152,6 +153,7 @@
 		<element type="SoundMP"/>
 		<element type="Button"/>
 		<element type="FreeTraits" minOccurs="0"/>
+		<element type="PyOnDiscovered" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="TechInfos" content="eltOnly">
 		<element type="TechInfo" maxOccurs="*"/>

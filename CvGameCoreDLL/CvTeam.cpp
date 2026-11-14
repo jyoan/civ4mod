@@ -5288,6 +5288,20 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 			}
 		}
 
+		// PyOnDiscovered of the tech (added by this mod): each player of the team, after the effects of the tech. bFirst: the
+		// team is the first to have it. Not for the techs of the start of the game, nor in the world builder
+		if (bNewValue && GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()) && GC.getTechInfo(eIndex).getPyOnDiscovered()[0] != '\0')
+		{
+			bool bFirstToHave = (bFirst && GC.getGameINLINE().countKnownTechNumTeams(eIndex) == 1);
+			for (iI = 0; iI < MAX_PLAYERS; iI++)
+			{
+				if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
+				{
+					GET_PLAYER((PlayerTypes)iI).doTechPythonHook(eIndex, bFirstToHave);
+				}
+			}
+		}
+
 		if (bNewValue)
 		{
 			if (bAnnounce)

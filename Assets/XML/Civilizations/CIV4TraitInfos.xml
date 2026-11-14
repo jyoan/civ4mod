@@ -597,6 +597,11 @@
 					<TraitType>TRAIT_TEST_COND_RANK</TraitType>
 					<iMinScoreRank>2</iMinScoreRank>
 				</ConditionalFreeTrait>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_TEST_COND_PYTHON</TraitType>
+					<PyCondition>pPlayer.getGold() &gt;= 200</PyCondition>
+					<PyConditionText>TXT_KEY_CONDITION_TEST_GOLD</PyConditionText>
+				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
@@ -1109,6 +1114,28 @@
 		<TraitInfo>
 			<Type>TRAIT_TEST_COND_RANK</Type>
 			<Description>TXT_KEY_TRAIT_TEST_COND_RANK</Description>
+			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iMaxAnarchy>-1</iMaxAnarchy>
+			<iUpkeepModifier>0</iUpkeepModifier>
+			<iLevelExperienceModifier>0</iLevelExperienceModifier>
+			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
+			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
+			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
+			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
+			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
+			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<ExtraYieldThresholds/>
+			<TradeYieldModifiers/>
+			<CommerceChanges/>
+			<CommerceModifiers/>
+			<FreePromotions/>
+			<FreePromotionUnitCombats/>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_TEST_COND_PYTHON</Type>
+			<Description>TXT_KEY_TRAIT_TEST_COND_PYTHON</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
 			<iHealth>0</iHealth>
 			<iHappiness>0</iHappiness>

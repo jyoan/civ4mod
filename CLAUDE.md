@@ -118,19 +118,20 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - ゲームのログは `%USERPROFILE%\Documents\My Games\Beyond the Sword(J)\Logs`（`xml.log`・`PythonErr.log` など）
 - XML 内のタグの順序は Schema の順序に合わせる。新しいタグは Schema で `minOccurs="0"` にして、既存の項目には書かなくて済むようにする
 - 「なし」を表す値は型名ではなく **`NONE`** と書く（例: 維持費なしの社会制度は `<Upkeep>NONE</Upkeep>`。`UPKEEP_NONE` は存在せず、起動時に「Tag: UPKEEP_NONE in Info class was incorrect」になった）。既存の値を書き換えるときは、元の XML でその要素がどう書かれているかを先に確かめる
-- 書いた名前が実在するかは `tools\check_refs.ps1`（build.bat が自動で実行）が調べる。ゲームが読む XML（`<BTS>` → `<WL>` → `<CIV4>` の順で最初のもの）の `<Type>` と `GlobalTypes.xml`（`ARTSTYLE_` / `CONTACT_` / `FLAVOR_` / `FORMATION_` など）、テキストの `<Tag>` と照合する。見るもの: 定義されていない名前（接頭辞が既知のもの）、無いテキストキー、`<Type>` の重複、要素の種類と違う名前（警告。`<TraitType>` に `UNIT_` など）、Mod のテキストキーの重複（警告）、Python と XML の `Py...` の式の中の引用符で囲んだ名前（コメント行を除く）。本体からコピーしたファイルにある本体と同じ誤りは数えるだけで表示しない
+- 書いた名前が実在するかは `tools\check_refs.ps1`（build.bat が自動で実行）が調べる。ゲームが読む XML（`<BTS>` → `<WL>` → `<CIV4>` の順で最初のもの）の `<Type>` と `GlobalTypes.xml`（`ARTSTYLE_` / `CONTACT_` / `FLAVOR_` / `FORMATION_` など）、テキストの `<Tag>` と照合する。見るもの: 定義されていない名前（接頭辞が既知のもの）、無いテキストキー、`<Type>` の重複、要素の種類と違う名前（警告。`<TraitType>` に `UNIT_` など）、Mod のテキストキーの重複（警告）、同じ引数を 2 回使うテキスト、Python と XML の `Py...` の式の中の引用符で囲んだ名前（コメント行を除く）。本体からコピーしたファイルにある本体と同じ誤りは数えるだけで表示しない
 - XML は `CvXMLLoadUtility::LoadPreMenuGlobals`（`CvXMLLoadUtilitySet.cpp`）に書かれた順に読み込まれ、`FindInInfoClass` で引けるのは**先に読み込まれた Info だけ**。例えば志向より後に読み込まれるのは施設・建物・社会制度・指導者・ユニット・文明など、先に読み込まれるのは地形・地形の特徴・昇進・兵科など。後に読み込まれる Info を参照するタグは、種類を文字列のまま持っておき、`readPass3()` で番号に変える（`CvTraitInfo::readPass3` が例）
 - Mod の XML は本体の同名ファイルを丸ごと置き換える（`ModularLoading = 0` のため）。`<BTS>` → `<WL>` → `<CIV4>` の順に探して最初に見つかったものを、同じ相対パスで `Assets\XML\...` にコピーしてから編集する（Schema も同様）
 - コピーした直後に**未改変のままコミット**し、編集は次のコミットにする（git の差分で Mod の変更だけが見えるように）
 - 新しいテキストキーは `Assets\XML\Text\` の分野ごとのファイルの末尾に足す（`XML\Text\` の xml はすべて読み込まれる）: 志向（`TXT_KEY_TRAIT_*`・`TXT_KEY_CONDITION_*`・`TXT_KEY_START_BIAS*`）は `CIV4GameText_ClaudeSample_Traits.xml`、昇進は `_Promotions.xml`、呪文は `_Spells.xml`、検証用の項目の名前は `_Test.xml`、それ以外（メッセージ、建物、社会制度、ゲームオプションなど）は `CIV4GameText_ClaudeSample.xml`
 - 元の XML はすべて ASCII・CRLF。Mod 側も ASCII・CRLF を保つ
 - テキスト XML（`XML\Text\`）は `encoding="ISO-8859-1"` 宣言の ASCII ファイル。日本語は `<Japanese>` の中に **10 進の数値文字参照**で書く（例: 「戦士」→ `&#25126;&#22763;`）。他の言語タグ（`<English>` など）も元ファイルに倣って残す
+- テキストの中で同じ引数を 2 回使わない（`%s1_Feature … %s1_Feature`）。ゲームは片方しか置き換えず、もう片方が `%s1_Feature` のまま出る。2 回目はコードから同じ値を別の番号（`%s3`）で渡す
 - 日本語版の用語: Trait は「〜志向」（例: `TRAIT_INDUSTRIOUS` = 勤労志向）。ペディアの見出し `TXT_KEY_PEDIA_TRAITS` は「特性」
 
 ### XML キャッシュ
 
 - `CvCivilizationInfo` などストリーム版 `read` / `write` を持つ Info クラスは、exe が XML キャッシュ（`%LOCALAPPDATA%\My Games\Beyond the Sword(J)\cache`）経由でも読み込む。exe は `CvGlobals::read/write*InfoArray` を呼び、そこから各 Info の `read` / `write` が使われる
-- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする（現在 `CvCivilizationInfo` は `uiFlag=3`、`CvCivicInfo` は `uiFlag=7`、`CvBuildingInfo` は `uiFlag=17`、`CvUnitInfo` は `uiFlag=3`、`CvPromotionInfo` は `uiFlag=15`、`CvTechInfo` は `uiFlag=1`、`CvImprovementInfo` は `uiFlag=7`、`CvEventTriggerInfo` は `uiFlag=1`、`CvBonusInfo` は `uiFlag=2`）
+- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする（現在 `CvCivilizationInfo` は `uiFlag=3`、`CvCivicInfo` は `uiFlag=8`、`CvBuildingInfo` は `uiFlag=18`、`CvUnitInfo` は `uiFlag=4`、`CvPromotionInfo` は `uiFlag=16`、`CvTechInfo` は `uiFlag=2`、`CvImprovementInfo` は `uiFlag=7`、`CvEventTriggerInfo` は `uiFlag=1`、`CvBonusInfo` は `uiFlag=2`）
 - **Info の数が変わる変更（志向・昇進・技術・ユニットなどの追加や削除）をしたら、必ずキャッシュを消す**。ユニット・建物・指導者・文明などのキャッシュは「志向の数」などの数だけ配列を読むため、XML を変えていないファイルの古いキャッシュがずれて読まれ、データ破損や強制終了の原因になる
 - キャッシュを消すときは、Civ4 が起動していないことを確認してから、上記の cache フォルダ内の `*.dat` だけを消す（フォルダは残す。次回起動時に作り直される。BtS 本体や他の Mod も次回の起動が少し遅くなるだけ）
 - キャッシュが原因と思われる不具合が出たときも、同じ手順で消す
@@ -144,7 +145,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - `Assets\Python\` に置いたファイルは本体の同名ファイルを置き換える。`<BTS>\Assets\Python\` から同じ相対パス（`EntryPoints\`、`Screens\` など）でコピーしてから編集する
 - 元の Python はすべて ASCII・CRLF。日本語を書く必要があるなら、ファイル先頭に coding 宣言を入れる
 - DLL の機能を Python に公開するには `Cy*.cpp` と `Cy*Interface*.cpp`（boost::python）に追加する
-- Mod に入れている Python: `Screens\CvPediaMain.py`・`Screens\CvPediaCivilization.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`・`Screens\CvVictoryScreen.py`・`Screens\CvMainInterface.py`・`Screens\CvTechChooser.py`・`CvEventManager.py`（BtS(J) のコピーに追記）、`Screens\CvCivicsScreen.py`（無印 Civ4(J) のコピーに追記。BtS(J)・Warlords(J) には無く、無印のものが使われている）、`Screens\CvFinanceAdvisor.py`（Warlords(J) のコピーに追記。BtS(J) には無い）、`CvAdvisorUtils.py`・`Screens\CvDomesticAdvisor.py`・`EntryPoints\CvRandomEventInterface.py`（BtS(J) のコピーに Unofficial Patch の修正）、`CvMapGeneratorUtil.py`（Warlords(J) のコピーに同じ）、`pyHelper\Popup.py`（無印 Civ4(J) のコピーに同じ）、`Screens\CvPediaTrait.py`・`Screens\CvPediaSpell.py`・`EntryPoints\CvSpellInterface.py`・`EntryPoints\CvTraitInterface.py`（新規）
+- Mod に入れている Python: `Screens\CvPediaMain.py`・`Screens\CvPediaCivilization.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`・`Screens\CvVictoryScreen.py`・`Screens\CvMainInterface.py`・`Screens\CvTechChooser.py`・`CvEventManager.py`（BtS(J) のコピーに追記）、`Screens\CvCivicsScreen.py`（無印 Civ4(J) のコピーに追記。BtS(J)・Warlords(J) には無く、無印のものが使われている）、`Screens\CvFinanceAdvisor.py`（Warlords(J) のコピーに追記。BtS(J) には無い）、`CvAdvisorUtils.py`・`Screens\CvDomesticAdvisor.py`・`EntryPoints\CvRandomEventInterface.py`（BtS(J) のコピーに Unofficial Patch の修正）、`CvMapGeneratorUtil.py`（Warlords(J) のコピーに同じ）、`pyHelper\Popup.py`（無印 Civ4(J) のコピーに同じ）、`Screens\CvPediaTrait.py`・`Screens\CvPediaSpell.py`・`EntryPoints\CvSpellInterface.py`・`EntryPoints\CvTraitInterface.py`・`EntryPoints\CvHookInterface.py`・`CvHookUtils.py`（新規。XML の Python の式の共通の関数は `CvHookUtils.py`）
 - 文法チェック: Python 3.14 が入っている（`python -I`）。Python 2.4 そのものではないが、インデントや括弧の誤りは見つかる。BtS のファイルには Python 2 の `print` 文があって途中で止まるので、`print` 行を `pass` に置き換えた複製で、**編集前と編集後の両方**をチェックして比べる
 
 ## Mod の設計方針

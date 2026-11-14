@@ -16,6 +16,10 @@
 #include "CyUnit.h"
 #include "CyArgsList.h"
 #include "CyPlot.h"
+
+// True while a unit replaces another (an upgrade, a gift, the ConvertUnit of a spell: initUnit, then convert): the new unit
+// is the old one going on, so neither PyOnCreated nor PyOnDeath of the units runs (added by this mod)
+static bool s_bReplacingUnit = false;
 #include "CvDLLEntityIFaceBase.h"
 #include "CvDLLInterfaceIFaceBase.h"
 #include "CvDLLEngineIFaceBase.h"
@@ -255,6 +259,12 @@ void CvUnit::init(int iID, UnitTypes eUnit, UnitAITypes eUnitAI, PlayerTypes eOw
 	AI_init(eUnitAI);
 
 	CvEventReporter::getInstance().unitCreated(this);
+
+	// PyOnCreated of the unit (added by this mod). Not in the world builder
+	if (!s_bReplacingUnit && !gDLL->GetWorldBuilderMode() && getUnitInfo().getPyOnCreated()[0] != '\0')
+	{
+		doUnitPythonHook(true, NO_PLAYER);
+	}
 }
 
 
@@ -582,6 +592,13 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 		}
 	}
 
+	// PyOnDeath of the unit (added by this mod): once (a unit already about to die has run it), not for the units of a dead
+	// player and not in the world builder. The unit is still on its plot
+	if (!isDelayedDeath() && !s_bReplacingUnit && !gDLL->GetWorldBuilderMode() && GET_PLAYER(getOwnerINLINE()).isAlive() && getUnitInfo().getPyOnDeath()[0] != '\0')
+	{
+		doUnitPythonHook(false, ePlayer);
+	}
+
 	if (bDelay)
 	{
 		startDelayedDeath();
@@ -838,6 +855,16 @@ void CvUnit::doTurnPromotions()
 		{
 			CvPromotionInfo& kPromotion = GC.getPromotionInfo((PromotionTypes)iI);
 
+			// PyOnBeginTurn of the promotion (added by this mod)
+			if (kPromotion.getPyOnBeginTurn()[0] != '\0')
+			{
+				doPromotionPythonHook("onPromotionBeginTurn", (PromotionTypes)iI, NULL);
+				if (!isHasPromotion((PromotionTypes)iI))
+				{
+					continue;
+				}
+			}
+
 			if (kPromotion.getFreeXPPerTurn() > 0)
 			{
 				// Not from combat: no experience modifiers and no great general points
@@ -867,6 +894,110 @@ void CvUnit::doTurnPromotions()
 
 // Defined with the summons below (added by this mod)
 static bool canInitUnitOnPlot(UnitTypes eUnit, const CvPlot* pPlot, PlayerTypes ePlayer);
+
+// The promotions of the unit with PyOnCombatWin or PyOnCombatLoss (added by this mod)
+void CvUnit::getCombatHookPromotions(std::vector<PromotionTypes>& aePromotions) const
+{
+	int iI;
+
+	aePromotions.clear();
+	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	{
+		if (isHasPromotion((PromotionTypes)iI))
+		{
+			CvPromotionInfo& kPromotion = GC.getPromotionInfo((PromotionTypes)iI);
+			if (kPromotion.getPyOnCombatWin()[0] != '\0' || kPromotion.getPyOnCombatLoss()[0] != '\0')
+			{
+				aePromotions.push_back((PromotionTypes)iI);
+			}
+		}
+	}
+}
+
+// PyOnCombatWin and PyOnCombatLoss of the promotions after a normal combat (added by this mod). this is the attacker. Both
+// units still exist and the loser is killed afterwards: a hook must not kill or heal the units. Nothing when both survive
+// (a withdrawal). The promotions are those the units had in the combat (collected before doCombatPromotions)
+void CvUnit::doCombatPythonHooks(CvUnit* pDefender, const std::vector<PromotionTypes>& aeAttackerPromotions, const std::vector<PromotionTypes>& aeDefenderPromotions)
+{
+	CvUnit* pWinner;
+	CvUnit* pLoser;
+	const std::vector<PromotionTypes>* paeWinnerPromotions;
+	const std::vector<PromotionTypes>* paeLoserPromotions;
+	int iI;
+
+	if (pDefender->isDead() && !isDead())
+	{
+		pWinner = this;
+		pLoser = pDefender;
+		paeWinnerPromotions = &aeAttackerPromotions;
+		paeLoserPromotions = &aeDefenderPromotions;
+	}
+	else if (isDead() && !pDefender->isDead())
+	{
+		pWinner = pDefender;
+		pLoser = this;
+		paeWinnerPromotions = &aeDefenderPromotions;
+		paeLoserPromotions = &aeAttackerPromotions;
+	}
+	else
+	{
+		return;
+	}
+
+	for (iI = 0; iI < (int)paeWinnerPromotions->size(); iI++)
+	{
+		if (GC.getPromotionInfo((*paeWinnerPromotions)[iI]).getPyOnCombatWin()[0] != '\0')
+		{
+			pWinner->doPromotionPythonHook("onPromotionCombatWin", (*paeWinnerPromotions)[iI], pLoser);
+		}
+	}
+
+	for (iI = 0; iI < (int)paeLoserPromotions->size(); iI++)
+	{
+		if (GC.getPromotionInfo((*paeLoserPromotions)[iI]).getPyOnCombatLoss()[0] != '\0')
+		{
+			pLoser->doPromotionPythonHook("onPromotionCombatLoss", (*paeLoserPromotions)[iI], pWinner);
+		}
+	}
+}
+
+// A Python hook of a promotion (added by this mod): CvHookInterface.py evaluates the expression with pUnit, pPlayer (the
+// owner), ePromotion, and pOpponent for the combat hooks
+void CvUnit::doPromotionPythonHook(const char* szFunction, PromotionTypes ePromotion, CvUnit* pOpponent)
+{
+	CyUnit* pyUnit = new CyUnit(this);
+	CyUnit* pyOpponent = NULL;
+	CyArgsList argsList;
+
+	argsList.add(gDLL->getPythonIFace()->makePythonObject(pyUnit));
+	if (pOpponent != NULL)
+	{
+		pyOpponent = new CyUnit(pOpponent);
+		argsList.add(gDLL->getPythonIFace()->makePythonObject(pyOpponent));
+	}
+	argsList.add((int)ePromotion);
+	gDLL->getPythonIFace()->callFunction(PYHookModule, szFunction, argsList.makeFunctionArgs());
+
+	// The python functions must not hold on to these pointers
+	delete pyUnit;
+	SAFE_DELETE(pyOpponent);
+}
+
+// PyOnCreated (bCreated) or PyOnDeath of the unit type (added by this mod): CvHookInterface.py evaluates the expression with
+// pUnit, pPlayer (the owner), and iKiller for PyOnDeath (the player who killed it, -1 if none)
+void CvUnit::doUnitPythonHook(bool bCreated, PlayerTypes eKiller)
+{
+	CyUnit* pyUnit = new CyUnit(this);
+	CyArgsList argsList;
+
+	argsList.add(gDLL->getPythonIFace()->makePythonObject(pyUnit));
+	if (!bCreated)
+	{
+		argsList.add((int)eKiller);
+	}
+	gDLL->getPythonIFace()->callFunction(PYHookModule, (bCreated ? "onUnitCreated" : "onUnitDeath"), argsList.makeFunctionArgs());
+	delete pyUnit;	// the python function must not hold on to it
+}
 
 // Promotion effects at the end of a normal combat (added by this mod). this is the attacker; both units still exist.
 // The effects are judged from the promotions the units had in the combat: first the survivors lose their
@@ -1801,7 +1932,14 @@ void CvUnit::updateCombat(bool bQuick)
 		NotifyEntity(MISSION_DAMAGE);
 		pDefender->NotifyEntity(MISSION_DAMAGE);
 
+		// PyOnCombatWin / PyOnCombatLoss (added by this mod): the promotions the units had in the combat
+		std::vector<PromotionTypes> aeAttackerHookPromotions;
+		std::vector<PromotionTypes> aeDefenderHookPromotions;
+		getCombatHookPromotions(aeAttackerHookPromotions);
+		pDefender->getCombatHookPromotions(aeDefenderHookPromotions);
+
 		doCombatPromotions(pDefender);
+		doCombatPythonHooks(pDefender, aeAttackerHookPromotions, aeDefenderHookPromotions);
 
 		if (isDead())
 		{
@@ -3498,9 +3636,11 @@ void CvUnit::castRemovePromotion(int spell)
 // The new unit keeps the experience and promotions (CvUnit::convert) and cannot move this turn
 void CvUnit::castConvertUnit(int spell)
 {
+	s_bReplacingUnit = true;	// no PyOnCreated / PyOnDeath (added by this mod)
 	CvUnit* pUnit = GET_PLAYER(getOwnerINLINE()).initUnit((UnitTypes)GC.getSpellInfo((SpellTypes)spell).getConvertUnitType(), getX_INLINE(), getY_INLINE(), AI_getUnitAIType());
 
 	pUnit->convert(this);
+	s_bReplacingUnit = false;
 	pUnit->changeImmobileTimer(1);
 }
 
@@ -4908,6 +5048,7 @@ void CvUnit::gift(bool bTestTransport)
 	}
 
 	FAssertMsg(plot()->getOwnerINLINE() != NO_PLAYER, "plot()->getOwnerINLINE() is not expected to be equal with NO_PLAYER");
+	s_bReplacingUnit = true;	// no PyOnCreated / PyOnDeath (added by this mod)
 	pGiftUnit = GET_PLAYER(plot()->getOwnerINLINE()).initUnit(getUnitType(), getX_INLINE(), getY_INLINE(), AI_getUnitAIType());
 
 	FAssertMsg(pGiftUnit != NULL, "GiftUnit is not assigned a valid value");
@@ -4915,6 +5056,7 @@ void CvUnit::gift(bool bTestTransport)
 	eOwner = getOwnerINLINE();
 
 	pGiftUnit->convert(this);
+	s_bReplacingUnit = false;
 
 	GET_PLAYER(pGiftUnit->getOwnerINLINE()).AI_changePeacetimeGrantValue(eOwner, (pGiftUnit->getUnitInfo().getProductionCost() / 5));
 
@@ -9036,6 +9178,7 @@ void CvUnit::upgrade(UnitTypes eUnit)
 
 	GET_PLAYER(getOwnerINLINE()).changeGold(-(upgradePrice(eUnit)));
 
+	s_bReplacingUnit = true;	// no PyOnCreated / PyOnDeath (added by this mod)
 	pUpgradeUnit = GET_PLAYER(getOwnerINLINE()).initUnit(eUnit, getX_INLINE(), getY_INLINE(), AI_getUnitAIType());
 
 	FAssertMsg(pUpgradeUnit != NULL, "UpgradeUnit is not assigned a valid value");
@@ -9043,6 +9186,7 @@ void CvUnit::upgrade(UnitTypes eUnit)
 	pUpgradeUnit->joinGroup(getGroup());
 
 	pUpgradeUnit->convert(this);
+	s_bReplacingUnit = false;
 
 	pUpgradeUnit->finishMoves();
 

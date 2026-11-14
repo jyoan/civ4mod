@@ -934,6 +934,18 @@ void CvCity::kill(bool bUpdatePlotGroups)
 }
 
 
+// PyOnBuilt (bBuilt) or PyOnBeginTurn of a building (added by this mod): CvHookInterface.py evaluates the expression with
+// pCity, pPlayer (the owner) and eBuilding
+void CvCity::doBuildingPythonHook(BuildingTypes eBuilding, bool bBuilt)
+{
+	CyCity* pyCity = new CyCity(this);
+	CyArgsList argsList;
+	argsList.add(gDLL->getPythonIFace()->makePythonObject(pyCity));
+	argsList.add((int)eBuilding);
+	gDLL->getPythonIFace()->callFunction(PYHookModule, (bBuilt ? "onBuildingBuilt" : "onBuildingBeginTurn"), argsList.makeFunctionArgs());
+	delete pyCity;	// the python function must not hold on to it
+}
+
 void CvCity::doTurn()
 {
 	PROFILE("CvCity::doTurn()");
@@ -962,6 +974,16 @@ void CvCity::doTurn()
 
 	// AngryYieldChanges and the like (added by this mod): before the growth and the production of this turn
 	updateMiseryChanges();
+
+	// PyOnBeginTurn of the buildings (added by this mod): once for each building the city has (not obsolete), before the
+	// growth and the production of this turn
+	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+	{
+		if (GC.getBuildingInfo((BuildingTypes)iI).getPyOnBeginTurn()[0] != '\0' && getNumActiveBuilding((BuildingTypes)iI) > 0)
+		{
+			doBuildingPythonHook((BuildingTypes)iI, false);
+		}
+	}
 
 	AI_doTurn();
 
@@ -12190,6 +12212,12 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			}
 
 			GET_PLAYER(getOwnerINLINE()).updateConditionalTraits();	// PrereqBuildingClass of ConditionalFreeTraits (added by this mod)
+
+			// PyOnBuilt of the building (added by this mod): completed by production, not the free buildings
+			if (GC.getBuildingInfo(eConstructBuilding).getPyOnBuilt()[0] != '\0')
+			{
+				doBuildingPythonHook(eConstructBuilding, true);
+			}
 
 			CvEventReporter::getInstance().buildingBuilt(this, eConstructBuilding);
 		}

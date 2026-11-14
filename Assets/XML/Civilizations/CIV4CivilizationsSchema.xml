@@ -558,6 +558,8 @@
 	<ElementType name="bVassal" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bHasVassal" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iMinScoreRank" content="textOnly" dt:type="int"/>
+	<ElementType name="PyCondition" content="textOnly"/>
+	<ElementType name="PyConditionText" content="textOnly"/>
 	<ElementType name="ConditionalFreeTrait" content="eltOnly">
 		<element type="TraitType"/>
 		<element type="bAtWar" minOccurs="0"/>
@@ -582,6 +584,8 @@
 		<element type="bVassal" minOccurs="0"/>
 		<element type="bHasVassal" minOccurs="0"/>
 		<element type="iMinScoreRank" minOccurs="0"/>
+		<element type="PyCondition" minOccurs="0"/>
+		<element type="PyConditionText" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="ConditionalFreeTraits" content="eltOnly">
 		<element type="ConditionalFreeTrait" minOccurs="0" maxOccurs="*"/>

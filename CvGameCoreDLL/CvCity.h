@@ -315,6 +315,7 @@ public:
 	int getMiseryYieldByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const;			// Exposed to Python
 	int getMiseryCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const;	// Exposed to Python
 	void updateMiseryChanges();										// added by this mod
+	void doBuildingPythonHook(BuildingTypes eBuilding, bool bBuilt);	// added by this mod: PyOnBuilt / PyOnBeginTurn
 	bool isBuildingChangeActive(int iSourceType, int iSource) const;	// added by this mod
 	int getBuildingChangeTotal(BuildingTypes eBuilding, int iEffect, int iIndex) const;	// added by this mod: for one building
 	void updateBuildingChangeSpecialists();							// added by this mod

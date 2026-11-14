@@ -12,6 +12,7 @@
 #            takes are learned from the base game files; an element they do not use takes the kind its name gives
 #            (<SpecialBuildingType> takes SPECIALBUILDING_ names)
 #   warning  a text key defined twice in the text XML of the mod
+#   error    a text that uses an argument twice (%s1 ... %s1): the game replaces only one of them
 #   error    the same for the names in quotes in the Python of the mod and in the Python expressions of the XML (Py...)
 #   error    a character that is not ASCII, or a line that does not end with CRLF, in the XML, Python, C++ sources,
 #            Makefile, build.bat, claude_sample.ini and tools
@@ -40,6 +41,8 @@ $latin1 = [Text.Encoding]::GetEncoding(28591)
 $nameElement = New-Object Text.RegularExpressions.Regex('<(\w+)>\s*(([A-Z][A-Z0-9]*)(?:_[A-Z0-9]+)+)\s*</\1>', 'Compiled')
 $pyElement = New-Object Text.RegularExpressions.Regex('<(Py\w+)>([^<]*)</\1>', 'Compiled')
 $quotedName = New-Object Text.RegularExpressions.Regex('([''"])(([A-Z][A-Z0-9]*)(?:_[A-Z0-9]+)+)\1', 'Compiled')
+$languageElement = New-Object Text.RegularExpressions.Regex('<(English|French|German|Italian|Spanish|Japanese)>([^<]*)</\1>', 'Compiled')
+$textArgument = New-Object Text.RegularExpressions.Regex('%([A-Za-z])(\d+)', 'Compiled')
 $definingElements = @{ 'Type' = 1; 'ScriptID' = 1; 'SoundID' = 1; 'DefineName' = 1; 'InfoType' = 1; 'Name' = 1 }
 
 $defined = New-Object 'System.Collections.Generic.HashSet[string]'
@@ -238,6 +241,22 @@ foreach ($rel in ($xmlFiles.Keys | Sort-Object)) {
 			Write-Problem 'warning' $display (Get-Line $text $m.Index) ("$value is a $($prefix)_ name, but <$element> takes " + (($expected | Sort-Object | ForEach-Object { $_ + '_' }) -join ' ') + ' names')
 		}
 	}
+	# The text XML: an argument used twice in a text (%s1 ... %s1). The game replaces only one of them and shows the other
+	# as it is: pass the value again as another argument (%s3)
+	if ($rel.StartsWith('text\')) {
+		foreach ($m in $languageElement.Matches($text)) {
+			$seen = @{}
+			foreach ($a in $textArgument.Matches($m.Groups[2].Value.Replace('%%', ''))) {
+				$key = $a.Groups[1].Value.ToLower() + $a.Groups[2].Value
+				if ($seen.ContainsKey($key)) {
+					Write-Problem 'error' $display (Get-Line $text $m.Index) "<$($m.Groups[1].Value)> uses %$key twice: the game replaces only one of them (give the value again as another argument)"
+					break
+				}
+				$seen[$key] = 1
+			}
+		}
+	}
+
 	# The names in quotes in the Python expressions (PyOnGameStart, PyResult, ...)
 	foreach ($m in $pyElement.Matches($text)) {
 		foreach ($q in $quotedName.Matches($m.Groups[2].Value)) {

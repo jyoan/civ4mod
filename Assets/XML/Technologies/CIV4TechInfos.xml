@@ -6782,6 +6782,7 @@
 			<FreeTraits>
 				<TraitType>TRAIT_TEST</TraitType>
 			</FreeTraits>
+			<PyOnDiscovered>gainGold(pPlayer, 20 + 30 * bFirst)</PyOnDiscovered>
 		</TechInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</TechInfos>

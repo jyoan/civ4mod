@@ -366,6 +366,8 @@ public:
 	int getNumFreeTraits() const;				// Exposed to Python
 	int getFreeTraits(int i) const;				// Exposed to Python
 	const std::vector<int>& getFreeTraitsVector() const;
+	// Python hooks (added by this mod): Python expressions that EntryPoints/CvHookInterface.py evaluates
+	const TCHAR* getPyOnDiscovered() const;	// Exposed to Python
 
 	void read(FDataStreamBase* );
 	void write(FDataStreamBase* );
@@ -436,6 +438,7 @@ protected:
 	std::vector<int> m_aiFreeTraits;
 	std::vector<CvString> m_aszFreeTraitTypes;		// read() keeps the types as strings until readPass3(), because traits
 													// are loaded after techs (also in the cache, written before that)
+	CvString m_szPyOnDiscovered;	// added by this mod
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -531,6 +534,10 @@ public:
 	int getOtherReligionCombatPercent() const;			// Exposed to Python (added by this mod)
 	int getStateReligionCityAttack() const;			// Exposed to Python (added by this mod)
 	bool isRivalTerritory() const;			// Exposed to Python (added by this mod)
+	// Python hooks (added by this mod): Python expressions that EntryPoints/CvHookInterface.py evaluates
+	const TCHAR* getPyOnCombatWin() const;	// Exposed to Python
+	const TCHAR* getPyOnCombatLoss() const;	// Exposed to Python
+	const TCHAR* getPyOnBeginTurn() const;	// Exposed to Python
 	// ImpassablePlotPassages (added by this mod): the impassable terrain or feature the unit can enter (the other is -1) and
 	// the damage percent at the start of its turn there
 	int getNumImpassablePlotPassages() const;		// Exposed to Python
@@ -637,6 +644,9 @@ protected:
 	int m_iOtherReligionCombatPercent;	// added by this mod
 	int m_iStateReligionCityAttack;	// added by this mod
 	bool m_bRivalTerritory;	// added by this mod
+	CvString m_szPyOnCombatWin;	// added by this mod
+	CvString m_szPyOnCombatLoss;	// added by this mod
+	CvString m_szPyOnBeginTurn;	// added by this mod
 	std::vector<int> m_aiImpassablePlotPassageTerrain;
 	std::vector<int> m_aiImpassablePlotPassageFeature;
 	std::vector<int> m_aiImpassablePlotPassageDamage;
@@ -1221,6 +1231,9 @@ public:
 	const std::vector<int>& getPrereqOrImprovementsVector() const;
 	// BonusAffinities (added by this mod, FFH2): strength for each copy of the bonus the owner has
 	int getBonusAffinity(int iBonus) const;			// Exposed to Python
+	// Python hooks (added by this mod): Python expressions that EntryPoints/CvHookInterface.py evaluates
+	const TCHAR* getPyOnCreated() const;	// Exposed to Python
+	const TCHAR* getPyOnDeath() const;	// Exposed to Python
 	int getProductionTraits(int i) const;				// Exposed to Python
 	int getFlavorValue(int i) const;				// Exposed to Python
 	int getTerrainAttackModifier(int i) const;				// Exposed to Python
@@ -1412,6 +1425,8 @@ protected:
 	int m_iPrereqPopulation;	// added by this mod
 	int m_iPrereqCultureLevel;	// added by this mod
 	std::vector<int> m_aiBonusAffinity;	// [bonus], empty when not set (added by this mod)
+	CvString m_szPyOnCreated;	// added by this mod
+	CvString m_szPyOnDeath;	// added by this mod
 	int* m_piProductionTraits;
 	int* m_piFlavorValue;
 	int* m_piTerrainAttackModifier;
@@ -1687,6 +1702,9 @@ public:
 	int getNumFreeTraits() const;				// Exposed to Python
 	int getFreeTraits(int i) const;				// Exposed to Python
 	const std::vector<int>& getFreeTraitsVector() const;
+	// Python hooks (added by this mod): Python expressions that EntryPoints/CvHookInterface.py evaluates
+	const TCHAR* getPyOnAdopt() const;	// Exposed to Python
+	const TCHAR* getPyOnRevoke() const;	// Exposed to Python
 	int getBuildingHappinessChanges(int i) const;				// Exposed to Python
 	int getBuildingHealthChanges(int i) const;				// Exposed to Python
 	int getFeatureHappinessChanges(int i) const;				// Exposed to Python
@@ -1760,6 +1778,8 @@ protected:
 	int* m_piTradeYieldModifier;
 	int* m_piCommerceModifier;
 	int m_iReplacedCivic;
+	CvString m_szPyOnAdopt;	// added by this mod
+	CvString m_szPyOnRevoke;	// added by this mod
 	int* m_piCapitalCommerceModifier;
 	int* m_piAngryYieldChange;
 	int* m_piAngryCommerceChange;
@@ -2105,6 +2125,9 @@ public:
 	int getNumFreeTraits() const;				// Exposed to Python
 	int getFreeTraits(int i) const;				// Exposed to Python
 	const std::vector<int>& getFreeTraitsVector() const;
+	// Python hooks (added by this mod): Python expressions that EntryPoints/CvHookInterface.py evaluates
+	const TCHAR* getPyOnBuilt() const;	// Exposed to Python
+	const TCHAR* getPyOnBeginTurn() const;	// Exposed to Python
 	// PrereqAndSettledSpecialists (added by this mod): every entry is needed
 	int getNumPrereqAndSettledSpecialists() const;			// Exposed to Python
 	int getPrereqAndSettledSpecialistType(int i) const;		// Exposed to Python
@@ -2374,6 +2397,8 @@ protected:
 	int* m_piAngryCommerceChange;
 	int* m_piUnhealthyYieldChange;
 	int* m_piUnhealthyCommerceChange;
+	CvString m_szPyOnBuilt;	// added by this mod
+	CvString m_szPyOnBeginTurn;	// added by this mod
 	int* m_piCommerceChangeDoubleTime;
 	int* m_piCommerceModifier;
 	int* m_piGlobalCommerceModifier;
@@ -4757,6 +4782,8 @@ struct ConditionalFreeTrait
 	bool bVassal;				// the team of the player is a vassal (added by this mod)
 	bool bHasVassal;			// the team of the player has a vassal
 	int iMinScoreRank;		// 0: no limit. The score rank of the player is this or lower (1: the top) (added by this mod)
+	CvString szPyCondition;	// empty: any. A Python expression of EntryPoints/CvHookInterface.py, true or false (added by this mod)
+	CvString szPyConditionText;	// the text key that describes PyCondition in the help (empty: a generic text)
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -2740,6 +2740,26 @@ bool CvPlayer::isConditionalFreeTraitActive(const ConditionalFreeTrait& kConditi
 		return false;
 	}
 
+	// PyCondition (added by this mod): last, after the other conditions. CvHookInterface.py evaluates the expression with
+	// pPlayer and eTrait (the trait given). It must not change the game
+	if (!kCondition.szPyCondition.empty())
+	{
+		CyPlayer* pyPlayer = new CyPlayer(const_cast<CvPlayer*>(this));
+		CyArgsList argsList;
+		long lResult = 0;
+
+		argsList.add(gDLL->getPythonIFace()->makePythonObject(pyPlayer));
+		argsList.add(kCondition.iTrait);
+		argsList.add(kCondition.szPyCondition.GetCString());
+		gDLL->getPythonIFace()->callFunction(PYHookModule, "isConditionTrue", argsList.makeFunctionArgs(), &lResult);
+		delete pyPlayer;	// the python function must not hold on to it
+
+		if (lResult == 0)
+		{
+			return false;
+		}
+	}
+
 	return true;
 }
 
@@ -2935,6 +2955,41 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 // (PyOnGameStart etc.), calls the function of CvTraitInterface.py that evaluates it. The arguments are the player and the
 // trait, then the city (PyOnCityFounded, PyOnCityAcquired), then the old owner, bConquest and bTrade (PyOnCityAcquired).
 // Called where CvEventReporter reports the Python events, which happens the same way on every computer.
+// PyOnDiscovered of a tech (added by this mod): CvHookInterface.py evaluates the expression with pPlayer, eTech and bFirst
+// (the team of the player is the first to have it)
+void CvPlayer::doTechPythonHook(TechTypes eTech, bool bFirst)
+{
+	if (isObserver())
+	{
+		return;
+	}
+
+	CyPlayer* pyPlayer = new CyPlayer(this);
+	CyArgsList argsList;
+	argsList.add(gDLL->getPythonIFace()->makePythonObject(pyPlayer));
+	argsList.add((int)eTech);
+	argsList.add(bFirst ? 1 : 0);
+	gDLL->getPythonIFace()->callFunction(PYHookModule, "onTechDiscovered", argsList.makeFunctionArgs());
+	delete pyPlayer;	// the python function must not hold on to it
+}
+
+// PyOnAdopt (bAdopt) or PyOnRevoke of a civic (added by this mod): CvHookInterface.py evaluates the expression with pPlayer
+// and eCivic
+void CvPlayer::doCivicPythonHook(CivicTypes eCivic, bool bAdopt)
+{
+	if (isObserver())
+	{
+		return;
+	}
+
+	CyPlayer* pyPlayer = new CyPlayer(this);
+	CyArgsList argsList;
+	argsList.add(gDLL->getPythonIFace()->makePythonObject(pyPlayer));
+	argsList.add((int)eCivic);
+	gDLL->getPythonIFace()->callFunction(PYHookModule, (bAdopt ? "onCivicAdopt" : "onCivicRevoke"), argsList.makeFunctionArgs());
+	delete pyPlayer;	// the python function must not hold on to it
+}
+
 void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, PlayerTypes eOldOwner, bool bConquest, bool bTrade)
 {
 	// Not for the player watching in the AI observe mode, who has nothing to act on
@@ -14220,6 +14275,19 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 
 		// ConditionalFreeTraits (PrereqCivic, bFavoriteCivic, StateReligion; added by this mod)
 		updateConditionalTraits();
+
+		// PyOnRevoke and PyOnAdopt of the civics (added by this mod). Not for the civics set at the start of the game
+		if (GC.getGameINLINE().isFinalInitialized())
+		{
+			if (eOldCivic != NO_CIVIC && GC.getCivicInfo(eOldCivic).getPyOnRevoke()[0] != '\0')
+			{
+				doCivicPythonHook(eOldCivic, false);
+			}
+			if (getCivics(eIndex) != NO_CIVIC && GC.getCivicInfo(getCivics(eIndex)).getPyOnAdopt()[0] != '\0')
+			{
+				doCivicPythonHook(getCivics(eIndex), true);
+			}
+		}
 
 		GC.getGameINLINE().updateSecretaryGeneral();
 

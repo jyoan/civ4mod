@@ -3720,6 +3720,11 @@ static CvWString getConditionalFreeTraitConditions(const ConditionalFreeTrait& k
 			szConditions += gDLL->getText("TXT_KEY_CONDITION_RECORD_NOW", GC.getGameINLINE().getPlayerRank(eActivePlayer) + 1);
 		}
 	}
+	// PyCondition: its PyConditionText, or a generic text (added by this mod)
+	if (!kCondition.szPyCondition.empty())
+	{
+		appendConditionText(szConditions, gDLL->getText(kCondition.szPyConditionText.empty() ? "TXT_KEY_CONDITION_PYTHON" : kCondition.szPyConditionText.GetCString()));
+	}
 
 	return szConditions;
 }
@@ -4226,7 +4231,8 @@ void CvGameTextMgr::parseTraitYieldEffects(CvWStringBuffer& szHelpString, TraitT
 		if (iValue != 0)
 		{
 			szTempBuffer.Format(L"%c%d.%02d", ((iValue > 0) ? L'+' : L'-'), abs(iValue) / 100, abs(iValue) % 100);
-			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FEATURE_GROWTH_CHANGE", szFeature.GetCString(), szTempBuffer.GetCString()));
+			// The feature twice: %s1 and %s3 (getText replaces only one occurrence of an argument)
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FEATURE_GROWTH_CHANGE", szFeature.GetCString(), szTempBuffer.GetCString(), szFeature.GetCString()));
 		}
 
 		iValue = kTrait.getFeatureHealthChange(iJ);
