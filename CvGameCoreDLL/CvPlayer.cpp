@@ -7972,6 +7972,44 @@ int CvPlayer::getRouteMovementModifierInBorders() const
 	return sumTraitValues(&CvTraitInfo::getRouteMovementModifierInBorders);
 }
 
+// The max number of national wonders in a city of the player, -1 for no limit (added by this mod; was in
+// CvCity::isNationalWondersMaxed). MAX_NATIONAL_WONDERS_PER_CITY of GlobalDefines, or MAX_NATIONAL_WONDERS_PER_CITY_FOR_OCC for a
+// human player in a One-City Challenge game. iMaxNationalWondersPerCity (ForOCC) of the traits replaces the define; with several
+// traits, the loosest wins (-1 over any number). 0 in a trait: not set
+int CvPlayer::getMaxNationalWondersPerCity() const
+{
+	bool bOCC = (GC.getGameINLINE().isOption(GAMEOPTION_ONE_CITY_CHALLENGE) && isHuman());
+	int iMax = 0;
+	int iValue;
+	int iI;
+
+	if (getLeaderType() != NO_LEADER)
+	{
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (hasTrait((TraitTypes)iI))
+			{
+				CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+				iValue = (bOCC ? kTrait.getMaxNationalWondersPerCityForOCC() : kTrait.getMaxNationalWondersPerCity());
+
+				if (iValue == -1)
+				{
+					return -1;
+				}
+
+				iMax = std::max(iMax, iValue);
+			}
+		}
+	}
+
+	if (iMax > 0)
+	{
+		return iMax;
+	}
+
+	return (bOCC ? GC.getDefineINT("MAX_NATIONAL_WONDERS_PER_CITY_FOR_OCC") : GC.getDefineINT("MAX_NATIONAL_WONDERS_PER_CITY"));
+}
+
 // bConquestStateReligion of the traits (added by this mod): see acquireCity
 bool CvPlayer::isConquestStateReligion() const
 {

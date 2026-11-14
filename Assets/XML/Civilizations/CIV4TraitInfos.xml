@@ -395,6 +395,8 @@
 				<CivicType>CIVIC_CASTE_SYSTEM</CivicType>
 				<CivicType>CIVIC_ORGANIZED_RELIGION</CivicType>
 			</NoTechCivics>
+			<iMaxNationalWondersPerCity>4</iMaxNationalWondersPerCity>
+			<iMaxNationalWondersPerCityForOCC>-1</iMaxNationalWondersPerCityForOCC>
 			<iGoldenAgeModifier>50</iGoldenAgeModifier>
 			<iGoldenAgeGreatPeopleRateModifier>50</iGoldenAgeGreatPeopleRateModifier>
 			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>

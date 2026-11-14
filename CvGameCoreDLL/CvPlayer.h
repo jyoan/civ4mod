@@ -260,6 +260,7 @@ public:
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(SpecialBuildingTypes eSpecialBuilding) const;	// Exposed to Python (added by this mod)
 	bool isNoTechCivic(CivicTypes eCivic) const;	// Exposed to Python (added by this mod)
+	int getMaxNationalWondersPerCity() const;	// Exposed to Python (added by this mod)
 	void doEnemyAttrition();	// added by this mod
 	int getFeatureProductionChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	int getFeatureGrowthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)

@@ -412,6 +412,8 @@
 	<ElementType name="NoTechCivics" content="eltOnly">
 		<element type="CivicType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="iMaxNationalWondersPerCity" content="textOnly" dt:type="int"/>
+	<ElementType name="iMaxNationalWondersPerCityForOCC" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldenAgeModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldenAgeGreatPeopleRateModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iCapitalBuildingProductionModifier" content="textOnly" dt:type="int"/>
@@ -714,6 +716,8 @@
 		<element type="bConquestStateReligion" minOccurs="0"/>
 		<element type="ConquestReligionBuildings" minOccurs="0"/>
 		<element type="NoTechCivics" minOccurs="0"/>
+		<element type="iMaxNationalWondersPerCity" minOccurs="0"/>
+		<element type="iMaxNationalWondersPerCityForOCC" minOccurs="0"/>
 		<element type="iGoldenAgeModifier" minOccurs="0"/>
 		<element type="iGoldenAgeGreatPeopleRateModifier" minOccurs="0"/>
 		<element type="iCapitalBuildingProductionModifier" minOccurs="0"/>

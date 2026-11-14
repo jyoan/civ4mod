@@ -4850,6 +4850,8 @@ public:
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(int iSpecialBuilding) const;	// Exposed to Python (added by this mod)
 	bool isNoTechCivic(int i) const;		// Exposed to Python (added by this mod)
+	int getMaxNationalWondersPerCity() const;	// Exposed to Python (added by this mod)
+	int getMaxNationalWondersPerCityForOCC() const;	// Exposed to Python (added by this mod)
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -5042,6 +5044,8 @@ protected:
 	std::vector<CvString> m_aszConquestReligionBuildingTypes;	// read() keeps the types as strings until readPass3()
 	bool* m_pabNoTechCivic;	// added by this mod, NULL when not set
 	std::vector<CvString> m_aszNoTechCivicTypes;	// read() keeps the types as strings until readPass3() (civics are loaded later)
+	int m_iMaxNationalWondersPerCity;	// added by this mod: 0 = not set, -1 = no limit
+	int m_iMaxNationalWondersPerCityForOCC;	// added by this mod: 0 = not set, -1 = no limit
 	bool m_bNewCityStateReligion;
 
 	CvString m_szShortDescription;

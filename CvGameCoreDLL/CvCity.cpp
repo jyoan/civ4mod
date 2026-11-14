@@ -1909,7 +1909,8 @@ bool CvCity::isTeamWondersMaxed() const
 
 bool CvCity::isNationalWondersMaxed() const
 {
-	int iMaxNumWonders = (GC.getGameINLINE().isOption(GAMEOPTION_ONE_CITY_CHALLENGE) && isHuman()) ? GC.getDefineINT("MAX_NATIONAL_WONDERS_PER_CITY_FOR_OCC") : GC.getDefineINT("MAX_NATIONAL_WONDERS_PER_CITY");
+	// The traits can replace the GlobalDefines (changed by this mod)
+	int iMaxNumWonders = GET_PLAYER(getOwnerINLINE()).getMaxNationalWondersPerCity();
 
 	if (iMaxNumWonders == -1)
 	{

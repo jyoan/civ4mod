@@ -20021,6 +20021,8 @@ m_iRouteMovementModifierInBorders(0),
 m_bConquestStateReligion(false),
 m_pabConquestReligionBuilding(NULL),
 m_pabNoTechCivic(NULL),
+m_iMaxNationalWondersPerCity(0),
+m_iMaxNationalWondersPerCityForOCC(0),
 m_bNewCityStateReligion(false),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
@@ -20584,6 +20586,20 @@ bool CvTraitInfo::isNoTechCivic(int i) const
 	FAssertMsg(i < GC.getNumCivicInfos(), "Index out of bounds");
 	FAssertMsg(i > -1, "Index out of bounds");
 	return m_pabNoTechCivic ? m_pabNoTechCivic[i] : false;
+}
+
+// iMaxNationalWondersPerCity (added by this mod): replaces MAX_NATIONAL_WONDERS_PER_CITY of GlobalDefines for the player
+// (CvPlayer::getMaxNationalWondersPerCity). 0: not set, -1: no limit
+int CvTraitInfo::getMaxNationalWondersPerCity() const
+{
+	return m_iMaxNationalWondersPerCity;
+}
+
+// iMaxNationalWondersPerCityForOCC (added by this mod): the same for MAX_NATIONAL_WONDERS_PER_CITY_FOR_OCC (a human player
+// in a One-City Challenge game)
+int CvTraitInfo::getMaxNationalWondersPerCityForOCC() const
+{
+	return m_iMaxNationalWondersPerCityForOCC;
 }
 
 const TCHAR* CvTraitInfo::getShortDescription() const
@@ -21469,6 +21485,8 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bConquestStateReligion, "bConquestStateReligion");
 	readTypeList(pXML, "ConquestReligionBuildings", m_aszConquestReligionBuildingTypes);	// special buildings: readPass3()
 	readTypeList(pXML, "NoTechCivics", m_aszNoTechCivicTypes);	// civics are loaded later: readPass3()
+	pXML->GetChildXmlValByName(&m_iMaxNationalWondersPerCity, "iMaxNationalWondersPerCity");
+	pXML->GetChildXmlValByName(&m_iMaxNationalWondersPerCityForOCC, "iMaxNationalWondersPerCityForOCC");
 }
 
 // The part of read() for the yield and commerce arrays, the unit combat arrays, the free promotions and MaintainFeatures (added by this mod)

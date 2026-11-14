@@ -2248,6 +2248,11 @@ bool CyPlayer::isNoTechCivic(int /*CivicTypes*/ eCivic)
 	return m_pPlayer ? m_pPlayer->isNoTechCivic((CivicTypes)eCivic) : false;
 }
 
+int CyPlayer::getMaxNationalWondersPerCity()
+{
+	return m_pPlayer ? m_pPlayer->getMaxNationalWondersPerCity() : -1;
+}
+
 int CyPlayer::getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce)
 {
 	return m_pPlayer ? m_pPlayer->getSpecialistTypeExtraCommerce((SpecialistTypes)eSpecialist, (CommerceTypes)eCommerce) : 0;

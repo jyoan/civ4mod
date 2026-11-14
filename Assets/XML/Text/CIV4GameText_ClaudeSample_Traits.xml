@@ -830,4 +830,31 @@
 		<Spanish>[ICON_BULLET]Conquered cities with the state religion get its (when they could build it): </Spanish>
 		<Japanese>[ICON_BULLET]&#22269;&#25945;&#12398;&#12354;&#12427;&#21344;&#38936;&#12375;&#12383;&#37117;&#24066;&#12395;&#24314;&#12388;&#22269;&#25945;&#12398;&#24314;&#29289;&#65288;&#24314;&#35373;&#12398;&#26465;&#20214;&#12434;&#28288;&#12383;&#12377;&#12392;&#12365;&#65289;: </Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MAX_NATIONAL_WONDERS</Tag>
+		<English>[ICON_BULLET]National wonders per city: %s1</English>
+		<French>[ICON_BULLET]National wonders per city: %s1</French>
+		<German>[ICON_BULLET]National wonders per city: %s1</German>
+		<Italian>[ICON_BULLET]National wonders per city: %s1</Italian>
+		<Spanish>[ICON_BULLET]National wonders per city: %s1</Spanish>
+		<Japanese>[ICON_BULLET]1&#37117;&#24066;&#12395;&#24314;&#35373;&#12391;&#12365;&#12427;&#22269;&#23478;&#36986;&#29987;: %s1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MAX_NATIONAL_WONDERS_OCC</Tag>
+		<English>[ICON_BULLET]National wonders per city in One-City Challenge: %s1</English>
+		<French>[ICON_BULLET]National wonders per city in One-City Challenge: %s1</French>
+		<German>[ICON_BULLET]National wonders per city in One-City Challenge: %s1</German>
+		<Italian>[ICON_BULLET]National wonders per city in One-City Challenge: %s1</Italian>
+		<Spanish>[ICON_BULLET]National wonders per city in One-City Challenge: %s1</Spanish>
+		<Japanese>[ICON_BULLET]1&#37117;&#24066;&#12395;&#24314;&#35373;&#12391;&#12365;&#12427;&#22269;&#23478;&#36986;&#29987;&#65288;1&#12388;&#12398;&#37117;&#24066;&#12391;&#12481;&#12515;&#12524;&#12531;&#12472;&#65289;: %s1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_LIMIT</Tag>
+		<English>no limit</English>
+		<French>no limit</French>
+		<German>no limit</German>
+		<Italian>no limit</Italian>
+		<Spanish>no limit</Spanish>
+		<Japanese>&#28961;&#21046;&#38480;</Japanese>
+	</TEXT>
 </Civ4GameText>

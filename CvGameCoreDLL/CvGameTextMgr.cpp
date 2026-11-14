@@ -3972,6 +3972,19 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		}
 	}
 
+	// iMaxNationalWondersPerCity (ForOCC): "National wonders per city: 4" / "no limit" (added by this mod)
+	if (kTrait.getMaxNationalWondersPerCity() != 0)
+	{
+		szText = (kTrait.getMaxNationalWondersPerCity() == -1) ? gDLL->getText("TXT_KEY_TRAIT_NO_LIMIT") : CvWString::format(L"%d", kTrait.getMaxNationalWondersPerCity());
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_MAX_NATIONAL_WONDERS", szText.GetCString()));
+	}
+
+	if (kTrait.getMaxNationalWondersPerCityForOCC() != 0)
+	{
+		szText = (kTrait.getMaxNationalWondersPerCityForOCC() == -1) ? gDLL->getText("TXT_KEY_TRAIT_NO_LIMIT") : CvWString::format(L"%d", kTrait.getMaxNationalWondersPerCityForOCC());
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_MAX_NATIONAL_WONDERS_OCC", szText.GetCString()));
+	}
+
 	// iUnitCostModifier / iBuildingCostModifier: "-20% production cost of units" (added by this mod)
 	if (kTrait.getUnitCostModifier() != 0)
 	{
@@ -9865,7 +9878,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			{
 				if (pCity->isNationalWondersMaxed())
 				{
-					int iMaxNumWonders = (GC.getGameINLINE().isOption(GAMEOPTION_ONE_CITY_CHALLENGE) && GET_PLAYER(pCity->getOwnerINLINE()).isHuman()) ? GC.getDefineINT("MAX_NATIONAL_WONDERS_PER_CITY_FOR_OCC") : GC.getDefineINT("MAX_NATIONAL_WONDERS_PER_CITY");
+					int iMaxNumWonders = GET_PLAYER(pCity->getOwnerINLINE()).getMaxNationalWondersPerCity();	// with the traits (changed by this mod)
 					szBuffer.append(NEWLINE);
 					szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_NATIONAL_WONDERS_PER_CITY", iMaxNumWonders));
 				}
