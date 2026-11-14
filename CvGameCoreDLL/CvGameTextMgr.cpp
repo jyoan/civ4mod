@@ -3935,6 +3935,43 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		}
 	}
 
+	// NoTechCivics: "Can adopt without the tech: Caste System" (added by this mod)
+	bFirstCivic = true;
+	for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
+	{
+		if (kTrait.isNoTechCivic(iI))
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_NO_TECH_CIVICS").c_str());
+			szText = getLinkText(GC.getCivicInfo((CivicTypes)iI).getDescription());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstCivic);
+			bFirstCivic = false;
+		}
+	}
+
+	// iRouteMovementModifierInBorders, bConquestStateReligion, bConquestReligionBuildings (added by this mod)
+	if (kTrait.getRouteMovementModifierInBorders() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ROUTE_MOVEMENT_IN_BORDERS", kTrait.getRouteMovementModifierInBorders()));
+	}
+
+	if (kTrait.isConquestStateReligion())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_STATE_RELIGION"));
+	}
+
+	// ConquestReligionBuildings: "Conquered cities get (when they could build it): Temple, Cathedral". Special buildings have
+	// no Civilopedia page: no link
+	bool bFirstConquestBuilding = true;
+	for (iI = 0; iI < GC.getNumSpecialBuildingInfos(); iI++)
+	{
+		if (kTrait.isConquestReligionBuilding(iI))
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_RELIGION_BUILDINGS").c_str());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), GC.getSpecialBuildingInfo((SpecialBuildingTypes)iI).getDescription(), L", ", bFirstConquestBuilding);
+			bFirstConquestBuilding = false;
+		}
+	}
+
 	// iUnitCostModifier / iBuildingCostModifier: "-20% production cost of units" (added by this mod)
 	if (kTrait.getUnitCostModifier() != 0)
 	{
@@ -6359,6 +6396,24 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 				szForbiddenTrait.Format(L"<link=literal>%s</link>", GC.getTraitInfo((TraitTypes)iI).getDescription());
 				setListHelp(szHelpText, szForbiddenStart, szForbiddenTrait, L", ", bFirstForbiddingTrait);
 				bFirstForbiddingTrait = false;
+			}
+		}
+	}
+
+	// The traits that need no tech for the civic (NoTechCivics; added by this mod): in the game, those of the active player
+	bool bFirstNoTechTrait = true;
+	for (iI = 0; iI < GC.getNumTraitInfos(); ++iI)
+	{
+		if (GC.getTraitInfo((TraitTypes)iI).isNoTechCivic(eCivic))
+		{
+			if (bCivilopediaText || !bPlayerContext || GC.getGameINLINE().getActivePlayer() == NO_PLAYER || GET_PLAYER(GC.getGameINLINE().getActivePlayer()).hasTrait((TraitTypes)iI))
+			{
+				CvWString szNoTechStart;
+				CvWString szNoTechTrait;
+				szNoTechStart.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_NO_TECH_TRAITS").c_str());
+				szNoTechTrait.Format(L"<link=literal>%s</link>", GC.getTraitInfo((TraitTypes)iI).getDescription());
+				setListHelp(szHelpText, szNoTechStart, szNoTechTrait, L", ", bFirstNoTechTrait);
+				bFirstNoTechTrait = false;
 			}
 		}
 	}

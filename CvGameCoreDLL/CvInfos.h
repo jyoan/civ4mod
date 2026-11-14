@@ -4846,6 +4846,10 @@ public:
 	int getAnarchyGoldenAgePercent() const;			// Exposed to Python (added by this mod)
 	int getTechCostModifier() const;			// Exposed to Python (added by this mod)
 	int getAttitudeChange() const;			// Exposed to Python (added by this mod)
+	int getRouteMovementModifierInBorders() const;	// Exposed to Python (added by this mod)
+	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
+	bool isConquestReligionBuilding(int iSpecialBuilding) const;	// Exposed to Python (added by this mod)
+	bool isNoTechCivic(int i) const;		// Exposed to Python (added by this mod)
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -5032,6 +5036,12 @@ protected:
 	int m_iAnarchyGoldenAgePercent;	// added by this mod
 	int m_iTechCostModifier;	// added by this mod
 	int m_iAttitudeChange;	// added by this mod
+	int m_iRouteMovementModifierInBorders;	// added by this mod
+	bool m_bConquestStateReligion;	// added by this mod
+	bool* m_pabConquestReligionBuilding;	// added by this mod: [special building], NULL when not set
+	std::vector<CvString> m_aszConquestReligionBuildingTypes;	// read() keeps the types as strings until readPass3()
+	bool* m_pabNoTechCivic;	// added by this mod, NULL when not set
+	std::vector<CvString> m_aszNoTechCivicTypes;	// read() keeps the types as strings until readPass3() (civics are loaded later)
 	bool m_bNewCityStateReligion;
 
 	CvString m_szShortDescription;

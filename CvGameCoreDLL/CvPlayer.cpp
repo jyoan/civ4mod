@@ -1964,6 +1964,41 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		GC.getGameINLINE().updatePlotGroups();
 	}
 
+	// bConquestStateReligion and ConquestReligionBuildings of the traits (added by this mod, as the Arabian power of Rhye's
+	// and Fall of Civilization): the state religion spreads to the conquered city, and the city gets the buildings of that
+	// religion with the listed special buildings (temple, monastery, cathedral; the versions of the civilization of the
+	// player) it could build now: tech, the religion in the city, the temples a cathedral needs (CvCity::canConstruct, the
+	// cost aside). Two passes, so a temple given here counts for a cathedral
+	if (bConquest && getStateReligion() != NO_RELIGION)
+	{
+		if (isConquestStateReligion())
+		{
+			pNewCity->setHasReligion(getStateReligion(), true, true, true);
+		}
+
+		for (int iPass = 0; iPass < 2; iPass++)
+		{
+			for (int iBuildingClass = 0; iBuildingClass < GC.getNumBuildingClassInfos(); iBuildingClass++)
+			{
+				BuildingTypes eReligionBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iBuildingClass);
+				if (eReligionBuilding == NO_BUILDING || GC.getBuildingInfo(eReligionBuilding).getReligionType() != getStateReligion())
+				{
+					continue;
+				}
+
+				if (!isConquestReligionBuilding((SpecialBuildingTypes)GC.getBuildingInfo(eReligionBuilding).getSpecialBuildingType()))
+				{
+					continue;
+				}
+
+				if (pNewCity->getNumRealBuilding(eReligionBuilding) == 0 && pNewCity->canConstruct(eReligionBuilding, false, false, true))
+				{
+					pNewCity->setNumRealBuilding(eReligionBuilding, 1);
+				}
+			}
+		}
+	}
+
 	// iMinCitiesConquered of ConditionalFreeTraits (added by this mod). Not for culture or trade. Before the hooks, so a trait
 	// gained here also runs its PyOnCityAcquired for this city
 	if (bConquest)
@@ -7931,6 +7966,55 @@ int CvPlayer::getAttitudeChange() const
 	return sumTraitValues(&CvTraitInfo::getAttitudeChange);
 }
 
+// iRouteMovementModifierInBorders of the traits (added by this mod): see CvPlot::movementCost
+int CvPlayer::getRouteMovementModifierInBorders() const
+{
+	return sumTraitValues(&CvTraitInfo::getRouteMovementModifierInBorders);
+}
+
+// bConquestStateReligion of the traits (added by this mod): see acquireCity
+bool CvPlayer::isConquestStateReligion() const
+{
+	return hasTraitFlag(&CvTraitInfo::isConquestStateReligion);
+}
+
+// ConquestReligionBuildings of the traits (added by this mod): see acquireCity
+bool CvPlayer::isConquestReligionBuilding(SpecialBuildingTypes eSpecialBuilding) const
+{
+	int iI;
+
+	if (eSpecialBuilding == NO_SPECIALBUILDING)
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (GC.getTraitInfo((TraitTypes)iI).isConquestReligionBuilding(eSpecialBuilding) && hasTrait((TraitTypes)iI))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// NoTechCivics of the traits (added by this mod): the player can adopt the civic without its tech
+bool CvPlayer::isNoTechCivic(CivicTypes eCivic) const
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (GC.getTraitInfo((TraitTypes)iI).isNoTechCivic(eCivic) && hasTrait((TraitTypes)iI))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 // iEnemyAttritionLimit of the traits with iEnemyAttritionInBorders (added by this mod): the largest one, 0 to 100
 int CvPlayer::getEnemyAttritionLimit() const
 {
@@ -9188,7 +9272,8 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 		}
 	}
 
-	if (!isHasCivicOption((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())) && !(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getCivicInfo(eCivic).getTechPrereq()))))
+	// NoTechCivics of the traits (added by this mod): no tech needed
+	if (!isHasCivicOption((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())) && !(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getCivicInfo(eCivic).getTechPrereq()))) && !isNoTechCivic(eCivic))
 	{
 		return false;
 	}

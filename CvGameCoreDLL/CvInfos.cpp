@@ -20017,6 +20017,10 @@ m_iEnemyAttritionLimit(100),
 m_iAnarchyGoldenAgePercent(0),
 m_iTechCostModifier(0),
 m_iAttitudeChange(0),
+m_iRouteMovementModifierInBorders(0),
+m_bConquestStateReligion(false),
+m_pabConquestReligionBuilding(NULL),
+m_pabNoTechCivic(NULL),
 m_bNewCityStateReligion(false),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
@@ -20089,6 +20093,8 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_piStartBiasFeatures);
 	SAFE_DELETE_ARRAY(m_piStartBiasBonuses);
 	SAFE_DELETE_ARRAY(m_pabForbiddenCivic);
+	SAFE_DELETE_ARRAY(m_pabNoTechCivic);
+	SAFE_DELETE_ARRAY(m_pabConquestReligionBuilding);
 }
 
 int CvTraitInfo::getHealth() const									
@@ -20548,6 +20554,36 @@ int CvTraitInfo::getTechCostModifier() const
 int CvTraitInfo::getAttitudeChange() const
 {
 	return m_iAttitudeChange;
+}
+
+// iRouteMovementModifierInBorders (added by this mod): % to the movement cost of routes between plots of the team of the
+// player (CvPlot::movementCost). -50: the roads of the player are twice as fast there
+int CvTraitInfo::getRouteMovementModifierInBorders() const
+{
+	return m_iRouteMovementModifierInBorders;
+}
+
+// bConquestStateReligion (added by this mod): the state religion spreads to the cities the player conquers
+bool CvTraitInfo::isConquestStateReligion() const
+{
+	return m_bConquestStateReligion;
+}
+
+// ConquestReligionBuildings (added by this mod): the special buildings (temple, monastery, cathedral) of the state religion
+// a conquered city gets, when it could build them (CvPlayer::acquireCity)
+bool CvTraitInfo::isConquestReligionBuilding(int iSpecialBuilding) const
+{
+	FAssertMsg(iSpecialBuilding < GC.getNumSpecialBuildingInfos(), "Index out of bounds");
+	FAssertMsg(iSpecialBuilding > -1, "Index out of bounds");
+	return m_pabConquestReligionBuilding ? m_pabConquestReligionBuilding[iSpecialBuilding] : false;
+}
+
+// NoTechCivics (added by this mod): the player can adopt the civic without its tech (CvPlayer::canDoCivics)
+bool CvTraitInfo::isNoTechCivic(int i) const
+{
+	FAssertMsg(i < GC.getNumCivicInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_pabNoTechCivic ? m_pabNoTechCivic[i] : false;
 }
 
 const TCHAR* CvTraitInfo::getShortDescription() const
@@ -21429,6 +21465,10 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iAnarchyGoldenAgePercent, "iAnarchyGoldenAgePercent");
 	pXML->GetChildXmlValByName(&m_iTechCostModifier, "iTechCostModifier");
 	pXML->GetChildXmlValByName(&m_iAttitudeChange, "iAttitudeChange");
+	pXML->GetChildXmlValByName(&m_iRouteMovementModifierInBorders, "iRouteMovementModifierInBorders");
+	pXML->GetChildXmlValByName(&m_bConquestStateReligion, "bConquestStateReligion");
+	readTypeList(pXML, "ConquestReligionBuildings", m_aszConquestReligionBuildingTypes);	// special buildings: readPass3()
+	readTypeList(pXML, "NoTechCivics", m_aszNoTechCivicTypes);	// civics are loaded later: readPass3()
 }
 
 // The part of read() for the yield and commerce arrays, the unit combat arrays, the free promotions and MaintainFeatures (added by this mod)
@@ -21945,6 +21985,10 @@ bool CvTraitInfo::readPass3()
 
 	resolveTypeList("ForbiddenCivics", m_aszForbiddenCivicTypes, GC.getNumCivicInfos(), &m_pabForbiddenCivic);
 	m_aszForbiddenCivicTypes.clear();
+	resolveTypeList("NoTechCivics", m_aszNoTechCivicTypes, GC.getNumCivicInfos(), &m_pabNoTechCivic);
+	m_aszNoTechCivicTypes.clear();
+	resolveTypeList("ConquestReligionBuildings", m_aszConquestReligionBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabConquestReligionBuilding);
+	m_aszConquestReligionBuildingTypes.clear();
 	resolveTypeList("NoObsoleteBuildingClasses", m_aszNoObsoleteBuildingClassTypes, GC.getNumBuildingClassInfos(), &m_pabNoObsoleteBuildingClass);
 	m_aszNoObsoleteBuildingClassTypes.clear();
 	resolveTypeList("NoObsoleteSpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabNoObsoleteSpecialBuilding);

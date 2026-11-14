@@ -794,4 +794,40 @@
 		<Spanish>[ICON_BULLET]%D1 attitude of the other civilizations</Spanish>
 		<Japanese>[ICON_BULLET]&#12411;&#12363;&#12398;&#25991;&#26126;&#12363;&#12425;&#12398;&#24907;&#24230; %D1</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_TECH_CIVICS</Tag>
+		<English>[ICON_BULLET]Can adopt without the technology: </English>
+		<French>[ICON_BULLET]Can adopt without the technology: </French>
+		<German>[ICON_BULLET]Can adopt without the technology: </German>
+		<Italian>[ICON_BULLET]Can adopt without the technology: </Italian>
+		<Spanish>[ICON_BULLET]Can adopt without the technology: </Spanish>
+		<Japanese>[ICON_BULLET]&#25216;&#34899;&#12394;&#12375;&#12391;&#25505;&#29992;&#12391;&#12365;&#12427;&#31038;&#20250;&#21046;&#24230;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ROUTE_MOVEMENT_IN_BORDERS</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% movement cost of routes in your territory</English>
+		<French>[ICON_BULLET]%D1_Percent%% movement cost of routes in your territory</French>
+		<German>[ICON_BULLET]%D1_Percent%% movement cost of routes in your territory</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% movement cost of routes in your territory</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% movement cost of routes in your territory</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12398;&#36947;&#36335;&#12539;&#37444;&#36947;&#12398;&#31227;&#21205;&#12467;&#12473;&#12488;%D1_Percent%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONQUEST_STATE_RELIGION</Tag>
+		<English>[ICON_BULLET]The state religion spreads to conquered cities</English>
+		<French>[ICON_BULLET]The state religion spreads to conquered cities</French>
+		<German>[ICON_BULLET]The state religion spreads to conquered cities</German>
+		<Italian>[ICON_BULLET]The state religion spreads to conquered cities</Italian>
+		<Spanish>[ICON_BULLET]The state religion spreads to conquered cities</Spanish>
+		<Japanese>[ICON_BULLET]&#21344;&#38936;&#12375;&#12383;&#37117;&#24066;&#12395;&#22269;&#25945;&#12364;&#24195;&#12414;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONQUEST_RELIGION_BUILDINGS</Tag>
+		<English>[ICON_BULLET]Conquered cities with the state religion get its (when they could build it): </English>
+		<French>[ICON_BULLET]Conquered cities with the state religion get its (when they could build it): </French>
+		<German>[ICON_BULLET]Conquered cities with the state religion get its (when they could build it): </German>
+		<Italian>[ICON_BULLET]Conquered cities with the state religion get its (when they could build it): </Italian>
+		<Spanish>[ICON_BULLET]Conquered cities with the state religion get its (when they could build it): </Spanish>
+		<Japanese>[ICON_BULLET]&#22269;&#25945;&#12398;&#12354;&#12427;&#21344;&#38936;&#12375;&#12383;&#37117;&#24066;&#12395;&#24314;&#12388;&#22269;&#25945;&#12398;&#24314;&#29289;&#65288;&#24314;&#35373;&#12398;&#26465;&#20214;&#12434;&#28288;&#12383;&#12377;&#12392;&#12365;&#65289;: </Japanese>
+	</TEXT>
 </Civ4GameText>

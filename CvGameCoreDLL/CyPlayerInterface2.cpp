@@ -124,5 +124,9 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("getAnarchyGoldenAgePercent", &CyPlayer::getAnarchyGoldenAgePercent, "int () - golden age turns in % of the anarchy of a change of civics or religion (traits, added by this mod)")
 		.def("getTechCostModifier", &CyPlayer::getTechCostModifier, "int () - research cost % of the techs (traits, added by this mod)")
 		.def("getAttitudeChange", &CyPlayer::getAttitudeChange, "int () - attitude of the other players toward this one (traits, added by this mod)")
+		.def("getRouteMovementModifierInBorders", &CyPlayer::getRouteMovementModifierInBorders, "int () - route movement cost % in the territory (traits, added by this mod)")
+		.def("isConquestStateReligion", &CyPlayer::isConquestStateReligion, "bool () - the state religion spreads to conquered cities (traits, added by this mod)")
+		.def("isConquestReligionBuilding", &CyPlayer::isConquestReligionBuilding, "bool (int eSpecialBuilding) - conquered cities get this building of the state religion (traits, added by this mod)")
+		.def("isNoTechCivic", &CyPlayer::isNoTechCivic, "bool (int eCivic) - the civic needs no tech (traits, added by this mod)")
 		;
 }

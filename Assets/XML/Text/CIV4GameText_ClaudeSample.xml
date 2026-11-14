@@ -1249,6 +1249,15 @@
 		<Spanish>%D1: Their traits</Spanish>
 		<Japanese>%D1: &#24535;&#21521;&#12395;&#12424;&#12427;&#21360;&#35937;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIVIC_NO_TECH_TRAITS</Tag>
+		<English>[ICON_BULLET]No technology needed with: </English>
+		<French>[ICON_BULLET]No technology needed with: </French>
+		<German>[ICON_BULLET]No technology needed with: </German>
+		<Italian>[ICON_BULLET]No technology needed with: </Italian>
+		<Spanish>[ICON_BULLET]No technology needed with: </Spanish>
+		<Japanese>[ICON_BULLET]&#27425;&#12398;&#24535;&#21521;&#12434;&#25345;&#12388;&#12392;&#25216;&#34899;&#12394;&#12375;&#12391;&#25505;&#29992;&#12391;&#12365;&#12427;: </Japanese>
+	</TEXT>
 	<!-- Unofficial 3.19 Patch (jdog5000): the keys of CIV4GameText_UnofficialPatch.xml and the key it uses without text -->
 	<TEXT>
 		<Tag>TXT_KEY_TERRAIN_TURN_DAMAGE</Tag>
