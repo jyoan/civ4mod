@@ -34,6 +34,7 @@ build.bat clean      CvGameCoreDLL\Release\ を削除（配置はしない）
   - PowerShell: `& 'C:\claudeCode\civ4mod\build.bat'`
 - 全ビルド約 2 分、変更なしなら 0 秒。ヘッダを 1 つでも変えると PCH 経由で全再コンパイルになる
 - build.bat はビルド後に依存 DLL を検査し、MSVCR71.dll に依存しない／MSVCR80 以降に依存する DLL は失敗扱いにしてコピーしない
+- build.bat はビルド後（配置の前）に `tools\check_refs.ps1` を実行する（約 2 秒）。XML・Python の名前の参照と、ソースの形式（ASCII のみ・CRLF）を調べる。エラーがあっても配置は続ける（終了コードも変えない）ので、出力の `check_refs:` の行を見て、エラーが出ていたら直す。`build.bat deploy` では実行しない
 - 元ソースは `/W3` で**警告 0 件**。警告が出たら自分の変更が原因
 - `CyPlayerInterface1.cpp` は MSVC 7.1 のデバッグ情報の上限に達している（`.def` を足すと `fatal error C1067: compiler limit : debug information module size exceeded`）。この Mod で足す `CyPlayer` の `.def` は `CyPlayerInterface2.cpp` の末尾に書く。`CyCityInterface1.cpp` も同じ上限に達している。`CyCity` の `.def` は `CyCityInterface2.cpp` に書く
 - 新しい `.cpp` を追加したら Makefile の `OBJS` に 1 行足す（ワイルドカードは使っていない）
@@ -113,11 +114,11 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 4. その Info クラスに `read(FDataStreamBase*)` / `write(FDataStreamBase*)` もある場合（Unit, Building, Tech, Promotion, Civic, Bonus など）は、そちらにも追加
 5. Python から使うなら `CyInfoInterface*.cpp` で公開する
 
-- XML や Schema を変えたら、起動の前に `tools\check_xml.ps1` を実行する（`powershell -ExecutionPolicy Bypass -File tools\check_xml.ps1`）。ゲームと同じ MSXML で検証するので、Schema の二重宣言や必須要素の抜けなど、起動時の XML エラーを先に見つけられる。ただし検証するのは形式だけで、名前の参照の誤りは見つからない
+- XML や Schema を変えたら、起動の前に `tools\check_xml.ps1` を実行する（`powershell -ExecutionPolicy Bypass -File tools\check_xml.ps1`）。ゲームと同じ MSXML で検証するので、Schema の二重宣言や必須要素の抜けなど、起動時の XML エラーを先に見つけられる。ただし検証するのは形式だけで、名前の参照の誤りは見つからない（それは build.bat が実行する `tools\check_refs.ps1` が調べる）
 - ゲームのログは `%USERPROFILE%\Documents\My Games\Beyond the Sword(J)\Logs`（`xml.log`・`PythonErr.log` など）
 - XML 内のタグの順序は Schema の順序に合わせる。新しいタグは Schema で `minOccurs="0"` にして、既存の項目には書かなくて済むようにする
 - 「なし」を表す値は型名ではなく **`NONE`** と書く（例: 維持費なしの社会制度は `<Upkeep>NONE</Upkeep>`。`UPKEEP_NONE` は存在せず、起動時に「Tag: UPKEEP_NONE in Info class was incorrect」になった）。既存の値を書き換えるときは、元の XML でその要素がどう書かれているかを先に確かめる
-- 書いた名前が実在するかは、本体（`<BTS>` / `<WL>` / `<CIV4>`）と Mod の XML の `<Type>` 一覧と照合して確かめられる。ただし `ARTSTYLE_` / `CONTACT_` / `FLAVOR_` / `FORMATION_` などは別の一覧で定義されているので、`<Type>` には出てこない
+- 書いた名前が実在するかは `tools\check_refs.ps1`（build.bat が自動で実行）が調べる。ゲームが読む XML（`<BTS>` → `<WL>` → `<CIV4>` の順で最初のもの）の `<Type>` と `GlobalTypes.xml`（`ARTSTYLE_` / `CONTACT_` / `FLAVOR_` / `FORMATION_` など）、テキストの `<Tag>` と照合する。見るもの: 定義されていない名前（接頭辞が既知のもの）、無いテキストキー、`<Type>` の重複、要素の種類と違う名前（警告。`<TraitType>` に `UNIT_` など）、Mod のテキストキーの重複（警告）、Python と XML の `Py...` の式の中の引用符で囲んだ名前（コメント行を除く）。本体からコピーしたファイルにある本体と同じ誤りは数えるだけで表示しない
 - XML は `CvXMLLoadUtility::LoadPreMenuGlobals`（`CvXMLLoadUtilitySet.cpp`）に書かれた順に読み込まれ、`FindInInfoClass` で引けるのは**先に読み込まれた Info だけ**。例えば志向より後に読み込まれるのは施設・建物・社会制度・指導者・ユニット・文明など、先に読み込まれるのは地形・地形の特徴・昇進・兵科など。後に読み込まれる Info を参照するタグは、種類を文字列のまま持っておき、`readPass3()` で番号に変える（`CvTraitInfo::readPass3` が例）
 - Mod の XML は本体の同名ファイルを丸ごと置き換える（`ModularLoading = 0` のため）。`<BTS>` → `<WL>` → `<CIV4>` の順に探して最初に見つかったものを、同じ相対パスで `Assets\XML\...` にコピーしてから編集する（Schema も同様）
 - コピーした直後に**未改変のままコミット**し、編集は次のコミットにする（git の差分で Mod の変更だけが見えるように）
