@@ -58,6 +58,10 @@ copy /y "%DLL%" "%ASSETS%\CvGameCoreDLL.dll" >nul || goto fail
 echo.
 echo Build succeeded: %ASSETS%\CvGameCoreDLL.dll
 
+rem Check the names the XML and Python refer to, and the format of the sources.
+rem The errors are reported but do not stop the deploy.
+"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\check_refs.ps1" -Bts "%BTS%" || echo WARNING: tools\check_refs.ps1 found errors, see above. Deploying anyway.
+
 :deploy
 if not exist "%BTS%\Mods" goto nodeploy
 rem A running Civ4 keeps CvGameCoreDLL.dll open, so do not even try to copy.

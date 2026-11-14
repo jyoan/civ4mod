@@ -1860,6 +1860,8 @@
 				<iCommerce>0</iCommerce>
 				<iCommerce>1</iCommerce>
 			</UnhealthyCommerceChanges>
+			<PyOnAdopt>createUnits(pPlayer, 'UNITCLASS_WORKER', 1, capitalPlot(pPlayer))</PyOnAdopt>
+			<PyOnRevoke>gainGold(pPlayer, 20)</PyOnRevoke>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_GOVERNMENT</CivicOptionType>

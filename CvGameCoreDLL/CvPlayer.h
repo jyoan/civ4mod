@@ -87,6 +87,8 @@ public:
 	int getNumCitiesConquered() const;							// Exposed to Python: iMinCitiesConquered of ConditionalFreeTraits
 	void changeNumCitiesConquered(int iChange);
 	void doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity = NULL, PlayerTypes eOldOwner = NO_PLAYER, bool bConquest = false, bool bTrade = false);	// PyOnGameStart etc. of the traits
+	void doTechPythonHook(TechTypes eTech, bool bFirst);	// added by this mod: PyOnDiscovered
+	void doCivicPythonHook(CivicTypes eCivic, bool bAdopt);	// added by this mod: PyOnAdopt / PyOnRevoke
 	DllExport bool isHuman() const;																																							// Exposed to Python						
 	DllExport void updateHuman();
 	DllExport bool isBarbarian() const;																																					// Exposed to Python						
@@ -260,6 +262,8 @@ public:
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(SpecialBuildingTypes eSpecialBuilding) const;	// Exposed to Python (added by this mod)
 	bool isNoTechCivic(CivicTypes eCivic) const;	// Exposed to Python (added by this mod)
+	int getMaxNationalWondersPerCity() const;	// Exposed to Python (added by this mod)
+	bool isHumanCanBeVassal() const;	// Exposed to Python (added by this mod)
 	void doEnemyAttrition();	// added by this mod
 	int getFeatureProductionChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	int getFeatureGrowthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)

@@ -10,12 +10,14 @@
 ##   PyOnCityFounded   pPlayer, eTrait, pCity (CyCity): after the player founds the city
 ##   PyOnCityAcquired  pPlayer, eTrait, pCity, iOldOwner, bConquest, bTrade (1 or 0): after the player acquires the city
 ##                     by conquest, trade or culture. A conquered city can still be razed afterwards.
-## Write common functions below and give them values in the XML, e.g.
+## The common functions are in CvHookUtils.py (imported below), e.g.
 ##   <PyOnGameStart>gainGold(pPlayer, scaleBySpeed(100, 'Train'))</PyOnGameStart>
 ## The hooks change the game and are called on every computer of a multiplayer game: use CyGame().getSorenRandNum for
 ## random numbers. Describe the effects in the Help of the trait (the trait text shows it).
+## The hooks of buildings, promotions, techs, civics and units are in CvHookInterface.py.
 
 from CvPythonExtensions import *
+from CvHookUtils import *
 
 gc = CyGlobalContext()
 
@@ -34,46 +36,3 @@ def onCityFounded(argsList):
 def onCityAcquired(argsList):
 	pPlayer, eTrait, pCity, iOldOwner, bConquest, bTrade = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnCityAcquired())
-
-## Common functions: values
-
-def scaleBySpeed(iValue, szPercent):
-	"iValue scaled by a percent of the game speed (CIV4GameSpeedInfo.xml). szPercent is the tag without i and Percent: 'Train' (iTrainPercent: 100 at normal speed, 150 at epic), 'Construct', 'Research', 'Growth', 'GreatPeople', etc."
-	kSpeed = gc.getGameSpeedInfo(CyGame().getGameSpeedType())
-	return iValue * getattr(kSpeed, 'get' + szPercent + 'Percent')() / 100
-
-def startEra():
-	"The era the game started in (0: ancient)"
-	return CyGame().getStartEra()
-
-def isEveryTurns(iTurns):
-	"True on every iTurns-th game turn"
-	return CyGame().getGameTurn() % iTurns == 0
-
-def capitalPlot(pPlayer):
-	"The plot of the capital (None without a capital)"
-	pCity = pPlayer.getCapitalCity()
-	if pCity.isNone():
-		return None
-	return pCity.plot()
-
-## Common functions: effects
-
-def gainGold(pPlayer, iGold):
-	"The player gains gold"
-	pPlayer.changeGold(iGold)
-
-def createUnits(pPlayer, szUnitClass, iNum, pPlot):
-	"Creates iNum units of the unit class (the unit of the player's civilization) on the plot. Nothing without a plot."
-	eUnit = pPlayer.getCivilizationUnit(gc.getInfoTypeForString(szUnitClass))
-	if eUnit == -1 or pPlot is None or pPlot.isNone():
-		return
-	for i in range(iNum):
-		pPlayer.initUnit(eUnit, pPlot.getX(), pPlot.getY(), UnitAITypes.NO_UNITAI, DirectionTypes.DIRECTION_SOUTH)
-
-def addBuilding(pCity, szBuildingClass):
-	"The city gets the building of the building class (the building of the owner's civilization)"
-	pOwner = gc.getPlayer(pCity.getOwner())
-	eBuilding = pOwner.getCivilizationBuilding(gc.getInfoTypeForString(szBuildingClass))
-	if eBuilding != -1:
-		pCity.setNumRealBuilding(eBuilding, 1)

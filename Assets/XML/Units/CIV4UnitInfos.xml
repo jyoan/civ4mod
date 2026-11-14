@@ -23434,6 +23434,7 @@
 			<FreePromotions/>
 			<LeaderPromotion>NONE</LeaderPromotion>
 			<iLeaderExperience>0</iLeaderExperience>
+			<PyOnDeath>createUnits(pPlayer, 'UNITCLASS_SCOUT', 1, capitalPlot(pPlayer))</PyOnDeath>
 		</UnitInfo>
 		<UnitInfo>
 			<Class>UNITCLASS_TEST_B</Class>
@@ -23622,6 +23623,7 @@
 			<FreePromotions/>
 			<LeaderPromotion>NONE</LeaderPromotion>
 			<iLeaderExperience>0</iLeaderExperience>
+			<PyOnCreated>addPromotion(pUnit, 'PROMOTION_COMBAT1')</PyOnCreated>
 		</UnitInfo>
 		<UnitInfo>
 			<Class>UNITCLASS_WARRIOR</Class>

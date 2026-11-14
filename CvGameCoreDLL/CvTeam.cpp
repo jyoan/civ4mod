@@ -4030,6 +4030,16 @@ void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 			}
 		}
 
+		// bVassal, bHasVassal of ConditionalFreeTraits of the players of both teams (added by this mod)
+		for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
+		{
+			CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
+			if (kLoopPlayer.isAlive() && (kLoopPlayer.getTeam() == getID() || kLoopPlayer.getTeam() == eIndex))
+			{
+				kLoopPlayer.updateConditionalTraits();
+			}
+		}
+
 		if (GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()))
 		{
 			CvEventReporter::getInstance().vassalState(eIndex, getID(), bNewValue);
@@ -5274,6 +5284,20 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 					{
 						GET_TEAM((TeamTypes)iI).updateTechShare(eIndex);
 					}
+				}
+			}
+		}
+
+		// PyOnDiscovered of the tech (added by this mod): each player of the team, after the effects of the tech. bFirst: the
+		// team is the first to have it. Not for the techs of the start of the game, nor in the world builder
+		if (bNewValue && GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()) && GC.getTechInfo(eIndex).getPyOnDiscovered()[0] != '\0')
+		{
+			bool bFirstToHave = (bFirst && GC.getGameINLINE().countKnownTechNumTeams(eIndex) == 1);
+			for (iI = 0; iI < MAX_PLAYERS; iI++)
+			{
+				if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
+				{
+					GET_PLAYER((PlayerTypes)iI).doTechPythonHook(eIndex, bFirstToHave);
 				}
 			}
 		}

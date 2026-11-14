@@ -543,6 +543,8 @@
 	<ElementType name="BonusAffinities" content="eltOnly">
 		<element type="BonusAffinity" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="PyOnCreated" content="textOnly"/>
+	<ElementType name="PyOnDeath" content="textOnly"/>
 	<ElementType name="UnitInfo" content="eltOnly">
 		<element type="Class"/>
 		<element type="Type"/>
@@ -708,6 +710,8 @@
 		<element type="LeaderPromotion"/>
 		<element type="iLeaderExperience"/>
 		<element type="iOrderPriority" minOccurs="0"/>
+		<element type="PyOnCreated" minOccurs="0"/>
+		<element type="PyOnDeath" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="UnitInfos" content="eltOnly">
 		<element type="UnitInfo" maxOccurs="*"/>
@@ -928,6 +932,9 @@
 	<ElementType name="FeatureDoubleMoves" content="eltOnly">
 		<element type="FeatureDoubleMove" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="PyOnCombatWin" content="textOnly"/>
+	<ElementType name="PyOnCombatLoss" content="textOnly"/>
+	<ElementType name="PyOnBeginTurn" content="textOnly"/>
 	<ElementType name="PromotionInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -1021,6 +1028,9 @@
 		<element type="iHotKeyPriority"/>
 		<element type="Button" maxOccurs="*"/>
 		<element type="iOrderPriority" minOccurs="0"/>
+		<element type="PyOnCombatWin" minOccurs="0"/>
+		<element type="PyOnCombatLoss" minOccurs="0"/>
+		<element type="PyOnBeginTurn" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="PromotionInfos" content="eltOnly">
 		<element type="PromotionInfo" maxOccurs="*"/>

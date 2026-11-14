@@ -688,12 +688,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_FEATURE_GROWTH_CHANGE</Tag>
-		<English>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s1_Feature</English>
-		<French>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s1_Feature</French>
-		<German>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s1_Feature</German>
-		<Italian>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s1_Feature</Italian>
-		<Spanish>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s1_Feature</Spanish>
-		<Japanese>[ICON_BULLET]&#38936;&#22303;&#20869;&#12391;%s1_Feature&#12364;&#24195;&#12364;&#12427;&#30906;&#29575;&#65306;&#38563;&#12398;%s1_Feature 1&#12388;&#12395;&#12388;&#12365;1&#12479;&#12540;&#12531;&#12354;&#12383;&#12426;%s2_Chance%%</Japanese>
+		<English>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s3_Feature</English>
+		<French>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s3_Feature</French>
+		<German>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s3_Feature</German>
+		<Italian>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s3_Feature</Italian>
+		<Spanish>[ICON_BULLET]%s1_Feature spreads in your territory: %s2_Chance%% per turn for each adjacent %s3_Feature</Spanish>
+		<Japanese>[ICON_BULLET]&#38936;&#22303;&#20869;&#12391;%s1_Feature&#12364;&#24195;&#12364;&#12427;&#30906;&#29575;&#65306;&#38563;&#12398;%s3_Feature 1&#12388;&#12395;&#12388;&#12365;1&#12479;&#12540;&#12531;&#12354;&#12383;&#12426;%s2_Chance%%</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_FEATURE_HEALTH_CHANGE</Tag>
@@ -829,5 +829,158 @@
 		<Italian>[ICON_BULLET]Conquered cities with the state religion get its (when they could build it): </Italian>
 		<Spanish>[ICON_BULLET]Conquered cities with the state religion get its (when they could build it): </Spanish>
 		<Japanese>[ICON_BULLET]&#22269;&#25945;&#12398;&#12354;&#12427;&#21344;&#38936;&#12375;&#12383;&#37117;&#24066;&#12395;&#24314;&#12388;&#22269;&#25945;&#12398;&#24314;&#29289;&#65288;&#24314;&#35373;&#12398;&#26465;&#20214;&#12434;&#28288;&#12383;&#12377;&#12392;&#12365;&#65289;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MAX_NATIONAL_WONDERS</Tag>
+		<English>[ICON_BULLET]National wonders per city: %s1</English>
+		<French>[ICON_BULLET]National wonders per city: %s1</French>
+		<German>[ICON_BULLET]National wonders per city: %s1</German>
+		<Italian>[ICON_BULLET]National wonders per city: %s1</Italian>
+		<Spanish>[ICON_BULLET]National wonders per city: %s1</Spanish>
+		<Japanese>[ICON_BULLET]1&#37117;&#24066;&#12395;&#24314;&#35373;&#12391;&#12365;&#12427;&#22269;&#23478;&#36986;&#29987;: %s1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MAX_NATIONAL_WONDERS_OCC</Tag>
+		<English>[ICON_BULLET]National wonders per city in One-City Challenge: %s1</English>
+		<French>[ICON_BULLET]National wonders per city in One-City Challenge: %s1</French>
+		<German>[ICON_BULLET]National wonders per city in One-City Challenge: %s1</German>
+		<Italian>[ICON_BULLET]National wonders per city in One-City Challenge: %s1</Italian>
+		<Spanish>[ICON_BULLET]National wonders per city in One-City Challenge: %s1</Spanish>
+		<Japanese>[ICON_BULLET]1&#37117;&#24066;&#12395;&#24314;&#35373;&#12391;&#12365;&#12427;&#22269;&#23478;&#36986;&#29987;&#65288;1&#12388;&#12398;&#37117;&#24066;&#12391;&#12481;&#12515;&#12524;&#12531;&#12472;&#65289;: %s1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_LIMIT</Tag>
+		<English>no limit</English>
+		<French>no limit</French>
+		<German>no limit</German>
+		<Italian>no limit</Italian>
+		<Spanish>no limit</Spanish>
+		<Japanese>&#28961;&#21046;&#38480;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_GOLDEN_AGE</Tag>
+		<English>in a golden age</English>
+		<French>in a golden age</French>
+		<German>in a golden age</German>
+		<Italian>in a golden age</Italian>
+		<Spanish>in a golden age</Spanish>
+		<Japanese>&#40644;&#37329;&#26178;&#20195;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_NO_GOLDEN_AGE</Tag>
+		<English>not in a golden age</English>
+		<French>not in a golden age</French>
+		<German>not in a golden age</German>
+		<Italian>not in a golden age</Italian>
+		<Spanish>not in a golden age</Spanish>
+		<Japanese>&#40644;&#37329;&#26178;&#20195;&#12391;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_ANARCHY</Tag>
+		<English>in anarchy</English>
+		<French>in anarchy</French>
+		<German>in anarchy</German>
+		<Italian>in anarchy</Italian>
+		<Spanish>in anarchy</Spanish>
+		<Japanese>&#28961;&#25919;&#24220;&#29366;&#24907;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_NO_ANARCHY</Tag>
+		<English>not in anarchy</English>
+		<French>not in anarchy</French>
+		<German>not in anarchy</German>
+		<Italian>not in anarchy</Italian>
+		<Spanish>not in anarchy</Spanish>
+		<Japanese>&#28961;&#25919;&#24220;&#29366;&#24907;&#12391;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_CITIES_RANGE</Tag>
+		<English>%d1_Min to %d2_Max cities</English>
+		<French>%d1_Min to %d2_Max cities</French>
+		<German>%d1_Min to %d2_Max cities</German>
+		<Italian>%d1_Min to %d2_Max cities</Italian>
+		<Spanish>%d1_Min to %d2_Max cities</Spanish>
+		<Japanese>&#37117;&#24066;&#12364;%d1_Min&#65374;%d2_Max</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_MIN_CITIES</Tag>
+		<English>%d1_Num or more cities</English>
+		<French>%d1_Num or more cities</French>
+		<German>%d1_Num or more cities</German>
+		<Italian>%d1_Num or more cities</Italian>
+		<Spanish>%d1_Num or more cities</Spanish>
+		<Japanese>&#37117;&#24066;&#12364;%d1_Num&#20197;&#19978;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_MAX_CITIES</Tag>
+		<English>%d1_Num or fewer cities</English>
+		<French>%d1_Num or fewer cities</French>
+		<German>%d1_Num or fewer cities</German>
+		<Italian>%d1_Num or fewer cities</Italian>
+		<Spanish>%d1_Num or fewer cities</Spanish>
+		<Japanese>&#37117;&#24066;&#12364;%d1_Num&#20197;&#19979;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_BONUS</Tag>
+		<English>with %s1_Bonus</English>
+		<French>with %s1_Bonus</French>
+		<German>with %s1_Bonus</German>
+		<Italian>with %s1_Bonus</Italian>
+		<Spanish>with %s1_Bonus</Spanish>
+		<Japanese>%s1_Bonus&#12434;&#20445;&#26377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_BUILDING</Tag>
+		<English>with %s1_Building</English>
+		<French>with %s1_Building</French>
+		<German>with %s1_Building</German>
+		<Italian>with %s1_Building</Italian>
+		<Spanish>with %s1_Building</Spanish>
+		<Japanese>%s1_Building&#12434;&#20445;&#26377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_VASSAL</Tag>
+		<English>a vassal</English>
+		<French>a vassal</French>
+		<German>a vassal</German>
+		<Italian>a vassal</Italian>
+		<Spanish>a vassal</Spanish>
+		<Japanese>&#23646;&#22269;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_HAS_VASSAL</Tag>
+		<English>with a vassal</English>
+		<French>with a vassal</French>
+		<German>with a vassal</German>
+		<Italian>with a vassal</Italian>
+		<Spanish>with a vassal</Spanish>
+		<Japanese>&#23646;&#22269;&#12434;&#25345;&#12388;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_SCORE_RANK</Tag>
+		<English>score rank %d1_Num or lower</English>
+		<French>score rank %d1_Num or lower</French>
+		<German>score rank %d1_Num or lower</German>
+		<Italian>score rank %d1_Num or lower</Italian>
+		<Spanish>score rank %d1_Num or lower</Spanish>
+		<Japanese>&#12473;&#12467;&#12450;&#12364;%d1_Num&#20301;&#20197;&#19979;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HUMAN_CAN_BE_VASSAL</Tag>
+		<English>[ICON_BULLET]Can become the vassal of an AI civilization, also as a human player</English>
+		<French>[ICON_BULLET]Can become the vassal of an AI civilization, also as a human player</French>
+		<German>[ICON_BULLET]Can become the vassal of an AI civilization, also as a human player</German>
+		<Italian>[ICON_BULLET]Can become the vassal of an AI civilization, also as a human player</Italian>
+		<Spanish>[ICON_BULLET]Can become the vassal of an AI civilization, also as a human player</Spanish>
+		<Japanese>[ICON_BULLET]&#20154;&#38291;&#12398;&#12503;&#12524;&#12452;&#12516;&#12540;&#12391;&#12418;AI&#12398;&#25991;&#26126;&#12398;&#23646;&#22269;&#12395;&#12394;&#12428;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_PYTHON</Tag>
+		<English>a special condition</English>
+		<French>a special condition</French>
+		<German>a special condition</German>
+		<Italian>a special condition</Italian>
+		<Spanish>a special condition</Spanish>
+		<Japanese>&#29305;&#21029;&#12394;&#26465;&#20214;</Japanese>
 	</TEXT>
 </Civ4GameText>

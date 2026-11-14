@@ -5925,6 +5925,20 @@ bool CvPlayerAI::AI_considerOffer(PlayerTypes ePlayer, const CLinkList<TradeData
 				return false;
 			}
 		}
+
+		// A human who offers to become our vassal (bHumanCanBeVassal of the traits; added by this mod): as with an AI vassal,
+		// only when we can take on its wars and its peace. The denial of the vassal side checks that for the master
+		// (CvTeamAI::AI_vassalTrade), and it gives no denial for the will of a human vassal
+		if (GET_PLAYER(ePlayer).isHuman())
+		{
+			for (pNode = pTheirList->head(); pNode; pNode = pTheirList->next(pNode))
+			{
+				if (CvDeal::isVassal(pNode->m_data.m_eItemType) && GET_PLAYER(ePlayer).getTradeDenial(getID(), pNode->m_data) != NO_DENIAL)
+				{
+					return false;
+				}
+			}
+		}
 	}
 
 	if (GET_PLAYER(ePlayer).getTeam() == getTeam())
@@ -11554,7 +11568,11 @@ void CvPlayerAI::AI_doDiplo()
 
 									for (iJ = 0; iJ < GC.getNumBonusInfos(); iJ++)
 									{
-										if (GET_PLAYER((PlayerTypes)iI).getNumTradeableBonuses((BonusTypes)iJ) > 0 && getNumAvailableBonuses((BonusTypes)iJ) == 0)
+										// Only a bonus the vassal can trade to us: with a trade network between us and not obsolete, as
+										// the demand of a human master (CvDLLButtonPopup::launchVassalDemandTributePopup). Without it the
+										// deal of a human vassal was void (CvDeal::verify) and refusing it meant war (changed by this mod)
+										setTradeItem(&item, TRADE_RESOURCES, iJ);
+										if (GET_PLAYER((PlayerTypes)iI).canTradeItem(getID(), item) && getNumAvailableBonuses((BonusTypes)iJ) == 0)
 										{
 											iValue = AI_bonusTradeVal((BonusTypes)iJ, (PlayerTypes)iI, 1);
 

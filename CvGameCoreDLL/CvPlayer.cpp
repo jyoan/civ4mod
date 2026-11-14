@@ -2006,6 +2006,14 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		changeNumCitiesConquered(1);
 	}
 
+	// iMinCities, iMaxCities, PrereqBuildingClass of ConditionalFreeTraits (added by this mod): a city and its buildings
+	// changed hands. Before the hooks, as above
+	updateConditionalTraits();
+	if (eOldOwner != NO_PLAYER && GET_PLAYER(eOldOwner).isAlive())
+	{
+		GET_PLAYER(eOldOwner).updateConditionalTraits();
+	}
+
 	CvEventReporter::getInstance().cityAcquired(eOldOwner, getID(), pNewCity, bConquest, bTrade);
 	doTraitPythonHook(TRAIT_PYHOOK_CITY_ACQUIRED, pNewCity, eOldOwner, bConquest, bTrade);	// PyOnCityAcquired (added by this mod)
 
@@ -2691,6 +2699,67 @@ bool CvPlayer::isConditionalFreeTraitActive(const ConditionalFreeTrait& kConditi
 		return false;
 	}
 
+	// bGoldenAge, bNoGoldenAge, bAnarchy, bNoAnarchy (added by this mod)
+	if ((kCondition.bGoldenAge && !isGoldenAge()) || (kCondition.bNoGoldenAge && isGoldenAge()))
+	{
+		return false;
+	}
+
+	if ((kCondition.bAnarchy && !isAnarchy()) || (kCondition.bNoAnarchy && isAnarchy()))
+	{
+		return false;
+	}
+
+	// iMinCities, iMaxCities (added by this mod)
+	if ((kCondition.iMinCities > 0 && getNumCities() < kCondition.iMinCities) || (kCondition.iMaxCities > 0 && getNumCities() > kCondition.iMaxCities))
+	{
+		return false;
+	}
+
+	// PrereqBonus (added by this mod): the bonuses of the plot group of the capital, as the trade screen shows them
+	if (kCondition.iPrereqBonus != NO_BONUS && getNumAvailableBonuses((BonusTypes)kCondition.iPrereqBonus) <= 0)
+	{
+		return false;
+	}
+
+	// PrereqBuildingClass (added by this mod): a building of the class, obsolete or not
+	if (kCondition.iPrereqBuildingClass != NO_BUILDINGCLASS && getBuildingClassCount((BuildingClassTypes)kCondition.iPrereqBuildingClass) <= 0)
+	{
+		return false;
+	}
+
+	// bVassal, bHasVassal (added by this mod)
+	if ((kCondition.bVassal && !GET_TEAM(getTeam()).isAVassal()) || (kCondition.bHasVassal && GET_TEAM(getTeam()).getVassalCount() <= 0))
+	{
+		return false;
+	}
+
+	// iMinScoreRank (added by this mod): the rank of the last update of the scores (CvGame::updateScore), 1 for the top
+	if (kCondition.iMinScoreRank > 0 && GC.getGameINLINE().getPlayerRank(getID()) + 1 < kCondition.iMinScoreRank)
+	{
+		return false;
+	}
+
+	// PyCondition (added by this mod): last, after the other conditions. CvHookInterface.py evaluates the expression with
+	// pPlayer and eTrait (the trait given). It must not change the game
+	if (!kCondition.szPyCondition.empty())
+	{
+		CyPlayer* pyPlayer = new CyPlayer(const_cast<CvPlayer*>(this));
+		CyArgsList argsList;
+		long lResult = 0;
+
+		argsList.add(gDLL->getPythonIFace()->makePythonObject(pyPlayer));
+		argsList.add(kCondition.iTrait);
+		argsList.add(kCondition.szPyCondition.GetCString());
+		gDLL->getPythonIFace()->callFunction(PYHookModule, "isConditionTrue", argsList.makeFunctionArgs(), &lResult);
+		delete pyPlayer;	// the python function must not hold on to it
+
+		if (lResult == 0)
+		{
+			return false;
+		}
+	}
+
 	return true;
 }
 
@@ -2886,6 +2955,41 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 // (PyOnGameStart etc.), calls the function of CvTraitInterface.py that evaluates it. The arguments are the player and the
 // trait, then the city (PyOnCityFounded, PyOnCityAcquired), then the old owner, bConquest and bTrade (PyOnCityAcquired).
 // Called where CvEventReporter reports the Python events, which happens the same way on every computer.
+// PyOnDiscovered of a tech (added by this mod): CvHookInterface.py evaluates the expression with pPlayer, eTech and bFirst
+// (the team of the player is the first to have it)
+void CvPlayer::doTechPythonHook(TechTypes eTech, bool bFirst)
+{
+	if (isObserver())
+	{
+		return;
+	}
+
+	CyPlayer* pyPlayer = new CyPlayer(this);
+	CyArgsList argsList;
+	argsList.add(gDLL->getPythonIFace()->makePythonObject(pyPlayer));
+	argsList.add((int)eTech);
+	argsList.add(bFirst ? 1 : 0);
+	gDLL->getPythonIFace()->callFunction(PYHookModule, "onTechDiscovered", argsList.makeFunctionArgs());
+	delete pyPlayer;	// the python function must not hold on to it
+}
+
+// PyOnAdopt (bAdopt) or PyOnRevoke of a civic (added by this mod): CvHookInterface.py evaluates the expression with pPlayer
+// and eCivic
+void CvPlayer::doCivicPythonHook(CivicTypes eCivic, bool bAdopt)
+{
+	if (isObserver())
+	{
+		return;
+	}
+
+	CyPlayer* pyPlayer = new CyPlayer(this);
+	CyArgsList argsList;
+	argsList.add(gDLL->getPythonIFace()->makePythonObject(pyPlayer));
+	argsList.add((int)eCivic);
+	gDLL->getPythonIFace()->callFunction(PYHookModule, (bAdopt ? "onCivicAdopt" : "onCivicRevoke"), argsList.makeFunctionArgs());
+	delete pyPlayer;	// the python function must not hold on to it
+}
+
 void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, PlayerTypes eOldOwner, bool bConquest, bool bTrade)
 {
 	// Not for the player watching in the AI observe mode, who has nothing to act on
@@ -4734,7 +4838,9 @@ bool CvPlayer::canTradeItem(PlayerTypes eWhoTo, TradeData item, bool bTestDenial
 
 	case TRADE_VASSAL:
 	case TRADE_SURRENDER:
-		if (!isHuman() || GET_PLAYER(eWhoTo).isHuman()) //  human can't be vassal of AI
+		// human can't be vassal of AI, unless a trait has bHumanCanBeVassal (changed by this mod). The AI master checks the
+		// wars it would take on in CvPlayerAI::AI_considerOffer
+		if (!isHuman() || GET_PLAYER(eWhoTo).isHuman() || isHumanCanBeVassal())
 		{
 			CvTeam& kVassalTeam = GET_TEAM(getTeam());
 			CvTeam& kMasterTeam = GET_TEAM(GET_PLAYER(eWhoTo).getTeam());
@@ -5393,6 +5499,8 @@ void CvPlayer::raze(CvCity* pCity)
 	CvEventReporter::getInstance().cityRazed(pCity, getID());
 
 	disband(pCity);
+
+	updateConditionalTraits();	// iMinCities, iMaxCities, PrereqBuildingClass of ConditionalFreeTraits (added by this mod)
 }
 
 
@@ -6199,6 +6307,10 @@ void CvPlayer::found(int iX, int iY)
 	{
 		pCity->doFoundMessage();
 	}
+
+	// iMinCities, iMaxCities of ConditionalFreeTraits (added by this mod). Before the hooks, so a trait gained here also runs
+	// its PyOnCityFounded and CityFoundedUnits for this city
+	updateConditionalTraits();
 
 	CvEventReporter::getInstance().cityBuilt(pCity);
 	doTraitPythonHook(TRAIT_PYHOOK_CITY_FOUNDED, pCity);	// PyOnCityFounded (added by this mod)
@@ -7970,6 +8082,50 @@ int CvPlayer::getAttitudeChange() const
 int CvPlayer::getRouteMovementModifierInBorders() const
 {
 	return sumTraitValues(&CvTraitInfo::getRouteMovementModifierInBorders);
+}
+
+// The max number of national wonders in a city of the player, -1 for no limit (added by this mod; was in
+// CvCity::isNationalWondersMaxed). MAX_NATIONAL_WONDERS_PER_CITY of GlobalDefines, or MAX_NATIONAL_WONDERS_PER_CITY_FOR_OCC for a
+// human player in a One-City Challenge game. iMaxNationalWondersPerCity (ForOCC) of the traits replaces the define; with several
+// traits, the loosest wins (-1 over any number). 0 in a trait: not set
+int CvPlayer::getMaxNationalWondersPerCity() const
+{
+	bool bOCC = (GC.getGameINLINE().isOption(GAMEOPTION_ONE_CITY_CHALLENGE) && isHuman());
+	int iMax = 0;
+	int iValue;
+	int iI;
+
+	if (getLeaderType() != NO_LEADER)
+	{
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (hasTrait((TraitTypes)iI))
+			{
+				CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+				iValue = (bOCC ? kTrait.getMaxNationalWondersPerCityForOCC() : kTrait.getMaxNationalWondersPerCity());
+
+				if (iValue == -1)
+				{
+					return -1;
+				}
+
+				iMax = std::max(iMax, iValue);
+			}
+		}
+	}
+
+	if (iMax > 0)
+	{
+		return iMax;
+	}
+
+	return (bOCC ? GC.getDefineINT("MAX_NATIONAL_WONDERS_PER_CITY_FOR_OCC") : GC.getDefineINT("MAX_NATIONAL_WONDERS_PER_CITY"));
+}
+
+// bHumanCanBeVassal of the traits (added by this mod): see canTradeItem
+bool CvPlayer::isHumanCanBeVassal() const
+{
+	return hasTraitFlag(&CvTraitInfo::isHumanCanBeVassal);
 }
 
 // bConquestStateReligion of the traits (added by this mod): see acquireCity
@@ -10275,6 +10431,7 @@ void CvPlayer::changeGoldenAgeTurns(int iChange)
 			}
 
 			updateYield();
+			updateConditionalTraits();	// bGoldenAge, bNoGoldenAge of ConditionalFreeTraits (added by this mod)
 
 			if (isGoldenAge())
 			{
@@ -10376,6 +10533,7 @@ void CvPlayer::changeAnarchyTurns(int iChange)
 			updateMaintenance();
 			updateTradeRoutes();
 			updateCorporation();
+			updateConditionalTraits();	// bAnarchy, bNoAnarchy of ConditionalFreeTraits (added by this mod)
 
 			AI_makeAssignWorkDirty();
 
@@ -14117,6 +14275,19 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 
 		// ConditionalFreeTraits (PrereqCivic, bFavoriteCivic, StateReligion; added by this mod)
 		updateConditionalTraits();
+
+		// PyOnRevoke and PyOnAdopt of the civics (added by this mod). Not for the civics set at the start of the game
+		if (GC.getGameINLINE().isFinalInitialized())
+		{
+			if (eOldCivic != NO_CIVIC && GC.getCivicInfo(eOldCivic).getPyOnRevoke()[0] != '\0')
+			{
+				doCivicPythonHook(eOldCivic, false);
+			}
+			if (getCivics(eIndex) != NO_CIVIC && GC.getCivicInfo(getCivics(eIndex)).getPyOnAdopt()[0] != '\0')
+			{
+				doCivicPythonHook(getCivics(eIndex), true);
+			}
+		}
 
 		GC.getGameINLINE().updateSecretaryGeneral();
 

@@ -12,8 +12,10 @@
 ## PyResult and PyMiscast (when the spell is miscast, instead of its effects) are called on every computer of a
 ## multiplayer game: use CyGame().getSorenRandNum for random numbers.
 ## To kill the caster, use the delayed kill: pCaster.kill(True, -1)
+## The common functions of CvHookUtils.py (gainGold, createUnits, addPromotion, ...) can be used too.
 
 from CvPythonExtensions import *
+from CvHookUtils import *
 
 gc = CyGlobalContext()
 

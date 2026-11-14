@@ -89,6 +89,11 @@ public:
 
 	void updateCombat(bool bQuick = false);
 	void doCombatPromotions(CvUnit* pDefender);
+	// Python hooks (added by this mod)
+	void getCombatHookPromotions(std::vector<PromotionTypes>& aePromotions) const;
+	void doCombatPythonHooks(CvUnit* pDefender, const std::vector<PromotionTypes>& aeAttackerPromotions, const std::vector<PromotionTypes>& aeDefenderPromotions);
+	void doPromotionPythonHook(const char* szFunction, PromotionTypes ePromotion, CvUnit* pOpponent);
+	void doUnitPythonHook(bool bCreated, PlayerTypes eKiller);
 	void updateAirCombat(bool bQuick = false);
 	void updateAirStrike(CvPlot* pPlot, bool bQuick, bool bFinish);
 

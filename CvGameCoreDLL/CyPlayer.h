@@ -503,6 +503,8 @@ public:
 	bool isConquestStateReligion();	// added by this mod
 	bool isConquestReligionBuilding(int /*SpecialBuildingTypes*/ eSpecialBuilding);	// added by this mod
 	bool isNoTechCivic(int /*CivicTypes*/ eCivic);	// added by this mod
+	int getMaxNationalWondersPerCity();	// added by this mod
+	bool isHumanCanBeVassal();	// added by this mod
 	int getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce);
 	int getBonusHealChange();
 	int getBonusHealChangeEnemy();

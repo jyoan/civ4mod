@@ -128,5 +128,7 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("isConquestStateReligion", &CyPlayer::isConquestStateReligion, "bool () - the state religion spreads to conquered cities (traits, added by this mod)")
 		.def("isConquestReligionBuilding", &CyPlayer::isConquestReligionBuilding, "bool (int eSpecialBuilding) - conquered cities get this building of the state religion (traits, added by this mod)")
 		.def("isNoTechCivic", &CyPlayer::isNoTechCivic, "bool (int eCivic) - the civic needs no tech (traits, added by this mod)")
+		.def("getMaxNationalWondersPerCity", &CyPlayer::getMaxNationalWondersPerCity, "int () - max national wonders per city, -1 for no limit (GlobalDefines or traits, added by this mod)")
+		.def("isHumanCanBeVassal", &CyPlayer::isHumanCanBeVassal, "bool () - a human player can become the vassal of an AI (traits, added by this mod)")
 		;
 }

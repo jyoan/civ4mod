@@ -3647,6 +3647,84 @@ static CvWString getConditionalFreeTraitConditions(const ConditionalFreeTrait& k
 			szConditions += gDLL->getText("TXT_KEY_CONDITION_RECORD_NOW", GET_PLAYER(eActivePlayer).getNumCitiesConquered());
 		}
 	}
+	// bGoldenAge, bNoGoldenAge, bAnarchy, bNoAnarchy (added by this mod)
+	if (kCondition.bGoldenAge)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_GOLDEN_AGE"));
+	}
+	if (kCondition.bNoGoldenAge)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_NO_GOLDEN_AGE"));
+	}
+	if (kCondition.bAnarchy)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_ANARCHY"));
+	}
+	if (kCondition.bNoAnarchy)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_NO_ANARCHY"));
+	}
+	// iMinCities, iMaxCities (added by this mod)
+	if (kCondition.iMinCities > 0 || kCondition.iMaxCities > 0)
+	{
+		if (kCondition.iMinCities > 0 && kCondition.iMaxCities > 0)
+		{
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_CITIES_RANGE", kCondition.iMinCities, kCondition.iMaxCities));
+		}
+		else if (kCondition.iMinCities > 0)
+		{
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_MIN_CITIES", kCondition.iMinCities));
+		}
+		else
+		{
+			appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_MAX_CITIES", kCondition.iMaxCities));
+		}
+		if (bShowRecord)
+		{
+			szConditions += gDLL->getText("TXT_KEY_CONDITION_RECORD_NOW", GET_PLAYER(eActivePlayer).getNumCities());
+		}
+	}
+	// PrereqBonus, PrereqBuildingClass (the default building of the class) (added by this mod)
+	if (kCondition.iPrereqBonus != NO_BONUS)
+	{
+		szText = getLinkText(GC.getBonusInfo((BonusTypes)kCondition.iPrereqBonus).getDescription());
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_BONUS", szText.GetCString()));
+	}
+	if (kCondition.iPrereqBuildingClass != NO_BUILDINGCLASS)
+	{
+		BuildingTypes eBuilding = (BuildingTypes)GC.getBuildingClassInfo((BuildingClassTypes)kCondition.iPrereqBuildingClass).getDefaultBuildingIndex();
+		if (eBuilding != NO_BUILDING)
+		{
+			szText = getLinkText(GC.getBuildingInfo(eBuilding).getDescription());
+		}
+		else
+		{
+			szText = GC.getBuildingClassInfo((BuildingClassTypes)kCondition.iPrereqBuildingClass).getDescription();
+		}
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_BUILDING", szText.GetCString()));
+	}
+	// bVassal, bHasVassal, iMinScoreRank (added by this mod)
+	if (kCondition.bVassal)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_VASSAL"));
+	}
+	if (kCondition.bHasVassal)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_HAS_VASSAL"));
+	}
+	if (kCondition.iMinScoreRank > 0)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_SCORE_RANK", kCondition.iMinScoreRank));
+		if (bShowRecord)
+		{
+			szConditions += gDLL->getText("TXT_KEY_CONDITION_RECORD_NOW", GC.getGameINLINE().getPlayerRank(eActivePlayer) + 1);
+		}
+	}
+	// PyCondition: its PyConditionText, or a generic text (added by this mod)
+	if (!kCondition.szPyCondition.empty())
+	{
+		appendConditionText(szConditions, gDLL->getText(kCondition.szPyConditionText.empty() ? "TXT_KEY_CONDITION_PYTHON" : kCondition.szPyConditionText.GetCString()));
+	}
 
 	return szConditions;
 }
@@ -3972,6 +4050,25 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		}
 	}
 
+	// iMaxNationalWondersPerCity (ForOCC): "National wonders per city: 4" / "no limit" (added by this mod)
+	if (kTrait.getMaxNationalWondersPerCity() != 0)
+	{
+		szText = (kTrait.getMaxNationalWondersPerCity() == -1) ? gDLL->getText("TXT_KEY_TRAIT_NO_LIMIT") : CvWString::format(L"%d", kTrait.getMaxNationalWondersPerCity());
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_MAX_NATIONAL_WONDERS", szText.GetCString()));
+	}
+
+	if (kTrait.getMaxNationalWondersPerCityForOCC() != 0)
+	{
+		szText = (kTrait.getMaxNationalWondersPerCityForOCC() == -1) ? gDLL->getText("TXT_KEY_TRAIT_NO_LIMIT") : CvWString::format(L"%d", kTrait.getMaxNationalWondersPerCityForOCC());
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_MAX_NATIONAL_WONDERS_OCC", szText.GetCString()));
+	}
+
+	// bHumanCanBeVassal (added by this mod)
+	if (kTrait.isHumanCanBeVassal())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HUMAN_CAN_BE_VASSAL"));
+	}
+
 	// iUnitCostModifier / iBuildingCostModifier: "-20% production cost of units" (added by this mod)
 	if (kTrait.getUnitCostModifier() != 0)
 	{
@@ -4134,7 +4231,8 @@ void CvGameTextMgr::parseTraitYieldEffects(CvWStringBuffer& szHelpString, TraitT
 		if (iValue != 0)
 		{
 			szTempBuffer.Format(L"%c%d.%02d", ((iValue > 0) ? L'+' : L'-'), abs(iValue) / 100, abs(iValue) % 100);
-			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FEATURE_GROWTH_CHANGE", szFeature.GetCString(), szTempBuffer.GetCString()));
+			// The feature twice: %s1 and %s3 (getText replaces only one occurrence of an argument)
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FEATURE_GROWTH_CHANGE", szFeature.GetCString(), szTempBuffer.GetCString(), szFeature.GetCString()));
 		}
 
 		iValue = kTrait.getFeatureHealthChange(iJ);
@@ -9865,7 +9963,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			{
 				if (pCity->isNationalWondersMaxed())
 				{
-					int iMaxNumWonders = (GC.getGameINLINE().isOption(GAMEOPTION_ONE_CITY_CHALLENGE) && GET_PLAYER(pCity->getOwnerINLINE()).isHuman()) ? GC.getDefineINT("MAX_NATIONAL_WONDERS_PER_CITY_FOR_OCC") : GC.getDefineINT("MAX_NATIONAL_WONDERS_PER_CITY");
+					int iMaxNumWonders = GET_PLAYER(pCity->getOwnerINLINE()).getMaxNationalWondersPerCity();	// with the traits (changed by this mod)
 					szBuffer.append(NEWLINE);
 					szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_NATIONAL_WONDERS_PER_CITY", iMaxNumWonders));
 				}
