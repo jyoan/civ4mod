@@ -723,4 +723,13 @@
 		<Spanish>Test Settled Great Person</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#23450;&#20303;&#20553;&#20154;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_SPY</Tag>
+		<English>Test Spy</English>
+		<French>Test Spy</French>
+		<German>Test Spy</German>
+		<Italian>Test Spy</Italian>
+		<Spanish>Test Spy</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#12473;&#12497;&#12452;</Japanese>
+	</TEXT>
 </Civ4GameText>

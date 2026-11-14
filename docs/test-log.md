@@ -108,3 +108,4 @@
 - 2026-11-13: 無政府期間の後の黄金期（`iAnarchyGoldenAgePercent`）を検証用志向で確認（マラソンで無政府 1 ターン → 黄金期 3 ターン。速度の補正が BtS の黄金期と同じ比率になること）
 - 2026-11-13: 専門家の幸福・衛生（`SpecialistInfo/iHappiness`・`iHealth`）を検証用定住偉人で確認（都市の幸福 +2・不衛生 +1 と内訳の行、専門家の説明とペディア）
 - 2026-11-14: 異教徒との戦闘ボーナス（`iOtherReligionCombatPercent`・`iStateReligionCityAttack`）を検証用昇進で確認（国教が違う相手との戦闘のオッズ、国教が広まった都市への攻撃、昇進の説明）
+- 2026-11-14: 旧スパイの行動（`bSabotage`・`bDestroy`・`bStealPlans`・`bInvestigate`・`bCounterSpy`）を検証用スパイで確認
