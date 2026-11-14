@@ -1240,6 +1240,15 @@
 		<Spanish>[ICON_BULLET]%D1%% City Attack (your state religion there)</Spanish>
 		<Japanese>[ICON_BULLET]&#22269;&#25945;&#12364;&#24195;&#12414;&#12387;&#12383;&#37117;&#24066;&#12408;&#12398;&#25915;&#25731;: %D1%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_ATTITUDE_TRAITS</Tag>
+		<English>%D1: Their traits</English>
+		<French>%D1: Their traits</French>
+		<German>%D1: Their traits</German>
+		<Italian>%D1: Their traits</Italian>
+		<Spanish>%D1: Their traits</Spanish>
+		<Japanese>%D1: &#24535;&#21521;&#12395;&#12424;&#12427;&#21360;&#35937;</Japanese>
+	</TEXT>
 	<!-- Unofficial 3.19 Patch (jdog5000): the keys of CIV4GameText_UnofficialPatch.xml and the key it uses without text -->
 	<TEXT>
 		<Tag>TXT_KEY_TERRAIN_TURN_DAMAGE</Tag>

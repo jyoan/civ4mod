@@ -2650,6 +2650,12 @@ bool CvPlayer::isConditionalFreeTraitActive(const ConditionalFreeTrait& kConditi
 		return false;
 	}
 
+	// PrereqTech (added by this mod)
+	if (kCondition.iPrereqTech != NO_TECH && !GET_TEAM(getTeam()).isHasTech((TechTypes)kCondition.iPrereqTech))
+	{
+		return false;
+	}
+
 	return true;
 }
 
@@ -7911,6 +7917,18 @@ int CvPlayer::getEnemyAttritionInBorders() const
 int CvPlayer::getAnarchyGoldenAgePercent() const
 {
 	return sumTraitValues(&CvTraitInfo::getAnarchyGoldenAgePercent);
+}
+
+// iTechCostModifier of the traits (added by this mod): see CvTeam::getResearchCost
+int CvPlayer::getTechCostModifier() const
+{
+	return sumTraitValues(&CvTraitInfo::getTechCostModifier);
+}
+
+// iAttitudeChange of the traits (added by this mod): see CvPlayerAI::AI_getAttitudeVal
+int CvPlayer::getAttitudeChange() const
+{
+	return sumTraitValues(&CvTraitInfo::getAttitudeChange);
 }
 
 // iEnemyAttritionLimit of the traits with iEnemyAttritionInBorders (added by this mod): the largest one, 0 to 100

@@ -2462,6 +2462,24 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 	iCost *= std::max(0, ((GC.getDefineINT("TECH_COST_EXTRA_TEAM_MEMBER_MODIFIER") * (getNumMembers() - 1)) + 100));
 	iCost /= 100;
 
+	// iTechCostModifier of the traits (added by this mod): the average of the alive members of the team
+	int iTraitModifier = 0;
+	int iMembers = 0;
+	int iI;
+	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
+		{
+			iTraitModifier += GET_PLAYER((PlayerTypes)iI).getTechCostModifier();
+			iMembers++;
+		}
+	}
+	if (iMembers > 0 && iTraitModifier != 0)
+	{
+		iCost *= std::max(0, 100 + (iTraitModifier / iMembers));
+		iCost /= 100;
+	}
+
 	return std::max(1, iCost);
 }
 
@@ -4908,6 +4926,15 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 		}
 
 		processTech(eIndex, ((bNewValue) ? 1 : -1));
+
+		// ConditionalFreeTraits (PrereqTech) of the players of the team (added by this mod)
+		for (iI = 0; iI < MAX_PLAYERS; iI++)
+		{
+			if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
+			{
+				GET_PLAYER((PlayerTypes)iI).updateConditionalTraits();
+			}
+		}
 
 		if (isHasTech(eIndex))
 		{

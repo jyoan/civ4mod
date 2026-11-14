@@ -5046,6 +5046,7 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 
 	iAttitude += AI_getColonyAttitude(ePlayer);
 	iAttitude += AI_getAttitudeExtra(ePlayer);
+	iAttitude += GET_PLAYER(ePlayer).getAttitudeChange();	// iAttitudeChange of the traits of ePlayer (added by this mod)
 
 	return range(iAttitude, -100, 100);
 }

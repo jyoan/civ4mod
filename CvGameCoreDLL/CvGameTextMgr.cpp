@@ -3616,6 +3616,12 @@ static CvWString getConditionalFreeTraitConditions(const ConditionalFreeTrait& k
 		szText = getLinkText(GC.getCivicInfo((CivicTypes)kCondition.iPrereqCivic).getDescription());
 		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_CIVIC", szText.GetCString()));
 	}
+	// PrereqTech (added by this mod)
+	if (kCondition.iPrereqTech != NO_TECH)
+	{
+		szText = getLinkText(GC.getTechInfo((TechTypes)kCondition.iPrereqTech).getDescription());
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_TECH", szText.GetCString()));
+	}
 	if (kCondition.bFavoriteCivic)
 	{
 		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_FAVORITE_CIVIC"));
@@ -3709,6 +3715,17 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 	if (kTrait.getDistantTradeRouteModifier() != 0)
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DISTANT_TRADE_ROUTE", kTrait.getDistantTradeRouteModifier()));
+	}
+
+	// iTechCostModifier, iAttitudeChange (added by this mod)
+	if (kTrait.getTechCostModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_TECH_COST", kTrait.getTechCostModifier()));
+	}
+
+	if (kTrait.getAttitudeChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ATTITUDE_CHANGE", kTrait.getAttitudeChange()));
 	}
 
 	// iAnarchyGoldenAgePercent (added by this mod)
@@ -5462,6 +5479,13 @@ void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, Prom
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_PERCENT_OVERSEAS", GC.getPromotionInfo(ePromotion).getCombatPercentOverseas()));
+	}
+
+	// bRivalTerritory (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).isRivalTerritory())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_RIVAL_TERRITORY"));
 	}
 
 	// iOtherReligionCombatPercent, iStateReligionCityAttack (added by this mod)
@@ -13864,6 +13888,15 @@ void CvGameTextMgr::getAttitudeString(CvWStringBuffer& szBuffer, PlayerTypes ePl
 		if ((iPass == 0) ? (iAttitudeChange > 0) : (iAttitudeChange < 0))
 		{
 			szTempBuffer.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR((iAttitudeChange > 0) ? "COLOR_POSITIVE_TEXT" : "COLOR_NEGATIVE_TEXT"), gDLL->getText("TXT_KEY_MISC_ATTITUDE_FREEDOM", iAttitudeChange).GetCString());
+			szBuffer.append(NEWLINE);
+			szBuffer.append(szTempBuffer);
+		}
+
+		// iAttitudeChange of the traits of eTargetPlayer (added by this mod)
+		iAttitudeChange = GET_PLAYER(eTargetPlayer).getAttitudeChange();
+		if ((iPass == 0) ? (iAttitudeChange > 0) : (iAttitudeChange < 0))
+		{
+			szTempBuffer.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR((iAttitudeChange > 0) ? "COLOR_POSITIVE_TEXT" : "COLOR_NEGATIVE_TEXT"), gDLL->getText("TXT_KEY_MISC_ATTITUDE_TRAITS", iAttitudeChange).GetCString());
 			szBuffer.append(NEWLINE);
 			szBuffer.append(szTempBuffer);
 		}

@@ -1727,6 +1727,7 @@ m_iCombatPercentInBorders(0),
 m_iCombatPercentOverseas(0),
 m_iOtherReligionCombatPercent(0),
 m_iStateReligionCityAttack(0),
+m_bRivalTerritory(false),
 m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
@@ -2293,6 +2294,13 @@ int CvPromotionInfo::getStateReligionCityAttack() const
 	return m_iStateReligionCityAttack;
 }
 
+// bRivalTerritory (added by this mod, as the tag of the units): the unit can enter the territory of other players without
+// open borders
+bool CvPromotionInfo::isRivalTerritory() const
+{
+	return m_bRivalTerritory;
+}
+
 const TCHAR* CvPromotionInfo::getSound() const										
 {
 	return m_szSound;
@@ -2664,13 +2672,20 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 		stream->Read(&m_iOtherReligionCombatPercent);
 		stream->Read(&m_iStateReligionCityAttack);
 	}
+
+	// uiFlag < 15: cache written before bRivalTerritory existed
+	m_bRivalTerritory = false;
+	if (uiFlag > 14)
+	{
+		stream->Read(&m_bRivalTerritory);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 14;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack (added by this mod)
+	uint uiFlag = 15;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2792,6 +2807,7 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iCombatPercentOverseas);
 	stream->Write(m_iOtherReligionCombatPercent);
 	stream->Write(m_iStateReligionCityAttack);
+	stream->Write(m_bRivalTerritory);
 }
 
 // Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
@@ -2938,6 +2954,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCombatPercentOverseas, "iCombatPercentOverseas");
 	pXML->GetChildXmlValByName(&m_iOtherReligionCombatPercent, "iOtherReligionCombatPercent");
 	pXML->GetChildXmlValByName(&m_iStateReligionCityAttack, "iStateReligionCityAttack");
+	pXML->GetChildXmlValByName(&m_bRivalTerritory, "bRivalTerritory");
 
 	pXML->GetChildXmlValByName(&m_iRiverCrossingDamagePercent, "iRiverCrossingDamagePercent");
 	pXML->GetChildXmlValByName(&m_bNoDamagePenalty, "bNoDamagePenalty");
@@ -19998,6 +20015,8 @@ m_iDistantTradeRouteModifier(0),
 m_iEnemyAttritionInBorders(0),
 m_iEnemyAttritionLimit(100),
 m_iAnarchyGoldenAgePercent(0),
+m_iTechCostModifier(0),
+m_iAttitudeChange(0),
 m_bNewCityStateReligion(false),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
@@ -20515,6 +20534,20 @@ int CvTraitInfo::getEnemyAttritionLimit() const
 int CvTraitInfo::getAnarchyGoldenAgePercent() const
 {
 	return m_iAnarchyGoldenAgePercent;
+}
+
+// iTechCostModifier (added by this mod): research cost % of the techs (the average of the members of the team,
+// CvTeam::getResearchCost)
+int CvTraitInfo::getTechCostModifier() const
+{
+	return m_iTechCostModifier;
+}
+
+// iAttitudeChange (added by this mod): attitude of the other players (the AI) toward the player
+// (CvPlayerAI::AI_getAttitudeVal)
+int CvTraitInfo::getAttitudeChange() const
+{
+	return m_iAttitudeChange;
 }
 
 const TCHAR* CvTraitInfo::getShortDescription() const
@@ -21394,6 +21427,8 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iEnemyAttritionInBorders, "iEnemyAttritionInBorders");
 	pXML->GetChildXmlValByName(&m_iEnemyAttritionLimit, "iEnemyAttritionLimit", 100);
 	pXML->GetChildXmlValByName(&m_iAnarchyGoldenAgePercent, "iAnarchyGoldenAgePercent");
+	pXML->GetChildXmlValByName(&m_iTechCostModifier, "iTechCostModifier");
+	pXML->GetChildXmlValByName(&m_iAttitudeChange, "iAttitudeChange");
 }
 
 // The part of read() for the yield and commerce arrays, the unit combat arrays, the free promotions and MaintainFeatures (added by this mod)
@@ -21571,6 +21606,10 @@ void CvTraitInfo::readConditionalFreeTraits(CvXMLLoadUtility* pXML)
 				kCondition.bFavoriteCivic = false;
 				kCondition.iMinUnitsKilled = 0;
 				kCondition.iMinCitiesConquered = 0;
+				// PrereqTech (added by this mod): the techs are loaded before the traits
+				szTextVal = "";
+				pXML->GetChildXmlValByName(szTextVal, "PrereqTech");
+				kCondition.iPrereqTech = pXML->FindInInfoClass(szTextVal);
 				pXML->GetChildXmlValByName(&kCondition.bAtWar, "bAtWar");
 				pXML->GetChildXmlValByName(&kCondition.bAtPeace, "bAtPeace");
 				pXML->GetChildXmlValByName(&kCondition.bNoStateReligion, "bNoStateReligion");
