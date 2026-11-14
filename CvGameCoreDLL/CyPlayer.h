@@ -497,6 +497,8 @@ public:
 	int getEnemyAttritionInBorders();	// added by this mod
 	int getEnemyAttritionLimit();	// added by this mod
 	int getAnarchyGoldenAgePercent();	// added by this mod
+	int getTechCostModifier();	// added by this mod
+	int getAttitudeChange();	// added by this mod
 	int getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce);
 	int getBonusHealChange();
 	int getBonusHealChangeEnemy();

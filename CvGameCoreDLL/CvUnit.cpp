@@ -329,6 +329,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iCombatPercentOverseas = 0;
 	m_iOtherReligionCombatPercent = 0;
 	m_iStateReligionCityAttack = 0;
+	m_iRivalTerritoryCount = 0;
 	m_iNoDamagePenaltyCount = 0;
 	m_iHiddenNationalityCount = 0;
 	m_iExtraCityAttackPercent = 0;
@@ -9354,9 +9355,10 @@ bool CvUnit::isNoCapture() const
 }
 
 
+// With bRivalTerritory of the promotions (added by this mod)
 bool CvUnit::isRivalTerritory() const
 {
-	return m_pUnitInfo->isRivalTerritory();
+	return (m_pUnitInfo->isRivalTerritory() || m_iRivalTerritoryCount > 0);
 }
 
 
@@ -10807,6 +10809,7 @@ void CvUnit::updatePromotionCounts()
 	m_iCombatPercentOverseas = sumPromotionValues(&CvPromotionInfo::getCombatPercentOverseas);
 	m_iOtherReligionCombatPercent = sumPromotionValues(&CvPromotionInfo::getOtherReligionCombatPercent);
 	m_iStateReligionCityAttack = sumPromotionValues(&CvPromotionInfo::getStateReligionCityAttack);
+	m_iRivalTerritoryCount = countPromotions(&CvPromotionInfo::isRivalTerritory);
 	m_iNoDamagePenaltyCount = countPromotions(&CvPromotionInfo::isNoDamagePenalty);
 	m_iHiddenNationalityCount = countPromotions(&CvPromotionInfo::isHiddenNationality);
 
@@ -13720,6 +13723,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		m_iCombatPercentOverseas += GC.getPromotionInfo(eIndex).getCombatPercentOverseas() * iChange;
 		m_iOtherReligionCombatPercent += GC.getPromotionInfo(eIndex).getOtherReligionCombatPercent() * iChange;
 		m_iStateReligionCityAttack += GC.getPromotionInfo(eIndex).getStateReligionCityAttack() * iChange;
+		m_iRivalTerritoryCount += (GC.getPromotionInfo(eIndex).isRivalTerritory() ? iChange : 0);
 		m_iNoDamagePenaltyCount += (GC.getPromotionInfo(eIndex).isNoDamagePenalty() ? iChange : 0);
 
 		// BonusAffinities (added by this mod)

@@ -530,6 +530,7 @@ public:
 	int getCombatPercentOverseas() const;			// Exposed to Python (added by this mod)
 	int getOtherReligionCombatPercent() const;			// Exposed to Python (added by this mod)
 	int getStateReligionCityAttack() const;			// Exposed to Python (added by this mod)
+	bool isRivalTerritory() const;			// Exposed to Python (added by this mod)
 	// ImpassablePlotPassages (added by this mod): the impassable terrain or feature the unit can enter (the other is -1) and
 	// the damage percent at the start of its turn there
 	int getNumImpassablePlotPassages() const;		// Exposed to Python
@@ -635,6 +636,7 @@ protected:
 	int m_iCombatPercentOverseas;	// added by this mod
 	int m_iOtherReligionCombatPercent;	// added by this mod
 	int m_iStateReligionCityAttack;	// added by this mod
+	bool m_bRivalTerritory;	// added by this mod
 	std::vector<int> m_aiImpassablePlotPassageTerrain;
 	std::vector<int> m_aiImpassablePlotPassageFeature;
 	std::vector<int> m_aiImpassablePlotPassageDamage;
@@ -4743,6 +4745,7 @@ struct ConditionalFreeTrait
 	bool bFavoriteCivic;		// the leader of the player has adopted its FavoriteCivic
 	int iMinUnitsKilled;		// 0: no limit. Enemy units the player has killed in the whole game
 	int iMinCitiesConquered;	// 0: no limit. Cities the player has conquered in the whole game
+	int iPrereqTech;			// NO_TECH: any. The team of the player has the tech (added by this mod)
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -4841,6 +4844,8 @@ public:
 	int getEnemyAttritionInBorders() const;			// Exposed to Python (added by this mod)
 	int getEnemyAttritionLimit() const;			// Exposed to Python (added by this mod)
 	int getAnarchyGoldenAgePercent() const;			// Exposed to Python (added by this mod)
+	int getTechCostModifier() const;			// Exposed to Python (added by this mod)
+	int getAttitudeChange() const;			// Exposed to Python (added by this mod)
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -5025,6 +5030,8 @@ protected:
 	int m_iEnemyAttritionInBorders;	// added by this mod
 	int m_iEnemyAttritionLimit;	// added by this mod
 	int m_iAnarchyGoldenAgePercent;	// added by this mod
+	int m_iTechCostModifier;	// added by this mod
+	int m_iAttitudeChange;	// added by this mod
 	bool m_bNewCityStateReligion;
 
 	CvString m_szShortDescription;

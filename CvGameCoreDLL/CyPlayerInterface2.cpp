@@ -122,5 +122,7 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("getEnemyAttritionInBorders", &CyPlayer::getEnemyAttritionInBorders, "int () - damage % each turn to enemy units in the territory (traits, added by this mod)")
 		.def("getEnemyAttritionLimit", &CyPlayer::getEnemyAttritionLimit, "int () - the attrition does not go beyond this % of the max HP (traits, added by this mod)")
 		.def("getAnarchyGoldenAgePercent", &CyPlayer::getAnarchyGoldenAgePercent, "int () - golden age turns in % of the anarchy of a change of civics or religion (traits, added by this mod)")
+		.def("getTechCostModifier", &CyPlayer::getTechCostModifier, "int () - research cost % of the techs (traits, added by this mod)")
+		.def("getAttitudeChange", &CyPlayer::getAttitudeChange, "int () - attitude of the other players toward this one (traits, added by this mod)")
 		;
 }

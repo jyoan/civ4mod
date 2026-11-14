@@ -383,6 +383,8 @@
 			<iEnemyAttritionInBorders>10</iEnemyAttritionInBorders>
 			<iEnemyAttritionLimit>50</iEnemyAttritionLimit>
 			<iAnarchyGoldenAgePercent>200</iAnarchyGoldenAgePercent>
+			<iTechCostModifier>-40</iTechCostModifier>
+			<iAttitudeChange>3</iAttitudeChange>
 			<iGoldenAgeModifier>50</iGoldenAgeModifier>
 			<iGoldenAgeGreatPeopleRateModifier>50</iGoldenAgeGreatPeopleRateModifier>
 			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>
@@ -539,6 +541,10 @@
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_TEST_BARBARIAN</TraitType>
 					<PrereqCivic>CIVIC_TEST</PrereqCivic>
+				</ConditionalFreeTrait>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_INDUSTRIOUS</TraitType>
+					<PrereqTech>TECH_MINING</PrereqTech>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
 			<ExtraYieldThresholds/>

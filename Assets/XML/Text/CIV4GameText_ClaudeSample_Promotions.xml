@@ -353,4 +353,13 @@
 		<Spanish>[ICON_BULLET]%D1_Bonus%% City Attack against cities with your state religion</Spanish>
 		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#22269;&#25945;&#12364;&#24195;&#12414;&#12387;&#12383;&#37117;&#24066;&#12408;&#12398;&#25915;&#25731;%D1_Bonus%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_RIVAL_TERRITORY</Tag>
+		<English>[ICON_BULLET]Can enter rival territory</English>
+		<French>[ICON_BULLET]Can enter rival territory</French>
+		<German>[ICON_BULLET]Can enter rival territory</German>
+		<Italian>[ICON_BULLET]Can enter rival territory</Italian>
+		<Spanish>[ICON_BULLET]Can enter rival territory</Spanish>
+		<Japanese>[ICON_BULLET]&#22269;&#22659;&#12434;&#38283;&#12356;&#12390;&#12356;&#12394;&#12356;&#20182;&#22269;&#12398;&#38936;&#22303;&#12395;&#12418;&#20837;&#12428;&#12427;</Japanese>
+	</TEXT>
 </Civ4GameText>

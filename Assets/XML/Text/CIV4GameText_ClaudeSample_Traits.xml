@@ -767,4 +767,31 @@
 		<Spanish>[ICON_BULLET]When the anarchy of a change of civics or religion ends, a golden age of %d1%% of its length</Spanish>
 		<Japanese>[ICON_BULLET]&#31038;&#20250;&#21046;&#24230;&#12539;&#23447;&#25945;&#12398;&#22793;&#26356;&#12395;&#12424;&#12427;&#28961;&#25919;&#24220;&#26399;&#38291;&#12364;&#32066;&#12431;&#12427;&#12392;&#12289;&#12381;&#12398;&#38263;&#12373;&#12398;%d1%%&#12398;&#40644;&#37329;&#26399;&#12395;&#12394;&#12427;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CONDITION_TECH</Tag>
+		<English>%s1_Tech known</English>
+		<French>%s1_Tech known</French>
+		<German>%s1_Tech known</German>
+		<Italian>%s1_Tech known</Italian>
+		<Spanish>%s1_Tech known</Spanish>
+		<Japanese>%s1_Tech&#12434;&#30330;&#35211;&#28168;&#12415;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TECH_COST</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% research cost of technologies</English>
+		<French>[ICON_BULLET]%D1_Percent%% research cost of technologies</French>
+		<German>[ICON_BULLET]%D1_Percent%% research cost of technologies</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% research cost of technologies</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% research cost of technologies</Spanish>
+		<Japanese>[ICON_BULLET]&#25216;&#34899;&#12398;&#30740;&#31350;&#12467;&#12473;&#12488;%D1_Percent%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ATTITUDE_CHANGE</Tag>
+		<English>[ICON_BULLET]%D1 attitude of the other civilizations</English>
+		<French>[ICON_BULLET]%D1 attitude of the other civilizations</French>
+		<German>[ICON_BULLET]%D1 attitude of the other civilizations</German>
+		<Italian>[ICON_BULLET]%D1 attitude of the other civilizations</Italian>
+		<Spanish>[ICON_BULLET]%D1 attitude of the other civilizations</Spanish>
+		<Japanese>[ICON_BULLET]&#12411;&#12363;&#12398;&#25991;&#26126;&#12363;&#12425;&#12398;&#24907;&#24230; %D1</Japanese>
+	</TEXT>
 </Civ4GameText>
