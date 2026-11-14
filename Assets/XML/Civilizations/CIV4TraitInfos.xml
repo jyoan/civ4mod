@@ -471,6 +471,10 @@
 					<UnitClassType>UNITCLASS_SCIENTIST</UnitClassType>
 					<UnitType>UNIT_TEST_SCIENTIST</UnitType>
 				</UniqueUnit>
+				<UniqueUnit>
+					<UnitClassType>UNITCLASS_SPY</UnitClassType>
+					<UnitType>UNIT_TEST_SPY</UnitType>
+				</UniqueUnit>
 			</UniqueUnits>
 			<UniqueBuildings>
 				<UniqueBuilding>
