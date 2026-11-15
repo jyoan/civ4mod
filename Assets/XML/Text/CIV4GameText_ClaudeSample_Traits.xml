@@ -1021,12 +1021,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_COMMERCE_PER_RELIGION</Tag>
-		<English>[ICON_BULLET]%D1%c2 for each religion in a city</English>
-		<French>[ICON_BULLET]%D1%c2 for each religion in a city</French>
-		<German>[ICON_BULLET]%D1%c2 for each religion in a city</German>
-		<Italian>[ICON_BULLET]%D1%c2 for each religion in a city</Italian>
-		<Spanish>[ICON_BULLET]%D1%c2 for each religion in a city</Spanish>
-		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12398;&#23447;&#25945;1&#12388;&#12395;&#12388;&#12365;%D1%c2</Japanese>
+		<English>[ICON_BULLET]%D1%F2 for each religion in a city</English>
+		<French>[ICON_BULLET]%D1%F2 for each religion in a city</French>
+		<German>[ICON_BULLET]%D1%F2 for each religion in a city</German>
+		<Italian>[ICON_BULLET]%D1%F2 for each religion in a city</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 for each religion in a city</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12398;&#23447;&#25945;1&#12388;&#12395;&#12388;&#12365;%D1%F2</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_DEFENSE_COMBAT_PERCENT</Tag>
@@ -1036,5 +1036,23 @@
 		<Italian>[ICON_BULLET]%D1_Percent%% Strength when defending</Italian>
 		<Spanish>[ICON_BULLET]%D1_Percent%% Strength when defending</Spanish>
 		<Japanese>[ICON_BULLET]&#38450;&#34907;&#26178;&#12398;&#25126;&#38360;&#21147;%D1_Percent%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PER_CITY_WORLD_WONDER</Tag>
+		<English>[ICON_BULLET]%D1%F2 in each city for each World Wonder in it</English>
+		<French>[ICON_BULLET]%D1%F2 in each city for each World Wonder in it</French>
+		<German>[ICON_BULLET]%D1%F2 in each city for each World Wonder in it</German>
+		<Italian>[ICON_BULLET]%D1%F2 in each city for each World Wonder in it</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 in each city for each World Wonder in it</Spanish>
+		<Japanese>[ICON_BULLET]&#21508;&#37117;&#24066;&#12391;&#12289;&#12381;&#12398;&#37117;&#24066;&#12398;&#19990;&#30028;&#36986;&#29987;1&#12388;&#12395;&#12388;&#12365;%D1%F2</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PER_WORLD_WONDER</Tag>
+		<English>[ICON_BULLET]%D1%F2 in all cities for each World Wonder you own</English>
+		<French>[ICON_BULLET]%D1%F2 in all cities for each World Wonder you own</French>
+		<German>[ICON_BULLET]%D1%F2 in all cities for each World Wonder you own</German>
+		<Italian>[ICON_BULLET]%D1%F2 in all cities for each World Wonder you own</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 in all cities for each World Wonder you own</Spanish>
+		<Japanese>[ICON_BULLET]&#20840;&#37117;&#24066;&#12391;&#12289;&#25152;&#26377;&#12377;&#12427;&#19990;&#30028;&#36986;&#29987;1&#12388;&#12395;&#12388;&#12365;%D1%F2</Japanese>
 	</TEXT>
 </Civ4GameText>
