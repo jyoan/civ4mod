@@ -62,6 +62,10 @@ BtS の効果はそのままにして足す。
 | `bInlandCanals` | メフメド２世（確定、未実装） |
 | `LakePlotYieldChanges` | アステカ（確定、未実装） |
 | `iEnslavementChance` の昇進 | モンテスマ（確定、未実装） |
+| `iAnarchyGoldenAgePercent`、`iCombatPercent` | フランス（確定、未実装） |
+| `bRiverNavigation`・`bFreeEmbark` の昇進 | ヴァイキング（確定、未実装） |
+| `bPillageNoMoveCost`・`iPillageHealPercent` の昇進 | ラグナル（確定、未実装） |
+| `WonderHurrys`、`bIgnoreWonderHurryCostModifier` | 始皇帝（確定、未実装） |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -70,12 +74,13 @@ BtS の効果はそのままにして足す。
 | メフメド２世 | 艦隊の山越え: 艦船が、水に面していない要塞・都市にも入れる | `bInlandCanals` | 確定 |
 | アステカ（文明） | テノチティトラン: 湖のタイルの産出が増える | `LakePlotYieldChanges` | 確定 |
 | モンテスマ | 花の戦争: 倒した敵を捕虜（労働者）にする | 昇進の `iEnslavementChance` | 確定 |
-| フランス（文明） | 革命: 無政府期間が明けると黄金期。無政府期間中は全ユニットの戦闘力が上がる | `iAnarchyGoldenAgePercent`、志向の戦闘力 %（新タグ）を `ConditionalFreeTraits` の `bAnarchy` で与える | master に新タグを作る |
-| ヴァイキング（文明） | 古典時代までの艦船が川を進める。乗船・下船で移動力を余分に使わない | 新タグ | master に新タグを作る |
-| ラグナル | 略奪で移動力を使わない。略奪するとユニットが回復する | 新タグ | master に新タグを作る |
+| フランス（文明） | 革命: 無政府期間が明けると黄金期。無政府期間中は全ユニットの戦闘力が上がる | `iAnarchyGoldenAgePercent`、`iCombatPercent` を持つ志向を `ConditionalFreeTraits` の `bAnarchy` で与える | 確定（タグは master で作成済み、志向は未実装） |
+| ヴァイキング（文明） | 古典時代までの艦船が川を進める。乗船・下船で移動力を余分に使わない | `FreePromotionSets` で、`bRiverNavigation` の昇進を作業船・ガレー船・三段櫂船に、`bFreeEmbark` の昇進を陸上ユニットに配る | 確定（タグは master で作成済み、志向は未実装） |
+| ラグナル | 略奪で移動力を使わない。略奪するとユニットが回復する | `FreePromotionSets` で、`bPillageNoMoveCost`・`iPillageHealPercent` の昇進を陸上の戦闘ユニットに配る | 確定（タグは master で作成済み、志向は未実装） |
+| 始皇帝 | 奴隷制なしで、遺産（世界遺産・国家遺産）を人口で緊急生産できる。遺産の緊急生産に追加の費用がかからない（人口でも資金でも。生産 0 のときの +50% と人口を使ったときの不満は残る） | `WonderHurrys`（`HURRY_POPULATION`）、`bIgnoreWonderHurryCostModifier` | 確定（タグは master で作成済み、志向は未実装） |
 | サラディン | 占領した都市に国教の建物を建てる | `ConquestReligionBuildings` など（`iConquestBuildingSurviveModifier` も候補） | 方向だけ決定 |
 
-- 始皇帝の「長城線」（万里の長城が陳腐化しない）は取り下げた。BtS の万里の長城はもともと陳腐化しない（`ObsoleteTech` が `NONE`）
+- 始皇帝の最初の案「長城線」（万里の長城が陳腐化しない）は取り下げた。BtS の万里の長城はもともと陳腐化しない（`ObsoleteTech` が `NONE`）
 
 ## 文明
 
