@@ -1055,4 +1055,13 @@
 		<Spanish>[ICON_BULLET]%D1%F2 in all cities for each World Wonder you own</Spanish>
 		<Japanese>[ICON_BULLET]&#20840;&#37117;&#24066;&#12391;&#12289;&#25152;&#26377;&#12377;&#12427;&#19990;&#30028;&#36986;&#29987;1&#12388;&#12395;&#12388;&#12365;%D1%F2</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RIVER_EDGE_YIELD</Tag>
+		<English>[ICON_BULLET]Plots with 1/2/3/4 river edges: %D1/%D2/%D3/%D4%F5</English>
+		<French>[ICON_BULLET]Plots with 1/2/3/4 river edges: %D1/%D2/%D3/%D4%F5</French>
+		<German>[ICON_BULLET]Plots with 1/2/3/4 river edges: %D1/%D2/%D3/%D4%F5</German>
+		<Italian>[ICON_BULLET]Plots with 1/2/3/4 river edges: %D1/%D2/%D3/%D4%F5</Italian>
+		<Spanish>[ICON_BULLET]Plots with 1/2/3/4 river edges: %D1/%D2/%D3/%D4%F5</Spanish>
+		<Japanese>[ICON_BULLET]&#24029;&#12398;&#27969;&#12428;&#12427;&#36794;&#12364;1&#12539;2&#12539;3&#12539;4&#26412;&#12398;&#12479;&#12452;&#12523;: %D1&#12539;%D2&#12539;%D3&#12539;%D4%F5</Japanese>
+	</TEXT>
 </Civ4GameText>

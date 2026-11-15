@@ -1568,6 +1568,25 @@ bool CvPlot::isRiver() const
 }
 
 
+// The edges of the plot with a river along them, 0 to 4 (added by this mod): the river crossings to the four cardinal
+// directions (a river on the edge between two land plots)
+int CvPlot::getRiverEdgeCount() const
+{
+	int iCount = 0;
+	int iI;
+
+	for (iI = 0; iI < NUM_CARDINALDIRECTION_TYPES; iI++)
+	{
+		if (isRiverCrossing(cardinalDirectionToDirection((CardinalDirectionTypes)iI)))
+		{
+			iCount++;
+		}
+	}
+
+	return iCount;
+}
+
+
 // A ship sailing up a river (bRiverNavigation, added by this mod) may come to this land plot by a river from the adjacent
 // pFromPlot: from the sea (the mouth of the river), or from a land plot along the river (as the trade network,
 // isRiverConnection) or across it
@@ -6911,6 +6930,13 @@ int CvPlot::calculateTraitYieldChange(YieldTypes eYield, PlayerTypes ePlayer) co
 	if (isRiver() && !isImpassable())
 	{
 		iYield += kPlayer.getTraitRiverPlotYieldChange(eYield);
+
+		// RiverEdgeYieldPercents (added by this mod): % for each edge of the plot with a river, the sum rounded down
+		int iEdgePercent = kPlayer.getTraitRiverEdgeYieldPercent(eYield);
+		if (iEdgePercent != 0)
+		{
+			iYield += (getRiverEdgeCount() * iEdgePercent) / 100;
+		}
 	}
 
 	if (isLake())

@@ -4319,6 +4319,16 @@ void CvGameTextMgr::parseTraitYieldEffects(CvWStringBuffer& szHelpString, TraitT
 		szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_BUILDING_RIVER_PLOTS").c_str());
 		setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", kTrait.getRiverPlotYieldChangeArray(), false, false);
 	}
+
+	// RiverEdgeYieldPercents (added by this mod): the yield for 1, 2, 3 and 4 river edges, "+0, +0, +1, +1 food"
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		int iPercent = kTrait.getRiverEdgeYieldPercent(iI);
+		if (iPercent != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_RIVER_EDGE_YIELD", iPercent / 100, (2 * iPercent) / 100, (3 * iPercent) / 100, (4 * iPercent) / 100, GC.getYieldInfo((YieldTypes)iI).getChar()));
+		}
+	}
 }
 
 void CvGameTextMgr::parseTraitUniqueElements(CvWStringBuffer& szHelpString, TraitTypes eTrait)

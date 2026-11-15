@@ -232,6 +232,7 @@ public:
 	int getTraitFeatureYieldChange(FeatureTypes eFeature, YieldTypes eYield) const;
 	int getTraitImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield) const;
 	int getTraitRiverPlotYieldChange(YieldTypes eYield) const;
+	int getTraitRiverEdgeYieldPercent(YieldTypes eYield) const;	// Exposed to Python (added by this mod)
 	int getTraitLakePlotYieldChange(YieldTypes eYield) const;
 	// City plot radius from the traits of this player for a city with the culture level (added by this mod)
 	int getCityRadius(CultureLevelTypes eCultureLevel) const;

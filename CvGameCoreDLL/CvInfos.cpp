@@ -20231,6 +20231,7 @@ m_paiUnitCombatUpgradeDiscount(NULL),
 m_pabUpgradeAnywhereUnitCombat(NULL),
 m_pabUpgradeAnywhereExcludeEnemy(NULL),
 m_paiRiverPlotYieldChange(NULL),
+m_paiRiverEdgeYieldPercent(NULL),
 m_paiLakePlotYieldChange(NULL),
 m_paiAngryYieldChange(NULL),
 m_paiAngryCommerceChange(NULL),
@@ -20275,6 +20276,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabUpgradeAnywhereUnitCombat);
 	SAFE_DELETE_ARRAY(m_pabUpgradeAnywhereExcludeEnemy);
 	SAFE_DELETE_ARRAY(m_paiRiverPlotYieldChange);
+	SAFE_DELETE_ARRAY(m_paiRiverEdgeYieldPercent);
 	SAFE_DELETE_ARRAY(m_paiLakePlotYieldChange);
 	SAFE_DELETE_ARRAY(m_paiAngryYieldChange);
 	SAFE_DELETE_ARRAY(m_paiAngryCommerceChange);
@@ -21323,6 +21325,15 @@ int* CvTraitInfo::getRiverPlotYieldChangeArray() const
 	return m_paiRiverPlotYieldChange;
 }
 
+// RiverEdgeYieldPercents (added by this mod): % of a yield for each edge of a plot with a river along it (0 to 4 edges). The
+// sum is rounded down: 100 gives +1 for each edge, 34 gives +1 for 3 edges (CvPlot::calculateTraitYieldChange)
+int CvTraitInfo::getRiverEdgeYieldPercent(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiRiverEdgeYieldPercent ? m_paiRiverEdgeYieldPercent[i] : 0;
+}
+
 // Yields of the lake plots in the territory of the player (added by this mod, from the Touhou Epic mod)
 int CvTraitInfo::getLakePlotYieldChange(int i) const
 {
@@ -22131,6 +22142,16 @@ void CvTraitInfo::readPlotYieldChanges(CvXMLLoadUtility* pXML)
 	else
 	{
 		pXML->InitList(&m_paiRiverPlotYieldChange, NUM_YIELD_TYPES);
+	}
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "RiverEdgeYieldPercents"))
+	{
+		pXML->SetYields(&m_paiRiverEdgeYieldPercent);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_paiRiverEdgeYieldPercent, NUM_YIELD_TYPES);
 	}
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "LakePlotYieldChanges"))

@@ -119,6 +119,11 @@ bool CyPlot::isNewWorld()
 	return m_pPlot ? m_pPlot->isNewWorld() : false;
 }
 
+int CyPlot::getRiverEdgeCount()
+{
+	return m_pPlot ? m_pPlot->getRiverEdgeCount() : 0;
+}
+
 bool CyPlot::isOverseas(int /*PlayerTypes*/ ePlayer)
 {
 	return m_pPlot ? m_pPlot->isOverseas((PlayerTypes)ePlayer) : false;

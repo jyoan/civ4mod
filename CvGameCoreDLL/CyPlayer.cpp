@@ -2253,6 +2253,11 @@ int CyPlayer::getTraitDefenseCombatPercent()
 	return m_pPlayer ? m_pPlayer->getTraitDefenseCombatPercent() : 0;
 }
 
+int CyPlayer::getTraitRiverEdgeYieldPercent(int /*YieldTypes*/ eYield)
+{
+	return m_pPlayer ? m_pPlayer->getTraitRiverEdgeYieldPercent((YieldTypes)eYield) : 0;
+}
+
 int CyPlayer::getTraitWorldWonderCommerce(int /*CommerceTypes*/ eCommerce)
 {
 	return m_pPlayer ? m_pPlayer->getTraitWorldWonderCommerce((CommerceTypes)eCommerce) : 0;
