@@ -10,6 +10,8 @@
 ##   PyOnCityFounded   pPlayer, eTrait, pCity (CyCity): after the player founds the city
 ##   PyOnCityAcquired  pPlayer, eTrait, pCity, iOldOwner, bConquest, bTrade (1 or 0): after the player acquires the city
 ##                     by conquest, trade or culture. A conquered city can still be razed afterwards.
+##   PyOnCorporationFounded  pPlayer, eTrait, pCity (the headquarters), eCorporation: after the player founds the
+##                     corporation, e.g. createExecutives(pPlayer, eCorporation, 3, pCity)
 ## The common functions are in CvHookUtils.py (imported below), e.g.
 ##   <PyOnGameStart>gainGold(pPlayer, scaleBySpeed(100, 'Train'))</PyOnGameStart>
 ## The hooks change the game and are called on every computer of a multiplayer game: use CyGame().getSorenRandNum for
@@ -36,3 +38,7 @@ def onCityFounded(argsList):
 def onCityAcquired(argsList):
 	pPlayer, eTrait, pCity, iOldOwner, bConquest, bTrade = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnCityAcquired())
+
+def onCorporationFounded(argsList):
+	pPlayer, eTrait, pCity, eCorporation = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnCorporationFounded())

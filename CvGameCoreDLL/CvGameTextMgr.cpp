@@ -2064,6 +2064,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_OTHER_RELIGION_MOD", iModifier));
 			}
 
+			// iDefenseCombatPercent of the traits of the defender's owner (added by this mod)
+			iModifier = GET_PLAYER(pDefender->getOwnerINLINE()).getTraitDefenseCombatPercent();
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_TRAIT_DEFENSE_MOD", iModifier));
+			}
+
 			iModifier = pDefender->domainModifier(pAttacker->getDomainType());
 
 			if (iModifier != 0)
@@ -4036,6 +4045,30 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 	if (kTrait.getCombatPercent() != 0)
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_COMBAT_PERCENT", kTrait.getCombatPercent()));
+	}
+
+	// iHappinessPerReligion, CommercePerReligion, iDefenseCombatPercent, iEnemyWarWearinessModifier (added by this mod)
+	if (kTrait.getHappinessPerReligion() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HAPPINESS_PER_RELIGION", kTrait.getHappinessPerReligion()));
+	}
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		if (kTrait.getCommercePerReligion(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_COMMERCE_PER_RELIGION", kTrait.getCommercePerReligion(iI), GC.getCommerceInfo((CommerceTypes)iI).getChar()));
+		}
+	}
+
+	if (kTrait.getDefenseCombatPercent() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DEFENSE_COMBAT_PERCENT", kTrait.getDefenseCombatPercent()));
+	}
+
+	if (kTrait.getEnemyWarWearinessModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_ENEMY_WAR_WEAR", kTrait.getEnemyWarWearinessModifier()));
 	}
 
 	// WonderHurrys, bIgnoreWonderHurryCostModifier (added by this mod)
@@ -11706,6 +11739,16 @@ void CvGameTextMgr::setAngerHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		}
 		iOldAnger = iNewAnger;
 
+		// iHappinessPerReligion of the traits (added by this mod)
+		iNewAnger -= std::min(0, city.getTraitReligionHappiness());
+		iAnger = ((iNewAnger - iOldAnger) + std::min(0, iOldAnger));
+		if (iAnger > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_ANGER_TRAIT_RELIGIONS", iAnger));
+			szBuffer.append(NEWLINE);
+		}
+		iOldAnger = iNewAnger;
+
 		iNewAnger -= std::min(0, city.getReligionBadHappiness());
 		iAnger = ((iNewAnger - iOldAnger) + std::min(0, iOldAnger));
 		if (iAnger > 0)
@@ -11842,6 +11885,15 @@ void CvGameTextMgr::setHappyHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		{
 			iTotalHappy += iHappy;
 			szBuffer.append(gDLL->getText("TXT_KEY_HAPPY_SPECIALISTS", iHappy));
+			szBuffer.append(NEWLINE);
+		}
+
+		// iHappinessPerReligion of the traits (added by this mod)
+		iHappy = city.getTraitReligionHappiness();
+		if (iHappy > 0)
+		{
+			iTotalHappy += iHappy;
+			szBuffer.append(gDLL->getText("TXT_KEY_HAPPY_TRAIT_RELIGIONS", iHappy));
 			szBuffer.append(NEWLINE);
 		}
 

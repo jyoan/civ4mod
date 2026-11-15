@@ -86,7 +86,7 @@ public:
 	void changeNumUnitsKilled(int iChange);
 	int getNumCitiesConquered() const;							// Exposed to Python: iMinCitiesConquered of ConditionalFreeTraits
 	void changeNumCitiesConquered(int iChange);
-	void doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity = NULL, PlayerTypes eOldOwner = NO_PLAYER, bool bConquest = false, bool bTrade = false);	// PyOnGameStart etc. of the traits
+	void doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity = NULL, PlayerTypes eOldOwner = NO_PLAYER, bool bConquest = false, bool bTrade = false, CorporationTypes eCorporation = NO_CORPORATION);	// PyOnGameStart etc. of the traits
 	void doTechPythonHook(TechTypes eTech, bool bFirst);	// added by this mod: PyOnDiscovered
 	void doCivicPythonHook(CivicTypes eCivic, bool bAdopt);	// added by this mod: PyOnAdopt / PyOnRevoke
 	DllExport bool isHuman() const;																																							// Exposed to Python						
@@ -261,6 +261,9 @@ public:
 	int getRouteMovementModifierInBorders() const;	// Exposed to Python (added by this mod)
 	int getTraitCombatPercent() const;			// Exposed to Python (added by this mod)
 	bool isWonderHurry(HurryTypes eHurry) const;	// Exposed to Python (added by this mod)
+	int getHappinessPerReligion() const;	// Exposed to Python (added by this mod)
+	int getCommercePerReligion(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
+	int getTraitDefenseCombatPercent() const;	// Exposed to Python (added by this mod)
 	int getStartBiasFeature(FeatureTypes eFeature) const;	// added by this mod: StartBiasFeatures of the civilization and the traits
 	int getStartBiasTerrain(TerrainTypes eTerrain) const;	// added by this mod: StartBiasTerrains of the civilization and the traits
 	bool hasStartBias() const;	// Exposed to Python (added by this mod)

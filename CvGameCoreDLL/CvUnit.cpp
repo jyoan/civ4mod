@@ -10062,6 +10062,9 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 			iTempModifier += getOtherReligionCombatModifier(pAttacker->getOwnerINLINE());
 			iTempModifier -= pAttacker->getOtherReligionCombatModifier(getOwnerINLINE());
 
+			// iDefenseCombatPercent of the traits of the owner of this unit, the defender (added by this mod)
+			iTempModifier += GET_PLAYER(getOwnerINLINE()).getTraitDefenseCombatPercent();
+
 			if (pAttacker->isAnimal())
 			{
 				iExtraModifier = animalCombatModifier();

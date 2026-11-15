@@ -501,6 +501,9 @@ public:
 	int getAttitudeChange();	// added by this mod
 	int getRouteMovementModifierInBorders();	// added by this mod
 	int getTraitCombatPercent();	// added by this mod
+	int getHappinessPerReligion();	// added by this mod
+	int getCommercePerReligion(int /*CommerceTypes*/ eCommerce);	// added by this mod
+	int getTraitDefenseCombatPercent();	// added by this mod
 	bool isWonderHurry(int /*HurryTypes*/ eHurry);	// added by this mod
 	bool isIgnoreWonderHurryCostModifier();	// added by this mod
 	bool hasStartBias();	// added by this mod

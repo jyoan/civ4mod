@@ -118,3 +118,4 @@
 - 2026-11-15: 志向の `WonderHurrys`（奴隷制なしで遺産だけ人口による緊急生産）・`bIgnoreWonderHurryCostModifier`（遺産の追加費用なし）を検証用志向で確認
 - 2026-11-15: 開始位置の調整がバイアスで好む地形を残すこと（`normalizeRemoveBadTerrain` など）と、Python で開始位置を決める地図でもバイアスが効くこと（`CvMapGeneratorUtil.findStartingPlot`）を検証用文明で確認（開始位置の周りに砂漠が多く残る）
 - 2026-11-15: better_trait_mod のクメールの密林の民志向（`TRAIT_JUNGLE_PEOPLE`）を確認し、確定（開始位置のバイアスでジャングルの近くから始まる。ペディアの文明のページに志向の段）
+- 2026-11-15: 志向の `iHappinessPerReligion`・`CommercePerReligion`（都市の宗教の数で幸福・文化）、`iDefenseCombatPercent`、`iEnemyWarWearinessModifier`、Python フック `PyOnCorporationFounded`（企業を設立すると本社に幹部 3 体）を検証用志向で確認

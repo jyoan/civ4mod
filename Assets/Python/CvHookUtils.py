@@ -35,6 +35,18 @@ def capitalPlot(pPlayer):
 		return None
 	return pCity.plot()
 
+def isCoastalCity(pCity):
+	"The city touches the sea (an ocean, not a lake)"
+	return pCity.isCoastal(gc.getMIN_WATER_SIZE_FOR_OCEAN())
+
+def isOverseasCity(pCity):
+	"The city is in another region than the capital of its owner (the regions of this mod: CyPlot.isOverseas)"
+	return pCity.plot().isOverseas(pCity.getOwner())
+
+def isNewWorldCity(pCity):
+	"The city is in a region where no player started (CyPlot.isNewWorld)"
+	return pCity.plot().isNewWorld()
+
 def isOnFeature(pUnit, szFeature):
 	"True if the unit is on a plot with the feature ('FEATURE_FOREST')"
 	return pUnit.plot().getFeatureType() == gc.getInfoTypeForString(szFeature)
@@ -52,6 +64,14 @@ def createUnits(pPlayer, szUnitClass, iNum, pPlot):
 		return
 	for i in range(iNum):
 		pPlayer.initUnit(eUnit, pPlot.getX(), pPlot.getY(), UnitAITypes.NO_UNITAI, DirectionTypes.DIRECTION_SOUTH)
+
+def createExecutives(pPlayer, eCorporation, iNum, pCity):
+	"Creates iNum units that spread the corporation (the executive of the player's civilization) in the city"
+	for iUnitClass in range(gc.getNumUnitClassInfos()):
+		eUnit = pPlayer.getCivilizationUnit(iUnitClass)
+		if eUnit != -1 and gc.getUnitInfo(eUnit).getCorporationSpreads(eCorporation) > 0:
+			createUnits(pPlayer, gc.getUnitClassInfo(iUnitClass).getType(), iNum, pCity.plot())
+			return
 
 def addBuilding(pCity, szBuildingClass):
 	"The city gets the building of the building class (the building of the owner's civilization)"

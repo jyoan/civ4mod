@@ -2945,10 +2945,11 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 	// Trade network (FeatureRoutes). Traits rarely change, so this is not limited to the traits with FeatureRoutes.
 	updatePlotGroups();
 
-	// Feature health in the city radius (FeatureHealthChanges)
+	// Feature health in the city radius (FeatureHealthChanges), and the commerce for each religion (CommercePerReligion)
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
 		pLoopCity->updateFeatureHealth();
+		pLoopCity->updateReligionCommerce();
 	}
 
 	// Maintenance of the overseas cities (iOverseasMaintenanceModifier) and trade routes with distant cities
@@ -3009,7 +3010,7 @@ void CvPlayer::doCivicPythonHook(CivicTypes eCivic, bool bAdopt)
 	delete pyPlayer;	// the python function must not hold on to it
 }
 
-void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, PlayerTypes eOldOwner, bool bConquest, bool bTrade)
+void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, PlayerTypes eOldOwner, bool bConquest, bool bTrade, CorporationTypes eCorporation)
 {
 	// Not for the player watching in the AI observe mode, who has nothing to act on
 	if (isObserver())
@@ -3017,7 +3018,7 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 		return;
 	}
 
-	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired" };
+	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded" };
 	CyPlayer* pyPlayer;
 	CyCity* pyCity;
 	int iI;
@@ -3044,6 +3045,10 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 				argsList.add((int)eOldOwner);
 				argsList.add(bConquest ? 1 : 0);
 				argsList.add(bTrade ? 1 : 0);
+			}
+			else if (eHook == TRAIT_PYHOOK_CORPORATION_FOUNDED)
+			{
+				argsList.add((int)eCorporation);
 			}
 
 			gDLL->getPythonIFace()->callFunction(PYTraitModule, aszFunctions[eHook], argsList.makeFunctionArgs());
@@ -8109,6 +8114,22 @@ int CvPlayer::getTraitCombatPercent() const
 	return sumTraitValues(&CvTraitInfo::getCombatPercent);
 }
 
+// iHappinessPerReligion, CommercePerReligion and iDefenseCombatPercent of the traits (added by this mod)
+int CvPlayer::getHappinessPerReligion() const
+{
+	return sumTraitValues(&CvTraitInfo::getHappinessPerReligion);
+}
+
+int CvPlayer::getCommercePerReligion(CommerceTypes eCommerce) const
+{
+	return sumTraitValues(&CvTraitInfo::getCommercePerReligion, eCommerce);
+}
+
+int CvPlayer::getTraitDefenseCombatPercent() const
+{
+	return sumTraitValues(&CvTraitInfo::getDefenseCombatPercent);
+}
+
 // WonderHurrys of the traits (added by this mod): the player can hurry wonders this way without the civic (CvCity::isWonderHurry)
 bool CvPlayer::isWonderHurry(HurryTypes eHurry) const
 {
@@ -12985,7 +13006,13 @@ void CvPlayer::setTeam(TeamTypes eTeam)
 	GET_TEAM(getTeam()).changeTotalPopulation(-(getTotalPopulation()));
 	GET_TEAM(getTeam()).changeTotalLand(-(getTotalLand()));
 
+	// iEnemyWarWearinessModifier of the traits goes with the player (added by this mod; added to the team in processTrait)
+	int iTraitEnemyWarWeariness = (isEverAlive() ? sumTraitValues(&CvTraitInfo::getEnemyWarWearinessModifier) : 0);
+	GET_TEAM(getTeam()).changeEnemyWarWearinessModifier(-iTraitEnemyWarWeariness);
+
 	GC.getInitCore().setTeam(getID(), eTeam);
+
+	GET_TEAM(getTeam()).changeEnemyWarWearinessModifier(iTraitEnemyWarWeariness);
 
 	GET_TEAM(getTeam()).changeNumMembers(1);
 	if (isAlive())
@@ -18403,6 +18430,7 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	changeTradeRoutes(kTrait.getTradeRoutes() * iChange);
 	changeExpInBorderModifier(kTrait.getExpInBorderModifier() * iChange);
 	changeGoldenAgeModifier(kTrait.getGoldenAgeModifier() * iChange);
+	GET_TEAM(getTeam()).changeEnemyWarWearinessModifier(kTrait.getEnemyWarWearinessModifier() * iChange);	// added by this mod (the team value of the buildings)
 
 	for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
 	{

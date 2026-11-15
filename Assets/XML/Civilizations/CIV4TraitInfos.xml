@@ -425,6 +425,14 @@
 				<HurryType>HURRY_POPULATION</HurryType>
 			</WonderHurrys>
 			<bIgnoreWonderHurryCostModifier>1</bIgnoreWonderHurryCostModifier>
+			<iHappinessPerReligion>1</iHappinessPerReligion>
+			<CommercePerReligion>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>1</iCommerce>
+			</CommercePerReligion>
+			<iDefenseCombatPercent>10</iDefenseCombatPercent>
+			<iEnemyWarWearinessModifier>50</iEnemyWarWearinessModifier>
 			<bConquestStateReligion>1</bConquestStateReligion>
 			<ConquestReligionBuildings>
 				<SpecialBuildingType>SPECIALBUILDING_TEMPLE</SpecialBuildingType>
@@ -555,6 +563,7 @@
 			<PyOnBeginTurn>isEveryTurns(5) and createUnits(pPlayer, 'UNITCLASS_WARRIOR', 1, capitalPlot(pPlayer))</PyOnBeginTurn>
 			<PyOnCityFounded>addBuilding(pCity, 'BUILDINGCLASS_WALLS')</PyOnCityFounded>
 			<PyOnCityAcquired>addBuilding(pCity, 'BUILDINGCLASS_BARRACKS')</PyOnCityAcquired>
+			<PyOnCorporationFounded>createExecutives(pPlayer, eCorporation, 3, pCity)</PyOnCorporationFounded>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>

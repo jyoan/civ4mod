@@ -2800,6 +2800,7 @@ enum TraitPythonHookTypes
 	TRAIT_PYHOOK_BEGIN_TURN,		// PyOnBeginTurn
 	TRAIT_PYHOOK_CITY_FOUNDED,		// PyOnCityFounded
 	TRAIT_PYHOOK_CITY_ACQUIRED,		// PyOnCityAcquired
+	TRAIT_PYHOOK_CORPORATION_FOUNDED,	// PyOnCorporationFounded
 
 	NUM_TRAIT_PYHOOK_TYPES
 };

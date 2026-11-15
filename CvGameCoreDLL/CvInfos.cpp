@@ -20206,6 +20206,10 @@ m_iAttitudeChange(0),
 m_iRouteMovementModifierInBorders(0),
 m_iCombatPercent(0),
 m_pabWonderHurry(NULL),
+m_iHappinessPerReligion(0),
+m_paiCommercePerReligion(NULL),
+m_iDefenseCombatPercent(0),
+m_iEnemyWarWearinessModifier(0),
 m_bIgnoreWonderHurryCostModifier(false),
 m_bConquestStateReligion(false),
 m_pabConquestReligionBuilding(NULL),
@@ -20288,6 +20292,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabNoTechCivic);
 	SAFE_DELETE_ARRAY(m_pabConquestReligionBuilding);
 	SAFE_DELETE_ARRAY(m_pabWonderHurry);
+	SAFE_DELETE_ARRAY(m_paiCommercePerReligion);
 }
 
 int CvTraitInfo::getHealth() const									
@@ -20772,6 +20777,33 @@ bool CvTraitInfo::isWonderHurry(int iHurry) const
 	return m_pabWonderHurry ? m_pabWonderHurry[iHurry] : false;
 }
 
+// iHappinessPerReligion and CommercePerReligion (added by this mod): happiness and commerce of each city of the player for each
+// religion in the city (CvCity::getTraitReligionHappiness, getTraitReligionCommerce)
+int CvTraitInfo::getHappinessPerReligion() const
+{
+	return m_iHappinessPerReligion;
+}
+
+int CvTraitInfo::getCommercePerReligion(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiCommercePerReligion ? m_paiCommercePerReligion[i] : 0;
+}
+
+// iDefenseCombatPercent (added by this mod): combat % of the units of the player when they defend (CvUnit::maxCombatStr)
+int CvTraitInfo::getDefenseCombatPercent() const
+{
+	return m_iDefenseCombatPercent;
+}
+
+// iEnemyWarWearinessModifier (added by this mod, as the tag of the buildings): war weariness % of the teams at war with the team
+// of the player, against that team (CvTeam::changeEnemyWarWearinessModifier in CvPlayer::processTrait)
+int CvTraitInfo::getEnemyWarWearinessModifier() const
+{
+	return m_iEnemyWarWearinessModifier;
+}
+
 // bIgnoreWonderHurryCostModifier (added by this mod): hurrying a wonder costs no extra (iHurryCostModifier of the building
 // above 0 counts as 0, CvCity::getHurryCostModifier). The extra cost of a new item (NEW_HURRY_MODIFIER) and the anger stay
 bool CvTraitInfo::isIgnoreWonderHurryCostModifier() const
@@ -21019,6 +21051,11 @@ const TCHAR* CvTraitInfo::getPyOnCityFounded() const
 const TCHAR* CvTraitInfo::getPyOnCityAcquired() const
 {
 	return m_aszPythonHook[TRAIT_PYHOOK_CITY_ACQUIRED];
+}
+
+const TCHAR* CvTraitInfo::getPyOnCorporationFounded() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_CORPORATION_FOUNDED];
 }
 
 // ConditionalFreeTraits (added by this mod): the traits the player has while the conditions hold
@@ -21705,6 +21742,18 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iRouteMovementModifierInBorders, "iRouteMovementModifierInBorders");
 	pXML->GetChildXmlValByName(&m_iCombatPercent, "iCombatPercent");
 	readTypeList(pXML, "WonderHurrys", m_aszWonderHurryTypes);	// hurries: readPass3()
+	pXML->GetChildXmlValByName(&m_iHappinessPerReligion, "iHappinessPerReligion");
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CommercePerReligion"))
+	{
+		pXML->SetCommerce(&m_paiCommercePerReligion);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_paiCommercePerReligion, NUM_COMMERCE_TYPES);
+	}
+	pXML->GetChildXmlValByName(&m_iDefenseCombatPercent, "iDefenseCombatPercent");
+	pXML->GetChildXmlValByName(&m_iEnemyWarWearinessModifier, "iEnemyWarWearinessModifier");
 	pXML->GetChildXmlValByName(&m_bIgnoreWonderHurryCostModifier, "bIgnoreWonderHurryCostModifier");
 	pXML->GetChildXmlValByName(&m_bConquestStateReligion, "bConquestStateReligion");
 	readTypeList(pXML, "ConquestReligionBuildings", m_aszConquestReligionBuildingTypes);	// special buildings: readPass3()
@@ -21860,6 +21909,7 @@ void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_BEGIN_TURN], "PyOnBeginTurn");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_FOUNDED], "PyOnCityFounded");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_ACQUIRED], "PyOnCityAcquired");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CORPORATION_FOUNDED], "PyOnCorporationFounded");
 }
 
 // The part of read() for ConditionalFreeTraits (added by this mod)
