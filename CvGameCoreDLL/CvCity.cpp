@@ -4707,6 +4707,19 @@ static int getSpecialistTotal(const CvCity* pCity, int (CvSpecialistInfo::*pfVal
 	return iTotal;
 }
 
+// iHappinessPerReligion and CommercePerReligion of the traits of the owner (added by this mod): for each religion in the city
+int CvCity::getTraitReligionHappiness() const
+{
+	int iPerReligion = GET_PLAYER(getOwnerINLINE()).getHappinessPerReligion();
+	return ((iPerReligion != 0) ? (iPerReligion * getReligionCount()) : 0);
+}
+
+int CvCity::getTraitReligionCommerce(CommerceTypes eIndex) const
+{
+	int iPerReligion = GET_PLAYER(getOwnerINLINE()).getCommercePerReligion(eIndex);
+	return ((iPerReligion != 0) ? (iPerReligion * getReligionCount()) : 0);
+}
+
 int CvCity::getSpecialistGoodHappiness() const
 {
 	return getSpecialistTotal(this, &CvSpecialistInfo::getHappiness, true);
@@ -4764,6 +4777,7 @@ int CvCity::unhappyLevel(int iExtra) const
 		iUnhappiness -= std::min(0, getFeatureBadHappiness());
 		iUnhappiness -= std::min(0, getBonusBadHappiness());
 		iUnhappiness -= std::min(0, getSpecialistBadHappiness());	// added by this mod
+		iUnhappiness -= std::min(0, getTraitReligionHappiness());	// added by this mod
 		iUnhappiness -= std::min(0, getReligionBadHappiness());
 		iUnhappiness -= std::min(0, getCommerceHappiness());
 		iUnhappiness -= std::min(0, area()->getBuildingHappiness(getOwnerINLINE()));
@@ -4792,6 +4806,7 @@ int CvCity::happyLevel() const
 	iHappiness += std::max(0, getFeatureGoodHappiness());
 	iHappiness += std::max(0, getBonusGoodHappiness());
 	iHappiness += std::max(0, getSpecialistGoodHappiness());	// added by this mod
+	iHappiness += std::max(0, getTraitReligionHappiness());	// added by this mod
 	iHappiness += std::max(0, getReligionGoodHappiness());
 	iHappiness += std::max(0, getCommerceHappiness());
 	iHappiness += std::max(0, area()->getBuildingHappiness(getOwnerINLINE()));
@@ -9225,6 +9240,9 @@ void CvCity::updateReligionCommerce(CommerceTypes eIndex)
 	{
 		iNewReligionCommerce += getReligionCommerceByReligion(eIndex, ((ReligionTypes)iI));
 	}
+
+	// CommercePerReligion of the traits of the owner (added by this mod): for each religion in the city
+	iNewReligionCommerce += getTraitReligionCommerce(eIndex);
 
 	if (getReligionCommerce(eIndex) != iNewReligionCommerce)
 	{

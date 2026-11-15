@@ -2238,6 +2238,21 @@ int CyPlayer::getTraitCombatPercent()
 	return m_pPlayer ? m_pPlayer->getTraitCombatPercent() : 0;
 }
 
+int CyPlayer::getHappinessPerReligion()
+{
+	return m_pPlayer ? m_pPlayer->getHappinessPerReligion() : 0;
+}
+
+int CyPlayer::getCommercePerReligion(int /*CommerceTypes*/ eCommerce)
+{
+	return m_pPlayer ? m_pPlayer->getCommercePerReligion((CommerceTypes)eCommerce) : 0;
+}
+
+int CyPlayer::getTraitDefenseCombatPercent()
+{
+	return m_pPlayer ? m_pPlayer->getTraitDefenseCombatPercent() : 0;
+}
+
 bool CyPlayer::isWonderHurry(int /*HurryTypes*/ eHurry)
 {
 	return m_pPlayer ? m_pPlayer->isWonderHurry((HurryTypes)eHurry) : false;

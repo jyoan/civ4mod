@@ -543,6 +543,13 @@
 	<ElementType name="PyOnBeginTurn" content="textOnly"/>
 	<ElementType name="PyOnCityFounded" content="textOnly"/>
 	<ElementType name="PyOnCityAcquired" content="textOnly"/>
+	<ElementType name="PyOnCorporationFounded" content="textOnly"/>
+	<ElementType name="iHappinessPerReligion" content="textOnly" dt:type="int"/>
+	<ElementType name="CommercePerReligion" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iDefenseCombatPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iEnemyWarWearinessModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="bAtWar" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bAtPeace" content="textOnly" dt:type="boolean"/>
 	<ElementType name="StateReligion" content="textOnly"/>
@@ -748,6 +755,10 @@
 		<element type="iCombatPercent" minOccurs="0"/>
 		<element type="WonderHurrys" minOccurs="0"/>
 		<element type="bIgnoreWonderHurryCostModifier" minOccurs="0"/>
+		<element type="iHappinessPerReligion" minOccurs="0"/>
+		<element type="CommercePerReligion" minOccurs="0"/>
+		<element type="iDefenseCombatPercent" minOccurs="0"/>
+		<element type="iEnemyWarWearinessModifier" minOccurs="0"/>
 		<element type="bConquestStateReligion" minOccurs="0"/>
 		<element type="ConquestReligionBuildings" minOccurs="0"/>
 		<element type="NoTechCivics" minOccurs="0"/>
@@ -798,6 +809,7 @@
 		<element type="PyOnBeginTurn" minOccurs="0"/>
 		<element type="PyOnCityFounded" minOccurs="0"/>
 		<element type="PyOnCityAcquired" minOccurs="0"/>
+		<element type="PyOnCorporationFounded" minOccurs="0"/>
 		<element type="ConditionalFreeTraits" minOccurs="0"/>
 		<element type="ExtraYieldThresholds"/>
 		<element type="TradeYieldModifiers"/>

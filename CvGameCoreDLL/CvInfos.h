@@ -4895,6 +4895,10 @@ public:
 	int getRouteMovementModifierInBorders() const;	// Exposed to Python (added by this mod)
 	int getCombatPercent() const;			// Exposed to Python (added by this mod)
 	bool isWonderHurry(int iHurry) const;		// Exposed to Python (added by this mod)
+	int getHappinessPerReligion() const;		// Exposed to Python (added by this mod)
+	int getCommercePerReligion(int i) const;	// Exposed to Python (added by this mod)
+	int getDefenseCombatPercent() const;		// Exposed to Python (added by this mod)
+	int getEnemyWarWearinessModifier() const;	// Exposed to Python (added by this mod)
 	bool isIgnoreWonderHurryCostModifier() const;	// Exposed to Python (added by this mod)
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(int iSpecialBuilding) const;	// Exposed to Python (added by this mod)
@@ -4974,6 +4978,7 @@ public:
 	const TCHAR* getPyOnBeginTurn() const;			// Exposed to Python
 	const TCHAR* getPyOnCityFounded() const;		// Exposed to Python
 	const TCHAR* getPyOnCityAcquired() const;		// Exposed to Python
+	const TCHAR* getPyOnCorporationFounded() const;	// Exposed to Python (added by this mod)
 	int getNumConditionalFreeTraits() const;		// Exposed to Python
 	int getConditionalFreeTraitType(int i) const;	// Exposed to Python
 	const ConditionalFreeTrait& getConditionalFreeTrait(int i) const;
@@ -5091,6 +5096,10 @@ protected:
 	int m_iRouteMovementModifierInBorders;	// added by this mod
 	int m_iCombatPercent;	// added by this mod
 	bool* m_pabWonderHurry;	// added by this mod: WonderHurrys, [hurry], NULL when not set
+	int m_iHappinessPerReligion;	// added by this mod
+	int* m_paiCommercePerReligion;	// added by this mod: [commerce]
+	int m_iDefenseCombatPercent;	// added by this mod
+	int m_iEnemyWarWearinessModifier;	// added by this mod
 	std::vector<CvString> m_aszWonderHurryTypes;	// read() keeps the types as strings until readPass3() (hurries are loaded after traits)
 	bool m_bIgnoreWonderHurryCostModifier;	// added by this mod
 	bool m_bConquestStateReligion;	// added by this mod

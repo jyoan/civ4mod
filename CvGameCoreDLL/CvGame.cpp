@@ -5370,6 +5370,14 @@ void CvGame::makeCorporationFounded(CorporationTypes eIndex, PlayerTypes ePlayer
 		m_paiCorporationGameTurnFounded[eIndex] = getGameTurn();
 
 		CvEventReporter::getInstance().corporationFounded(eIndex, ePlayer);
+
+		// PyOnCorporationFounded of the traits of the founder (added by this mod), with the headquarters. Not in the world
+		// builder nor before the game starts, as the other hooks
+		CvCity* pHeadquarters = getHeadquarters(eIndex);
+		if (ePlayer != NO_PLAYER && pHeadquarters != NULL && isFinalInitialized() && !gDLL->GetWorldBuilderMode())
+		{
+			GET_PLAYER(ePlayer).doTraitPythonHook(TRAIT_PYHOOK_CORPORATION_FOUNDED, pHeadquarters, NO_PLAYER, false, false, eIndex);
+		}
 	}
 }
 
