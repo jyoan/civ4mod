@@ -340,6 +340,8 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iOtherReligionCombatPercent = 0;
 	m_iStateReligionCityAttack = 0;
 	m_iRivalTerritoryCount = 0;
+	m_iRiverNavigationCount = 0;
+	m_iFreeEmbarkCount = 0;
 	m_iNoDamagePenaltyCount = 0;
 	m_iHiddenNationalityCount = 0;
 	m_iExtraCityAttackPercent = 0;
@@ -4312,8 +4314,17 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 	case DOMAIN_SEA:
 		if (!pPlot->isWater() && !canMoveAllTerrain())
 		{
+			// bRiverNavigation of the promotions (added by this mod): a land plot by a river, but not to attack (ships do not
+			// attack land units, as in BtS)
+			if (canSailOnRiver(pPlot))
+			{
+				if (bAttack)
+				{
+					return false;
+				}
+			}
 			// bInlandCanals of the traits of the owner (added by this mod): also forts and cities that do not touch water
-			if (!pPlot->isFriendlyCity(*this, true) || (!pPlot->isCoastalLand() && !GET_PLAYER(getOwnerINLINE()).isInlandCanals()))
+			else if (!pPlot->isFriendlyCity(*this, true) || (!pPlot->isCoastalLand() && !GET_PLAYER(getOwnerINLINE()).isInlandCanals()))
 			{
 				return false;
 			}
@@ -6591,6 +6602,12 @@ bool CvUnit::canPillage(const CvPlot* pPlot) const
 		return false;
 	}
 
+	// A ship on a river (bRiverNavigation, added by this mod) does not pillage the land
+	if (getDomainType() == DOMAIN_SEA && !pPlot->isWater())
+	{
+		return false;
+	}
+
 	return true;
 }
 
@@ -6687,7 +6704,19 @@ bool CvUnit::pillage()
 		pPlot->setRouteType(NO_ROUTE, true); // XXX downgrade rail???
 	}
 
-	changeMoves(GC.getMOVE_DENOMINATOR());
+	// bPillageNoMoveCost of the promotions (added by this mod): pillaging spends no moves (the unit still needs moves left to
+	// start it, as in BtS)
+	if (!hasPromotionFlag(&CvPromotionInfo::isPillageNoMoveCost))
+	{
+		changeMoves(GC.getMOVE_DENOMINATOR());
+	}
+
+	// iPillageHealPercent of the promotions (added by this mod): each pillage heals this % of the maximum hit points
+	int iPillageHeal = (sumPromotionValues(&CvPromotionInfo::getPillageHealPercent) * maxHitPoints()) / 100;
+	if (iPillageHeal > 0 && getDamage() > 0)
+	{
+		changeDamage(-std::min(iPillageHeal, getDamage()));
+	}
 
 	if (pPlot->isActiveVisible(false))
 	{
@@ -9506,6 +9535,34 @@ bool CvUnit::isRivalTerritory() const
 }
 
 
+// With bRiverNavigation of the promotions (added by this mod)
+bool CvUnit::isRiverNavigation() const
+{
+	return (m_iRiverNavigationCount > 0);
+}
+
+
+// The ship can stay on this land plot by sailing up the river (bRiverNavigation, added by this mod): a plot by a river
+// that is no city. Cities keep the rules of BtS (friendly cities only, canals). Which plot it may come from is checked by
+// CvPlot::isRiverPassage in the path finder
+bool CvUnit::canSailOnRiver(const CvPlot* pPlot) const
+{
+	if (getDomainType() != DOMAIN_SEA || m_iRiverNavigationCount <= 0)
+	{
+		return false;
+	}
+
+	return (!pPlot->isWater() && pPlot->isRiver() && !pPlot->isCity());
+}
+
+
+// With bFreeEmbark of the promotions (added by this mod)
+bool CvUnit::isFreeEmbark() const
+{
+	return (m_iFreeEmbarkCount > 0);
+}
+
+
 bool CvUnit::isMilitaryHappiness() const
 {
 	return m_pUnitInfo->isMilitaryHappiness();
@@ -10954,6 +11011,8 @@ void CvUnit::updatePromotionCounts()
 	m_iOtherReligionCombatPercent = sumPromotionValues(&CvPromotionInfo::getOtherReligionCombatPercent);
 	m_iStateReligionCityAttack = sumPromotionValues(&CvPromotionInfo::getStateReligionCityAttack);
 	m_iRivalTerritoryCount = countPromotions(&CvPromotionInfo::isRivalTerritory);
+	m_iRiverNavigationCount = countPromotions(&CvPromotionInfo::isRiverNavigation);
+	m_iFreeEmbarkCount = countPromotions(&CvPromotionInfo::isFreeEmbark);
 	m_iNoDamagePenaltyCount = countPromotions(&CvPromotionInfo::isNoDamagePenalty);
 	m_iHiddenNationalityCount = countPromotions(&CvPromotionInfo::isHiddenNationality);
 
@@ -12851,6 +12910,9 @@ int CvUnit::getExtraCombatPercent() const
 		iPercent += m_iCombatPercentOverseas;
 	}
 
+	// iCombatPercent of the traits of the owner (added by this mod)
+	iPercent += GET_PLAYER(getOwnerINLINE()).getTraitCombatPercent();
+
 	return iPercent;
 }
 
@@ -13463,7 +13525,9 @@ void CvUnit::setTransportUnit(CvUnit* pTransportUnit)
 				getGroup()->setActivityType(ACTIVITY_SLEEP);
 			}
 
-			if (GC.getGameINLINE().isFinalInitialized())
+			// bFreeEmbark of the promotions (added by this mod): boarding keeps the moves (BtS ends them here, whatever
+			// CvPlot::movementCost says)
+			if (GC.getGameINLINE().isFinalInitialized() && !isFreeEmbark())
 			{
 				finishMoves();
 			}
@@ -13868,6 +13932,8 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		m_iOtherReligionCombatPercent += GC.getPromotionInfo(eIndex).getOtherReligionCombatPercent() * iChange;
 		m_iStateReligionCityAttack += GC.getPromotionInfo(eIndex).getStateReligionCityAttack() * iChange;
 		m_iRivalTerritoryCount += (GC.getPromotionInfo(eIndex).isRivalTerritory() ? iChange : 0);
+		m_iRiverNavigationCount += (GC.getPromotionInfo(eIndex).isRiverNavigation() ? iChange : 0);
+		m_iFreeEmbarkCount += (GC.getPromotionInfo(eIndex).isFreeEmbark() ? iChange : 0);
 		m_iNoDamagePenaltyCount += (GC.getPromotionInfo(eIndex).isNoDamagePenalty() ? iChange : 0);
 
 		// BonusAffinities (added by this mod)

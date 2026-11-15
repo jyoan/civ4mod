@@ -362,4 +362,40 @@
 		<Spanish>[ICON_BULLET]Can enter rival territory</Spanish>
 		<Japanese>[ICON_BULLET]&#22269;&#22659;&#12434;&#38283;&#12356;&#12390;&#12356;&#12394;&#12356;&#20182;&#22269;&#12398;&#38936;&#22303;&#12395;&#12418;&#20837;&#12428;&#12427;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_RIVER_NAVIGATION</Tag>
+		<English>[ICON_BULLET]Can sail up rivers (in from the river mouth, then along the river or across it)</English>
+		<French>[ICON_BULLET]Can sail up rivers (in from the river mouth, then along the river or across it)</French>
+		<German>[ICON_BULLET]Can sail up rivers (in from the river mouth, then along the river or across it)</German>
+		<Italian>[ICON_BULLET]Can sail up rivers (in from the river mouth, then along the river or across it)</Italian>
+		<Spanish>[ICON_BULLET]Can sail up rivers (in from the river mouth, then along the river or across it)</Spanish>
+		<Japanese>[ICON_BULLET]&#24029;&#12434;&#36914;&#12417;&#12427;&#65288;&#27827;&#21475;&#12363;&#12425;&#20837;&#12426;&#12289;&#24029;&#12395;&#27839;&#12387;&#12390;&#12289;&#12414;&#12383;&#12399;&#24029;&#12434;&#12399;&#12373;&#12435;&#12384;&#21521;&#12363;&#12356;&#12408;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FREE_EMBARK</Tag>
+		<English>[ICON_BULLET]Boards ships at sea without spending moves, and leaves them with an ordinary move</English>
+		<French>[ICON_BULLET]Boards ships at sea without spending moves, and leaves them with an ordinary move</French>
+		<German>[ICON_BULLET]Boards ships at sea without spending moves, and leaves them with an ordinary move</German>
+		<Italian>[ICON_BULLET]Boards ships at sea without spending moves, and leaves them with an ordinary move</Italian>
+		<Spanish>[ICON_BULLET]Boards ships at sea without spending moves, and leaves them with an ordinary move</Spanish>
+		<Japanese>[ICON_BULLET]&#28023;&#19978;&#12398;&#33337;&#12395;&#20055;&#12427;&#12392;&#12365;&#12395;&#31227;&#21205;&#21147;&#12434;&#20351;&#12431;&#12378;&#12289;&#38477;&#12426;&#12427;&#12392;&#12365;&#12418;&#26222;&#36890;&#12398;&#31227;&#21205;&#12392;&#21516;&#12376;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_PILLAGE_NO_MOVE_COST</Tag>
+		<English>[ICON_BULLET]Pillaging spends no moves</English>
+		<French>[ICON_BULLET]Pillaging spends no moves</French>
+		<German>[ICON_BULLET]Pillaging spends no moves</German>
+		<Italian>[ICON_BULLET]Pillaging spends no moves</Italian>
+		<Spanish>[ICON_BULLET]Pillaging spends no moves</Spanish>
+		<Japanese>[ICON_BULLET]&#30053;&#22890;&#12391;&#31227;&#21205;&#21147;&#12434;&#20351;&#12431;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_PILLAGE_HEAL</Tag>
+		<English>[ICON_BULLET]Heals %d1%% of its hit points with each pillage</English>
+		<French>[ICON_BULLET]Heals %d1%% of its hit points with each pillage</French>
+		<German>[ICON_BULLET]Heals %d1%% of its hit points with each pillage</German>
+		<Italian>[ICON_BULLET]Heals %d1%% of its hit points with each pillage</Italian>
+		<Spanish>[ICON_BULLET]Heals %d1%% of its hit points with each pillage</Spanish>
+		<Japanese>[ICON_BULLET]&#30053;&#22890;&#12377;&#12427;&#12383;&#12403;&#12395;HP&#12364;%d1%%&#22238;&#24489;</Japanese>
+	</TEXT>
 </Civ4GameText>

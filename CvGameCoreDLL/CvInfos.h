@@ -534,6 +534,10 @@ public:
 	int getOtherReligionCombatPercent() const;			// Exposed to Python (added by this mod)
 	int getStateReligionCityAttack() const;			// Exposed to Python (added by this mod)
 	bool isRivalTerritory() const;			// Exposed to Python (added by this mod)
+	bool isRiverNavigation() const;			// Exposed to Python (added by this mod)
+	bool isFreeEmbark() const;			// Exposed to Python (added by this mod)
+	bool isPillageNoMoveCost() const;			// Exposed to Python (added by this mod)
+	int getPillageHealPercent() const;			// Exposed to Python (added by this mod)
 	// Python hooks (added by this mod): Python expressions that EntryPoints/CvHookInterface.py evaluates
 	const TCHAR* getPyOnCombatWin() const;	// Exposed to Python
 	const TCHAR* getPyOnCombatLoss() const;	// Exposed to Python
@@ -644,6 +648,10 @@ protected:
 	int m_iOtherReligionCombatPercent;	// added by this mod
 	int m_iStateReligionCityAttack;	// added by this mod
 	bool m_bRivalTerritory;	// added by this mod
+	bool m_bRiverNavigation;	// added by this mod
+	bool m_bFreeEmbark;	// added by this mod
+	bool m_bPillageNoMoveCost;	// added by this mod
+	int m_iPillageHealPercent;	// added by this mod
 	CvString m_szPyOnCombatWin;	// added by this mod
 	CvString m_szPyOnCombatLoss;	// added by this mod
 	CvString m_szPyOnBeginTurn;	// added by this mod
@@ -4885,6 +4893,9 @@ public:
 	int getTechCostModifier() const;			// Exposed to Python (added by this mod)
 	int getAttitudeChange() const;			// Exposed to Python (added by this mod)
 	int getRouteMovementModifierInBorders() const;	// Exposed to Python (added by this mod)
+	int getCombatPercent() const;			// Exposed to Python (added by this mod)
+	bool isWonderHurry(int iHurry) const;		// Exposed to Python (added by this mod)
+	bool isIgnoreWonderHurryCostModifier() const;	// Exposed to Python (added by this mod)
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(int iSpecialBuilding) const;	// Exposed to Python (added by this mod)
 	bool isNoTechCivic(int i) const;		// Exposed to Python (added by this mod)
@@ -5078,6 +5089,10 @@ protected:
 	int m_iTechCostModifier;	// added by this mod
 	int m_iAttitudeChange;	// added by this mod
 	int m_iRouteMovementModifierInBorders;	// added by this mod
+	int m_iCombatPercent;	// added by this mod
+	bool* m_pabWonderHurry;	// added by this mod: WonderHurrys, [hurry], NULL when not set
+	std::vector<CvString> m_aszWonderHurryTypes;	// read() keeps the types as strings until readPass3() (hurries are loaded after traits)
+	bool m_bIgnoreWonderHurryCostModifier;	// added by this mod
 	bool m_bConquestStateReligion;	// added by this mod
 	bool* m_pabConquestReligionBuilding;	// added by this mod: [special building], NULL when not set
 	std::vector<CvString> m_aszConquestReligionBuildingTypes;	// read() keeps the types as strings until readPass3()

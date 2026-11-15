@@ -133,6 +133,7 @@ public:
 	int getExtraProductionDifference(int iExtra) const;																					// Exposed to Python
 
 	bool canHurry(HurryTypes eHurry, bool bTestVisible = false) const;		// Exposed to Python
+	bool isWonderHurry(HurryTypes eHurry, BuildingTypes eBuilding) const;	// added by this mod: WonderHurrys of the traits
 	void hurry(HurryTypes eHurry);																						// Exposed to Python
 
 	UnitTypes getConscriptUnit() const;																// Exposed to Python

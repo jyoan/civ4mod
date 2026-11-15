@@ -341,6 +341,9 @@ public:
 	bool isOnlyDefensive() const;																					// Exposed to Python
 	bool isNoCapture() const;																							// Exposed to Python 
 	bool isRivalTerritory() const;																				// Exposed to Python 
+	bool isRiverNavigation() const;		// Exposed to Python (added by this mod)
+	bool canSailOnRiver(const CvPlot* pPlot) const;	// added by this mod
+	bool isFreeEmbark() const;			// Exposed to Python (added by this mod)
 	bool isMilitaryHappiness() const;																			// Exposed to Python
 	bool isInvestigate() const;																						// Exposed to Python
 	bool isCounterSpy() const;																						// Exposed to Python
@@ -879,6 +882,8 @@ protected:
 	int m_iOtherReligionCombatPercent;	// added by this mod: of the promotions (not saved)
 	int m_iStateReligionCityAttack;	// added by this mod: of the promotions (not saved)
 	int m_iRivalTerritoryCount;	// added by this mod: promotions with bRivalTerritory (not saved)
+	int m_iRiverNavigationCount;	// added by this mod: promotions with bRiverNavigation (not saved)
+	int m_iFreeEmbarkCount;	// added by this mod: promotions with bFreeEmbark (not saved)
 	std::vector<int> m_aiBonusAffinity;	// added by this mod: BonusAffinities of the unit and its promotions, [bonus], empty when none (not saved)
 	int m_iNoDamagePenaltyCount;		// added by this mod: promotions with bNoDamagePenalty (not saved)
 	int m_iHiddenNationalityCount;		// added by this mod: promotions with bHiddenNationality (not saved)

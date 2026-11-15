@@ -405,6 +405,12 @@
 	<ElementType name="iTechCostModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iAttitudeChange" content="textOnly" dt:type="int"/>
 	<ElementType name="iRouteMovementModifierInBorders" content="textOnly" dt:type="int"/>
+	<ElementType name="iCombatPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="HurryType" content="textOnly"/>
+	<ElementType name="WonderHurrys" content="eltOnly">
+		<element type="HurryType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="bIgnoreWonderHurryCostModifier" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bConquestStateReligion" content="textOnly" dt:type="boolean"/>
 	<ElementType name="ConquestReligionBuildings" content="eltOnly">
 		<element type="SpecialBuildingType" minOccurs="0" maxOccurs="*"/>
@@ -739,6 +745,9 @@
 		<element type="iTechCostModifier" minOccurs="0"/>
 		<element type="iAttitudeChange" minOccurs="0"/>
 		<element type="iRouteMovementModifierInBorders" minOccurs="0"/>
+		<element type="iCombatPercent" minOccurs="0"/>
+		<element type="WonderHurrys" minOccurs="0"/>
+		<element type="bIgnoreWonderHurryCostModifier" minOccurs="0"/>
 		<element type="bConquestStateReligion" minOccurs="0"/>
 		<element type="ConquestReligionBuildings" minOccurs="0"/>
 		<element type="NoTechCivics" minOccurs="0"/>

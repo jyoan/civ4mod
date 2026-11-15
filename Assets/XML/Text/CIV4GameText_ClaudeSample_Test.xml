@@ -840,4 +840,22 @@
 		<Spanish>200 gold or more</Spanish>
 		<Japanese>&#36039;&#37329;&#12364;200&#20197;&#19978;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_RIVER</Tag>
+		<English>Test Promotion (River)</English>
+		<French>Test Promotion (River)</French>
+		<German>Test Promotion (River)</German>
+		<Italian>Test Promotion (River)</Italian>
+		<Spanish>Test Promotion (River)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#24029;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_RAIDER</Tag>
+		<English>Test Promotion (Raider)</English>
+		<French>Test Promotion (Raider)</French>
+		<German>Test Promotion (Raider)</German>
+		<Italian>Test Promotion (Raider)</Italian>
+		<Spanish>Test Promotion (Raider)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#30053;&#22890;&#32773;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

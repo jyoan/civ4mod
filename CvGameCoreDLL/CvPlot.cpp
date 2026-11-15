@@ -1568,6 +1568,26 @@ bool CvPlot::isRiver() const
 }
 
 
+// A ship sailing up a river (bRiverNavigation, added by this mod) may come to this land plot by a river from the adjacent
+// pFromPlot: from the sea (the mouth of the river), or from a land plot along the river (as the trade network,
+// isRiverConnection) or across it
+bool CvPlot::isRiverPassage(const CvPlot* pFromPlot) const
+{
+	if (pFromPlot == NULL || !isRiver())
+	{
+		return false;
+	}
+
+	if (pFromPlot->isWater())
+	{
+		return true;
+	}
+
+	DirectionTypes eDirection = directionXY(pFromPlot, this);
+	return (pFromPlot->isRiverConnection(eDirection) || pFromPlot->isRiverCrossing(eDirection));
+}
+
+
 bool CvPlot::isRiverConnection(DirectionTypes eDirection) const
 {
 	if (eDirection == NO_DIRECTION)
@@ -3019,10 +3039,22 @@ int CvPlot::movementCost(const CvUnit* pUnit, const CvPlot* pFromPlot) const
 
 	if (!pFromPlot->isValidDomainForLocation(*pUnit))
 	{
-		return pUnit->maxMoves();
+		// bFreeEmbark of the promotions (added by this mod): leaving a ship at sea is an ordinary move, at the cost of the plot
+		if (!pUnit->isFreeEmbark())
+		{
+			return pUnit->maxMoves();
+		}
 	}
 
 	if (!isValidDomainForAction(*pUnit))
+	{
+		// bFreeEmbark: boarding a ship at sea spends no moves (the least cost)
+		return (pUnit->isFreeEmbark() ? 1 : GC.getMOVE_DENOMINATOR());
+	}
+
+	// A ship sailing on a river (bRiverNavigation, added by this mod): one move for each plot, whatever the terrain and the
+	// feature; ships use no roads
+	if (pUnit->getDomainType() == DOMAIN_SEA && !isWater())
 	{
 		return GC.getMOVE_DENOMINATOR();
 	}
@@ -4127,7 +4159,7 @@ bool CvPlot::isValidDomainForAction(const CvUnit& unit) const
 	switch (unit.getDomainType())
 	{
 	case DOMAIN_SEA:
-		return (isWater() || unit.canMoveAllTerrain());
+		return (isWater() || unit.canMoveAllTerrain() || unit.canSailOnRiver(this));	// a ship on a river (bRiverNavigation, added by this mod) defends itself there as at sea
 		break;
 
 	case DOMAIN_AIR:

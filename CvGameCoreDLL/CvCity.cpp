@@ -3536,9 +3536,21 @@ int CvCity::getExtraProductionDifference(int iExtra, int iModifier) const
 }
 
 
+// WonderHurrys of the traits of the owner (added by this mod): eBuilding is a wonder (world, team or national) the owner
+// can hurry this way without the civic that allows it
+bool CvCity::isWonderHurry(HurryTypes eHurry, BuildingTypes eBuilding) const
+{
+	if (eBuilding == NO_BUILDING || !isLimitedWonderClass((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType()))
+	{
+		return false;
+	}
+
+	return GET_PLAYER(getOwnerINLINE()).isWonderHurry(eHurry);
+}
+
 bool CvCity::canHurry(HurryTypes eHurry, bool bTestVisible) const
 {
-	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)))
+	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)) && !isWonderHurry(eHurry, getProductionBuilding()))
 	{
 		return false;
 	}
@@ -3606,7 +3618,7 @@ bool CvCity::canHurryUnit(HurryTypes eHurry, UnitTypes eUnit, bool bIgnoreNew) c
 
 bool CvCity::canHurryBuilding(HurryTypes eHurry, BuildingTypes eBuilding, bool bIgnoreNew) const
 {
-	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)))
+	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)) && !isWonderHurry(eHurry, eBuilding))
 	{
 		return false;
 	}
@@ -5103,7 +5115,19 @@ int CvCity::getHurryCostModifier(UnitTypes eUnit, bool bIgnoreNew) const
 
 int CvCity::getHurryCostModifier(BuildingTypes eBuilding, bool bIgnoreNew) const
 {
-	return getHurryCostModifier(GC.getBuildingInfo(eBuilding).getHurryCostModifier(), getBuildingProduction(eBuilding), bIgnoreNew);
+	int iBaseModifier = GC.getBuildingInfo(eBuilding).getHurryCostModifier();
+
+	// bIgnoreWonderHurryCostModifier of the traits of the owner (added by this mod): no extra cost for wonders (world, team
+	// and national). A discount (below 0) stays
+	if (iBaseModifier > 0 && GET_PLAYER(getOwnerINLINE()).isIgnoreWonderHurryCostModifier())
+	{
+		if (isLimitedWonderClass((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType()))
+		{
+			iBaseModifier = 0;
+		}
+	}
+
+	return getHurryCostModifier(iBaseModifier, getBuildingProduction(eBuilding), bIgnoreNew);
 }
 
 int CvCity::getHurryCostModifier(int iBaseModifier, int iProduction, bool bIgnoreNew) const

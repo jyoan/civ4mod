@@ -8084,6 +8084,24 @@ int CvPlayer::getRouteMovementModifierInBorders() const
 	return sumTraitValues(&CvTraitInfo::getRouteMovementModifierInBorders);
 }
 
+// iCombatPercent of the traits (added by this mod): combat % of all the units of the player (CvUnit::getExtraCombatPercent)
+int CvPlayer::getTraitCombatPercent() const
+{
+	return sumTraitValues(&CvTraitInfo::getCombatPercent);
+}
+
+// WonderHurrys of the traits (added by this mod): the player can hurry wonders this way without the civic (CvCity::isWonderHurry)
+bool CvPlayer::isWonderHurry(HurryTypes eHurry) const
+{
+	return hasTraitFlag(&CvTraitInfo::isWonderHurry, eHurry);
+}
+
+// bIgnoreWonderHurryCostModifier of the traits (added by this mod): see CvCity::getHurryCostModifier
+bool CvPlayer::isIgnoreWonderHurryCostModifier() const
+{
+	return hasTraitFlag(&CvTraitInfo::isIgnoreWonderHurryCostModifier);
+}
+
 // The max number of national wonders in a city of the player, -1 for no limit (added by this mod; was in
 // CvCity::isNationalWondersMaxed). MAX_NATIONAL_WONDERS_PER_CITY of GlobalDefines, or MAX_NATIONAL_WONDERS_PER_CITY_FOR_OCC for a
 // human player in a One-City Challenge game. iMaxNationalWondersPerCity (ForOCC) of the traits replaces the define; with several

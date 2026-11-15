@@ -1528,6 +1528,17 @@ int pathValid(FAStarNode* parent, FAStarNode* node, int data, const void* pointe
 				return FALSE;
 			}
 		}
+
+		// Ships sailing up a river (bRiverNavigation, added by this mod): from one land plot to another along the river or
+		// across it. Friendly cities and forts keep the rules of BtS (canals)
+		if (!pFromPlot->isWater() && !pToPlot->isWater())
+		{
+			CvUnit* pHeadUnit = pSelectionGroup->getHeadUnit();
+			if (pHeadUnit != NULL && pHeadUnit->canSailOnRiver(pToPlot) && !pToPlot->isFriendlyCity(*pHeadUnit, true) && !pToPlot->isRiverPassage(pFromPlot))
+			{
+				return FALSE;
+			}
+		}
 	}
 
 	if (pSelectionGroup->atPlot(pFromPlot))

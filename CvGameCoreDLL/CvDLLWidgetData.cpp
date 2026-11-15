@@ -1848,7 +1848,9 @@ void CvDLLWidgetData::parseHurryHelp(CvWidgetDataStruct &widgetDataStruct, CvWSt
 			szBuffer.append(gDLL->getText("TXT_KEY_MISC_UNIT_BUILDING_HURRY"));
 		}
 
-		if (!(GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).canHurry((HurryTypes)(widgetDataStruct.m_iData1))))
+		// Not when WonderHurrys of the traits (added by this mod) allow it for the wonder in production
+		if (!(GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).canHurry((HurryTypes)(widgetDataStruct.m_iData1))) &&
+			!(pHeadSelectedCity->isWonderHurry((HurryTypes)(widgetDataStruct.m_iData1), pHeadSelectedCity->getProductionBuilding())))
 		{
 			bFirst = true;
 

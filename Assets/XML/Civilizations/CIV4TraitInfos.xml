@@ -386,6 +386,10 @@
 			<iTechCostModifier>-40</iTechCostModifier>
 			<iAttitudeChange>3</iAttitudeChange>
 			<iRouteMovementModifierInBorders>-50</iRouteMovementModifierInBorders>
+			<WonderHurrys>
+				<HurryType>HURRY_POPULATION</HurryType>
+			</WonderHurrys>
+			<bIgnoreWonderHurryCostModifier>1</bIgnoreWonderHurryCostModifier>
 			<bConquestStateReligion>1</bConquestStateReligion>
 			<ConquestReligionBuildings>
 				<SpecialBuildingType>SPECIALBUILDING_TEMPLE</SpecialBuildingType>
@@ -910,6 +914,61 @@
 						<UnitClassType>UNITCLASS_WORKBOAT</UnitClassType>
 					</FreePromotionUnitClasses>
 				</FreePromotionSet>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_TEST_RIVER</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<FreePromotionUnitClasses>
+						<UnitClassType>UNITCLASS_WORKBOAT</UnitClassType>
+						<UnitClassType>UNITCLASS_GALLEY</UnitClassType>
+						<UnitClassType>UNITCLASS_TRIREME</UnitClassType>
+					</FreePromotionUnitClasses>
+				</FreePromotionSet>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_TEST_RAIDER</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<FreePromotionUnitCombats>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_RECON</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_GUN</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_SIEGE</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_ARMOR</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+					</FreePromotionUnitCombats>
+					<bFreePromotionNoUnitCombat>1</bFreePromotionNoUnitCombat>
+					<FreePromotionDomains>
+						<DomainType>DOMAIN_LAND</DomainType>
+					</FreePromotionDomains>
+				</FreePromotionSet>
 			</FreePromotionSets>
 		</TraitInfo>
 		<TraitInfo>
@@ -972,6 +1031,7 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<iCombatPercent>25</iCombatPercent>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

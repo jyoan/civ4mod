@@ -4032,6 +4032,26 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ROUTE_MOVEMENT_IN_BORDERS", kTrait.getRouteMovementModifierInBorders()));
 	}
 
+	// iCombatPercent (added by this mod)
+	if (kTrait.getCombatPercent() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_COMBAT_PERCENT", kTrait.getCombatPercent()));
+	}
+
+	// WonderHurrys, bIgnoreWonderHurryCostModifier (added by this mod)
+	for (iI = 0; iI < GC.getNumHurryInfos(); iI++)
+	{
+		if (kTrait.isWonderHurry(iI))
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_WONDER_HURRY", GC.getHurryInfo((HurryTypes)iI).getTextKeyWide()));
+		}
+	}
+
+	if (kTrait.isIgnoreWonderHurryCostModifier())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_IGNORE_WONDER_HURRY_COST"));
+	}
+
 	if (kTrait.isConquestStateReligion())
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_STATE_RELIGION"));
@@ -5621,6 +5641,31 @@ void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, Prom
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_RIVAL_TERRITORY"));
+	}
+
+	// bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).isRiverNavigation())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_RIVER_NAVIGATION"));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).isFreeEmbark())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_FREE_EMBARK"));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).isPillageNoMoveCost())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_PILLAGE_NO_MOVE_COST"));
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getPillageHealPercent() > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_PILLAGE_HEAL", GC.getPromotionInfo(ePromotion).getPillageHealPercent()));
 	}
 
 	// iOtherReligionCombatPercent, iStateReligionCityAttack (added by this mod)

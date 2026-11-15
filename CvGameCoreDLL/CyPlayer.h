@@ -500,6 +500,9 @@ public:
 	int getTechCostModifier();	// added by this mod
 	int getAttitudeChange();	// added by this mod
 	int getRouteMovementModifierInBorders();	// added by this mod
+	int getTraitCombatPercent();	// added by this mod
+	bool isWonderHurry(int /*HurryTypes*/ eHurry);	// added by this mod
+	bool isIgnoreWonderHurryCostModifier();	// added by this mod
 	bool isConquestStateReligion();	// added by this mod
 	bool isConquestReligionBuilding(int /*SpecialBuildingTypes*/ eSpecialBuilding);	// added by this mod
 	bool isNoTechCivic(int /*CivicTypes*/ eCivic);	// added by this mod

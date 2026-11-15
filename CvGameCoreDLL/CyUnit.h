@@ -172,6 +172,8 @@ public:
 
 	bool isNoCapture();
 	bool isRivalTerritory();
+	bool isRiverNavigation();	// added by this mod
+	bool isFreeEmbark();	// added by this mod
 	bool isMilitaryHappiness();
 	bool isInvestigate();
 	bool isCounterSpy();

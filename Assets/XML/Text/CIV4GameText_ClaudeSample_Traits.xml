@@ -983,4 +983,31 @@
 		<Spanish>a special condition</Spanish>
 		<Japanese>&#29305;&#21029;&#12394;&#26465;&#20214;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_COMBAT_PERCENT</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% Strength for all units</English>
+		<French>[ICON_BULLET]%D1_Percent%% Strength for all units</French>
+		<German>[ICON_BULLET]%D1_Percent%% Strength for all units</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% Strength for all units</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% Strength for all units</Spanish>
+		<Japanese>[ICON_BULLET]&#20840;&#12518;&#12491;&#12483;&#12488;&#12398;&#25126;&#38360;&#21147;%D1_Percent%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_WONDER_HURRY</Tag>
+		<English>[ICON_BULLET]For wonders, whatever the civics: %s1</English>
+		<French>[ICON_BULLET]For wonders, whatever the civics: %s1</French>
+		<German>[ICON_BULLET]For wonders, whatever the civics: %s1</German>
+		<Italian>[ICON_BULLET]For wonders, whatever the civics: %s1</Italian>
+		<Spanish>[ICON_BULLET]For wonders, whatever the civics: %s1</Spanish>
+		<Japanese>[ICON_BULLET]&#36986;&#29987;&#12391;&#12399;&#31038;&#20250;&#21046;&#24230;&#12395;&#12424;&#12425;&#12378;: %s1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_IGNORE_WONDER_HURRY_COST</Tag>
+		<English>[ICON_BULLET]No extra hurry cost for wonders</English>
+		<French>[ICON_BULLET]No extra hurry cost for wonders</French>
+		<German>[ICON_BULLET]No extra hurry cost for wonders</German>
+		<Italian>[ICON_BULLET]No extra hurry cost for wonders</Italian>
+		<Spanish>[ICON_BULLET]No extra hurry cost for wonders</Spanish>
+		<Japanese>[ICON_BULLET]&#36986;&#29987;&#12398;&#32202;&#24613;&#29983;&#29987;&#12395;&#36861;&#21152;&#12398;&#36027;&#29992;&#12364;&#12363;&#12363;&#12425;&#12394;&#12356;</Japanese>
+	</TEXT>
 </Civ4GameText>

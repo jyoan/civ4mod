@@ -2233,6 +2233,21 @@ int CyPlayer::getRouteMovementModifierInBorders()
 	return m_pPlayer ? m_pPlayer->getRouteMovementModifierInBorders() : 0;
 }
 
+int CyPlayer::getTraitCombatPercent()
+{
+	return m_pPlayer ? m_pPlayer->getTraitCombatPercent() : 0;
+}
+
+bool CyPlayer::isWonderHurry(int /*HurryTypes*/ eHurry)
+{
+	return m_pPlayer ? m_pPlayer->isWonderHurry((HurryTypes)eHurry) : false;
+}
+
+bool CyPlayer::isIgnoreWonderHurryCostModifier()
+{
+	return m_pPlayer ? m_pPlayer->isIgnoreWonderHurryCostModifier() : false;
+}
+
 bool CyPlayer::isConquestStateReligion()
 {
 	return m_pPlayer ? m_pPlayer->isConquestStateReligion() : false;

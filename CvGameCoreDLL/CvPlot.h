@@ -114,6 +114,7 @@ public:
 	bool isRiverSide() const;																																		// Exposed to Python
 	bool isRiver() const;																																				// Exposed to Python
 	bool isRiverConnection(DirectionTypes eDirection) const;																		// Exposed to Python
+	bool isRiverPassage(const CvPlot* pFromPlot) const;	// added by this mod: a ship on a river may come here from pFromPlot
 
 	CvPlot* getNearestLandPlotInternal(int iDistance) const;
 	int getNearestLandArea() const;																															// Exposed to Python
