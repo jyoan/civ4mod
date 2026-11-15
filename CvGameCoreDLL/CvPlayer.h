@@ -261,6 +261,10 @@ public:
 	int getRouteMovementModifierInBorders() const;	// Exposed to Python (added by this mod)
 	int getTraitCombatPercent() const;			// Exposed to Python (added by this mod)
 	bool isWonderHurry(HurryTypes eHurry) const;	// Exposed to Python (added by this mod)
+	int getStartBiasFeature(FeatureTypes eFeature) const;	// added by this mod: StartBiasFeatures of the civilization and the traits
+	int getStartBiasTerrain(TerrainTypes eTerrain) const;	// added by this mod: StartBiasTerrains of the civilization and the traits
+	bool hasStartBias() const;	// Exposed to Python (added by this mod)
+	int getStartBiasValue(const CvPlot* pPlot, int iFoundValue) const;	// Exposed to Python (added by this mod)
 	bool isIgnoreWonderHurryCostModifier() const;	// Exposed to Python (added by this mod)
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(SpecialBuildingTypes eSpecialBuilding) const;	// Exposed to Python (added by this mod)

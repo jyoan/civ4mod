@@ -53,6 +53,8 @@ class CvPediaCivilization:
 		self.W_TEXT = 705
 		self.H_TEXT = 350
 		self.H_IMPROVEMENT = 110	# added by this mod
+		self.H_TRAIT = 130	# added by this mod
+		self.W_TRAIT_LIST = 200	# added by this mod
 		
 	# Screen construction function
 	def interfaceScreen(self, iCivilization):	
@@ -94,6 +96,7 @@ class CvPediaCivilization:
 		self.placeUnit()
 		self.placeLeader()
 		self.placeImprovement()
+		self.placeTrait()
 		self.placeText()
 
 		return
@@ -170,6 +173,62 @@ class CvPediaCivilization:
 		for iImprovement in lImprovements:
 			screen.attachImageButton( panelName, "", gc.getImprovementInfo(iImprovement).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_IMPROVEMENT, iImprovement, 1, False )
 
+	# Added by this mod: the traits of the civilization (CivilizationInfo/Traits)
+	def getCivTraits(self):
+		civilization = gc.getCivilizationInfo(self.iCivilization)
+		lTraits = []
+		for iTrait in range(gc.getNumTraitInfos()):
+			if civilization.hasTrait(iTrait):
+				lTraits.append(iTrait)
+		return lTraits
+
+	# Added by this mod: the height of the rows above the history text (unique improvements, traits)
+	def getRowsHeight(self):
+		iHeight = 0
+		if len(self.getUniqueImprovements()) > 0:
+			iHeight += self.H_IMPROVEMENT
+		if len(self.getCivTraits()) > 0:
+			iHeight += self.H_TRAIT
+		return iHeight
+
+	# Added by this mod: a row under the unique improvements (or under the panels), only for a civilization with traits. On
+	# the left the trait names (a click opens the page of the trait; the icon shows when the trait has a Button), on the
+	# right the trait help (parseTraits), which scrolls when it is long
+	def placeTrait(self):
+		lTraits = self.getCivTraits()
+		if len(lTraits) == 0:
+			return
+
+		screen = self.top.getScreen()
+
+		iY = self.Y_TEXT - 10
+		if len(self.getUniqueImprovements()) > 0:
+			iY += self.H_IMPROVEMENT
+
+		panelName = self.top.getNextWidgetName()
+		screen.addPanel( panelName, localText.getText("TXT_KEY_PEDIA_CATEGORY_TRAIT", ()), "", true, false,
+				 self.X_TEXT, iY, self.W_TEXT, self.H_TRAIT, PanelStyles.PANEL_STYLE_BLUE50 )
+
+		szTable = self.top.getNextWidgetName()
+		screen.addTableControlGFC(szTable, 1, self.X_TEXT + 10, iY + 35, self.W_TRAIT_LIST, self.H_TRAIT - 45, False, False, 24, 24, TableStyles.TABLE_STYLE_EMPTY)
+		iRow = 0
+		for iTrait in lTraits:
+			szButton = gc.getTraitInfo(iTrait).getButton()
+			if not szButton:
+				szButton = ""
+			screen.appendTableRow(szTable)
+			screen.setTableText(szTable, 0, iRow, u"<font=2>" + gc.getTraitInfo(iTrait).getDescription() + u"</font>", szButton, WidgetTypes.WIDGET_PEDIA_JUMP_TO_TRAIT, iTrait, -1, CvUtil.FONT_LEFT_JUSTIFY)
+			iRow += 1
+
+		szText = u""
+		for iTrait in lTraits:
+			szText += CyGameTextMgr().parseTraits(iTrait, self.iCivilization, False)
+		if szText.startswith(u"\n"):
+			szText = szText[1:]
+
+		iX = self.X_TEXT + 20 + self.W_TRAIT_LIST
+		screen.addMultilineText(self.top.getNextWidgetName(), szText, iX, iY + 30, self.X_TEXT + self.W_TEXT - iX - 10, self.H_TRAIT - 35, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
+
 	def placeLeader(self):
 		
 		screen = self.top.getScreen()
@@ -189,10 +248,8 @@ class CvPediaCivilization:
 		screen = self.top.getScreen()
 		
 		panelName = self.top.getNextWidgetName()
-		# Changed by this mod: under the row of the unique improvements, if there is one
-		iShift = 0
-		if len(self.getUniqueImprovements()) > 0:
-			iShift = self.H_IMPROVEMENT
+		# Changed by this mod: under the rows of the unique improvements and the traits, if there are some
+		iShift = self.getRowsHeight()
 		screen.addPanel( panelName, "", "", true, true,
 				 self.X_TEXT, self.Y_TEXT + iShift, self.W_TEXT, self.H_TEXT - iShift, PanelStyles.PANEL_STYLE_BLUE50 )
  

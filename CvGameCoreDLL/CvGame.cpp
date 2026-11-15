@@ -1168,13 +1168,17 @@ void CvGame::normalizeRemovePeaks()
 			{
 				iRange = 3;
 
+				// Not for a player whose start bias likes peaks (TERRAIN_PEAK, added by this mod)
+				TerrainTypes ePeakTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_PEAK", true);
+				bool bKeepPeaks = (ePeakTerrain != NO_TERRAIN && GET_PLAYER((PlayerTypes)iI).getStartBiasTerrain(ePeakTerrain) > 0);
+
 				for (iDX = -(iRange); iDX <= iRange; iDX++)
 				{
 					for (iDY = -(iRange); iDY <= iRange; iDY++)
 					{
 						pLoopPlot = plotXY(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), iDX, iDY);
 
-						if (pLoopPlot != NULL)
+						if (pLoopPlot != NULL && !bKeepPeaks)
 						{
 							if (pLoopPlot->isPeak())
 							{
@@ -1280,7 +1284,8 @@ void CvGame::normalizeRemoveBadFeatures()
 
 					if (pLoopPlot != NULL)
 					{
-						if (pLoopPlot->getFeatureType() != NO_FEATURE)
+						// Not the features the start bias of the player likes (added by this mod)
+						if (pLoopPlot->getFeatureType() != NO_FEATURE && GET_PLAYER((PlayerTypes)iI).getStartBiasFeature(pLoopPlot->getFeatureType()) <= 0)
 						{
 							if ((GC.getFeatureInfo(pLoopPlot->getFeatureType()).getYieldChange(YIELD_FOOD) <= 0) &&
 								(GC.getFeatureInfo(pLoopPlot->getFeatureType()).getYieldChange(YIELD_PRODUCTION) <= 0))
@@ -1306,7 +1311,7 @@ void CvGame::normalizeRemoveBadFeatures()
 							int iDistance = plotDistance(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE());			
 							if (iDistance <= iMaxRange)
 							{
-								if (pLoopPlot->getFeatureType() != NO_FEATURE)
+								if (pLoopPlot->getFeatureType() != NO_FEATURE && GET_PLAYER((PlayerTypes)iI).getStartBiasFeature(pLoopPlot->getFeatureType()) <= 0)	// (added by this mod, as above)
 								{
 									if ((GC.getFeatureInfo(pLoopPlot->getFeatureType()).getYieldChange(YIELD_FOOD) <= 0) &&
 										(GC.getFeatureInfo(pLoopPlot->getFeatureType()).getYieldChange(YIELD_PRODUCTION) <= 0))
@@ -1372,7 +1377,8 @@ void CvGame::normalizeRemoveBadTerrain()
                             int iDistance = plotDistance(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE());
                             if (iDistance <= iMaxRange)
                             {
-                                if (!(pLoopPlot->isWater()) && ((iDistance <= iCityRange) || (pLoopPlot->isCoastalLand()) || (0 == getSorenRandNum(1 + iDistance - iCityRange, "Map Upgrade Terrain Food"))))
+                                // Not the terrains the start bias of the player likes (added by this mod)
+                                if (!(pLoopPlot->isWater()) && GET_PLAYER((PlayerTypes)iI).getStartBiasTerrain(pLoopPlot->getTerrainType()) <= 0 && ((iDistance <= iCityRange) || (pLoopPlot->isCoastalLand()) || (0 == getSorenRandNum(1 + iDistance - iCityRange, "Map Upgrade Terrain Food"))))
                                 {
                                     iPlotFood = GC.getTerrainInfo(pLoopPlot->getTerrainType()).getYield(YIELD_FOOD);
                                     iPlotProduction = GC.getTerrainInfo(pLoopPlot->getTerrainType()).getYield(YIELD_PRODUCTION);

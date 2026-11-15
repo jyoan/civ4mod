@@ -465,6 +465,10 @@
 					<FeatureType>FEATURE_FOREST</FeatureType>
 					<iStartBias>20</iStartBias>
 				</StartBiasFeature>
+				<StartBiasFeature>
+					<FeatureType>FEATURE_JUNGLE</FeatureType>
+					<iStartBias>20</iStartBias>
+				</StartBiasFeature>
 			</StartBiasFeatures>
 			<StartBiasBonuses>
 				<StartBiasBonus>

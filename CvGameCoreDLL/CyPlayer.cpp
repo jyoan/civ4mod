@@ -2248,6 +2248,16 @@ bool CyPlayer::isIgnoreWonderHurryCostModifier()
 	return m_pPlayer ? m_pPlayer->isIgnoreWonderHurryCostModifier() : false;
 }
 
+bool CyPlayer::hasStartBias()
+{
+	return m_pPlayer ? m_pPlayer->hasStartBias() : false;
+}
+
+int CyPlayer::getStartBiasValue(CyPlot* pPlot, int iFoundValue)
+{
+	return (m_pPlayer && pPlot) ? m_pPlayer->getStartBiasValue(pPlot->getPlot(), iFoundValue) : iFoundValue;
+}
+
 bool CyPlayer::isConquestStateReligion()
 {
 	return m_pPlayer ? m_pPlayer->isConquestStateReligion() : false;
