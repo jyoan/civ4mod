@@ -59,27 +59,34 @@ BtS の効果はそのままにして足す。
 | `iAttitudeChange`、`iWarWearinessModifier` | カリスマ志向 |
 | `iOccupationTimeModifier`、`iOverseasMaintenanceModifier` | 帝国主義志向 |
 | `FreePromotionSets` + `bNoDamagePenalty` の昇進 | 日本の武士道志向 |
-| `bInlandCanals` | メフメド２世（確定、未実装） |
-| `LakePlotYieldChanges` | アステカ（確定、未実装） |
-| `iEnslavementChance` の昇進 | モンテスマ（確定、未実装） |
-| `iAnarchyGoldenAgePercent`、`iCombatPercent` | フランス（確定、未実装） |
-| `bRiverNavigation`・`bFreeEmbark` の昇進 | ヴァイキング（確定、未実装） |
-| `bPillageNoMoveCost`・`iPillageHealPercent` の昇進 | ラグナル（確定、未実装） |
-| `WonderHurrys`、`bIgnoreWonderHurryCostModifier` | 始皇帝（確定、未実装） |
+| `bInlandCanals` | メフメド２世 |
+| `LakePlotYieldChanges` | アステカ |
+| `iEnslavementChance` の昇進 | モンテスマ |
+| `iAnarchyGoldenAgePercent`、`iCombatPercent` | フランス |
+| `bRiverNavigation`・`bFreeEmbark` の昇進 | ヴァイキング |
+| `bPillageNoMoveCost`・`iPillageHealPercent` の昇進 | ラグナル |
+| `WonderHurrys`、`bIgnoreWonderHurryCostModifier` | 始皇帝 |
+| `FeatureRoutes`・`MaintainFeatures` の森 | アメリカ先住民 |
+| `FeatureRoutes`・`MaintainFeatures`・`FeatureHealthChanges`・`FeatureYieldChanges` のジャングル | クメール |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
-| 対象 | 内容 | タグ | 状態 |
+| 対象 | 内容 | タグ | 状態（志向） |
 |---|---|---|---|
-| メフメド２世 | 艦隊の山越え: 艦船が、水に面していない要塞・都市にも入れる | `bInlandCanals` | 確定 |
-| アステカ（文明） | テノチティトラン: 湖のタイルの産出が増える | `LakePlotYieldChanges` | 確定 |
-| モンテスマ | 花の戦争: 倒した敵を捕虜（労働者）にする | 昇進の `iEnslavementChance` | 確定 |
-| フランス（文明） | 革命: 無政府期間が明けると黄金期。無政府期間中は全ユニットの戦闘力が上がる | `iAnarchyGoldenAgePercent`、`iCombatPercent` を持つ志向を `ConditionalFreeTraits` の `bAnarchy` で与える | 確定（タグは master で作成済み、志向は未実装） |
-| ヴァイキング（文明） | 古典時代までの艦船が川を進める。乗船・下船で移動力を余分に使わない | `FreePromotionSets` で、`bRiverNavigation` の昇進を作業船・ガレー船・三段櫂船に、`bFreeEmbark` の昇進を陸上ユニットに配る | 確定（タグは master で作成済み、志向は未実装） |
-| ラグナル | 略奪で移動力を使わない。略奪するとユニットが回復する | `FreePromotionSets` で、`bPillageNoMoveCost`・`iPillageHealPercent` の昇進を陸上の戦闘ユニットに配る | 確定（タグは master で作成済み、志向は未実装） |
-| 始皇帝 | 奴隷制なしで、遺産（世界遺産・国家遺産）を人口で緊急生産できる。遺産の緊急生産に追加の費用がかからない（人口でも資金でも。生産 0 のときの +50% と人口を使ったときの不満は残る） | `WonderHurrys`（`HURRY_POPULATION`）、`bIgnoreWonderHurryCostModifier` | 確定（タグは master で作成済み、志向は未実装） |
+| メフメド２世 | 艦隊の山越え: 艦船が、水に面していない要塞・都市にも入れる | `bInlandCanals` | 実装済み `TRAIT_OVERLAND_FLEET` |
+| アステカ（文明） | テノチティトラン: 湖のタイルの産出が増える | `LakePlotYieldChanges` | 実装済み `TRAIT_CHINAMPA` |
+| モンテスマ | 花の戦争: 倒した敵を捕虜（労働者）にする | 昇進の `iEnslavementChance` | 実装済み `TRAIT_FLOWER_WAR` |
+| フランス（文明） | 革命: 無政府期間が明けると黄金期。無政府期間中は全ユニットの戦闘力が上がる | `iAnarchyGoldenAgePercent`、`iCombatPercent` を持つ志向を `ConditionalFreeTraits` の `bAnarchy` で与える | 実装済み `TRAIT_REVOLUTION` |
+| ヴァイキング（文明） | 古典時代までの艦船が川を進める。乗船・下船で移動力を余分に使わない | `FreePromotionSets` で、`bRiverNavigation` の昇進を作業船・ガレー船・三段櫂船に、`bFreeEmbark` の昇進を陸上ユニットに配る | 実装済み `TRAIT_LONGSHIP` |
+| ラグナル | 略奪で移動力を使わない。略奪するとユニットが回復する | `FreePromotionSets` で、`bPillageNoMoveCost`・`iPillageHealPercent` の昇進を陸上の戦闘ユニットに配る | 実装済み `TRAIT_RAIDING` |
+| 始皇帝 | 奴隷制なしで、遺産（世界遺産・国家遺産）を人口で緊急生産できる。遺産の緊急生産に追加の費用がかからない（人口でも資金でも。生産 0 のときの +50% と人口を使ったときの不満は残る） | `WonderHurrys`（`HURRY_POPULATION`）、`bIgnoreWonderHurryCostModifier` | 実装済み `TRAIT_CORVEE` |
+| アメリカ先住民（文明） | 森に特化: 自国の領土の森を道路として扱う（移動と交易網）。施設を作っても森が残る | `FeatureRoutes`（森 → `ROUTE_ROAD`）、`MaintainFeatures`（森） | 実装済み `TRAIT_FOREST_PEOPLE` |
+| クメール（文明） | ジャングルに特化: 自国の領土のジャングルを道路として扱う。ジャングルの不衛生がなくなる。ジャングルの食料 +2（BtS の -1 と合わせて +1）。施設を作ってもジャングルが残る | `FeatureRoutes`（ジャングル → `ROUTE_ROAD`）、`FeatureHealthChanges`（ジャングル +25。BtS の -25 と合わせて 0）、`FeatureYieldChanges`（ジャングル 食料 +2）、`MaintainFeatures`（ジャングル） | 実装済み、ゲームで確認済み `TRAIT_JUNGLE_PEOPLE` |
 | サラディン | 占領した都市に国教の建物を建てる | `ConquestReligionBuildings` など（`iConquestBuildingSurviveModifier` も候補） | 方向だけ決定 |
 
+- 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
+- 数値はユーザーが決めていないものを仮に入れた（変えてよい）: 湖のタイル 食料 +1・生産 +1、花の戦争 25% で労働者、革命 黄金期は無政府期間の 200%・無政府期間中の戦闘力 +25%、略奪 1 回で HP 25% 回復、開始位置のバイアス 森・ジャングル 1 タイルにつき +10%
+- これからは、確定したものをその都度 XML に入れる（2026-11-15 にユーザーの指示）
 - 始皇帝の最初の案「長城線」（万里の長城が陳腐化しない）は取り下げた。BtS の万里の長城はもともと陳腐化しない（`ObsoleteTech` が `NONE`）
 
 ## 文明

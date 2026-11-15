@@ -29,4 +29,220 @@
 		<Spanish>Bushido</Spanish>
 		<Japanese>&#27494;&#22763;&#36947;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_OVERLAND_FLEET</Tag>
+		<English>Overland Fleet</English>
+		<French>Overland Fleet</French>
+		<German>Overland Fleet</German>
+		<Italian>Overland Fleet</Italian>
+		<Spanish>Overland Fleet</Spanish>
+		<Japanese>&#33382;&#38538;&#12398;&#23665;&#36234;&#12360;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_OVERLAND_FLEET_SHORT</Tag>
+		<English>Ovr</English>
+		<French>Ovr</French>
+		<German>Ovr</German>
+		<Italian>Ovr</Italian>
+		<Spanish>Ovr</Spanish>
+		<Japanese>&#33382;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CHINAMPA</Tag>
+		<English>Chinampa</English>
+		<French>Chinampa</French>
+		<German>Chinampa</German>
+		<Italian>Chinampa</Italian>
+		<Spanish>Chinampa</Spanish>
+		<Japanese>&#12481;&#12490;&#12531;&#12497;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CHINAMPA_SHORT</Tag>
+		<English>Chi</English>
+		<French>Chi</French>
+		<German>Chi</German>
+		<Italian>Chi</Italian>
+		<Spanish>Chi</Spanish>
+		<Japanese>&#28246;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FLOWER_WAR</Tag>
+		<English>Flower War</English>
+		<French>Flower War</French>
+		<German>Flower War</German>
+		<Italian>Flower War</Italian>
+		<Spanish>Flower War</Spanish>
+		<Japanese>&#33457;&#12398;&#25126;&#20105;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FLOWER_WAR_SHORT</Tag>
+		<English>Flo</English>
+		<French>Flo</French>
+		<German>Flo</German>
+		<Italian>Flo</Italian>
+		<Spanish>Flo</Spanish>
+		<Japanese>&#33457;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_REVOLUTION</Tag>
+		<English>Revolution</English>
+		<French>Revolution</French>
+		<German>Revolution</German>
+		<Italian>Revolution</Italian>
+		<Spanish>Revolution</Spanish>
+		<Japanese>&#38761;&#21629;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_REVOLUTION_SHORT</Tag>
+		<English>Rev</English>
+		<French>Rev</French>
+		<German>Rev</German>
+		<Italian>Rev</Italian>
+		<Spanish>Rev</Spanish>
+		<Japanese>&#38761;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_REVOLUTIONARY_FERVOR</Tag>
+		<English>Revolutionary Fervor</English>
+		<French>Revolutionary Fervor</French>
+		<German>Revolutionary Fervor</German>
+		<Italian>Revolutionary Fervor</Italian>
+		<Spanish>Revolutionary Fervor</Spanish>
+		<Japanese>&#38761;&#21629;&#12398;&#29105;&#29378;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_REVOLUTIONARY_FERVOR_SHORT</Tag>
+		<English>Fer</English>
+		<French>Fer</French>
+		<German>Fer</German>
+		<Italian>Fer</Italian>
+		<Spanish>Fer</Spanish>
+		<Japanese>&#29105;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LONGSHIP</Tag>
+		<English>Longship</English>
+		<French>Longship</French>
+		<German>Longship</German>
+		<Italian>Longship</Italian>
+		<Spanish>Longship</Spanish>
+		<Japanese>&#12525;&#12531;&#12464;&#12471;&#12483;&#12503;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LONGSHIP_SHORT</Tag>
+		<English>Lon</English>
+		<French>Lon</French>
+		<German>Lon</German>
+		<Italian>Lon</Italian>
+		<Spanish>Lon</Spanish>
+		<Japanese>&#33337;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RAIDING</Tag>
+		<English>Raiding</English>
+		<French>Raiding</French>
+		<German>Raiding</German>
+		<Italian>Raiding</Italian>
+		<Spanish>Raiding</Spanish>
+		<Japanese>&#30053;&#22890;&#34892;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RAIDING_SHORT</Tag>
+		<English>Rai</English>
+		<French>Rai</French>
+		<German>Rai</German>
+		<Italian>Rai</Italian>
+		<Spanish>Rai</Spanish>
+		<Japanese>&#30053;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CORVEE</Tag>
+		<English>Corvee</English>
+		<French>Corvee</French>
+		<German>Corvee</German>
+		<Italian>Corvee</Italian>
+		<Spanish>Corvee</Spanish>
+		<Japanese>&#36070;&#24441;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CORVEE_SHORT</Tag>
+		<English>Cor</English>
+		<French>Cor</French>
+		<German>Cor</German>
+		<Italian>Cor</Italian>
+		<Spanish>Cor</Spanish>
+		<Japanese>&#36070;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOREST_PEOPLE</Tag>
+		<English>People of the Forest</English>
+		<French>People of the Forest</French>
+		<German>People of the Forest</German>
+		<Italian>People of the Forest</Italian>
+		<Spanish>People of the Forest</Spanish>
+		<Japanese>&#26862;&#12398;&#27665;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOREST_PEOPLE_SHORT</Tag>
+		<English>For</English>
+		<French>For</French>
+		<German>For</German>
+		<Italian>For</Italian>
+		<Spanish>For</Spanish>
+		<Japanese>&#26862;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_JUNGLE_PEOPLE</Tag>
+		<English>People of the Jungle</English>
+		<French>People of the Jungle</French>
+		<German>People of the Jungle</German>
+		<Italian>People of the Jungle</Italian>
+		<Spanish>People of the Jungle</Spanish>
+		<Japanese>&#23494;&#26519;&#12398;&#27665;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_JUNGLE_PEOPLE_SHORT</Tag>
+		<English>Jun</English>
+		<French>Jun</French>
+		<German>Jun</German>
+		<Italian>Jun</Italian>
+		<Spanish>Jun</Spanish>
+		<Japanese>&#23494;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FLOWER_WAR</Tag>
+		<English>Flower War</English>
+		<French>Flower War</French>
+		<German>Flower War</German>
+		<Italian>Flower War</Italian>
+		<Spanish>Flower War</Spanish>
+		<Japanese>&#33457;&#12398;&#25126;&#20105;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_LONGSHIP</Tag>
+		<English>Longship</English>
+		<French>Longship</French>
+		<German>Longship</German>
+		<Italian>Longship</Italian>
+		<Spanish>Longship</Spanish>
+		<Japanese>&#12525;&#12531;&#12464;&#12471;&#12483;&#12503;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_SEA_RAIDER</Tag>
+		<English>Sea Raider</English>
+		<French>Sea Raider</French>
+		<German>Sea Raider</German>
+		<Italian>Sea Raider</Italian>
+		<Spanish>Sea Raider</Spanish>
+		<Japanese>&#19978;&#38520;&#12398;&#24515;&#24471;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_RAIDING</Tag>
+		<English>Raiding</English>
+		<French>Raiding</French>
+		<German>Raiding</German>
+		<Italian>Raiding</Italian>
+		<Spanish>Raiding</Spanish>
+		<Japanese>&#30053;&#22890;&#34892;</Japanese>
+	</TEXT>
 </Civ4GameText>

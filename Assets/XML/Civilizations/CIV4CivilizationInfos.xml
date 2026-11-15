@@ -340,6 +340,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_CHINAMPA</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_AZTEC_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_AZTEC_ORDER</CivilizationActionSound>
@@ -1348,6 +1354,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_REVOLUTION</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_FRANCE_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_FRANCE_ORDER</CivilizationActionSound>
@@ -2179,6 +2191,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_JUNGLE_PEOPLE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_KHMER_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_KHMER_ORDER</CivilizationActionSound>
@@ -2700,6 +2718,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_FOREST_PEOPLE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_NATIVE_AMERICA_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_NATIVE_AMERICA_ORDER</CivilizationActionSound>
@@ -3715,6 +3739,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_LONGSHIP</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_VIKING_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_VIKING_ORDER</CivilizationActionSound>

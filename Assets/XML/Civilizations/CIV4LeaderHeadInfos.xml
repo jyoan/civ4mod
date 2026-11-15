@@ -16769,6 +16769,10 @@
 					<TraitType>TRAIT_ORGANIZED</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_OVERLAND_FLEET</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -17324,6 +17328,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_SPIRITUAL</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_FLOWER_WAR</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -20102,6 +20110,10 @@
 					<TraitType>TRAIT_PROTECTIVE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_CORVEE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -21195,6 +21207,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_RAIDING</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
