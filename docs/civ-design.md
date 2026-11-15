@@ -93,6 +93,12 @@ BtS の効果はそのままにして足す。
 | `iEnemyAttritionInBorders` | スターリン |
 | `iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | ガンジー |
 | `NoObsoleteBuildingClasses` の世界遺産 | ラムセス２世 |
+| `PrereqTech` + `iFreeSpecialist` | リンカーン |
+| `iImprovementUpgradeRateModifier` | アメリカ |
+| `iDistantTradeRouteModifier` | ハトシェプスト |
+| `iCityRadiusChange` | スーリヤヴァルマン2世 |
+| `iGoldenAgeLandMovesChange`、`bGoldenAge` + `iCombatPercent` | ペルシャ |
+| `WorldWonderCommerceChanges` の文化 | ルイ14世 |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -132,9 +138,18 @@ BtS の効果はそのままにして足す。
 | スターリン | 焦土: 自国の領土にいる交戦中の敵が毎ターン最大 HP の 10% を失う（50% まで） | `iEnemyAttritionInBorders`・`iEnemyAttritionLimit` | 実装済み `TRAIT_SCORCHED_EARTH` |
 | ガンジー | 非暴力不服従: 防衛時の戦闘力 +10%、敵の厭戦感情 +50% | `iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | 実装済み `TRAIT_SATYAGRAHA` |
 | ラムセス２世 | 永遠の記念碑: すべての世界遺産が陳腐化しない（BtS で陳腐化する 13 個を並べた） | `NoObsoleteBuildingClasses` | 実装済み `TRAIT_ETERNAL_MONUMENTS` |
+| リンカーン | 奴隷解放: 自由主義を得ると全都市に無償の専門家 +1 | `PrereqTech` で `TRAIT_EMANCIPATION_ACT`（`iFreeSpecialist`） | 実装済み、ゲームで確認済み `TRAIT_EMANCIPATION` |
+| アメリカ（文明） | ホームステッド法: 小屋などの成長 +50% | `iImprovementUpgradeRateModifier` | 実装済み、ゲームで確認済み `TRAIT_HOMESTEAD` |
+| ハトシェプスト | プント遠征: 遠く離れた都市との交易路 +50% | `iDistantTradeRouteModifier` | 実装済み、ゲームで確認済み `TRAIT_PUNT` |
+| スーリヤヴァルマン2世 | アンコール: 文化レベル「洗練」以上の都市は都市圏の半径 +1 | `iCityRadiusChange` + `CityRadiusCultureLevel` | 実装済み、ゲームで確認済み `TRAIT_ANGKOR` |
+| ペルシャ（文明） | 黄金の帝国: 黄金時代は陸上ユニットの移動力 +1、全ユニットの戦闘力 +15% | `iGoldenAgeLandMovesChange`、`bGoldenAge` で `TRAIT_GOLDEN_EMPIRE_AGE`（`iCombatPercent`） | 実装済み、ゲームで確認済み `TRAIT_GOLDEN_EMPIRE` |
+| ルイ14世 | 太陽王: 世界遺産のある都市は、遺産 1 つにつき文化 +3 | `WorldWonderCommerceChanges` | 実装済み、ゲームで確認済み `TRAIT_SUN_KING` |
+| カルタゴ・イギリス（文明） | 開始位置のバイアス: 沿岸 +100%（文明の志向は未定） | 文明の `iStartBiasCoastal` | 実装済み、ゲームで確認済み |
+| シュメール（文明） | 開始位置のバイアス: 川沿い +100%（文明の志向は未定） | 文明の `iStartBiasRiver` | 実装済み、ゲームで確認済み |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
 - 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%
+- 3 回目（2026-11-15）の仮の数値: 小屋の成長 +50%、遠い交易路 +50%、アンコールは文化レベル「洗練」から、黄金時代の戦闘力 +15%、沿岸・川のバイアス +100%
 - カルタゴ・スペイン（ポルトガルと同じタグになった）とユスティニアヌス1世（サラディンと同じタグになった）は別の案を考える
 - 数値はユーザーが決めていないものを仮に入れた（変えてよい）: 湖のタイル 食料 +1・生産 +1、花の戦争 25% で労働者、革命 黄金期は無政府期間の 200%・無政府期間中の戦闘力 +25%、略奪 1 回で HP 25% 回復、開始位置のバイアス 森・ジャングル 1 タイルにつき +10%
 - これからは、確定したものをその都度 XML に入れる（2026-11-15 にユーザーの指示）

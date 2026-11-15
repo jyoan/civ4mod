@@ -10745,6 +10745,10 @@
 					<TraitType>TRAIT_CREATIVE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_PUNT</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -14606,6 +14610,10 @@
 					<TraitType>TRAIT_CHARISMATIC</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_EMANCIPATION</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -15159,6 +15167,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_CREATIVE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_SUN_KING</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -25137,6 +25149,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_CREATIVE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_ANGKOR</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>

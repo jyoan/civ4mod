@@ -136,6 +136,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_HOMESTEAD</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_AMERICA_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_AMERICA_ORDER</CivilizationActionSound>
@@ -675,6 +681,7 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<iStartBiasCoastal>100</iStartBiasCoastal>
 			<DerivativeCiv>CIVILIZATION_SPAIN</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_CARTHAGE_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_CARTHAGE_ORDER</CivilizationActionSound>
@@ -1148,6 +1155,7 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<iStartBiasCoastal>100</iStartBiasCoastal>
 			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_ENGLAND_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_ENGLAND_ORDER</CivilizationActionSound>
@@ -3118,6 +3126,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_GOLDEN_EMPIRE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_ARABIA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_PERSIA_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_PERSIA_ORDER</CivilizationActionSound>
@@ -3694,6 +3708,7 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<iStartBiasRiver>100</iStartBiasRiver>
 			<DerivativeCiv>CIVILIZATION_BABYLON</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_SUMERIA_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_SUMERIA_ORDER</CivilizationActionSound>

@@ -794,4 +794,148 @@
 		<Spanish>Ete</Spanish>
 		<Japanese>&#30865;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_EMANCIPATION</Tag>
+		<English>Emancipation</English>
+		<French>Emancipation</French>
+		<German>Emancipation</German>
+		<Italian>Emancipation</Italian>
+		<Spanish>Emancipation</Spanish>
+		<Japanese>&#22900;&#38583;&#35299;&#25918;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_EMANCIPATION_SHORT</Tag>
+		<English>Ema</English>
+		<French>Ema</French>
+		<German>Ema</German>
+		<Italian>Ema</Italian>
+		<Spanish>Ema</Spanish>
+		<Japanese>&#35299;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_EMANCIPATION_ACT</Tag>
+		<English>Emancipation Proclamation</English>
+		<French>Emancipation Proclamation</French>
+		<German>Emancipation Proclamation</German>
+		<Italian>Emancipation Proclamation</Italian>
+		<Spanish>Emancipation Proclamation</Spanish>
+		<Japanese>&#22900;&#38583;&#35299;&#25918;&#23459;&#35328;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_EMANCIPATION_ACT_SHORT</Tag>
+		<English>Pro</English>
+		<French>Pro</French>
+		<German>Pro</German>
+		<Italian>Pro</Italian>
+		<Spanish>Pro</Spanish>
+		<Japanese>&#23459;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HOMESTEAD</Tag>
+		<English>Homestead Act</English>
+		<French>Homestead Act</French>
+		<German>Homestead Act</German>
+		<Italian>Homestead Act</Italian>
+		<Spanish>Homestead Act</Spanish>
+		<Japanese>&#12507;&#12540;&#12512;&#12473;&#12486;&#12483;&#12489;&#27861;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HOMESTEAD_SHORT</Tag>
+		<English>Hom</English>
+		<French>Hom</French>
+		<German>Hom</German>
+		<Italian>Hom</Italian>
+		<Spanish>Hom</Spanish>
+		<Japanese>&#38283;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PUNT</Tag>
+		<English>Expedition to Punt</English>
+		<French>Expedition to Punt</French>
+		<German>Expedition to Punt</German>
+		<Italian>Expedition to Punt</Italian>
+		<Spanish>Expedition to Punt</Spanish>
+		<Japanese>&#12503;&#12531;&#12488;&#36960;&#24449;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PUNT_SHORT</Tag>
+		<English>Pun</English>
+		<French>Pun</French>
+		<German>Pun</German>
+		<Italian>Pun</Italian>
+		<Spanish>Pun</Spanish>
+		<Japanese>&#36960;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ANGKOR</Tag>
+		<English>Angkor</English>
+		<French>Angkor</French>
+		<German>Angkor</German>
+		<Italian>Angkor</Italian>
+		<Spanish>Angkor</Spanish>
+		<Japanese>&#12450;&#12531;&#12467;&#12540;&#12523;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ANGKOR_SHORT</Tag>
+		<English>Ang</English>
+		<French>Ang</French>
+		<German>Ang</German>
+		<Italian>Ang</Italian>
+		<Spanish>Ang</Spanish>
+		<Japanese>&#37117;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_EMPIRE</Tag>
+		<English>Golden Empire</English>
+		<French>Golden Empire</French>
+		<German>Golden Empire</German>
+		<Italian>Golden Empire</Italian>
+		<Spanish>Golden Empire</Spanish>
+		<Japanese>&#40644;&#37329;&#12398;&#24093;&#22269;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_EMPIRE_SHORT</Tag>
+		<English>Gol</English>
+		<French>Gol</French>
+		<German>Gol</German>
+		<Italian>Gol</Italian>
+		<Spanish>Gol</Spanish>
+		<Japanese>&#26628;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_EMPIRE_AGE</Tag>
+		<English>Golden Empire (Golden Age)</English>
+		<French>Golden Empire (Golden Age)</French>
+		<German>Golden Empire (Golden Age)</German>
+		<Italian>Golden Empire (Golden Age)</Italian>
+		<Spanish>Golden Empire (Golden Age)</Spanish>
+		<Japanese>&#40644;&#37329;&#12398;&#24093;&#22269;&#65288;&#40644;&#37329;&#26178;&#20195;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_EMPIRE_AGE_SHORT</Tag>
+		<English>Age</English>
+		<French>Age</French>
+		<German>Age</German>
+		<Italian>Age</Italian>
+		<Spanish>Age</Spanish>
+		<Japanese>&#21191;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SUN_KING</Tag>
+		<English>Sun King</English>
+		<French>Sun King</French>
+		<German>Sun King</German>
+		<Italian>Sun King</Italian>
+		<Spanish>Sun King</Spanish>
+		<Japanese>&#22826;&#38525;&#29579;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SUN_KING_SHORT</Tag>
+		<English>Sun</English>
+		<French>Sun</French>
+		<German>Sun</German>
+		<Italian>Sun</Italian>
+		<Spanish>Sun</Spanish>
+		<Japanese>&#38525;</Japanese>
+	</TEXT>
 </Civ4GameText>

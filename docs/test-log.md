@@ -120,3 +120,4 @@
 - 2026-11-15: better_trait_mod のクメールの密林の民志向（`TRAIT_JUNGLE_PEOPLE`）を確認し、確定（開始位置のバイアスでジャングルの近くから始まる。ペディアの文明のページに志向の段）
 - 2026-11-15: 志向の `iHappinessPerReligion`・`CommercePerReligion`（都市の宗教の数で幸福・文化）、`iDefenseCombatPercent`、`iEnemyWarWearinessModifier`、Python フック `PyOnCorporationFounded`（企業を設立すると本社に幹部 3 体）を検証用志向で確認
 - 2026-11-15: 志向の `WorldWonderCommerceChanges`・`GlobalWorldWonderCommerceChanges`（世界遺産の数で文化・研究、商業の内訳に「世界遺産（志向）により」）を検証用志向で確認。志向の説明の商業のアイコンが「?」になっていたのを `%F2` に直した（都市の宗教の数の行も）
+- 2026-11-15: better_trait_mod の 3 回目の志向（リンカーン `TRAIT_EMANCIPATION`、アメリカ `TRAIT_HOMESTEAD`、ハトシェプスト `TRAIT_PUNT`、スーリヤヴァルマン2世 `TRAIT_ANGKOR`、ペルシャ `TRAIT_GOLDEN_EMPIRE`）、カルタゴ・イギリス・シュメールの開始位置のバイアス、ルイ14世 `TRAIT_SUN_KING` を確認
