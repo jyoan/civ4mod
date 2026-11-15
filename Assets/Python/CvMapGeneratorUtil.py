@@ -1233,6 +1233,9 @@ def findStartingPlot(playerID, validFn = None):
 
 	player.AI_updateFoundValues(True)
 
+	# Start bias of the civilization and the traits (added by this mod), as in CvPlayer::findStartingPlot of the DLL
+	bStartBias = player.hasStartBias()
+
 	iRange = player.startingPlotRange()
 	iPass = 0
 
@@ -1247,6 +1250,8 @@ def findStartingPlot(playerID, validFn = None):
 				pLoopPlot = map.plot(iX, iY)
 
 				val = pLoopPlot.getFoundValue(playerID)
+				if bStartBias and val > 0:
+					val = player.getStartBiasValue(pLoopPlot, val)
 
 				if val > iBestValue:
 				

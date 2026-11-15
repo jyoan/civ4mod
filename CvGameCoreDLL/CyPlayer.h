@@ -503,6 +503,8 @@ public:
 	int getTraitCombatPercent();	// added by this mod
 	bool isWonderHurry(int /*HurryTypes*/ eHurry);	// added by this mod
 	bool isIgnoreWonderHurryCostModifier();	// added by this mod
+	bool hasStartBias();	// added by this mod
+	int getStartBiasValue(CyPlot* pPlot, int iFoundValue);	// added by this mod
 	bool isConquestStateReligion();	// added by this mod
 	bool isConquestReligionBuilding(int /*SpecialBuildingTypes*/ eSpecialBuilding);	// added by this mod
 	bool isNoTechCivic(int /*CivicTypes*/ eCivic);	// added by this mod

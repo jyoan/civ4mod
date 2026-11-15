@@ -1324,6 +1324,25 @@ static int getStartBiasPercent(const CvPlot* pPlot, const StartBias& kBias)
 	return iBias;
 }
 
+// The start bias for map scripts that find the starting plot in Python (CvMapGeneratorUtil.findStartingPlot, added by this
+// mod): whether the player has one, and the found value with it, as in findStartingPlot below
+bool CvPlayer::hasStartBias() const
+{
+	StartBias kStartBias;
+	return buildStartBias(*this, kStartBias);
+}
+
+int CvPlayer::getStartBiasValue(const CvPlot* pPlot, int iFoundValue) const
+{
+	StartBias kStartBias;
+	if (pPlot == NULL || iFoundValue <= 0 || !buildStartBias(*this, kStartBias))
+	{
+		return iFoundValue;
+	}
+
+	return (iFoundValue * std::max(0, 100 + getStartBiasPercent(pPlot, kStartBias))) / 100;
+}
+
 CvPlot* CvPlayer::findStartingPlot(bool bRandomize)
 {
 	PROFILE_FUNC();
@@ -8094,6 +8113,31 @@ int CvPlayer::getTraitCombatPercent() const
 bool CvPlayer::isWonderHurry(HurryTypes eHurry) const
 {
 	return hasTraitFlag(&CvTraitInfo::isWonderHurry, eHurry);
+}
+
+// The start bias of the player for a feature or a terrain (added by this mod): StartBiasFeatures / StartBiasTerrains of the
+// civilization and of the traits of the player. The normalization of the starting plots keeps what the player likes
+// (CvGame::normalizeRemovePeaks, normalizeRemoveBadFeatures, normalizeRemoveBadTerrain)
+int CvPlayer::getStartBiasFeature(FeatureTypes eFeature) const
+{
+	if (eFeature == NO_FEATURE || getLeaderType() == NO_LEADER)
+	{
+		return 0;
+	}
+
+	int iBias = ((getCivilizationType() != NO_CIVILIZATION) ? GC.getCivilizationInfo(getCivilizationType()).getStartBiasFeature(eFeature) : 0);
+	return iBias + sumTraitValues(&CvTraitInfo::getStartBiasFeature, eFeature);
+}
+
+int CvPlayer::getStartBiasTerrain(TerrainTypes eTerrain) const
+{
+	if (eTerrain == NO_TERRAIN || getLeaderType() == NO_LEADER)
+	{
+		return 0;
+	}
+
+	int iBias = ((getCivilizationType() != NO_CIVILIZATION) ? GC.getCivilizationInfo(getCivilizationType()).getStartBiasTerrain(eTerrain) : 0);
+	return iBias + sumTraitValues(&CvTraitInfo::getStartBiasTerrain, eTerrain);
 }
 
 // bIgnoreWonderHurryCostModifier of the traits (added by this mod): see CvCity::getHurryCostModifier
