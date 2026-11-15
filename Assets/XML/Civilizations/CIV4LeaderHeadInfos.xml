@@ -12412,6 +12412,10 @@
 					<TraitType>TRAIT_EXPANSIVE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_EXPLORER_KING</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -15713,6 +15717,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_FINANCIAL</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_GOLDEN_PILGRIMAGE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>

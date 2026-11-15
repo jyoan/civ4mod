@@ -1624,6 +1624,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_AGORA</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_BYZANTIUM</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_GREECE_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_GREECE_ORDER</CivilizationActionSound>
@@ -2991,6 +2997,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_DEVSHIRME</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_OTTOMAN_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_OTTOMAN_ORDER</CivilizationActionSound>

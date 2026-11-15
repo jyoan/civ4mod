@@ -938,4 +938,112 @@
 		<Spanish>Sun</Spanish>
 		<Japanese>&#38525;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_EXPLORER_KING</Tag>
+		<English>Explorer King</English>
+		<French>Explorer King</French>
+		<German>Explorer King</German>
+		<Italian>Explorer King</Italian>
+		<Spanish>Explorer King</Spanish>
+		<Japanese>&#25506;&#26908;&#29579;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_EXPLORER_KING_SHORT</Tag>
+		<English>Exp</English>
+		<French>Exp</French>
+		<German>Exp</German>
+		<Italian>Exp</Italian>
+		<Spanish>Exp</Spanish>
+		<Japanese>&#25506;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_PILGRIMAGE</Tag>
+		<English>Golden Pilgrimage</English>
+		<French>Golden Pilgrimage</French>
+		<German>Golden Pilgrimage</German>
+		<Italian>Golden Pilgrimage</Italian>
+		<Spanish>Golden Pilgrimage</Spanish>
+		<Japanese>&#40644;&#37329;&#12398;&#24033;&#31036;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_PILGRIMAGE_SHORT</Tag>
+		<English>Pil</English>
+		<French>Pil</French>
+		<German>Pil</German>
+		<Italian>Pil</Italian>
+		<Spanish>Pil</Spanish>
+		<Japanese>&#24033;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DEVSHIRME</Tag>
+		<English>Devshirme</English>
+		<French>Devshirme</French>
+		<German>Devshirme</German>
+		<Italian>Devshirme</Italian>
+		<Spanish>Devshirme</Spanish>
+		<Japanese>&#12487;&#12532;&#12471;&#12523;&#12513;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DEVSHIRME_SHORT</Tag>
+		<English>Dev</English>
+		<French>Dev</French>
+		<German>Dev</German>
+		<Italian>Dev</Italian>
+		<Spanish>Dev</Spanish>
+		<Japanese>&#24500;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_AGORA</Tag>
+		<English>Agora</English>
+		<French>Agora</French>
+		<German>Agora</German>
+		<Italian>Agora</Italian>
+		<Spanish>Agora</Spanish>
+		<Japanese>&#12450;&#12468;&#12521;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_AGORA_SHORT</Tag>
+		<English>Ago</English>
+		<French>Ago</French>
+		<German>Ago</German>
+		<Italian>Ago</Italian>
+		<Spanish>Ago</Spanish>
+		<Japanese>&#24066;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_EXPLORER_KING</Tag>
+		<English>Explorer King</English>
+		<French>Explorer King</French>
+		<German>Explorer King</German>
+		<Italian>Explorer King</Italian>
+		<Spanish>Explorer King</Spanish>
+		<Japanese>&#25506;&#26908;&#29579;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_WANGARA_TRADER</Tag>
+		<English>Wangara Trader</English>
+		<French>Wangara Trader</French>
+		<German>Wangara Trader</German>
+		<Italian>Wangara Trader</Italian>
+		<Spanish>Wangara Trader</Spanish>
+		<Japanese>&#12527;&#12531;&#12460;&#12521;&#21830;&#20154;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_EXPLORER_KING_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#39318;&#37117;&#12434;&#24314;&#35373;&#12377;&#12427;&#12392;&#26021;&#20505;&#12364;1&#20307;&#21152;&#12431;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DEVSHIRME_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#37117;&#24066;&#12434;&#24449;&#26381;&#12377;&#12427;&#12392;&#12289;&#12381;&#12398;&#37117;&#24066;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12364;1&#20307;&#21152;&#12431;&#12427;</Japanese>
+	</TEXT>
 </Civ4GameText>
