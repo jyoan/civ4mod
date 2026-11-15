@@ -8965,8 +8965,32 @@ int CvCity::getBaseCommerceRateTimes100(CommerceTypes eIndex) const
 	iBaseCommerceRate += 100 * getSpecialistTypeExtraCommerce(eIndex);	// SpecialistCommerceChanges of the traits (added by this mod)
 	iBaseCommerceRate += 100 * (getBuildingCommerce(eIndex) + getSpecialistCommerce(eIndex) + getReligionCommerce(eIndex) + getCorporationCommerce(eIndex) + GET_PLAYER(getOwnerINLINE()).getFreeCityCommerce(eIndex));
 	iBaseCommerceRate += 100 * (getAngryCommerce(eIndex) + getUnhealthyCommerce(eIndex));	// added by this mod
+	iBaseCommerceRate += 100 * getTraitWorldWonderCommerce(eIndex);	// added by this mod
 
 	return iBaseCommerceRate;
+}
+
+// WorldWonderCommerceChanges and GlobalWorldWonderCommerceChanges of the traits of the owner (added by this mod): for each
+// world wonder of the city, and for each world wonder of the owner. Recalculated by CvPlayer::updateWorldWonderEffects when
+// the numbers change, and by CvPlayer::updateTraitDependents when the traits change
+int CvCity::getTraitWorldWonderCommerce(CommerceTypes eIndex) const
+{
+	CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+	int iCommerce = 0;
+
+	int iPerCityWonder = kOwner.getTraitWorldWonderCommerce(eIndex);
+	if (iPerCityWonder != 0)
+	{
+		iCommerce += iPerCityWonder * getNumWorldWonders();
+	}
+
+	int iPerOwnedWonder = kOwner.getTraitGlobalWorldWonderCommerce(eIndex);
+	if (iPerOwnedWonder != 0)
+	{
+		iCommerce += iPerOwnedWonder * kOwner.getNumWorldWonders();
+	}
+
+	return iCommerce;
 }
 
 // SpecialistCommerceChanges of the traits of the owner (added by this mod): for each specialist type, the specialists and

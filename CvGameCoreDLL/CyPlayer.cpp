@@ -2253,6 +2253,16 @@ int CyPlayer::getTraitDefenseCombatPercent()
 	return m_pPlayer ? m_pPlayer->getTraitDefenseCombatPercent() : 0;
 }
 
+int CyPlayer::getTraitWorldWonderCommerce(int /*CommerceTypes*/ eCommerce)
+{
+	return m_pPlayer ? m_pPlayer->getTraitWorldWonderCommerce((CommerceTypes)eCommerce) : 0;
+}
+
+int CyPlayer::getTraitGlobalWorldWonderCommerce(int /*CommerceTypes*/ eCommerce)
+{
+	return m_pPlayer ? m_pPlayer->getTraitGlobalWorldWonderCommerce((CommerceTypes)eCommerce) : 0;
+}
+
 bool CyPlayer::isWonderHurry(int /*HurryTypes*/ eHurry)
 {
 	return m_pPlayer ? m_pPlayer->isWonderHurry((HurryTypes)eHurry) : false;

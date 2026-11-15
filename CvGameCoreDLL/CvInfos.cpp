@@ -20209,6 +20209,8 @@ m_pabWonderHurry(NULL),
 m_iHappinessPerReligion(0),
 m_paiCommercePerReligion(NULL),
 m_iDefenseCombatPercent(0),
+m_paiWorldWonderCommerceChange(NULL),
+m_paiGlobalWorldWonderCommerceChange(NULL),
 m_iEnemyWarWearinessModifier(0),
 m_bIgnoreWonderHurryCostModifier(false),
 m_bConquestStateReligion(false),
@@ -20293,6 +20295,8 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabConquestReligionBuilding);
 	SAFE_DELETE_ARRAY(m_pabWonderHurry);
 	SAFE_DELETE_ARRAY(m_paiCommercePerReligion);
+	SAFE_DELETE_ARRAY(m_paiWorldWonderCommerceChange);
+	SAFE_DELETE_ARRAY(m_paiGlobalWorldWonderCommerceChange);
 }
 
 int CvTraitInfo::getHealth() const									
@@ -20795,6 +20799,33 @@ int CvTraitInfo::getCommercePerReligion(int i) const
 int CvTraitInfo::getDefenseCombatPercent() const
 {
 	return m_iDefenseCombatPercent;
+}
+
+// WorldWonderCommerceChanges and GlobalWorldWonderCommerceChanges (added by this mod, as the tags of the buildings): commerce
+// of each city of the player for each world wonder in the city, and for each world wonder of the player
+// (CvCity::getTraitWorldWonderCommerce)
+int CvTraitInfo::getWorldWonderCommerceChange(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiWorldWonderCommerceChange ? m_paiWorldWonderCommerceChange[i] : 0;
+}
+
+int CvTraitInfo::getGlobalWorldWonderCommerceChange(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiGlobalWorldWonderCommerceChange ? m_paiGlobalWorldWonderCommerceChange[i] : 0;
+}
+
+int* CvTraitInfo::getWorldWonderCommerceChangeArray() const
+{
+	return m_paiWorldWonderCommerceChange;
+}
+
+int* CvTraitInfo::getGlobalWorldWonderCommerceChangeArray() const
+{
+	return m_paiGlobalWorldWonderCommerceChange;
 }
 
 // iEnemyWarWearinessModifier (added by this mod, as the tag of the buildings): war weariness % of the teams at war with the team
@@ -21753,6 +21784,24 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 		pXML->InitList(&m_paiCommercePerReligion, NUM_COMMERCE_TYPES);
 	}
 	pXML->GetChildXmlValByName(&m_iDefenseCombatPercent, "iDefenseCombatPercent");
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "WorldWonderCommerceChanges"))
+	{
+		pXML->SetCommerce(&m_paiWorldWonderCommerceChange);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_paiWorldWonderCommerceChange, NUM_COMMERCE_TYPES);
+	}
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "GlobalWorldWonderCommerceChanges"))
+	{
+		pXML->SetCommerce(&m_paiGlobalWorldWonderCommerceChange);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_paiGlobalWorldWonderCommerceChange, NUM_COMMERCE_TYPES);
+	}
 	pXML->GetChildXmlValByName(&m_iEnemyWarWearinessModifier, "iEnemyWarWearinessModifier");
 	pXML->GetChildXmlValByName(&m_bIgnoreWonderHurryCostModifier, "bIgnoreWonderHurryCostModifier");
 	pXML->GetChildXmlValByName(&m_bConquestStateReligion, "bConquestStateReligion");

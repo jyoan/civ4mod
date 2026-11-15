@@ -2950,6 +2950,7 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 	{
 		pLoopCity->updateFeatureHealth();
 		pLoopCity->updateReligionCommerce();
+		pLoopCity->updateCommerce();	// (Global)WorldWonderCommerceChanges
 	}
 
 	// Maintenance of the overseas cities (iOverseasMaintenanceModifier) and trade routes with distant cities
@@ -7451,6 +7452,7 @@ void CvPlayer::updateWorldWonderEffects()
 	{
 		pLoopCity->updateDynamicBuildingYields();
 		pLoopCity->updateBuildingCommerce();
+		pLoopCity->updateCommerce();	// (Global)WorldWonderCommerceChanges of the traits, which are not building commerce
 	}
 }
 
@@ -8128,6 +8130,17 @@ int CvPlayer::getCommercePerReligion(CommerceTypes eCommerce) const
 int CvPlayer::getTraitDefenseCombatPercent() const
 {
 	return sumTraitValues(&CvTraitInfo::getDefenseCombatPercent);
+}
+
+// WorldWonderCommerceChanges and GlobalWorldWonderCommerceChanges of the traits (added by this mod): CvCity::getTraitWorldWonderCommerce
+int CvPlayer::getTraitWorldWonderCommerce(CommerceTypes eCommerce) const
+{
+	return sumTraitValues(&CvTraitInfo::getWorldWonderCommerceChange, eCommerce);
+}
+
+int CvPlayer::getTraitGlobalWorldWonderCommerce(CommerceTypes eCommerce) const
+{
+	return sumTraitValues(&CvTraitInfo::getGlobalWorldWonderCommerceChange, eCommerce);
 }
 
 // WonderHurrys of the traits (added by this mod): the player can hurry wonders this way without the civic (CvCity::isWonderHurry)

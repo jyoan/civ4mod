@@ -549,6 +549,12 @@
 		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="iDefenseCombatPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="WorldWonderCommerceChanges" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="GlobalWorldWonderCommerceChanges" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="iEnemyWarWearinessModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="bAtWar" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bAtPeace" content="textOnly" dt:type="boolean"/>
@@ -758,6 +764,8 @@
 		<element type="iHappinessPerReligion" minOccurs="0"/>
 		<element type="CommercePerReligion" minOccurs="0"/>
 		<element type="iDefenseCombatPercent" minOccurs="0"/>
+		<element type="WorldWonderCommerceChanges" minOccurs="0"/>
+		<element type="GlobalWorldWonderCommerceChanges" minOccurs="0"/>
 		<element type="iEnemyWarWearinessModifier" minOccurs="0"/>
 		<element type="bConquestStateReligion" minOccurs="0"/>
 		<element type="ConquestReligionBuildings" minOccurs="0"/>

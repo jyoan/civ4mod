@@ -1313,4 +1313,13 @@
 		<Spanish>[ICON_BULLET]%D1%% Defending (Trait)</Spanish>
 		<Japanese>[ICON_BULLET]&#38450;&#34907;&#65288;&#24535;&#21521;&#65289;: %D1%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_TRAIT_WONDER_COMMERCE</Tag>
+		<English>[ICON_BULLET]%D1%F2 from World Wonders (trait)</English>
+		<French>[ICON_BULLET]%D1%F2 from World Wonders (trait)</French>
+		<German>[ICON_BULLET]%D1%F2 from World Wonders (trait)</German>
+		<Italian>[ICON_BULLET]%D1%F2 from World Wonders (trait)</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 from World Wonders (trait)</Spanish>
+		<Japanese>[ICON_BULLET]&#19990;&#30028;&#36986;&#29987;&#65288;&#24535;&#21521;&#65289;&#12395;&#12424;&#12426;%F2%D1</Japanese>
+	</TEXT>
 </Civ4GameText>

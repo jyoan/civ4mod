@@ -264,6 +264,8 @@ public:
 	int getHappinessPerReligion() const;	// Exposed to Python (added by this mod)
 	int getCommercePerReligion(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
 	int getTraitDefenseCombatPercent() const;	// Exposed to Python (added by this mod)
+	int getTraitWorldWonderCommerce(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
+	int getTraitGlobalWorldWonderCommerce(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
 	int getStartBiasFeature(FeatureTypes eFeature) const;	// added by this mod: StartBiasFeatures of the civilization and the traits
 	int getStartBiasTerrain(TerrainTypes eTerrain) const;	// added by this mod: StartBiasTerrains of the civilization and the traits
 	bool hasStartBias() const;	// Exposed to Python (added by this mod)

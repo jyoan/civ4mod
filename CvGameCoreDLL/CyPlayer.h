@@ -504,6 +504,8 @@ public:
 	int getHappinessPerReligion();	// added by this mod
 	int getCommercePerReligion(int /*CommerceTypes*/ eCommerce);	// added by this mod
 	int getTraitDefenseCombatPercent();	// added by this mod
+	int getTraitWorldWonderCommerce(int /*CommerceTypes*/ eCommerce);	// added by this mod
+	int getTraitGlobalWorldWonderCommerce(int /*CommerceTypes*/ eCommerce);	// added by this mod
 	bool isWonderHurry(int /*HurryTypes*/ eHurry);	// added by this mod
 	bool isIgnoreWonderHurryCostModifier();	// added by this mod
 	bool hasStartBias();	// added by this mod

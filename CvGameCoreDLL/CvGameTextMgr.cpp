@@ -4066,6 +4066,23 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DEFENSE_COMBAT_PERCENT", kTrait.getDefenseCombatPercent()));
 	}
 
+	// WorldWonderCommerceChanges, GlobalWorldWonderCommerceChanges (added by this mod)
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		if (kTrait.getWorldWonderCommerceChange(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_PER_CITY_WORLD_WONDER", kTrait.getWorldWonderCommerceChange(iI), GC.getCommerceInfo((CommerceTypes)iI).getChar()));
+		}
+	}
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		if (kTrait.getGlobalWorldWonderCommerceChange(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_PER_WORLD_WONDER", kTrait.getGlobalWorldWonderCommerceChange(iI), GC.getCommerceInfo((CommerceTypes)iI).getChar()));
+		}
+	}
+
 	if (kTrait.getEnemyWarWearinessModifier() != 0)
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_ENEMY_WAR_WEAR", kTrait.getEnemyWarWearinessModifier()));
@@ -15132,6 +15149,15 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_COMMERCE", iBuildingCommerce, info.getChar()));
 		szBuffer.append(NEWLINE);
 		iBaseCommerceRate += 100 * iBuildingCommerce;
+	}
+
+	// WorldWonderCommerceChanges and GlobalWorldWonderCommerceChanges of the traits (added by this mod)
+	int iWonderCommerce = city.getTraitWorldWonderCommerce(eCommerceType);
+	if (0 != iWonderCommerce)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_TRAIT_WONDER_COMMERCE", iWonderCommerce, info.getChar()));
+		szBuffer.append(NEWLINE);
+		iBaseCommerceRate += 100 * iWonderCommerce;
 	}
 
 	// AngryCommerceChanges and UnhealthyCommerceChanges (added by this mod)

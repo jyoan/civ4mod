@@ -125,6 +125,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - 新しいテキストキーは `Assets\XML\Text\` の分野ごとのファイルの末尾に足す（`XML\Text\` の xml はすべて読み込まれる）: 志向（`TXT_KEY_TRAIT_*`・`TXT_KEY_CONDITION_*`・`TXT_KEY_START_BIAS*`）は `CIV4GameText_ClaudeSample_Traits.xml`、昇進は `_Promotions.xml`、呪文は `_Spells.xml`、検証用の項目の名前は `_Test.xml`、それ以外（メッセージ、建物、社会制度、ゲームオプションなど）は `CIV4GameText_ClaudeSample.xml`
 - 元の XML はすべて ASCII・CRLF。Mod 側も ASCII・CRLF を保つ
 - テキスト XML（`XML\Text\`）は `encoding="ISO-8859-1"` 宣言の ASCII ファイル。日本語は `<Japanese>` の中に **10 進の数値文字参照**で書く（例: 「戦士」→ `&#25126;&#22763;`）。他の言語タグ（`<English>` など）も元ファイルに倣って残す
+- 商業・産出のアイコン（`GC.getCommerceInfo(e).getChar()` など）を引数で渡すときは `%F2` と書く（`%c2` ではアイコンが「?」になる。BtS の「建造物により%F2%D1」と同じ）
 - テキストの中で同じ引数を 2 回使わない（`%s1_Feature … %s1_Feature`）。ゲームは片方しか置き換えず、もう片方が `%s1_Feature` のまま出る。2 回目はコードから同じ値を別の番号（`%s3`）で渡す
 - 日本語版の用語: Trait は「〜志向」（例: `TRAIT_INDUSTRIOUS` = 勤労志向）。ペディアの見出し `TXT_KEY_PEDIA_TRAITS` は「特性」
 
