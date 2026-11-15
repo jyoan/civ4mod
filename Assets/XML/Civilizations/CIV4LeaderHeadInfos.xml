@@ -1928,6 +1928,10 @@
 					<TraitType>TRAIT_INDUSTRIOUS</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_BLOOD_AND_IRON</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -4669,6 +4673,10 @@
 					<TraitType>TRAIT_PROTECTIVE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_FINEST_HOUR</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -5222,6 +5230,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_IMPERIALIST</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_TOLERANCE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -6887,6 +6899,10 @@
 					<TraitType>TRAIT_FINANCIAL</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_LETTERS_OF_MARQUE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -7442,6 +7458,10 @@
 					<TraitType>TRAIT_ORGANIZED</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_ARMY_STATE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -7991,6 +8011,10 @@
 					<TraitType>TRAIT_PHILOSOPHICAL</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_SATYAGRAHA</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -8506,6 +8530,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_IMPERIALIST</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_STEPPE_UNITY</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -9053,6 +9081,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_CREATIVE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_WALLS_OF_URUK</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -10150,6 +10182,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_CHARISMATIC</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_ALPS</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -11808,6 +11844,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_EXPANSIVE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_RECONQUISTA</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -20656,6 +20696,10 @@
 					<TraitType>TRAIT_INDUSTRIOUS</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_ETERNAL_MONUMENTS</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -22304,6 +22348,10 @@
 					<TraitType>TRAIT_SPIRITUAL</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_COEXISTENCE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -23402,6 +23450,10 @@
 					<TraitType>TRAIT_PROTECTIVE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_FOREST_KEEPER</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -23946,6 +23998,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_SCORCHED_EARTH</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -28488,6 +28544,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_ORGANIZED</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_KING_OF_FAITH</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>

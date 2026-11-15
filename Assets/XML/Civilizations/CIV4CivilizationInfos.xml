@@ -238,6 +238,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_BEDOUIN</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_ARABIA_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_ARABIA_ORDER</CivilizationActionSound>
@@ -1024,6 +1030,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_NILE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_EGYPT_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_EGYPT_ORDER</CivilizationActionSound>
@@ -1483,6 +1495,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_INDUSTRIALIZATION</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_GERMANY_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_GERMANY_ORDER</CivilizationActionSound>
@@ -1810,6 +1828,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_ANDES</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_INCA_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_INCA_ORDER</CivilizationActionSound>
@@ -1977,6 +2001,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_MULTI_RELIGION</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_INDIA_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_INDIA_ORDER</CivilizationActionSound>
@@ -2602,6 +2632,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_HORSE_PEOPLE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_CHINA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_MONGOL_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_MONGOL_ORDER</CivilizationActionSound>
@@ -2835,6 +2871,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_VOC</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_NETHERLANDS_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_NETHERLANDS_ORDER</CivilizationActionSound>
@@ -3187,6 +3229,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_AGE_OF_DISCOVERY</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_PORTUGAL_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_PORTUGAL_ORDER</CivilizationActionSound>
@@ -3312,6 +3360,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_PAX_ROMANA</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_BYZANTIUM</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_ROME_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_ROME_ORDER</CivilizationActionSound>
@@ -3424,6 +3478,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_VAST_LAND</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_RUSSIA_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_RUSSIA_ORDER</CivilizationActionSound>

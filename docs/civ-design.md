@@ -68,6 +68,31 @@ BtS の効果はそのままにして足す。
 | `WonderHurrys`、`bIgnoreWonderHurryCostModifier` | 始皇帝 |
 | `FeatureRoutes`・`MaintainFeatures` の森 | アメリカ先住民 |
 | `FeatureRoutes`・`MaintainFeatures`・`FeatureHealthChanges`・`FeatureYieldChanges` のジャングル | クメール |
+| 昇進の `TerrainDoubleMoves`・`TerrainDefenses` の砂漠、`StartBiasTerrains` の砂漠 | アラブ |
+| `iHappinessPerReligion`、`CommercePerReligion` | インド |
+| `TerrainYieldChanges`・`StartBiasTerrains` の丘陵・山岳 | インカ |
+| `iCorporationSpreadChange`、幹部への `bRivalTerritory` の昇進、`PyOnCorporationFounded` | オランダ |
+| `PrereqTech` + `YieldModifiers` の生産 | ドイツ |
+| `FeatureYieldChanges`・`FeatureHealthChanges`・`StartBiasFeatures` の氾濫原 | エジプト |
+| `iCultureRangeChange` | ロシア |
+| `ImprovementYieldChanges` の牧草地、`UnitCombatFreeExperiences` の騎乗、`StartBiasBonuses` の馬 | モンゴル |
+| `iCapitalBuildingProductionModifier` | ローマ |
+| `iOverseasCityPopulation`、`iNewWorldCityPopulation`、艦船への歩哨の昇進 | ポルトガル |
+| `bConquestStateReligion`、`ConquestReligionBuildings`、`iConquestBuildingSurviveModifier` | サラディン |
+| `FeatureGrowthChanges` の森 | シッティング・ブル |
+| フリゲートへの `bHiddenNationality` の昇進 | エリザベス |
+| `bAtWar` + `YieldModifiers` の生産 | チャーチル |
+| 昇進の `ImpassablePlotPassages` の山岳 | ハンニバル |
+| `bNoConquestPopulationLoss` | 大キュロス |
+| `UnitCombatProductionModifiers` の銃火器・装甲 | ビスマルク |
+| `UpgradeAnywhereUnitCombats` の白兵戦・銃火器 | フリードリッヒ |
+| 昇進の `iOtherReligionCombatPercent`・`iStateReligionCityAttack` | イザベル |
+| `NoObsoleteBuildingClasses` の城壁・城 | ギルガメッシュ |
+| `bNewCityStateReligion` | ザラ・ヤコブ |
+| `bBarbarianAlly` | チンギス・ハーン |
+| `iEnemyAttritionInBorders` | スターリン |
+| `iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | ガンジー |
+| `NoObsoleteBuildingClasses` の世界遺産 | ラムセス２世 |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -82,9 +107,35 @@ BtS の効果はそのままにして足す。
 | 始皇帝 | 奴隷制なしで、遺産（世界遺産・国家遺産）を人口で緊急生産できる。遺産の緊急生産に追加の費用がかからない（人口でも資金でも。生産 0 のときの +50% と人口を使ったときの不満は残る） | `WonderHurrys`（`HURRY_POPULATION`）、`bIgnoreWonderHurryCostModifier` | 実装済み `TRAIT_CORVEE` |
 | アメリカ先住民（文明） | 森に特化: 自国の領土の森を道路として扱う（移動と交易網）。施設を作っても森が残る | `FeatureRoutes`（森 → `ROUTE_ROAD`）、`MaintainFeatures`（森） | 実装済み `TRAIT_FOREST_PEOPLE` |
 | クメール（文明） | ジャングルに特化: 自国の領土のジャングルを道路として扱う。ジャングルの不衛生がなくなる。ジャングルの食料 +2（BtS の -1 と合わせて +1）。施設を作ってもジャングルが残る | `FeatureRoutes`（ジャングル → `ROUTE_ROAD`）、`FeatureHealthChanges`（ジャングル +25。BtS の -25 と合わせて 0）、`FeatureYieldChanges`（ジャングル 食料 +2）、`MaintainFeatures`（ジャングル） | 実装済み、ゲームで確認済み `TRAIT_JUNGLE_PEOPLE` |
-| サラディン | 占領した都市に国教の建物を建てる | `ConquestReligionBuildings` など（`iConquestBuildingSurviveModifier` も候補） | 方向だけ決定 |
+| サラディン | 共存: 占領した都市に国教が広まり寺院が建つ、建物が残りやすい（+50%） | `bConquestStateReligion`、`ConquestReligionBuildings`（寺院）、`iConquestBuildingSurviveModifier` | 実装済み `TRAIT_COEXISTENCE` |
+| アラブ（文明） | ベドウィン: 騎乗ユニットが砂漠で移動 2 倍・防御 +25%。砂漠のバイアス | 昇進の `TerrainDoubleMoves`・`TerrainDefenses`、`StartBiasTerrains` | 実装済み `TRAIT_BEDOUIN` |
+| インド（文明） | 多宗教の受容: 都市の宗教 1 つにつき幸福 +1・文化 +1 | `iHappinessPerReligion`、`CommercePerReligion` | 実装済み `TRAIT_MULTI_RELIGION` |
+| インカ（文明） | アンデスの民: 丘陵 食料 +1、山岳 食料 +1・生産 +1（山岳も働かせられる）。丘陵・山岳のバイアス | `TerrainYieldChanges`、`StartBiasTerrains` | 実装済み `TRAIT_ANDES` |
+| オランダ（文明） | 東インド会社: 幹部の成功率 +50%、幹部が国境を閉じた国にも入れる、企業を設立すると本社に幹部 3 体 | `iCorporationSpreadChange`、昇進の `bRivalTerritory`、`PyOnCorporationFounded` | 実装済み `TRAIT_VOC` |
+| ドイツ（文明） | 産業化: 産業主義を得ると全都市の生産 +10% | `ConditionalFreeTraits` の `PrereqTech` で `TRAIT_INDUSTRIAL_POWER`（`YieldModifiers`） | 実装済み `TRAIT_INDUSTRIALIZATION` |
+| エジプト（文明） | ナイルの賜物: 氾濫原 生産 +1、不衛生なし。氾濫原のバイアス | `FeatureYieldChanges`、`FeatureHealthChanges`、`StartBiasFeatures` | 実装済み `TRAIT_NILE` |
+| ロシア（文明） | 広大な大地: 文化圏 +1 | `iCultureRangeChange` | 実装済み `TRAIT_VAST_LAND` |
+| モンゴル（文明） | 騎馬の民: 牧草地 食料 +1、騎乗ユニットの経験値 +2。馬のバイアス | `ImprovementYieldChanges`、`UnitCombatFreeExperiences`、`StartBiasBonuses` | 実装済み `TRAIT_HORSE_PEOPLE` |
+| ローマ（文明） | パクス・ロマーナ: 首都にある建物を他の都市で建てるとき生産 +50% | `iCapitalBuildingProductionModifier` | 実装済み `TRAIT_PAX_ROMANA` |
+| ポルトガル（文明） | 大航海時代: 海外に建てた都市の人口 +1、新世界に建てた都市の人口 +1（重なる）。そのうち沿岸の都市には灯台、新世界なら港も。艦船に歩哨 | `iOverseasCityPopulation`、`iNewWorldCityPopulation`、`PyOnCityFounded`、`FreePromotionSets`（`PROMOTION_SENTRY`） | 実装済み `TRAIT_AGE_OF_DISCOVERY` |
+| シッティング・ブル | 森を育む: 領土の森が広がりやすい | `FeatureGrowthChanges` | 実装済み `TRAIT_FOREST_KEEPER` |
+| エリザベス | 私掠免状: フリゲートが国籍を隠す | 昇進の `bHiddenNationality` | 実装済み `TRAIT_LETTERS_OF_MARQUE` |
+| チャーチル | 最も輝ける時: 戦時は全都市の生産 +15% | `bAtWar` で `TRAIT_FINEST_HOUR_WAR`（`YieldModifiers`） | 実装済み `TRAIT_FINEST_HOUR` |
+| ハンニバル | アルプス越え: 陸上ユニットが山岳に入れる（山岳でターンを迎えると 20% のダメージ） | 昇進の `ImpassablePlotPassages` | 実装済み `TRAIT_ALPS` |
+| 大キュロス | 寛容王: 都市を占領しても人口が減らない | `bNoConquestPopulationLoss` | 実装済み `TRAIT_TOLERANCE` |
+| ビスマルク | 鉄と血: 銃火器・装甲ユニットの生産 +25% | `UnitCombatProductionModifiers` | 実装済み `TRAIT_BLOOD_AND_IRON` |
+| フリードリッヒ | 軍隊を持つ国家: 白兵戦・銃火器ユニットが戦地でアップグレードできる | `UpgradeAnywhereUnitCombats` | 実装済み `TRAIT_ARMY_STATE` |
+| イザベル | レコンキスタ: 異教徒との戦闘力 +25%、国教の広まった都市への攻撃 +25% | 昇進の `iOtherReligionCombatPercent`・`iStateReligionCityAttack` | 実装済み `TRAIT_RECONQUISTA` |
+| ギルガメッシュ | ウルクの城壁: 城壁と城が陳腐化しない | `NoObsoleteBuildingClasses` | 実装済み `TRAIT_WALLS_OF_URUK` |
+| ザラ・ヤコブ | 信仰の王: 新しい都市に国教が広まる | `bNewCityStateReligion` | 実装済み `TRAIT_KING_OF_FAITH` |
+| チンギス・ハーン | 草原の統一: 蛮族と平和 | `bBarbarianAlly` | 実装済み `TRAIT_STEPPE_UNITY` |
+| スターリン | 焦土: 自国の領土にいる交戦中の敵が毎ターン最大 HP の 10% を失う（50% まで） | `iEnemyAttritionInBorders`・`iEnemyAttritionLimit` | 実装済み `TRAIT_SCORCHED_EARTH` |
+| ガンジー | 非暴力不服従: 防衛時の戦闘力 +10%、敵の厭戦感情 +50% | `iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | 実装済み `TRAIT_SATYAGRAHA` |
+| ラムセス２世 | 永遠の記念碑: すべての世界遺産が陳腐化しない（BtS で陳腐化する 13 個を並べた） | `NoObsoleteBuildingClasses` | 実装済み `TRAIT_ETERNAL_MONUMENTS` |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
+- 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%
+- カルタゴ・スペイン（ポルトガルと同じタグになった）とユスティニアヌス1世（サラディンと同じタグになった）は別の案を考える
 - 数値はユーザーが決めていないものを仮に入れた（変えてよい）: 湖のタイル 食料 +1・生産 +1、花の戦争 25% で労働者、革命 黄金期は無政府期間の 200%・無政府期間中の戦闘力 +25%、略奪 1 回で HP 25% 回復、開始位置のバイアス 森・ジャングル 1 タイルにつき +10%
 - これからは、確定したものをその都度 XML に入れる（2026-11-15 にユーザーの指示）
 - 始皇帝の最初の案「長城線」（万里の長城が陳腐化しない）は取り下げた。BtS の万里の長城はもともと陳腐化しない（`ObsoleteTech` が `NONE`）

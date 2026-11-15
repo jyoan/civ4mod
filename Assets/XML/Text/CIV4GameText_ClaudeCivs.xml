@@ -245,4 +245,553 @@
 		<Spanish>Raiding</Spanish>
 		<Japanese>&#30053;&#22890;&#34892;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BEDOUIN</Tag>
+		<English>Bedouin</English>
+		<French>Bedouin</French>
+		<German>Bedouin</German>
+		<Italian>Bedouin</Italian>
+		<Spanish>Bedouin</Spanish>
+		<Japanese>&#12505;&#12489;&#12454;&#12451;&#12531;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BEDOUIN_SHORT</Tag>
+		<English>Bed</English>
+		<French>Bed</French>
+		<German>Bed</German>
+		<Italian>Bed</Italian>
+		<Spanish>Bed</Spanish>
+		<Japanese>&#30722;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ANDES</Tag>
+		<English>People of the Andes</English>
+		<French>People of the Andes</French>
+		<German>People of the Andes</German>
+		<Italian>People of the Andes</Italian>
+		<Spanish>People of the Andes</Spanish>
+		<Japanese>&#12450;&#12531;&#12487;&#12473;&#12398;&#27665;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ANDES_SHORT</Tag>
+		<English>And</English>
+		<French>And</French>
+		<German>And</German>
+		<Italian>And</Italian>
+		<Spanish>And</Spanish>
+		<Japanese>&#23665;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDUSTRIALIZATION</Tag>
+		<English>Industrialization</English>
+		<French>Industrialization</French>
+		<German>Industrialization</German>
+		<Italian>Industrialization</Italian>
+		<Spanish>Industrialization</Spanish>
+		<Japanese>&#29987;&#26989;&#21270;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDUSTRIALIZATION_SHORT</Tag>
+		<English>Ind</English>
+		<French>Ind</French>
+		<German>Ind</German>
+		<Italian>Ind</Italian>
+		<Spanish>Ind</Spanish>
+		<Japanese>&#29987;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDUSTRIAL_POWER</Tag>
+		<English>Industrial Power</English>
+		<French>Industrial Power</French>
+		<German>Industrial Power</German>
+		<Italian>Industrial Power</Italian>
+		<Spanish>Industrial Power</Spanish>
+		<Japanese>&#29987;&#26989;&#22269;&#23478;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDUSTRIAL_POWER_SHORT</Tag>
+		<English>Pow</English>
+		<French>Pow</French>
+		<German>Pow</German>
+		<Italian>Pow</Italian>
+		<Spanish>Pow</Spanish>
+		<Japanese>&#24037;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NILE</Tag>
+		<English>Gift of the Nile</English>
+		<French>Gift of the Nile</French>
+		<German>Gift of the Nile</German>
+		<Italian>Gift of the Nile</Italian>
+		<Spanish>Gift of the Nile</Spanish>
+		<Japanese>&#12490;&#12452;&#12523;&#12398;&#36060;&#29289;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NILE_SHORT</Tag>
+		<English>Nil</English>
+		<French>Nil</French>
+		<German>Nil</German>
+		<Italian>Nil</Italian>
+		<Spanish>Nil</Spanish>
+		<Japanese>&#27710;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_VAST_LAND</Tag>
+		<English>Vast Land</English>
+		<French>Vast Land</French>
+		<German>Vast Land</German>
+		<Italian>Vast Land</Italian>
+		<Spanish>Vast Land</Spanish>
+		<Japanese>&#24195;&#22823;&#12394;&#22823;&#22320;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_VAST_LAND_SHORT</Tag>
+		<English>Vas</English>
+		<French>Vas</French>
+		<German>Vas</German>
+		<Italian>Vas</Italian>
+		<Spanish>Vas</Spanish>
+		<Japanese>&#22823;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HORSE_PEOPLE</Tag>
+		<English>Horse People</English>
+		<French>Horse People</French>
+		<German>Horse People</German>
+		<Italian>Horse People</Italian>
+		<Spanish>Horse People</Spanish>
+		<Japanese>&#39438;&#39340;&#12398;&#27665;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HORSE_PEOPLE_SHORT</Tag>
+		<English>Hor</English>
+		<French>Hor</French>
+		<German>Hor</German>
+		<Italian>Hor</Italian>
+		<Spanish>Hor</Spanish>
+		<Japanese>&#39340;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PAX_ROMANA</Tag>
+		<English>Pax Romana</English>
+		<French>Pax Romana</French>
+		<German>Pax Romana</German>
+		<Italian>Pax Romana</Italian>
+		<Spanish>Pax Romana</Spanish>
+		<Japanese>&#12497;&#12463;&#12473;&#12539;&#12525;&#12510;&#12540;&#12490;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PAX_ROMANA_SHORT</Tag>
+		<English>Pax</English>
+		<French>Pax</French>
+		<German>Pax</German>
+		<Italian>Pax</Italian>
+		<Spanish>Pax</Spanish>
+		<Japanese>&#32645;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_VOC</Tag>
+		<English>East India Company</English>
+		<French>East India Company</French>
+		<German>East India Company</German>
+		<Italian>East India Company</Italian>
+		<Spanish>East India Company</Spanish>
+		<Japanese>&#26481;&#12452;&#12531;&#12489;&#20250;&#31038;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_VOC_SHORT</Tag>
+		<English>VOC</English>
+		<French>VOC</French>
+		<German>VOC</German>
+		<Italian>VOC</Italian>
+		<Spanish>VOC</Spanish>
+		<Japanese>&#21830;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_COEXISTENCE</Tag>
+		<English>Coexistence</English>
+		<French>Coexistence</French>
+		<German>Coexistence</German>
+		<Italian>Coexistence</Italian>
+		<Spanish>Coexistence</Spanish>
+		<Japanese>&#20849;&#23384;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_COEXISTENCE_SHORT</Tag>
+		<English>Coe</English>
+		<French>Coe</French>
+		<German>Coe</German>
+		<Italian>Coe</Italian>
+		<Spanish>Coe</Spanish>
+		<Japanese>&#20849;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOREST_KEEPER</Tag>
+		<English>Keeper of the Forest</English>
+		<French>Keeper of the Forest</French>
+		<German>Keeper of the Forest</German>
+		<Italian>Keeper of the Forest</Italian>
+		<Spanish>Keeper of the Forest</Spanish>
+		<Japanese>&#26862;&#12434;&#32946;&#12416;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOREST_KEEPER_SHORT</Tag>
+		<English>Kee</English>
+		<French>Kee</French>
+		<German>Kee</German>
+		<Italian>Kee</Italian>
+		<Spanish>Kee</Spanish>
+		<Japanese>&#32946;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LETTERS_OF_MARQUE</Tag>
+		<English>Letters of Marque</English>
+		<French>Letters of Marque</French>
+		<German>Letters of Marque</German>
+		<Italian>Letters of Marque</Italian>
+		<Spanish>Letters of Marque</Spanish>
+		<Japanese>&#31169;&#25504;&#20813;&#29366;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LETTERS_OF_MARQUE_SHORT</Tag>
+		<English>Mar</English>
+		<French>Mar</French>
+		<German>Mar</German>
+		<Italian>Mar</Italian>
+		<Spanish>Mar</Spanish>
+		<Japanese>&#31169;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FINEST_HOUR</Tag>
+		<English>Finest Hour</English>
+		<French>Finest Hour</French>
+		<German>Finest Hour</German>
+		<Italian>Finest Hour</Italian>
+		<Spanish>Finest Hour</Spanish>
+		<Japanese>&#26368;&#12418;&#36637;&#12369;&#12427;&#26178;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FINEST_HOUR_SHORT</Tag>
+		<English>Fin</English>
+		<French>Fin</French>
+		<German>Fin</German>
+		<Italian>Fin</Italian>
+		<Spanish>Fin</Spanish>
+		<Japanese>&#36637;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FINEST_HOUR_WAR</Tag>
+		<English>Finest Hour (at war)</English>
+		<French>Finest Hour (at war)</French>
+		<German>Finest Hour (at war)</German>
+		<Italian>Finest Hour (at war)</Italian>
+		<Spanish>Finest Hour (at war)</Spanish>
+		<Japanese>&#26368;&#12418;&#36637;&#12369;&#12427;&#26178;&#65288;&#25126;&#26178;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FINEST_HOUR_WAR_SHORT</Tag>
+		<English>War</English>
+		<French>War</French>
+		<German>War</German>
+		<Italian>War</Italian>
+		<Spanish>War</Spanish>
+		<Japanese>&#25126;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ALPS</Tag>
+		<English>Crossing the Alps</English>
+		<French>Crossing the Alps</French>
+		<German>Crossing the Alps</German>
+		<Italian>Crossing the Alps</Italian>
+		<Spanish>Crossing the Alps</Spanish>
+		<Japanese>&#12450;&#12523;&#12503;&#12473;&#36234;&#12360;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ALPS_SHORT</Tag>
+		<English>Alp</English>
+		<French>Alp</French>
+		<German>Alp</German>
+		<Italian>Alp</Italian>
+		<Spanish>Alp</Spanish>
+		<Japanese>&#36234;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TOLERANCE</Tag>
+		<English>Tolerance</English>
+		<French>Tolerance</French>
+		<German>Tolerance</German>
+		<Italian>Tolerance</Italian>
+		<Spanish>Tolerance</Spanish>
+		<Japanese>&#23515;&#23481;&#29579;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TOLERANCE_SHORT</Tag>
+		<English>Tol</English>
+		<French>Tol</French>
+		<German>Tol</German>
+		<Italian>Tol</Italian>
+		<Spanish>Tol</Spanish>
+		<Japanese>&#23515;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BLOOD_AND_IRON</Tag>
+		<English>Blood and Iron</English>
+		<French>Blood and Iron</French>
+		<German>Blood and Iron</German>
+		<Italian>Blood and Iron</Italian>
+		<Spanish>Blood and Iron</Spanish>
+		<Japanese>&#37444;&#12392;&#34880;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BLOOD_AND_IRON_SHORT</Tag>
+		<English>Iro</English>
+		<French>Iro</French>
+		<German>Iro</German>
+		<Italian>Iro</Italian>
+		<Spanish>Iro</Spanish>
+		<Japanese>&#37444;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ARMY_STATE</Tag>
+		<English>An Army with a State</English>
+		<French>An Army with a State</French>
+		<German>An Army with a State</German>
+		<Italian>An Army with a State</Italian>
+		<Spanish>An Army with a State</Spanish>
+		<Japanese>&#36557;&#38538;&#12434;&#25345;&#12388;&#22269;&#23478;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ARMY_STATE_SHORT</Tag>
+		<English>Arm</English>
+		<French>Arm</French>
+		<German>Arm</German>
+		<Italian>Arm</Italian>
+		<Spanish>Arm</Spanish>
+		<Japanese>&#36557;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RECONQUISTA</Tag>
+		<English>Reconquista</English>
+		<French>Reconquista</French>
+		<German>Reconquista</German>
+		<Italian>Reconquista</Italian>
+		<Spanish>Reconquista</Spanish>
+		<Japanese>&#12524;&#12467;&#12531;&#12461;&#12473;&#12479;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RECONQUISTA_SHORT</Tag>
+		<English>Rec</English>
+		<French>Rec</French>
+		<German>Rec</German>
+		<Italian>Rec</Italian>
+		<Spanish>Rec</Spanish>
+		<Japanese>&#20877;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_WALLS_OF_URUK</Tag>
+		<English>Walls of Uruk</English>
+		<French>Walls of Uruk</French>
+		<German>Walls of Uruk</German>
+		<Italian>Walls of Uruk</Italian>
+		<Spanish>Walls of Uruk</Spanish>
+		<Japanese>&#12454;&#12523;&#12463;&#12398;&#22478;&#22721;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_WALLS_OF_URUK_SHORT</Tag>
+		<English>Uru</English>
+		<French>Uru</French>
+		<German>Uru</German>
+		<Italian>Uru</Italian>
+		<Spanish>Uru</Spanish>
+		<Japanese>&#22721;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_KING_OF_FAITH</Tag>
+		<English>King of Faith</English>
+		<French>King of Faith</French>
+		<German>King of Faith</German>
+		<Italian>King of Faith</Italian>
+		<Spanish>King of Faith</Spanish>
+		<Japanese>&#20449;&#20208;&#12398;&#29579;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_KING_OF_FAITH_SHORT</Tag>
+		<English>Fai</English>
+		<French>Fai</French>
+		<German>Fai</German>
+		<Italian>Fai</Italian>
+		<Spanish>Fai</Spanish>
+		<Japanese>&#20449;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_STEPPE_UNITY</Tag>
+		<English>Unity of the Steppe</English>
+		<French>Unity of the Steppe</French>
+		<German>Unity of the Steppe</German>
+		<Italian>Unity of the Steppe</Italian>
+		<Spanish>Unity of the Steppe</Spanish>
+		<Japanese>&#33609;&#21407;&#12398;&#32113;&#19968;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_STEPPE_UNITY_SHORT</Tag>
+		<English>Ste</English>
+		<French>Ste</French>
+		<German>Ste</German>
+		<Italian>Ste</Italian>
+		<Spanish>Ste</Spanish>
+		<Japanese>&#33609;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SCORCHED_EARTH</Tag>
+		<English>Scorched Earth</English>
+		<French>Scorched Earth</French>
+		<German>Scorched Earth</German>
+		<Italian>Scorched Earth</Italian>
+		<Spanish>Scorched Earth</Spanish>
+		<Japanese>&#28966;&#22303;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SCORCHED_EARTH_SHORT</Tag>
+		<English>Sco</English>
+		<French>Sco</French>
+		<German>Sco</German>
+		<Italian>Sco</Italian>
+		<Spanish>Sco</Spanish>
+		<Japanese>&#28966;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_BEDOUIN</Tag>
+		<English>Bedouin</English>
+		<French>Bedouin</French>
+		<German>Bedouin</German>
+		<Italian>Bedouin</Italian>
+		<Spanish>Bedouin</Spanish>
+		<Japanese>&#12505;&#12489;&#12454;&#12451;&#12531;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_VOC</Tag>
+		<English>East India Company</English>
+		<French>East India Company</French>
+		<German>East India Company</German>
+		<Italian>East India Company</Italian>
+		<Spanish>East India Company</Spanish>
+		<Japanese>&#26481;&#12452;&#12531;&#12489;&#20250;&#31038;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_LETTERS_OF_MARQUE</Tag>
+		<English>Letters of Marque</English>
+		<French>Letters of Marque</French>
+		<German>Letters of Marque</German>
+		<Italian>Letters of Marque</Italian>
+		<Spanish>Letters of Marque</Spanish>
+		<Japanese>&#31169;&#25504;&#20813;&#29366;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_ALPS</Tag>
+		<English>Crossing the Alps</English>
+		<French>Crossing the Alps</French>
+		<German>Crossing the Alps</German>
+		<Italian>Crossing the Alps</Italian>
+		<Spanish>Crossing the Alps</Spanish>
+		<Japanese>&#12450;&#12523;&#12503;&#12473;&#36234;&#12360;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_RECONQUISTA</Tag>
+		<English>Reconquista</English>
+		<French>Reconquista</French>
+		<German>Reconquista</German>
+		<Italian>Reconquista</Italian>
+		<Spanish>Reconquista</Spanish>
+		<Japanese>&#12524;&#12467;&#12531;&#12461;&#12473;&#12479;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MULTI_RELIGION</Tag>
+		<English>Many Faiths</English>
+		<French>Many Faiths</French>
+		<German>Many Faiths</German>
+		<Italian>Many Faiths</Italian>
+		<Spanish>Many Faiths</Spanish>
+		<Japanese>&#22810;&#23447;&#25945;&#12398;&#21463;&#23481;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MULTI_RELIGION_SHORT</Tag>
+		<English>Fai</English>
+		<French>Fai</French>
+		<German>Fai</German>
+		<Italian>Fai</Italian>
+		<Spanish>Fai</Spanish>
+		<Japanese>&#22810;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SATYAGRAHA</Tag>
+		<English>Satyagraha</English>
+		<French>Satyagraha</French>
+		<German>Satyagraha</German>
+		<Italian>Satyagraha</Italian>
+		<Spanish>Satyagraha</Spanish>
+		<Japanese>&#38750;&#26292;&#21147;&#19981;&#26381;&#24467;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SATYAGRAHA_SHORT</Tag>
+		<English>Sat</English>
+		<French>Sat</French>
+		<German>Sat</German>
+		<Italian>Sat</Italian>
+		<Spanish>Sat</Spanish>
+		<Japanese>&#38750;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_AGE_OF_DISCOVERY</Tag>
+		<English>Age of Discovery</English>
+		<French>Age of Discovery</French>
+		<German>Age of Discovery</German>
+		<Italian>Age of Discovery</Italian>
+		<Spanish>Age of Discovery</Spanish>
+		<Japanese>&#22823;&#33322;&#28023;&#26178;&#20195;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_AGE_OF_DISCOVERY_SHORT</Tag>
+		<English>Dis</English>
+		<French>Dis</French>
+		<German>Dis</German>
+		<Italian>Dis</Italian>
+		<Spanish>Dis</Spanish>
+		<Japanese>&#33322;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_AGE_OF_DISCOVERY_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#28023;&#22806;&#12363;&#26032;&#19990;&#30028;&#12395;&#24314;&#12390;&#12383;&#27839;&#23736;&#12398;&#37117;&#24066;&#12395;&#28783;&#21488;&#12289;&#26032;&#19990;&#30028;&#12394;&#12425;&#28207;&#12418;&#24314;&#12388;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_VOC_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a corporation gives 3 of its executives in the headquarters</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a corporation gives 3 of its executives in the headquarters</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a corporation gives 3 of its executives in the headquarters</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a corporation gives 3 of its executives in the headquarters</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a corporation gives 3 of its executives in the headquarters</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#20225;&#26989;&#12434;&#35373;&#31435;&#12377;&#12427;&#12392;&#12289;&#26412;&#31038;&#12395;&#12381;&#12398;&#20225;&#26989;&#12398;&#24185;&#37096;&#12364;3&#20307;&#21152;&#12431;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ETERNAL_MONUMENTS</Tag>
+		<English>Eternal Monuments</English>
+		<French>Eternal Monuments</French>
+		<German>Eternal Monuments</German>
+		<Italian>Eternal Monuments</Italian>
+		<Spanish>Eternal Monuments</Spanish>
+		<Japanese>&#27704;&#36960;&#12398;&#35352;&#24565;&#30865;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ETERNAL_MONUMENTS_SHORT</Tag>
+		<English>Ete</English>
+		<French>Ete</French>
+		<German>Ete</German>
+		<Italian>Ete</Italian>
+		<Spanish>Ete</Spanish>
+		<Japanese>&#30865;</Japanese>
+	</TEXT>
 </Civ4GameText>
