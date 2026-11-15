@@ -17,7 +17,7 @@ setlocal
 set "TOOLKIT=C:\Program Files (x86)\Microsoft Visual C++ Toolkit 2003"
 set "PSDK=C:\Program Files\Microsoft Platform SDK"
 set "BTS=C:\Program Files (x86)\CYBERFRONT\Sid Meier's Civilization 4(J)\Beyond the Sword(J)"
-set "MODNAME=claude_sample"
+set "MODNAME=better_trait_mod"
 set "CIV4EXE=Civ4BeyondSword.exe"
 
 rem Only the 2003-era toolchain may be visible. A newer cl.exe / link.exe on PATH,
