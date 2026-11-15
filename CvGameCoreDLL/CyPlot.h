@@ -44,6 +44,7 @@ public:
 	bool isFreshWater();
 	int getRegion();	// added by this mod
 	bool isNewWorld();	// added by this mod
+	int getRiverEdgeCount();	// added by this mod
 	bool isOverseas(int /*PlayerTypes*/ ePlayer);	// added by this mod
 	bool isDistant(int /*PlayerTypes*/ ePlayer);	// added by this mod
 	bool isPotentialIrrigation();

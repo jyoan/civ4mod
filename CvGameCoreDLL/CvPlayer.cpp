@@ -7209,6 +7209,12 @@ int CvPlayer::getTraitRiverPlotYieldChange(YieldTypes eYield) const
 	return sumTraitValues(&CvTraitInfo::getRiverPlotYieldChange, eYield);
 }
 
+// RiverEdgeYieldPercents of the traits (added by this mod): see CvPlot::calculateTraitYieldChange
+int CvPlayer::getTraitRiverEdgeYieldPercent(YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getRiverEdgeYieldPercent, eYield);
+}
+
 int CvPlayer::getTraitLakePlotYieldChange(YieldTypes eYield) const
 {
 	return sumTraitValues(&CvTraitInfo::getLakePlotYieldChange, eYield);

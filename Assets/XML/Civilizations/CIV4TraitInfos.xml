@@ -851,6 +851,11 @@
 				<iYield>0</iYield>
 				<iYield>0</iYield>
 			</RiverPlotYieldChanges>
+			<RiverEdgeYieldPercents>
+				<iYield>34</iYield>
+				<iYield>0</iYield>
+				<iYield>100</iYield>
+			</RiverEdgeYieldPercents>
 			<LakePlotYieldChanges>
 				<iYield>0</iYield>
 				<iYield>1</iYield>

@@ -663,6 +663,9 @@
 	<ElementType name="RiverPlotYieldChanges" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="RiverEdgeYieldPercents" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="AngryYieldChanges" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -840,6 +843,7 @@
 		<element type="FeatureHealthChanges" minOccurs="0"/>
 		<element type="ImprovementYieldChanges" minOccurs="0"/>
 		<element type="RiverPlotYieldChanges" minOccurs="0"/>
+		<element type="RiverEdgeYieldPercents" minOccurs="0"/>
 		<element type="LakePlotYieldChanges" minOccurs="0"/>
 		<element type="AngryYieldChanges" minOccurs="0"/>
 		<element type="AngryCommerceChanges" minOccurs="0"/>

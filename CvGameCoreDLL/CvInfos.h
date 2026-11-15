@@ -4949,6 +4949,7 @@ public:
 	int getImprovementYieldChanges(int iImprovement, int iYield) const;				// Exposed to Python
 	int getRiverPlotYieldChange(int i) const;				// Exposed to Python
 	int* getRiverPlotYieldChangeArray() const;
+	int getRiverEdgeYieldPercent(int i) const;			// Exposed to Python (added by this mod)
 	int getNumUniqueUnits() const;					// Exposed to Python
 	int getUniqueUnitClass(int i) const;				// Exposed to Python
 	int getUniqueUnit(int i) const;					// Exposed to Python
@@ -5147,6 +5148,7 @@ protected:
 	std::vector<CvString> m_aszImprovementYieldChangeTypes;		// read() keeps the types as strings until readPass3(),
 	std::vector< std::vector<int> > m_aaiImprovementYieldChangeValues;		// because improvements are loaded after traits
 	int* m_paiRiverPlotYieldChange;
+	int* m_paiRiverEdgeYieldPercent;	// added by this mod: [yield]
 	int* m_paiLakePlotYieldChange;
 	std::vector<CvString> m_aszUniqueUnitClassTypes;		// read(), the classes and units are loaded after the traits
 	std::vector<CvString> m_aszUniqueUnitTypes;
