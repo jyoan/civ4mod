@@ -3380,7 +3380,34 @@ bool CvSelectionGroup::isAmphibPlot(const CvPlot* pPlot) const
 		bFriendly = pPlot->isFriendlyCity(*pUnit, true);
 	}
 
-	return ((getDomainType() == DOMAIN_SEA) && pPlot->isCoastalLand() && !bFriendly);
+	if (!((getDomainType() == DOMAIN_SEA) && pPlot->isCoastalLand() && !bFriendly))
+	{
+		return false;
+	}
+
+	// Ships that can all sail up the river into the plot (bRiverNavigation, added by this mod) go there with their cargo
+	// instead of landing it, unless an enemy unit is there (ships do not attack land units)
+	if (!pPlot->isVisibleEnemyUnit(getHeadOwner()))
+	{
+		bool bAllSail = (getNumUnits() > 0);
+		CLLNode<IDInfo>* pUnitNode = headUnitNode();
+		while (pUnitNode != NULL && bAllSail)
+		{
+			CvUnit* pLoopUnit = ::getUnit(pUnitNode->m_data);
+			pUnitNode = nextUnitNode(pUnitNode);
+			if (!pLoopUnit->canSailOnRiver(pPlot))
+			{
+				bAllSail = false;
+			}
+		}
+
+		if (bAllSail)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 

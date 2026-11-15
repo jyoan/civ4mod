@@ -634,6 +634,16 @@ bool CyUnit::isRivalTerritory()
 	return m_pUnit ? m_pUnit->isRivalTerritory() : false;
 }
 
+bool CyUnit::isRiverNavigation()
+{
+	return m_pUnit ? m_pUnit->isRiverNavigation() : false;
+}
+
+bool CyUnit::isFreeEmbark()
+{
+	return m_pUnit ? m_pUnit->isFreeEmbark() : false;
+}
+
 bool CyUnit::isMilitaryHappiness()
 {
 	return m_pUnit ? m_pUnit->isMilitaryHappiness() : false;

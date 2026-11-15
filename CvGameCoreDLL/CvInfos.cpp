@@ -1745,6 +1745,10 @@ m_iCombatPercentOverseas(0),
 m_iOtherReligionCombatPercent(0),
 m_iStateReligionCityAttack(0),
 m_bRivalTerritory(false),
+m_bRiverNavigation(false),
+m_bFreeEmbark(false),
+m_bPillageNoMoveCost(false),
+m_iPillageHealPercent(0),
 m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
@@ -2318,6 +2322,32 @@ bool CvPromotionInfo::isRivalTerritory() const
 	return m_bRivalTerritory;
 }
 
+// bRiverNavigation (added by this mod): a ship sails up rivers: into a land plot by a river from the sea, then along the
+// river or across it (CvUnit::canSailOnRiver, CvPlot::isRiverPassage)
+bool CvPromotionInfo::isRiverNavigation() const
+{
+	return m_bRiverNavigation;
+}
+
+// bFreeEmbark (added by this mod): a land unit boards a ship at sea without spending moves, and leaves it like an ordinary
+// move (CvPlot::movementCost)
+bool CvPromotionInfo::isFreeEmbark() const
+{
+	return m_bFreeEmbark;
+}
+
+// bPillageNoMoveCost (added by this mod): pillaging spends no moves (CvUnit::pillage)
+bool CvPromotionInfo::isPillageNoMoveCost() const
+{
+	return m_bPillageNoMoveCost;
+}
+
+// iPillageHealPercent (added by this mod): each pillage heals this % of the maximum hit points (added up over the promotions)
+int CvPromotionInfo::getPillageHealPercent() const
+{
+	return m_iPillageHealPercent;
+}
+
 const TCHAR* CvPromotionInfo::getSound() const										
 {
 	return m_szSound;
@@ -2725,13 +2755,26 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 		stream->ReadString(m_szPyOnCombatLoss);
 		stream->ReadString(m_szPyOnBeginTurn);
 	}
+
+	// uiFlag < 17: cache written before bRiverNavigation, bFreeEmbark, bPillageNoMoveCost and iPillageHealPercent existed
+	m_bRiverNavigation = false;
+	m_bFreeEmbark = false;
+	m_bPillageNoMoveCost = false;
+	m_iPillageHealPercent = 0;
+	if (uiFlag > 16)
+	{
+		stream->Read(&m_bRiverNavigation);
+		stream->Read(&m_bFreeEmbark);
+		stream->Read(&m_bPillageNoMoveCost);
+		stream->Read(&m_iPillageHealPercent);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 16;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks (added by this mod)
+	uint uiFlag = 17;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2857,6 +2900,10 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->WriteString(m_szPyOnCombatWin);
 	stream->WriteString(m_szPyOnCombatLoss);
 	stream->WriteString(m_szPyOnBeginTurn);
+	stream->Write(m_bRiverNavigation);
+	stream->Write(m_bFreeEmbark);
+	stream->Write(m_bPillageNoMoveCost);
+	stream->Write(m_iPillageHealPercent);
 }
 
 // Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
@@ -3009,6 +3056,10 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iOtherReligionCombatPercent, "iOtherReligionCombatPercent");
 	pXML->GetChildXmlValByName(&m_iStateReligionCityAttack, "iStateReligionCityAttack");
 	pXML->GetChildXmlValByName(&m_bRivalTerritory, "bRivalTerritory");
+	pXML->GetChildXmlValByName(&m_bRiverNavigation, "bRiverNavigation");
+	pXML->GetChildXmlValByName(&m_bFreeEmbark, "bFreeEmbark");
+	pXML->GetChildXmlValByName(&m_bPillageNoMoveCost, "bPillageNoMoveCost");
+	pXML->GetChildXmlValByName(&m_iPillageHealPercent, "iPillageHealPercent");
 
 	pXML->GetChildXmlValByName(&m_iRiverCrossingDamagePercent, "iRiverCrossingDamagePercent");
 	pXML->GetChildXmlValByName(&m_bNoDamagePenalty, "bNoDamagePenalty");
@@ -20153,6 +20204,9 @@ m_iAnarchyGoldenAgePercent(0),
 m_iTechCostModifier(0),
 m_iAttitudeChange(0),
 m_iRouteMovementModifierInBorders(0),
+m_iCombatPercent(0),
+m_pabWonderHurry(NULL),
+m_bIgnoreWonderHurryCostModifier(false),
 m_bConquestStateReligion(false),
 m_pabConquestReligionBuilding(NULL),
 m_pabNoTechCivic(NULL),
@@ -20233,6 +20287,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabForbiddenCivic);
 	SAFE_DELETE_ARRAY(m_pabNoTechCivic);
 	SAFE_DELETE_ARRAY(m_pabConquestReligionBuilding);
+	SAFE_DELETE_ARRAY(m_pabWonderHurry);
 }
 
 int CvTraitInfo::getHealth() const									
@@ -20699,6 +20754,29 @@ int CvTraitInfo::getAttitudeChange() const
 int CvTraitInfo::getRouteMovementModifierInBorders() const
 {
 	return m_iRouteMovementModifierInBorders;
+}
+
+// iCombatPercent (added by this mod): combat % of all the units of the player while it has the trait, in attack and defense
+// (CvUnit::getExtraCombatPercent). Summed when asked, so a trait given and taken by conditions changes the existing units
+int CvTraitInfo::getCombatPercent() const
+{
+	return m_iCombatPercent;
+}
+
+// WonderHurrys (added by this mod): the player can hurry wonders (world, team and national) this way without the civic that
+// allows it (CvCity::canHurry, canHurryBuilding)
+bool CvTraitInfo::isWonderHurry(int iHurry) const
+{
+	FAssertMsg(iHurry < GC.getNumHurryInfos(), "Index out of bounds");
+	FAssertMsg(iHurry > -1, "Index out of bounds");
+	return m_pabWonderHurry ? m_pabWonderHurry[iHurry] : false;
+}
+
+// bIgnoreWonderHurryCostModifier (added by this mod): hurrying a wonder costs no extra (iHurryCostModifier of the building
+// above 0 counts as 0, CvCity::getHurryCostModifier). The extra cost of a new item (NEW_HURRY_MODIFIER) and the anger stay
+bool CvTraitInfo::isIgnoreWonderHurryCostModifier() const
+{
+	return m_bIgnoreWonderHurryCostModifier;
 }
 
 // bConquestStateReligion (added by this mod): the state religion spreads to the cities the player conquers
@@ -21625,6 +21703,9 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iTechCostModifier, "iTechCostModifier");
 	pXML->GetChildXmlValByName(&m_iAttitudeChange, "iAttitudeChange");
 	pXML->GetChildXmlValByName(&m_iRouteMovementModifierInBorders, "iRouteMovementModifierInBorders");
+	pXML->GetChildXmlValByName(&m_iCombatPercent, "iCombatPercent");
+	readTypeList(pXML, "WonderHurrys", m_aszWonderHurryTypes);	// hurries: readPass3()
+	pXML->GetChildXmlValByName(&m_bIgnoreWonderHurryCostModifier, "bIgnoreWonderHurryCostModifier");
 	pXML->GetChildXmlValByName(&m_bConquestStateReligion, "bConquestStateReligion");
 	readTypeList(pXML, "ConquestReligionBuildings", m_aszConquestReligionBuildingTypes);	// special buildings: readPass3()
 	readTypeList(pXML, "NoTechCivics", m_aszNoTechCivicTypes);	// civics are loaded later: readPass3()
@@ -22182,6 +22263,8 @@ bool CvTraitInfo::readPass3()
 	m_aszNoTechCivicTypes.clear();
 	resolveTypeList("ConquestReligionBuildings", m_aszConquestReligionBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabConquestReligionBuilding);
 	m_aszConquestReligionBuildingTypes.clear();
+	resolveTypeList("WonderHurrys", m_aszWonderHurryTypes, GC.getNumHurryInfos(), &m_pabWonderHurry);
+	m_aszWonderHurryTypes.clear();
 	resolveTypeList("NoObsoleteBuildingClasses", m_aszNoObsoleteBuildingClassTypes, GC.getNumBuildingClassInfos(), &m_pabNoObsoleteBuildingClass);
 	m_aszNoObsoleteBuildingClassTypes.clear();
 	resolveTypeList("NoObsoleteSpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabNoObsoleteSpecialBuilding);
