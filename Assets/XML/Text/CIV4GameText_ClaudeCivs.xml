@@ -1046,4 +1046,22 @@
 		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript</Spanish>
 		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#37117;&#24066;&#12434;&#24449;&#26381;&#12377;&#12427;&#12392;&#12289;&#12381;&#12398;&#37117;&#24066;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12364;1&#20307;&#21152;&#12431;&#12427;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MESOPOTAMIA</Tag>
+		<English>Between the Rivers</English>
+		<French>Between the Rivers</French>
+		<German>Between the Rivers</German>
+		<Italian>Between the Rivers</Italian>
+		<Spanish>Between the Rivers</Spanish>
+		<Japanese>&#20001;&#27827;&#12398;&#38291;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MESOPOTAMIA_SHORT</Tag>
+		<English>Mes</English>
+		<French>Mes</French>
+		<German>Mes</German>
+		<Italian>Mes</Italian>
+		<Spanish>Mes</Spanish>
+		<Japanese>&#27827;</Japanese>
+	</TEXT>
 </Civ4GameText>

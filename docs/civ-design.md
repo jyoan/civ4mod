@@ -99,6 +99,7 @@ BtS の効果はそのままにして足す。
 | `iCityRadiusChange` | スーリヤヴァルマン2世 |
 | `iGoldenAgeLandMovesChange`、`bGoldenAge` + `iCombatPercent` | ペルシャ |
 | `WorldWonderCommerceChanges` の文化 | ルイ14世 |
+| `RiverEdgeYieldPercents` | シュメール |
 | 偵察ユニットへの `bChooseGoody`・歩哨の昇進、首都の建設時の斥候（`PyOnCityFounded`） | ジョアン2世 |
 | `NoTechCivics` の普通選挙、大商人の `UniqueUnits` | マンサ・ムサ |
 | 征服した都市の徴兵ユニット（`PyOnCityAcquired`） | オスマン |
@@ -153,7 +154,7 @@ BtS の効果はそのままにして足す。
 | オスマン（文明） | デヴシルメ: 都市を征服すると、その都市で徴兵できるユニットが 1 体加わる | `PyOnCityAcquired`（`CyCity.getConscriptUnit`） | 実装済み `TRAIT_DEVSHIRME` |
 | ギリシャ（文明） | アゴラ: 専門家 1 人につき、科学者 研究 +1、商人 金 +1、技術者 生産 +1、芸術家 文化 +1、スパイ 諜報 +1、聖職者 商業 +1。定住した偉人はそれぞれ 2 倍 | `SpecialistYieldChanges`、`SpecialistCommerceChanges` | 実装済み `TRAIT_AGORA` |
 | カルタゴ・イギリス（文明） | 開始位置のバイアス: 沿岸 +100%（文明の志向は未定） | 文明の `iStartBiasCoastal` | 実装済み、ゲームで確認済み |
-| シュメール（文明） | 開始位置のバイアス: 川沿い +100%（文明の志向は未定） | 文明の `iStartBiasRiver` | 実装済み、ゲームで確認済み |
+| シュメール（文明） | 両河の間: タイルの川の辺 1 本につき商業 +1、3 本で食料 +1。開始位置のバイアス 川沿い +100%（文明に直接） | `RiverEdgeYieldPercents`（商業 100・食料 34）、文明の `iStartBiasRiver` | 実装済み `TRAIT_MESOPOTAMIA`（バイアスはゲームで確認済み） |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
 - 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%

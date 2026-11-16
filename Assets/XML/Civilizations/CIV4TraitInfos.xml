@@ -3142,5 +3142,32 @@
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_MESOPOTAMIA</Type>
+			<Description>TXT_KEY_TRAIT_MESOPOTAMIA</Description>
+			<ShortDescription>TXT_KEY_TRAIT_MESOPOTAMIA_SHORT</ShortDescription>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iMaxAnarchy>-1</iMaxAnarchy>
+			<iUpkeepModifier>0</iUpkeepModifier>
+			<iLevelExperienceModifier>0</iLevelExperienceModifier>
+			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
+			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
+			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
+			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
+			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
+			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<ExtraYieldThresholds/>
+			<TradeYieldModifiers/>
+			<CommerceChanges/>
+			<CommerceModifiers/>
+			<RiverEdgeYieldPercents>
+				<iYield>34</iYield>
+				<iYield>0</iYield>
+				<iYield>100</iYield>
+			</RiverEdgeYieldPercents>
+			<FreePromotions/>
+			<FreePromotionUnitCombats/>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>
