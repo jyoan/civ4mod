@@ -1064,4 +1064,22 @@
 		<Spanish>[ICON_BULLET]Plots with 1/2/3/4 river edges: %D1/%D2/%D3/%D4%F5</Spanish>
 		<Japanese>[ICON_BULLET]&#24029;&#12398;&#27969;&#12428;&#12427;&#36794;&#12364;1&#12539;2&#12539;3&#12539;4&#26412;&#12398;&#12479;&#12452;&#12523;: %D1&#12539;%D2&#12539;%D3&#12539;%D4%F5</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONQUEST_LEARN_UNIQUE_UNITS</Tag>
+		<English>[ICON_BULLET]Learns the unique units of the civilizations it conquers cities from (only the classes without a unique of its own; a later one replaces an earlier one; existing units stay)</English>
+		<French>[ICON_BULLET]Learns the unique units of the civilizations it conquers cities from (only the classes without a unique of its own; a later one replaces an earlier one; existing units stay)</French>
+		<German>[ICON_BULLET]Learns the unique units of the civilizations it conquers cities from (only the classes without a unique of its own; a later one replaces an earlier one; existing units stay)</German>
+		<Italian>[ICON_BULLET]Learns the unique units of the civilizations it conquers cities from (only the classes without a unique of its own; a later one replaces an earlier one; existing units stay)</Italian>
+		<Spanish>[ICON_BULLET]Learns the unique units of the civilizations it conquers cities from (only the classes without a unique of its own; a later one replaces an earlier one; existing units stay)</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12434;&#24449;&#26381;&#12377;&#12427;&#12392;&#12289;&#12381;&#12398;&#25991;&#26126;&#12398;&#22266;&#26377;&#12518;&#12491;&#12483;&#12488;&#12434;&#23398;&#12406;&#65288;&#33258;&#22269;&#12398;&#22266;&#26377;&#12364;&#12394;&#12356;&#31278;&#39006;&#12384;&#12369;&#12290;&#21516;&#12376;&#31278;&#39006;&#12399;&#24460;&#12395;&#23398;&#12435;&#12384;&#12418;&#12398;&#12395;&#26367;&#12431;&#12427;&#12290;&#20170;&#12356;&#12427;&#12518;&#12491;&#12483;&#12488;&#12399;&#12381;&#12398;&#12414;&#12414;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONQUEST_LEARN_UNIQUE_BUILDINGS</Tag>
+		<English>[ICON_BULLET]Learns the unique buildings of the civilizations it conquers cities from and rebuilds the existing buildings (only the classes without a unique of its own; a later one replaces an earlier one)</English>
+		<French>[ICON_BULLET]Learns the unique buildings of the civilizations it conquers cities from and rebuilds the existing buildings (only the classes without a unique of its own; a later one replaces an earlier one)</French>
+		<German>[ICON_BULLET]Learns the unique buildings of the civilizations it conquers cities from and rebuilds the existing buildings (only the classes without a unique of its own; a later one replaces an earlier one)</German>
+		<Italian>[ICON_BULLET]Learns the unique buildings of the civilizations it conquers cities from and rebuilds the existing buildings (only the classes without a unique of its own; a later one replaces an earlier one)</Italian>
+		<Spanish>[ICON_BULLET]Learns the unique buildings of the civilizations it conquers cities from and rebuilds the existing buildings (only the classes without a unique of its own; a later one replaces an earlier one)</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12434;&#24449;&#26381;&#12377;&#12427;&#12392;&#12289;&#12381;&#12398;&#25991;&#26126;&#12398;&#22266;&#26377;&#24314;&#36896;&#29289;&#12434;&#23398;&#12403;&#12289;&#26082;&#23384;&#12398;&#24314;&#29289;&#12418;&#24314;&#12390;&#26367;&#12360;&#12427;&#65288;&#33258;&#22269;&#12398;&#22266;&#26377;&#12364;&#12394;&#12356;&#31278;&#39006;&#12384;&#12369;&#12290;&#21516;&#12376;&#31278;&#39006;&#12399;&#24460;&#12395;&#23398;&#12435;&#12384;&#12418;&#12398;&#12395;&#26367;&#12431;&#12427;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

@@ -2313,6 +2313,26 @@ bool CyPlayer::isHumanCanBeVassal()
 	return m_pPlayer ? m_pPlayer->isHumanCanBeVassal() : false;
 }
 
+bool CyPlayer::isConquestLearnUniqueUnits()
+{
+	return m_pPlayer ? m_pPlayer->isConquestLearnUniqueUnits() : false;
+}
+
+bool CyPlayer::isConquestLearnUniqueBuildings()
+{
+	return m_pPlayer ? m_pPlayer->isConquestLearnUniqueBuildings() : false;
+}
+
+int CyPlayer::getLearnedUnit(int iUnitClass)
+{
+	return m_pPlayer ? m_pPlayer->getLearnedUnit(iUnitClass) : -1;
+}
+
+int CyPlayer::getLearnedBuilding(int iBuildingClass)
+{
+	return m_pPlayer ? m_pPlayer->getLearnedBuilding(iBuildingClass) : -1;
+}
+
 int CyPlayer::getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce)
 {
 	return m_pPlayer ? m_pPlayer->getSpecialistTypeExtraCommerce((SpecialistTypes)eSpecialist, (CommerceTypes)eCommerce) : 0;

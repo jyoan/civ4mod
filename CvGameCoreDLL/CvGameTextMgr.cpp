@@ -3864,6 +3864,17 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_AUTO_RAZE"));
 	}
 
+	// bConquestLearnUniqueUnits and bConquestLearnUniqueBuildings (added by this mod)
+	if (kTrait.isConquestLearnUniqueUnits())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_LEARN_UNIQUE_UNITS"));
+	}
+
+	if (kTrait.isConquestLearnUniqueBuildings())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_LEARN_UNIQUE_BUILDINGS"));
+	}
+
 	// iMinCityRangeChange: the range of this trait alone (added by this mod)
 	if (kTrait.getMinCityRangeChange() != 0)
 	{

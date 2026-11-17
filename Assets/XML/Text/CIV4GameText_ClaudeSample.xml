@@ -1322,4 +1322,13 @@
 		<Spanish>[ICON_BULLET]%D1%F2 from World Wonders (trait)</Spanish>
 		<Japanese>[ICON_BULLET]&#19990;&#30028;&#36986;&#29987;&#65288;&#24535;&#21521;&#65289;&#12395;&#12424;&#12426;%F2%D1</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_LEARNED_CONQUEST_UNIQUES</Tag>
+		<English>Learned the uniques of %s1: %s2</English>
+		<French>Learned the uniques of %s1: %s2</French>
+		<German>Learned the uniques of %s1: %s2</German>
+		<Italian>Learned the uniques of %s1: %s2</Italian>
+		<Spanish>Learned the uniques of %s1: %s2</Spanish>
+		<Japanese>%s1&#12398;&#22266;&#26377;&#12398;&#12518;&#12491;&#12483;&#12488;&#12539;&#24314;&#36896;&#29289;&#12434;&#23398;&#12435;&#12384;: %s2</Japanese>
+	</TEXT>
 </Civ4GameText>

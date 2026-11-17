@@ -61,6 +61,8 @@ CvPlayer::CvPlayer()
 	m_paiImprovementCount = NULL;
 	m_paiFreeTraitCount = NULL;
 	m_paiConditionalTraitCount = NULL;
+	m_paiLearnedUnit = NULL;
+	m_paiLearnedBuilding = NULL;
 	m_paiBuildingClassExtraCommerce = NULL;
 	m_paiSpecialistTypeExtraCommerce = NULL;
 	m_paiFreeBuildingCount = NULL;
@@ -278,6 +280,8 @@ void CvPlayer::uninit()
 	SAFE_DELETE_ARRAY(m_paiImprovementCount);
 	SAFE_DELETE_ARRAY(m_paiFreeTraitCount);
 	SAFE_DELETE_ARRAY(m_paiConditionalTraitCount);
+	SAFE_DELETE_ARRAY(m_paiLearnedUnit);
+	SAFE_DELETE_ARRAY(m_paiLearnedBuilding);
 	SAFE_DELETE_ARRAY(m_paiBuildingClassExtraCommerce);
 	SAFE_DELETE_ARRAY(m_paiSpecialistTypeExtraCommerce);
 	SAFE_DELETE_ARRAY(m_paiFreeBuildingCount);
@@ -589,6 +593,20 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
 		{
 			m_paiConditionalTraitCount[iI] = 0;
+		}
+
+		FAssertMsg(m_paiLearnedUnit==NULL, "about to leak memory, CvPlayer::m_paiLearnedUnit");
+		m_paiLearnedUnit = new int [GC.getNumUnitClassInfos()];
+		for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
+		{
+			m_paiLearnedUnit[iI] = NO_UNIT;
+		}
+
+		FAssertMsg(m_paiLearnedBuilding==NULL, "about to leak memory, CvPlayer::m_paiLearnedBuilding");
+		m_paiLearnedBuilding = new int [GC.getNumBuildingClassInfos()];
+		for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
+		{
+			m_paiLearnedBuilding[iI] = NO_BUILDING;
 		}
 
 		FAssertMsg(m_paiBuildingClassExtraCommerce==NULL, "about to leak memory, CvPlayer::m_paiBuildingClassExtraCommerce");
@@ -1517,6 +1535,13 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	std::vector<int> aeFreeSpecialists;
 
 	pCityPlot = pOldCity->plot();
+
+	// bConquestLearnUniqueUnits and bConquestLearnUniqueBuildings of the traits (added by this mod): learn the uniques of the old
+	// owner first, so that the buildings of this city are given below as the learned ones
+	if (bConquest)
+	{
+		learnConquestUniques(pOldCity->getOwnerINLINE());
+	}
 
 	pUnitNode = pCityPlot->headUnitNode();
 
@@ -7730,9 +7755,46 @@ CivicTypes CvPlayer::getInitialCivic(CivicOptionTypes eCivicOption) const
 	return eCivic;
 }
 
-// The unit of the unit class for this player (added by this mod): UniqueUnits of the traits, before the civilization. The
-// first trait in the order of the XML wins
+// The unit of the unit class for this player (added by this mod): UniqueUnits of the traits, then the civilization, then the unit
+// learned by conquest (bConquestLearnUniqueUnits) for a class where the first two give the default unit
 int CvPlayer::getCivilizationUnit(int iUnitClass) const
+{
+	int iUnit;
+
+	iUnit = getNativeCivilizationUnit(iUnitClass);
+
+	if (iUnitClass >= 0 && m_paiLearnedUnit != NULL && m_paiLearnedUnit[iUnitClass] != NO_UNIT)
+	{
+		if (iUnit == GC.getUnitClassInfo((UnitClassTypes)iUnitClass).getDefaultUnitIndex() && isConquestLearnUniqueUnits())
+		{
+			return m_paiLearnedUnit[iUnitClass];
+		}
+	}
+
+	return iUnit;
+}
+
+// The same for buildings (added by this mod)
+int CvPlayer::getCivilizationBuilding(int iBuildingClass) const
+{
+	int iBuilding;
+
+	iBuilding = getNativeCivilizationBuilding(iBuildingClass);
+
+	if (iBuildingClass >= 0 && m_paiLearnedBuilding != NULL && m_paiLearnedBuilding[iBuildingClass] != NO_BUILDING)
+	{
+		if (iBuilding == GC.getBuildingClassInfo((BuildingClassTypes)iBuildingClass).getDefaultBuildingIndex() && isConquestLearnUniqueBuildings())
+		{
+			return m_paiLearnedBuilding[iBuildingClass];
+		}
+	}
+
+	return iBuilding;
+}
+
+// The unit of the unit class without the learned ones (added by this mod): UniqueUnits of the traits, before the civilization.
+// The first trait in the order of the XML wins
+int CvPlayer::getNativeCivilizationUnit(int iUnitClass) const
 {
 	int iUnit;
 	int iI;
@@ -7756,7 +7818,7 @@ int CvPlayer::getCivilizationUnit(int iUnitClass) const
 }
 
 // The same for UniqueBuildings (added by this mod)
-int CvPlayer::getCivilizationBuilding(int iBuildingClass) const
+int CvPlayer::getNativeCivilizationBuilding(int iBuildingClass) const
 {
 	int iBuilding;
 	int iI;
@@ -7777,6 +7839,196 @@ int CvPlayer::getCivilizationBuilding(int iBuildingClass) const
 	}
 
 	return GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iBuildingClass);
+}
+
+// bConquestLearnUniqueUnits and bConquestLearnUniqueBuildings of the traits (added by this mod): see learnConquestUniques
+bool CvPlayer::isConquestLearnUniqueUnits() const
+{
+	return hasTraitFlag(&CvTraitInfo::isConquestLearnUniqueUnits);
+}
+
+bool CvPlayer::isConquestLearnUniqueBuildings() const
+{
+	return hasTraitFlag(&CvTraitInfo::isConquestLearnUniqueBuildings);
+}
+
+int CvPlayer::getLearnedUnit(int iUnitClass) const
+{
+	return ((m_paiLearnedUnit != NULL && iUnitClass >= 0 && iUnitClass < GC.getNumUnitClassInfos()) ? m_paiLearnedUnit[iUnitClass] : NO_UNIT);
+}
+
+int CvPlayer::getLearnedBuilding(int iBuildingClass) const
+{
+	return ((m_paiLearnedBuilding != NULL && iBuildingClass >= 0 && iBuildingClass < GC.getNumBuildingClassInfos()) ? m_paiLearnedBuilding[iBuildingClass] : NO_BUILDING);
+}
+
+// bConquestLearnUniqueUnits and bConquestLearnUniqueBuildings of the traits (added by this mod): called by acquireCity when this
+// player conquers a city of eOldOwner, before the buildings of the city are given to this player. This player learns the unique
+// units and buildings of the civilization of eOldOwner (CIV4CivilizationInfos.xml, not the traits of eOldOwner) for the classes
+// where it has no unique of its own (getNativeCivilizationUnit / getNativeCivilizationBuilding give the default one). A later
+// one replaces an earlier one of the same class. The existing units stay as they are. In the cities of this player, the
+// buildings of the class are rebuilt as the learned one, and the orders and the production of the old unit or building move to
+// the learned one. The free buildings (setNumFreeBuilding) stay as they are, since the things that give them take them back
+void CvPlayer::learnConquestUniques(PlayerTypes eOldOwner)
+{
+	CLLNode<OrderData>* pOrderNode;
+	CvCity* pLoopCity;
+	CvWString szList;
+	CvWString szBuffer;
+	CivilizationTypes eOldCiv;
+	UnitTypes eOldUnit;
+	UnitTypes eNewUnit;
+	BuildingTypes eOldBuilding;
+	BuildingTypes eNewBuilding;
+	PlayerTypes eBuildingOwner;
+	bool bUnits;
+	bool bBuildings;
+	int iNum;
+	int iTime;
+	int iLoop;
+	int iI;
+
+	if (eOldOwner == NO_PLAYER || eOldOwner == getID() || GET_PLAYER(eOldOwner).isBarbarian())
+	{
+		return;
+	}
+
+	if (m_paiLearnedUnit == NULL || m_paiLearnedBuilding == NULL)
+	{
+		return;
+	}
+
+	bUnits = isConquestLearnUniqueUnits();
+	bBuildings = isConquestLearnUniqueBuildings();
+	eOldCiv = GET_PLAYER(eOldOwner).getCivilizationType();
+
+	if ((!bUnits && !bBuildings) || eOldCiv == NO_CIVILIZATION)
+	{
+		return;
+	}
+
+	if (bUnits)
+	{
+		for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
+		{
+			eNewUnit = (UnitTypes)GC.getCivilizationInfo(eOldCiv).getCivilizationUnits(iI);
+
+			if (eNewUnit == NO_UNIT || eNewUnit == GC.getUnitClassInfo((UnitClassTypes)iI).getDefaultUnitIndex() || eNewUnit == m_paiLearnedUnit[iI])
+			{
+				continue;
+			}
+
+			if (getNativeCivilizationUnit(iI) != GC.getUnitClassInfo((UnitClassTypes)iI).getDefaultUnitIndex())
+			{
+				continue;	// a unique of its own (or a class the player cannot train)
+			}
+
+			eOldUnit = (UnitTypes)getCivilizationUnit(iI);
+			m_paiLearnedUnit[iI] = eNewUnit;
+
+			if (eOldUnit != NO_UNIT && eOldUnit != eNewUnit)
+			{
+				for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+				{
+					for (pOrderNode = pLoopCity->headOrderQueueNode(); pOrderNode != NULL; pOrderNode = pLoopCity->nextOrderQueueNode(pOrderNode))
+					{
+						if (pOrderNode->m_data.eOrderType == ORDER_TRAIN && pOrderNode->m_data.iData1 == eOldUnit)
+						{
+							pOrderNode->m_data.iData1 = eNewUnit;
+						}
+					}
+
+					if (pLoopCity->getUnitProduction(eOldUnit) > 0)
+					{
+						pLoopCity->changeUnitProduction(eNewUnit, pLoopCity->getUnitProduction(eOldUnit));
+						pLoopCity->setUnitProductionTime(eNewUnit, pLoopCity->getUnitProductionTime(eOldUnit));
+						pLoopCity->setUnitProduction(eOldUnit, 0);
+						pLoopCity->setUnitProductionTime(eOldUnit, 0);
+					}
+				}
+			}
+
+			if (!szList.empty())
+			{
+				szList += L", ";
+			}
+			szList += GC.getUnitInfo(eNewUnit).getDescription();
+		}
+	}
+
+	if (bBuildings)
+	{
+		for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
+		{
+			eNewBuilding = (BuildingTypes)GC.getCivilizationInfo(eOldCiv).getCivilizationBuildings(iI);
+
+			if (eNewBuilding == NO_BUILDING || eNewBuilding == GC.getBuildingClassInfo((BuildingClassTypes)iI).getDefaultBuildingIndex() || eNewBuilding == m_paiLearnedBuilding[iI])
+			{
+				continue;
+			}
+
+			if (getNativeCivilizationBuilding(iI) != GC.getBuildingClassInfo((BuildingClassTypes)iI).getDefaultBuildingIndex())
+			{
+				continue;	// a unique of its own (or a class the player cannot build)
+			}
+
+			eOldBuilding = (BuildingTypes)getCivilizationBuilding(iI);
+			m_paiLearnedBuilding[iI] = eNewBuilding;
+
+			if (eOldBuilding != NO_BUILDING && eOldBuilding != eNewBuilding)
+			{
+				for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+				{
+					// rebuilt even where the learned one could not be built (bWater and so on)
+					iNum = pLoopCity->getNumRealBuilding(eOldBuilding);
+					if (iNum > 0)
+					{
+						eBuildingOwner = (PlayerTypes)pLoopCity->getBuildingOriginalOwner(eOldBuilding);
+						iTime = pLoopCity->getBuildingOriginalTime(eOldBuilding);
+						pLoopCity->setNumRealBuilding(eOldBuilding, 0);
+						pLoopCity->setNumRealBuildingTimed(eNewBuilding, std::min(pLoopCity->getNumRealBuilding(eNewBuilding) + iNum, GC.getCITY_MAX_NUM_BUILDINGS()), false, eBuildingOwner, iTime);
+						pLoopCity->AI_setAssignWorkDirty(true);
+						pLoopCity->setInfoDirty(true);
+					}
+
+					for (pOrderNode = pLoopCity->headOrderQueueNode(); pOrderNode != NULL; pOrderNode = pLoopCity->nextOrderQueueNode(pOrderNode))
+					{
+						if (pOrderNode->m_data.eOrderType == ORDER_CONSTRUCT && pOrderNode->m_data.iData1 == eOldBuilding)
+						{
+							pOrderNode->m_data.iData1 = eNewBuilding;
+						}
+					}
+
+					if (pLoopCity->getBuildingProduction(eOldBuilding) > 0)
+					{
+						pLoopCity->changeBuildingProduction(eNewBuilding, pLoopCity->getBuildingProduction(eOldBuilding));
+						pLoopCity->setBuildingProductionTime(eNewBuilding, pLoopCity->getBuildingProductionTime(eOldBuilding));
+						pLoopCity->setBuildingProduction(eOldBuilding, 0);
+						pLoopCity->setBuildingProductionTime(eOldBuilding, 0);
+					}
+				}
+			}
+
+			if (!szList.empty())
+			{
+				szList += L", ";
+			}
+			szList += GC.getBuildingInfo(eNewBuilding).getDescription();
+		}
+	}
+
+	if (!szList.empty())
+	{
+		szBuffer = gDLL->getText("TXT_KEY_MISC_LEARNED_CONQUEST_UNIQUES", GC.getCivilizationInfo(eOldCiv).getShortDescriptionKey(), szList.GetCString());
+		gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
+
+		if (getID() == GC.getGameINLINE().getActivePlayer())
+		{
+			gDLL->getInterfaceIFace()->setDirty(CityScreen_DIRTY_BIT, true);
+			gDLL->getInterfaceIFace()->setDirty(SelectionButtons_DIRTY_BIT, true);
+			gDLL->getInterfaceIFace()->setDirty(InfoPane_DIRTY_BIT, true);
+		}
+	}
 }
 
 // iCultureRangeChange of the traits (added by this mod)
@@ -19032,6 +19284,13 @@ void CvPlayer::read(FDataStreamBase* pStream)
 		pStream->Read(&m_iRevolutionAnarchyTurns);
 		pStream->Read(&m_iAnarchyTurnsSpent);
 	}
+
+	// bConquestLearnUniqueUnits and bConquestLearnUniqueBuildings of the traits (uiFlag 10)
+	if (uiFlag > 9)
+	{
+		pStream->Read(GC.getNumUnitClassInfos(), m_paiLearnedUnit);
+		pStream->Read(GC.getNumBuildingClassInfos(), m_paiLearnedBuilding);
+	}
 }
 
 //
@@ -19042,7 +19301,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 9;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent (added by this mod)
+	uint uiFlag = 10;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -19460,6 +19719,8 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(m_iNumCitiesConquered);
 	pStream->Write(m_iRevolutionAnarchyTurns);
 	pStream->Write(m_iAnarchyTurnsSpent);
+	pStream->Write(GC.getNumUnitClassInfos(), m_paiLearnedUnit);
+	pStream->Write(GC.getNumBuildingClassInfos(), m_paiLearnedBuilding);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

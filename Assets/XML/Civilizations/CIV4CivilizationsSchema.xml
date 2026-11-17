@@ -395,6 +395,8 @@
 	<ElementType name="iConquestBuildingSurviveModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="bNoConquestPopulationLoss" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoAutoRaze" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bConquestLearnUniqueUnits" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bConquestLearnUniqueBuildings" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iNewWorldCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasMaintenanceModifier" content="textOnly" dt:type="int"/>
@@ -751,6 +753,8 @@
 		<element type="iConquestBuildingSurviveModifier" minOccurs="0"/>
 		<element type="bNoConquestPopulationLoss" minOccurs="0"/>
 		<element type="bNoAutoRaze" minOccurs="0"/>
+		<element type="bConquestLearnUniqueUnits" minOccurs="0"/>
+		<element type="bConquestLearnUniqueBuildings" minOccurs="0"/>
 		<element type="iNewWorldCityPopulation" minOccurs="0"/>
 		<element type="iOverseasCityPopulation" minOccurs="0"/>
 		<element type="iOverseasMaintenanceModifier" minOccurs="0"/>
