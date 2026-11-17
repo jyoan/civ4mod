@@ -20194,6 +20194,8 @@ m_iConquestCulturePercent(0),
 m_iConquestBuildingSurviveModifier(0),
 m_bNoConquestPopulationLoss(false),
 m_bNoAutoRaze(false),
+m_bConquestLearnUniqueUnits(false),
+m_bConquestLearnUniqueBuildings(false),
 m_iNewWorldCityPopulation(0),
 m_iOverseasCityPopulation(0),
 m_iOverseasMaintenanceModifier(0),
@@ -20699,6 +20701,17 @@ bool CvTraitInfo::isNoConquestPopulationLoss() const
 bool CvTraitInfo::isNoAutoRaze() const
 {
 	return m_bNoAutoRaze;
+}
+
+// bConquestLearnUniqueUnits and bConquestLearnUniqueBuildings (added by this mod): see CvPlayer::learnConquestUniques
+bool CvTraitInfo::isConquestLearnUniqueUnits() const
+{
+	return m_bConquestLearnUniqueUnits;
+}
+
+bool CvTraitInfo::isConquestLearnUniqueBuildings() const
+{
+	return m_bConquestLearnUniqueBuildings;
 }
 
 // iNewWorldCityPopulation (added by this mod): population of the cities the player founds in the New World
@@ -21772,6 +21785,8 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iConquestBuildingSurviveModifier, "iConquestBuildingSurviveModifier");
 	pXML->GetChildXmlValByName(&m_bNoConquestPopulationLoss, "bNoConquestPopulationLoss");
 	pXML->GetChildXmlValByName(&m_bNoAutoRaze, "bNoAutoRaze");
+	pXML->GetChildXmlValByName(&m_bConquestLearnUniqueUnits, "bConquestLearnUniqueUnits");
+	pXML->GetChildXmlValByName(&m_bConquestLearnUniqueBuildings, "bConquestLearnUniqueBuildings");
 	pXML->GetChildXmlValByName(&m_iNewWorldCityPopulation, "iNewWorldCityPopulation");
 	pXML->GetChildXmlValByName(&m_iOverseasCityPopulation, "iOverseasCityPopulation");
 	pXML->GetChildXmlValByName(&m_iOverseasMaintenanceModifier, "iOverseasMaintenanceModifier");

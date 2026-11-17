@@ -516,6 +516,10 @@ public:
 	bool isNoTechCivic(int /*CivicTypes*/ eCivic);	// added by this mod
 	int getMaxNationalWondersPerCity();	// added by this mod
 	bool isHumanCanBeVassal();	// added by this mod
+	bool isConquestLearnUniqueUnits();	// added by this mod
+	bool isConquestLearnUniqueBuildings();	// added by this mod
+	int getLearnedUnit(int iUnitClass);	// added by this mod
+	int getLearnedBuilding(int iBuildingClass);	// added by this mod
 	int getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce);
 	int getBonusHealChange();
 	int getBonusHealChangeEnemy();

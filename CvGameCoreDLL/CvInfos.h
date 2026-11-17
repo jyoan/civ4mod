@@ -4882,6 +4882,8 @@ public:
 	int getConquestBuildingSurviveModifier() const;		// Exposed to Python
 	bool isNoConquestPopulationLoss() const;			// Exposed to Python
 	bool isNoAutoRaze() const;				// Exposed to Python (added by this mod)
+	bool isConquestLearnUniqueUnits() const;		// Exposed to Python (added by this mod): see CvPlayer::learnConquestUniques
+	bool isConquestLearnUniqueBuildings() const;	// Exposed to Python (added by this mod)
 	// Regions (added by this mod): see CvMap::calculateRegions
 	int getNewWorldCityPopulation() const;			// Exposed to Python
 	int getOverseasCityPopulation() const;			// Exposed to Python
@@ -5089,6 +5091,8 @@ protected:
 	int m_iConquestBuildingSurviveModifier;	// added by this mod
 	bool m_bNoConquestPopulationLoss;	// added by this mod
 	bool m_bNoAutoRaze;	// added by this mod
+	bool m_bConquestLearnUniqueUnits;	// added by this mod
+	bool m_bConquestLearnUniqueBuildings;	// added by this mod
 	int m_iNewWorldCityPopulation;	// added by this mod
 	int m_iOverseasCityPopulation;	// added by this mod
 	int m_iOverseasMaintenanceModifier;	// added by this mod

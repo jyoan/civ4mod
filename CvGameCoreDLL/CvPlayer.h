@@ -314,6 +314,15 @@ public:
 	void updateTraitBonusPlots(TraitTypes eTrait, bool bAdd);		// added by this mod: PrereqOrTraits of the bonuses
 	int getCivilizationUnit(int iUnitClass) const;				// Exposed to Python: with UniqueUnits of the traits
 	int getCivilizationBuilding(int iBuildingClass) const;		// Exposed to Python: with UniqueBuildings of the traits
+	// Without the ones learned by conquest (added by this mod): UniqueUnits / UniqueBuildings of the traits, then the civilization
+	int getNativeCivilizationUnit(int iUnitClass) const;
+	int getNativeCivilizationBuilding(int iBuildingClass) const;
+	// bConquestLearnUniqueUnits and bConquestLearnUniqueBuildings of the traits (added by this mod)
+	bool isConquestLearnUniqueUnits() const;			// Exposed to Python
+	bool isConquestLearnUniqueBuildings() const;		// Exposed to Python
+	int getLearnedUnit(int iUnitClass) const;			// Exposed to Python: NO_UNIT if none
+	int getLearnedBuilding(int iBuildingClass) const;	// Exposed to Python: NO_BUILDING if none
+	void learnConquestUniques(PlayerTypes eOldOwner);
 	bool isCivicReplaced(CivicTypes eCivic) const;				// Exposed to Python: ReplacedCivic
 	bool canDoCivicByTraits(CivicTypes eCivic) const;			// Exposed to Python: PrereqOrTraits and ReplacedCivic, without the techs
 	bool isCivicOrReplacing(CivicTypes eCivic) const;			// added by this mod
@@ -1358,6 +1367,8 @@ protected:
 	int* m_paiBuildingClassExtraCommerce;	// GlobalBuildingExtraCommerces of the buildings the player has, per building class and commerce (added by this mod)
 	int* m_paiSpecialistTypeExtraCommerce;	// SpecialistCommerceChanges of the traits, per specialist type and commerce (added by this mod)
 	int* m_paiConditionalTraitCount;		// the part of m_paiFreeTraitCount given by ConditionalFreeTraits (added by this mod)
+	int* m_paiLearnedUnit;					// the unit learned by conquest per unit class, NO_UNIT if none (added by this mod)
+	int* m_paiLearnedBuilding;				// the building learned by conquest per building class, NO_BUILDING if none (added by this mod)
 	int* m_paiFreeBuildingCount;
 	int* m_paiExtraBuildingHappiness;
 	int* m_paiExtraBuildingHealth;

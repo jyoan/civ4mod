@@ -141,5 +141,9 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("isNoTechCivic", &CyPlayer::isNoTechCivic, "bool (int eCivic) - the civic needs no tech (traits, added by this mod)")
 		.def("getMaxNationalWondersPerCity", &CyPlayer::getMaxNationalWondersPerCity, "int () - max national wonders per city, -1 for no limit (GlobalDefines or traits, added by this mod)")
 		.def("isHumanCanBeVassal", &CyPlayer::isHumanCanBeVassal, "bool () - a human player can become the vassal of an AI (traits, added by this mod)")
+		.def("isConquestLearnUniqueUnits", &CyPlayer::isConquestLearnUniqueUnits, "bool () - learns the unique units of the civilizations it conquers cities from (traits, added by this mod)")
+		.def("isConquestLearnUniqueBuildings", &CyPlayer::isConquestLearnUniqueBuildings, "bool () - learns the unique buildings of the civilizations it conquers cities from (traits, added by this mod)")
+		.def("getLearnedUnit", &CyPlayer::getLearnedUnit, "int (int /*UnitClassTypes*/ iUnitClass) - the unit learned by conquest for the class, -1 if none (added by this mod)")
+		.def("getLearnedBuilding", &CyPlayer::getLearnedBuilding, "int (int /*BuildingClassTypes*/ iBuildingClass) - the building learned by conquest for the class, -1 if none (added by this mod)")
 		;
 }

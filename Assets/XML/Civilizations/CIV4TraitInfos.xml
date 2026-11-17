@@ -376,6 +376,8 @@
 			<iConquestBuildingSurviveModifier>100</iConquestBuildingSurviveModifier>
 			<bNoConquestPopulationLoss>1</bNoConquestPopulationLoss>
 			<bNoAutoRaze>1</bNoAutoRaze>
+			<bConquestLearnUniqueUnits>1</bConquestLearnUniqueUnits>
+			<bConquestLearnUniqueBuildings>1</bConquestLearnUniqueBuildings>
 			<iNewWorldCityPopulation>2</iNewWorldCityPopulation>
 			<iOverseasCityPopulation>1</iOverseasCityPopulation>
 			<iOverseasMaintenanceModifier>-50</iOverseasMaintenanceModifier>
