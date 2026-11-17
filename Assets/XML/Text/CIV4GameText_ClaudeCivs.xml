@@ -1064,4 +1064,40 @@
 		<Spanish>Mes</Spanish>
 		<Japanese>&#27827;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ORIENTALISM</Tag>
+		<English>Orientalism</English>
+		<French>Orientalism</French>
+		<German>Orientalism</German>
+		<Italian>Orientalism</Italian>
+		<Spanish>Orientalism</Spanish>
+		<Japanese>&#12458;&#12522;&#12456;&#12531;&#12479;&#12522;&#12474;&#12512;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ORIENTALISM_SHORT</Tag>
+		<English>Ori</English>
+		<French>Ori</French>
+		<German>Ori</German>
+		<Italian>Ori</Italian>
+		<Spanish>Ori</Spanish>
+		<Japanese>&#26481;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_APPIAN_WAY</Tag>
+		<English>Appian Way</English>
+		<French>Appian Way</French>
+		<German>Appian Way</German>
+		<Italian>Appian Way</Italian>
+		<Spanish>Appian Way</Spanish>
+		<Japanese>&#12450;&#12483;&#12500;&#12450;&#34903;&#36947;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_APPIAN_WAY_SHORT</Tag>
+		<English>App</English>
+		<French>App</French>
+		<German>App</German>
+		<Italian>App</Italian>
+		<Spanish>App</Spanish>
+		<Japanese>&#36947;</Japanese>
+	</TEXT>
 </Civ4GameText>

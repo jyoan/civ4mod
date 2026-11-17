@@ -287,6 +287,10 @@
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_ORIENTALISM</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -1380,6 +1384,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_INDUSTRIOUS</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_PAX_ROMANA</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>

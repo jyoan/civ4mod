@@ -3171,5 +3171,52 @@
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_ORIENTALISM</Type>
+			<Description>TXT_KEY_TRAIT_ORIENTALISM</Description>
+			<ShortDescription>TXT_KEY_TRAIT_ORIENTALISM_SHORT</ShortDescription>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iMaxAnarchy>-1</iMaxAnarchy>
+			<iUpkeepModifier>0</iUpkeepModifier>
+			<iLevelExperienceModifier>0</iLevelExperienceModifier>
+			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
+			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
+			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
+			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
+			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
+			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<bConquestLearnUniqueUnits>1</bConquestLearnUniqueUnits>
+			<bConquestLearnUniqueBuildings>1</bConquestLearnUniqueBuildings>
+			<ExtraYieldThresholds/>
+			<TradeYieldModifiers/>
+			<CommerceChanges/>
+			<CommerceModifiers/>
+			<FreePromotions/>
+			<FreePromotionUnitCombats/>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_APPIAN_WAY</Type>
+			<Description>TXT_KEY_TRAIT_APPIAN_WAY</Description>
+			<ShortDescription>TXT_KEY_TRAIT_APPIAN_WAY_SHORT</ShortDescription>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iMaxAnarchy>-1</iMaxAnarchy>
+			<iUpkeepModifier>0</iUpkeepModifier>
+			<iLevelExperienceModifier>0</iLevelExperienceModifier>
+			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
+			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
+			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
+			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
+			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
+			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<iRouteMovementModifierInBorders>-50</iRouteMovementModifierInBorders>
+			<ExtraYieldThresholds/>
+			<TradeYieldModifiers/>
+			<CommerceChanges/>
+			<CommerceModifiers/>
+			<FreePromotions/>
+			<FreePromotionUnitCombats/>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>

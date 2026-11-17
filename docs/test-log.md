@@ -123,3 +123,4 @@
 - 2026-11-15: better_trait_mod の 3 回目の志向（リンカーン `TRAIT_EMANCIPATION`、アメリカ `TRAIT_HOMESTEAD`、ハトシェプスト `TRAIT_PUNT`、スーリヤヴァルマン2世 `TRAIT_ANGKOR`、ペルシャ `TRAIT_GOLDEN_EMPIRE`）、カルタゴ・イギリス・シュメールの開始位置のバイアス、ルイ14世 `TRAIT_SUN_KING` を確認
 - 2026-11-16: 志向の `RiverEdgeYieldPercents`（タイルの川の辺の本数に応じた産出。検証用志向の食料 34・商業 100 で、1 本で商業 +1、3 本で商業 +3・食料 +1）を確認
 - 2026-11-17: 志向の `bConquestLearnUniqueUnits`・`bConquestLearnUniqueBuildings`（征服した相手の文明の固有ユニット・固有建造物を学ぶ。既存の建物の建て替え、生産キューとハンマーの引き継ぎ、後に学んだものへの上書き、検証用志向自身の固有の種類は学ばないこと、セーブと読み込み）を検証用志向で確認
+- 2026-11-17: better_trait_mod のアレクサンドロスのオリエンタリズム志向（`TRAIT_ORIENTALISM`。征服した文明の固有ユニット・固有建造物を学ぶ）を確認

@@ -76,7 +76,7 @@ BtS の効果はそのままにして足す。
 | `FeatureYieldChanges`・`FeatureHealthChanges`・`StartBiasFeatures` の氾濫原 | エジプト |
 | `iCultureRangeChange` | ロシア |
 | `ImprovementYieldChanges` の牧草地、`UnitCombatFreeExperiences` の騎乗、`StartBiasBonuses` の馬 | モンゴル |
-| `iCapitalBuildingProductionModifier` | ローマ |
+| `iCapitalBuildingProductionModifier` | アウグストゥス |
 | `iOverseasCityPopulation`、`iNewWorldCityPopulation`、艦船への歩哨の昇進 | ポルトガル |
 | `bConquestStateReligion`、`ConquestReligionBuildings`、`iConquestBuildingSurviveModifier` | サラディン |
 | `FeatureGrowthChanges` の森 | シッティング・ブル |
@@ -104,6 +104,8 @@ BtS の効果はそのままにして足す。
 | `NoTechCivics` の普通選挙、大商人の `UniqueUnits` | マンサ・ムサ |
 | 征服した都市の徴兵ユニット（`PyOnCityAcquired`） | オスマン |
 | `SpecialistYieldChanges`（技術者・聖職者）、`SpecialistCommerceChanges`（科学者・商人・芸術家・スパイ）と定住した偉人 | ギリシャ |
+| `bConquestLearnUniqueUnits`、`bConquestLearnUniqueBuildings` | アレクサンドロス |
+| `iRouteMovementModifierInBorders` | ローマ |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -127,7 +129,8 @@ BtS の効果はそのままにして足す。
 | エジプト（文明） | ナイルの賜物: 氾濫原 生産 +1、不衛生なし。氾濫原のバイアス | `FeatureYieldChanges`、`FeatureHealthChanges`、`StartBiasFeatures` | 実装済み `TRAIT_NILE` |
 | ロシア（文明） | 広大な大地: 文化圏 +1 | `iCultureRangeChange` | 実装済み `TRAIT_VAST_LAND` |
 | モンゴル（文明） | 騎馬の民: 牧草地 食料 +1、騎乗ユニットの経験値 +2。馬のバイアス | `ImprovementYieldChanges`、`UnitCombatFreeExperiences`、`StartBiasBonuses` | 実装済み `TRAIT_HORSE_PEOPLE` |
-| ローマ（文明） | パクス・ロマーナ: 首都にある建物を他の都市で建てるとき生産 +50% | `iCapitalBuildingProductionModifier` | 実装済み `TRAIT_PAX_ROMANA` |
+| ローマ（文明） | アッピア街道: 自国の領土の道路・鉄道の移動コスト -50%（道路で 2 倍進める） | `iRouteMovementModifierInBorders` | 実装済み `TRAIT_APPIAN_WAY` |
+| アウグストゥス | パクス・ロマーナ: 首都にある建物を他の都市で建てるとき生産 +50%（2026-11-17 にローマの文明志向から移した） | `iCapitalBuildingProductionModifier` | 実装済み `TRAIT_PAX_ROMANA` |
 | ポルトガル（文明） | 大航海時代: 海外に建てた都市の人口 +1、新世界に建てた都市の人口 +1（重なる）。そのうち沿岸の都市には灯台、新世界なら港も。艦船に歩哨 | `iOverseasCityPopulation`、`iNewWorldCityPopulation`、`PyOnCityFounded`、`FreePromotionSets`（`PROMOTION_SENTRY`） | 実装済み `TRAIT_AGE_OF_DISCOVERY` |
 | シッティング・ブル | 森を育む: 領土の森が広がりやすい | `FeatureGrowthChanges` | 実装済み `TRAIT_FOREST_KEEPER` |
 | エリザベス | 私掠免状: フリゲートが国籍を隠す | 昇進の `bHiddenNationality` | 実装済み `TRAIT_LETTERS_OF_MARQUE` |
@@ -155,6 +158,7 @@ BtS の効果はそのままにして足す。
 | ギリシャ（文明） | アゴラ: 専門家 1 人につき、科学者 研究 +1、商人 金 +1、技術者 生産 +1、芸術家 文化 +1、スパイ 諜報 +1、聖職者 商業 +1。定住した偉人はそれぞれ 2 倍 | `SpecialistYieldChanges`、`SpecialistCommerceChanges` | 実装済み `TRAIT_AGORA` |
 | カルタゴ・イギリス（文明） | 開始位置のバイアス: 沿岸 +100%（文明の志向は未定） | 文明の `iStartBiasCoastal` | 実装済み、ゲームで確認済み |
 | シュメール（文明） | 両河の間: タイルの川の辺 1 本につき商業 +1、3 本で食料 +1。開始位置のバイアス 川沿い +100%（文明に直接） | `RiverEdgeYieldPercents`（商業 100・食料 34）、文明の `iStartBiasRiver` | 実装済み `TRAIT_MESOPOTAMIA`（バイアスはゲームで確認済み） |
+| アレクサンドロス | オリエンタリズム: 都市を征服すると、奪った相手の文明の固有ユニット・固有建造物を学ぶ（自分の固有がない種類だけ。同じ種類は後に学んだものに替わる）。既存の建物も建て替え（立地の条件は見ない）、作りかけのハンマーも引き継ぐ。今いるユニットはそのまま。ギリシャのファランクス・オデオンは替わらない | `bConquestLearnUniqueUnits`、`bConquestLearnUniqueBuildings` | 実装済み、ゲームで確認済み `TRAIT_ORIENTALISM` |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
 - 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%
@@ -164,6 +168,7 @@ BtS の効果はそのままにして足す。
 - カルタゴ・スペイン（ポルトガルと同じタグになった）とユスティニアヌス1世（サラディンと同じタグになった）は別の案を考える
 - 数値はユーザーが決めていないものを仮に入れた（変えてよい）: 湖のタイル 食料 +1・生産 +1、花の戦争 25% で労働者、革命 黄金期は無政府期間の 200%・無政府期間中の戦闘力 +25%、略奪 1 回で HP 25% 回復、開始位置のバイアス 森・ジャングル 1 タイルにつき +10%
 - これからは、確定したものをその都度 XML に入れる（2026-11-15 にユーザーの指示）
+- 2026-11-17: ローマの文明志向をアッピア街道に替え、パクス・ロマーナはアウグストゥスに移した（ユーザーの管理票のメモから）。仮の数値: 道路の移動コスト -50%。移す先の指導者はユーザーが指定していないので、パクス・ロマーナを始めたアウグストゥスにした
 - 始皇帝の最初の案「長城線」（万里の長城が陳腐化しない）は取り下げた。BtS の万里の長城はもともと陳腐化しない（`ObsoleteTech` が `NONE`）
 
 ## 文明
