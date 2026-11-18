@@ -1100,4 +1100,274 @@
 		<Spanish>App</Spanish>
 		<Japanese>&#36947;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SUN_NEVER_SETS</Tag>
+		<English>The Empire on which the Sun Never Sets</English>
+		<French>The Empire on which the Sun Never Sets</French>
+		<German>The Empire on which the Sun Never Sets</German>
+		<Italian>The Empire on which the Sun Never Sets</Italian>
+		<Spanish>The Empire on which the Sun Never Sets</Spanish>
+		<Japanese>&#26085;&#12398;&#27784;&#12414;&#12396;&#24093;&#22269;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SUN_NEVER_SETS_SHORT</Tag>
+		<English>Sun</English>
+		<French>Sun</French>
+		<German>Sun</German>
+		<Italian>Sun</Italian>
+		<Spanish>Sun</Spanish>
+		<Japanese>&#38525;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ADWA</Tag>
+		<English>Battle of Adwa</English>
+		<French>Battle of Adwa</French>
+		<German>Battle of Adwa</German>
+		<Italian>Battle of Adwa</Italian>
+		<Spanish>Battle of Adwa</Spanish>
+		<Japanese>&#12450;&#12489;&#12527;&#12398;&#25126;&#12356;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ADWA_SHORT</Tag>
+		<English>Adw</English>
+		<French>Adw</French>
+		<German>Adw</German>
+		<Italian>Adw</Italian>
+		<Spanish>Adw</Spanish>
+		<Japanese>&#23432;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_AMABUTHO</Tag>
+		<English>Amabutho</English>
+		<French>Amabutho</French>
+		<German>Amabutho</German>
+		<Italian>Amabutho</Italian>
+		<Spanish>Amabutho</Spanish>
+		<Japanese>&#12450;&#12510;&#12502;&#12488;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_AMABUTHO_SHORT</Tag>
+		<English>Ama</English>
+		<French>Ama</French>
+		<German>Ama</German>
+		<Italian>Ama</Italian>
+		<Spanish>Ama</Spanish>
+		<Japanese>&#36899;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GREAT_EXHIBITION</Tag>
+		<English>Great Exhibition</English>
+		<French>Great Exhibition</French>
+		<German>Great Exhibition</German>
+		<Italian>Great Exhibition</Italian>
+		<Spanish>Great Exhibition</Spanish>
+		<Japanese>&#19975;&#22269;&#21338;&#35239;&#20250;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GREAT_EXHIBITION_SHORT</Tag>
+		<English>Exh</English>
+		<French>Exh</French>
+		<German>Exh</German>
+		<Italian>Exh</Italian>
+		<Spanish>Exh</Spanish>
+		<Japanese>&#21338;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_AGE_OF_PERICLES</Tag>
+		<English>Age of Pericles</English>
+		<French>Age of Pericles</French>
+		<German>Age of Pericles</German>
+		<Italian>Age of Pericles</Italian>
+		<Spanish>Age of Pericles</Spanish>
+		<Japanese>&#12506;&#12522;&#12463;&#12524;&#12473;&#26178;&#20195;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_AGE_OF_PERICLES_SHORT</Tag>
+		<English>Per</English>
+		<French>Per</French>
+		<German>Per</German>
+		<Italian>Per</Italian>
+		<Spanish>Per</Spanish>
+		<Japanese>&#40644;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_VAE_VICTIS</Tag>
+		<English>Vae Victis</English>
+		<French>Vae Victis</French>
+		<German>Vae Victis</German>
+		<Italian>Vae Victis</Italian>
+		<Spanish>Vae Victis</Spanish>
+		<Japanese>&#25943;&#32773;&#12395;&#28797;&#12356;&#12354;&#12428;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_VAE_VICTIS_SHORT</Tag>
+		<English>Vae</English>
+		<French>Vae</French>
+		<German>Vae</German>
+		<Italian>Vae</Italian>
+		<Spanish>Vae</Spanish>
+		<Japanese>&#28797;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HAGIA_SOPHIA</Tag>
+		<English>Hagia Sophia</English>
+		<French>Hagia Sophia</French>
+		<German>Hagia Sophia</German>
+		<Italian>Hagia Sophia</Italian>
+		<Spanish>Hagia Sophia</Spanish>
+		<Japanese>&#12495;&#12462;&#12450;&#12539;&#12477;&#12501;&#12451;&#12450;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HAGIA_SOPHIA_SHORT</Tag>
+		<English>Hag</English>
+		<French>Hag</French>
+		<German>Hag</German>
+		<Italian>Hag</Italian>
+		<Spanish>Hag</Spanish>
+		<Japanese>&#32854;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_SUN_NEVER_SETS</Tag>
+		<English>The Sun Never Sets</English>
+		<French>The Sun Never Sets</French>
+		<German>The Sun Never Sets</German>
+		<Italian>The Sun Never Sets</Italian>
+		<Spanish>The Sun Never Sets</Spanish>
+		<Japanese>&#26085;&#12398;&#27784;&#12414;&#12396;&#24093;&#22269;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_ROYAL_NAVY</Tag>
+		<English>Royal Navy</English>
+		<French>Royal Navy</French>
+		<German>Royal Navy</German>
+		<Italian>Royal Navy</Italian>
+		<Spanish>Royal Navy</Spanish>
+		<Japanese>&#29579;&#31435;&#28023;&#36557;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_ADWA</Tag>
+		<English>Spirit of Adwa</English>
+		<French>Spirit of Adwa</French>
+		<German>Spirit of Adwa</German>
+		<Italian>Spirit of Adwa</Italian>
+		<Spanish>Spirit of Adwa</Spanish>
+		<Japanese>&#12450;&#12489;&#12527;&#12398;&#31934;&#31070;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_VAE_VICTIS</Tag>
+		<English>Vae Victis</English>
+		<French>Vae Victis</French>
+		<German>Vae Victis</German>
+		<Italian>Vae Victis</Italian>
+		<Spanish>Vae Victis</Spanish>
+		<Japanese>&#25943;&#32773;&#12395;&#28797;&#12356;&#12354;&#12428;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DHAMMA</Tag>
+		<English>Edicts of Dhamma</English>
+		<French>Edicts of Dhamma</French>
+		<German>Edicts of Dhamma</German>
+		<Italian>Edicts of Dhamma</Italian>
+		<Spanish>Edicts of Dhamma</Spanish>
+		<Japanese>&#12480;&#12523;&#12510;&#12398;&#21189;&#20196;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DHAMMA_SHORT</Tag>
+		<English>Dha</English>
+		<French>Dha</French>
+		<German>Dha</German>
+		<Italian>Dha</Italian>
+		<Spanish>Dha</Spanish>
+		<Japanese>&#27861;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SINAN</Tag>
+		<English>Mimar Sinan</English>
+		<French>Mimar Sinan</French>
+		<German>Mimar Sinan</German>
+		<Italian>Mimar Sinan</Italian>
+		<Spanish>Mimar Sinan</Spanish>
+		<Japanese>&#22823;&#24314;&#31689;&#23478;&#12473;&#12451;&#12490;&#12531;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SINAN_SHORT</Tag>
+		<English>Sin</English>
+		<French>Sin</French>
+		<German>Sin</German>
+		<Italian>Sin</Italian>
+		<Spanish>Sin</Spanish>
+		<Japanese>&#21280;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RELIEF_OF_LEIDEN</Tag>
+		<English>Relief of Leiden</English>
+		<French>Relief of Leiden</French>
+		<German>Relief of Leiden</German>
+		<Italian>Relief of Leiden</Italian>
+		<Spanish>Relief of Leiden</Spanish>
+		<Japanese>&#12521;&#12452;&#12487;&#12531;&#12398;&#35299;&#25918;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RELIEF_OF_LEIDEN_SHORT</Tag>
+		<English>Lei</English>
+		<French>Lei</French>
+		<German>Lei</German>
+		<Italian>Lei</Italian>
+		<Spanish>Lei</Spanish>
+		<Japanese>&#27700;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_REVENGE_QUEEN</Tag>
+		<English>Queen of Revenge</English>
+		<French>Queen of Revenge</French>
+		<German>Queen of Revenge</German>
+		<Italian>Queen of Revenge</Italian>
+		<Spanish>Queen of Revenge</Spanish>
+		<Japanese>&#24489;&#35728;&#12398;&#22899;&#29579;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_REVENGE_QUEEN_SHORT</Tag>
+		<English>Rev</English>
+		<French>Rev</French>
+		<German>Rev</German>
+		<Italian>Rev</Italian>
+		<Spanish>Rev</Spanish>
+		<Japanese>&#35728;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GRAND_EMBASSY</Tag>
+		<English>Grand Embassy</English>
+		<French>Grand Embassy</French>
+		<German>Grand Embassy</German>
+		<Italian>Grand Embassy</Italian>
+		<Spanish>Grand Embassy</Spanish>
+		<Japanese>&#22823;&#20351;&#31680;&#22243;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GRAND_EMBASSY_SHORT</Tag>
+		<English>Emb</English>
+		<French>Emb</French>
+		<German>Emb</German>
+		<Italian>Emb</Italian>
+		<Spanish>Emb</Spanish>
+		<Japanese>&#20351;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_VENI_VIDI_VICI</Tag>
+		<English>Veni, Vidi, Vici</English>
+		<French>Veni, Vidi, Vici</French>
+		<German>Veni, Vidi, Vici</German>
+		<Italian>Veni, Vidi, Vici</Italian>
+		<Spanish>Veni, Vidi, Vici</Spanish>
+		<Japanese>&#26469;&#12383;&#12289;&#35211;&#12383;&#12289;&#21213;&#12387;&#12383;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_VENI_VIDI_VICI_SHORT</Tag>
+		<English>Ven</English>
+		<French>Ven</French>
+		<German>Ven</German>
+		<Italian>Ven</Italian>
+		<Spanish>Ven</Spanish>
+		<Japanese>&#21213;</Japanese>
+	</TEXT>
 </Civ4GameText>

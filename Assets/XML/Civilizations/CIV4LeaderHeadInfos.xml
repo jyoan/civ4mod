@@ -833,6 +833,10 @@
 					<TraitType>TRAIT_ORGANIZED</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_DHAMMA</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -2487,6 +2491,10 @@
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_REVENGE_QUEEN</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -3036,6 +3044,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_CHARISMATIC</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_VAE_VICTIS</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -12979,6 +12991,10 @@
 					<TraitType>TRAIT_IMPERIALIST</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_VENI_VIDI_VICI</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -13523,6 +13539,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_IMPERIALIST</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_HAGIA_SOPHIA</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -19061,6 +19081,10 @@
 					<TraitType>TRAIT_CREATIVE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_AGE_OF_PERICLES</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -19614,6 +19638,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_EXPANSIVE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_GRAND_EMBASSY</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -24594,6 +24622,10 @@
 					<TraitType>TRAIT_PHILOSOPHICAL</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_SINAN</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -26295,6 +26327,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_FINANCIAL</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_GREAT_EXHIBITION</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -28005,6 +28041,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_FINANCIAL</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_RELIEF_OF_LEIDEN</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>

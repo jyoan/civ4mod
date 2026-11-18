@@ -106,6 +106,19 @@ BtS の効果はそのままにして足す。
 | `SpecialistYieldChanges`（技術者・聖職者）、`SpecialistCommerceChanges`（科学者・商人・芸術家・スパイ）と定住した偉人 | ギリシャ |
 | `bConquestLearnUniqueUnits`、`bConquestLearnUniqueBuildings` | アレクサンドロス |
 | `iRouteMovementModifierInBorders` | ローマ |
+| 昇進の `iCombatPercentOverseas`、艦船への `iMovesChange` の昇進 | イギリス |
+| `iExpInBorderModifier`、昇進の `iCombatPercentInBorders` | エチオピア |
+| `iFreeExperience` | ズールー |
+| `GlobalWorldWonderCommerceChanges` の研究 | ヴィクトリア |
+| `iGoldenAgeModifier`、`iGoldenAgeGreatPeopleRateModifier` | ペリクレス |
+| 昇進の `iGoldFromCombat` | ブレヌス |
+| `NoObsoleteSpecialBuildings` の僧院 | ユスティニアヌス1世 |
+| `iStateReligionHappiness`、`iStateReligionHealth` | アショーカ |
+| `GreatPeopleClassRateModifiers` の大技術者 | スレイマン |
+| `iEnemyMoveCostInBorders` | オラニエ公ヴィレム1世 |
+| `iRevengeCombatPercent` | ブーディカ |
+| `iKnownTechCostModifier`、`iKnownTechCostLimit` | ピョートル |
+| `bConquestHeal` | ユリウス・カエサル |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -159,6 +172,19 @@ BtS の効果はそのままにして足す。
 | カルタゴ・イギリス（文明） | 開始位置のバイアス: 沿岸 +100%（文明の志向は未定） | 文明の `iStartBiasCoastal` | 実装済み、ゲームで確認済み |
 | シュメール（文明） | 両河の間: タイルの川の辺 1 本につき商業 +1、3 本で食料 +1。開始位置のバイアス 川沿い +100%（文明に直接） | `RiverEdgeYieldPercents`（商業 100・食料 34）、文明の `iStartBiasRiver` | 実装済み `TRAIT_MESOPOTAMIA`（バイアスはゲームで確認済み） |
 | アレクサンドロス | オリエンタリズム: 都市を征服すると、奪った相手の文明の固有ユニット・固有建造物を学ぶ（自分の固有がない種類だけ。同じ種類は後に学んだものに替わる）。既存の建物も建て替え（立地の条件は見ない）、作りかけのハンマーも引き継ぐ。今いるユニットはそのまま。ギリシャのファランクス・オデオンは替わらない | `bConquestLearnUniqueUnits`、`bConquestLearnUniqueBuildings` | 実装済み、ゲームで確認済み `TRAIT_ORIENTALISM` |
+| イギリス（文明） | 日の沈まぬ帝国: 海外（首都と別の地域）で戦うユニットの戦闘力 +15%。艦船の移動力 +1 | 昇進の `iCombatPercentOverseas`（全戦闘ユニット）、BtS の昇進の `iMovesChange`（海洋） | 実装済み、ゲームで確認済み `TRAIT_SUN_NEVER_SETS` |
+| エチオピア（文明） | アドワの戦い: 自国の領土での戦闘で得る経験値 +50%、自国の領土で戦うと戦闘力 +15% | `iExpInBorderModifier`、昇進の `iCombatPercentInBorders`（全戦闘ユニット） | 実装済み、ゲームで確認済み `TRAIT_ADWA` |
+| ズールー（文明） | アマブト（年齢連隊）: 都市で生産したユニットの経験値 +2 | `iFreeExperience` | 実装済み、ゲームで確認済み `TRAIT_AMABUTHO` |
+| ヴィクトリア | 万国博覧会: 持っている世界遺産 1 つにつき、全都市の研究 +1 | `GlobalWorldWonderCommerceChanges` | 実装済み、ゲームで確認済み `TRAIT_GREAT_EXHIBITION` |
+| ペリクレス | ペリクレス時代: 黄金時代の期間 +50%、黄金時代の偉人ポイント +100% | `iGoldenAgeModifier`、`iGoldenAgeGreatPeopleRateModifier` | 実装済み、ゲームで確認済み `TRAIT_AGE_OF_PERICLES` |
+| ブレヌス | 敗者に災いあれ: 戦闘に勝つたびに金 +5 | 昇進の `iGoldFromCombat`（全戦闘ユニット） | 実装済み、ゲームで確認済み `TRAIT_VAE_VICTIS` |
+| ユスティニアヌス1世 | ハギア・ソフィア: 僧院が陳腐化しない（寺院・大聖堂の生産 +100% は master の新しいタグを待つ） | `NoObsoleteSpecialBuildings`（`SPECIALBUILDING_MONASTERY`） | 実装済み、ゲームで確認済み `TRAIT_HAGIA_SOPHIA` |
+| アショーカ | ダルマの勅令: 国教の広まった都市の幸福 +1・衛生 +1 | `iStateReligionHappiness`、`iStateReligionHealth` | 実装済み、ゲームで確認済み `TRAIT_DHAMMA` |
+| スレイマン | 大建築家スィナン: 大技術者の偉人ポイント +100% | `GreatPeopleClassRateModifiers`（大技術者） | 実装済み、ゲームで確認済み `TRAIT_SINAN` |
+| オラニエ公ヴィレム1世 | ライデンの解放: 自国の領土では、交戦中の敵の陸上ユニットの移動コスト +1 | `iEnemyMoveCostInBorders` | 実装済み、ゲームで確認済み `TRAIT_RELIEF_OF_LEIDEN` |
+| ブーディカ | 復讐の女王: 自分の都市を一度でも征服した文明との戦闘力 +25% | `iRevengeCombatPercent` | 実装済み、ゲームで確認済み `TRAIT_REVENGE_QUEEN` |
+| ピョートル | 大使節団: その技術を持つ既知の文明 1 つにつき研究費 -10%（-75% まで） | `iKnownTechCostModifier`、`iKnownTechCostLimit` | 実装済み、ゲームで確認済み `TRAIT_GRAND_EMBASSY` |
+| ユリウス・カエサル | 来た、見た、勝った: 都市を征服すると全ユニットが全回復 | `bConquestHeal` | 実装済み、ゲームで確認済み `TRAIT_VENI_VIDI_VICI` |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
 - 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%
@@ -169,6 +195,7 @@ BtS の効果はそのままにして足す。
 - 数値はユーザーが決めていないものを仮に入れた（変えてよい）: 湖のタイル 食料 +1・生産 +1、花の戦争 25% で労働者、革命 黄金期は無政府期間の 200%・無政府期間中の戦闘力 +25%、略奪 1 回で HP 25% 回復、開始位置のバイアス 森・ジャングル 1 タイルにつき +10%
 - これからは、確定したものをその都度 XML に入れる（2026-11-15 にユーザーの指示）
 - 2026-11-17: ローマの文明志向をアッピア街道に替え、パクス・ロマーナはアウグストゥスに移した（ユーザーの管理票のメモから）。仮の数値: 道路の移動コスト -50%。移す先の指導者はユーザーが指定していないので、パクス・ロマーナを始めたアウグストゥスにした
+- 5 回目（2026-11-17）の仮の数値: エチオピアの経験値 +50%、イギリスの海外の戦闘力 +15%、ズールーの経験値 +2、ヴィクトリアの研究 +1、ペリクレスの黄金時代 +50%・偉人ポイント +100%、ブレヌスの金 +5（エチオピアの領土内 +15% と艦船の移動力 +1 はユーザーの指定）。新しいタグの分: アショーカの幸福・衛生 +1、スレイマン +100%、ヴィレム +1、ブーディカ +25% は提案の値。ピョートルの -10%・-75% はユーザーの指定。ユスティニアヌス1世の寺院・大聖堂の生産 +100% は宗教志向（BtS）と同じ効果なので入れず、代わりの案を待つ。黄金時代の期間はゲーム開始時に 1 回だけ適用する
 - 始皇帝の最初の案「長城線」（万里の長城が陳腐化しない）は取り下げた。BtS の万里の長城はもともと陳腐化しない（`ObsoleteTech` が `NONE`）
 
 ## 文明
