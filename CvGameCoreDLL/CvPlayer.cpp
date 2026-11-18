@@ -55,6 +55,7 @@ CvPlayer::CvPlayer()
 
 	m_abFeatAccomplished = new bool[NUM_FEAT_TYPES];
 	m_abOptions = new bool[NUM_PLAYEROPTION_TYPES];
+	m_abCityConqueredBy = new bool[MAX_PLAYERS];	// added by this mod
 
 	m_paiBonusExport = NULL;
 	m_paiBonusImport = NULL;
@@ -127,6 +128,7 @@ CvPlayer::~CvPlayer()
 	SAFE_DELETE_ARRAY(m_aiEspionageSpendingWeightAgainstTeam);
 	SAFE_DELETE_ARRAY(m_abFeatAccomplished);
 	SAFE_DELETE_ARRAY(m_abOptions);
+	SAFE_DELETE_ARRAY(m_abCityConqueredBy);
 }
 
 
@@ -556,6 +558,11 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	for (iI = 0; iI < NUM_PLAYEROPTION_TYPES; iI++)
 	{
 		m_abOptions[iI] = false;
+	}
+
+	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		m_abCityConqueredBy[iI] = false;
 	}
 
 	m_szScriptData = "";
@@ -1541,6 +1548,9 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	if (bConquest)
 	{
 		learnConquestUniques(pOldCity->getOwnerINLINE());
+
+		// iRevengeCombatPercent of the traits of the old owner (added by this mod)
+		GET_PLAYER(pOldCity->getOwnerINLINE()).setCityConqueredBy(getID(), true);
 	}
 
 	pUnitNode = pCityPlot->headUnitNode();
@@ -8031,6 +8041,100 @@ void CvPlayer::learnConquestUniques(PlayerTypes eOldOwner)
 	}
 }
 
+// iStateReligionHealth of the traits (added by this mod): health of the cities with the state religion (CvCity::goodHealth)
+int CvPlayer::getTraitStateReligionHealth() const
+{
+	return sumTraitValues(&CvTraitInfo::getStateReligionHealth);
+}
+
+// GreatPeopleClassRateModifiers of the traits (added by this mod): % of the great people points of the unit class
+int CvPlayer::getGreatPeopleClassRateModifier(UnitClassTypes eUnitClass) const
+{
+	return sumTraitValues(&CvTraitInfo::getGreatPeopleClassRateModifier, eUnitClass);
+}
+
+bool CvPlayer::isAnyGreatPeopleClassRateModifier() const
+{
+	return hasTraitFlag(&CvTraitInfo::isAnyGreatPeopleClassRateModifier);
+}
+
+// iEnemyMoveCostInBorders of the traits (added by this mod): see CvPlot::movementCost
+int CvPlayer::getEnemyMoveCostInBorders() const
+{
+	return sumTraitValues(&CvTraitInfo::getEnemyMoveCostInBorders);
+}
+
+// iRevengeCombatPercent of the traits (added by this mod): combat % of the units of this player against the units of ePlayer,
+// when ePlayer has ever conquered a city of this player (acquireCity records it)
+int CvPlayer::getRevengeCombatModifier(PlayerTypes ePlayer) const
+{
+	if (ePlayer == NO_PLAYER || ePlayer == getID() || !isCityConqueredBy(ePlayer))
+	{
+		return 0;
+	}
+
+	return sumTraitValues(&CvTraitInfo::getRevengeCombatPercent);
+}
+
+bool CvPlayer::isCityConqueredBy(PlayerTypes ePlayer) const
+{
+	return (ePlayer >= 0 && ePlayer < MAX_PLAYERS) ? m_abCityConqueredBy[ePlayer] : false;
+}
+
+void CvPlayer::setCityConqueredBy(PlayerTypes ePlayer, bool bNewValue)
+{
+	if (ePlayer >= 0 && ePlayer < MAX_PLAYERS && ePlayer != getID())
+	{
+		m_abCityConqueredBy[ePlayer] = bNewValue;
+	}
+}
+
+// SpecialBuildingProductionModifiers of the traits (added by this mod): see CvCity::getProductionModifier
+int CvPlayer::getSpecialBuildingProductionModifier(SpecialBuildingTypes eSpecialBuilding) const
+{
+	if (eSpecialBuilding == NO_SPECIALBUILDING)
+	{
+		return 0;
+	}
+
+	return sumTraitValues(&CvTraitInfo::getSpecialBuildingProductionModifier, eSpecialBuilding);
+}
+
+// iKnownTechCostModifier of the traits (added by this mod): see CvTeam::getResearchCost
+int CvPlayer::getKnownTechCostModifier() const
+{
+	return sumTraitValues(&CvTraitInfo::getKnownTechCostModifier);
+}
+
+// iKnownTechCostLimit of the traits with iKnownTechCostModifier (added by this mod): the lowest one, -100 to 0. 0 means no limit
+// (the cost goes down to the minimum of 1)
+int CvPlayer::getKnownTechCostLimit() const
+{
+	int iLimit = 0;
+	bool bNoLimit = false;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (GC.getTraitInfo((TraitTypes)iI).getKnownTechCostModifier() != 0 && hasTrait((TraitTypes)iI))
+		{
+			if (GC.getTraitInfo((TraitTypes)iI).getKnownTechCostLimit() == 0)
+			{
+				bNoLimit = true;
+			}
+			iLimit = std::min(iLimit, GC.getTraitInfo((TraitTypes)iI).getKnownTechCostLimit());
+		}
+	}
+
+	return bNoLimit ? -100 : range(iLimit, -100, 0);
+}
+
+// bConquestHeal of the traits (added by this mod): see CvUnit::setXY
+bool CvPlayer::isConquestHeal() const
+{
+	return hasTraitFlag(&CvTraitInfo::isConquestHeal);
+}
+
 // iCultureRangeChange of the traits (added by this mod)
 int CvPlayer::getCultureRangeChange() const
 {
@@ -8688,6 +8792,8 @@ int CvPlayer::getProductionModifier(BuildingTypes eBuilding) const
 			if (GC.getBuildingInfo(eBuilding).getSpecialBuildingType() != NO_SPECIALBUILDING)
 			{
 				iMultiplier += GC.getSpecialBuildingInfo((SpecialBuildingTypes) GC.getBuildingInfo(eBuilding).getSpecialBuildingType()).getProductionTraits(iI);
+				// SpecialBuildingProductionModifiers of the trait (added by this mod): the same thing written in the trait
+				iMultiplier += GC.getTraitInfo((TraitTypes)iI).getSpecialBuildingProductionModifier(GC.getBuildingInfo(eBuilding).getSpecialBuildingType());
 			}
 		}
 	}
@@ -18701,6 +18807,7 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	changeTradeRoutes(kTrait.getTradeRoutes() * iChange);
 	changeExpInBorderModifier(kTrait.getExpInBorderModifier() * iChange);
 	changeGoldenAgeModifier(kTrait.getGoldenAgeModifier() * iChange);
+	changeStateReligionHappiness(kTrait.getStateReligionHappiness() * iChange);	// added by this mod (as the civics)
 	GET_TEAM(getTeam()).changeEnemyWarWearinessModifier(kTrait.getEnemyWarWearinessModifier() * iChange);	// added by this mod (the team value of the buildings)
 
 	for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
@@ -19291,6 +19398,12 @@ void CvPlayer::read(FDataStreamBase* pStream)
 		pStream->Read(GC.getNumUnitClassInfos(), m_paiLearnedUnit);
 		pStream->Read(GC.getNumBuildingClassInfos(), m_paiLearnedBuilding);
 	}
+
+	// iRevengeCombatPercent of the traits (uiFlag 11)
+	if (uiFlag > 10)
+	{
+		pStream->Read(MAX_PLAYERS, m_abCityConqueredBy);
+	}
 }
 
 //
@@ -19301,7 +19414,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 10;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding (added by this mod)
+	uint uiFlag = 11;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -19721,6 +19834,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(m_iAnarchyTurnsSpent);
 	pStream->Write(GC.getNumUnitClassInfos(), m_paiLearnedUnit);
 	pStream->Write(GC.getNumBuildingClassInfos(), m_paiLearnedBuilding);
+	pStream->Write(MAX_PLAYERS, m_abCityConqueredBy);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

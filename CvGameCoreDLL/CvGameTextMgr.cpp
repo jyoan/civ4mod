@@ -1878,6 +1878,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_OTHER_RELIGION_MOD", iModifier));
 			}
 
+			// iRevengeCombatPercent of the traits of the attacker's owner (added by this mod)
+			iModifier = GET_PLAYER(pAttacker->getOwnerINLINE()).getRevengeCombatModifier(pDefender->getOwnerINLINE());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_REVENGE_MOD", iModifier));
+			}
+
 			if (pPlot->isCity(true, pDefender->getTeam()))
 			{
 				iModifier = pAttacker->cityAttackModifier();
@@ -2071,6 +2080,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 			{
 				szString.append(NEWLINE);
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_TRAIT_DEFENSE_MOD", iModifier));
+			}
+
+			// iRevengeCombatPercent of the traits of the defender's owner (added by this mod)
+			iModifier = GET_PLAYER(pDefender->getOwnerINLINE()).getRevengeCombatModifier(pAttacker->getOwnerINLINE());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_REVENGE_MOD", iModifier));
 			}
 
 			iModifier = pDefender->domainModifier(pAttacker->getDomainType());
@@ -3875,6 +3893,55 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_LEARN_UNIQUE_BUILDINGS"));
 	}
 
+	// Batch of 2026-11-17 (added by this mod). iStateReligionHappiness uses the civic text key
+	if (kTrait.getStateReligionHappiness() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_RELIGION_HAPPINESS", abs(kTrait.getStateReligionHappiness()), ((kTrait.getStateReligionHappiness() > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR))));
+	}
+
+	if (kTrait.getStateReligionHealth() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_STATE_RELIGION_HEALTH", abs(kTrait.getStateReligionHealth()), ((kTrait.getStateReligionHealth() > 0) ? gDLL->getSymbolID(HEALTHY_CHAR) : gDLL->getSymbolID(UNHEALTHY_CHAR))));
+	}
+
+	if (kTrait.isAnyGreatPeopleClassRateModifier())
+	{
+		for (int iUnitClass = 0; iUnitClass < GC.getNumUnitClassInfos(); iUnitClass++)
+		{
+			if (kTrait.getGreatPeopleClassRateModifier(iUnitClass) != 0)
+			{
+				appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GREAT_PEOPLE_CLASS_RATE", kTrait.getGreatPeopleClassRateModifier(iUnitClass), GC.getUnitClassInfo((UnitClassTypes)iUnitClass).getTextKeyWide()));
+			}
+		}
+	}
+
+	if (kTrait.getEnemyMoveCostInBorders() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ENEMY_MOVE_COST_IN_BORDERS", kTrait.getEnemyMoveCostInBorders()));
+	}
+
+	if (kTrait.getRevengeCombatPercent() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_REVENGE_COMBAT", kTrait.getRevengeCombatPercent()));
+	}
+
+	if (kTrait.getKnownTechCostModifier() != 0)
+	{
+		if (kTrait.getKnownTechCostLimit() != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_KNOWN_TECH_COST_LIMIT", kTrait.getKnownTechCostModifier(), kTrait.getKnownTechCostLimit()));
+		}
+		else
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_KNOWN_TECH_COST", kTrait.getKnownTechCostModifier()));
+		}
+	}
+
+	if (kTrait.isConquestHeal())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_HEAL"));
+	}
+
 	// iMinCityRangeChange: the range of this trait alone (added by this mod)
 	if (kTrait.getMinCityRangeChange() != 0)
 	{
@@ -4891,18 +4958,20 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		iLast = 0;
 		for (iI = 0; iI < GC.getNumSpecialBuildingInfos(); ++iI)
 		{
-			if (GC.getSpecialBuildingInfo((SpecialBuildingTypes) iI).getProductionTraits(eTrait) != 0)
+			// with SpecialBuildingProductionModifiers of the trait (changed by this mod)
+			int iSpecialBuildingProduction = GC.getSpecialBuildingInfo((SpecialBuildingTypes) iI).getProductionTraits(eTrait) + GC.getTraitInfo(eTrait).getSpecialBuildingProductionModifier(iI);
+			if (iSpecialBuildingProduction != 0)
 			{
-				if (GC.getSpecialBuildingInfo((SpecialBuildingTypes) iI).getProductionTraits(eTrait) == 100)
+				if (iSpecialBuildingProduction == 100)
 				{
 					szText = gDLL->getText("TXT_KEY_TRAIT_DOUBLE_SPEED");
 				}
 				else
 				{
-					szText = gDLL->getText("TXT_KEY_TRAIT_PRODUCTION_MODIFIER", GC.getSpecialBuildingInfo((SpecialBuildingTypes) iI).getProductionTraits(eTrait));
+					szText = gDLL->getText("TXT_KEY_TRAIT_PRODUCTION_MODIFIER", iSpecialBuildingProduction);
 				}
-				setListHelp(szHelpString, szText.GetCString(), GC.getSpecialBuildingInfo((SpecialBuildingTypes) iI).getDescription(), L", ", (GC.getSpecialBuildingInfo((SpecialBuildingTypes) iI).getProductionTraits(eTrait) != iLast));
-				iLast = GC.getSpecialBuildingInfo((SpecialBuildingTypes) iI).getProductionTraits(eTrait);
+				setListHelp(szHelpString, szText.GetCString(), GC.getSpecialBuildingInfo((SpecialBuildingTypes) iI).getDescription(), L", ", (iSpecialBuildingProduction != iLast));
+				iLast = iSpecialBuildingProduction;
 			}
 		}
 
@@ -11409,6 +11478,14 @@ void CvGameTextMgr::setBadHealthHelp(CvWStringBuffer &szBuffer, CvCity& city)
 			szBuffer.append(NEWLINE);
 		}
 
+		// iStateReligionHealth of the traits (added by this mod)
+		iHealth = -(city.getStateReligionTraitHealth());
+		if (iHealth > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HEALTH_FROM_STATE_RELIGION_TRAIT", iHealth));
+			szBuffer.append(NEWLINE);
+		}
+
 		iHealth = -(city.totalBadBuildingHealth());
 		if (iHealth > 0)
 		{
@@ -11518,6 +11595,14 @@ void CvGameTextMgr::setGoodHealthHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		if (iHealth > 0)
 		{
 			szBuffer.append(gDLL->getText("TXT_KEY_MISC_GOOD_HEALTH_FROM_SPECIALISTS", iHealth));
+			szBuffer.append(NEWLINE);
+		}
+
+		// iStateReligionHealth of the traits (added by this mod)
+		iHealth = city.getStateReligionTraitHealth();
+		if (iHealth > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_GOOD_HEALTH_FROM_STATE_RELIGION_TRAIT", iHealth));
 			szBuffer.append(NEWLINE);
 		}
 
@@ -14770,6 +14855,8 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 				if (building.getSpecialBuildingType() != NO_SPECIALBUILDING)
 				{
 					iTraitMod += GC.getSpecialBuildingInfo((SpecialBuildingTypes) building.getSpecialBuildingType()).getProductionTraits(i);
+					// SpecialBuildingProductionModifiers of the trait (added by this mod)
+					iTraitMod += GC.getTraitInfo((TraitTypes)i).getSpecialBuildingProductionModifier(building.getSpecialBuildingType());
 				}
 				if (0 != iTraitMod)
 				{
@@ -15757,6 +15844,14 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_GREATPEOPLE_BASE_RATE", city.getBaseGreatPeopleRate()));
 	szBuffer.append(NEWLINE);
 
+	// GreatPeopleClassRateModifiers of the traits (added by this mod)
+	int iTraitClassExtra = city.getTraitGreatPeopleRateExtra();
+	if (iTraitClassExtra != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_GREATPEOPLE_TRAIT_CLASS", iTraitClassExtra));
+		szBuffer.append(NEWLINE);
+	}
+
 	int iModifier = 100;
 
 	// Buildings
@@ -15857,7 +15952,7 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 		}
 	}
 
-	int iModGreatPeople = (iModifier * city.getBaseGreatPeopleRate()) / 100;
+	int iModGreatPeople = (iModifier * (city.getBaseGreatPeopleRate() + iTraitClassExtra)) / 100;	// with GreatPeopleClassRateModifiers (changed by this mod)
 
 	FAssertMsg(iModGreatPeople == city.getGreatPeopleRate(), "Great person rate does not match actual value");
 

@@ -85,6 +85,7 @@ public:
 	int countEnemyDangerByArea(CvArea* pArea) const;																		// Exposed to Python
 
 	int getResearchCost(TechTypes eTech) const;																// Exposed to Python
+	int getKnownTechCostModifier(TechTypes eTech) const;	// added by this mod: iKnownTechCostModifier of the traits
 	int getResearchLeft(TechTypes eTech) const;																// Exposed to Python
 
 	bool hasHolyCity(ReligionTypes eReligion) const;																		// Exposed to Python

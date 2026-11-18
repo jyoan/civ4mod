@@ -2480,7 +2480,61 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 		iCost /= 100;
 	}
 
+	// iKnownTechCostModifier of the traits (added by this mod): % for each known full civilization (team) that has the tech,
+	// down to iKnownTechCostLimit. The member with the strongest one counts
+	int iKnownModifier = getKnownTechCostModifier(eTech);
+	if (iKnownModifier != 0)
+	{
+		iCost *= std::max(0, 100 + iKnownModifier);
+		iCost /= 100;
+	}
+
 	return std::max(1, iCost);
+}
+
+// iKnownTechCostModifier and iKnownTechCostLimit of the traits of the members (added by this mod): the % of the research cost
+// of eTech, 0 if none. The other alive teams of full civilizations that this team has met and that have the tech are counted
+int CvTeam::getKnownTechCostModifier(TechTypes eTech) const
+{
+	int iBest = 0;
+	int iKnown = -1;
+	int iI;
+
+	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		CvPlayer& kMember = GET_PLAYER((PlayerTypes)iI);
+		if (!kMember.isAlive() || kMember.getTeam() != getID())
+		{
+			continue;
+		}
+
+		int iPerCiv = kMember.getKnownTechCostModifier();
+		if (iPerCiv == 0)
+		{
+			continue;
+		}
+
+		if (iKnown < 0)
+		{
+			iKnown = 0;
+			for (int iJ = 0; iJ < MAX_CIV_TEAMS; iJ++)
+			{
+				CvTeam& kTeam = GET_TEAM((TeamTypes)iJ);
+				if (iJ != getID() && kTeam.isAlive() && !kTeam.isMinorCiv() && !kTeam.isBarbarian() && isHasMet((TeamTypes)iJ) && kTeam.isHasTech(eTech))
+				{
+					iKnown++;
+				}
+			}
+		}
+
+		int iModifier = std::max(iPerCiv * iKnown, kMember.getKnownTechCostLimit());
+		if (iModifier < iBest)
+		{
+			iBest = iModifier;
+		}
+	}
+
+	return iBest;
 }
 
 

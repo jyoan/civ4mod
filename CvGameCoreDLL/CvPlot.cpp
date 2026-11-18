@@ -3137,6 +3137,17 @@ int CvPlot::movementCost(const CvUnit* pUnit, const CvPlot* pFromPlot) const
 		}
 	}
 
+	// iEnemyMoveCostInBorders of the traits of the owner of this plot (added by this mod): extra moves for a land unit at war
+	// with the owner, at most all its moves. The roads below are not usable by enemies anyway (but by units that can use them)
+	if (pUnit->getDomainType() == DOMAIN_LAND && isOwned() && GET_TEAM(pUnit->getTeam()).isAtWar(getTeam()))
+	{
+		int iEnemyMoveCost = GET_PLAYER(getOwnerINLINE()).getEnemyMoveCostInBorders();
+		if (iEnemyMoveCost > 0)
+		{
+			iRegularCost = std::min(iRegularCost + (iEnemyMoveCost * GC.getMOVE_DENOMINATOR()), (pUnit->baseMoves() * GC.getMOVE_DENOMINATOR()));
+		}
+	}
+
 	// The routes of the plots, or the features that count as routes (getUnitRouteType, added by this mod)
 	RouteTypes eFromRoute = pFromPlot->getUnitRouteType(pUnit);
 	RouteTypes eToRoute = getUnitRouteType(pUnit);

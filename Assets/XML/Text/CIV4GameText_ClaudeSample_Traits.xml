@@ -1082,4 +1082,67 @@
 		<Spanish>[ICON_BULLET]Learns the unique buildings of the civilizations it conquers cities from and rebuilds the existing buildings (only the classes without a unique of its own; a later one replaces an earlier one)</Spanish>
 		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12434;&#24449;&#26381;&#12377;&#12427;&#12392;&#12289;&#12381;&#12398;&#25991;&#26126;&#12398;&#22266;&#26377;&#24314;&#36896;&#29289;&#12434;&#23398;&#12403;&#12289;&#26082;&#23384;&#12398;&#24314;&#29289;&#12418;&#24314;&#12390;&#26367;&#12360;&#12427;&#65288;&#33258;&#22269;&#12398;&#22266;&#26377;&#12364;&#12394;&#12356;&#31278;&#39006;&#12384;&#12369;&#12290;&#21516;&#12376;&#31278;&#39006;&#12399;&#24460;&#12395;&#23398;&#12435;&#12384;&#12418;&#12398;&#12395;&#26367;&#12431;&#12427;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_STATE_RELIGION_HEALTH</Tag>
+		<English>[ICON_BULLET]%D1_Change%F2 in Cities with State [ICON_RELIGION]</English>
+		<French>[ICON_BULLET]%D1_Change%F2 in Cities with State [ICON_RELIGION]</French>
+		<German>[ICON_BULLET]%D1_Change%F2 in Cities with State [ICON_RELIGION]</German>
+		<Italian>[ICON_BULLET]%D1_Change%F2 in Cities with State [ICON_RELIGION]</Italian>
+		<Spanish>[ICON_BULLET]%D1_Change%F2 in Cities with State [ICON_RELIGION]</Spanish>
+		<Japanese>[ICON_BULLET]&#22269;&#25945;[ICON_RELIGION]&#12434;&#12418;&#12388;&#37117;&#24066;&#12391;&#12289;%F2%D1_Change</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GREAT_PEOPLE_CLASS_RATE</Tag>
+		<English>[ICON_BULLET]%D1%% [ICON_GREATPEOPLE] points of %s2</English>
+		<French>[ICON_BULLET]%D1%% [ICON_GREATPEOPLE] points of %s2</French>
+		<German>[ICON_BULLET]%D1%% [ICON_GREATPEOPLE] points of %s2</German>
+		<Italian>[ICON_BULLET]%D1%% [ICON_GREATPEOPLE] points of %s2</Italian>
+		<Spanish>[ICON_BULLET]%D1%% [ICON_GREATPEOPLE] points of %s2</Spanish>
+		<Japanese>[ICON_BULLET]%s2&#12398;[ICON_GREATPEOPLE]&#20553;&#20154;&#12509;&#12452;&#12531;&#12488; %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ENEMY_MOVE_COST_IN_BORDERS</Tag>
+		<English>[ICON_BULLET]Enemy land units at war spend %d1 extra [ICON_MOVES] on each plot of your territory</English>
+		<French>[ICON_BULLET]Enemy land units at war spend %d1 extra [ICON_MOVES] on each plot of your territory</French>
+		<German>[ICON_BULLET]Enemy land units at war spend %d1 extra [ICON_MOVES] on each plot of your territory</German>
+		<Italian>[ICON_BULLET]Enemy land units at war spend %d1 extra [ICON_MOVES] on each plot of your territory</Italian>
+		<Spanish>[ICON_BULLET]Enemy land units at war spend %d1 extra [ICON_MOVES] on each plot of your territory</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#12399;&#12289;&#20132;&#25126;&#20013;&#12398;&#25973;&#12398;&#38520;&#19978;&#12518;&#12491;&#12483;&#12488;&#12398;&#31227;&#21205;&#12467;&#12473;&#12488; +%d1[ICON_MOVES]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_REVENGE_COMBAT</Tag>
+		<English>[ICON_BULLET]%D1%% [ICON_STRENGTH] against civilizations that have conquered a city of yours</English>
+		<French>[ICON_BULLET]%D1%% [ICON_STRENGTH] against civilizations that have conquered a city of yours</French>
+		<German>[ICON_BULLET]%D1%% [ICON_STRENGTH] against civilizations that have conquered a city of yours</German>
+		<Italian>[ICON_BULLET]%D1%% [ICON_STRENGTH] against civilizations that have conquered a city of yours</Italian>
+		<Spanish>[ICON_BULLET]%D1%% [ICON_STRENGTH] against civilizations that have conquered a city of yours</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#37117;&#24066;&#12434;&#24449;&#26381;&#12375;&#12383;&#12371;&#12392;&#12398;&#12354;&#12427;&#25991;&#26126;&#12392;&#12398;&#25126;&#38360;&#12391;[ICON_STRENGTH] %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_KNOWN_TECH_COST_LIMIT</Tag>
+		<English>[ICON_BULLET]%D1%% research cost of a technology for each known civilization that has it (down to %D2%%)</English>
+		<French>[ICON_BULLET]%D1%% research cost of a technology for each known civilization that has it (down to %D2%%)</French>
+		<German>[ICON_BULLET]%D1%% research cost of a technology for each known civilization that has it (down to %D2%%)</German>
+		<Italian>[ICON_BULLET]%D1%% research cost of a technology for each known civilization that has it (down to %D2%%)</Italian>
+		<Spanish>[ICON_BULLET]%D1%% research cost of a technology for each known civilization that has it (down to %D2%%)</Spanish>
+		<Japanese>[ICON_BULLET]&#12381;&#12398;&#25216;&#34899;&#12434;&#25345;&#12388;&#26082;&#30693;&#12398;&#25991;&#26126; 1 &#12388;&#12395;&#12388;&#12365;&#12289;&#30740;&#31350;&#36027; %D1%%&#65288;%D2%% &#12414;&#12391;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_KNOWN_TECH_COST</Tag>
+		<English>[ICON_BULLET]%D1%% research cost of a technology for each known civilization that has it</English>
+		<French>[ICON_BULLET]%D1%% research cost of a technology for each known civilization that has it</French>
+		<German>[ICON_BULLET]%D1%% research cost of a technology for each known civilization that has it</German>
+		<Italian>[ICON_BULLET]%D1%% research cost of a technology for each known civilization that has it</Italian>
+		<Spanish>[ICON_BULLET]%D1%% research cost of a technology for each known civilization that has it</Spanish>
+		<Japanese>[ICON_BULLET]&#12381;&#12398;&#25216;&#34899;&#12434;&#25345;&#12388;&#26082;&#30693;&#12398;&#25991;&#26126; 1 &#12388;&#12395;&#12388;&#12365;&#12289;&#30740;&#31350;&#36027; %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONQUEST_HEAL</Tag>
+		<English>[ICON_BULLET]All units are fully healed when a city is conquered</English>
+		<French>[ICON_BULLET]All units are fully healed when a city is conquered</French>
+		<German>[ICON_BULLET]All units are fully healed when a city is conquered</German>
+		<Italian>[ICON_BULLET]All units are fully healed when a city is conquered</Italian>
+		<Spanish>[ICON_BULLET]All units are fully healed when a city is conquered</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12434;&#24449;&#26381;&#12377;&#12427;&#12392;&#12289;&#20840;&#12518;&#12491;&#12483;&#12488;&#12364;&#20840;&#22238;&#24489;&#12377;&#12427;</Japanese>
+	</TEXT>
 </Civ4GameText>

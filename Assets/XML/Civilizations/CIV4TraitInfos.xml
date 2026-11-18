@@ -413,6 +413,25 @@
 			<bNoAutoRaze>1</bNoAutoRaze>
 			<bConquestLearnUniqueUnits>1</bConquestLearnUniqueUnits>
 			<bConquestLearnUniqueBuildings>1</bConquestLearnUniqueBuildings>
+			<iStateReligionHappiness>1</iStateReligionHappiness>
+			<iStateReligionHealth>1</iStateReligionHealth>
+			<GreatPeopleClassRateModifiers>
+				<GreatPeopleClassRateModifier>
+					<UnitClassType>UNITCLASS_ENGINEER</UnitClassType>
+					<iGreatPeopleRateModifier>100</iGreatPeopleRateModifier>
+				</GreatPeopleClassRateModifier>
+			</GreatPeopleClassRateModifiers>
+			<iEnemyMoveCostInBorders>1</iEnemyMoveCostInBorders>
+			<iRevengeCombatPercent>25</iRevengeCombatPercent>
+			<SpecialBuildingProductionModifiers>
+				<SpecialBuildingProductionModifier>
+					<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
+					<iProductionModifier>100</iProductionModifier>
+				</SpecialBuildingProductionModifier>
+			</SpecialBuildingProductionModifiers>
+			<iKnownTechCostModifier>-10</iKnownTechCostModifier>
+			<iKnownTechCostLimit>-75</iKnownTechCostLimit>
+			<bConquestHeal>1</bConquestHeal>
 			<iNewWorldCityPopulation>2</iNewWorldCityPopulation>
 			<iOverseasCityPopulation>1</iOverseasCityPopulation>
 			<iOverseasMaintenanceModifier>-50</iOverseasMaintenanceModifier>

@@ -4740,6 +4740,19 @@ int CvCity::getSpecialistBadHealth() const
 	return getSpecialistTotal(this, &CvSpecialistInfo::getHealth, false);
 }
 
+// iStateReligionHealth of the traits of the owner, when the city has the state religion (added by this mod)
+int CvCity::getStateReligionTraitHealth() const
+{
+	ReligionTypes eStateReligion = GET_PLAYER(getOwnerINLINE()).getStateReligion();
+
+	if (eStateReligion == NO_RELIGION || !isHasReligion(eStateReligion))
+	{
+		return 0;
+	}
+
+	return GET_PLAYER(getOwnerINLINE()).getTraitStateReligionHealth();
+}
+
 int CvCity::unhappyLevel(int iExtra) const
 {
 	int iAngerPercent;
@@ -4946,6 +4959,13 @@ int CvCity::goodHealth() const
 		iTotalHealth += iHealth;
 	}
 
+	// iStateReligionHealth of the traits (added by this mod)
+	iHealth = getStateReligionTraitHealth();
+	if (iHealth > 0)
+	{
+		iTotalHealth += iHealth;
+	}
+
 	iHealth = totalGoodBuildingHealth();
 	if (iHealth > 0)
 	{
@@ -5007,6 +5027,13 @@ int CvCity::badHealth(bool bNoAngry, int iExtra) const
 
 	// iHealth of the specialists (added by this mod)
 	iHealth = getSpecialistBadHealth();
+	if (iHealth < 0)
+	{
+		iTotalHealth += iHealth;
+	}
+
+	// iStateReligionHealth of the traits (added by this mod)
+	iHealth = getStateReligionTraitHealth();
 	if (iHealth < 0)
 	{
 		iTotalHealth += iHealth;
@@ -5789,7 +5816,46 @@ int CvCity::getGreatPeopleRate() const
 		return 0;
 	}
 
-	return ((getBaseGreatPeopleRate() * getTotalGreatPeopleRateModifier()) / 100);
+	// GreatPeopleClassRateModifiers of the traits (added by this mod)
+	return (((getBaseGreatPeopleRate() + getTraitGreatPeopleRateExtra()) * getTotalGreatPeopleRateModifier()) / 100);
+}
+
+
+// GreatPeopleClassRateModifiers of the traits of the owner (added by this mod): the points of a great person unit with the %
+// of its unit class. They are added to the progress of the unit (the chance of that great person) and to the total rate
+int CvCity::getGreatPeopleUnitRateWithTraits(UnitTypes eIndex) const
+{
+	int iRate = getGreatPeopleUnitRate(eIndex);
+
+	if (iRate != 0 && GET_PLAYER(getOwnerINLINE()).isAnyGreatPeopleClassRateModifier())
+	{
+		int iModifier = GET_PLAYER(getOwnerINLINE()).getGreatPeopleClassRateModifier((UnitClassTypes)GC.getUnitInfo(eIndex).getUnitClassType());
+		iRate = std::max(0, (iRate * (100 + iModifier)) / 100);
+	}
+
+	return iRate;
+}
+
+// The points GreatPeopleClassRateModifiers add to the base great people rate (added by this mod)
+int CvCity::getTraitGreatPeopleRateExtra() const
+{
+	int iExtra = 0;
+	int iI;
+
+	if (!GET_PLAYER(getOwnerINLINE()).isAnyGreatPeopleClassRateModifier())
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
+	{
+		if (getGreatPeopleUnitRate((UnitTypes)iI) != 0)
+		{
+			iExtra += getGreatPeopleUnitRateWithTraits((UnitTypes)iI) - getGreatPeopleUnitRate((UnitTypes)iI);
+		}
+	}
+
+	return iExtra;
 }
 
 
@@ -13149,7 +13215,7 @@ void CvCity::doGreatPeople()
 
 	for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
 	{
-		changeGreatPeopleUnitProgress(((UnitTypes)iI), getGreatPeopleUnitRate((UnitTypes)iI));
+		changeGreatPeopleUnitProgress(((UnitTypes)iI), getGreatPeopleUnitRateWithTraits((UnitTypes)iI));	// with GreatPeopleClassRateModifiers (changed by this mod)
 	}
 
 	if (getGreatPeopleProgress() >= GET_PLAYER(getOwnerINLINE()).greatPeopleThreshold(false))
