@@ -2333,6 +2333,51 @@ int CyPlayer::getLearnedBuilding(int iBuildingClass)
 	return m_pPlayer ? m_pPlayer->getLearnedBuilding(iBuildingClass) : -1;
 }
 
+int CyPlayer::getTraitStateReligionHealth()
+{
+	return m_pPlayer ? m_pPlayer->getTraitStateReligionHealth() : 0;
+}
+
+int CyPlayer::getGreatPeopleClassRateModifier(int iUnitClass)
+{
+	return m_pPlayer ? m_pPlayer->getGreatPeopleClassRateModifier((UnitClassTypes)iUnitClass) : 0;
+}
+
+int CyPlayer::getEnemyMoveCostInBorders()
+{
+	return m_pPlayer ? m_pPlayer->getEnemyMoveCostInBorders() : 0;
+}
+
+int CyPlayer::getRevengeCombatModifier(int ePlayer)
+{
+	return m_pPlayer ? m_pPlayer->getRevengeCombatModifier((PlayerTypes)ePlayer) : 0;
+}
+
+bool CyPlayer::isCityConqueredBy(int ePlayer)
+{
+	return m_pPlayer ? m_pPlayer->isCityConqueredBy((PlayerTypes)ePlayer) : false;
+}
+
+int CyPlayer::getSpecialBuildingProductionModifier(int eSpecialBuilding)
+{
+	return m_pPlayer ? m_pPlayer->getSpecialBuildingProductionModifier((SpecialBuildingTypes)eSpecialBuilding) : 0;
+}
+
+int CyPlayer::getKnownTechCostModifier()
+{
+	return m_pPlayer ? m_pPlayer->getKnownTechCostModifier() : 0;
+}
+
+int CyPlayer::getKnownTechCostLimit()
+{
+	return m_pPlayer ? m_pPlayer->getKnownTechCostLimit() : 0;
+}
+
+bool CyPlayer::isConquestHeal()
+{
+	return m_pPlayer ? m_pPlayer->isConquestHeal() : false;
+}
+
 int CyPlayer::getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce)
 {
 	return m_pPlayer ? m_pPlayer->getSpecialistTypeExtraCommerce((SpecialistTypes)eSpecialist, (CommerceTypes)eCommerce) : 0;

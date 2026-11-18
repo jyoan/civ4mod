@@ -397,6 +397,27 @@
 	<ElementType name="bNoAutoRaze" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bConquestLearnUniqueUnits" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bConquestLearnUniqueBuildings" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iStateReligionHappiness" content="textOnly" dt:type="int"/>
+	<ElementType name="iStateReligionHealth" content="textOnly" dt:type="int"/>
+	<ElementType name="GreatPeopleClassRateModifier" content="eltOnly">
+		<element type="UnitClassType"/>
+		<element type="iGreatPeopleRateModifier"/>
+	</ElementType>
+	<ElementType name="GreatPeopleClassRateModifiers" content="eltOnly">
+		<element type="GreatPeopleClassRateModifier" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iEnemyMoveCostInBorders" content="textOnly" dt:type="int"/>
+	<ElementType name="iRevengeCombatPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="SpecialBuildingProductionModifier" content="eltOnly">
+		<element type="SpecialBuildingType"/>
+		<element type="iProductionModifier"/>
+	</ElementType>
+	<ElementType name="SpecialBuildingProductionModifiers" content="eltOnly">
+		<element type="SpecialBuildingProductionModifier" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iKnownTechCostModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iKnownTechCostLimit" content="textOnly" dt:type="int"/>
+	<ElementType name="bConquestHeal" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iNewWorldCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasMaintenanceModifier" content="textOnly" dt:type="int"/>
@@ -755,6 +776,15 @@
 		<element type="bNoAutoRaze" minOccurs="0"/>
 		<element type="bConquestLearnUniqueUnits" minOccurs="0"/>
 		<element type="bConquestLearnUniqueBuildings" minOccurs="0"/>
+		<element type="iStateReligionHappiness" minOccurs="0"/>
+		<element type="iStateReligionHealth" minOccurs="0"/>
+		<element type="GreatPeopleClassRateModifiers" minOccurs="0"/>
+		<element type="iEnemyMoveCostInBorders" minOccurs="0"/>
+		<element type="iRevengeCombatPercent" minOccurs="0"/>
+		<element type="SpecialBuildingProductionModifiers" minOccurs="0"/>
+		<element type="iKnownTechCostModifier" minOccurs="0"/>
+		<element type="iKnownTechCostLimit" minOccurs="0"/>
+		<element type="bConquestHeal" minOccurs="0"/>
 		<element type="iNewWorldCityPopulation" minOccurs="0"/>
 		<element type="iOverseasCityPopulation" minOccurs="0"/>
 		<element type="iOverseasMaintenanceModifier" minOccurs="0"/>

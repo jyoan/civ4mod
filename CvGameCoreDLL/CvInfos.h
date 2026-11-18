@@ -4884,6 +4884,17 @@ public:
 	bool isNoAutoRaze() const;				// Exposed to Python (added by this mod)
 	bool isConquestLearnUniqueUnits() const;		// Exposed to Python (added by this mod): see CvPlayer::learnConquestUniques
 	bool isConquestLearnUniqueBuildings() const;	// Exposed to Python (added by this mod)
+	// Batch of 2026-11-17 (added by this mod)
+	int getStateReligionHappiness() const;			// Exposed to Python: as the civics
+	int getStateReligionHealth() const;				// Exposed to Python
+	int getGreatPeopleClassRateModifier(int iUnitClass) const;	// Exposed to Python
+	bool isAnyGreatPeopleClassRateModifier() const;
+	int getEnemyMoveCostInBorders() const;			// Exposed to Python
+	int getRevengeCombatPercent() const;			// Exposed to Python
+	int getSpecialBuildingProductionModifier(int iSpecialBuilding) const;	// Exposed to Python
+	int getKnownTechCostModifier() const;			// Exposed to Python
+	int getKnownTechCostLimit() const;				// Exposed to Python
+	bool isConquestHeal() const;					// Exposed to Python
 	// Regions (added by this mod): see CvMap::calculateRegions
 	int getNewWorldCityPopulation() const;			// Exposed to Python
 	int getOverseasCityPopulation() const;			// Exposed to Python
@@ -5005,6 +5016,7 @@ public:
 	bool read(CvXMLLoadUtility* pXML);
 	void readModValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readCityFoundedUnits(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readSpecialBuildingProductionModifiers(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readStartBias(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readCityAndEconomyValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readYieldAndUnitArrays(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
@@ -5093,6 +5105,17 @@ protected:
 	bool m_bNoAutoRaze;	// added by this mod
 	bool m_bConquestLearnUniqueUnits;	// added by this mod
 	bool m_bConquestLearnUniqueBuildings;	// added by this mod
+	int m_iStateReligionHappiness;	// added by this mod
+	int m_iStateReligionHealth;	// added by this mod
+	int m_iEnemyMoveCostInBorders;	// added by this mod
+	int m_iRevengeCombatPercent;	// added by this mod
+	int m_iKnownTechCostModifier;	// added by this mod
+	int m_iKnownTechCostLimit;	// added by this mod
+	bool m_bConquestHeal;	// added by this mod
+	std::vector<int> m_aiGreatPeopleClassRateModifier;		// per unit class, empty when not set (added by this mod)
+	std::vector<int> m_aiSpecialBuildingProductionModifier;	// per special building, empty when not set (added by this mod)
+	std::vector<CvString> m_aszSpecialBuildingProductionTypes;	// read before the special buildings are loaded, resolved in readPass3
+	std::vector<int> m_aiSpecialBuildingProductionValues;		// the values of m_aszSpecialBuildingProductionTypes
 	int m_iNewWorldCityPopulation;	// added by this mod
 	int m_iOverseasCityPopulation;	// added by this mod
 	int m_iOverseasMaintenanceModifier;	// added by this mod

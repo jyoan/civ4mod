@@ -520,6 +520,15 @@ public:
 	bool isConquestLearnUniqueBuildings();	// added by this mod
 	int getLearnedUnit(int iUnitClass);	// added by this mod
 	int getLearnedBuilding(int iBuildingClass);	// added by this mod
+	int getTraitStateReligionHealth();	// added by this mod
+	int getGreatPeopleClassRateModifier(int iUnitClass);	// added by this mod
+	int getEnemyMoveCostInBorders();	// added by this mod
+	int getRevengeCombatModifier(int ePlayer);	// added by this mod
+	bool isCityConqueredBy(int ePlayer);	// added by this mod
+	int getSpecialBuildingProductionModifier(int eSpecialBuilding);	// added by this mod
+	int getKnownTechCostModifier();	// added by this mod
+	int getKnownTechCostLimit();	// added by this mod
+	bool isConquestHeal();	// added by this mod
 	int getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce);
 	int getBonusHealChange();
 	int getBonusHealChangeEnemy();

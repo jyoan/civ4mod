@@ -323,6 +323,18 @@ public:
 	int getLearnedUnit(int iUnitClass) const;			// Exposed to Python: NO_UNIT if none
 	int getLearnedBuilding(int iBuildingClass) const;	// Exposed to Python: NO_BUILDING if none
 	void learnConquestUniques(PlayerTypes eOldOwner);
+	// Batch of 2026-11-17 of the traits (added by this mod)
+	int getTraitStateReligionHealth() const;			// Exposed to Python
+	int getGreatPeopleClassRateModifier(UnitClassTypes eUnitClass) const;	// Exposed to Python
+	bool isAnyGreatPeopleClassRateModifier() const;
+	int getEnemyMoveCostInBorders() const;			// Exposed to Python
+	int getRevengeCombatModifier(PlayerTypes ePlayer) const;	// Exposed to Python
+	bool isCityConqueredBy(PlayerTypes ePlayer) const;	// Exposed to Python
+	void setCityConqueredBy(PlayerTypes ePlayer, bool bNewValue);
+	int getSpecialBuildingProductionModifier(SpecialBuildingTypes eSpecialBuilding) const;	// Exposed to Python
+	int getKnownTechCostModifier() const;			// Exposed to Python
+	int getKnownTechCostLimit() const;				// Exposed to Python
+	bool isConquestHeal() const;					// Exposed to Python
 	bool isCivicReplaced(CivicTypes eCivic) const;				// Exposed to Python: ReplacedCivic
 	bool canDoCivicByTraits(CivicTypes eCivic) const;			// Exposed to Python: PrereqOrTraits and ReplacedCivic, without the techs
 	bool isCivicOrReplacing(CivicTypes eCivic) const;			// added by this mod
@@ -1369,6 +1381,7 @@ protected:
 	int* m_paiConditionalTraitCount;		// the part of m_paiFreeTraitCount given by ConditionalFreeTraits (added by this mod)
 	int* m_paiLearnedUnit;					// the unit learned by conquest per unit class, NO_UNIT if none (added by this mod)
 	int* m_paiLearnedBuilding;				// the building learned by conquest per building class, NO_BUILDING if none (added by this mod)
+	bool* m_abCityConqueredBy;				// the players that have conquered a city of this player (iRevengeCombatPercent, added by this mod)
 	int* m_paiFreeBuildingCount;
 	int* m_paiExtraBuildingHappiness;
 	int* m_paiExtraBuildingHealth;

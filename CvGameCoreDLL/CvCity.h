@@ -425,6 +425,9 @@ public:
 	int getSpecialistBadHappiness() const;	// added by this mod
 	int getSpecialistGoodHealth() const;	// added by this mod
 	int getSpecialistBadHealth() const;	// added by this mod
+	int getStateReligionTraitHealth() const;	// added by this mod: iStateReligionHealth of the traits
+	int getGreatPeopleUnitRateWithTraits(UnitTypes eIndex) const;	// added by this mod: GreatPeopleClassRateModifiers of the traits
+	int getTraitGreatPeopleRateExtra() const;	// added by this mod
 	int getBonusBadHappiness() const;																			// Exposed to Python  
 	void changeBonusGoodHappiness(int iChange);
 	void changeBonusBadHappiness(int iChange);

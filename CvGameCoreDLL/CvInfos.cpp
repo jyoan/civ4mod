@@ -20196,6 +20196,13 @@ m_bNoConquestPopulationLoss(false),
 m_bNoAutoRaze(false),
 m_bConquestLearnUniqueUnits(false),
 m_bConquestLearnUniqueBuildings(false),
+m_iStateReligionHappiness(0),
+m_iStateReligionHealth(0),
+m_iEnemyMoveCostInBorders(0),
+m_iRevengeCombatPercent(0),
+m_iKnownTechCostModifier(0),
+m_iKnownTechCostLimit(0),
+m_bConquestHeal(false),
 m_iNewWorldCityPopulation(0),
 m_iOverseasCityPopulation(0),
 m_iOverseasMaintenanceModifier(0),
@@ -20712,6 +20719,64 @@ bool CvTraitInfo::isConquestLearnUniqueUnits() const
 bool CvTraitInfo::isConquestLearnUniqueBuildings() const
 {
 	return m_bConquestLearnUniqueBuildings;
+}
+
+// iStateReligionHappiness (added by this mod): as the civics, happiness of the cities with the state religion
+int CvTraitInfo::getStateReligionHappiness() const
+{
+	return m_iStateReligionHappiness;
+}
+
+// iStateReligionHealth (added by this mod): health of the cities with the state religion
+int CvTraitInfo::getStateReligionHealth() const
+{
+	return m_iStateReligionHealth;
+}
+
+// GreatPeopleClassRateModifiers (added by this mod): % of the great people points of a unit class (CvCity::getGreatPeopleUnitRateWithTraits)
+int CvTraitInfo::getGreatPeopleClassRateModifier(int iUnitClass) const
+{
+	return (iUnitClass >= 0 && iUnitClass < (int)m_aiGreatPeopleClassRateModifier.size()) ? m_aiGreatPeopleClassRateModifier[iUnitClass] : 0;
+}
+
+bool CvTraitInfo::isAnyGreatPeopleClassRateModifier() const
+{
+	return !m_aiGreatPeopleClassRateModifier.empty();
+}
+
+// iEnemyMoveCostInBorders (added by this mod): extra moves of the land units at war in the territory (CvPlot::movementCost)
+int CvTraitInfo::getEnemyMoveCostInBorders() const
+{
+	return m_iEnemyMoveCostInBorders;
+}
+
+// iRevengeCombatPercent (added by this mod): combat % against the players that have conquered a city of the player
+int CvTraitInfo::getRevengeCombatPercent() const
+{
+	return m_iRevengeCombatPercent;
+}
+
+// SpecialBuildingProductionModifiers (added by this mod): production % of the buildings of a special building type
+int CvTraitInfo::getSpecialBuildingProductionModifier(int iSpecialBuilding) const
+{
+	return (iSpecialBuilding >= 0 && iSpecialBuilding < (int)m_aiSpecialBuildingProductionModifier.size()) ? m_aiSpecialBuildingProductionModifier[iSpecialBuilding] : 0;
+}
+
+// iKnownTechCostModifier and iKnownTechCostLimit (added by this mod): see CvTeam::getResearchCost
+int CvTraitInfo::getKnownTechCostModifier() const
+{
+	return m_iKnownTechCostModifier;
+}
+
+int CvTraitInfo::getKnownTechCostLimit() const
+{
+	return m_iKnownTechCostLimit;
+}
+
+// bConquestHeal (added by this mod): the units that conquer a city are healed (CvUnit::setXY)
+bool CvTraitInfo::isConquestHeal() const
+{
+	return m_bConquestHeal;
 }
 
 // iNewWorldCityPopulation (added by this mod): population of the cities the player founds in the New World
@@ -21733,6 +21798,39 @@ void CvTraitInfo::readCityFoundedUnits(CvXMLLoadUtility* pXML)
 	}
 }
 
+// The part of read() for SpecialBuildingProductionModifiers (added by this mod): the special buildings are loaded after the
+// traits, so the types are kept as strings and resolved in readPass3
+void CvTraitInfo::readSpecialBuildingProductionModifiers(CvXMLLoadUtility* pXML)
+{
+	CvString szTextVal;
+	int iValue;
+
+	m_aszSpecialBuildingProductionTypes.clear();
+	m_aiSpecialBuildingProductionValues.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "SpecialBuildingProductionModifiers"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "SpecialBuildingProductionModifier"))
+		{
+			do
+			{
+				iValue = 0;
+				pXML->GetChildXmlValByName(szTextVal, "SpecialBuildingType");
+				pXML->GetChildXmlValByName(&iValue, "iProductionModifier", 0);
+				if (!szTextVal.empty() && szTextVal != "NONE" && iValue != 0)
+				{
+					m_aszSpecialBuildingProductionTypes.push_back(szTextVal);
+					m_aiSpecialBuildingProductionValues.push_back(iValue);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "SpecialBuildingProductionModifier"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
 // The part of read() for the start bias (added by this mod)
 void CvTraitInfo::readStartBias(CvXMLLoadUtility* pXML)
 {
@@ -21787,6 +21885,16 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bNoAutoRaze, "bNoAutoRaze");
 	pXML->GetChildXmlValByName(&m_bConquestLearnUniqueUnits, "bConquestLearnUniqueUnits");
 	pXML->GetChildXmlValByName(&m_bConquestLearnUniqueBuildings, "bConquestLearnUniqueBuildings");
+	pXML->GetChildXmlValByName(&m_iStateReligionHappiness, "iStateReligionHappiness");
+	pXML->GetChildXmlValByName(&m_iStateReligionHealth, "iStateReligionHealth");
+	pXML->GetChildXmlValByName(&m_iEnemyMoveCostInBorders, "iEnemyMoveCostInBorders");
+	pXML->GetChildXmlValByName(&m_iRevengeCombatPercent, "iRevengeCombatPercent");
+	pXML->GetChildXmlValByName(&m_iKnownTechCostModifier, "iKnownTechCostModifier");
+	pXML->GetChildXmlValByName(&m_iKnownTechCostLimit, "iKnownTechCostLimit");
+	pXML->GetChildXmlValByName(&m_bConquestHeal, "bConquestHeal");
+	// GreatPeopleClassRateModifiers: the unit classes are loaded before the traits
+	readTypeValueList(pXML, "GreatPeopleClassRateModifiers", "GreatPeopleClassRateModifier", "UnitClassType", "iGreatPeopleRateModifier", GC.getNumUnitClassInfos(), m_aiGreatPeopleClassRateModifier);
+	readSpecialBuildingProductionModifiers(pXML);
 	pXML->GetChildXmlValByName(&m_iNewWorldCityPopulation, "iNewWorldCityPopulation");
 	pXML->GetChildXmlValByName(&m_iOverseasCityPopulation, "iOverseasCityPopulation");
 	pXML->GetChildXmlValByName(&m_iOverseasMaintenanceModifier, "iOverseasMaintenanceModifier");
@@ -22406,6 +22514,26 @@ bool CvTraitInfo::readPass3()
 	m_aszNoObsoleteSpecialBuildingTypes.clear();
 	resolveTypeList("NoObsoleteBonuses", m_aszNoObsoleteBonusTypes, GC.getNumBonusInfos(), &m_pabNoObsoleteBonus);
 	m_aszNoObsoleteBonusTypes.clear();
+
+	// SpecialBuildingProductionModifiers (added by this mod)
+	m_aiSpecialBuildingProductionModifier.clear();
+	for (i = 0; i < (int)m_aszSpecialBuildingProductionTypes.size(); i++)
+	{
+		int iSpecialBuilding = GC.getInfoTypeForString(m_aszSpecialBuildingProductionTypes[i].GetCString(), true);
+		if (iSpecialBuilding < 0 || iSpecialBuilding >= GC.getNumSpecialBuildingInfos())
+		{
+			sprintf(szMessage, "Tag: %s in SpecialBuildingProductionModifiers of CIV4TraitInfos.xml was incorrect", m_aszSpecialBuildingProductionTypes[i].GetCString());
+			gDLL->MessageBox(szMessage, "XML Error");
+			continue;
+		}
+		if (m_aiSpecialBuildingProductionModifier.empty())
+		{
+			m_aiSpecialBuildingProductionModifier.resize(GC.getNumSpecialBuildingInfos(), 0);
+		}
+		m_aiSpecialBuildingProductionModifier[iSpecialBuilding] += m_aiSpecialBuildingProductionValues[i];
+	}
+	m_aszSpecialBuildingProductionTypes.clear();
+	m_aiSpecialBuildingProductionValues.clear();
 
 	return true;
 }

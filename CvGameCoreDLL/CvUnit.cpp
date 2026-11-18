@@ -10065,6 +10065,10 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 			// iDefenseCombatPercent of the traits of the owner of this unit, the defender (added by this mod)
 			iTempModifier += GET_PLAYER(getOwnerINLINE()).getTraitDefenseCombatPercent();
 
+			// iRevengeCombatPercent of the traits of both owners (added by this mod)
+			iTempModifier += GET_PLAYER(getOwnerINLINE()).getRevengeCombatModifier(pAttacker->getOwnerINLINE());
+			iTempModifier -= GET_PLAYER(pAttacker->getOwnerINLINE()).getRevengeCombatModifier(getOwnerINLINE());
+
 			if (pAttacker->isAnimal())
 			{
 				iExtraModifier = animalCombatModifier();
@@ -11969,6 +11973,17 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 				{
 					GET_PLAYER(eNewOwner).acquireCity(pNewCity, true, false, true); // will delete the pointer
 					pNewCity = NULL;
+
+					// bConquestHeal of the traits of the owner of this unit (added by this mod): all the units of the owner are
+					// healed
+					if (GET_PLAYER(getOwnerINLINE()).isConquestHeal())
+					{
+						int iHealLoop;
+						for (CvUnit* pHealUnit = GET_PLAYER(getOwnerINLINE()).firstUnit(&iHealLoop); pHealUnit != NULL; pHealUnit = GET_PLAYER(getOwnerINLINE()).nextUnit(&iHealLoop))
+						{
+							pHealUnit->setDamage(0);
+						}
+					}
 				}
 			}
 		}
