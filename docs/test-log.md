@@ -135,3 +135,4 @@
 - 2026-11-19: 志向の `TerrainTrades`（砂漠が交易網をつなぐ）・`CapitalTerrainYieldPercents`（首都の都市圏の砂漠 1 タイルにつき首都の食料 +0.5・商業 +1、産出の内訳の行）を検証用志向で確認
 - 2026-11-19: 志向の `PyOnGained`・`PyOnLost` と期間つきの志向（`gainTraitForTurns`。得たとき・終わったときのメッセージ、指導者の説明の残りターン、期間中の再取得で残りが戻る）を、検証用志向（期間）でゲーム内で確認
 - 2026-11-19: 志向の `bBarbarianVision`（蛮族のユニット・動物・都市の視界を共有。採用ですぐ見え、やめるとすぐ消える）を、検証用志向（蛮族）でゲーム内で確認
+- 2026-11-19: シッズ・スシ社の重役のユニットクラスの名前（BtS の `CHANGED_TXT_KEY_UNIT_EXECUTIVE_2` を `TXT_KEY_UNIT_EXECUTIVE_2` に）を、better_trait_mod のオランダのペディアで確認
