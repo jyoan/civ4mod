@@ -462,6 +462,25 @@
 					<iExperience>3</iExperience>
 				</HurryUnitExperience>
 			</HurryUnitExperiences>
+			<RevealBonuses>
+				<BonusType>BONUS_OIL</BonusType>
+				<BonusType>BONUS_URANIUM</BonusType>
+			</RevealBonuses>
+			<NoTechProcesses>
+				<ProcessType>PROCESS_WEALTH</ProcessType>
+				<ProcessType>PROCESS_RESEARCH</ProcessType>
+			</NoTechProcesses>
+			<bNoConscriptExperiencePenalty>1</bNoConscriptExperiencePenalty>
+			<FreeTechs>
+				<FreeTech>
+					<TechType>TECH_THE_WHEEL</TechType>
+					<bFreeTech>1</bFreeTech>
+				</FreeTech>
+				<FreeTech>
+					<TechType>TECH_POTTERY</TechType>
+					<bFreeTech>1</bFreeTech>
+				</FreeTech>
+			</FreeTechs>
 			<iGoldenAgeModifier>50</iGoldenAgeModifier>
 			<iGoldenAgeGreatPeopleRateModifier>50</iGoldenAgeGreatPeopleRateModifier>
 			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>

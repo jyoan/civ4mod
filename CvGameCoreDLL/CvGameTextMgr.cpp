@@ -4630,6 +4630,61 @@ void CvGameTextMgr::parseTraitUnitAndCityEffects(CvWStringBuffer& szHelpString, 
 	}
 }
 
+// The part of the trait help for the tags of 2026-11-19: RevealBonuses, NoTechProcesses, bNoConscriptExperiencePenalty,
+// FreeTechs (added by this mod)
+void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szTempBuffer;
+	CvWString szText;
+	bool bFirst;
+	int iI;
+
+	// "Reveals without the technology: Uranium"
+	bFirst = true;
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		if (kTrait.isRevealBonus(iI))
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_REVEAL_BONUSES").c_str());
+			szText = getLinkText(GC.getBonusInfo((BonusTypes)iI).getDescription());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirst);
+			bFirst = false;
+		}
+	}
+
+	// "Can build without the technology: Research". The processes are loaded when a game is launched: none on the screens
+	// before (GC.getNumProcessInfos() is 0)
+	bFirst = true;
+	for (iI = 0; iI < GC.getNumProcessInfos(); iI++)
+	{
+		if (kTrait.isNoTechProcess(iI))
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_NO_TECH_PROCESSES").c_str());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), GC.getProcessInfo((ProcessTypes)iI).getDescription(), L", ", bFirst);
+			bFirst = false;
+		}
+	}
+
+	if (kTrait.isNoConscriptExperiencePenalty())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_CONSCRIPT_EXPERIENCE_PENALTY"));
+	}
+
+	// "Starts with: The Wheel, Bronze Working"
+	bFirst = true;
+	for (iI = 0; iI < GC.getNumTechInfos(); iI++)
+	{
+		if (kTrait.isFreeTech(iI))
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_FREE_TECHS").c_str());
+			szText = getLinkText(GC.getTechInfo((TechTypes)iI).getDescription());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirst);
+			bFirst = false;
+		}
+	}
+}
+
 void CvGameTextMgr::parseTraitUniqueImprovements(CvWStringBuffer& szHelpString, TraitTypes eTrait)
 {
 	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
@@ -4871,6 +4926,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		parseTraitUniqueElements(szHelpString, eTrait);
 		parseTraitMiseryAndLakeEffects(szHelpString, eTrait);
 		parseTraitUnitAndCityEffects(szHelpString, eTrait);
+		parseTraitRevealAndStartEffects(szHelpString, eTrait);
 		parseTraitUniqueImprovements(szHelpString, eTrait);
 		parseTraitFeatureAndObsolescenceEffects(szHelpString, eTrait, eCivilization);
 

@@ -285,6 +285,11 @@ public:
 	bool isUnitHurry(HurryTypes eHurry) const;	// Exposed to Python
 	int getHurryUnitExperience(HurryTypes eHurry) const;	// Exposed to Python
 	int getTraitImprovedBonusYieldChange(BonusTypes eBonus, YieldTypes eYield) const;
+	// Batch of 2026-11-19 (added by this mod)
+	bool isTraitRevealBonus(BonusTypes eBonus) const;	// Exposed to Python
+	bool isNoTechProcess(ProcessTypes eProcess) const;	// Exposed to Python
+	bool isNoConscriptExperiencePenalty() const;		// Exposed to Python
+	void initTraitFreeTechs();
 	void doEnemyAttrition();	// added by this mod
 	int getFeatureProductionChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	int getFeatureGrowthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)

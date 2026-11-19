@@ -2675,7 +2675,8 @@ void CvCity::addProductionExperience(CvUnit* pUnit, bool bConscript)
 
 	if (pUnit->canAcquirePromotionAny())
 	{
-		pUnit->changeExperience(getProductionExperience(pUnit->getUnitType()) / ((bConscript) ? 2 : 1));
+		// bNoConscriptExperiencePenalty of the traits (added by this mod): drafted units get all of it
+		pUnit->changeExperience(getProductionExperience(pUnit->getUnitType()) / ((bConscript && !GET_PLAYER(getOwnerINLINE()).isNoConscriptExperiencePenalty()) ? 2 : 1));
 	}
 
 	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)

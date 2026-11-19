@@ -535,6 +535,9 @@ public:
 	int getTraitSpecialistSlotChange(int /*SpecialistTypes*/ eSpecialist);	// added by this mod
 	bool isUnitHurry(int /*HurryTypes*/ eHurry);	// added by this mod
 	int getHurryUnitExperience(int /*HurryTypes*/ eHurry);	// added by this mod
+	bool isTraitRevealBonus(int /*BonusTypes*/ eBonus);	// added by this mod
+	bool isNoTechProcess(int /*ProcessTypes*/ eProcess);	// added by this mod
+	bool isNoConscriptExperiencePenalty();	// added by this mod
 	int getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce);
 	int getBonusHealChange();
 	int getBonusHealChangeEnemy();

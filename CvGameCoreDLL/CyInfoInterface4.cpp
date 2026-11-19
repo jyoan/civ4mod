@@ -21,5 +21,9 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getHappyCommercePercent", &CvTraitInfo::getHappyCommercePercent, "int (int i)")
 		.def("getHealthyYieldPercent", &CvTraitInfo::getHealthyYieldPercent, "int (int i)")
 		.def("getHealthyCommercePercent", &CvTraitInfo::getHealthyCommercePercent, "int (int i)")
+		.def("isRevealBonus", &CvTraitInfo::isRevealBonus, "bool (int iBonus)")
+		.def("isNoTechProcess", &CvTraitInfo::isNoTechProcess, "bool (int iProcess)")
+		.def("isNoConscriptExperiencePenalty", &CvTraitInfo::isNoConscriptExperiencePenalty, "bool ()")
+		.def("isFreeTech", &CvTraitInfo::isFreeTech, "bool (int iTech)")
 		;
 }

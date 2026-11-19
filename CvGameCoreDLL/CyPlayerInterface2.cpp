@@ -160,5 +160,8 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("getTraitSpecialistSlotChange", &CyPlayer::getTraitSpecialistSlotChange, "int (int eSpecialist) - slots of the specialist in every city, -1 for no limit (traits, added by this mod)")
 		.def("isUnitHurry", &CyPlayer::isUnitHurry, "bool (int eHurry) - can hurry units this way without the civic (UnitHurrys of the traits, added by this mod)")
 		.def("getHurryUnitExperience", &CyPlayer::getHurryUnitExperience, "int (int eHurry) - experience of a unit hurried this way (traits, added by this mod)")
+		.def("isTraitRevealBonus", &CyPlayer::isTraitRevealBonus, "bool (int eBonus) - a trait reveals the bonus without its tech (RevealBonuses, added by this mod)")
+		.def("isNoTechProcess", &CyPlayer::isNoTechProcess, "bool (int eProcess) - the process needs no tech (NoTechProcesses of the traits, added by this mod)")
+		.def("isNoConscriptExperiencePenalty", &CyPlayer::isNoConscriptExperiencePenalty, "bool () - drafted units get all the experience (traits, added by this mod)")
 		;
 }

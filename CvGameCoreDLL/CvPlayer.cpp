@@ -6826,7 +6826,8 @@ bool CvPlayer::canCreate(ProjectTypes eProject, bool bContinue, bool bTestVisibl
 
 bool CvPlayer::canMaintain(ProcessTypes eProcess, bool bContinue) const
 {
-	if (!(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getProcessInfo(eProcess).getTechPrereq()))))
+	// NoTechProcesses of the traits (added by this mod): no tech needed
+	if (!(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getProcessInfo(eProcess).getTechPrereq()))) && !isNoTechProcess(eProcess))
 	{
 		return false;
 	}
@@ -7593,6 +7594,13 @@ void CvPlayer::updateTraitBonusPlots(TraitTypes eTrait, bool bAdd)
 	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
 	{
 		if (GC.getBonusInfo((BonusTypes)iI).getTechObsolete() != NO_TECH && GC.getTraitInfo(eTrait).isBonusObsolescenceIgnored(iI))
+		{
+			aiBonuses.push_back(iI);
+			continue;
+		}
+
+		// RevealBonuses (added by this mod)
+		if (GC.getTraitInfo(eTrait).isRevealBonus(iI))
 		{
 			aiBonuses.push_back(iI);
 			continue;
@@ -8678,6 +8686,44 @@ int CvPlayer::getHurryUnitExperience(HurryTypes eHurry) const
 int CvPlayer::getTraitImprovedBonusYieldChange(BonusTypes eBonus, YieldTypes eYield) const
 {
 	return sumTraitValues(&CvTraitInfo::getImprovedBonusYieldChange, eBonus, eYield);
+}
+
+// RevealBonuses of the traits (added by this mod): see CvTeam::isTraitRevealedBonus
+bool CvPlayer::isTraitRevealBonus(BonusTypes eBonus) const
+{
+	return hasTraitFlag(&CvTraitInfo::isRevealBonus, eBonus);
+}
+
+// NoTechProcesses of the traits (added by this mod): the cities can maintain the process without its tech
+bool CvPlayer::isNoTechProcess(ProcessTypes eProcess) const
+{
+	return hasTraitFlag(&CvTraitInfo::isNoTechProcess, eProcess);
+}
+
+// bNoConscriptExperiencePenalty of the traits (added by this mod): see CvCity::addProductionExperience
+bool CvPlayer::isNoConscriptExperiencePenalty() const
+{
+	return hasTraitFlag(&CvTraitInfo::isNoConscriptExperiencePenalty);
+}
+
+// FreeTechs of the traits (added by this mod): the techs the traits give at the start of the game. CvGame::setInitialItems
+// calls this after ConditionalFreeTraits, so the traits given at the start also count. Like the free techs of the
+// civilizations (CvGame::initFreeState), the prerequisite techs are not needed
+void CvPlayer::initTraitFreeTechs()
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTechInfos(); iI++)
+	{
+		if (!GET_TEAM(getTeam()).isHasTech((TechTypes)iI) && hasTraitFlag(&CvTraitInfo::isFreeTech, iI))
+		{
+			GET_TEAM(getTeam()).setHasTech((TechTypes)iI, true, NO_PLAYER, false, false);
+			if (GC.getTechInfo((TechTypes)iI).isMapVisible())
+			{
+				GC.getMapINLINE().setRevealedPlots(getTeam(), true, true);
+			}
+		}
+	}
 }
 
 // bConquestStateReligion of the traits (added by this mod): see acquireCity

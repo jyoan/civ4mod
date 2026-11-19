@@ -786,6 +786,11 @@ bool CvXMLLoadUtility::LoadPostMenuGlobals()
 	UpdateProgressCB("Global Process");
 
 	LoadGlobalClassInfo(GC.getProcessInfo(), "CIV4ProcessInfo", "GameInfo", "Civ4ProcessInfo/ProcessInfos/ProcessInfo", false);
+	for (int iTrait = 0; iTrait < GC.getNumTraitInfos(); ++iTrait)
+	{
+		// Trait NoTechProcesses (added by this mod): processes are loaded after traits
+		GC.getTraitInfo((TraitTypes)iTrait).readPass4();
+	}
 
 	UpdateProgressCB("Global Emphasize");
 

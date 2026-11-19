@@ -1253,4 +1253,40 @@
 		<Spanish>[ICON_BULLET]%s1%F2 per point of extra [ICON_HEALTHY]</Spanish>
 		<Japanese>[ICON_BULLET]&#20313;&#21104;&#12398;[ICON_HEALTHY] 1 &#12395;&#12388;&#12365;%F2%s1</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_REVEAL_BONUSES</Tag>
+		<English>[ICON_BULLET]Reveals without the technology: </English>
+		<French>[ICON_BULLET]Reveals without the technology: </French>
+		<German>[ICON_BULLET]Reveals without the technology: </German>
+		<Italian>[ICON_BULLET]Reveals without the technology: </Italian>
+		<Spanish>[ICON_BULLET]Reveals without the technology: </Spanish>
+		<Japanese>[ICON_BULLET]&#25216;&#34899;&#12394;&#12375;&#12391;&#35211;&#12360;&#12427;&#36039;&#28304;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_TECH_PROCESSES</Tag>
+		<English>[ICON_BULLET]Can build without the technology: </English>
+		<French>[ICON_BULLET]Can build without the technology: </French>
+		<German>[ICON_BULLET]Can build without the technology: </German>
+		<Italian>[ICON_BULLET]Can build without the technology: </Italian>
+		<Spanish>[ICON_BULLET]Can build without the technology: </Spanish>
+		<Japanese>[ICON_BULLET]&#25216;&#34899;&#12394;&#12375;&#12391;&#36984;&#12409;&#12427;&#29983;&#29987;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_CONSCRIPT_EXPERIENCE_PENALTY</Tag>
+		<English>[ICON_BULLET]Drafted units get all the experience of the city</English>
+		<French>[ICON_BULLET]Drafted units get all the experience of the city</French>
+		<German>[ICON_BULLET]Drafted units get all the experience of the city</German>
+		<Italian>[ICON_BULLET]Drafted units get all the experience of the city</Italian>
+		<Spanish>[ICON_BULLET]Drafted units get all the experience of the city</Spanish>
+		<Japanese>[ICON_BULLET]&#24500;&#20853;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12398;&#32076;&#39443;&#20516;&#12364;&#21322;&#20998;&#12395;&#12394;&#12425;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FREE_TECHS</Tag>
+		<English>[ICON_BULLET]Starts the game with: </English>
+		<French>[ICON_BULLET]Starts the game with: </French>
+		<German>[ICON_BULLET]Starts the game with: </German>
+		<Italian>[ICON_BULLET]Starts the game with: </Italian>
+		<Spanish>[ICON_BULLET]Starts the game with: </Spanish>
+		<Japanese>[ICON_BULLET]&#12466;&#12540;&#12512;&#38283;&#22987;&#26178;&#12395;&#24471;&#12427;&#25216;&#34899;: </Japanese>
+	</TEXT>
 </Civ4GameText>

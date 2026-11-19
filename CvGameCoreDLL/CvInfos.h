@@ -4941,6 +4941,12 @@ public:
 	int* getHealthyYieldPercentArray() const;
 	int getHealthyCommercePercent(int i) const;	// Exposed to Python
 	int* getHealthyCommercePercentArray() const;
+	// Batch of 2026-11-19 (added by this mod)
+	bool isRevealBonus(int iBonus) const;		// Exposed to Python
+	bool isNoTechProcess(int iProcess) const;	// Exposed to Python
+	bool isNoConscriptExperiencePenalty() const;	// Exposed to Python
+	bool isFreeTech(int iTech) const;			// Exposed to Python
+	void readPass4();	// added by this mod: the types loaded with LoadPostMenuGlobals (processes)
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -5044,6 +5050,7 @@ public:
 	void readFreePromotionSets(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readPlotYieldChanges(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readUnitAndCityValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readRevealAndStartValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	bool readPass3();
 	void readUniqueUnits();							// added by this mod: after the units are loaded
 
@@ -5179,6 +5186,12 @@ protected:
 	int* m_paiHappyCommercePercent;	// added by this mod: [commerce]
 	int* m_paiHealthyYieldPercent;	// added by this mod: [yield]
 	int* m_paiHealthyCommercePercent;	// added by this mod: [commerce]
+	bool* m_pabRevealBonus;	// added by this mod: RevealBonuses, [bonus], NULL when not set
+	std::vector<CvString> m_aszRevealBonusTypes;	// as strings until readPass3() (bonuses are loaded after traits)
+	bool* m_pabNoTechProcess;	// added by this mod: NoTechProcesses, [process], NULL when not set
+	std::vector<CvString> m_aszNoTechProcessTypes;	// kept for readPass4() (processes are loaded with LoadPostMenuGlobals)
+	bool m_bNoConscriptExperiencePenalty;	// added by this mod
+	bool* m_pabFreeTech;	// added by this mod: FreeTechs, [tech]
 	bool m_bNewCityStateReligion;
 
 	CvString m_szShortDescription;

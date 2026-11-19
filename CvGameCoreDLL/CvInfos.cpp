@@ -20252,6 +20252,10 @@ m_paiHappyYieldPercent(NULL),
 m_paiHappyCommercePercent(NULL),
 m_paiHealthyYieldPercent(NULL),
 m_paiHealthyCommercePercent(NULL),
+m_pabRevealBonus(NULL),
+m_pabNoTechProcess(NULL),
+m_bNoConscriptExperiencePenalty(false),
+m_pabFreeTech(NULL),
 m_bNewCityStateReligion(false),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
@@ -20334,6 +20338,9 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_paiHappyCommercePercent);
 	SAFE_DELETE_ARRAY(m_paiHealthyYieldPercent);
 	SAFE_DELETE_ARRAY(m_paiHealthyCommercePercent);
+	SAFE_DELETE_ARRAY(m_pabRevealBonus);
+	SAFE_DELETE_ARRAY(m_pabNoTechProcess);
+	SAFE_DELETE_ARRAY(m_pabFreeTech);
 	SAFE_DELETE_ARRAY(m_paiCommercePerReligion);
 	SAFE_DELETE_ARRAY(m_paiWorldWonderCommerceChange);
 	SAFE_DELETE_ARRAY(m_paiGlobalWorldWonderCommerceChange);
@@ -21030,6 +21037,36 @@ bool CvTraitInfo::isUnitHurry(int iHurry) const
 	FAssertMsg(iHurry < GC.getNumHurryInfos(), "Index out of bounds");
 	FAssertMsg(iHurry > -1, "Index out of bounds");
 	return m_pabUnitHurry ? m_pabUnitHurry[iHurry] : false;
+}
+
+// RevealBonuses (added by this mod): the team sees the bonus without its TechReveal, as the random events that reveal a
+// bonus. Using it (TechCityTrade) still needs the tech (CvTeam::isTraitRevealedBonus)
+bool CvTraitInfo::isRevealBonus(int iBonus) const
+{
+	FAssertMsg(iBonus < GC.getNumBonusInfos(), "Index out of bounds");
+	FAssertMsg(iBonus > -1, "Index out of bounds");
+	return m_pabRevealBonus ? m_pabRevealBonus[iBonus] : false;
+}
+
+// NoTechProcesses (added by this mod): the cities can maintain the process without its tech (CvPlayer::canMaintain)
+bool CvTraitInfo::isNoTechProcess(int iProcess) const
+{
+	FAssertMsg(iProcess > -1, "Index out of bounds");
+	return (m_pabNoTechProcess != NULL && iProcess < GC.getNumProcessInfos()) ? m_pabNoTechProcess[iProcess] : false;
+}
+
+// bNoConscriptExperiencePenalty (added by this mod): drafted units get all the experience of the city, not half
+bool CvTraitInfo::isNoConscriptExperiencePenalty() const
+{
+	return m_bNoConscriptExperiencePenalty;
+}
+
+// FreeTechs (added by this mod): the team gets the tech at the start of the game (CvPlayer::initTraitFreeTechs)
+bool CvTraitInfo::isFreeTech(int iTech) const
+{
+	FAssertMsg(iTech < GC.getNumTechInfos(), "Index out of bounds");
+	FAssertMsg(iTech > -1, "Index out of bounds");
+	return m_pabFreeTech ? m_pabFreeTech[iTech] : false;
 }
 
 // HurryUnitExperiences (added by this mod): experience of a unit hurried this way
@@ -22449,6 +22486,25 @@ void CvTraitInfo::readUnitAndCityValues(CvXMLLoadUtility* pXML)
 	readCommerceChanges(pXML, "HealthyCommercePercents", &m_paiHealthyCommercePercent);
 }
 
+// The part of read() for the tags of 2026-11-19: revealed bonuses, processes without tech, drafted units and the techs at
+// the start of the game (added by this mod)
+void CvTraitInfo::readRevealAndStartValues(CvXMLLoadUtility* pXML)
+{
+	// Bonuses: readPass3(). Processes are loaded with LoadPostMenuGlobals: readPass4()
+	readTypeList(pXML, "RevealBonuses", m_aszRevealBonusTypes);
+	readTypeList(pXML, "NoTechProcesses", m_aszNoTechProcessTypes);
+	pXML->GetChildXmlValByName(&m_bNoConscriptExperiencePenalty, "bNoConscriptExperiencePenalty");
+	// Same format as FreeTechs of the civilizations. The techs are loaded before the traits
+	pXML->SetVariableListTagPair(&m_pabFreeTech, "FreeTechs", sizeof(GC.getTechInfo((TechTypes)0)), GC.getNumTechInfos());
+}
+
+// NoTechProcesses (added by this mod): CvXMLLoadUtility::LoadPostMenuGlobals calls this after it loads the processes. The
+// types stay as strings, in case it runs again
+void CvTraitInfo::readPass4()
+{
+	resolveTypeList("NoTechProcesses", m_aszNoTechProcessTypes, GC.getNumProcessInfos(), &m_pabNoTechProcess);
+}
+
 bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 {
 	CvString szTextVal;
@@ -22483,6 +22539,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	readFreePromotionSets(pXML);
 	readPlotYieldChanges(pXML);
 	readUnitAndCityValues(pXML);
+	readRevealAndStartValues(pXML);
 
 	return true;
 }
@@ -22667,6 +22724,8 @@ bool CvTraitInfo::readPass3()
 	m_aszWonderHurryTypes.clear();
 	resolveTypeList("UnitHurrys", m_aszUnitHurryTypes, GC.getNumHurryInfos(), &m_pabUnitHurry);
 	m_aszUnitHurryTypes.clear();
+	resolveTypeList("RevealBonuses", m_aszRevealBonusTypes, GC.getNumBonusInfos(), &m_pabRevealBonus);
+	m_aszRevealBonusTypes.clear();
 
 	// HurryUnitExperiences (added by this mod)
 	m_aiHurryUnitExperience.clear();

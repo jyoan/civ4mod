@@ -429,7 +429,8 @@ void CvPlot::doImprovement()
 			FAssertMsg((0 < GC.getNumBonusInfos()), "GC.getNumBonusInfos() is not greater than zero but an array is being allocated in CvPlot::doImprovement");
 			for (iI = 0; iI < GC.getNumBonusInfos(); ++iI)
 			{
-				if (GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getBonusInfo((BonusTypes) iI).getTechReveal())))
+				// RevealBonuses of the traits (added by this mod): the improvement can discover the bonus without the tech
+				if (GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getBonusInfo((BonusTypes) iI).getTechReveal())) || GET_TEAM(getTeam()).isTraitRevealedBonus((BonusTypes)iI))
 				{
 /************************************************************************************************/
 /* UNOFFICIAL_PATCH                       03/04/10                                jdog5000      */
@@ -5750,7 +5751,8 @@ BonusTypes CvPlot::getBonusType(TeamTypes eTeam) const
 				return NO_BONUS;
 			}
 
-			if (!GET_TEAM(eTeam).isHasTech((TechTypes)(GC.getBonusInfo((BonusTypes)m_eBonusType).getTechReveal())) && !GET_TEAM(eTeam).isForceRevealedBonus((BonusTypes)m_eBonusType))
+			// RevealBonuses of the traits (added by this mod): last, it is the slowest
+			if (!GET_TEAM(eTeam).isHasTech((TechTypes)(GC.getBonusInfo((BonusTypes)m_eBonusType).getTechReveal())) && !GET_TEAM(eTeam).isForceRevealedBonus((BonusTypes)m_eBonusType) && !GET_TEAM(eTeam).isTraitRevealedBonus((BonusTypes)m_eBonusType))
 			{
 				return NO_BONUS;
 			}

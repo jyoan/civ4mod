@@ -5264,7 +5264,7 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 
 							if (eBonus != NO_BONUS)
 							{
-								if (GC.getBonusInfo(eBonus).getTechReveal() == eIndex && !isForceRevealedBonus(eBonus))
+								if (GC.getBonusInfo(eBonus).getTechReveal() == eIndex && !isForceRevealedBonus(eBonus) && !isTraitRevealedBonus(eBonus))	// RevealBonuses (added by this mod)
 								{
 									pCity = GC.getMapINLINE().findCity(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), NO_PLAYER, getID(), false);
 
@@ -6101,6 +6101,14 @@ bool CvTeam::hasBonusTraits(BonusTypes eBonus) const
 	}
 
 	return false;
+}
+
+// RevealBonuses of the traits (added by this mod): a living player of the team has a trait that reveals the bonus. The
+// team sees it as with its TechReveal or a random event (CvPlot::getBonusType): the plot yields, and the improvements can
+// discover it. Using the bonus still needs its TechCityTrade (CvPlot::updatePlotGroupBonus)
+bool CvTeam::isTraitRevealedBonus(BonusTypes eBonus) const
+{
+	return hasPlayerTraitFlag(&CvTraitInfo::isRevealBonus, eBonus);
 }
 
 bool CvTeam::isForceRevealedBonus(BonusTypes eBonus) const

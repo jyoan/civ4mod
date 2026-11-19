@@ -14,6 +14,8 @@
 #   warning  a text key defined twice in the text XML of the mod
 #   error    a text that uses an argument twice (%s1 ... %s1): the game replaces only one of them
 #   error    the same for the names in quotes in the Python of the mod and in the Python expressions of the XML (Py...)
+#   warning  ConditionalFreeTraits of the traits in a loop (TRAIT_A gives TRAIT_B, TRAIT_B gives TRAIT_A, or a trait
+#            gives itself): once gained, the traits of the loop keep each other when the conditions no longer hold
 #   error    a character that is not ASCII, or a line that does not end with CRLF, in the XML, Python, C++ sources,
 #            Makefile, build.bat, claude_sample.ini and tools
 # A file the mod copied from the base game keeps the mistakes of the original: a reference the base game file also
@@ -276,6 +278,72 @@ foreach ($rel in ($xmlFiles.Keys | Sort-Object)) {
 				}
 			}
 		}
+	}
+}
+
+# ConditionalFreeTraits in a loop (a trait that gives itself, or A gives B and B gives A, also through other traits).
+# CvPlayer::updateConditionalTraits counts the traits given by the traits the player has, so once gained, the traits of
+# a loop keep giving each other even when the condition that started them no longer holds
+$traitFile = $xmlFiles['civilizations\civ4traitinfos.xml']
+if ($traitFile -ne $null -and $traitFile.Root -eq 0) {
+	$display = 'Assets\XML\' + $traitFile.Path.Substring($modXml.Length + 1)
+	$text = Read-Text $traitFile.Path
+	$gives = @{}
+	$givesAt = @{}
+	$order = @()
+	foreach ($m in [regex]::Matches($text, '<TraitInfo>(.*?)</TraitInfo>', 'Singleline')) {
+		$t = [regex]::Match($m.Groups[1].Value, '<Type>\s*(\w+)\s*</Type>')
+		if (-not $t.Success) {
+			continue
+		}
+		$type = $t.Groups[1].Value
+		$order += $type
+		$gives[$type] = @()
+		$c = [regex]::Match($m.Groups[1].Value, '<ConditionalFreeTraits>(.*?)</ConditionalFreeTraits>', 'Singleline')
+		if ($c.Success) {
+			foreach ($g in [regex]::Matches($c.Groups[1].Value, '<TraitType>\s*(\w+)\s*</TraitType>')) {
+				$gives[$type] += $g.Groups[1].Value
+				$givesAt[$type + '>' + $g.Groups[1].Value] = $m.Groups[1].Index + $c.Groups[1].Index + $g.Index
+			}
+		}
+	}
+	$loops = @{}
+	foreach ($start in $order) {
+		# The shortest way back to the trait (breadth first), as the list of the traits on it
+		$parent = @{}
+		$queue = New-Object 'System.Collections.Generic.Queue[string]'
+		$queue.Enqueue($start)
+		$found = $null
+		while ($queue.Count -gt 0 -and $found -eq $null) {
+			$n = $queue.Dequeue()
+			foreach ($x in $gives[$n]) {
+				if ($x -eq $start) {
+					$found = $n
+					break
+				}
+				if ($gives.ContainsKey($x) -and -not $parent.ContainsKey($x)) {
+					$parent[$x] = $n
+					$queue.Enqueue($x)
+				}
+			}
+		}
+		if ($found -eq $null) {
+			continue
+		}
+		$path = @($found)
+		while ($path[0] -ne $start) {
+			$path = @($parent[$path[0]]) + $path
+		}
+		$key = ($path | Sort-Object) -join ' '
+		if ($loops.ContainsKey($key)) {
+			continue
+		}
+		$loops[$key] = 1
+		$next = $start
+		if ($path.Count -gt 1) {
+			$next = $path[1]
+		}
+		Write-Problem 'warning' $display (Get-Line $text $givesAt[$start + '>' + $next]) ((($path + $start) -join ' -> ') + ': ConditionalFreeTraits in a loop. Once gained, these traits keep giving each other even when the conditions no longer hold')
 	}
 }
 

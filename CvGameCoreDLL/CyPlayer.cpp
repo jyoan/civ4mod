@@ -2408,6 +2408,21 @@ int CyPlayer::getHurryUnitExperience(int /*HurryTypes*/ eHurry)
 	return m_pPlayer ? m_pPlayer->getHurryUnitExperience((HurryTypes)eHurry) : 0;
 }
 
+bool CyPlayer::isTraitRevealBonus(int /*BonusTypes*/ eBonus)
+{
+	return m_pPlayer ? m_pPlayer->isTraitRevealBonus((BonusTypes)eBonus) : false;
+}
+
+bool CyPlayer::isNoTechProcess(int /*ProcessTypes*/ eProcess)
+{
+	return m_pPlayer ? m_pPlayer->isNoTechProcess((ProcessTypes)eProcess) : false;
+}
+
+bool CyPlayer::isNoConscriptExperiencePenalty()
+{
+	return m_pPlayer ? m_pPlayer->isNoConscriptExperiencePenalty() : false;
+}
+
 int CyPlayer::getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce)
 {
 	return m_pPlayer ? m_pPlayer->getSpecialistTypeExtraCommerce((SpecialistTypes)eSpecialist, (CommerceTypes)eCommerce) : 0;

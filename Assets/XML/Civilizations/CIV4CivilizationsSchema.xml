@@ -776,6 +776,14 @@
 	<ElementType name="HealthyCommercePercents" content="eltOnly">
 		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="RevealBonuses" content="eltOnly">
+		<element type="BonusType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="ProcessType" content="textOnly"/>
+	<ElementType name="NoTechProcesses" content="eltOnly">
+		<element type="ProcessType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="bNoConscriptExperiencePenalty" content="textOnly" dt:type="boolean"/>
 	<ElementType name="TraitInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -856,6 +864,10 @@
 		<element type="SpecialistSlotChanges" minOccurs="0"/>
 		<element type="UnitHurrys" minOccurs="0"/>
 		<element type="HurryUnitExperiences" minOccurs="0"/>
+		<element type="RevealBonuses" minOccurs="0"/>
+		<element type="NoTechProcesses" minOccurs="0"/>
+		<element type="bNoConscriptExperiencePenalty" minOccurs="0"/>
+		<element type="FreeTechs" minOccurs="0"/>
 		<element type="iGoldenAgeModifier" minOccurs="0"/>
 		<element type="iGoldenAgeGreatPeopleRateModifier" minOccurs="0"/>
 		<element type="iCapitalBuildingProductionModifier" minOccurs="0"/>
