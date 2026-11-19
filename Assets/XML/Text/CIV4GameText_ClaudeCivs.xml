@@ -1559,4 +1559,22 @@
 		<Spanish>Hor</Spanish>
 		<Japanese>&#39438;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MERCENARIES</Tag>
+		<English>Mercenaries</English>
+		<French>Mercenaries</French>
+		<German>Mercenaries</German>
+		<Italian>Mercenaries</Italian>
+		<Spanish>Mercenaries</Spanish>
+		<Japanese>&#20653;&#20853;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MERCENARIES_SHORT</Tag>
+		<English>Mer</English>
+		<French>Mer</French>
+		<German>Mer</German>
+		<Italian>Mer</Italian>
+		<Spanish>Mer</Spanish>
+		<Japanese>&#20653;</Japanese>
+	</TEXT>
 </Civ4GameText>

@@ -120,6 +120,7 @@ BtS の効果はそのままにして足す。
 | `iKnownTechCostModifier`、`iKnownTechCostLimit` | ピョートル |
 | `bConquestHeal` | ユリウス・カエサル |
 | `CapitalTerrainYieldPercents`、`TerrainTrades` の砂漠 | マリ |
+| `Hurrys` の資金（ユニットだけ、`iExperience`） | カルタゴ |
 | `PyOnCityLost`（`createPartisans`） | ド・ゴール |
 | `bAtWar` + `PyOnGained`（`createCityConscripts`） | ワシントン |
 | `bAtWar` + `PyOnLost` で期間つきの志向（`CommerceModifiers` の文化、`iHappiness`） | 徳川家康 |
@@ -173,7 +174,7 @@ BtS の効果はそのままにして足す。
 | マンサ・ムサ | 黄金の巡礼: 普通選挙なしで資金による緊急生産ができる（2026-11-19 に「普通選挙を最初から採用できる」から変更）。大商人の代わりにワンガラ商人（移動力 3、交易任務の金 1.5 倍） | `Hurrys`（`HURRY_GOLD`）、`UniqueUnits`（`UNIT_WANGARA_TRADER`） | 実装済み `TRAIT_GOLDEN_PILGRIMAGE` |
 | オスマン（文明） | デヴシルメ: 都市を征服すると、その都市で徴兵できるユニットが 1 体加わる | `PyOnCityAcquired`（`CyCity.getConscriptUnit`） | 実装済み `TRAIT_DEVSHIRME` |
 | ギリシャ（文明） | アゴラ: 専門家 1 人につき、科学者 研究 +1、商人 金 +1、技術者 生産 +1、芸術家 文化 +1、スパイ 諜報 +1、聖職者 商業 +1。定住した偉人はそれぞれ 2 倍 | `SpecialistYieldChanges`、`SpecialistCommerceChanges` | 実装済み `TRAIT_AGORA` |
-| カルタゴ・イギリス（文明） | 開始位置のバイアス: 沿岸 +100%（文明の志向は未定） | 文明の `iStartBiasCoastal` | 実装済み、ゲームで確認済み |
+| カルタゴ・イギリス（文明） | 開始位置のバイアス: 沿岸 +100%（イギリスの文明の志向は未定。カルタゴは 2026-11-19 に傭兵志向） | 文明の `iStartBiasCoastal` | 実装済み、ゲームで確認済み |
 | シュメール（文明） | 両河の間: タイルの川の辺 1 本につき商業 +1、3 本で食料 +1。開始位置のバイアス 川沿い +100%（文明に直接） | `RiverEdgeYieldPercents`（商業 100・食料 34）、文明の `iStartBiasRiver` | 実装済み `TRAIT_MESOPOTAMIA`（バイアスはゲームで確認済み） |
 | アレクサンドロス | オリエンタリズム: 都市を征服すると、奪った相手の文明の固有ユニット・固有建造物を学ぶ（自分の固有がない種類だけ。同じ種類は後に学んだものに替わる）。既存の建物も建て替え（立地の条件は見ない）、作りかけのハンマーも引き継ぐ。今いるユニットはそのまま。ギリシャのファランクス・オデオンは替わらない | `bConquestLearnUniqueUnits`、`bConquestLearnUniqueBuildings` | 実装済み、ゲームで確認済み `TRAIT_ORIENTALISM` |
 | イギリス（文明） | 日の沈まぬ帝国: 海外（首都と別の地域）で戦うユニットの戦闘力 +15%。艦船の移動力 +1 | 昇進の `iCombatPercentOverseas`（全戦闘ユニット）、BtS の昇進の `iMovesChange`（海洋） | 実装済み、ゲームで確認済み `TRAIT_SUN_NEVER_SETS` |
@@ -190,6 +191,7 @@ BtS の効果はそのままにして足す。
 | ピョートル | 大使節団: その技術を持つ既知の文明 1 つにつき研究費 -10%（-75% まで） | `iKnownTechCostModifier`、`iKnownTechCostLimit` | 実装済み、ゲームで確認済み `TRAIT_GRAND_EMBASSY` |
 | ユリウス・カエサル | 来た、見た、勝った: 都市を征服すると全ユニットが全回復 | `bConquestHeal` | 実装済み、ゲームで確認済み `TRAIT_VENI_VIDI_VICI` |
 | マリ（文明） | サハラ交易: 首都の都市圏の砂漠 1 タイルにつき、首都の食料 +0.5・商業 +1（砂漠のタイルそのものは変わらない）。砂漠が交易網をつなぐ。砂漠のバイアス | `CapitalTerrainYieldPercents`（砂漠 食料 50・商業 100）、`TerrainTrades`（砂漠）、`StartBiasTerrains`（砂漠 10） | 実装済み `TRAIT_TRANS_SAHARAN` |
+| カルタゴ（文明） | 傭兵: 普通選挙なしで、資金でユニットを緊急生産できる。資金で緊急生産したユニットは経験値 +2（普通選挙で緊急生産した場合も）（2026-11-19） | `Hurrys`（`HURRY_GOLD`、`bUnitsOnly`、`iExperience` 2） | 実装済み `TRAIT_MERCENARIES` |
 | ド・ゴール | レジスタンス: 都市を占領される（破壊される）と、その近くにパルチザンが（人口 + 2）体現れる。首都で徴兵できるユニットで、都市の文化レベルに応じて戦闘術Ⅰ～Ⅵを持つ（2026-11-19。人口と文化レベルは占領される前のもの） | `PyOnCityLost` で `createPartisans` | 実装済み `TRAIT_RESISTANCE` |
 | ワシントン | ミニットマン: 戦争が始まると（交戦相手がいない状態から）、首都と人口 5 以上の都市に、その都市で徴兵できるユニットが 1 体ずつ現れる（2026-11-19。人口 5 は仮） | `bAtWar` で `TRAIT_MINUTEMEN_WAR`、その `PyOnGained` で `createCityConscripts` | 実装済み `TRAIT_MINUTEMEN` |
 | 徳川家康 | 天下泰平: 戦争が終わると（交戦相手がいなくなると）、20 ターン（ゲーム速度で変わる）泰平志向（全都市の文化 +50%、幸福 +1）を得る（2026-11-19。数値は仮） | `bAtWar` で `TRAIT_PAX_TOKUGAWA_WAR`、その `PyOnLost` で `gainTraitForTurns`（`TRAIT_PAX_TOKUGAWA_PEACE`） | 実装済み `TRAIT_PAX_TOKUGAWA` |
