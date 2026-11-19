@@ -481,7 +481,7 @@
 			</CommerceHealths>
 			<TerrainTrades>
 				<TerrainTrade>
-					<TerrainType>TERRAIN_DESERT</TerrainType>
+					<TerrainType>TERRAIN_PEAK</TerrainType>
 					<bTerrainTrade>1</bTerrainTrade>
 				</TerrainTrade>
 			</TerrainTrades>
@@ -723,16 +723,6 @@
 					<bMaintain>1</bMaintain>
 				</MaintainFeature>
 			</MaintainFeatures>
-			<FeatureRoutes>
-				<FeatureRoute>
-					<FeatureType>FEATURE_FOREST</FeatureType>
-					<RouteType>ROUTE_ROAD</RouteType>
-				</FeatureRoute>
-				<FeatureRoute>
-					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<RouteType>ROUTE_ROAD</RouteType>
-				</FeatureRoute>
-			</FeatureRoutes>
 			<UniqueUnits>
 				<UniqueUnit>
 					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
@@ -981,6 +971,16 @@
 					</Yields>
 				</TerrainYieldChange>
 			</TerrainYieldChanges>
+			<TerrainYieldChangesPerEra>
+				<TerrainYieldChangePerEra>
+					<TerrainType>TERRAIN_TUNDRA</TerrainType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+					</Yields>
+				</TerrainYieldChangePerEra>
+			</TerrainYieldChangesPerEra>
 			<FeatureYieldChanges>
 				<FeatureYieldChange>
 					<FeatureType>FEATURE_ICE</FeatureType>

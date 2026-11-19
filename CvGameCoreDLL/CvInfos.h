@@ -5044,6 +5044,7 @@ public:
 	bool isUpgradeAnywhereUnitCombat(int i) const;				// Exposed to Python
 	bool isUpgradeAnywhereExcludeEnemy(int i) const;				// Exposed to Python
 	int getTerrainYieldChange(int iTerrain, int iYield) const;				// Exposed to Python
+	int getTerrainYieldChangePerEra(int iTerrain, int iYield) const;		// Exposed to Python (added by this mod)
 	int getFeatureYieldChange(int iFeature, int iYield) const;				// Exposed to Python
 	// FeatureProductionChanges, FeatureGrowthChanges and FeatureHealthChanges (added by this mod, from The History of Three
 	// Kingdoms): per feature, the production from removing it, its growth chance and its health in the city radius
@@ -5345,6 +5346,7 @@ protected:
 	bool* m_pabUpgradeAnywhereUnitCombat;
 	bool* m_pabUpgradeAnywhereExcludeEnemy;
 	std::vector< std::vector<int> > m_aaiTerrainYieldChange;		// [terrain][yield], empty when not set
+	std::vector< std::vector<int> > m_aaiTerrainYieldChangePerEra;	// [terrain][yield], empty when not set
 	std::vector< std::vector<int> > m_aaiFeatureYieldChange;		// [feature][yield], empty when not set
 	std::vector<int> m_aiFeatureProductionChange;		// [feature], empty when not set (added by this mod)
 	std::vector<int> m_aiFeatureGrowthChange;		// [feature], empty when not set (added by this mod)

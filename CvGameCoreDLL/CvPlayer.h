@@ -233,6 +233,7 @@ public:
 	// Sum of the trait TerrainYieldChanges / FeatureYieldChanges / ImprovementYieldChanges / RiverPlotYieldChanges,
 	// computed on each call (nothing is saved)
 	int getTraitTerrainYieldChange(TerrainTypes eTerrain, YieldTypes eYield) const;
+	int getTraitTerrainYieldChangePerEra(TerrainTypes eTerrain, YieldTypes eYield) const;	// TerrainYieldChangesPerEra, before times the era
 	int getTraitFeatureYieldChange(FeatureTypes eFeature, YieldTypes eYield) const;
 	int getTraitImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield) const;
 	int getTraitRiverPlotYieldChange(YieldTypes eYield) const;

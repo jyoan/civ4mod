@@ -3487,12 +3487,12 @@ static CvWString getLinkText(const wchar* szName)
 
 // One entry of TerrainYieldChanges and the like: "+1 food: Forest, Jungle". iLast starts a new line when the value changes
 // (added by this mod)
-static void appendTraitPlotYieldChange(CvWStringBuffer& szHelpString, int iChange, int iYield, const wchar* szName, int& iLast)
+static void appendTraitPlotYieldChange(CvWStringBuffer& szHelpString, int iChange, int iYield, const wchar* szName, int& iLast, const char* szKey = "TXT_KEY_CIVIC_IMPROVEMENT_YIELD_CHANGE")
 {
 	if (iChange != 0)
 	{
 		CvWString szStart;
-		szStart.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_IMPROVEMENT_YIELD_CHANGE", iChange, GC.getYieldInfo((YieldTypes)iYield).getChar()).c_str());
+		szStart.Format(L"%s  %s", NEWLINE, gDLL->getText(szKey, iChange, GC.getYieldInfo((YieldTypes)iYield).getChar()).c_str());
 		setListHelp(szHelpString, szStart.GetCString(), getLinkText(szName).GetCString(), L", ", (iChange != iLast));
 		iLast = iChange;
 	}
@@ -4373,6 +4373,13 @@ void CvGameTextMgr::parseTraitYieldEffects(CvWStringBuffer& szHelpString, TraitT
 		for (iJ = 0; iJ < GC.getNumBonusInfos(); ++iJ)
 		{
 			appendTraitPlotYieldChange(szHelpString, kTrait.getBonusYieldChange(iJ, iI), iI, GC.getBonusInfo((BonusTypes)iJ).getDescription(), iLast);
+		}
+
+		// TerrainYieldChangesPerEra (added by this mod): a line of its own
+		iLast = 0;
+		for (iJ = 0; iJ < GC.getNumTerrainInfos(); ++iJ)
+		{
+			appendTraitPlotYieldChange(szHelpString, kTrait.getTerrainYieldChangePerEra(iJ, iI), iI, GC.getTerrainInfo((TerrainTypes)iJ).getDescription(), iLast, "TXT_KEY_TRAIT_YIELD_CHANGE_PER_ERA");
 		}
 	}
 

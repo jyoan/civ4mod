@@ -677,6 +677,13 @@
 	<ElementType name="TerrainYieldChanges" content="eltOnly">
 		<element type="TerrainYieldChange" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="TerrainYieldChangePerEra" content="eltOnly">
+		<element type="TerrainType"/>
+		<element type="Yields"/>
+	</ElementType>
+	<ElementType name="TerrainYieldChangesPerEra" content="eltOnly">
+		<element type="TerrainYieldChangePerEra" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="FeatureYieldChange" content="eltOnly">
 		<element type="FeatureType"/>
 		<element type="Yields"/>
@@ -1115,6 +1122,7 @@
 		<element type="UnitCombatUpgradeDiscounts" minOccurs="0"/>
 		<element type="UpgradeAnywhereUnitCombats" minOccurs="0"/>
 		<element type="TerrainYieldChanges" minOccurs="0"/>
+		<element type="TerrainYieldChangesPerEra" minOccurs="0"/>
 		<element type="FeatureYieldChanges" minOccurs="0"/>
 		<element type="FeatureProductionChanges" minOccurs="0"/>
 		<element type="FeatureGrowthChanges" minOccurs="0"/>
