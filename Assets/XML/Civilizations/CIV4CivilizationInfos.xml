@@ -2445,6 +2445,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_TRANS_SAHARAN</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_MALI_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_MALI_ORDER</CivilizationActionSound>

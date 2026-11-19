@@ -3917,5 +3917,73 @@
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_TRANS_SAHARAN</Type>
+			<Description>TXT_KEY_TRAIT_TRANS_SAHARAN</Description>
+			<ShortDescription>TXT_KEY_TRAIT_TRANS_SAHARAN_SHORT</ShortDescription>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iMaxAnarchy>-1</iMaxAnarchy>
+			<iUpkeepModifier>0</iUpkeepModifier>
+			<iLevelExperienceModifier>0</iLevelExperienceModifier>
+			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
+			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
+			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
+			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
+			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
+			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<TerrainTrades>
+				<TerrainTrade>
+					<TerrainType>TERRAIN_DESERT</TerrainType>
+					<bTerrainTrade>1</bTerrainTrade>
+				</TerrainTrade>
+			</TerrainTrades>
+			<CapitalTerrainYieldPercents>
+				<CapitalTerrainYieldPercent>
+					<TerrainType>TERRAIN_DESERT</TerrainType>
+					<Yields>
+						<iYield>50</iYield>
+						<iYield>0</iYield>
+						<iYield>100</iYield>
+					</Yields>
+				</CapitalTerrainYieldPercent>
+			</CapitalTerrainYieldPercents>
+			<StartBiasTerrains>
+				<StartBiasTerrain>
+					<TerrainType>TERRAIN_DESERT</TerrainType>
+					<iStartBias>10</iStartBias>
+				</StartBiasTerrain>
+			</StartBiasTerrains>
+			<ExtraYieldThresholds/>
+			<TradeYieldModifiers/>
+			<CommerceChanges/>
+			<CommerceModifiers/>
+			<FreePromotions/>
+			<FreePromotionUnitCombats/>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_RESISTANCE</Type>
+			<Description>TXT_KEY_TRAIT_RESISTANCE</Description>
+			<ShortDescription>TXT_KEY_TRAIT_RESISTANCE_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_RESISTANCE_HELP</Help>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iMaxAnarchy>-1</iMaxAnarchy>
+			<iUpkeepModifier>0</iUpkeepModifier>
+			<iLevelExperienceModifier>0</iLevelExperienceModifier>
+			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
+			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
+			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
+			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
+			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
+			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<PyOnCityLost>bConquest and createPartisans(pPlayer, pCity, 2 + iPopulation, iCultureLevel)</PyOnCityLost>
+			<ExtraYieldThresholds/>
+			<TradeYieldModifiers/>
+			<CommerceChanges/>
+			<CommerceModifiers/>
+			<FreePromotions/>
+			<FreePromotionUnitCombats/>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>

@@ -1370,4 +1370,49 @@
 		<Spanish>Ven</Spanish>
 		<Japanese>&#21213;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TRANS_SAHARAN</Tag>
+		<English>Trans-Saharan Trade</English>
+		<French>Trans-Saharan Trade</French>
+		<German>Trans-Saharan Trade</German>
+		<Italian>Trans-Saharan Trade</Italian>
+		<Spanish>Trans-Saharan Trade</Spanish>
+		<Japanese>&#12469;&#12495;&#12521;&#20132;&#26131;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TRANS_SAHARAN_SHORT</Tag>
+		<English>Sah</English>
+		<French>Sah</French>
+		<German>Sah</German>
+		<Italian>Sah</Italian>
+		<Spanish>Sah</Spanish>
+		<Japanese>&#30722;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RESISTANCE</Tag>
+		<English>Resistance</English>
+		<French>Resistance</French>
+		<German>Resistance</German>
+		<Italian>Resistance</Italian>
+		<Spanish>Resistance</Spanish>
+		<Japanese>&#12524;&#12472;&#12473;&#12479;&#12531;&#12473;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RESISTANCE_SHORT</Tag>
+		<English>Res</English>
+		<French>Res</French>
+		<German>Res</German>
+		<Italian>Res</Italian>
+		<Spanish>Res</Spanish>
+		<Japanese>&#25239;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RESISTANCE_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered (or razed), (population + 2) partisans rise near it: the unit the capital conscripts, with Combat promotions by the culture level of the city</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered (or razed), (population + 2) partisans rise near it: the unit the capital conscripts, with Combat promotions by the culture level of the city</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered (or razed), (population + 2) partisans rise near it: the unit the capital conscripts, with Combat promotions by the culture level of the city</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered (or razed), (population + 2) partisans rise near it: the unit the capital conscripts, with Combat promotions by the culture level of the city</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered (or razed), (population + 2) partisans rise near it: the unit the capital conscripts, with Combat promotions by the culture level of the city</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#37117;&#24066;&#12434;&#21344;&#38936;&#12373;&#12428;&#12427;&#65288;&#30772;&#22730;&#12373;&#12428;&#12427;&#65289;&#12392;&#12289;&#12381;&#12398;&#36817;&#12367;&#12395;&#12497;&#12523;&#12481;&#12470;&#12531;&#12364;&#65288;&#20154;&#21475; + 2&#65289;&#20307;&#29694;&#12428;&#12427;&#12290;&#39318;&#37117;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12391;&#12289;&#37117;&#24066;&#12398;&#25991;&#21270;&#12524;&#12505;&#12523;&#12395;&#24540;&#12376;&#12390;&#25126;&#38360;&#34899;&#8544;&#65374;&#8549;&#12434;&#25345;&#12388;</Japanese>
+	</TEXT>
 </Civ4GameText>
