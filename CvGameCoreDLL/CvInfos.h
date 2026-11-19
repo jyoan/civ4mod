@@ -5094,6 +5094,8 @@ public:
 	const TCHAR* getPyOnCityAcquired() const;		// Exposed to Python
 	const TCHAR* getPyOnCorporationFounded() const;	// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnCityLost() const;			// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnGained() const;			// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnLost() const;				// Exposed to Python (added by this mod)
 	int getNumConditionalFreeTraits() const;		// Exposed to Python
 	int getConditionalFreeTraitType(int i) const;	// Exposed to Python
 	const ConditionalFreeTrait& getConditionalFreeTrait(int i) const;

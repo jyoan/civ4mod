@@ -169,5 +169,7 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("getYieldPerReligion", &CyPlayer::getYieldPerReligion, "int (int eYield) - yield for each religion in a city (traits, added by this mod)")
 		.def("getTraitWorldWonderYield", &CyPlayer::getTraitWorldWonderYield, "int (int eYield) - yield for each world wonder in the city (traits, added by this mod)")
 		.def("getTraitGlobalWorldWonderYield", &CyPlayer::getTraitGlobalWorldWonderYield, "int (int eYield) - yield in all cities for each world wonder owned (traits, added by this mod)")
+		.def("getTraitTurns", &CyPlayer::getTraitTurns, "int (int /*TraitTypes*/ eTrait) - turns left of a temporary trait, 0 if not temporary (added by this mod)")
+		.def("setTraitTurns", &CyPlayer::setTraitTurns, "void (int /*TraitTypes*/ eTrait, int iTurns) - has the trait for iTurns turns, 0 ends it (added by this mod)")
 		;
 }

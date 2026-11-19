@@ -5193,6 +5193,13 @@ void CvGameTextMgr::parseTraitFeatureAndObsolescenceEffects(CvWStringBuffer& szH
 
 void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait, CivilizationTypes eCivilization, bool bDawnOfMan)
 {
+	parseTraitsWithTurns(szHelpString, eTrait, eCivilization, bDawnOfMan, 0);
+}
+
+// parseTraits, with the turns left of a temporary trait after its name (added by this mod; parseTraits is exported, so its
+// arguments stay)
+void CvGameTextMgr::parseTraitsWithTurns(CvWStringBuffer &szHelpString, TraitTypes eTrait, CivilizationTypes eCivilization, bool bDawnOfMan, int iTurnsLeft)
+{
 	PROFILE_FUNC();
 
 	CvWString szTempBuffer;
@@ -5214,6 +5221,12 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		szTempBuffer.Format(NEWLINE SETCOLR L"<link=literal>%s</link>" ENDCOLR, TEXT_COLOR("COLOR_ALT_HIGHLIGHT_TEXT"), szText.GetCString());
 	}
 	szHelpString.append(szTempBuffer);
+
+	// Temporary trait (added by this mod)
+	if (iTurnsLeft > 0)
+	{
+		szHelpString.append(gDLL->getText("TXT_KEY_TRAIT_TURNS_LEFT", iTurnsLeft));
+	}
 
 	if (!bDawnOfMan)
 	{
@@ -5671,7 +5684,7 @@ void CvGameTextMgr::buildLeaderTraitsString(CvWStringBuffer &szHelpString, Leade
 				{
 					bFirst = false;
 				}
-				parseTraits(szHelpString, ((TraitTypes)iI), eCivilization, bDawnOfMan);
+				parseTraitsWithTurns(szHelpString, ((TraitTypes)iI), eCivilization, bDawnOfMan, ((ePlayer != NO_PLAYER) ? GET_PLAYER(ePlayer).getTraitTurns((TraitTypes)iI) : 0));
 			}
 		}
 	}

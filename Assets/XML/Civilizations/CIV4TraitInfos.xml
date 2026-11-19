@@ -770,7 +770,7 @@
 			</NoObsoleteBonuses>
 			<PyOnGameStart>gainGold(pPlayer, scaleBySpeed(100 + 50 * startEra(), 'Train'))</PyOnGameStart>
 			<PyOnBeginTurn>isEveryTurns(5) and createUnits(pPlayer, 'UNITCLASS_WARRIOR', 1, capitalPlot(pPlayer))</PyOnBeginTurn>
-			<PyOnCityFounded>addBuilding(pCity, 'BUILDINGCLASS_WALLS')</PyOnCityFounded>
+			<PyOnCityFounded>(addBuilding(pCity, 'BUILDINGCLASS_WALLS'), gainTraitForTurns(pPlayer, 'TRAIT_TEST_TEMPORARY', 3))</PyOnCityFounded>
 			<PyOnCityAcquired>addBuilding(pCity, 'BUILDINGCLASS_BARRACKS')</PyOnCityAcquired>
 			<PyOnCorporationFounded>createExecutives(pPlayer, eCorporation, 3, pCity)</PyOnCorporationFounded>
 			<PyOnCityLost>bConquest and createPartisans(pPlayer, pCity, 2 + iPopulation, iCultureLevel)</PyOnCityLost>
@@ -1498,6 +1498,31 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<ExtraYieldThresholds/>
+			<TradeYieldModifiers/>
+			<CommerceChanges/>
+			<CommerceModifiers/>
+			<FreePromotions/>
+			<FreePromotionUnitCombats/>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_TEST_TEMPORARY</Type>
+			<Description>TXT_KEY_TRAIT_TEST_TEMPORARY</Description>
+			<ShortDescription>TXT_KEY_TRAIT_TEST_TEMPORARY_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_TEST_TEMPORARY_HELP</Help>
+			<iHealth>0</iHealth>
+			<iHappiness>1</iHappiness>
+			<iMaxAnarchy>-1</iMaxAnarchy>
+			<iUpkeepModifier>0</iUpkeepModifier>
+			<iLevelExperienceModifier>0</iLevelExperienceModifier>
+			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
+			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
+			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
+			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
+			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
+			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<PyOnGained>gainGold(pPlayer, 10)</PyOnGained>
+			<PyOnLost>gainGold(pPlayer, 20)</PyOnLost>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

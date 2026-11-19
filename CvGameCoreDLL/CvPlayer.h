@@ -80,6 +80,10 @@ public:
 	int getFreeTraitCount(TraitTypes eTrait) const;			// Exposed to Python: traits given during the game
 	void changeFreeTraitCount(TraitTypes eTrait, int iChange);	// Exposed to Python
 	int getConditionalTraitCount(TraitTypes eTrait) const;		// Exposed to Python: given by ConditionalFreeTraits
+	int getTraitTurns(TraitTypes eTrait) const;					// Exposed to Python: turns left of a temporary trait (added by this mod)
+	void setTraitTurns(TraitTypes eTrait, int iTurns);			// Exposed to Python
+	void doTraitTurns();
+	void doTraitGainedPythonHook(TraitTypes eTrait, bool bGained);	// PyOnGained / PyOnLost of the trait
 	bool isConditionalFreeTraitActive(const ConditionalFreeTrait& kCondition) const;
 	void updateConditionalTraits(bool bNotify = false);								// Exposed to Python
 	int getNumUnitsKilled() const;								// Exposed to Python: iMinUnitsKilled of ConditionalFreeTraits
@@ -1418,6 +1422,7 @@ protected:
 	int* m_paiLearnedUnit;					// the unit learned by conquest per unit class, NO_UNIT if none (added by this mod)
 	int* m_paiLearnedBuilding;				// the building learned by conquest per building class, NO_BUILDING if none (added by this mod)
 	bool* m_abCityConqueredBy;				// the players that have conquered a city of this player (iRevengeCombatPercent, added by this mod)
+	int* m_paiTraitTurns;					// turns left of the temporary traits, 0 if not temporary (added by this mod)
 	int* m_paiFreeBuildingCount;
 	int* m_paiExtraBuildingHappiness;
 	int* m_paiExtraBuildingHealth;

@@ -1415,4 +1415,13 @@
 		<Spanish>[ICON_BULLET]%s2_Yields in the capital for each %s1_Terrain in its city radius</Spanish>
 		<Japanese>[ICON_BULLET]&#39318;&#37117;&#12398;&#37117;&#24066;&#22287;&#12398;%s1_Terrain 1 &#12479;&#12452;&#12523;&#12395;&#12388;&#12365;&#12289;&#39318;&#37117;&#12391;%s2_Yields</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TURNS_LEFT</Tag>
+		<English> (%d1 turns left)</English>
+		<French> (%d1 turns left)</French>
+		<German> (%d1 turns left)</German>
+		<Italian> (%d1 turns left)</Italian>
+		<Spanish> (%d1 turns left)</Spanish>
+		<Japanese>&#65288;&#27531;&#12426; %d1 &#12479;&#12540;&#12531;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>
