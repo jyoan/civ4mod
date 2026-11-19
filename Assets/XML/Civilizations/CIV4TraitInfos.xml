@@ -481,6 +481,63 @@
 					<bFreeTech>1</bFreeTech>
 				</FreeTech>
 			</FreeTechs>
+			<YieldChanges>
+				<iYield>0</iYield>
+				<iYield>1</iYield>
+				<iYield>0</iYield>
+			</YieldChanges>
+			<iHealthPerReligion>1</iHealthPerReligion>
+			<YieldPerReligion>
+				<iYield>1</iYield>
+				<iYield>0</iYield>
+				<iYield>0</iYield>
+			</YieldPerReligion>
+			<FeatureHappinessChanges>
+				<FeatureHappinessChange>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<iHappinessChange>1</iHappinessChange>
+				</FeatureHappinessChange>
+			</FeatureHappinessChanges>
+			<WorldWonderYieldChanges>
+				<iYield>0</iYield>
+				<iYield>2</iYield>
+				<iYield>0</iYield>
+			</WorldWonderYieldChanges>
+			<GlobalWorldWonderYieldChanges>
+				<iYield>1</iYield>
+				<iYield>0</iYield>
+				<iYield>0</iYield>
+			</GlobalWorldWonderYieldChanges>
+			<SpecialistExtraYields>
+				<iYield>0</iYield>
+				<iYield>1</iYield>
+				<iYield>0</iYield>
+			</SpecialistExtraYields>
+			<iNonStateReligionHappiness>1</iNonStateReligionHappiness>
+			<BuildingHappinessChanges>
+				<BuildingHappinessChange>
+					<BuildingClassType>BUILDINGCLASS_GRANARY</BuildingClassType>
+					<iHappinessChange>1</iHappinessChange>
+				</BuildingHappinessChange>
+			</BuildingHappinessChanges>
+			<BuildingHealthChanges>
+				<BuildingHealthChange>
+					<BuildingClassType>BUILDINGCLASS_BARRACKS</BuildingClassType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+			</BuildingHealthChanges>
+			<BonusHappinessChanges>
+				<BonusHappinessChange>
+					<BonusType>BONUS_CORN</BonusType>
+					<iHappinessChange>1</iHappinessChange>
+				</BonusHappinessChange>
+			</BonusHappinessChanges>
+			<BonusHealthChanges>
+				<BonusHealthChange>
+					<BonusType>BONUS_STONE</BonusType>
+					<iHealthChange>1</iHealthChange>
+				</BonusHealthChange>
+			</BonusHealthChanges>
 			<iGoldenAgeModifier>50</iGoldenAgeModifier>
 			<iGoldenAgeGreatPeopleRateModifier>50</iGoldenAgeGreatPeopleRateModifier>
 			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>

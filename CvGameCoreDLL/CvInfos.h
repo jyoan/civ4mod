@@ -4947,6 +4947,22 @@ public:
 	bool isNoConscriptExperiencePenalty() const;	// Exposed to Python
 	bool isFreeTech(int iTech) const;			// Exposed to Python
 	void readPass4();	// added by this mod: the types loaded with LoadPostMenuGlobals (processes)
+	// Batch of 2026-11-19, the counterparts of the tags that existed for only one of happiness/health or yield/commerce
+	int getYieldChange(int i) const;			// Exposed to Python
+	int* getYieldChangeArray() const;
+	int getHealthPerReligion() const;			// Exposed to Python
+	int getYieldPerReligion(int i) const;		// Exposed to Python
+	int getFeatureHappinessChange(int iFeature) const;	// Exposed to Python
+	int getWorldWonderYieldChange(int i) const;	// Exposed to Python
+	int getGlobalWorldWonderYieldChange(int i) const;	// Exposed to Python
+	int getSpecialistExtraYield(int i) const;	// Exposed to Python
+	int* getSpecialistExtraYieldArray() const;
+	int getNonStateReligionHappiness() const;	// Exposed to Python
+	int getBuildingHappinessChange(int iBuildingClass) const;	// Exposed to Python
+	int getBuildingHealthChange(int iBuildingClass) const;		// Exposed to Python
+	int getBonusHappinessChange(int iBonus) const;	// Exposed to Python
+	int getBonusHealthChange(int iBonus) const;		// Exposed to Python
+	bool isAnyBonusHappinessOrHealthChange() const;
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -5051,6 +5067,7 @@ public:
 	void readPlotYieldChanges(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readUnitAndCityValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readRevealAndStartValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readCounterpartValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	bool readPass3();
 	void readUniqueUnits();							// added by this mod: after the units are loaded
 
@@ -5192,6 +5209,27 @@ protected:
 	std::vector<CvString> m_aszNoTechProcessTypes;	// kept for readPass4() (processes are loaded with LoadPostMenuGlobals)
 	bool m_bNoConscriptExperiencePenalty;	// added by this mod
 	bool* m_pabFreeTech;	// added by this mod: FreeTechs, [tech]
+	int* m_paiYieldChange;	// added by this mod: YieldChanges, [yield]
+	int m_iHealthPerReligion;	// added by this mod
+	int* m_paiYieldPerReligion;	// added by this mod: [yield]
+	std::vector<int> m_aiFeatureHappinessChange;	// added by this mod: [feature], empty when not set
+	int* m_paiWorldWonderYieldChange;	// added by this mod: [yield]
+	int* m_paiGlobalWorldWonderYieldChange;	// added by this mod: [yield]
+	int* m_paiSpecialistExtraYield;	// added by this mod: SpecialistExtraYields, [yield]
+	int m_iNonStateReligionHappiness;	// added by this mod
+	std::vector<int> m_aiBuildingHappinessChange;	// added by this mod: [building class], empty when not set
+	std::vector<int> m_aiBuildingHealthChange;	// added by this mod: [building class], empty when not set
+	std::vector<int> m_aiBonusHappinessChange;	// added by this mod: [bonus], empty when not set
+	std::vector<int> m_aiBonusHealthChange;	// added by this mod: [bonus], empty when not set
+	// As strings and values until readPass3() (building classes and bonuses are loaded after traits)
+	std::vector<CvString> m_aszBuildingHappinessChangeTypes;
+	std::vector<int> m_aiBuildingHappinessChangeValues;
+	std::vector<CvString> m_aszBuildingHealthChangeTypes;
+	std::vector<int> m_aiBuildingHealthChangeValues;
+	std::vector<CvString> m_aszBonusHappinessChangeTypes;
+	std::vector<int> m_aiBonusHappinessChangeValues;
+	std::vector<CvString> m_aszBonusHealthChangeTypes;
+	std::vector<int> m_aiBonusHealthChangeValues;
 	bool m_bNewCityStateReligion;
 
 	CvString m_szShortDescription;

@@ -427,6 +427,10 @@ public:
 	int getSpecialistGoodHealth() const;	// added by this mod
 	int getSpecialistBadHealth() const;	// added by this mod
 	int getStateReligionTraitHealth() const;	// added by this mod: iStateReligionHealth of the traits
+	int getTraitReligionHealth() const;	// added by this mod: iHealthPerReligion of the traits
+	int getTraitBonusHappiness(bool bGood) const;	// added by this mod: BonusHappinessChanges of the traits
+	int getTraitBonusHealth(bool bGood) const;	// added by this mod: BonusHealthChanges of the traits
+	int getTraitYield(YieldTypes eIndex) const;	// added by this mod: YieldChanges, YieldPerReligion, (Global)WorldWonderYieldChanges of the traits
 	int getGreatPeopleUnitRateWithTraits(UnitTypes eIndex) const;	// added by this mod: GreatPeopleClassRateModifiers of the traits
 	int getTraitGreatPeopleRateExtra() const;	// added by this mod
 	int getBonusBadHappiness() const;																			// Exposed to Python  

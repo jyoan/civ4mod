@@ -1289,4 +1289,13 @@
 		<Spanish>[ICON_BULLET]Starts the game with: </Spanish>
 		<Japanese>[ICON_BULLET]&#12466;&#12540;&#12512;&#38283;&#22987;&#26178;&#12395;&#24471;&#12427;&#25216;&#34899;: </Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HEALTH_PER_RELIGION</Tag>
+		<English>[ICON_BULLET]%D1[ICON_HEALTHY] for each religion in a city</English>
+		<French>[ICON_BULLET]%D1[ICON_HEALTHY] for each religion in a city</French>
+		<German>[ICON_BULLET]%D1[ICON_HEALTHY] for each religion in a city</German>
+		<Italian>[ICON_BULLET]%D1[ICON_HEALTHY] for each religion in a city</Italian>
+		<Spanish>[ICON_BULLET]%D1[ICON_HEALTHY] for each religion in a city</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12398;&#23447;&#25945;1&#12388;&#12395;&#12388;&#12365;%D1[ICON_HEALTHY]</Japanese>
+	</TEXT>
 </Civ4GameText>

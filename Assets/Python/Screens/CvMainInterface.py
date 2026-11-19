@@ -2129,6 +2129,9 @@ class CvMainInterface:
 							szLeftBuffer = gc.getBuildingInfo(i).getDescription()
 							szRightBuffer = u""
 							bFirst = True
+							# The changes of the traits for each world wonder in the city are shown with each world wonder (added by this mod)
+							bWorldWonder = isWorldWonderClass(gc.getBuildingInfo(i).getBuildingClassType())
+							pBuildingOwner = gc.getPlayer(pHeadSelectedCity.getOwner())
 							
 							if (pHeadSelectedCity.getNumActiveBuilding(i) > 0):
 								iHealth = pHeadSelectedCity.getBuildingHealth(i)
@@ -2165,6 +2168,8 @@ class CvMainInterface:
 									iYield = gc.getBuildingInfo(i).getYieldChange(j) + pHeadSelectedCity.getNumBuilding(i) * pHeadSelectedCity.getBuildingYieldChange(gc.getBuildingInfo(i).getBuildingClassType(), j)
 									iYield += pHeadSelectedCity.getDynamicBuildingYieldByBuilding(j, i) / pHeadSelectedCity.getNumBuilding(i)	# world wonder and tech changes of buildings (added by this mod)
 									iYield += pHeadSelectedCity.getMiseryYieldByBuilding(j, i) / pHeadSelectedCity.getNumBuilding(i)	# changes per angry citizen and per unhealthiness (added by this mod)
+								if (bWorldWonder):
+									iYield += pBuildingOwner.getTraitWorldWonderYield(j)	# WorldWonderYieldChanges of the traits, for each world wonder in the city (added by this mod)
 
 									if (iYield != 0):
 										if ( bFirst == False ):
@@ -2182,6 +2187,8 @@ class CvMainInterface:
 							for j in range(CommerceTypes.NUM_COMMERCE_TYPES):
 								iCommerce = pHeadSelectedCity.getBuildingCommerceByBuilding(j, i) / pHeadSelectedCity.getNumBuilding(i)
 								iCommerce += pHeadSelectedCity.getMiseryCommerceByBuilding(j, i) / pHeadSelectedCity.getNumBuilding(i)	# changes per angry citizen and per unhealthiness (added by this mod)
+								if (bWorldWonder):
+									iCommerce += pBuildingOwner.getTraitWorldWonderCommerce(j)	# WorldWonderCommerceChanges of the traits (added by this mod)
 	
 								if (iCommerce != 0):
 									if ( bFirst == False ):
@@ -2196,6 +2203,20 @@ class CvMainInterface:
 										szTempBuffer = u"%s%d%c" %( "", iCommerce, gc.getCommerceInfo(j).getChar() )
 										szRightBuffer = szRightBuffer + szTempBuffer
 	
+							# An obsolete world wonder still counts for WorldWonderYieldChanges of the traits (added by this mod)
+							if (bWorldWonder and pHeadSelectedCity.getNumActiveBuilding(i) == 0):
+								for j in range(YieldTypes.NUM_YIELD_TYPES):
+									iYield = pBuildingOwner.getTraitWorldWonderYield(j)
+									if (iYield != 0):
+										if ( bFirst == False ):
+											szRightBuffer = szRightBuffer + ", "
+										else:
+											bFirst = False
+										if ( iYield > 0 ):
+											szRightBuffer = szRightBuffer + u"%s%d%c" %( "+", iYield, gc.getYieldInfo(j).getChar() )
+										else:
+											szRightBuffer = szRightBuffer + u"%s%d%c" %( "", iYield, gc.getYieldInfo(j).getChar() )
+
 							szBuffer = szLeftBuffer + "  " + szRightBuffer
 							
 							screen.appendTableRow( "BuildingListTable" )

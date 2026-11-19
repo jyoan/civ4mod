@@ -538,6 +538,11 @@ public:
 	bool isTraitRevealBonus(int /*BonusTypes*/ eBonus);	// added by this mod
 	bool isNoTechProcess(int /*ProcessTypes*/ eProcess);	// added by this mod
 	bool isNoConscriptExperiencePenalty();	// added by this mod
+	int getTraitYieldChange(int /*YieldTypes*/ eYield);	// added by this mod
+	int getHealthPerReligion();	// added by this mod
+	int getYieldPerReligion(int /*YieldTypes*/ eYield);	// added by this mod
+	int getTraitWorldWonderYield(int /*YieldTypes*/ eYield);	// added by this mod
+	int getTraitGlobalWorldWonderYield(int /*YieldTypes*/ eYield);	// added by this mod
 	int getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce);
 	int getBonusHealChange();
 	int getBonusHealChangeEnemy();

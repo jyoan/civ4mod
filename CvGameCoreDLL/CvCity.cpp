@@ -300,6 +300,7 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 	updateFeatureHealth();
 	updateFeatureHappiness();
 	updatePowerHealth();
+	updateDynamicBuildingYields();	// YieldChanges of the traits (added by this mod)
 
 	GET_PLAYER(getOwnerINLINE()).updateMaintenance();
 
@@ -3921,6 +3922,9 @@ int CvCity::getBonusHealth(BonusTypes eBonus) const
 		iHealth += getNumActiveBuilding((BuildingTypes)iI) * GC.getBuildingInfo((BuildingTypes) iI).getBonusHealthChanges(eBonus);
 	}
 
+	// BonusHealthChanges of the traits of the owner (added by this mod): shown with the bonus on the city screen
+	iHealth += GET_PLAYER(getOwnerINLINE()).getTraitBonusHealth(eBonus);
+
 	return iHealth;
 }
 
@@ -3936,6 +3940,9 @@ int CvCity::getBonusHappiness(BonusTypes eBonus) const
 	{
 		iHappiness += getNumActiveBuilding((BuildingTypes)iI) * GC.getBuildingInfo((BuildingTypes) iI).getBonusHappinessChanges(eBonus);
 	}
+
+	// BonusHappinessChanges of the traits of the owner (added by this mod): shown with the bonus on the city screen
+	iHappiness += GET_PLAYER(getOwnerINLINE()).getTraitBonusHappiness(eBonus);
 
 	return iHappiness;
 }
@@ -4779,6 +4786,67 @@ int CvCity::getStateReligionTraitHealth() const
 	return GET_PLAYER(getOwnerINLINE()).getTraitStateReligionHealth();
 }
 
+// iHealthPerReligion of the traits of the owner (added by this mod): for each religion in the city
+int CvCity::getTraitReligionHealth() const
+{
+	int iPerReligion = GET_PLAYER(getOwnerINLINE()).getHealthPerReligion();
+	return ((iPerReligion != 0) ? (iPerReligion * getReligionCount()) : 0);
+}
+
+// The sum of BonusHappinessChanges (BonusHealthChanges) of the traits of the owner over the bonuses the city has (added by
+// this mod). bGood: the bonuses whose value is positive, else the negative ones, as the buildings in processBonus
+static int getTraitBonusTotal(const CvCity* pCity, int (CvPlayer::*pfValue)(BonusTypes) const, bool bGood)
+{
+	const CvPlayer& kOwner = GET_PLAYER(pCity->getOwnerINLINE());
+	int iTotal = 0;
+	int iValue;
+	int iI;
+
+	if (!kOwner.isAnyTraitBonusHappinessOrHealth())
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		if (pCity->hasBonus((BonusTypes)iI))
+		{
+			iValue = (kOwner.*pfValue)((BonusTypes)iI);
+			if ((bGood && iValue > 0) || (!bGood && iValue < 0))
+			{
+				iTotal += iValue;
+			}
+		}
+	}
+
+	return iTotal;
+}
+
+int CvCity::getTraitBonusHappiness(bool bGood) const
+{
+	return getTraitBonusTotal(this, &CvPlayer::getTraitBonusHappiness, bGood);
+}
+
+int CvCity::getTraitBonusHealth(bool bGood) const
+{
+	return getTraitBonusTotal(this, &CvPlayer::getTraitBonusHealth, bGood);
+}
+
+// YieldChanges, YieldPerReligion, WorldWonderYieldChanges and GlobalWorldWonderYieldChanges of the traits of the owner (added
+// by this mod). A part of calculateDynamicBuildingYield, so updateDynamicBuildingYields adds it to the base yield rate
+int CvCity::getTraitYield(YieldTypes eIndex) const
+{
+	const CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+	int iYield;
+
+	iYield = kOwner.getTraitYieldChange(eIndex);
+	iYield += kOwner.getYieldPerReligion(eIndex) * getReligionCount();
+	iYield += kOwner.getTraitWorldWonderYield(eIndex) * getNumWorldWonders();
+	iYield += kOwner.getTraitGlobalWorldWonderYield(eIndex) * kOwner.getNumWorldWonders();
+
+	return iYield;
+}
+
 int CvCity::unhappyLevel(int iExtra) const
 {
 	int iAngerPercent;
@@ -4817,6 +4885,7 @@ int CvCity::unhappyLevel(int iExtra) const
 		iUnhappiness -= std::min(0, getBonusBadHappiness());
 		iUnhappiness -= std::min(0, getSpecialistBadHappiness());	// added by this mod
 		iUnhappiness -= std::min(0, getTraitReligionHappiness());	// added by this mod
+		iUnhappiness -= getTraitBonusHappiness(false);	// added by this mod
 		iUnhappiness -= std::min(0, getReligionBadHappiness());
 		iUnhappiness -= std::min(0, getCommerceHappiness());
 		iUnhappiness -= std::min(0, area()->getBuildingHappiness(getOwnerINLINE()));
@@ -4846,6 +4915,7 @@ int CvCity::happyLevel() const
 	iHappiness += std::max(0, getBonusGoodHappiness());
 	iHappiness += std::max(0, getSpecialistGoodHappiness());	// added by this mod
 	iHappiness += std::max(0, getTraitReligionHappiness());	// added by this mod
+	iHappiness += getTraitBonusHappiness(true);	// added by this mod
 	iHappiness += std::max(0, getReligionGoodHappiness());
 	iHappiness += std::max(0, getCommerceHappiness());
 	iHappiness += std::max(0, area()->getBuildingHappiness(getOwnerINLINE()));
@@ -4992,6 +5062,14 @@ int CvCity::goodHealth() const
 		iTotalHealth += iHealth;
 	}
 
+	// iHealthPerReligion and BonusHealthChanges of the traits (added by this mod)
+	iHealth = getTraitReligionHealth();
+	if (iHealth > 0)
+	{
+		iTotalHealth += iHealth;
+	}
+	iTotalHealth += getTraitBonusHealth(true);
+
 	iHealth = totalGoodBuildingHealth();
 	if (iHealth > 0)
 	{
@@ -5064,6 +5142,14 @@ int CvCity::badHealth(bool bNoAngry, int iExtra) const
 	{
 		iTotalHealth += iHealth;
 	}
+
+	// iHealthPerReligion and BonusHealthChanges of the traits (added by this mod)
+	iHealth = getTraitReligionHealth();
+	if (iHealth < 0)
+	{
+		iTotalHealth += iHealth;
+	}
+	iTotalHealth += getTraitBonusHealth(false);
 
 	iHealth = totalBadBuildingHealth();
 	if (iHealth < 0)
@@ -5974,6 +6060,9 @@ int CvCity::calculateDynamicBuildingYield(YieldTypes eIndex) const
 	{
 		iYield += getDynamicBuildingYieldByBuilding(eIndex, (BuildingTypes)iI);
 	}
+
+	// The flat yields of the traits (added by this mod): they change with the religions and the world wonders as well
+	iYield += getTraitYield(eIndex);
 
 	return iYield;
 }
@@ -11726,6 +11815,7 @@ void CvCity::setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce
 		updateMaintenance();
 		updateReligionHappiness();
 		updateReligionCommerce();
+		updateDynamicBuildingYields();	// YieldPerReligion of the traits (added by this mod)
 
 		AI_setAssignWorkDirty(true);
 

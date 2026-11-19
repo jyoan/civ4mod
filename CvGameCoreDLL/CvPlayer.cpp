@@ -2987,6 +2987,11 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 		pLoopCity->updateReligionCommerce();
 		pLoopCity->updateCommerce();	// (Global)WorldWonderCommerceChanges
 		pLoopCity->updateMiseryChanges();	// AngryYieldChanges, HappyYieldPercents and the like
+		pLoopCity->updateFeatureHappiness();	// FeatureHappinessChanges
+		pLoopCity->updateExtraBuildingHappiness();	// BuildingHappinessChanges
+		pLoopCity->updateExtraBuildingHealth();	// BuildingHealthChanges
+		pLoopCity->updateReligionHappiness();	// iNonStateReligionHappiness
+		pLoopCity->updateDynamicBuildingYields();	// YieldChanges, YieldPerReligion, (Global)WorldWonderYieldChanges
 	}
 
 	// Maintenance of the overseas cities (iOverseasMaintenanceModifier) and trade routes with distant cities
@@ -8726,6 +8731,50 @@ void CvPlayer::initTraitFreeTechs()
 	}
 }
 
+// YieldChanges of the traits (added by this mod): yield of every city (CvCity::getTraitYield)
+int CvPlayer::getTraitYieldChange(YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getYieldChange, eYield);
+}
+
+// iHealthPerReligion and YieldPerReligion of the traits (added by this mod): for each religion in the city
+int CvPlayer::getHealthPerReligion() const
+{
+	return sumTraitValues(&CvTraitInfo::getHealthPerReligion);
+}
+
+int CvPlayer::getYieldPerReligion(YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getYieldPerReligion, eYield);
+}
+
+// WorldWonderYieldChanges and GlobalWorldWonderYieldChanges of the traits (added by this mod): CvCity::getTraitYield
+int CvPlayer::getTraitWorldWonderYield(YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getWorldWonderYieldChange, eYield);
+}
+
+int CvPlayer::getTraitGlobalWorldWonderYield(YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getGlobalWorldWonderYieldChange, eYield);
+}
+
+// BonusHappinessChanges and BonusHealthChanges of the traits (added by this mod): CvCity::getTraitBonusHappiness
+int CvPlayer::getTraitBonusHappiness(BonusTypes eBonus) const
+{
+	return sumTraitValues(&CvTraitInfo::getBonusHappinessChange, eBonus);
+}
+
+int CvPlayer::getTraitBonusHealth(BonusTypes eBonus) const
+{
+	return sumTraitValues(&CvTraitInfo::getBonusHealthChange, eBonus);
+}
+
+bool CvPlayer::isAnyTraitBonusHappinessOrHealth() const
+{
+	return hasTraitFlag(&CvTraitInfo::isAnyBonusHappinessOrHealthChange);
+}
+
 // bConquestStateReligion of the traits (added by this mod): see acquireCity
 bool CvPlayer::isConquestStateReligion() const
 {
@@ -12371,7 +12420,8 @@ void CvPlayer::changeStateReligionHappiness(int iChange)
 
 int CvPlayer::getNonStateReligionHappiness() const 
 {
-	return m_iNonStateReligionHappiness;
+	// With iNonStateReligionHappiness of the traits (added by this mod)
+	return m_iNonStateReligionHappiness + sumTraitValues(&CvTraitInfo::getNonStateReligionHappiness);
 }
 
 
@@ -14241,7 +14291,8 @@ int CvPlayer::getExtraBuildingHappiness(BuildingTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < GC.getNumBuildingInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
-	return m_paiExtraBuildingHappiness[eIndex];
+	// With BuildingHappinessChanges of the traits, for the buildings of the class (added by this mod)
+	return m_paiExtraBuildingHappiness[eIndex] + sumTraitValues(&CvTraitInfo::getBuildingHappinessChange, GC.getBuildingInfo(eIndex).getBuildingClassType());
 }
 
 
@@ -14262,7 +14313,8 @@ int CvPlayer::getExtraBuildingHealth(BuildingTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < GC.getNumBuildingInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
-	return m_paiExtraBuildingHealth[eIndex];
+	// With BuildingHealthChanges of the traits, for the buildings of the class (added by this mod)
+	return m_paiExtraBuildingHealth[eIndex] + sumTraitValues(&CvTraitInfo::getBuildingHealthChange, GC.getBuildingInfo(eIndex).getBuildingClassType());
 }
 
 
@@ -14284,7 +14336,8 @@ int CvPlayer::getFeatureHappiness(FeatureTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < GC.getNumFeatureInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
-	return m_paiFeatureHappiness[eIndex];
+	// With FeatureHappinessChanges of the traits (added by this mod)
+	return m_paiFeatureHappiness[eIndex] + sumTraitValues(&CvTraitInfo::getFeatureHappinessChange, eIndex);
 }
 
 
@@ -18966,12 +19019,13 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 		changeSpecialistExtraCommerce(((CommerceTypes)iJ), kTrait.getSpecialistExtraCommerce(iJ) * iChange);
 	}
 
-	// SpecialistYieldChanges (as the buildings) and SpecialistCommerceChanges (added by this mod)
+	// SpecialistYieldChanges (as the buildings), SpecialistExtraYields (every specialist) and SpecialistCommerceChanges
+	// (added by this mod)
 	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
 	{
 		for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
 		{
-			changeSpecialistExtraYield(((SpecialistTypes)iI), ((YieldTypes)iJ), kTrait.getSpecialistYieldChange(iI, iJ) * iChange);
+			changeSpecialistExtraYield(((SpecialistTypes)iI), ((YieldTypes)iJ), (kTrait.getSpecialistYieldChange(iI, iJ) + kTrait.getSpecialistExtraYield(iJ)) * iChange);
 		}
 
 		for (iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)

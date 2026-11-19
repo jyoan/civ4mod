@@ -290,6 +290,14 @@ public:
 	bool isNoTechProcess(ProcessTypes eProcess) const;	// Exposed to Python
 	bool isNoConscriptExperiencePenalty() const;		// Exposed to Python
 	void initTraitFreeTechs();
+	int getTraitYieldChange(YieldTypes eYield) const;		// Exposed to Python
+	int getHealthPerReligion() const;						// Exposed to Python
+	int getYieldPerReligion(YieldTypes eYield) const;		// Exposed to Python
+	int getTraitWorldWonderYield(YieldTypes eYield) const;	// Exposed to Python
+	int getTraitGlobalWorldWonderYield(YieldTypes eYield) const;	// Exposed to Python
+	int getTraitBonusHappiness(BonusTypes eBonus) const;		// Exposed to Python
+	int getTraitBonusHealth(BonusTypes eBonus) const;		// Exposed to Python
+	bool isAnyTraitBonusHappinessOrHealth() const;
 	void doEnemyAttrition();	// added by this mod
 	int getFeatureProductionChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	int getFeatureGrowthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)

@@ -4630,6 +4630,119 @@ void CvGameTextMgr::parseTraitUnitAndCityEffects(CvWStringBuffer& szHelpString, 
 	}
 }
 
+// The part of the trait help for the counterparts of the tags that existed for only one of happiness/health or
+// yield/commerce (added by this mod). The texts of the civics and buildings, with a newline and an indent
+void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szTempBuffer;
+	CvWString szFirstBuffer;
+	CvWString szText;
+	int iValue;
+	int iLast;
+	int iI;
+
+	// YieldChanges and SpecialistExtraYields: "+1[food] in all cities", "+1[production] per specialist"
+	szTempBuffer.Format(L"%s  %c", NEWLINE, gDLL->getSymbolID(BULLET_CHAR));
+	setYieldChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_IN_ALL_CITIES"), kTrait.getYieldChangeArray(), false, false);
+	setYieldChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_PER_SPECIALIST"), kTrait.getSpecialistExtraYieldArray(), false, false);
+
+	// iHealthPerReligion, YieldPerReligion
+	if (kTrait.getHealthPerReligion() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HEALTH_PER_RELIGION", kTrait.getHealthPerReligion()));
+	}
+
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		if (kTrait.getYieldPerReligion(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_COMMERCE_PER_RELIGION", kTrait.getYieldPerReligion(iI), GC.getYieldInfo((YieldTypes)iI).getChar()));
+		}
+	}
+
+	// WorldWonderYieldChanges, GlobalWorldWonderYieldChanges: the texts of the commerce versions
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		if (kTrait.getWorldWonderYieldChange(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_PER_CITY_WORLD_WONDER", kTrait.getWorldWonderYieldChange(iI), GC.getYieldInfo((YieldTypes)iI).getChar()));
+		}
+	}
+
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		if (kTrait.getGlobalWorldWonderYieldChange(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_PER_WORLD_WONDER", kTrait.getGlobalWorldWonderYieldChange(iI), GC.getYieldInfo((YieldTypes)iI).getChar()));
+		}
+	}
+
+	// iNonStateReligionHappiness: the text of the civics
+	iValue = kTrait.getNonStateReligionHappiness();
+	if (iValue != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_NON_STATE_REL_HAPPINESS_WITH_STATE", abs(iValue), ((iValue > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR))));
+	}
+
+	// FeatureHappinessChanges: "+1[happy] from Forest, Jungle", as the civics
+	iLast = 0;
+	for (iI = 0; iI < GC.getNumFeatureInfos(); iI++)
+	{
+		iValue = kTrait.getFeatureHappinessChange(iI);
+		if (iValue != 0)
+		{
+			szFirstBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_FEATURE_HAPPINESS", abs(iValue), ((iValue > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR))).c_str());
+			szText = getLinkText(GC.getFeatureInfo((FeatureTypes)iI).getDescription());
+			setListHelp(szHelpString, szFirstBuffer, szText, L", ", (iValue != iLast));
+			iLast = iValue;
+		}
+	}
+
+	// BuildingHappinessChanges, BuildingHealthChanges: "+1[happy] from Colosseum", as the civics (the building class)
+	for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
+	{
+		iValue = kTrait.getBuildingHappinessChange(iI);
+		if (iValue != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_BUILDING_HAPPINESS", abs(iValue), ((iValue > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR)), GC.getBuildingClassInfo((BuildingClassTypes)iI).getTextKeyWide()));
+		}
+
+		iValue = kTrait.getBuildingHealthChange(iI);
+		if (iValue != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_BUILDING_HAPPINESS", abs(iValue), ((iValue > 0) ? gDLL->getSymbolID(HEALTHY_CHAR) : gDLL->getSymbolID(UNHEALTHY_CHAR)), GC.getBuildingClassInfo((BuildingClassTypes)iI).getTextKeyWide()));
+		}
+	}
+
+	// BonusHappinessChanges, BonusHealthChanges: "+1[happy] from Wine, Silk", as the buildings
+	iLast = 0;
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		iValue = kTrait.getBonusHappinessChange(iI);
+		if (iValue != 0)
+		{
+			szFirstBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_BUILDING_HEALTH_HAPPINESS_CHANGE", abs(iValue), ((iValue > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR))).c_str());
+			szText = getLinkText(GC.getBonusInfo((BonusTypes)iI).getDescription());
+			setListHelp(szHelpString, szFirstBuffer, szText, L", ", (iValue != iLast));
+			iLast = iValue;
+		}
+	}
+
+	iLast = 0;
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		iValue = kTrait.getBonusHealthChange(iI);
+		if (iValue != 0)
+		{
+			szFirstBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_BUILDING_HEALTH_HAPPINESS_CHANGE", abs(iValue), ((iValue > 0) ? gDLL->getSymbolID(HEALTHY_CHAR) : gDLL->getSymbolID(UNHEALTHY_CHAR))).c_str());
+			szText = getLinkText(GC.getBonusInfo((BonusTypes)iI).getDescription());
+			setListHelp(szHelpString, szFirstBuffer, szText, L", ", (iValue != iLast));
+			iLast = iValue;
+		}
+	}
+}
+
 // The part of the trait help for the tags of 2026-11-19: RevealBonuses, NoTechProcesses, bNoConscriptExperiencePenalty,
 // FreeTechs (added by this mod)
 void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
@@ -4927,6 +5040,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		parseTraitMiseryAndLakeEffects(szHelpString, eTrait);
 		parseTraitUnitAndCityEffects(szHelpString, eTrait);
 		parseTraitRevealAndStartEffects(szHelpString, eTrait);
+		parseTraitCounterpartEffects(szHelpString, eTrait);
 		parseTraitUniqueImprovements(szHelpString, eTrait);
 		parseTraitFeatureAndObsolescenceEffects(szHelpString, eTrait, eCivilization);
 
@@ -11686,6 +11800,21 @@ void CvGameTextMgr::setBadHealthHelp(CvWStringBuffer &szBuffer, CvCity& city)
 			szBuffer.append(NEWLINE);
 		}
 
+		// iHealthPerReligion and BonusHealthChanges of the traits (added by this mod)
+		iHealth = -(city.getTraitReligionHealth());
+		if (iHealth > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HEALTH_FROM_TRAIT_RELIGIONS", iHealth));
+			szBuffer.append(NEWLINE);
+		}
+
+		iHealth = -(city.getTraitBonusHealth(false));
+		if (iHealth > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HEALTH_FROM_TRAIT_BONUSES", iHealth));
+			szBuffer.append(NEWLINE);
+		}
+
 		iHealth = -(city.totalBadBuildingHealth());
 		if (iHealth > 0)
 		{
@@ -11803,6 +11932,21 @@ void CvGameTextMgr::setGoodHealthHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		if (iHealth > 0)
 		{
 			szBuffer.append(gDLL->getText("TXT_KEY_MISC_GOOD_HEALTH_FROM_STATE_RELIGION_TRAIT", iHealth));
+			szBuffer.append(NEWLINE);
+		}
+
+		// iHealthPerReligion and BonusHealthChanges of the traits (added by this mod)
+		iHealth = city.getTraitReligionHealth();
+		if (iHealth > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_GOOD_HEALTH_FROM_TRAIT_RELIGIONS", iHealth));
+			szBuffer.append(NEWLINE);
+		}
+
+		iHealth = city.getTraitBonusHealth(true);
+		if (iHealth > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_GOOD_HEALTH_FROM_TRAIT_BONUSES", iHealth));
 			szBuffer.append(NEWLINE);
 		}
 
@@ -12072,6 +12216,16 @@ void CvGameTextMgr::setAngerHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		}
 		iOldAnger = iNewAnger;
 
+		// BonusHappinessChanges of the traits (added by this mod)
+		iNewAnger -= city.getTraitBonusHappiness(false);
+		iAnger = ((iNewAnger - iOldAnger) + std::min(0, iOldAnger));
+		if (iAnger > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_ANGER_TRAIT_BONUSES", iAnger));
+			szBuffer.append(NEWLINE);
+		}
+		iOldAnger = iNewAnger;
+
 		iNewAnger -= std::min(0, city.getReligionBadHappiness());
 		iAnger = ((iNewAnger - iOldAnger) + std::min(0, iOldAnger));
 		if (iAnger > 0)
@@ -12217,6 +12371,15 @@ void CvGameTextMgr::setHappyHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		{
 			iTotalHappy += iHappy;
 			szBuffer.append(gDLL->getText("TXT_KEY_HAPPY_TRAIT_RELIGIONS", iHappy));
+			szBuffer.append(NEWLINE);
+		}
+
+		// BonusHappinessChanges of the traits (added by this mod)
+		iHappy = city.getTraitBonusHappiness(true);
+		if (iHappy > 0)
+		{
+			iTotalHappy += iHappy;
+			szBuffer.append(gDLL->getText("TXT_KEY_HAPPY_TRAIT_BONUSES", iHappy));
 			szBuffer.append(NEWLINE);
 		}
 
@@ -12686,29 +12849,79 @@ void CvGameTextMgr::setReligionHelpCity(CvWStringBuffer &szBuffer, ReligionTypes
 		}
 	}
 
-	if (eStateReligion == eReligion || eStateReligion == NO_RELIGION || bForceState)
+	// YieldPerReligion of the traits of the owner (added by this mod): for every religion in the city
+	for (i = 0; i < NUM_YIELD_TYPES; i++)
 	{
-		for (i = 0; i < NUM_COMMERCE_TYPES; i++)
+		int iYield = GET_PLAYER(pCity->getOwnerINLINE()).getYieldPerReligion((YieldTypes)i);
+		if (iYield != 0)
 		{
-			iCommerce = GC.getReligionInfo(eReligion).getStateReligionCommerce((CommerceTypes)i);
+			if (bHandled)
+			{
+				szBuffer.append(L", ");
+			}
+
+			szTempBuffer.Format(L"%s%d%c", iYield > 0 ? "+" : "", iYield, GC.getYieldInfo((YieldTypes)i).getChar());
+			szBuffer.append(szTempBuffer);
+			bHandled = true;
+		}
+	}
+
+	// With CommercePerReligion of the traits of the owner, for every religion in the city (changed by this mod)
+	for (i = 0; i < NUM_COMMERCE_TYPES; i++)
+	{
+		iCommerce = 0;
+
+		if (eStateReligion == eReligion || eStateReligion == NO_RELIGION || bForceState)
+		{
+			iCommerce += GC.getReligionInfo(eReligion).getStateReligionCommerce((CommerceTypes)i);
 
 			if (pCity->isHolyCity(eReligion))
 			{
 				iCommerce += GC.getReligionInfo(eReligion).getHolyCityCommerce((CommerceTypes)i);
 			}
-
-			if (iCommerce != 0)
-			{
-				if (bHandled)
-				{
-					szBuffer.append(L", ");
-				}
-
-				szTempBuffer.Format(L"%s%d%c", iCommerce > 0 ? "+" : "", iCommerce, GC.getCommerceInfo((CommerceTypes)i).getChar());
-				szBuffer.append(szTempBuffer);
-				bHandled = true;
-			}
 		}
+
+		iCommerce += GET_PLAYER(pCity->getOwnerINLINE()).getCommercePerReligion((CommerceTypes)i);
+
+		if (iCommerce != 0)
+		{
+			if (bHandled)
+			{
+				szBuffer.append(L", ");
+			}
+
+			szTempBuffer.Format(L"%s%d%c", iCommerce > 0 ? "+" : "", iCommerce, GC.getCommerceInfo((CommerceTypes)i).getChar());
+			szBuffer.append(szTempBuffer);
+			bHandled = true;
+		}
+	}
+
+	// iHappinessPerReligion and iHealthPerReligion of the traits of the owner (added by this mod): for every religion in the
+	// city. The happiness of the state religion follows separately, as before
+	iHappiness = GET_PLAYER(pCity->getOwnerINLINE()).getHappinessPerReligion();
+	if (iHappiness != 0)
+	{
+		if (bHandled)
+		{
+			szBuffer.append(L", ");
+		}
+
+		szTempBuffer.Format(L"+%d%c", abs(iHappiness), ((iHappiness > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR)));
+		szBuffer.append(szTempBuffer);
+		bHandled = true;
+	}
+
+	int iHealth = GET_PLAYER(pCity->getOwnerINLINE()).getHealthPerReligion();
+	if (iHealth != 0)
+	{
+		if (bHandled)
+		{
+			szBuffer.append(L", ");
+		}
+
+		szTempBuffer.Format(L"+%d%c", abs(iHealth), ((iHealth > 0) ? gDLL->getSymbolID(HEALTHY_CHAR) : gDLL->getSymbolID(UNHEALTHY_CHAR)));
+		szBuffer.append(szTempBuffer);
+		bHandled = true;
 	}
 
 	if (eStateReligion == eReligion || bForceState)
@@ -15646,6 +15859,9 @@ void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity&
 	int iPlots = 0;
 	int iSpecialists = 0;
 	int iBuildings = 0;
+	int iTraits = 0;
+	int iTraitReligions;
+	int iTraitWonders;
 	int iTradeRoutes = 0;
 	int iCorporations = 0;
 	int iAngry;
@@ -15679,12 +15895,18 @@ void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity&
 		}
 	}
 	iBuildings += city.getDynamicBuildingYield(eYieldType);
+	// The dynamic yield also holds the flat yields of the traits. Shown by where they come from: the religions, the world
+	// wonders, and the rest (YieldChanges)
+	iTraits = city.getTraitYield(eYieldType);
+	iBuildings -= iTraits;
+	iTraitReligions = GET_PLAYER(city.getOwnerINLINE()).getYieldPerReligion(eYieldType) * city.getReligionCount();
+	iTraitWonders = GET_PLAYER(city.getOwnerINLINE()).getTraitWorldWonderYield(eYieldType) * city.getNumWorldWonders() + GET_PLAYER(city.getOwnerINLINE()).getTraitGlobalWorldWonderYield(eYieldType) * GET_PLAYER(city.getOwnerINLINE()).getNumWorldWonders();
 
 	iTradeRoutes = city.getTradeYield(eYieldType);
 	iCorporations = city.getCorporationYield(eYieldType);
 	iAngry = city.getAngryYield(eYieldType);
 	iUnhealthy = city.getUnhealthyYield(eYieldType);
-	iOther = city.getBaseYieldRate(eYieldType) - iPlots - iSpecialists - iBuildings - iTradeRoutes - iCorporations - iAngry - iUnhealthy;
+	iOther = city.getBaseYieldRate(eYieldType) - iPlots - iSpecialists - iBuildings - iTraits - iTradeRoutes - iCorporations - iAngry - iUnhealthy;
 
 	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_PLOTS", iPlots, info.getChar()));
 	szBuffer.append(NEWLINE);
@@ -15698,6 +15920,24 @@ void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity&
 	if (iBuildings != 0)
 	{
 		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_BUILDINGS", iBuildings, info.getChar()));
+		szBuffer.append(NEWLINE);
+	}
+
+	if (iTraitReligions != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_TRAIT_RELIGIONS", iTraitReligions, info.getChar()));
+		szBuffer.append(NEWLINE);
+	}
+
+	if (iTraitWonders != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_TRAIT_WONDERS", iTraitWonders, info.getChar()));
+		szBuffer.append(NEWLINE);
+	}
+
+	if (iTraits - iTraitReligions - iTraitWonders != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_TRAITS", iTraits - iTraitReligions - iTraitWonders, info.getChar()));
 		szBuffer.append(NEWLINE);
 	}
 

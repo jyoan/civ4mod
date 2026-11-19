@@ -2423,6 +2423,31 @@ bool CyPlayer::isNoConscriptExperiencePenalty()
 	return m_pPlayer ? m_pPlayer->isNoConscriptExperiencePenalty() : false;
 }
 
+int CyPlayer::getTraitYieldChange(int /*YieldTypes*/ eYield)
+{
+	return m_pPlayer ? m_pPlayer->getTraitYieldChange((YieldTypes)eYield) : 0;
+}
+
+int CyPlayer::getHealthPerReligion()
+{
+	return m_pPlayer ? m_pPlayer->getHealthPerReligion() : 0;
+}
+
+int CyPlayer::getYieldPerReligion(int /*YieldTypes*/ eYield)
+{
+	return m_pPlayer ? m_pPlayer->getYieldPerReligion((YieldTypes)eYield) : 0;
+}
+
+int CyPlayer::getTraitWorldWonderYield(int /*YieldTypes*/ eYield)
+{
+	return m_pPlayer ? m_pPlayer->getTraitWorldWonderYield((YieldTypes)eYield) : 0;
+}
+
+int CyPlayer::getTraitGlobalWorldWonderYield(int /*YieldTypes*/ eYield)
+{
+	return m_pPlayer ? m_pPlayer->getTraitGlobalWorldWonderYield((YieldTypes)eYield) : 0;
+}
+
 int CyPlayer::getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce)
 {
 	return m_pPlayer ? m_pPlayer->getSpecialistTypeExtraCommerce((SpecialistTypes)eSpecialist, (CommerceTypes)eCommerce) : 0;

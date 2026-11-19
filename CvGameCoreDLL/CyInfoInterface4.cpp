@@ -25,5 +25,17 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("isNoTechProcess", &CvTraitInfo::isNoTechProcess, "bool (int iProcess)")
 		.def("isNoConscriptExperiencePenalty", &CvTraitInfo::isNoConscriptExperiencePenalty, "bool ()")
 		.def("isFreeTech", &CvTraitInfo::isFreeTech, "bool (int iTech)")
+		.def("getYieldChange", &CvTraitInfo::getYieldChange, "int (int iYield)")
+		.def("getHealthPerReligion", &CvTraitInfo::getHealthPerReligion, "int ()")
+		.def("getYieldPerReligion", &CvTraitInfo::getYieldPerReligion, "int (int iYield)")
+		.def("getFeatureHappinessChange", &CvTraitInfo::getFeatureHappinessChange, "int (int iFeature)")
+		.def("getWorldWonderYieldChange", &CvTraitInfo::getWorldWonderYieldChange, "int (int iYield)")
+		.def("getGlobalWorldWonderYieldChange", &CvTraitInfo::getGlobalWorldWonderYieldChange, "int (int iYield)")
+		.def("getSpecialistExtraYield", &CvTraitInfo::getSpecialistExtraYield, "int (int iYield)")
+		.def("getNonStateReligionHappiness", &CvTraitInfo::getNonStateReligionHappiness, "int ()")
+		.def("getBuildingHappinessChange", &CvTraitInfo::getBuildingHappinessChange, "int (int iBuildingClass)")
+		.def("getBuildingHealthChange", &CvTraitInfo::getBuildingHealthChange, "int (int iBuildingClass)")
+		.def("getBonusHappinessChange", &CvTraitInfo::getBonusHappinessChange, "int (int iBonus)")
+		.def("getBonusHealthChange", &CvTraitInfo::getBonusHealthChange, "int (int iBonus)")
 		;
 }

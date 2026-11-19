@@ -163,5 +163,10 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("isTraitRevealBonus", &CyPlayer::isTraitRevealBonus, "bool (int eBonus) - a trait reveals the bonus without its tech (RevealBonuses, added by this mod)")
 		.def("isNoTechProcess", &CyPlayer::isNoTechProcess, "bool (int eProcess) - the process needs no tech (NoTechProcesses of the traits, added by this mod)")
 		.def("isNoConscriptExperiencePenalty", &CyPlayer::isNoConscriptExperiencePenalty, "bool () - drafted units get all the experience (traits, added by this mod)")
+		.def("getTraitYieldChange", &CyPlayer::getTraitYieldChange, "int (int eYield) - yield of every city (YieldChanges of the traits, added by this mod)")
+		.def("getHealthPerReligion", &CyPlayer::getHealthPerReligion, "int () - health for each religion in a city (traits, added by this mod)")
+		.def("getYieldPerReligion", &CyPlayer::getYieldPerReligion, "int (int eYield) - yield for each religion in a city (traits, added by this mod)")
+		.def("getTraitWorldWonderYield", &CyPlayer::getTraitWorldWonderYield, "int (int eYield) - yield for each world wonder in the city (traits, added by this mod)")
+		.def("getTraitGlobalWorldWonderYield", &CyPlayer::getTraitGlobalWorldWonderYield, "int (int eYield) - yield in all cities for each world wonder owned (traits, added by this mod)")
 		;
 }
