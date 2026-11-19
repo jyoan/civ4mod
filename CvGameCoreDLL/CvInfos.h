@@ -4967,6 +4967,16 @@ public:
 	int getBonusHappinessChange(int iBonus) const;	// Exposed to Python
 	int getBonusHealthChange(int iBonus) const;		// Exposed to Python
 	bool isAnyBonusHappinessOrHealthChange() const;
+	int getMaxConscript() const;	// Exposed to Python (added by this mod)
+	bool isMilitaryFoodProduction() const;	// Exposed to Python (added by this mod)
+	int getHealRateChange() const;	// Exposed to Python (added by this mod)
+	int getDomainFreeExperience(int iDomain) const;	// Exposed to Python (added by this mod)
+	int getDomainProductionModifier(int iDomain) const;	// Exposed to Python (added by this mod)
+	int getLargestCityHappiness() const;	// Exposed to Python (added by this mod)
+	int getHappyPerMilitaryUnit() const;	// Exposed to Python (added by this mod)
+	int getFoodKept() const;	// Exposed to Python (added by this mod)
+	bool isNoUnhealthyPopulation() const;	// Exposed to Python (added by this mod)
+	bool isBuildingOnlyHealthy() const;	// Exposed to Python (added by this mod)
 	int getCoastalTradeRoutes() const;	// Exposed to Python (added by this mod)
 	int getTradeRouteModifier() const;	// Exposed to Python (added by this mod)
 	int getForeignTradeRouteModifier() const;	// Exposed to Python (added by this mod)
@@ -5231,6 +5241,16 @@ protected:
 	int* m_paiGlobalWorldWonderYieldChange;	// added by this mod: [yield]
 	int* m_paiSpecialistExtraYield;	// added by this mod: SpecialistExtraYields, [yield]
 	int m_iNonStateReligionHappiness;	// added by this mod
+	int m_iMaxConscript;	// added by this mod
+	bool m_bMilitaryFoodProduction;	// added by this mod
+	int m_iHealRateChange;	// added by this mod
+	std::vector<int> m_aiDomainFreeExperience;	// added by this mod: [domain], empty when not set
+	std::vector<int> m_aiDomainProductionModifier;	// added by this mod: [domain], empty when not set
+	int m_iLargestCityHappiness;	// added by this mod
+	int m_iHappyPerMilitaryUnit;	// added by this mod
+	int m_iFoodKept;	// added by this mod
+	bool m_bNoUnhealthyPopulation;	// added by this mod
+	bool m_bBuildingOnlyHealthy;	// added by this mod
 	int m_iCoastalTradeRoutes;	// added by this mod
 	int m_iTradeRouteModifier;	// added by this mod
 	int m_iForeignTradeRouteModifier;	// added by this mod

@@ -127,3 +127,5 @@
 - 2026-11-19: 志向の `YieldChanges`・`iHealthPerReligion`・`YieldPerReligion`・`FeatureHappinessChanges`・`WorldWonderYieldChanges`・`GlobalWorldWonderYieldChanges`・`SpecialistExtraYields`・`iNonStateReligionHappiness`・`BuildingHappinessChanges`・`BuildingHealthChanges`・`BonusHappinessChanges`・`BonusHealthChanges` を検証用志向で確認。表示: 産出の内訳を由来ごとの行（都市の宗教・世界遺産・志向）に分け、宗教アイコンの説明に宗教ごとの値、建造物の欄の各世界遺産に遺産ごとの値、資源の欄に資源の幸福・衛生を出す
 - 2026-11-19: 志向の `iStateReligionGreatPeopleRateModifier`・`iStateReligionUnitProductionModifier`・`iStateReligionBuildingProductionModifier`・`iStateReligionFreeExperience`（国教の都市の偉人ポイント・ユニットと建物の生産 +25%、経験値 +2。宗教アイコンの説明、偉人ポイントの内訳の「国教（検証用志向）により」の行）を検証用志向で確認
 - 2026-11-19: 志向の `iCoastalTradeRoutes`・`iTradeRouteModifier`・`iForeignTradeRouteModifier`・`iAllCityDefense`・`iBombardDefense`・`iEspionageDefense` を検証用志向で確認
+- 2026-11-19: 志向の `iLargestCityHappiness`・`iHappyPerMilitaryUnit`・`iFoodKept`（検証用志向）、`bNoUnhealthyPopulation`・`bBuildingOnlyHealthy`（検証用志向（蛮族）、検証用社会制度の採用で付け外し）を確認
+- 2026-11-19: 志向の `iMaxConscript`・`iHealRateChange`・`DomainFreeExperiences`・`DomainProductionModifiers`（検証用志向）、`bMilitaryFoodProduction`（検証用志向（蛮族））を確認

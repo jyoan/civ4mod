@@ -6773,7 +6773,8 @@ void CvCity::changeHurryAngerModifier(int iChange)
 
 int CvCity::getHealRate() const
 {
-	return m_iHealRate;
+	// With iHealRateChange of the traits of the owner (added by this mod)
+	return m_iHealRate + GET_PLAYER(getOwnerINLINE()).getTraitHealRateChange();
 }
 
 
@@ -7753,7 +7754,8 @@ void CvCity::changeFoodKept(int iChange)
 
 int CvCity::getMaxFoodKeptPercent() const
 {
-	return m_iMaxFoodKeptPercent;
+	// With iFoodKept of the traits of the owner (added by this mod). At most 100: more would let the city grow again at once
+	return std::min(100, m_iMaxFoodKeptPercent + GET_PLAYER(getOwnerINLINE()).getTraitFoodKept());
 }
 
 
@@ -9831,7 +9833,8 @@ int CvCity::getDomainFreeExperience(DomainTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < NUM_DOMAIN_TYPES, "eIndex expected to be < NUM_DOMAIN_TYPES");
-	return m_aiDomainFreeExperience[eIndex];
+	// With DomainFreeExperiences of the traits of the owner (added by this mod)
+	return m_aiDomainFreeExperience[eIndex] + GET_PLAYER(getOwnerINLINE()).getTraitDomainFreeExperience(eIndex);
 }
 
 
@@ -9848,7 +9851,8 @@ int CvCity::getDomainProductionModifier(DomainTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < NUM_DOMAIN_TYPES, "eIndex expected to be < NUM_DOMAIN_TYPES");
-	return m_aiDomainProductionModifier[eIndex];
+	// With DomainProductionModifiers of the traits of the owner (added by this mod)
+	return m_aiDomainProductionModifier[eIndex] + GET_PLAYER(getOwnerINLINE()).getTraitDomainProductionModifier(eIndex);
 }
 
 

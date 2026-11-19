@@ -20267,6 +20267,14 @@ m_paiWorldWonderYieldChange(NULL),
 m_paiGlobalWorldWonderYieldChange(NULL),
 m_paiSpecialistExtraYield(NULL),
 m_iNonStateReligionHappiness(0),
+m_iMaxConscript(0),
+m_bMilitaryFoodProduction(false),
+m_iHealRateChange(0),
+m_iLargestCityHappiness(0),
+m_iHappyPerMilitaryUnit(0),
+m_iFoodKept(0),
+m_bNoUnhealthyPopulation(false),
+m_bBuildingOnlyHealthy(false),
 m_iCoastalTradeRoutes(0),
 m_iTradeRouteModifier(0),
 m_iForeignTradeRouteModifier(0),
@@ -21213,6 +21221,65 @@ int CvTraitInfo::getBonusHealthChange(int iBonus) const
 bool CvTraitInfo::isAnyBonusHappinessOrHealthChange() const
 {
 	return (!m_aiBonusHappinessChange.empty() || !m_aiBonusHealthChange.empty());
+}
+
+// iMaxConscript (added by this mod): as the civics, units the player can draft per turn, before the world size modifier
+int CvTraitInfo::getMaxConscript() const
+{
+	return m_iMaxConscript;
+}
+
+// bMilitaryFoodProduction (added by this mod): as the civics, the food surplus goes into military units
+bool CvTraitInfo::isMilitaryFoodProduction() const
+{
+	return m_bMilitaryFoodProduction;
+}
+
+// iHealRateChange (added by this mod): as the buildings, extra heal % of the units in every city (CvCity::getHealRate)
+int CvTraitInfo::getHealRateChange() const
+{
+	return m_iHealRateChange;
+}
+
+// DomainFreeExperiences / DomainProductionModifiers (added by this mod): as the buildings, for every city
+int CvTraitInfo::getDomainFreeExperience(int iDomain) const
+{
+	return getVectorValue(m_aiDomainFreeExperience, iDomain);
+}
+
+int CvTraitInfo::getDomainProductionModifier(int iDomain) const
+{
+	return getVectorValue(m_aiDomainProductionModifier, iDomain);
+}
+
+// iLargestCityHappiness (added by this mod): as the civics, happiness of the largest cities (CvPlayer::processTrait)
+int CvTraitInfo::getLargestCityHappiness() const
+{
+	return m_iLargestCityHappiness;
+}
+
+// iHappyPerMilitaryUnit (added by this mod): as the civics, happiness for each military unit in a city (CvPlayer::processTrait)
+int CvTraitInfo::getHappyPerMilitaryUnit() const
+{
+	return m_iHappyPerMilitaryUnit;
+}
+
+// iFoodKept (added by this mod): as the buildings, % of the food kept after growth in every city (CvCity::getMaxFoodKeptPercent)
+int CvTraitInfo::getFoodKept() const
+{
+	return m_iFoodKept;
+}
+
+// bNoUnhealthyPopulation (added by this mod): as the civics, no unhealthiness from the population (CvPlayer::processTrait)
+bool CvTraitInfo::isNoUnhealthyPopulation() const
+{
+	return m_bNoUnhealthyPopulation;
+}
+
+// bBuildingOnlyHealthy (added by this mod): as the civics, no unhealthiness from the buildings (CvPlayer::processTrait)
+bool CvTraitInfo::isBuildingOnlyHealthy() const
+{
+	return m_bBuildingOnlyHealthy;
 }
 
 // iCoastalTradeRoutes (added by this mod): as the buildings, trade routes of every coastal city (CvPlayer::processTrait)
@@ -22702,6 +22769,18 @@ void CvTraitInfo::readCounterpartValues(CvXMLLoadUtility* pXML)
 	readTypeStringValueList(pXML, "BuildingHealthChanges", "BuildingHealthChange", "BuildingClassType", "iHealthChange", m_aszBuildingHealthChangeTypes, m_aiBuildingHealthChangeValues);
 	readTypeStringValueList(pXML, "BonusHappinessChanges", "BonusHappinessChange", "BonusType", "iHappinessChange", m_aszBonusHappinessChangeTypes, m_aiBonusHappinessChangeValues);
 	readTypeStringValueList(pXML, "BonusHealthChanges", "BonusHealthChange", "BonusType", "iHealthChange", m_aszBonusHealthChangeTypes, m_aiBonusHealthChangeValues);
+	// Military, as the civics and buildings. The domains are loaded before the traits
+	pXML->GetChildXmlValByName(&m_iMaxConscript, "iMaxConscript");
+	pXML->GetChildXmlValByName(&m_bMilitaryFoodProduction, "bMilitaryFoodProduction");
+	pXML->GetChildXmlValByName(&m_iHealRateChange, "iHealRateChange");
+	readTypeValueList(pXML, "DomainFreeExperiences", "DomainFreeExperience", "DomainType", "iExperience", NUM_DOMAIN_TYPES, m_aiDomainFreeExperience);
+	readTypeValueList(pXML, "DomainProductionModifiers", "DomainProductionModifier", "DomainType", "iProductionModifier", NUM_DOMAIN_TYPES, m_aiDomainProductionModifier);
+	// Cities and population, as the civics and buildings
+	pXML->GetChildXmlValByName(&m_iLargestCityHappiness, "iLargestCityHappiness");
+	pXML->GetChildXmlValByName(&m_iHappyPerMilitaryUnit, "iHappyPerMilitaryUnit");
+	pXML->GetChildXmlValByName(&m_iFoodKept, "iFoodKept");
+	pXML->GetChildXmlValByName(&m_bNoUnhealthyPopulation, "bNoUnhealthyPopulation");
+	pXML->GetChildXmlValByName(&m_bBuildingOnlyHealthy, "bBuildingOnlyHealthy");
 	// Trade routes and defense, as the buildings
 	pXML->GetChildXmlValByName(&m_iCoastalTradeRoutes, "iCoastalTradeRoutes");
 	pXML->GetChildXmlValByName(&m_iTradeRouteModifier, "iTradeRouteModifier");

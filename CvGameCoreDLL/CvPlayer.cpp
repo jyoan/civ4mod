@@ -8797,6 +8797,29 @@ int CvPlayer::getTraitEspionageDefense() const
 	return sumTraitValues(&CvTraitInfo::getEspionageDefense);
 }
 
+// iFoodKept of the traits (added by this mod): see CvCity::getMaxFoodKeptPercent
+int CvPlayer::getTraitFoodKept() const
+{
+	return sumTraitValues(&CvTraitInfo::getFoodKept);
+}
+
+// iHealRateChange, DomainFreeExperiences and DomainProductionModifiers of the traits (added by this mod): as the
+// buildings, for every city (CvCity::getHealRate, getDomainFreeExperience, getDomainProductionModifier)
+int CvPlayer::getTraitHealRateChange() const
+{
+	return sumTraitValues(&CvTraitInfo::getHealRateChange);
+}
+
+int CvPlayer::getTraitDomainFreeExperience(DomainTypes eDomain) const
+{
+	return sumTraitValues(&CvTraitInfo::getDomainFreeExperience, eDomain);
+}
+
+int CvPlayer::getTraitDomainProductionModifier(DomainTypes eDomain) const
+{
+	return sumTraitValues(&CvTraitInfo::getDomainProductionModifier, eDomain);
+}
+
 // bConquestStateReligion of the traits (added by this mod): see acquireCity
 bool CvPlayer::isConquestStateReligion() const
 {
@@ -19031,6 +19054,14 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	changeStateReligionFreeExperience(kTrait.getStateReligionFreeExperience() * iChange);
 	changeCoastalTradeRoutes(kTrait.getCoastalTradeRoutes() * iChange);	// added by this mod (as the buildings)
 	changeCityDefenseModifier(kTrait.getAllCityDefense() * iChange);	// added by this mod (as the buildings)
+	// added by this mod (as the civics)
+	changeLargestCityHappiness(kTrait.getLargestCityHappiness() * iChange);
+	changeHappyPerMilitaryUnit(kTrait.getHappyPerMilitaryUnit() * iChange);
+	changeNoUnhealthyPopulationCount((kTrait.isNoUnhealthyPopulation()) ? iChange : 0);
+	changeBuildingOnlyHealthyCount((kTrait.isBuildingOnlyHealthy()) ? iChange : 0);
+	changeMilitaryFoodProductionCount((kTrait.isMilitaryFoodProduction()) ? iChange : 0);
+	// iMaxConscript with the modifier of the world size, as getWorldSizeMaxConscript for the civics
+	changeMaxConscript(((kTrait.getMaxConscript() * std::max(0, (GC.getWorldInfo(GC.getMapINLINE().getWorldSize()).getMaxConscriptModifier() + 100))) / 100) * iChange);
 	GET_TEAM(getTeam()).changeEnemyWarWearinessModifier(kTrait.getEnemyWarWearinessModifier() * iChange);	// added by this mod (the team value of the buildings)
 
 	for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)

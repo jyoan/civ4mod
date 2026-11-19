@@ -47,5 +47,15 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getAllCityDefense", &CvTraitInfo::getAllCityDefense, "int ()")
 		.def("getBombardDefense", &CvTraitInfo::getBombardDefense, "int ()")
 		.def("getEspionageDefense", &CvTraitInfo::getEspionageDefense, "int ()")
+		.def("getLargestCityHappiness", &CvTraitInfo::getLargestCityHappiness, "int ()")
+		.def("getHappyPerMilitaryUnit", &CvTraitInfo::getHappyPerMilitaryUnit, "int ()")
+		.def("getFoodKept", &CvTraitInfo::getFoodKept, "int ()")
+		.def("isNoUnhealthyPopulation", &CvTraitInfo::isNoUnhealthyPopulation, "bool ()")
+		.def("isBuildingOnlyHealthy", &CvTraitInfo::isBuildingOnlyHealthy, "bool ()")
+		.def("getMaxConscript", &CvTraitInfo::getMaxConscript, "int ()")
+		.def("isMilitaryFoodProduction", &CvTraitInfo::isMilitaryFoodProduction, "bool ()")
+		.def("getHealRateChange", &CvTraitInfo::getHealRateChange, "int ()")
+		.def("getDomainFreeExperience", &CvTraitInfo::getDomainFreeExperience, "int (int iDomain)")
+		.def("getDomainProductionModifier", &CvTraitInfo::getDomainProductionModifier, "int (int iDomain)")
 		;
 }

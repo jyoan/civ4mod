@@ -302,6 +302,10 @@ public:
 	int getTraitForeignTradeRouteModifier() const;	// Exposed to Python
 	int getTraitBombardDefense() const;				// Exposed to Python
 	int getTraitEspionageDefense() const;			// Exposed to Python
+	int getTraitFoodKept() const;	// Exposed to Python
+	int getTraitHealRateChange() const;	// Exposed to Python
+	int getTraitDomainFreeExperience(DomainTypes eDomain) const;	// Exposed to Python
+	int getTraitDomainProductionModifier(DomainTypes eDomain) const;	// Exposed to Python
 	void doEnemyAttrition();	// added by this mod
 	int getFeatureProductionChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	int getFeatureGrowthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)

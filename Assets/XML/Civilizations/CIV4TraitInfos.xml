@@ -390,6 +390,23 @@
 			<iAllCityDefense>25</iAllCityDefense>
 			<iBombardDefense>50</iBombardDefense>
 			<iEspionageDefense>50</iEspionageDefense>
+			<iLargestCityHappiness>1</iLargestCityHappiness>
+			<iHappyPerMilitaryUnit>1</iHappyPerMilitaryUnit>
+			<iFoodKept>25</iFoodKept>
+			<iMaxConscript>1</iMaxConscript>
+			<iHealRateChange>10</iHealRateChange>
+			<DomainFreeExperiences>
+				<DomainFreeExperience>
+					<DomainType>DOMAIN_SEA</DomainType>
+					<iExperience>2</iExperience>
+				</DomainFreeExperience>
+			</DomainFreeExperiences>
+			<DomainProductionModifiers>
+				<DomainProductionModifier>
+					<DomainType>DOMAIN_SEA</DomainType>
+					<iProductionModifier>25</iProductionModifier>
+				</DomainProductionModifier>
+			</DomainProductionModifiers>
 			<GreatPeopleClassRateModifiers>
 				<GreatPeopleClassRateModifier>
 					<UnitClassType>UNITCLASS_ENGINEER</UnitClassType>
@@ -1166,6 +1183,9 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<bNoUnhealthyPopulation>1</bNoUnhealthyPopulation>
+			<bBuildingOnlyHealthy>1</bBuildingOnlyHealthy>
+			<bMilitaryFoodProduction>1</bMilitaryFoodProduction>
 			<bBarbarianAlly>1</bBarbarianAlly>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>

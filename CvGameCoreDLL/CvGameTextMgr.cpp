@@ -4794,6 +4794,66 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_ESPIONAGE_DEFENSE_MOD", kTrait.getEspionageDefense()));
 	}
+
+	// The world size of the game, also on the screens before a game, where it may not be set yet
+	WorldSizeTypes eWorldSize = GC.getMapINLINE().getWorldSize();
+
+	// Cities and population: the civic and building text keys
+	iValue = kTrait.getLargestCityHappiness();
+	if (iValue != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_LARGEST_CITIES_HAPPINESS", abs(iValue), ((iValue > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR)), ((eWorldSize != NO_WORLDSIZE) ? GC.getWorldInfo(eWorldSize).getTargetNumCities() : 0)));
+	}
+
+	iValue = kTrait.getHappyPerMilitaryUnit();
+	if (iValue != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_UNIT_HAPPINESS", abs(iValue), ((iValue > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR))));
+	}
+
+	if (kTrait.isNoUnhealthyPopulation())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_NO_POP_UNHEALTHY"));
+	}
+
+	if (kTrait.isBuildingOnlyHealthy())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_NO_BUILDING_UNHEALTHY"));
+	}
+
+	if (kTrait.getFoodKept() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_STORES_FOOD", kTrait.getFoodKept()));
+	}
+
+	// Military: the civic and building text keys. The draft with the modifier of the world size, as the civics
+	if (kTrait.getMaxConscript() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_CONSCRIPTION", (kTrait.getMaxConscript() * std::max(0, (((eWorldSize != NO_WORLDSIZE) ? GC.getWorldInfo(eWorldSize).getMaxConscriptModifier() : 0) + 100))) / 100));
+	}
+
+	if (kTrait.isMilitaryFoodProduction())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_MILITARY_FOOD"));
+	}
+
+	if (kTrait.getHealRateChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_HEAL_MOD", kTrait.getHealRateChange()));
+	}
+
+	for (iI = 0; iI < NUM_DOMAIN_TYPES; iI++)
+	{
+		if (kTrait.getDomainFreeExperience(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_FREE_XP", GC.getDomainInfo((DomainTypes)iI).getTextKeyWide(), kTrait.getDomainFreeExperience(iI)));
+		}
+
+		if (kTrait.getDomainProductionModifier(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_BUILDS_FASTER_DOMAIN", GC.getDomainInfo((DomainTypes)iI).getTextKeyWide(), kTrait.getDomainProductionModifier(iI)));
+		}
+	}
 }
 
 // The part of the trait help for the tags of 2026-11-19: RevealBonuses, NoTechProcesses, bNoConscriptExperiencePenalty,

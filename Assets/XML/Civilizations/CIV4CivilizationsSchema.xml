@@ -409,6 +409,11 @@
 	<ElementType name="iAllCityDefense" content="textOnly" dt:type="int"/>
 	<ElementType name="iBombardDefense" content="textOnly" dt:type="int"/>
 	<ElementType name="iEspionageDefense" content="textOnly" dt:type="int"/>
+	<ElementType name="iLargestCityHappiness" content="textOnly" dt:type="int"/>
+	<ElementType name="iHappyPerMilitaryUnit" content="textOnly" dt:type="int"/>
+	<ElementType name="iFoodKept" content="textOnly" dt:type="int"/>
+	<ElementType name="bNoUnhealthyPopulation" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bBuildingOnlyHealthy" content="textOnly" dt:type="boolean"/>
 	<ElementType name="GreatPeopleClassRateModifier" content="eltOnly">
 		<element type="UnitClassType"/>
 		<element type="iGreatPeopleRateModifier"/>
@@ -845,6 +850,23 @@
 	<ElementType name="BonusHealthChanges" content="eltOnly">
 		<element type="BonusHealthChange" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="iMaxConscript" content="textOnly" dt:type="int"/>
+	<ElementType name="bMilitaryFoodProduction" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iHealRateChange" content="textOnly" dt:type="int"/>
+	<ElementType name="DomainFreeExperience" content="eltOnly">
+		<element type="DomainType"/>
+		<element type="iExperience"/>
+	</ElementType>
+	<ElementType name="DomainFreeExperiences" content="eltOnly">
+		<element type="DomainFreeExperience" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="DomainProductionModifier" content="eltOnly">
+		<element type="DomainType"/>
+		<element type="iProductionModifier"/>
+	</ElementType>
+	<ElementType name="DomainProductionModifiers" content="eltOnly">
+		<element type="DomainProductionModifier" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="TraitInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -897,6 +919,16 @@
 		<element type="iAllCityDefense" minOccurs="0"/>
 		<element type="iBombardDefense" minOccurs="0"/>
 		<element type="iEspionageDefense" minOccurs="0"/>
+		<element type="iLargestCityHappiness" minOccurs="0"/>
+		<element type="iHappyPerMilitaryUnit" minOccurs="0"/>
+		<element type="iFoodKept" minOccurs="0"/>
+		<element type="bNoUnhealthyPopulation" minOccurs="0"/>
+		<element type="bBuildingOnlyHealthy" minOccurs="0"/>
+		<element type="iMaxConscript" minOccurs="0"/>
+		<element type="bMilitaryFoodProduction" minOccurs="0"/>
+		<element type="iHealRateChange" minOccurs="0"/>
+		<element type="DomainFreeExperiences" minOccurs="0"/>
+		<element type="DomainProductionModifiers" minOccurs="0"/>
 		<element type="GreatPeopleClassRateModifiers" minOccurs="0"/>
 		<element type="iEnemyMoveCostInBorders" minOccurs="0"/>
 		<element type="iRevengeCombatPercent" minOccurs="0"/>
