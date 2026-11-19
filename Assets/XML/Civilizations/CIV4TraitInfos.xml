@@ -2792,6 +2792,12 @@
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<bBarbarianAlly>1</bBarbarianAlly>
+			<ConditionalFreeTraits>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_STEPPE_UNITY_VISION</TraitType>
+					<PrereqTech>TECH_HORSEBACK_RIDING</PrereqTech>
+				</ConditionalFreeTrait>
+			</ConditionalFreeTraits>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>
@@ -3229,9 +3235,11 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<NoTechCivics>
-				<CivicType>CIVIC_UNIVERSAL_SUFFRAGE</CivicType>
-			</NoTechCivics>
+			<Hurrys>
+				<Hurry>
+					<HurryType>HURRY_GOLD</HurryType>
+				</Hurry>
+			</Hurrys>
 			<UniqueUnits>
 				<UniqueUnit>
 					<UnitClassType>UNITCLASS_MERCHANT</UnitClassType>
@@ -4140,6 +4148,29 @@
 				<iCommerce>0</iCommerce>
 				<iCommerce>50</iCommerce>
 			</CommerceModifiers>
+			<FreePromotions/>
+			<FreePromotionUnitCombats/>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_STEPPE_UNITY_VISION</Type>
+			<Description>TXT_KEY_TRAIT_STEPPE_UNITY_VISION</Description>
+			<ShortDescription>TXT_KEY_TRAIT_STEPPE_UNITY_VISION_SHORT</ShortDescription>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iMaxAnarchy>-1</iMaxAnarchy>
+			<iUpkeepModifier>0</iUpkeepModifier>
+			<iLevelExperienceModifier>0</iLevelExperienceModifier>
+			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
+			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
+			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
+			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
+			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
+			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<bBarbarianVision>1</bBarbarianVision>
+			<ExtraYieldThresholds/>
+			<TradeYieldModifiers/>
+			<CommerceChanges/>
+			<CommerceModifiers/>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 		</TraitInfo>

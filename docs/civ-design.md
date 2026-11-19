@@ -89,7 +89,7 @@ BtS の効果はそのままにして足す。
 | 昇進の `iOtherReligionCombatPercent`・`iStateReligionCityAttack` | イザベル |
 | `NoObsoleteBuildingClasses` の城壁・城 | ギルガメッシュ |
 | `bNewCityStateReligion` | ザラ・ヤコブ |
-| `bBarbarianAlly` | チンギス・ハーン |
+| `bBarbarianAlly`、`PrereqTech`（騎乗）+ `bBarbarianVision` | チンギス・ハーン |
 | `iEnemyAttritionInBorders` | スターリン |
 | `iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | ガンジー |
 | `NoObsoleteBuildingClasses` の世界遺産 | ラムセス２世 |
@@ -101,7 +101,7 @@ BtS の効果はそのままにして足す。
 | `WorldWonderCommerceChanges` の文化 | ルイ14世 |
 | `RiverEdgeYieldPercents` | シュメール |
 | 偵察ユニットへの `bChooseGoody`・歩哨の昇進、首都の建設時の斥候（`PyOnCityFounded`） | ジョアン2世 |
-| `NoTechCivics` の普通選挙、大商人の `UniqueUnits` | マンサ・ムサ |
+| `Hurrys` の資金（制限なし）、大商人の `UniqueUnits` | マンサ・ムサ |
 | 征服した都市の徴兵ユニット（`PyOnCityAcquired`） | オスマン |
 | `SpecialistYieldChanges`（技術者・聖職者）、`SpecialistCommerceChanges`（科学者・商人・芸術家・スパイ）と定住した偉人 | ギリシャ |
 | `bConquestLearnUniqueUnits`、`bConquestLearnUniqueBuildings` | アレクサンドロス |
@@ -159,7 +159,7 @@ BtS の効果はそのままにして足す。
 | イザベル | レコンキスタ: 異教徒との戦闘力 +25%、国教の広まった都市への攻撃 +25% | 昇進の `iOtherReligionCombatPercent`・`iStateReligionCityAttack` | 実装済み `TRAIT_RECONQUISTA` |
 | ギルガメッシュ | ウルクの城壁: 城壁と城が陳腐化しない | `NoObsoleteBuildingClasses` | 実装済み `TRAIT_WALLS_OF_URUK` |
 | ザラ・ヤコブ | 信仰の王: 新しい都市に国教が広まる | `bNewCityStateReligion` | 実装済み `TRAIT_KING_OF_FAITH` |
-| チンギス・ハーン | 草原の統一: 蛮族と平和 | `bBarbarianAlly` | 実装済み `TRAIT_STEPPE_UNITY` |
+| チンギス・ハーン | 草原の統一: 蛮族と平和。騎乗を得ると蛮族の視界を共有する（蛮族のユニット・動物・都市が見ているタイルが見える。2026-11-19 に追加。視界は強力なので騎乗を条件にした） | `bBarbarianAlly`、`ConditionalFreeTraits` の `PrereqTech`（`TECH_HORSEBACK_RIDING`）で `TRAIT_STEPPE_UNITY_VISION`（`bBarbarianVision`） | 実装済み `TRAIT_STEPPE_UNITY` |
 | スターリン | 焦土: 自国の領土にいる交戦中の敵が毎ターン最大 HP の 10% を失う（50% まで） | `iEnemyAttritionInBorders`・`iEnemyAttritionLimit` | 実装済み `TRAIT_SCORCHED_EARTH` |
 | ガンジー | 非暴力不服従: 防衛時の戦闘力 +10%、敵の厭戦感情 +50% | `iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | 実装済み `TRAIT_SATYAGRAHA` |
 | ラムセス２世 | 永遠の記念碑: すべての世界遺産が陳腐化しない（BtS で陳腐化する 13 個を並べた） | `NoObsoleteBuildingClasses` | 実装済み `TRAIT_ETERNAL_MONUMENTS` |
@@ -170,7 +170,7 @@ BtS の効果はそのままにして足す。
 | ペルシャ（文明） | 黄金の帝国: 黄金時代は陸上ユニットの移動力 +1、全ユニットの戦闘力 +15% | `iGoldenAgeLandMovesChange`、`bGoldenAge` で `TRAIT_GOLDEN_EMPIRE_AGE`（`iCombatPercent`） | 実装済み、ゲームで確認済み `TRAIT_GOLDEN_EMPIRE` |
 | ルイ14世 | 太陽王: 世界遺産のある都市は、遺産 1 つにつき文化 +3 | `WorldWonderCommerceChanges` | 実装済み、ゲームで確認済み `TRAIT_SUN_KING` |
 | ジョアン2世 | 探検王: 偵察ユニットが部族集落の報酬を選べ、歩哨の昇進も持つ。首都を建設すると斥候 1 体 | `FreePromotionSets`（`bChooseGoody` の昇進 `PROMOTION_EXPLORER_KING`、`PROMOTION_SENTRY`）、`PyOnCityFounded` | 実装済み `TRAIT_EXPLORER_KING` |
-| マンサ・ムサ | 黄金の巡礼: 普通選挙を最初から採用できる。大商人の代わりにワンガラ商人（移動力 3、交易任務の金 1.5 倍） | `NoTechCivics`、`UniqueUnits`（`UNIT_WANGARA_TRADER`） | 実装済み `TRAIT_GOLDEN_PILGRIMAGE` |
+| マンサ・ムサ | 黄金の巡礼: 普通選挙なしで資金による緊急生産ができる（2026-11-19 に「普通選挙を最初から採用できる」から変更）。大商人の代わりにワンガラ商人（移動力 3、交易任務の金 1.5 倍） | `Hurrys`（`HURRY_GOLD`）、`UniqueUnits`（`UNIT_WANGARA_TRADER`） | 実装済み `TRAIT_GOLDEN_PILGRIMAGE` |
 | オスマン（文明） | デヴシルメ: 都市を征服すると、その都市で徴兵できるユニットが 1 体加わる | `PyOnCityAcquired`（`CyCity.getConscriptUnit`） | 実装済み `TRAIT_DEVSHIRME` |
 | ギリシャ（文明） | アゴラ: 専門家 1 人につき、科学者 研究 +1、商人 金 +1、技術者 生産 +1、芸術家 文化 +1、スパイ 諜報 +1、聖職者 商業 +1。定住した偉人はそれぞれ 2 倍 | `SpecialistYieldChanges`、`SpecialistCommerceChanges` | 実装済み `TRAIT_AGORA` |
 | カルタゴ・イギリス（文明） | 開始位置のバイアス: 沿岸 +100%（文明の志向は未定） | 文明の `iStartBiasCoastal` | 実装済み、ゲームで確認済み |

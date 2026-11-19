@@ -1541,4 +1541,22 @@
 		<Spanish>Pea</Spanish>
 		<Japanese>&#24179;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_STEPPE_UNITY_VISION</Tag>
+		<English>Unity of the Steppe (Horseback Riding)</English>
+		<French>Unity of the Steppe (Horseback Riding)</French>
+		<German>Unity of the Steppe (Horseback Riding)</German>
+		<Italian>Unity of the Steppe (Horseback Riding)</Italian>
+		<Spanish>Unity of the Steppe (Horseback Riding)</Spanish>
+		<Japanese>&#33609;&#21407;&#12398;&#32113;&#19968;&#65288;&#39438;&#20055;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_STEPPE_UNITY_VISION_SHORT</Tag>
+		<English>Hor</English>
+		<French>Hor</French>
+		<German>Hor</German>
+		<Italian>Hor</Italian>
+		<Spanish>Hor</Spanish>
+		<Japanese>&#39438;</Japanese>
+	</TEXT>
 </Civ4GameText>
