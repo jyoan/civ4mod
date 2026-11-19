@@ -3108,6 +3108,12 @@ def canTriggerExperiencedCaptain(argsList):
 
 ######## PARTISANS ###########
 
+# Fixes of this mod in the partisans (BtS had these bugs):
+# - Option 2 asked max(1, ...) > 0, which is always true, so it gave a unit even without culture on the plot. It now needs culture like option 1
+# - Option 1 counted the plot of the razed city when deciding whether it can be chosen, but did not place units there, so it could be chosen and give nothing.
+#   It also placed units in a city next to the razed one (possible with iMinCityRangeChange of the traits). Both now use getPartisanPlots
+# - The help left szHelp undefined without a capital, and the options did not check that the capital has a unit to conscript (initUnit with NO_UNIT)
+
 def getNumPartisanUnits(plot, iPlayer):
 	for i in range(gc.getNumCultureLevelInfos()):
 		iI = gc.getNumCultureLevelInfos() - i - 1
@@ -3115,16 +3121,35 @@ def getNumPartisanUnits(plot, iPlayer):
 			return iI
 	return 0
 
+def getPartisanUnit(iPlayer):
+	'The unit of the partisans (what the capital conscripts), or -1 (added by this mod)'
+	capital = gc.getPlayer(iPlayer).getCapitalCity()
+	if None == capital or capital.isNone():
+		return -1
+	return capital.getConscriptUnit()
+
+def getPartisanPlots(kTriggeredData):
+	'The plots around the razed city where option 1 places units (added by this mod)'
+	listPlots = []
+	for i in range(3):
+		for j in range(3):
+			if i != 1 or j != 1:
+				loopPlot = gc.getMap().plot(kTriggeredData.iPlotX + i - 1, kTriggeredData.iPlotY + j - 1)
+				if None != loopPlot and not loopPlot.isNone():
+					if not (loopPlot.isVisibleEnemyUnit(kTriggeredData.ePlayer) or loopPlot.isWater() or loopPlot.isImpassable() or loopPlot.isCity()):
+						listPlots.append(loopPlot)
+	return listPlots
+
 def getHelpPartisans1(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
-	player = gc.getPlayer(kTriggeredData.ePlayer)
-	capital = player.getCapitalCity()
 	plot = gc.getMap().plot(kTriggeredData.iPlotX, kTriggeredData.iPlotY)
+	eUnit = getPartisanUnit(kTriggeredData.ePlayer)
 	
-	if None != capital and not capital.isNone():
+	szHelp = ""
+	if eUnit != -1:
 		iNumUnits = getNumPartisanUnits(plot, kTriggeredData.ePlayer)
-		szUnit = gc.getUnitInfo(capital.getConscriptUnit()).getTextKey()
+		szUnit = gc.getUnitInfo(eUnit).getTextKey()
 		
 		szHelp = localText.getText("TXT_KEY_EVENT_PARTISANS_HELP_1", (iNumUnits, szUnit))	
 
@@ -3133,43 +3158,33 @@ def getHelpPartisans1(argsList):
 def canApplyPartisans1(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
-	player = gc.getPlayer(kTriggeredData.ePlayer)
 	plot = gc.getMap().plot(kTriggeredData.iPlotX, kTriggeredData.iPlotY)
+
+	if getPartisanUnit(kTriggeredData.ePlayer) == -1:
+		return false
 
 	if getNumPartisanUnits(plot, kTriggeredData.ePlayer) <= 0:
 		return false
 
-	for i in range(3):
-		for j in range(3):
-			loopPlot = gc.getMap().plot(kTriggeredData.iPlotX + i - 1, kTriggeredData.iPlotY + j - 1)
-			if None != loopPlot and not loopPlot.isNone():
-				if not (loopPlot.isVisibleEnemyUnit(kTriggeredData.ePlayer) or loopPlot.isWater() or loopPlot.isImpassable() or loopPlot.isCity()):
-					return true
-	return false
+	return (len(getPartisanPlots(kTriggeredData)) > 0)
 	
 
 def applyPartisans1(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
 	player = gc.getPlayer(kTriggeredData.ePlayer)	
-	capital = player.getCapitalCity()
 	plot = gc.getMap().plot(kTriggeredData.iPlotX, kTriggeredData.iPlotY)
+	eUnit = getPartisanUnit(kTriggeredData.ePlayer)
 	
-	if None != capital and not capital.isNone():
+	if eUnit != -1:
 		iNumUnits = getNumPartisanUnits(plot, kTriggeredData.ePlayer)
 
-		listPlots = []
-		for i in range(3):
-			for j in range(3):
-				loopPlot = gc.getMap().plot(kTriggeredData.iPlotX + i - 1, kTriggeredData.iPlotY + j - 1)
-				if None != loopPlot and not loopPlot.isNone() and (i != 1 or j != 1):
-					if not (loopPlot.isVisibleEnemyUnit(kTriggeredData.ePlayer) or loopPlot.isWater() or loopPlot.isImpassable()):
-						listPlots.append(loopPlot)
+		listPlots = getPartisanPlots(kTriggeredData)
 		
 		if len(listPlots) > 0:
 			for i in range(iNumUnits):
 				iPlot = gc.getGame().getSorenRandNum(len(listPlots), "Partisan event placement")
-				player.initUnit(capital.getConscriptUnit(), listPlots[iPlot].getX(), listPlots[iPlot].getY(), UnitAITypes.UNITAI_ATTACK, DirectionTypes.DIRECTION_SOUTH)
+				player.initUnit(eUnit, listPlots[iPlot].getX(), listPlots[iPlot].getY(), UnitAITypes.UNITAI_ATTACK, DirectionTypes.DIRECTION_SOUTH)
 
 def getHelpPartisans2(argsList):
 	iEvent = argsList[0]
@@ -3177,10 +3192,12 @@ def getHelpPartisans2(argsList):
 	player = gc.getPlayer(kTriggeredData.ePlayer)
 	capital = player.getCapitalCity()
 	plot = gc.getMap().plot(kTriggeredData.iPlotX, kTriggeredData.iPlotY)
+	eUnit = getPartisanUnit(kTriggeredData.ePlayer)
 	
-	if None != capital and not capital.isNone():
+	szHelp = ""
+	if eUnit != -1:
 		iNumUnits = max(1, getNumPartisanUnits(plot, kTriggeredData.ePlayer) / 2)
-		szUnit = gc.getUnitInfo(capital.getConscriptUnit()).getTextKey()
+		szUnit = gc.getUnitInfo(eUnit).getTextKey()
 		
 		szHelp = localText.getText("TXT_KEY_EVENT_PARTISANS_HELP_2", (iNumUnits, szUnit, capital.getNameKey()))	
 
@@ -3189,10 +3206,12 @@ def getHelpPartisans2(argsList):
 def canApplyPartisans2(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
-	player = gc.getPlayer(kTriggeredData.ePlayer)
 	plot = gc.getMap().plot(kTriggeredData.iPlotX, kTriggeredData.iPlotY)
 	
-	return (max(1, getNumPartisanUnits(plot, kTriggeredData.ePlayer) / 2) > 0)
+	if getPartisanUnit(kTriggeredData.ePlayer) == -1:
+		return false
+
+	return (getNumPartisanUnits(plot, kTriggeredData.ePlayer) > 0)
 	
 def applyPartisans2(argsList):
 	iEvent = argsList[0]
@@ -3200,11 +3219,12 @@ def applyPartisans2(argsList):
 	player = gc.getPlayer(kTriggeredData.ePlayer)	
 	capital = player.getCapitalCity()
 	plot = gc.getMap().plot(kTriggeredData.iPlotX, kTriggeredData.iPlotY)
+	eUnit = getPartisanUnit(kTriggeredData.ePlayer)
 
-	if None != capital and not capital.isNone():
+	if eUnit != -1:
 		iNumUnits = max(1, getNumPartisanUnits(plot, kTriggeredData.ePlayer) / 2)
 		for i in range(iNumUnits):
-			player.initUnit(capital.getConscriptUnit(), capital.getX(), capital.getY(), UnitAITypes.UNITAI_ATTACK, DirectionTypes.DIRECTION_SOUTH)
+			player.initUnit(eUnit, capital.getX(), capital.getY(), UnitAITypes.UNITAI_ATTACK, DirectionTypes.DIRECTION_SOUTH)
 
 ######## GREED ###########
 
