@@ -239,6 +239,8 @@ public:
 	int getTraitRiverPlotYieldChange(YieldTypes eYield) const;
 	int getTraitRiverEdgeYieldPercent(YieldTypes eYield) const;	// Exposed to Python (added by this mod)
 	int getTraitLakePlotYieldChange(YieldTypes eYield) const;
+	int getTraitLakePlotYieldChangePerEra(YieldTypes eYield) const;	// before times the era (added by this mod)
+	bool isTraitPassableInBorders(const CvPlot* pPlot) const;	// PassableTerrainsInBorders / PassableFeaturesInBorders for this impassable plot (added by this mod)
 	// City plot radius from the traits of this player for a city with the culture level (added by this mod)
 	int getCityRadius(CultureLevelTypes eCultureLevel) const;
 	// City plot radius the AI plans new cities with: all the traits, as if the city had every culture level (added by this mod)

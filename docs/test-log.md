@@ -137,3 +137,4 @@
 - 2026-11-19: 志向の `bBarbarianVision`（蛮族のユニット・動物・都市の視界を共有。採用ですぐ見え、やめるとすぐ消える）を、検証用志向（蛮族）でゲーム内で確認
 - 2026-11-19: シッズ・スシ社の重役のユニットクラスの名前（BtS の `CHANGED_TXT_KEY_UNIT_EXECUTIVE_2` を `TXT_KEY_UNIT_EXECUTIVE_2` に）を、better_trait_mod のオランダのペディアで確認
 - 2026-11-19: 志向の `TerrainTrades` の `TERRAIN_PEAK`（山岳が交易網をつなぎ、通行不能でも止めない）と `TerrainYieldChangesPerEra`（時代が 1 つ進むごとにツンドラの商業 +1）を、検証用志向でゲーム内で確認
+- 2026-11-19: 志向の `PassableTerrainsInBorders`（自国の領土の山岳にダメージなしで入れる）・`FeatureHealChanges`（森での回復 +20%）・`LakePlotYieldChangesPerEra`（時代ごとに湖の商業 +1）を、検証用志向でゲーム内で確認

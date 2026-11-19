@@ -20304,6 +20304,7 @@ m_pabUpgradeAnywhereExcludeEnemy(NULL),
 m_paiRiverPlotYieldChange(NULL),
 m_paiRiverEdgeYieldPercent(NULL),
 m_paiLakePlotYieldChange(NULL),
+m_paiLakePlotYieldChangePerEra(NULL),
 m_paiAngryYieldChange(NULL),
 m_paiAngryCommerceChange(NULL),
 m_paiUnhealthyYieldChange(NULL),
@@ -20349,6 +20350,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_paiRiverPlotYieldChange);
 	SAFE_DELETE_ARRAY(m_paiRiverEdgeYieldPercent);
 	SAFE_DELETE_ARRAY(m_paiLakePlotYieldChange);
+	SAFE_DELETE_ARRAY(m_paiLakePlotYieldChangePerEra);
 	SAFE_DELETE_ARRAY(m_paiAngryYieldChange);
 	SAFE_DELETE_ARRAY(m_paiAngryCommerceChange);
 	SAFE_DELETE_ARRAY(m_paiUnhealthyYieldChange);
@@ -20698,6 +20700,37 @@ bool CvTraitInfo::isBarbarianAlly() const
 bool CvTraitInfo::isBarbarianVision() const
 {
 	return m_bBarbarianVision;
+}
+
+// PassableTerrainsInBorders / PassableFeaturesInBorders (added by this mod): the units of the player enter these impassable
+// plots in its territory without damage. TERRAIN_PEAK stands for peak plots
+bool CvTraitInfo::isPassableTerrainInBorders(int iTerrain) const
+{
+	return (std::find(m_aiPassableTerrainsInBorders.begin(), m_aiPassableTerrainsInBorders.end(), iTerrain) != m_aiPassableTerrainsInBorders.end());
+}
+
+bool CvTraitInfo::isPassableFeatureInBorders(int iFeature) const
+{
+	return (std::find(m_aiPassableFeaturesInBorders.begin(), m_aiPassableFeaturesInBorders.end(), iFeature) != m_aiPassableFeaturesInBorders.end());
+}
+
+// FeatureHealChanges (added by this mod): heal % of the units of the player on the feature
+int CvTraitInfo::getFeatureHealChange(int iFeature) const
+{
+	return ((iFeature > -1) && (iFeature < (int)m_aiFeatureHealChange.size())) ? m_aiFeatureHealChange[iFeature] : 0;
+}
+
+// LakePlotYieldChangesPerEra (added by this mod): times the current era of the player
+int CvTraitInfo::getLakePlotYieldChangePerEra(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiLakePlotYieldChangePerEra ? m_paiLakePlotYieldChangePerEra[i] : 0;
+}
+
+int* CvTraitInfo::getLakePlotYieldChangePerEraArray() const
+{
+	return m_paiLakePlotYieldChangePerEra;
 }
 
 bool CvTraitInfo::isNoPillageInBorders() const
@@ -22350,6 +22383,10 @@ void CvTraitInfo::readModValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bInlandCanals, "bInlandCanals");
 	pXML->GetChildXmlValByName(&m_bBarbarianAlly, "bBarbarianAlly");
 	pXML->GetChildXmlValByName(&m_bBarbarianVision, "bBarbarianVision");
+	// The terrains and features are loaded before the traits
+	readTypeList(pXML, "PassableTerrainsInBorders", m_aiPassableTerrainsInBorders);
+	readTypeList(pXML, "PassableFeaturesInBorders", m_aiPassableFeaturesInBorders);
+	readTypeValueList(pXML, "FeatureHealChanges", "FeatureHealChange", "FeatureType", "iHealChange", GC.getNumFeatureInfos(), m_aiFeatureHealChange);
 }
 
 // The part of read() for CityFoundedUnits (added by this mod)
@@ -22886,6 +22923,16 @@ void CvTraitInfo::readPlotYieldChanges(CvXMLLoadUtility* pXML)
 	else
 	{
 		pXML->InitList(&m_paiLakePlotYieldChange, NUM_YIELD_TYPES);
+	}
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "LakePlotYieldChangesPerEra"))
+	{
+		pXML->SetYields(&m_paiLakePlotYieldChangePerEra);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	else
+	{
+		pXML->InitList(&m_paiLakePlotYieldChangePerEra, NUM_YIELD_TYPES);
 	}
 
 	readYieldChanges(pXML, "AngryYieldChanges", &m_paiAngryYieldChange);

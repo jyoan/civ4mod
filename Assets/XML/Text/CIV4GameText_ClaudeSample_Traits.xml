@@ -1442,4 +1442,31 @@
 		<Spanish>[ICON_BULLET]%D1_Change%F2_Icon for each era after the first from[SPACE]</Spanish>
 		<Japanese>[ICON_BULLET]&#26178;&#20195;&#12364; 1 &#12388;&#36914;&#12416;&#12372;&#12392;&#12395;&#12289;&#27425;&#12398;&#12418;&#12398;&#12424;&#12426;%F2_Icon%D1_Change:[SPACE]</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PASSABLE_IN_BORDERS</Tag>
+		<English>[ICON_BULLET]Units enter in our territory, without damage: %s1</English>
+		<French>[ICON_BULLET]Units enter in our territory, without damage: %s1</French>
+		<German>[ICON_BULLET]Units enter in our territory, without damage: %s1</German>
+		<Italian>[ICON_BULLET]Units enter in our territory, without damage: %s1</Italian>
+		<Spanish>[ICON_BULLET]Units enter in our territory, without damage: %s1</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#12399;&#12518;&#12491;&#12483;&#12488;&#12364;&#20837;&#12428;&#12427;&#65288;&#12480;&#12513;&#12540;&#12472;&#12394;&#12375;&#65289;: %s1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FEATURE_HEAL</Tag>
+		<English>[ICON_BULLET]+%d1%% healing of units on %s2</English>
+		<French>[ICON_BULLET]+%d1%% healing of units on %s2</French>
+		<German>[ICON_BULLET]+%d1%% healing of units on %s2</German>
+		<Italian>[ICON_BULLET]+%d1%% healing of units on %s2</Italian>
+		<Spanish>[ICON_BULLET]+%d1%% healing of units on %s2</Spanish>
+		<Japanese>[ICON_BULLET]%s2&#12395;&#12356;&#12427;&#12518;&#12491;&#12483;&#12488;&#12398;&#22238;&#24489; +%d1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LAKE_PLOTS_PER_ERA</Tag>
+		<English>Lake Tiles for each era after the first</English>
+		<French>Lake Tiles for each era after the first</French>
+		<German>Lake Tiles for each era after the first</German>
+		<Italian>Lake Tiles for each era after the first</Italian>
+		<Spanish>Lake Tiles for each era after the first</Spanish>
+		<Japanese>&#26178;&#20195;&#12364; 1 &#12388;&#36914;&#12416;&#12372;&#12392;&#12395;&#28246;&#12473;&#12463;&#12456;&#12450;</Japanese>
+	</TEXT>
 </Civ4GameText>

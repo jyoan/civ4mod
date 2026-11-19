@@ -12,6 +12,10 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 	kTraitInfo
 		.def("getPyOnCityLost", &CvTraitInfo::getPyOnCityLost, "string ()")
 		.def("isBarbarianVision", &CvTraitInfo::isBarbarianVision, "bool ()")
+		.def("isPassableTerrainInBorders", &CvTraitInfo::isPassableTerrainInBorders, "bool (int iTerrain)")
+		.def("isPassableFeatureInBorders", &CvTraitInfo::isPassableFeatureInBorders, "bool (int iFeature)")
+		.def("getFeatureHealChange", &CvTraitInfo::getFeatureHealChange, "int (int iFeature)")
+		.def("getLakePlotYieldChangePerEra", &CvTraitInfo::getLakePlotYieldChangePerEra, "int (int iYield) - times the current era")
 		.def("getTerrainYieldChangePerEra", &CvTraitInfo::getTerrainYieldChangePerEra, "int (int iTerrain, int iYield) - times the current era")
 		.def("getPyOnGained", &CvTraitInfo::getPyOnGained, "string ()")
 		.def("getPyOnLost", &CvTraitInfo::getPyOnLost, "string ()")

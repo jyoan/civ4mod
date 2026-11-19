@@ -367,6 +367,20 @@
 	<ElementType name="bInlandCanals" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bBarbarianAlly" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bBarbarianVision" content="textOnly" dt:type="boolean"/>
+	<ElementType name="PassableTerrainsInBorders" content="eltOnly">
+		<element type="TerrainType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="PassableFeaturesInBorders" content="eltOnly">
+		<element type="FeatureType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iHealChange" content="textOnly" dt:type="int"/>
+	<ElementType name="FeatureHealChange" content="eltOnly">
+		<element type="FeatureType"/>
+		<element type="iHealChange"/>
+	</ElementType>
+	<ElementType name="FeatureHealChanges" content="eltOnly">
+		<element type="FeatureHealChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="iNumUnits" content="textOnly" dt:type="int"/>
 	<ElementType name="bCoastalOnly" content="textOnly" dt:type="boolean"/>
 	<ElementType name="CityFoundedUnit" content="eltOnly">
@@ -746,6 +760,9 @@
 	<ElementType name="LakePlotYieldChanges" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="LakePlotYieldChangesPerEra" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="BonusType" content="textOnly"/>
 	<ElementType name="iStartBiasCoastal" content="textOnly" dt:type="int"/>
 	<ElementType name="iStartBiasRiver" content="textOnly" dt:type="int"/>
@@ -1075,6 +1092,9 @@
 		<element type="bInlandCanals" minOccurs="0"/>
 		<element type="bBarbarianAlly" minOccurs="0"/>
 		<element type="bBarbarianVision" minOccurs="0"/>
+		<element type="PassableTerrainsInBorders" minOccurs="0"/>
+		<element type="PassableFeaturesInBorders" minOccurs="0"/>
+		<element type="FeatureHealChanges" minOccurs="0"/>
 		<element type="iStartBiasCoastal" minOccurs="0"/>
 		<element type="iStartBiasRiver" minOccurs="0"/>
 		<element type="StartBiasTerrains" minOccurs="0"/>
@@ -1131,6 +1151,7 @@
 		<element type="RiverPlotYieldChanges" minOccurs="0"/>
 		<element type="RiverEdgeYieldPercents" minOccurs="0"/>
 		<element type="LakePlotYieldChanges" minOccurs="0"/>
+		<element type="LakePlotYieldChangesPerEra" minOccurs="0"/>
 		<element type="AngryYieldChanges" minOccurs="0"/>
 		<element type="AngryCommerceChanges" minOccurs="0"/>
 		<element type="UnhealthyYieldChanges" minOccurs="0"/>

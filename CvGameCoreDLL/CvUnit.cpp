@@ -5640,6 +5640,12 @@ int CvUnit::healRate(const CvPlot* pPlot) const
 	// iHealRateChange of the improvements of our team around (added by this mod)
 	iTotalHeal += pPlot->getImprovementRangeValue(getTeam(), &CvImprovementInfo::getHealRateChange);
 
+	// FeatureHealChanges of the owner's traits (added by this mod)
+	if (pPlot->getFeatureType() != NO_FEATURE)
+	{
+		iTotalHeal += GET_PLAYER(getOwnerINLINE()).sumTraitValues(&CvTraitInfo::getFeatureHealChange, pPlot->getFeatureType());
+	}
+
 	return iTotalHeal;
 }
 
@@ -10773,6 +10779,12 @@ int CvUnit::getImpassablePlotPassageDamage(const CvPlot* pPlot) const
 		return -1;
 	}
 
+	// PassableTerrainsInBorders / PassableFeaturesInBorders of the owner's traits (added by this mod): no damage in our territory
+	if (getDomainType() == DOMAIN_LAND && pPlot->getTeam() == getTeam() && GET_PLAYER(getOwnerINLINE()).isTraitPassableInBorders(pPlot))
+	{
+		return 0;
+	}
+
 	ePeakTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_PEAK", true);
 
 	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
@@ -10802,6 +10814,12 @@ int CvUnit::getImpassablePlotPassageMoveCost(const CvPlot* pPlot) const
 	int iI, iJ;
 
 	if (!pPlot->isImpassable())
+	{
+		return 0;
+	}
+
+	// PassableTerrainsInBorders / PassableFeaturesInBorders of the owner's traits (added by this mod)
+	if (getDomainType() == DOMAIN_LAND && pPlot->getTeam() == getTeam() && GET_PLAYER(getOwnerINLINE()).isTraitPassableInBorders(pPlot))
 	{
 		return 0;
 	}
