@@ -10,6 +10,7 @@
 void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInfoBase> >& kTraitInfo)
 {
 	kTraitInfo
+		.def("getPyOnCityLost", &CvTraitInfo::getPyOnCityLost, "string ()")
 		.def("getMaxExperienceAfterUpgrade", &CvTraitInfo::getMaxExperienceAfterUpgrade, "int () - 0 = not set, -1 = keeps all")
 		.def("getExpOutsideBordersChange", &CvTraitInfo::getExpOutsideBordersChange, "int ()")
 		.def("getWeLoveTheKingChance", &CvTraitInfo::getWeLoveTheKingChance, "int ()")

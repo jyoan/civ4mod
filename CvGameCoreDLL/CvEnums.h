@@ -2801,6 +2801,7 @@ enum TraitPythonHookTypes
 	TRAIT_PYHOOK_CITY_FOUNDED,		// PyOnCityFounded
 	TRAIT_PYHOOK_CITY_ACQUIRED,		// PyOnCityAcquired
 	TRAIT_PYHOOK_CORPORATION_FOUNDED,	// PyOnCorporationFounded
+	TRAIT_PYHOOK_CITY_LOST,			// PyOnCityLost
 
 	NUM_TRAIT_PYHOOK_TYPES
 };

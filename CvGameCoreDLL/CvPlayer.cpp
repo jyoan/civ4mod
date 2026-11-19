@@ -1529,6 +1529,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	int iCaptureGold;
 	int iGameTurnFounded;
 	int iPopulation;
+	CultureLevelTypes eOldCultureLevel;
 	int iHighestPopulation;
 	int iHurryAngerTimer;
 	int iConscriptAngerTimer;
@@ -1702,6 +1703,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	eHighestCulturePlayer = pOldCity->findHighestCulture();
 	iGameTurnFounded = pOldCity->getGameTurnFounded();
 	iPopulation = pOldCity->getPopulation();
+	eOldCultureLevel = pOldCity->getCultureLevel();	// for PyOnCityLost (added by this mod)
 	iHighestPopulation = pOldCity->getHighestPopulation();
 	iHurryAngerTimer = pOldCity->getHurryAngerTimer();
 	iConscriptAngerTimer = pOldCity->getConscriptAngerTimer();
@@ -2070,6 +2072,11 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 
 	CvEventReporter::getInstance().cityAcquired(eOldOwner, getID(), pNewCity, bConquest, bTrade);
 	doTraitPythonHook(TRAIT_PYHOOK_CITY_ACQUIRED, pNewCity, eOldOwner, bConquest, bTrade);	// PyOnCityAcquired (added by this mod)
+	// PyOnCityLost of the old owner (added by this mod): before the city can be razed, so a razed city calls it too
+	if (eOldOwner != NO_PLAYER && GET_PLAYER(eOldOwner).isAlive())
+	{
+		GET_PLAYER(eOldOwner).doTraitPythonHook(TRAIT_PYHOOK_CITY_LOST, pNewCity, getID(), bConquest, bTrade, NO_CORPORATION, iPopulation, eOldCultureLevel);
+	}
 
 	SAFE_DELETE_ARRAY(pabHasReligion);
 	SAFE_DELETE_ARRAY(pabHolyCity);
@@ -3016,6 +3023,8 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 // Python hooks of the traits (added by this mod): for each trait of the player with the expression of the hook
 // (PyOnGameStart etc.), calls the function of CvTraitInterface.py that evaluates it. The arguments are the player and the
 // trait, then the city (PyOnCityFounded, PyOnCityAcquired), then the old owner, bConquest and bTrade (PyOnCityAcquired).
+// PyOnCityLost: the city (now of the new owner), the new owner (in eOldOwner), bConquest, bTrade, and the population and
+// the culture level of the city before it was lost.
 // Called where CvEventReporter reports the Python events, which happens the same way on every computer.
 // PyOnDiscovered of a tech (added by this mod): CvHookInterface.py evaluates the expression with pPlayer, eTech and bFirst
 // (the team of the player is the first to have it)
@@ -3052,7 +3061,7 @@ void CvPlayer::doCivicPythonHook(CivicTypes eCivic, bool bAdopt)
 	delete pyPlayer;	// the python function must not hold on to it
 }
 
-void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, PlayerTypes eOldOwner, bool bConquest, bool bTrade, CorporationTypes eCorporation)
+void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, PlayerTypes eOldOwner, bool bConquest, bool bTrade, CorporationTypes eCorporation, int iPopulation, CultureLevelTypes eCultureLevel)
 {
 	// Not for the player watching in the AI observe mode, who has nothing to act on
 	if (isObserver())
@@ -3060,7 +3069,7 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 		return;
 	}
 
-	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded" };
+	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost" };
 	CyPlayer* pyPlayer;
 	CyCity* pyCity;
 	int iI;
@@ -3087,6 +3096,14 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 				argsList.add((int)eOldOwner);
 				argsList.add(bConquest ? 1 : 0);
 				argsList.add(bTrade ? 1 : 0);
+			}
+			else if (eHook == TRAIT_PYHOOK_CITY_LOST)
+			{
+				argsList.add((int)eOldOwner);
+				argsList.add(bConquest ? 1 : 0);
+				argsList.add(bTrade ? 1 : 0);
+				argsList.add(iPopulation);
+				argsList.add((int)eCultureLevel);
 			}
 			else if (eHook == TRAIT_PYHOOK_CORPORATION_FOUNDED)
 			{

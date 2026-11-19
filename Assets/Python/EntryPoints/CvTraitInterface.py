@@ -12,6 +12,11 @@
 ##                     by conquest, trade or culture. A conquered city can still be razed afterwards.
 ##   PyOnCorporationFounded  pPlayer, eTrait, pCity (the headquarters), eCorporation: after the player founds the
 ##                     corporation, e.g. createExecutives(pPlayer, eCorporation, 3, pCity)
+##   PyOnCityLost      pPlayer, eTrait, pCity (now of the new owner), iNewOwner, bConquest, bTrade (1 or 0), iPopulation,
+##                     iCultureLevel (the population and the culture level before the city was lost): after the player
+##                     loses the city by conquest, trade or culture. A conquered city is razed, if it is, only afterwards,
+##                     so this is also the hook for a razed city, e.g.
+##                     bConquest and createPartisans(pPlayer, pCity, 2 + iPopulation, iCultureLevel)
 ## The common functions are in CvHookUtils.py (imported below), e.g.
 ##   <PyOnGameStart>gainGold(pPlayer, scaleBySpeed(100, 'Train'))</PyOnGameStart>
 ## The hooks change the game and are called on every computer of a multiplayer game: use CyGame().getSorenRandNum for
@@ -42,3 +47,7 @@ def onCityAcquired(argsList):
 def onCorporationFounded(argsList):
 	pPlayer, eTrait, pCity, eCorporation = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnCorporationFounded())
+
+def onCityLost(argsList):
+	pPlayer, eTrait, pCity, iNewOwner, bConquest, bTrade, iPopulation, iCultureLevel = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnCityLost())

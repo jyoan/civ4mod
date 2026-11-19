@@ -525,6 +525,7 @@
 			<NoTechCivics>
 				<CivicType>CIVIC_CASTE_SYSTEM</CivicType>
 				<CivicType>CIVIC_ORGANIZED_RELIGION</CivicType>
+				<CivicType>CIVIC_EMANCIPATION</CivicType>
 			</NoTechCivics>
 			<iMaxNationalWondersPerCity>4</iMaxNationalWondersPerCity>
 			<iMaxNationalWondersPerCityForOCC>-1</iMaxNationalWondersPerCityForOCC>
@@ -737,6 +738,7 @@
 			<PyOnCityFounded>addBuilding(pCity, 'BUILDINGCLASS_WALLS')</PyOnCityFounded>
 			<PyOnCityAcquired>addBuilding(pCity, 'BUILDINGCLASS_BARRACKS')</PyOnCityAcquired>
 			<PyOnCorporationFounded>createExecutives(pPlayer, eCorporation, 3, pCity)</PyOnCorporationFounded>
+			<PyOnCityLost>bConquest and createPartisans(pPlayer, pCity, 2 + iPopulation, iCultureLevel)</PyOnCityLost>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>

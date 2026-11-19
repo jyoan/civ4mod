@@ -4760,6 +4760,10 @@
 					<LeaderName>LEADER_TEST</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
+				<Leader>
+					<LeaderName>LEADER_TEST_RAZER</LeaderName>
+					<bLeaderAvailability>1</bLeaderAvailability>
+				</Leader>
 			</Leaders>
 			<Traits>
 				<Trait>
