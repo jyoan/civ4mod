@@ -20234,14 +20234,12 @@ m_iTechCostModifier(0),
 m_iAttitudeChange(0),
 m_iRouteMovementModifierInBorders(0),
 m_iCombatPercent(0),
-m_pabWonderHurry(NULL),
 m_iHappinessPerReligion(0),
 m_paiCommercePerReligion(NULL),
 m_iDefenseCombatPercent(0),
 m_paiWorldWonderCommerceChange(NULL),
 m_paiGlobalWorldWonderCommerceChange(NULL),
 m_iEnemyWarWearinessModifier(0),
-m_bIgnoreWonderHurryCostModifier(false),
 m_bConquestStateReligion(false),
 m_pabConquestReligionBuilding(NULL),
 m_pabNoTechCivic(NULL),
@@ -20251,7 +20249,6 @@ m_bHumanCanBeVassal(false),
 m_iMaxExperienceAfterUpgrade(0),
 m_iExpOutsideBordersChange(0),
 m_iWeLoveTheKingChance(0),
-m_pabUnitHurry(NULL),
 m_paiHappyYieldPercent(NULL),
 m_paiHappyCommercePercent(NULL),
 m_paiHealthyYieldPercent(NULL),
@@ -20267,6 +20264,16 @@ m_paiWorldWonderYieldChange(NULL),
 m_paiGlobalWorldWonderYieldChange(NULL),
 m_paiSpecialistExtraYield(NULL),
 m_iNonStateReligionHappiness(0),
+m_paiCommerceHappiness(NULL),
+m_paiCommerceHealth(NULL),
+m_iBaseFreeUnits(0),
+m_iBaseFreeMilitaryUnits(0),
+m_iFreeUnitsPopulationPercent(0),
+m_iFreeMilitaryUnitsPopulationPercent(0),
+m_iGoldPerUnit(0),
+m_iGoldPerMilitaryUnit(0),
+m_iCorporationMaintenanceModifier(0),
+m_iMaintenanceModifier(0),
 m_iMaxConscript(0),
 m_bMilitaryFoodProduction(false),
 m_iHealRateChange(0),
@@ -20357,8 +20364,6 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabForbiddenCivic);
 	SAFE_DELETE_ARRAY(m_pabNoTechCivic);
 	SAFE_DELETE_ARRAY(m_pabConquestReligionBuilding);
-	SAFE_DELETE_ARRAY(m_pabWonderHurry);
-	SAFE_DELETE_ARRAY(m_pabUnitHurry);
 	SAFE_DELETE_ARRAY(m_paiHappyYieldPercent);
 	SAFE_DELETE_ARRAY(m_paiHappyCommercePercent);
 	SAFE_DELETE_ARRAY(m_paiHealthyYieldPercent);
@@ -20367,6 +20372,8 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabNoTechProcess);
 	SAFE_DELETE_ARRAY(m_pabFreeTech);
 	SAFE_DELETE_ARRAY(m_paiYieldChange);
+	SAFE_DELETE_ARRAY(m_paiCommerceHappiness);
+	SAFE_DELETE_ARRAY(m_paiCommerceHealth);
 	SAFE_DELETE_ARRAY(m_paiYieldPerReligion);
 	SAFE_DELETE_ARRAY(m_paiWorldWonderYieldChange);
 	SAFE_DELETE_ARRAY(m_paiGlobalWorldWonderYieldChange);
@@ -20942,15 +20949,6 @@ int CvTraitInfo::getCombatPercent() const
 	return m_iCombatPercent;
 }
 
-// WonderHurrys (added by this mod): the player can hurry wonders (world, team and national) this way without the civic that
-// allows it (CvCity::canHurry, canHurryBuilding)
-bool CvTraitInfo::isWonderHurry(int iHurry) const
-{
-	FAssertMsg(iHurry < GC.getNumHurryInfos(), "Index out of bounds");
-	FAssertMsg(iHurry > -1, "Index out of bounds");
-	return m_pabWonderHurry ? m_pabWonderHurry[iHurry] : false;
-}
-
 // iHappinessPerReligion and CommercePerReligion (added by this mod): happiness and commerce of each city of the player for each
 // religion in the city (CvCity::getTraitReligionHappiness, getTraitReligionCommerce)
 int CvTraitInfo::getHappinessPerReligion() const
@@ -21003,13 +21001,6 @@ int* CvTraitInfo::getGlobalWorldWonderCommerceChangeArray() const
 int CvTraitInfo::getEnemyWarWearinessModifier() const
 {
 	return m_iEnemyWarWearinessModifier;
-}
-
-// bIgnoreWonderHurryCostModifier (added by this mod): hurrying a wonder costs no extra (iHurryCostModifier of the building
-// above 0 counts as 0, CvCity::getHurryCostModifier). The extra cost of a new item (NEW_HURRY_MODIFIER) and the anger stay
-bool CvTraitInfo::isIgnoreWonderHurryCostModifier() const
-{
-	return m_bIgnoreWonderHurryCostModifier;
 }
 
 // bConquestStateReligion (added by this mod): the state religion spreads to the cities the player conquers
@@ -21083,14 +21074,6 @@ int CvTraitInfo::getSpecialistSlotChange(int iSpecialist) const
 		return 0;
 	}
 	return m_aiSpecialistSlotChange[iSpecialist];
-}
-
-// UnitHurrys (added by this mod): the player can hurry units this way without the civic (CvCity::isUnitHurry)
-bool CvTraitInfo::isUnitHurry(int iHurry) const
-{
-	FAssertMsg(iHurry < GC.getNumHurryInfos(), "Index out of bounds");
-	FAssertMsg(iHurry > -1, "Index out of bounds");
-	return m_pabUnitHurry ? m_pabUnitHurry[iHurry] : false;
 }
 
 // RevealBonuses (added by this mod): the team sees the bonus without its TechReveal, as the random events that reveal a
@@ -21223,6 +21206,147 @@ bool CvTraitInfo::isAnyBonusHappinessOrHealthChange() const
 	return (!m_aiBonusHappinessChange.empty() || !m_aiBonusHealthChange.empty());
 }
 
+// The item applies to the unit or building (added by this mod). No flag: any unit or building
+bool TraitHurry::isTarget(UnitTypes eUnit, BuildingTypes eBuilding) const
+{
+	if (!bUnitsOnly && !bBuildingsOnly && !bWondersOnly && !bWorldWondersOnly && !bNationalWondersOnly)
+	{
+		return (eUnit != NO_UNIT || eBuilding != NO_BUILDING);
+	}
+
+	if (eUnit != NO_UNIT)
+	{
+		return bUnitsOnly;
+	}
+
+	if (eBuilding != NO_BUILDING)
+	{
+		BuildingClassTypes eClass = (BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType();
+
+		if (bBuildingsOnly || (bWondersOnly && isLimitedWonderClass(eClass)) || (bWorldWondersOnly && isWorldWonderClass(eClass)) || (bNationalWondersOnly && isNationalWonderClass(eClass)))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// Hurrys (added by this mod): see TraitHurry and CvPlayer::isTraitHurry
+int CvTraitInfo::getNumHurrys() const
+{
+	return (int)m_aHurrys.size();
+}
+
+const TraitHurry& CvTraitInfo::getHurry(int i) const
+{
+	FAssertMsg(i >= 0 && i < getNumHurrys(), "Index out of bounds");
+	return m_aHurrys[i];
+}
+
+int CvTraitInfo::getHurryType(int i) const
+{
+	return getHurry(i).iHurry;
+}
+
+int CvTraitInfo::getHurryCostModifier(int i) const
+{
+	return getHurry(i).iCostModifier;
+}
+
+int CvTraitInfo::getHurryExperience(int i) const
+{
+	return getHurry(i).iExperience;
+}
+
+// FreeBonuses (added by this mod): as FreeBonus of the buildings, the player has the bonuses in the trade network of the
+// capital, as the imported ones (CvPlot::updatePlotGroupBonus), so they follow the capital
+int CvTraitInfo::getFreeBonus(int iBonus) const
+{
+	return getVectorValue(m_aiFreeBonus, iBonus);
+}
+
+bool CvTraitInfo::isAnyFreeBonus() const
+{
+	return !m_aiFreeBonus.empty();
+}
+
+// BonusProductionModifiers (added by this mod): production % in the cities with the bonus, of everything, or of the world
+// wonders only (bWorldWondersOnly: getBonusWonderProductionModifier)
+int CvTraitInfo::getBonusProductionModifier(int iBonus) const
+{
+	return getVectorValue(m_aiBonusProductionModifier, iBonus);
+}
+
+int CvTraitInfo::getBonusWonderProductionModifier(int iBonus) const
+{
+	return getVectorValue(m_aiBonusWonderProductionModifier, iBonus);
+}
+
+// CommerceHappinesses (as the buildings) and CommerceHealths (added by this mod): happiness / health of every city per 100%
+// of the commerce rate (10 = +1 per 10%)
+int CvTraitInfo::getCommerceHappiness(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiCommerceHappiness ? m_paiCommerceHappiness[i] : 0;
+}
+
+int CvTraitInfo::getCommerceHealth(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiCommerceHealth ? m_paiCommerceHealth[i] : 0;
+}
+
+// iBaseFreeUnits (added by this mod): as the civics, units the player supports for free
+int CvTraitInfo::getBaseFreeUnits() const
+{
+	return m_iBaseFreeUnits;
+}
+
+// iBaseFreeMilitaryUnits (added by this mod): as the civics, military units the player supports for free
+int CvTraitInfo::getBaseFreeMilitaryUnits() const
+{
+	return m_iBaseFreeMilitaryUnits;
+}
+
+// iFreeUnitsPopulationPercent (added by this mod): as the civics, free units: % of the total population
+int CvTraitInfo::getFreeUnitsPopulationPercent() const
+{
+	return m_iFreeUnitsPopulationPercent;
+}
+
+// iFreeMilitaryUnitsPopulationPercent (added by this mod): as the civics, free military units: % of the total population
+int CvTraitInfo::getFreeMilitaryUnitsPopulationPercent() const
+{
+	return m_iFreeMilitaryUnitsPopulationPercent;
+}
+
+// iGoldPerUnit (added by this mod): as the civics, gold for each unit beyond the free ones
+int CvTraitInfo::getGoldPerUnit() const
+{
+	return m_iGoldPerUnit;
+}
+
+// iGoldPerMilitaryUnit (added by this mod): as the civics, gold for each military unit beyond the free ones
+int CvTraitInfo::getGoldPerMilitaryUnit() const
+{
+	return m_iGoldPerMilitaryUnit;
+}
+
+// iCorporationMaintenanceModifier (added by this mod): as the civics, maintenance % of the corporations
+int CvTraitInfo::getCorporationMaintenanceModifier() const
+{
+	return m_iCorporationMaintenanceModifier;
+}
+
+// iMaintenanceModifier (added by this mod): as the buildings, maintenance % of every city (CvCity::getMaintenanceModifier)
+int CvTraitInfo::getMaintenanceModifier() const
+{
+	return m_iMaintenanceModifier;
+}
+
 // iMaxConscript (added by this mod): as the civics, units the player can draft per turn, before the world size modifier
 int CvTraitInfo::getMaxConscript() const
 {
@@ -21316,16 +21440,6 @@ int CvTraitInfo::getBombardDefense() const
 int CvTraitInfo::getEspionageDefense() const
 {
 	return m_iEspionageDefense;
-}
-
-// HurryUnitExperiences (added by this mod): experience of a unit hurried this way
-int CvTraitInfo::getHurryUnitExperience(int iHurry) const
-{
-	if (iHurry < 0 || iHurry >= (int)m_aiHurryUnitExperience.size())
-	{
-		return 0;
-	}
-	return m_aiHurryUnitExperience[iHurry];
 }
 
 // ImprovedBonusYieldChanges (added by this mod): yields of a plot with the bonus and an improvement that trades it
@@ -22332,7 +22446,6 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iAttitudeChange, "iAttitudeChange");
 	pXML->GetChildXmlValByName(&m_iRouteMovementModifierInBorders, "iRouteMovementModifierInBorders");
 	pXML->GetChildXmlValByName(&m_iCombatPercent, "iCombatPercent");
-	readTypeList(pXML, "WonderHurrys", m_aszWonderHurryTypes);	// hurries: readPass3()
 	pXML->GetChildXmlValByName(&m_iHappinessPerReligion, "iHappinessPerReligion");
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CommercePerReligion"))
 	{
@@ -22363,7 +22476,6 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 		pXML->InitList(&m_paiGlobalWorldWonderCommerceChange, NUM_COMMERCE_TYPES);
 	}
 	pXML->GetChildXmlValByName(&m_iEnemyWarWearinessModifier, "iEnemyWarWearinessModifier");
-	pXML->GetChildXmlValByName(&m_bIgnoreWonderHurryCostModifier, "bIgnoreWonderHurryCostModifier");
 	pXML->GetChildXmlValByName(&m_bConquestStateReligion, "bConquestStateReligion");
 	readTypeList(pXML, "ConquestReligionBuildings", m_aszConquestReligionBuildingTypes);	// special buildings: readPass3()
 	readTypeList(pXML, "NoTechCivics", m_aszNoTechCivicTypes);	// civics are loaded later: readPass3()
@@ -22729,8 +22841,6 @@ void CvTraitInfo::readUnitAndCityValues(CvXMLLoadUtility* pXML)
 	// The specialists are loaded before the traits
 	readTypeValueList(pXML, "SpecialistSlotChanges", "SpecialistSlotChange", "SpecialistType", "iSlots", GC.getNumSpecialistInfos(), m_aiSpecialistSlotChange);
 	// The hurries are loaded after the traits: readPass3() finds the types
-	readTypeList(pXML, "UnitHurrys", m_aszUnitHurryTypes);
-	readTypeStringValueList(pXML, "HurryUnitExperiences", "HurryUnitExperience", "HurryType", "iExperience", m_aszHurryUnitExperienceTypes, m_aiHurryUnitExperienceValues);
 	// Same format as BonusYieldChanges. Resolved in readPass3()
 	readYieldChanges(pXML, "ImprovedBonusYieldChanges", "ImprovedBonusYieldChange", "BonusType", "Yields", m_aszImprovedBonusYieldChangeTypes, m_aaiImprovedBonusYieldChangeValues);
 	readYieldChanges(pXML, "HappyYieldPercents", &m_paiHappyYieldPercent);
@@ -22751,6 +22861,85 @@ void CvTraitInfo::readRevealAndStartValues(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_pabFreeTech, "FreeTechs", sizeof(GC.getTechInfo((TechTypes)0)), GC.getNumTechInfos());
 }
 
+// BonusProductionModifiers of the traits (added by this mod): <BonusProductionModifier> with BonusType, iProductionModifier
+// and the optional bWorldWondersOnly
+static void readBonusProductionModifiers(CvXMLLoadUtility* pXML, std::vector<CvString>& aszTypes, std::vector<int>& aiValues, std::vector<int>& aiWonders)
+{
+	CvString szTextVal;
+	int iValue;
+	bool bWonders;
+
+	aszTypes.clear();
+	aiValues.clear();
+	aiWonders.clear();
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "BonusProductionModifiers"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "BonusProductionModifier"))
+		{
+			do
+			{
+				szTextVal = "";
+				pXML->GetChildXmlValByName(szTextVal, "BonusType");
+				pXML->GetChildXmlValByName(&iValue, "iProductionModifier", 0);
+				pXML->GetChildXmlValByName(&bWonders, "bWorldWondersOnly", false);
+				if (!szTextVal.empty() && iValue != 0)
+				{
+					aszTypes.push_back(szTextVal);
+					aiValues.push_back(iValue);
+					aiWonders.push_back(bWonders ? 1 : 0);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "BonusProductionModifier"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
+// Hurrys of the traits (added by this mod): <Hurry> with HurryType and the optional flags and values of TraitHurry
+static void readTraitHurrys(CvXMLLoadUtility* pXML, std::vector<TraitHurry>& aHurrys, std::vector<CvString>& aszTypes)
+{
+	CvString szTextVal;
+
+	aHurrys.clear();
+	aszTypes.clear();
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Hurrys"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Hurry"))
+		{
+			do
+			{
+				TraitHurry kHurry;
+				szTextVal = "";
+				pXML->GetChildXmlValByName(szTextVal, "HurryType");
+				kHurry.iHurry = NO_HURRY;
+				pXML->GetChildXmlValByName(&kHurry.bUnitsOnly, "bUnitsOnly", false);
+				pXML->GetChildXmlValByName(&kHurry.bBuildingsOnly, "bBuildingsOnly", false);
+				pXML->GetChildXmlValByName(&kHurry.bWondersOnly, "bWondersOnly", false);
+				pXML->GetChildXmlValByName(&kHurry.bWorldWondersOnly, "bWorldWondersOnly", false);
+				pXML->GetChildXmlValByName(&kHurry.bNationalWondersOnly, "bNationalWondersOnly", false);
+				pXML->GetChildXmlValByName(&kHurry.iCostModifier, "iCostModifier", 0);
+				pXML->GetChildXmlValByName(&kHurry.bIgnoreCostModifier, "bIgnoreCostModifier", false);
+				pXML->GetChildXmlValByName(&kHurry.iExperience, "iExperience", 0);
+				if (!szTextVal.empty())
+				{
+					aHurrys.push_back(kHurry);
+					aszTypes.push_back(szTextVal);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "Hurry"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
 // The part of read() for the counterparts of the tags that existed for only one of happiness/health or yield/commerce
 // (added by this mod)
 void CvTraitInfo::readCounterpartValues(CvXMLLoadUtility* pXML)
@@ -22769,6 +22958,22 @@ void CvTraitInfo::readCounterpartValues(CvXMLLoadUtility* pXML)
 	readTypeStringValueList(pXML, "BuildingHealthChanges", "BuildingHealthChange", "BuildingClassType", "iHealthChange", m_aszBuildingHealthChangeTypes, m_aiBuildingHealthChangeValues);
 	readTypeStringValueList(pXML, "BonusHappinessChanges", "BonusHappinessChange", "BonusType", "iHappinessChange", m_aszBonusHappinessChangeTypes, m_aiBonusHappinessChangeValues);
 	readTypeStringValueList(pXML, "BonusHealthChanges", "BonusHealthChange", "BonusType", "iHealthChange", m_aszBonusHealthChangeTypes, m_aiBonusHealthChangeValues);
+	// Hurrys. The hurries are loaded after the traits: readPass3()
+	readTraitHurrys(pXML, m_aHurrys, m_aszHurryTypes);
+	// Bonuses and commerce rates. The bonuses are loaded after the traits: readPass3()
+	readTypeStringValueList(pXML, "FreeBonuses", "FreeBonus", "BonusType", "iNumBonuses", m_aszFreeBonusTypes, m_aiFreeBonusValues);
+	readBonusProductionModifiers(pXML, m_aszBonusProductionModifierTypes, m_aiBonusProductionModifierValues, m_aiBonusProductionModifierWonders);
+	readCommerceChanges(pXML, "CommerceHappinesses", &m_paiCommerceHappiness);
+	readCommerceChanges(pXML, "CommerceHealths", &m_paiCommerceHealth);
+	// Unit support and maintenance, as the civics and buildings
+	pXML->GetChildXmlValByName(&m_iBaseFreeUnits, "iBaseFreeUnits");
+	pXML->GetChildXmlValByName(&m_iBaseFreeMilitaryUnits, "iBaseFreeMilitaryUnits");
+	pXML->GetChildXmlValByName(&m_iFreeUnitsPopulationPercent, "iFreeUnitsPopulationPercent");
+	pXML->GetChildXmlValByName(&m_iFreeMilitaryUnitsPopulationPercent, "iFreeMilitaryUnitsPopulationPercent");
+	pXML->GetChildXmlValByName(&m_iGoldPerUnit, "iGoldPerUnit");
+	pXML->GetChildXmlValByName(&m_iGoldPerMilitaryUnit, "iGoldPerMilitaryUnit");
+	pXML->GetChildXmlValByName(&m_iCorporationMaintenanceModifier, "iCorporationMaintenanceModifier");
+	pXML->GetChildXmlValByName(&m_iMaintenanceModifier, "iMaintenanceModifier");
 	// Military, as the civics and buildings. The domains are loaded before the traits
 	pXML->GetChildXmlValByName(&m_iMaxConscript, "iMaxConscript");
 	pXML->GetChildXmlValByName(&m_bMilitaryFoodProduction, "bMilitaryFoodProduction");
@@ -23041,36 +23246,55 @@ bool CvTraitInfo::readPass3()
 	m_aszNoTechCivicTypes.clear();
 	resolveTypeList("ConquestReligionBuildings", m_aszConquestReligionBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabConquestReligionBuilding);
 	m_aszConquestReligionBuildingTypes.clear();
-	resolveTypeList("WonderHurrys", m_aszWonderHurryTypes, GC.getNumHurryInfos(), &m_pabWonderHurry);
-	m_aszWonderHurryTypes.clear();
-	resolveTypeList("UnitHurrys", m_aszUnitHurryTypes, GC.getNumHurryInfos(), &m_pabUnitHurry);
-	m_aszUnitHurryTypes.clear();
 	resolveTypeList("RevealBonuses", m_aszRevealBonusTypes, GC.getNumBonusInfos(), &m_pabRevealBonus);
 	m_aszRevealBonusTypes.clear();
 	resolveTypeValueList("BuildingHappinessChanges", m_aszBuildingHappinessChangeTypes, m_aiBuildingHappinessChangeValues, GC.getNumBuildingClassInfos(), m_aiBuildingHappinessChange);
 	resolveTypeValueList("BuildingHealthChanges", m_aszBuildingHealthChangeTypes, m_aiBuildingHealthChangeValues, GC.getNumBuildingClassInfos(), m_aiBuildingHealthChange);
 	resolveTypeValueList("BonusHappinessChanges", m_aszBonusHappinessChangeTypes, m_aiBonusHappinessChangeValues, GC.getNumBonusInfos(), m_aiBonusHappinessChange);
 	resolveTypeValueList("BonusHealthChanges", m_aszBonusHealthChangeTypes, m_aiBonusHealthChangeValues, GC.getNumBonusInfos(), m_aiBonusHealthChange);
-
-	// HurryUnitExperiences (added by this mod)
-	m_aiHurryUnitExperience.clear();
-	for (i = 0; i < (int)m_aszHurryUnitExperienceTypes.size(); i++)
+	resolveTypeValueList("FreeBonuses", m_aszFreeBonusTypes, m_aiFreeBonusValues, GC.getNumBonusInfos(), m_aiFreeBonus);
+	// BonusProductionModifiers: the items with bWorldWondersOnly go to their own vector
 	{
-		int iHurry = GC.getInfoTypeForString(m_aszHurryUnitExperienceTypes[i].GetCString(), true);
-		if (iHurry < 0 || iHurry >= GC.getNumHurryInfos())
+		std::vector<CvString> aszAll, aszWonders;
+		std::vector<int> aiAll, aiWonders;
+		for (i = 0; i < (int)m_aszBonusProductionModifierTypes.size(); i++)
 		{
-			sprintf(szMessage, "Tag: %s in HurryUnitExperiences of CIV4TraitInfos.xml was incorrect", m_aszHurryUnitExperienceTypes[i].GetCString());
-			gDLL->MessageBox(szMessage, "XML Error");
-			continue;
+			if (m_aiBonusProductionModifierWonders[i] != 0)
+			{
+				aszWonders.push_back(m_aszBonusProductionModifierTypes[i]);
+				aiWonders.push_back(m_aiBonusProductionModifierValues[i]);
+			}
+			else
+			{
+				aszAll.push_back(m_aszBonusProductionModifierTypes[i]);
+				aiAll.push_back(m_aiBonusProductionModifierValues[i]);
+			}
 		}
-		if (m_aiHurryUnitExperience.empty())
-		{
-			m_aiHurryUnitExperience.resize(GC.getNumHurryInfos(), 0);
-		}
-		m_aiHurryUnitExperience[iHurry] += m_aiHurryUnitExperienceValues[i];
+		resolveTypeValueList("BonusProductionModifiers", aszAll, aiAll, GC.getNumBonusInfos(), m_aiBonusProductionModifier);
+		resolveTypeValueList("BonusProductionModifiers", aszWonders, aiWonders, GC.getNumBonusInfos(), m_aiBonusWonderProductionModifier);
+		m_aszBonusProductionModifierTypes.clear();
+		m_aiBonusProductionModifierValues.clear();
+		m_aiBonusProductionModifierWonders.clear();
 	}
-	m_aszHurryUnitExperienceTypes.clear();
-	m_aiHurryUnitExperienceValues.clear();
+
+	// Hurrys (added by this mod): items without a valid hurry are removed
+	{
+		std::vector<TraitHurry> aHurrys;
+		for (i = 0; i < (int)m_aHurrys.size() && i < (int)m_aszHurryTypes.size(); i++)
+		{
+			TraitHurry kHurry = m_aHurrys[i];
+			kHurry.iHurry = GC.getInfoTypeForString(m_aszHurryTypes[i].GetCString(), true);
+			if (kHurry.iHurry < 0 || kHurry.iHurry >= GC.getNumHurryInfos())
+			{
+				sprintf(szMessage, "Tag: %s in Hurrys of CIV4TraitInfos.xml was incorrect", m_aszHurryTypes[i].GetCString());
+				gDLL->MessageBox(szMessage, "XML Error");
+				continue;
+			}
+			aHurrys.push_back(kHurry);
+		}
+		m_aHurrys = aHurrys;
+		m_aszHurryTypes.clear();
+	}
 
 	resolveYieldChanges("ImprovedBonusYieldChanges", m_aszImprovedBonusYieldChangeTypes, m_aaiImprovedBonusYieldChangeValues, GC.getNumBonusInfos(), m_aaiImprovedBonusYieldChange);
 	m_aszImprovedBonusYieldChangeTypes.clear();

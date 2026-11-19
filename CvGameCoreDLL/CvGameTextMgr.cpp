@@ -4188,20 +4188,6 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_ENEMY_WAR_WEAR", kTrait.getEnemyWarWearinessModifier()));
 	}
 
-	// WonderHurrys, bIgnoreWonderHurryCostModifier (added by this mod)
-	for (iI = 0; iI < GC.getNumHurryInfos(); iI++)
-	{
-		if (kTrait.isWonderHurry(iI))
-		{
-			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_WONDER_HURRY", GC.getHurryInfo((HurryTypes)iI).getTextKeyWide()));
-		}
-	}
-
-	if (kTrait.isIgnoreWonderHurryCostModifier())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_IGNORE_WONDER_HURRY_COST"));
-	}
-
 	if (kTrait.isConquestStateReligion())
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_STATE_RELIGION"));
@@ -4584,20 +4570,56 @@ void CvGameTextMgr::parseTraitUnitAndCityEffects(CvWStringBuffer& szHelpString, 
 		}
 	}
 
-	for (iI = 0; iI < GC.getNumHurryInfos(); iI++)
+	// Hurrys: "Can hurry with gold without the civic (units): cost -25%, +3 experience"
+	for (iI = 0; iI < kTrait.getNumHurrys(); iI++)
 	{
-		if (kTrait.isUnitHurry(iI))
-		{
-			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_UNIT_HURRY", GC.getHurryInfo((HurryTypes)iI).getTextKeyWide()));
-		}
-	}
+		const TraitHurry& kHurry = kTrait.getHurry(iI);
+		CvWString szTargets;
+		CvWString szExtras;
 
-	for (iI = 0; iI < GC.getNumHurryInfos(); iI++)
-	{
-		if (kTrait.getHurryUnitExperience(iI) != 0)
+		if (kHurry.bUnitsOnly)
 		{
-			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HURRY_UNIT_EXPERIENCE", kTrait.getHurryUnitExperience(iI), GC.getHurryInfo((HurryTypes)iI).getTextKeyWide()));
+			szTargets += gDLL->getText("TXT_KEY_TRAIT_HURRY_TARGET_UNITS");
 		}
+		if (kHurry.bBuildingsOnly)
+		{
+			szTargets += (szTargets.empty() ? L"" : L", ") + gDLL->getText("TXT_KEY_TRAIT_HURRY_TARGET_BUILDINGS");
+		}
+		if (kHurry.bWondersOnly)
+		{
+			szTargets += (szTargets.empty() ? L"" : L", ") + gDLL->getText("TXT_KEY_TRAIT_HURRY_TARGET_WONDERS");
+		}
+		if (kHurry.bWorldWondersOnly)
+		{
+			szTargets += (szTargets.empty() ? L"" : L", ") + gDLL->getText("TXT_KEY_TRAIT_HURRY_TARGET_WORLD_WONDERS");
+		}
+		if (kHurry.bNationalWondersOnly)
+		{
+			szTargets += (szTargets.empty() ? L"" : L", ") + gDLL->getText("TXT_KEY_TRAIT_HURRY_TARGET_NATIONAL_WONDERS");
+		}
+		if (!szTargets.empty())
+		{
+			szTargets = gDLL->getText("TXT_KEY_TRAIT_HURRY_TARGETS", szTargets.GetCString());
+		}
+
+		if (kHurry.iCostModifier != 0)
+		{
+			szExtras += gDLL->getText("TXT_KEY_TRAIT_HURRY_COST", kHurry.iCostModifier);
+		}
+		if (kHurry.bIgnoreCostModifier)
+		{
+			szExtras += (szExtras.empty() ? L"" : L", ") + gDLL->getText("TXT_KEY_TRAIT_HURRY_IGNORE_COST");
+		}
+		if (kHurry.iExperience != 0)
+		{
+			szExtras += (szExtras.empty() ? L"" : L", ") + gDLL->getText("TXT_KEY_TRAIT_HURRY_EXPERIENCE", kHurry.iExperience);
+		}
+		if (!szExtras.empty())
+		{
+			szExtras = gDLL->getText("TXT_KEY_TRAIT_HURRY_EXTRAS", szExtras.GetCString());
+		}
+
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HURRY", GC.getHurryInfo((HurryTypes)kHurry.iHurry).getTextKeyWide(), szTargets.GetCString(), szExtras.GetCString()));
 	}
 
 	// ImprovedBonusYieldChanges: one line per yield and value, "+3 commerce from these developed resources: gold, silver"
@@ -4824,6 +4846,91 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 	if (kTrait.getFoodKept() != 0)
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_STORES_FOOD", kTrait.getFoodKept()));
+	}
+
+	// FreeBonuses, BonusProductionModifiers, CommerceHappinesses, CommerceHealths: the building text keys
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		if (kTrait.getFreeBonus(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_PROVIDES", kTrait.getFreeBonus(iI), GC.getBonusInfo((BonusTypes)iI).getTextKeyWide(), GC.getBonusInfo((BonusTypes)iI).getChar()));
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		if (kTrait.getBonusProductionModifier(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_BONUS_PRODUCTION", kTrait.getBonusProductionModifier(iI), GC.getBonusInfo((BonusTypes)iI).getTextKeyWide()));
+		}
+
+		if (kTrait.getBonusWonderProductionModifier(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_BONUS_WONDER_PRODUCTION", kTrait.getBonusWonderProductionModifier(iI), GC.getBonusInfo((BonusTypes)iI).getTextKeyWide()));
+		}
+	}
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		iValue = kTrait.getCommerceHappiness(iI);
+		if (iValue != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_PER_LEVEL", ((iValue > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR)), abs(100 / iValue), GC.getCommerceInfo((CommerceTypes)iI).getChar()));
+		}
+
+		iValue = kTrait.getCommerceHealth(iI);
+		if (iValue != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_PER_LEVEL", ((iValue > 0) ? gDLL->getSymbolID(HEALTHY_CHAR) : gDLL->getSymbolID(UNHEALTHY_CHAR)), abs(100 / iValue), GC.getCommerceInfo((CommerceTypes)iI).getChar()));
+		}
+	}
+
+	// Unit support and maintenance: the civic and building text keys
+	if (kTrait.getBaseFreeUnits() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_FREE_UNITS", kTrait.getBaseFreeUnits()));
+	}
+
+	if (kTrait.getFreeUnitsPopulationPercent() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FREE_UNITS_POPULATION", kTrait.getFreeUnitsPopulationPercent()));
+	}
+
+	if (kTrait.getBaseFreeMilitaryUnits() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_FREE_MILITARY_UNITS", kTrait.getBaseFreeMilitaryUnits()));
+	}
+
+	if (kTrait.getFreeMilitaryUnitsPopulationPercent() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FREE_MILITARY_UNITS_POPULATION", kTrait.getFreeMilitaryUnitsPopulationPercent()));
+	}
+
+	if (kTrait.getGoldPerUnit() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_SUPPORT_COSTS", kTrait.getGoldPerUnit(), GC.getCommerceInfo(COMMERCE_GOLD).getChar()));
+	}
+
+	if (kTrait.getGoldPerMilitaryUnit() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_MILITARY_SUPPORT_COSTS", kTrait.getGoldPerMilitaryUnit(), GC.getCommerceInfo(COMMERCE_GOLD).getChar()));
+	}
+
+	if (kTrait.getCorporationMaintenanceModifier() != 0)
+	{
+		if (kTrait.getCorporationMaintenanceModifier() <= -100)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_NO_MAINT_CORPORATION"));
+		}
+		else
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_NO_MAINT_CORPORATION_MOD", kTrait.getCorporationMaintenanceModifier()));
+		}
+	}
+
+	if (kTrait.getMaintenanceModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_MAINT_MOD", kTrait.getMaintenanceModifier()));
 	}
 
 	// Military: the civic and building text keys. The draft with the modifier of the world size, as the civics
@@ -11928,6 +12035,14 @@ void CvGameTextMgr::setBadHealthHelp(CvWStringBuffer &szBuffer, CvCity& city)
 			szBuffer.append(NEWLINE);
 		}
 
+		// CommerceHealths of the traits (added by this mod)
+		iHealth = -(city.getTraitCommerceHealth());
+		if (iHealth > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HEALTH_FROM_TRAIT_COMMERCE", iHealth));
+			szBuffer.append(NEWLINE);
+		}
+
 		iHealth = -(city.totalBadBuildingHealth());
 		if (iHealth > 0)
 		{
@@ -12060,6 +12175,14 @@ void CvGameTextMgr::setGoodHealthHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		if (iHealth > 0)
 		{
 			szBuffer.append(gDLL->getText("TXT_KEY_MISC_GOOD_HEALTH_FROM_TRAIT_BONUSES", iHealth));
+			szBuffer.append(NEWLINE);
+		}
+
+		// CommerceHealths of the traits (added by this mod)
+		iHealth = city.getTraitCommerceHealth();
+		if (iHealth > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_GOOD_HEALTH_FROM_TRAIT_COMMERCE", iHealth));
 			szBuffer.append(NEWLINE);
 		}
 
@@ -15289,6 +15412,15 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 					szBuffer.append(NEWLINE);
 					iBaseModifier += iBonusMod;
 				}
+
+				// BonusProductionModifiers of the traits (added by this mod)
+				iBonusMod = GET_PLAYER(city.getOwnerINLINE()).getTraitBonusProductionModifier((BonusTypes)i, false);
+				if (0 != iBonusMod)
+				{
+					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PROD_TRAIT_BONUS", iBonusMod, GC.getBonusInfo((BonusTypes)i).getTextKeyWide()));
+					szBuffer.append(NEWLINE);
+					iBaseModifier += iBonusMod;
+				}
 			}
 		}
 
@@ -15365,6 +15497,15 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 				if (0 != iBonusMod)
 				{
 					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PROD_MOD_BONUS", iBonusMod, building.getTextKeyWide(), GC.getBonusInfo((BonusTypes)i).getTextKeyWide()));
+					szBuffer.append(NEWLINE);
+					iBaseModifier += iBonusMod;
+				}
+
+				// BonusProductionModifiers of the traits (added by this mod)
+				iBonusMod = GET_PLAYER(city.getOwnerINLINE()).getTraitBonusProductionModifier((BonusTypes)i, isWorldWonderClass((BuildingClassTypes)building.getBuildingClassType()));
+				if (0 != iBonusMod)
+				{
+					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PROD_TRAIT_BONUS", iBonusMod, GC.getBonusInfo((BonusTypes)i).getTextKeyWide()));
 					szBuffer.append(NEWLINE);
 					iBaseModifier += iBonusMod;
 				}
@@ -15484,6 +15625,15 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 				if (0 != iBonusMod)
 				{
 					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PROD_MOD_BONUS", iBonusMod, project.getTextKeyWide(), GC.getBonusInfo((BonusTypes)i).getTextKeyWide()));
+					szBuffer.append(NEWLINE);
+					iBaseModifier += iBonusMod;
+				}
+
+				// BonusProductionModifiers of the traits (added by this mod)
+				iBonusMod = GET_PLAYER(city.getOwnerINLINE()).getTraitBonusProductionModifier((BonusTypes)i, false);
+				if (0 != iBonusMod)
+				{
+					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PROD_TRAIT_BONUS", iBonusMod, GC.getBonusInfo((BonusTypes)i).getTextKeyWide()));
 					szBuffer.append(NEWLINE);
 					iBaseModifier += iBonusMod;
 				}

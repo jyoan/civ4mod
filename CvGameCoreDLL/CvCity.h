@@ -133,8 +133,6 @@ public:
 	int getExtraProductionDifference(int iExtra) const;																					// Exposed to Python
 
 	bool canHurry(HurryTypes eHurry, bool bTestVisible = false) const;		// Exposed to Python
-	bool isWonderHurry(HurryTypes eHurry, BuildingTypes eBuilding) const;	// added by this mod: WonderHurrys of the traits
-	bool isUnitHurry(HurryTypes eHurry, UnitTypes eUnit) const;	// added by this mod: UnitHurrys of the traits
 	void hurry(HurryTypes eHurry);																						// Exposed to Python
 
 	UnitTypes getConscriptUnit() const;																// Exposed to Python
@@ -209,8 +207,8 @@ public:
 	int growthThreshold() const;																	// Exposed to Python
 
 	int productionLeft() const;																							// Exposed to Python
-	int hurryCost(bool bExtra) const;																				// Exposed to Python
-	int getHurryCostModifier(bool bIgnoreNew = false) const;
+	int hurryCost(bool bExtra, HurryTypes eHurry = NO_HURRY) const;	// eHurry: Hurrys of the traits (added by this mod);																				// Exposed to Python
+	int getHurryCostModifier(bool bIgnoreNew = false, HurryTypes eHurry = NO_HURRY) const;	// eHurry: Hurrys of the traits (added by this mod)
 	int hurryGold(HurryTypes eHurry) const;												// Exposed to Python
 	int hurryPopulation(HurryTypes eHurry) const;									// Exposed to Python
 	int hurryProduction(HurryTypes eHurry) const;														// Exposed to Python
@@ -430,6 +428,7 @@ public:
 	int getTraitReligionHealth() const;	// added by this mod: iHealthPerReligion of the traits
 	int getTraitBonusHappiness(bool bGood) const;	// added by this mod: BonusHappinessChanges of the traits
 	int getTraitBonusHealth(bool bGood) const;	// added by this mod: BonusHealthChanges of the traits
+	int getTraitCommerceHealth() const;	// added by this mod: CommerceHealths of the traits
 	int getTraitYield(YieldTypes eIndex) const;	// added by this mod: YieldChanges, YieldPerReligion, (Global)WorldWonderYieldChanges of the traits
 	int getGreatPeopleUnitRateWithTraits(UnitTypes eIndex) const;	// added by this mod: GreatPeopleClassRateModifiers of the traits
 	int getTraitGreatPeopleRateExtra() const;	// added by this mod
@@ -1222,11 +1221,11 @@ protected:
 	int getExtraProductionDifference(int iExtra, BuildingTypes eBuilding) const;
 	int getExtraProductionDifference(int iExtra, ProjectTypes eProject) const;
 	int getExtraProductionDifference(int iExtra, int iModifier) const;
-	int getHurryCostModifier(UnitTypes eUnit, bool bIgnoreNew) const;
-	int getHurryCostModifier(BuildingTypes eBuilding, bool bIgnoreNew) const;
+	int getHurryCostModifier(UnitTypes eUnit, bool bIgnoreNew, HurryTypes eHurry = NO_HURRY) const;
+	int getHurryCostModifier(BuildingTypes eBuilding, bool bIgnoreNew, HurryTypes eHurry = NO_HURRY) const;
 	int getHurryCostModifier(int iBaseModifier, int iProduction, bool bIgnoreNew) const;
-	int getHurryCost(bool bExtra, UnitTypes eUnit, bool bIgnoreNew) const;
-	int getHurryCost(bool bExtra, BuildingTypes eBuilding, bool bIgnoreNew) const;
+	int getHurryCost(bool bExtra, UnitTypes eUnit, bool bIgnoreNew, HurryTypes eHurry = NO_HURRY) const;
+	int getHurryCost(bool bExtra, BuildingTypes eBuilding, bool bIgnoreNew, HurryTypes eHurry = NO_HURRY) const;
 	int getHurryCost(bool bExtra, int iProductionLeft, int iHurryModifier, int iModifier) const;
 	int getHurryPopulation(HurryTypes eHurry, int iHurryCost) const;
 	int getHurryGold(HurryTypes eHurry, int iHurryCost) const;

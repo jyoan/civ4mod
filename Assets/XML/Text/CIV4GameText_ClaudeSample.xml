@@ -1502,4 +1502,31 @@
 		<Spanish>%D1%%: from traits</Spanish>
 		<Japanese>%D1%%&#65306;&#24535;&#21521;&#12395;&#12424;&#12426;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_PROD_TRAIT_BONUS</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_PRODUCTION] with access to %s2_bonus (trait)</English>
+		<French>[ICON_BULLET]%D1%%[ICON_PRODUCTION] with access to %s2_bonus (trait)</French>
+		<German>[ICON_BULLET]%D1%%[ICON_PRODUCTION] with access to %s2_bonus (trait)</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_PRODUCTION] with access to %s2_bonus (trait)</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_PRODUCTION] with access to %s2_bonus (trait)</Spanish>
+		<Japanese>[ICON_BULLET]%s2_bonus&#12434;&#20351;&#12360;&#12427;&#12383;&#12417;&#65288;&#24535;&#21521;&#65289;[ICON_PRODUCTION]%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_GOOD_HEALTH_FROM_TRAIT_COMMERCE</Tag>
+		<English>%D1_Change[ICON_HEALTHY] from the Commerce Rates (Trait)</English>
+		<French>%D1_Change[ICON_HEALTHY] from the Commerce Rates (Trait)</French>
+		<German>%D1_Change[ICON_HEALTHY] from the Commerce Rates (Trait)</German>
+		<Italian>%D1_Change[ICON_HEALTHY] from the Commerce Rates (Trait)</Italian>
+		<Spanish>%D1_Change[ICON_HEALTHY] from the Commerce Rates (Trait)</Spanish>
+		<Japanese>&#21830;&#26989;&#12398;&#37197;&#20998;&#65288;&#24535;&#21521;&#65289;&#12395;&#12424;&#12426;[ICON_HEALTHY]%D1_Change</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HEALTH_FROM_TRAIT_COMMERCE</Tag>
+		<English>%D1_Change[ICON_UNHEALTHY] from the Commerce Rates (Trait)</English>
+		<French>%D1_Change[ICON_UNHEALTHY] from the Commerce Rates (Trait)</French>
+		<German>%D1_Change[ICON_UNHEALTHY] from the Commerce Rates (Trait)</German>
+		<Italian>%D1_Change[ICON_UNHEALTHY] from the Commerce Rates (Trait)</Italian>
+		<Spanish>%D1_Change[ICON_UNHEALTHY] from the Commerce Rates (Trait)</Spanish>
+		<Japanese>&#21830;&#26989;&#12398;&#37197;&#20998;&#65288;&#24535;&#21521;&#65289;&#12395;&#12424;&#12426;[ICON_UNHEALTHY]%D1_Change</Japanese>
+	</TEXT>
 </Civ4GameText>

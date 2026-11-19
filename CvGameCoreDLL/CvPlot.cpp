@@ -1079,6 +1079,8 @@ void CvPlot::updatePlotGroupBonus(bool bAdd)
 				{
 					pPlotGroup->changeNumBonuses(((BonusTypes)iI), (GET_PLAYER(getOwnerINLINE()).getBonusExport((BonusTypes)iI) * ((bAdd) ? -1 : 1)));
 					pPlotGroup->changeNumBonuses(((BonusTypes)iI), (GET_PLAYER(getOwnerINLINE()).getBonusImport((BonusTypes)iI) * ((bAdd) ? 1 : -1)));
+					// FreeBonuses of the traits (added by this mod): as the imported bonuses
+					pPlotGroup->changeNumBonuses(((BonusTypes)iI), (GET_PLAYER(getOwnerINLINE()).getTraitFreeBonus((BonusTypes)iI) * ((bAdd) ? 1 : -1)));
 				}
 			}
 		}

@@ -445,10 +445,26 @@
 	<ElementType name="iRouteMovementModifierInBorders" content="textOnly" dt:type="int"/>
 	<ElementType name="iCombatPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="HurryType" content="textOnly"/>
-	<ElementType name="WonderHurrys" content="eltOnly">
-		<element type="HurryType" minOccurs="0" maxOccurs="*"/>
+	<ElementType name="bUnitsOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bBuildingsOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bWondersOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bNationalWondersOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iCostModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="bIgnoreCostModifier" content="textOnly" dt:type="boolean"/>
+	<ElementType name="Hurry" content="eltOnly">
+		<element type="HurryType"/>
+		<element type="bUnitsOnly" minOccurs="0"/>
+		<element type="bBuildingsOnly" minOccurs="0"/>
+		<element type="bWondersOnly" minOccurs="0"/>
+		<element type="bWorldWondersOnly" minOccurs="0"/>
+		<element type="bNationalWondersOnly" minOccurs="0"/>
+		<element type="iCostModifier" minOccurs="0"/>
+		<element type="bIgnoreCostModifier" minOccurs="0"/>
+		<element type="iExperience" minOccurs="0"/>
 	</ElementType>
-	<ElementType name="bIgnoreWonderHurryCostModifier" content="textOnly" dt:type="boolean"/>
+	<ElementType name="Hurrys" content="eltOnly">
+		<element type="Hurry" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="bConquestStateReligion" content="textOnly" dt:type="boolean"/>
 	<ElementType name="ConquestReligionBuildings" content="eltOnly">
 		<element type="SpecialBuildingType" minOccurs="0" maxOccurs="*"/>
@@ -762,16 +778,6 @@
 	<ElementType name="SpecialistSlotChanges" content="eltOnly">
 		<element type="SpecialistSlotChange" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
-	<ElementType name="UnitHurrys" content="eltOnly">
-		<element type="HurryType" minOccurs="0" maxOccurs="*"/>
-	</ElementType>
-	<ElementType name="HurryUnitExperience" content="eltOnly">
-		<element type="HurryType"/>
-		<element type="iExperience"/>
-	</ElementType>
-	<ElementType name="HurryUnitExperiences" content="eltOnly">
-		<element type="HurryUnitExperience" minOccurs="0" maxOccurs="*"/>
-	</ElementType>
 	<ElementType name="ImprovedBonusYieldChange" content="eltOnly">
 		<element type="BonusType"/>
 		<element type="Yields"/>
@@ -850,6 +856,14 @@
 	<ElementType name="BonusHealthChanges" content="eltOnly">
 		<element type="BonusHealthChange" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="iBaseFreeUnits" content="textOnly" dt:type="int"/>
+	<ElementType name="iBaseFreeMilitaryUnits" content="textOnly" dt:type="int"/>
+	<ElementType name="iFreeUnitsPopulationPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iFreeMilitaryUnitsPopulationPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iGoldPerUnit" content="textOnly" dt:type="int"/>
+	<ElementType name="iGoldPerMilitaryUnit" content="textOnly" dt:type="int"/>
+	<ElementType name="iCorporationMaintenanceModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iMaintenanceModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iMaxConscript" content="textOnly" dt:type="int"/>
 	<ElementType name="bMilitaryFoodProduction" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iHealRateChange" content="textOnly" dt:type="int"/>
@@ -866,6 +880,29 @@
 	</ElementType>
 	<ElementType name="DomainProductionModifiers" content="eltOnly">
 		<element type="DomainProductionModifier" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iNumBonuses" content="textOnly" dt:type="int"/>
+	<ElementType name="FreeBonus" content="eltOnly">
+		<element type="BonusType"/>
+		<element type="iNumBonuses"/>
+	</ElementType>
+	<ElementType name="FreeBonuses" content="eltOnly">
+		<element type="FreeBonus" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="bWorldWondersOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="BonusProductionModifier" content="eltOnly">
+		<element type="BonusType"/>
+		<element type="iProductionModifier"/>
+		<element type="bWorldWondersOnly" minOccurs="0"/>
+	</ElementType>
+	<ElementType name="BonusProductionModifiers" content="eltOnly">
+		<element type="BonusProductionModifier" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="CommerceHappinesses" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="CommerceHealths" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="TraitInfo" content="eltOnly">
 		<element type="Type"/>
@@ -924,11 +961,23 @@
 		<element type="iFoodKept" minOccurs="0"/>
 		<element type="bNoUnhealthyPopulation" minOccurs="0"/>
 		<element type="bBuildingOnlyHealthy" minOccurs="0"/>
+		<element type="iBaseFreeUnits" minOccurs="0"/>
+		<element type="iBaseFreeMilitaryUnits" minOccurs="0"/>
+		<element type="iFreeUnitsPopulationPercent" minOccurs="0"/>
+		<element type="iFreeMilitaryUnitsPopulationPercent" minOccurs="0"/>
+		<element type="iGoldPerUnit" minOccurs="0"/>
+		<element type="iGoldPerMilitaryUnit" minOccurs="0"/>
+		<element type="iCorporationMaintenanceModifier" minOccurs="0"/>
+		<element type="iMaintenanceModifier" minOccurs="0"/>
 		<element type="iMaxConscript" minOccurs="0"/>
 		<element type="bMilitaryFoodProduction" minOccurs="0"/>
 		<element type="iHealRateChange" minOccurs="0"/>
 		<element type="DomainFreeExperiences" minOccurs="0"/>
 		<element type="DomainProductionModifiers" minOccurs="0"/>
+		<element type="FreeBonuses" minOccurs="0"/>
+		<element type="BonusProductionModifiers" minOccurs="0"/>
+		<element type="CommerceHappinesses" minOccurs="0"/>
+		<element type="CommerceHealths" minOccurs="0"/>
 		<element type="GreatPeopleClassRateModifiers" minOccurs="0"/>
 		<element type="iEnemyMoveCostInBorders" minOccurs="0"/>
 		<element type="iRevengeCombatPercent" minOccurs="0"/>
@@ -947,8 +996,7 @@
 		<element type="iAttitudeChange" minOccurs="0"/>
 		<element type="iRouteMovementModifierInBorders" minOccurs="0"/>
 		<element type="iCombatPercent" minOccurs="0"/>
-		<element type="WonderHurrys" minOccurs="0"/>
-		<element type="bIgnoreWonderHurryCostModifier" minOccurs="0"/>
+		<element type="Hurrys" minOccurs="0"/>
 		<element type="iHappinessPerReligion" minOccurs="0"/>
 		<element type="CommercePerReligion" minOccurs="0"/>
 		<element type="iDefenseCombatPercent" minOccurs="0"/>
@@ -965,8 +1013,6 @@
 		<element type="iExpOutsideBordersChange" minOccurs="0"/>
 		<element type="iWeLoveTheKingChance" minOccurs="0"/>
 		<element type="SpecialistSlotChanges" minOccurs="0"/>
-		<element type="UnitHurrys" minOccurs="0"/>
-		<element type="HurryUnitExperiences" minOccurs="0"/>
 		<element type="RevealBonuses" minOccurs="0"/>
 		<element type="NoTechProcesses" minOccurs="0"/>
 		<element type="bNoConscriptExperiencePenalty" minOccurs="0"/>

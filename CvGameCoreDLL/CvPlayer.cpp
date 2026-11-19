@@ -7596,6 +7596,12 @@ void CvPlayer::updateTraitBonusPlots(TraitTypes eTrait, bool bAdd)
 	std::vector<int> aiBonuses;
 	int iI, iJ;
 
+	// FreeBonuses (added by this mod): the trade network of the capital, which counts them (as the imported bonuses)
+	if (GC.getTraitInfo(eTrait).isAnyFreeBonus() && getCapitalCity() != NULL)
+	{
+		getCapitalCity()->plot()->updatePlotGroupBonus(bAdd);
+	}
+
 	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
 	{
 		if (GC.getBonusInfo((BonusTypes)iI).getTechObsolete() != NO_TECH && GC.getTraitInfo(eTrait).isBonusObsolescenceIgnored(iI))
@@ -8519,12 +8525,6 @@ int CvPlayer::getTraitGlobalWorldWonderCommerce(CommerceTypes eCommerce) const
 	return sumTraitValues(&CvTraitInfo::getGlobalWorldWonderCommerceChange, eCommerce);
 }
 
-// WonderHurrys of the traits (added by this mod): the player can hurry wonders this way without the civic (CvCity::isWonderHurry)
-bool CvPlayer::isWonderHurry(HurryTypes eHurry) const
-{
-	return hasTraitFlag(&CvTraitInfo::isWonderHurry, eHurry);
-}
-
 // The start bias of the player for a feature or a terrain (added by this mod): StartBiasFeatures / StartBiasTerrains of the
 // civilization and of the traits of the player. The normalization of the starting plots keeps what the player likes
 // (CvGame::normalizeRemovePeaks, normalizeRemoveBadFeatures, normalizeRemoveBadTerrain)
@@ -8548,12 +8548,6 @@ int CvPlayer::getStartBiasTerrain(TerrainTypes eTerrain) const
 
 	int iBias = ((getCivilizationType() != NO_CIVILIZATION) ? GC.getCivilizationInfo(getCivilizationType()).getStartBiasTerrain(eTerrain) : 0);
 	return iBias + sumTraitValues(&CvTraitInfo::getStartBiasTerrain, eTerrain);
-}
-
-// bIgnoreWonderHurryCostModifier of the traits (added by this mod): see CvCity::getHurryCostModifier
-bool CvPlayer::isIgnoreWonderHurryCostModifier() const
-{
-	return hasTraitFlag(&CvTraitInfo::isIgnoreWonderHurryCostModifier);
 }
 
 // The max number of national wonders in a city of the player, -1 for no limit (added by this mod; was in
@@ -8675,18 +8669,6 @@ int CvPlayer::getTraitSpecialistSlotChange(SpecialistTypes eSpecialist) const
 	return iSlots;
 }
 
-// UnitHurrys of the traits (added by this mod): the player can hurry units this way without the civic (CvCity::isUnitHurry)
-bool CvPlayer::isUnitHurry(HurryTypes eHurry) const
-{
-	return hasTraitFlag(&CvTraitInfo::isUnitHurry, eHurry);
-}
-
-// HurryUnitExperiences of the traits (added by this mod): see CvCity::popOrder
-int CvPlayer::getHurryUnitExperience(HurryTypes eHurry) const
-{
-	return sumTraitValues(&CvTraitInfo::getHurryUnitExperience, eHurry);
-}
-
 // ImprovedBonusYieldChanges of the traits (added by this mod): see CvPlot::calculateImprovementYieldChange
 int CvPlayer::getTraitImprovedBonusYieldChange(BonusTypes eBonus, YieldTypes eYield) const
 {
@@ -8801,6 +8783,157 @@ int CvPlayer::getTraitEspionageDefense() const
 int CvPlayer::getTraitFoodKept() const
 {
 	return sumTraitValues(&CvTraitInfo::getFoodKept);
+}
+
+// iMaintenanceModifier of the traits (added by this mod): see CvCity::getMaintenanceModifier
+int CvPlayer::getTraitMaintenanceModifier() const
+{
+	return sumTraitValues(&CvTraitInfo::getMaintenanceModifier);
+}
+
+// Hurrys of the traits (added by this mod): an item of a trait of the player for eHurry that applies to the unit or building
+// lets the player hurry it this way without the civic (CvCity::canHurry...)
+bool CvPlayer::isTraitHurry(HurryTypes eHurry, UnitTypes eUnit, BuildingTypes eBuilding) const
+{
+	int iI, iJ;
+
+	if (eHurry == NO_HURRY || getLeaderType() == NO_LEADER)
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		const CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+		if (kTrait.getNumHurrys() > 0 && hasTrait((TraitTypes)iI))
+		{
+			for (iJ = 0; iJ < kTrait.getNumHurrys(); iJ++)
+			{
+				if (kTrait.getHurry(iJ).iHurry == eHurry && kTrait.getHurry(iJ).isTarget(eUnit, eBuilding))
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+// The sum of iCostModifier (bIgnoreCostModifier: any of them, iExperience: the sum) of the items for eHurry that apply to
+// the unit or building. They count whether the trait or a civic lets the player hurry it (added by this mod)
+int CvPlayer::getTraitHurryCostModifier(HurryTypes eHurry, UnitTypes eUnit, BuildingTypes eBuilding) const
+{
+	int iModifier = 0;
+	int iI, iJ;
+
+	if (eHurry == NO_HURRY || getLeaderType() == NO_LEADER)
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		const CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+		if (kTrait.getNumHurrys() > 0 && hasTrait((TraitTypes)iI))
+		{
+			for (iJ = 0; iJ < kTrait.getNumHurrys(); iJ++)
+			{
+				if (kTrait.getHurry(iJ).iHurry == eHurry && kTrait.getHurry(iJ).isTarget(eUnit, eBuilding))
+				{
+					iModifier += kTrait.getHurry(iJ).iCostModifier;
+				}
+			}
+		}
+	}
+
+	return iModifier;
+}
+
+bool CvPlayer::isTraitHurryIgnoreCostModifier(HurryTypes eHurry, UnitTypes eUnit, BuildingTypes eBuilding) const
+{
+	int iI, iJ;
+
+	if (eHurry == NO_HURRY || getLeaderType() == NO_LEADER)
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		const CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+		if (kTrait.getNumHurrys() > 0 && hasTrait((TraitTypes)iI))
+		{
+			for (iJ = 0; iJ < kTrait.getNumHurrys(); iJ++)
+			{
+				if (kTrait.getHurry(iJ).iHurry == eHurry && kTrait.getHurry(iJ).bIgnoreCostModifier && kTrait.getHurry(iJ).isTarget(eUnit, eBuilding))
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+int CvPlayer::getTraitHurryExperience(HurryTypes eHurry, UnitTypes eUnit) const
+{
+	int iExperience = 0;
+	int iI, iJ;
+
+	if (eHurry == NO_HURRY || eUnit == NO_UNIT || getLeaderType() == NO_LEADER)
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		const CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+		if (kTrait.getNumHurrys() > 0 && hasTrait((TraitTypes)iI))
+		{
+			for (iJ = 0; iJ < kTrait.getNumHurrys(); iJ++)
+			{
+				if (kTrait.getHurry(iJ).iHurry == eHurry && kTrait.getHurry(iJ).isTarget(eUnit, NO_BUILDING))
+				{
+					iExperience += kTrait.getHurry(iJ).iExperience;
+				}
+			}
+		}
+	}
+
+	return iExperience;
+}
+
+// FreeBonuses of the traits (added by this mod): in the trade network of the capital (CvPlot::updatePlotGroupBonus)
+int CvPlayer::getTraitFreeBonus(BonusTypes eBonus) const
+{
+	return sumTraitValues(&CvTraitInfo::getFreeBonus, eBonus);
+}
+
+// BonusProductionModifiers of the traits (added by this mod): production % in a city with eBonus. bWorldWonder: also the
+// items with bWorldWondersOnly
+int CvPlayer::getTraitBonusProductionModifier(BonusTypes eBonus, bool bWorldWonder) const
+{
+	int iModifier = sumTraitValues(&CvTraitInfo::getBonusProductionModifier, eBonus);
+
+	if (bWorldWonder)
+	{
+		iModifier += sumTraitValues(&CvTraitInfo::getBonusWonderProductionModifier, eBonus);
+	}
+
+	return iModifier;
+}
+
+// CommerceHappinesses and CommerceHealths of the traits (added by this mod): per 100% of the commerce rate
+int CvPlayer::getTraitCommerceHappiness(CommerceTypes eCommerce) const
+{
+	return sumTraitValues(&CvTraitInfo::getCommerceHappiness, eCommerce);
+}
+
+int CvPlayer::getTraitCommerceHealth(CommerceTypes eCommerce) const
+{
+	return sumTraitValues(&CvTraitInfo::getCommerceHealth, eCommerce);
 }
 
 // iHealRateChange, DomainFreeExperiences and DomainProductionModifiers of the traits (added by this mod): as the
@@ -19060,6 +19193,13 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	changeNoUnhealthyPopulationCount((kTrait.isNoUnhealthyPopulation()) ? iChange : 0);
 	changeBuildingOnlyHealthyCount((kTrait.isBuildingOnlyHealthy()) ? iChange : 0);
 	changeMilitaryFoodProductionCount((kTrait.isMilitaryFoodProduction()) ? iChange : 0);
+	changeBaseFreeUnits(kTrait.getBaseFreeUnits() * iChange);
+	changeBaseFreeMilitaryUnits(kTrait.getBaseFreeMilitaryUnits() * iChange);
+	changeFreeUnitsPopulationPercent(kTrait.getFreeUnitsPopulationPercent() * iChange);
+	changeFreeMilitaryUnitsPopulationPercent(kTrait.getFreeMilitaryUnitsPopulationPercent() * iChange);
+	changeGoldPerUnit(kTrait.getGoldPerUnit() * iChange);
+	changeGoldPerMilitaryUnit(kTrait.getGoldPerMilitaryUnit() * iChange);
+	changeCorporationMaintenanceModifier(kTrait.getCorporationMaintenanceModifier() * iChange);
 	// iMaxConscript with the modifier of the world size, as getWorldSizeMaxConscript for the civics
 	changeMaxConscript(((kTrait.getMaxConscript() * std::max(0, (GC.getWorldInfo(GC.getMapINLINE().getWorldSize()).getMaxConscriptModifier() + 100))) / 100) * iChange);
 	GET_TEAM(getTeam()).changeEnemyWarWearinessModifier(kTrait.getEnemyWarWearinessModifier() * iChange);	// added by this mod (the team value of the buildings)

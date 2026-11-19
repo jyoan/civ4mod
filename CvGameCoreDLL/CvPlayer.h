@@ -261,7 +261,6 @@ public:
 	int getAttitudeChange() const;			// Exposed to Python (added by this mod)
 	int getRouteMovementModifierInBorders() const;	// Exposed to Python (added by this mod)
 	int getTraitCombatPercent() const;			// Exposed to Python (added by this mod)
-	bool isWonderHurry(HurryTypes eHurry) const;	// Exposed to Python (added by this mod)
 	int getHappinessPerReligion() const;	// Exposed to Python (added by this mod)
 	int getCommercePerReligion(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
 	int getTraitDefenseCombatPercent() const;	// Exposed to Python (added by this mod)
@@ -271,7 +270,6 @@ public:
 	int getStartBiasTerrain(TerrainTypes eTerrain) const;	// added by this mod: StartBiasTerrains of the civilization and the traits
 	bool hasStartBias() const;	// Exposed to Python (added by this mod)
 	int getStartBiasValue(const CvPlot* pPlot, int iFoundValue) const;	// Exposed to Python (added by this mod)
-	bool isIgnoreWonderHurryCostModifier() const;	// Exposed to Python (added by this mod)
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(SpecialBuildingTypes eSpecialBuilding) const;	// Exposed to Python (added by this mod)
 	bool isNoTechCivic(CivicTypes eCivic) const;	// Exposed to Python (added by this mod)
@@ -282,8 +280,6 @@ public:
 	int getExpOutsideBordersChange() const;		// Exposed to Python
 	int getWeLoveTheKingChance() const;			// Exposed to Python
 	int getTraitSpecialistSlotChange(SpecialistTypes eSpecialist) const;	// Exposed to Python: -1 = no limit
-	bool isUnitHurry(HurryTypes eHurry) const;	// Exposed to Python
-	int getHurryUnitExperience(HurryTypes eHurry) const;	// Exposed to Python
 	int getTraitImprovedBonusYieldChange(BonusTypes eBonus, YieldTypes eYield) const;
 	// Batch of 2026-11-19 (added by this mod)
 	bool isTraitRevealBonus(BonusTypes eBonus) const;	// Exposed to Python
@@ -303,6 +299,15 @@ public:
 	int getTraitBombardDefense() const;				// Exposed to Python
 	int getTraitEspionageDefense() const;			// Exposed to Python
 	int getTraitFoodKept() const;	// Exposed to Python
+	int getTraitMaintenanceModifier() const;	// Exposed to Python
+	bool isTraitHurry(HurryTypes eHurry, UnitTypes eUnit, BuildingTypes eBuilding) const;	// Exposed to Python
+	int getTraitHurryCostModifier(HurryTypes eHurry, UnitTypes eUnit, BuildingTypes eBuilding) const;	// Exposed to Python
+	bool isTraitHurryIgnoreCostModifier(HurryTypes eHurry, UnitTypes eUnit, BuildingTypes eBuilding) const;
+	int getTraitHurryExperience(HurryTypes eHurry, UnitTypes eUnit) const;	// Exposed to Python
+	int getTraitFreeBonus(BonusTypes eBonus) const;	// Exposed to Python
+	int getTraitBonusProductionModifier(BonusTypes eBonus, bool bWorldWonder) const;
+	int getTraitCommerceHappiness(CommerceTypes eCommerce) const;	// Exposed to Python
+	int getTraitCommerceHealth(CommerceTypes eCommerce) const;	// Exposed to Python
 	int getTraitHealRateChange() const;	// Exposed to Python
 	int getTraitDomainFreeExperience(DomainTypes eDomain) const;	// Exposed to Python
 	int getTraitDomainProductionModifier(DomainTypes eDomain) const;	// Exposed to Python

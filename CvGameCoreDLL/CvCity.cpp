@@ -3392,6 +3392,7 @@ int CvCity::getProductionModifier(UnitTypes eUnit) const
 		if (hasBonus((BonusTypes)iI))
 		{
 			iMultiplier += GC.getUnitInfo(eUnit).getBonusProductionModifier(iI);
+			iMultiplier += GET_PLAYER(getOwnerINLINE()).getTraitBonusProductionModifier((BonusTypes)iI, false);	// BonusProductionModifiers of the traits (added by this mod)
 		}
 	}
 
@@ -3425,6 +3426,7 @@ int CvCity::getProductionModifier(BuildingTypes eBuilding) const
 		if (hasBonus((BonusTypes)iI))
 		{
 			iMultiplier += GC.getBuildingInfo(eBuilding).getBonusProductionModifier(iI);
+			iMultiplier += GET_PLAYER(getOwnerINLINE()).getTraitBonusProductionModifier((BonusTypes)iI, isWorldWonderClass((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType()));	// BonusProductionModifiers of the traits (added by this mod)
 		}
 	}
 
@@ -3480,6 +3482,7 @@ int CvCity::getProductionModifier(ProjectTypes eProject) const
 		if (hasBonus((BonusTypes)iI))
 		{
 			iMultiplier += GC.getProjectInfo(eProject).getBonusProductionModifier(iI);
+			iMultiplier += GET_PLAYER(getOwnerINLINE()).getTraitBonusProductionModifier((BonusTypes)iI, false);	// BonusProductionModifiers of the traits (added by this mod)
 		}
 	}
 
@@ -3544,33 +3547,10 @@ int CvCity::getExtraProductionDifference(int iExtra, int iModifier) const
 }
 
 
-// WonderHurrys of the traits of the owner (added by this mod): eBuilding is a wonder (world, team or national) the owner
-// can hurry this way without the civic that allows it
-bool CvCity::isWonderHurry(HurryTypes eHurry, BuildingTypes eBuilding) const
-{
-	if (eBuilding == NO_BUILDING || !isLimitedWonderClass((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType()))
-	{
-		return false;
-	}
-
-	return GET_PLAYER(getOwnerINLINE()).isWonderHurry(eHurry);
-}
-
-// UnitHurrys of the traits of the owner (added by this mod): eUnit is a unit the owner can hurry this way without the civic
-// that allows it
-bool CvCity::isUnitHurry(HurryTypes eHurry, UnitTypes eUnit) const
-{
-	if (eUnit == NO_UNIT)
-	{
-		return false;
-	}
-
-	return GET_PLAYER(getOwnerINLINE()).isUnitHurry(eHurry);
-}
-
 bool CvCity::canHurry(HurryTypes eHurry, bool bTestVisible) const
 {
-	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)) && !isWonderHurry(eHurry, getProductionBuilding()) && !isUnitHurry(eHurry, getProductionUnit()))
+	// Hurrys of the traits of the owner (added by this mod): the item in production without the civic
+	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)) && !GET_PLAYER(getOwnerINLINE()).isTraitHurry(eHurry, getProductionUnit(), getProductionBuilding()))
 	{
 		return false;
 	}
@@ -3608,7 +3588,7 @@ bool CvCity::canHurry(HurryTypes eHurry, bool bTestVisible) const
 
 bool CvCity::canHurryUnit(HurryTypes eHurry, UnitTypes eUnit, bool bIgnoreNew) const
 {
-	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)) && !isUnitHurry(eHurry, eUnit))
+	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)) && !GET_PLAYER(getOwnerINLINE()).isTraitHurry(eHurry, eUnit, NO_BUILDING))	// Hurrys of the traits (added by this mod)
 	{
 		return false;
 	}
@@ -3623,12 +3603,12 @@ bool CvCity::canHurryUnit(HurryTypes eHurry, UnitTypes eUnit, bool bIgnoreNew) c
 		return false;
 	}
 
-	if (GET_PLAYER(getOwnerINLINE()).getGold() < getHurryGold(eHurry, getHurryCost(false, eUnit, bIgnoreNew)))
+	if (GET_PLAYER(getOwnerINLINE()).getGold() < getHurryGold(eHurry, getHurryCost(false, eUnit, bIgnoreNew, eHurry)))
 	{
 		return false;
 	}
 
-	if (maxHurryPopulation() < getHurryPopulation(eHurry, getHurryCost(true, eUnit, bIgnoreNew)))
+	if (maxHurryPopulation() < getHurryPopulation(eHurry, getHurryCost(true, eUnit, bIgnoreNew, eHurry)))
 	{
 		return false;
 	}
@@ -3638,7 +3618,7 @@ bool CvCity::canHurryUnit(HurryTypes eHurry, UnitTypes eUnit, bool bIgnoreNew) c
 
 bool CvCity::canHurryBuilding(HurryTypes eHurry, BuildingTypes eBuilding, bool bIgnoreNew) const
 {
-	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)) && !isWonderHurry(eHurry, eBuilding))
+	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)) && !GET_PLAYER(getOwnerINLINE()).isTraitHurry(eHurry, NO_UNIT, eBuilding))	// Hurrys of the traits (added by this mod)
 	{
 		return false;
 	}
@@ -3653,12 +3633,12 @@ bool CvCity::canHurryBuilding(HurryTypes eHurry, BuildingTypes eBuilding, bool b
 		return false;
 	}
 
-	if (GET_PLAYER(getOwnerINLINE()).getGold() < getHurryGold(eHurry, getHurryCost(false, eBuilding, bIgnoreNew)))
+	if (GET_PLAYER(getOwnerINLINE()).getGold() < getHurryGold(eHurry, getHurryCost(false, eBuilding, bIgnoreNew, eHurry)))
 	{
 		return false;
 	}
 
-	if (maxHurryPopulation() < getHurryPopulation(eHurry, getHurryCost(true, eBuilding, bIgnoreNew)))
+	if (maxHurryPopulation() < getHurryPopulation(eHurry, getHurryCost(true, eBuilding, bIgnoreNew, eHurry)))
 	{
 		return false;
 	}
@@ -3682,7 +3662,7 @@ void CvCity::hurry(HurryTypes eHurry)
 	iHurryPopulation = hurryPopulation(eHurry);
 	iHurryAngerLength = hurryAngerLength(eHurry);
 
-	// HurryUnitExperiences of the traits (added by this mod): the unit completed this turn gets the experience (popOrder)
+	// iExperience of Hurrys of the traits (added by this mod): the unit completed this turn gets the experience (popOrder)
 	if (isProductionUnit())
 	{
 		m_eHurriedUnit = getProductionUnit();
@@ -4786,6 +4766,22 @@ int CvCity::getStateReligionTraitHealth() const
 	return GET_PLAYER(getOwnerINLINE()).getTraitStateReligionHealth();
 }
 
+// CommerceHealths of the traits of the owner (added by this mod): health per 100% of each commerce rate, as
+// CommerceHappinesses for the happiness
+int CvCity::getTraitCommerceHealth() const
+{
+	const CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+	int iHealth = 0;
+	int iI;
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		iHealth += (kOwner.getTraitCommerceHealth((CommerceTypes)iI) * kOwner.getCommercePercent((CommerceTypes)iI)) / 100;
+	}
+
+	return iHealth;
+}
+
 // iHealthPerReligion of the traits of the owner (added by this mod): for each religion in the city
 int CvCity::getTraitReligionHealth() const
 {
@@ -5069,6 +5065,7 @@ int CvCity::goodHealth() const
 		iTotalHealth += iHealth;
 	}
 	iTotalHealth += getTraitBonusHealth(true);
+	iTotalHealth += std::max(0, getTraitCommerceHealth());	// CommerceHealths of the traits (added by this mod)
 
 	iHealth = totalGoodBuildingHealth();
 	if (iHealth > 0)
@@ -5150,6 +5147,7 @@ int CvCity::badHealth(bool bNoAngry, int iExtra) const
 		iTotalHealth += iHealth;
 	}
 	iTotalHealth += getTraitBonusHealth(false);
+	iTotalHealth += std::min(0, getTraitCommerceHealth());	// CommerceHealths of the traits (added by this mod)
 
 	iHealth = totalBadBuildingHealth();
 	if (iHealth < 0)
@@ -5232,7 +5230,7 @@ int CvCity::productionLeft() const
 	return (getProductionNeeded() - getProduction());
 }
 
-int CvCity::getHurryCostModifier(bool bIgnoreNew) const
+int CvCity::getHurryCostModifier(bool bIgnoreNew, HurryTypes eHurry) const
 {
 	int iModifier = 100;
 	CLLNode<OrderData>* pOrderNode = headOrderQueueNode();
@@ -5242,11 +5240,11 @@ int CvCity::getHurryCostModifier(bool bIgnoreNew) const
 		switch (pOrderNode->m_data.eOrderType)
 		{
 		case ORDER_TRAIN:
-			iModifier = getHurryCostModifier((UnitTypes) pOrderNode->m_data.iData1, bIgnoreNew);
+			iModifier = getHurryCostModifier((UnitTypes) pOrderNode->m_data.iData1, bIgnoreNew, eHurry);
 			break;
 
 		case ORDER_CONSTRUCT:
-			iModifier = getHurryCostModifier((BuildingTypes) pOrderNode->m_data.iData1, bIgnoreNew);
+			iModifier = getHurryCostModifier((BuildingTypes) pOrderNode->m_data.iData1, bIgnoreNew, eHurry);
 			break;
 
 		case ORDER_CREATE:
@@ -5262,26 +5260,32 @@ int CvCity::getHurryCostModifier(bool bIgnoreNew) const
 	return iModifier;
 }
 
-int CvCity::getHurryCostModifier(UnitTypes eUnit, bool bIgnoreNew) const
+int CvCity::getHurryCostModifier(UnitTypes eUnit, bool bIgnoreNew, HurryTypes eHurry) const
 {
-	return getHurryCostModifier(GC.getUnitInfo(eUnit).getHurryCostModifier(), getUnitProduction(eUnit), bIgnoreNew);
+	int iBaseModifier = GC.getUnitInfo(eUnit).getHurryCostModifier();
+
+	// Hurrys of the traits of the owner (added by this mod): bIgnoreCostModifier (an extra cost only, a discount stays) and
+	// iCostModifier of the items for eHurry and the unit
+	if (iBaseModifier > 0 && GET_PLAYER(getOwnerINLINE()).isTraitHurryIgnoreCostModifier(eHurry, eUnit, NO_BUILDING))
+	{
+		iBaseModifier = 0;
+	}
+
+	return (getHurryCostModifier(iBaseModifier, getUnitProduction(eUnit), bIgnoreNew) * std::max(0, 100 + GET_PLAYER(getOwnerINLINE()).getTraitHurryCostModifier(eHurry, eUnit, NO_BUILDING))) / 100;
 }
 
-int CvCity::getHurryCostModifier(BuildingTypes eBuilding, bool bIgnoreNew) const
+int CvCity::getHurryCostModifier(BuildingTypes eBuilding, bool bIgnoreNew, HurryTypes eHurry) const
 {
 	int iBaseModifier = GC.getBuildingInfo(eBuilding).getHurryCostModifier();
 
-	// bIgnoreWonderHurryCostModifier of the traits of the owner (added by this mod): no extra cost for wonders (world, team
-	// and national). A discount (below 0) stays
-	if (iBaseModifier > 0 && GET_PLAYER(getOwnerINLINE()).isIgnoreWonderHurryCostModifier())
+	// Hurrys of the traits of the owner (added by this mod): bIgnoreCostModifier (an extra cost only, as the wonders; a
+	// discount stays) and iCostModifier of the items for eHurry and the building
+	if (iBaseModifier > 0 && GET_PLAYER(getOwnerINLINE()).isTraitHurryIgnoreCostModifier(eHurry, NO_UNIT, eBuilding))
 	{
-		if (isLimitedWonderClass((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType()))
-		{
-			iBaseModifier = 0;
-		}
+		iBaseModifier = 0;
 	}
 
-	return getHurryCostModifier(iBaseModifier, getBuildingProduction(eBuilding), bIgnoreNew);
+	return (getHurryCostModifier(iBaseModifier, getBuildingProduction(eBuilding), bIgnoreNew) * std::max(0, 100 + GET_PLAYER(getOwnerINLINE()).getTraitHurryCostModifier(eHurry, NO_UNIT, eBuilding))) / 100;
 }
 
 int CvCity::getHurryCostModifier(int iBaseModifier, int iProduction, bool bIgnoreNew) const
@@ -5303,23 +5307,23 @@ int CvCity::getHurryCostModifier(int iBaseModifier, int iProduction, bool bIgnor
 }
 
 
-int CvCity::hurryCost(bool bExtra) const
+int CvCity::hurryCost(bool bExtra, HurryTypes eHurry) const
 {
-	return (getHurryCost(bExtra, productionLeft(), getHurryCostModifier(), getProductionModifier()));
+	return (getHurryCost(bExtra, productionLeft(), getHurryCostModifier(false, eHurry), getProductionModifier()));
 }
 
-int CvCity::getHurryCost(bool bExtra, UnitTypes eUnit, bool bIgnoreNew) const
+int CvCity::getHurryCost(bool bExtra, UnitTypes eUnit, bool bIgnoreNew, HurryTypes eHurry) const
 {
 	int iProductionLeft = getProductionNeeded(eUnit) - getUnitProduction(eUnit);
 
-	return getHurryCost(bExtra, iProductionLeft, getHurryCostModifier(eUnit, bIgnoreNew), getProductionModifier(eUnit));
+	return getHurryCost(bExtra, iProductionLeft, getHurryCostModifier(eUnit, bIgnoreNew, eHurry), getProductionModifier(eUnit));
 }
 
-int CvCity::getHurryCost(bool bExtra, BuildingTypes eBuilding, bool bIgnoreNew) const
+int CvCity::getHurryCost(bool bExtra, BuildingTypes eBuilding, bool bIgnoreNew, HurryTypes eHurry) const
 {
 	int iProductionLeft = getProductionNeeded(eBuilding) - getBuildingProduction(eBuilding);
 
-	return getHurryCost(bExtra, iProductionLeft, getHurryCostModifier(eBuilding, bIgnoreNew), getProductionModifier(eBuilding));
+	return getHurryCost(bExtra, iProductionLeft, getHurryCostModifier(eBuilding, bIgnoreNew, eHurry), getProductionModifier(eBuilding));
 }
 
 int CvCity::getHurryCost(bool bExtra, int iProductionLeft, int iHurryModifier, int iModifier) const
@@ -5343,7 +5347,7 @@ int CvCity::getHurryCost(bool bExtra, int iProductionLeft, int iHurryModifier, i
 
 int CvCity::hurryGold(HurryTypes eHurry) const
 {
-	return getHurryGold(eHurry, hurryCost(false));
+	return getHurryGold(eHurry, hurryCost(false, eHurry));	// eHurry: Hurrys of the traits (added by this mod)
 }
 
 int CvCity::getHurryGold(HurryTypes eHurry, int iHurryCost) const
@@ -5363,7 +5367,7 @@ int CvCity::getHurryGold(HurryTypes eHurry, int iHurryCost) const
 
 int CvCity::hurryPopulation(HurryTypes eHurry) const
 {
-	return (getHurryPopulation(eHurry, hurryCost(true)));
+	return (getHurryPopulation(eHurry, hurryCost(true, eHurry)));	// eHurry: Hurrys of the traits (added by this mod)
 }
 
 int CvCity::getHurryPopulation(HurryTypes eHurry, int iHurryCost) const
@@ -5384,7 +5388,7 @@ int CvCity::hurryProduction(HurryTypes eHurry) const
 
 	if (GC.getHurryInfo(eHurry).getProductionPerPopulation() > 0)
 	{
-		iProduction = (100 * getExtraProductionDifference(hurryPopulation(eHurry) * GC.getGameINLINE().getProductionPerPopulation(eHurry))) / std::max(1, getHurryCostModifier());
+		iProduction = (100 * getExtraProductionDifference(hurryPopulation(eHurry) * GC.getGameINLINE().getProductionPerPopulation(eHurry))) / std::max(1, getHurryCostModifier(false, eHurry));
 		FAssert(iProduction >= productionLeft());
 	}
 	else
@@ -6707,12 +6711,15 @@ int CvCity::calculateBaseMaintenanceTimes100() const
 // the finance advisor all include it. The saves keep only m_iMaintenanceModifier
 int CvCity::getMaintenanceModifier() const
 {
+	// With iMaintenanceModifier of the traits of the owner (added by this mod)
+	int iModifier = m_iMaintenanceModifier + GET_PLAYER(getOwnerINLINE()).getTraitMaintenanceModifier();
+
 	if (plot()->isOverseas(getOwnerINLINE()))
 	{
-		return m_iMaintenanceModifier + GET_PLAYER(getOwnerINLINE()).getOverseasMaintenanceModifier();
+		return iModifier + GET_PLAYER(getOwnerINLINE()).getOverseasMaintenanceModifier();
 	}
 
-	return m_iMaintenanceModifier;
+	return iModifier;
 }
 
 
@@ -9788,7 +9795,8 @@ int CvCity::getCommerceHappinessPer(CommerceTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < NUM_COMMERCE_TYPES, "eIndex expected to be < NUM_COMMERCE_TYPES");
-	return m_aiCommerceHappinessPer[eIndex];
+	// With CommerceHappinesses of the traits of the owner (added by this mod)
+	return m_aiCommerceHappinessPer[eIndex] + GET_PLAYER(getOwnerINLINE()).getTraitCommerceHappiness(eIndex);
 }
 
 
@@ -12443,10 +12451,10 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 
 			addProductionExperience(pUnit);
 
-			// HurryUnitExperiences of the traits (added by this mod): the first such unit completed after the hurry
+			// iExperience of Hurrys of the traits (added by this mod): the first such unit completed after the hurry
 			if (eTrainUnit == m_eHurriedUnit && m_eHurriedUnitHurry != NO_HURRY)
 			{
-				int iHurryExperience = GET_PLAYER(getOwnerINLINE()).getHurryUnitExperience(m_eHurriedUnitHurry);
+				int iHurryExperience = GET_PLAYER(getOwnerINLINE()).getTraitHurryExperience(m_eHurriedUnitHurry, eTrainUnit);
 				if (iHurryExperience > 0 && pUnit->canAcquirePromotionAny())
 				{
 					pUnit->changeExperience(iHurryExperience);

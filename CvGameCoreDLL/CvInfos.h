@@ -4803,6 +4803,24 @@ struct ConditionalFreeTrait
 //  DESC:   
 //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// An item of Hurrys of the traits (added by this mod): the player can hurry this way without the civic that allows it, for
+// the items the flags name (no flag: units and buildings; several flags: any of them), with the cost modifier and the
+// experience of a hurried unit
+struct TraitHurry
+{
+	int iHurry;
+	bool bUnitsOnly;
+	bool bBuildingsOnly;
+	bool bWondersOnly;			// world, team and national wonders
+	bool bWorldWondersOnly;
+	bool bNationalWondersOnly;
+	int iCostModifier;			// % of the hurry cost
+	bool bIgnoreCostModifier;	// no extra cost of the item (iHurryCostModifier above 0, as the wonders)
+	int iExperience;			// a hurried unit; nothing for buildings
+
+	bool isTarget(UnitTypes eUnit, BuildingTypes eBuilding) const;
+};
+
 class CvTraitInfo :
 	public CvInfoBase
 {
@@ -4913,7 +4931,6 @@ public:
 	int getAttitudeChange() const;			// Exposed to Python (added by this mod)
 	int getRouteMovementModifierInBorders() const;	// Exposed to Python (added by this mod)
 	int getCombatPercent() const;			// Exposed to Python (added by this mod)
-	bool isWonderHurry(int iHurry) const;		// Exposed to Python (added by this mod)
 	int getHappinessPerReligion() const;		// Exposed to Python (added by this mod)
 	int getCommercePerReligion(int i) const;	// Exposed to Python (added by this mod)
 	int getDefenseCombatPercent() const;		// Exposed to Python (added by this mod)
@@ -4922,7 +4939,6 @@ public:
 	int* getWorldWonderCommerceChangeArray() const;	// added by this mod
 	int* getGlobalWorldWonderCommerceChangeArray() const;	// added by this mod
 	int getEnemyWarWearinessModifier() const;	// Exposed to Python (added by this mod)
-	bool isIgnoreWonderHurryCostModifier() const;	// Exposed to Python (added by this mod)
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(int iSpecialBuilding) const;	// Exposed to Python (added by this mod)
 	bool isNoTechCivic(int i) const;		// Exposed to Python (added by this mod)
@@ -4934,8 +4950,6 @@ public:
 	int getExpOutsideBordersChange() const;		// Exposed to Python
 	int getWeLoveTheKingChance() const;			// Exposed to Python
 	int getSpecialistSlotChange(int iSpecialist) const;	// Exposed to Python: -1 (negative) = no limit
-	bool isUnitHurry(int iHurry) const;			// Exposed to Python
-	int getHurryUnitExperience(int iHurry) const;	// Exposed to Python
 	int getImprovedBonusYieldChange(int iBonus, int iYield) const;	// Exposed to Python
 	int getHappyYieldPercent(int i) const;		// Exposed to Python
 	int* getHappyYieldPercentArray() const;
@@ -4967,6 +4981,25 @@ public:
 	int getBonusHappinessChange(int iBonus) const;	// Exposed to Python
 	int getBonusHealthChange(int iBonus) const;		// Exposed to Python
 	bool isAnyBonusHappinessOrHealthChange() const;
+	int getNumHurrys() const;	// Exposed to Python (added by this mod)
+	const TraitHurry& getHurry(int i) const;
+	int getHurryType(int i) const;	// Exposed to Python (added by this mod)
+	int getHurryCostModifier(int i) const;	// Exposed to Python (added by this mod)
+	int getHurryExperience(int i) const;	// Exposed to Python (added by this mod)
+	int getFreeBonus(int iBonus) const;	// Exposed to Python (added by this mod)
+	bool isAnyFreeBonus() const;
+	int getBonusProductionModifier(int iBonus) const;	// Exposed to Python (added by this mod)
+	int getBonusWonderProductionModifier(int iBonus) const;	// Exposed to Python (added by this mod)
+	int getCommerceHappiness(int i) const;	// Exposed to Python (added by this mod)
+	int getCommerceHealth(int i) const;	// Exposed to Python (added by this mod)
+	int getBaseFreeUnits() const;	// Exposed to Python (added by this mod)
+	int getBaseFreeMilitaryUnits() const;	// Exposed to Python (added by this mod)
+	int getFreeUnitsPopulationPercent() const;	// Exposed to Python (added by this mod)
+	int getFreeMilitaryUnitsPopulationPercent() const;	// Exposed to Python (added by this mod)
+	int getGoldPerUnit() const;	// Exposed to Python (added by this mod)
+	int getGoldPerMilitaryUnit() const;	// Exposed to Python (added by this mod)
+	int getCorporationMaintenanceModifier() const;	// Exposed to Python (added by this mod)
+	int getMaintenanceModifier() const;	// Exposed to Python (added by this mod)
 	int getMaxConscript() const;	// Exposed to Python (added by this mod)
 	bool isMilitaryFoodProduction() const;	// Exposed to Python (added by this mod)
 	int getHealRateChange() const;	// Exposed to Python (added by this mod)
@@ -5194,15 +5227,12 @@ protected:
 	int m_iAttitudeChange;	// added by this mod
 	int m_iRouteMovementModifierInBorders;	// added by this mod
 	int m_iCombatPercent;	// added by this mod
-	bool* m_pabWonderHurry;	// added by this mod: WonderHurrys, [hurry], NULL when not set
 	int m_iHappinessPerReligion;	// added by this mod
 	int* m_paiCommercePerReligion;	// added by this mod: [commerce]
 	int m_iDefenseCombatPercent;	// added by this mod
 	int* m_paiWorldWonderCommerceChange;	// added by this mod: [commerce]
 	int* m_paiGlobalWorldWonderCommerceChange;	// added by this mod: [commerce]
 	int m_iEnemyWarWearinessModifier;	// added by this mod
-	std::vector<CvString> m_aszWonderHurryTypes;	// read() keeps the types as strings until readPass3() (hurries are loaded after traits)
-	bool m_bIgnoreWonderHurryCostModifier;	// added by this mod
 	bool m_bConquestStateReligion;	// added by this mod
 	bool* m_pabConquestReligionBuilding;	// added by this mod: [special building], NULL when not set
 	std::vector<CvString> m_aszConquestReligionBuildingTypes;	// read() keeps the types as strings until readPass3()
@@ -5215,11 +5245,6 @@ protected:
 	int m_iExpOutsideBordersChange;	// added by this mod
 	int m_iWeLoveTheKingChance;	// added by this mod
 	std::vector<int> m_aiSpecialistSlotChange;	// added by this mod: [specialist], empty when not set
-	bool* m_pabUnitHurry;	// added by this mod: UnitHurrys, [hurry], NULL when not set
-	std::vector<CvString> m_aszUnitHurryTypes;	// read() keeps the types as strings until readPass3() (hurries are loaded after traits)
-	std::vector<int> m_aiHurryUnitExperience;	// added by this mod: [hurry], empty when not set
-	std::vector<CvString> m_aszHurryUnitExperienceTypes;	// as strings until readPass3()
-	std::vector<int> m_aiHurryUnitExperienceValues;
 	std::vector< std::vector<int> > m_aaiImprovedBonusYieldChange;	// added by this mod: [bonus][yield], empty when not set
 	std::vector<CvString> m_aszImprovedBonusYieldChangeTypes;	// as strings until readPass3() (bonuses are loaded after traits)
 	std::vector< std::vector<int> > m_aaiImprovedBonusYieldChangeValues;
@@ -5241,6 +5266,26 @@ protected:
 	int* m_paiGlobalWorldWonderYieldChange;	// added by this mod: [yield]
 	int* m_paiSpecialistExtraYield;	// added by this mod: SpecialistExtraYields, [yield]
 	int m_iNonStateReligionHappiness;	// added by this mod
+	std::vector<TraitHurry> m_aHurrys;	// added by this mod: Hurrys
+	std::vector<CvString> m_aszHurryTypes;	// the HurryType of each item as a string until readPass3() (hurries are loaded after traits)
+	std::vector<int> m_aiFreeBonus;	// added by this mod: FreeBonuses, [bonus], empty when not set
+	std::vector<CvString> m_aszFreeBonusTypes;	// as strings until readPass3()
+	std::vector<int> m_aiFreeBonusValues;
+	std::vector<int> m_aiBonusProductionModifier;	// added by this mod: [bonus], empty when not set
+	std::vector<int> m_aiBonusWonderProductionModifier;	// added by this mod: bWorldWondersOnly items, [bonus], empty when not set
+	std::vector<CvString> m_aszBonusProductionModifierTypes;	// as strings until readPass3()
+	std::vector<int> m_aiBonusProductionModifierValues;
+	std::vector<int> m_aiBonusProductionModifierWonders;
+	int* m_paiCommerceHappiness;	// added by this mod: CommerceHappinesses, [commerce]
+	int* m_paiCommerceHealth;	// added by this mod: CommerceHealths, [commerce]
+	int m_iBaseFreeUnits;	// added by this mod
+	int m_iBaseFreeMilitaryUnits;	// added by this mod
+	int m_iFreeUnitsPopulationPercent;	// added by this mod
+	int m_iFreeMilitaryUnitsPopulationPercent;	// added by this mod
+	int m_iGoldPerUnit;	// added by this mod
+	int m_iGoldPerMilitaryUnit;	// added by this mod
+	int m_iCorporationMaintenanceModifier;	// added by this mod
+	int m_iMaintenanceModifier;	// added by this mod
 	int m_iMaxConscript;	// added by this mod
 	bool m_bMilitaryFoodProduction;	// added by this mod
 	int m_iHealRateChange;	// added by this mod
