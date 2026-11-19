@@ -25769,6 +25769,10 @@
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_PAX_TOKUGAWA</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
@@ -27467,6 +27471,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_CHARISMATIC</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_MINUTEMEN</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>

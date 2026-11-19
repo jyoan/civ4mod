@@ -121,6 +121,8 @@ BtS の効果はそのままにして足す。
 | `bConquestHeal` | ユリウス・カエサル |
 | `CapitalTerrainYieldPercents`、`TerrainTrades` の砂漠 | マリ |
 | `PyOnCityLost`（`createPartisans`） | ド・ゴール |
+| `bAtWar` + `PyOnGained`（`createCityConscripts`） | ワシントン |
+| `bAtWar` + `PyOnLost` で期間つきの志向（`CommerceModifiers` の文化、`iHappiness`） | 徳川家康 |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -189,6 +191,8 @@ BtS の効果はそのままにして足す。
 | ユリウス・カエサル | 来た、見た、勝った: 都市を征服すると全ユニットが全回復 | `bConquestHeal` | 実装済み、ゲームで確認済み `TRAIT_VENI_VIDI_VICI` |
 | マリ（文明） | サハラ交易: 首都の都市圏の砂漠 1 タイルにつき、首都の食料 +0.5・商業 +1（砂漠のタイルそのものは変わらない）。砂漠が交易網をつなぐ。砂漠のバイアス | `CapitalTerrainYieldPercents`（砂漠 食料 50・商業 100）、`TerrainTrades`（砂漠）、`StartBiasTerrains`（砂漠 10） | 実装済み `TRAIT_TRANS_SAHARAN` |
 | ド・ゴール | レジスタンス: 都市を占領される（破壊される）と、その近くにパルチザンが（人口 + 2）体現れる。首都で徴兵できるユニットで、都市の文化レベルに応じて戦闘術Ⅰ～Ⅵを持つ（2026-11-19。人口と文化レベルは占領される前のもの） | `PyOnCityLost` で `createPartisans` | 実装済み `TRAIT_RESISTANCE` |
+| ワシントン | ミニットマン: 戦争が始まると（交戦相手がいない状態から）、首都と人口 5 以上の都市に、その都市で徴兵できるユニットが 1 体ずつ現れる（2026-11-19。人口 5 は仮） | `bAtWar` で `TRAIT_MINUTEMEN_WAR`、その `PyOnGained` で `createCityConscripts` | 実装済み `TRAIT_MINUTEMEN` |
+| 徳川家康 | 天下泰平: 戦争が終わると（交戦相手がいなくなると）、20 ターン（ゲーム速度で変わる）泰平志向（全都市の文化 +50%、幸福 +1）を得る（2026-11-19。数値は仮） | `bAtWar` で `TRAIT_PAX_TOKUGAWA_WAR`、その `PyOnLost` で `gainTraitForTurns`（`TRAIT_PAX_TOKUGAWA_PEACE`） | 実装済み `TRAIT_PAX_TOKUGAWA` |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
 - 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%

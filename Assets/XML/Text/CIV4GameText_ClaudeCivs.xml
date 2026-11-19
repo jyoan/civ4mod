@@ -1415,4 +1415,130 @@
 		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered (or razed), (population + 2) partisans rise near it: the unit the capital conscripts, with Combat promotions by the culture level of the city</Spanish>
 		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#37117;&#24066;&#12434;&#21344;&#38936;&#12373;&#12428;&#12427;&#65288;&#30772;&#22730;&#12373;&#12428;&#12427;&#65289;&#12392;&#12289;&#12381;&#12398;&#36817;&#12367;&#12395;&#12497;&#12523;&#12481;&#12470;&#12531;&#12364;&#65288;&#20154;&#21475; + 2&#65289;&#20307;&#29694;&#12428;&#12427;&#12290;&#39318;&#37117;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12391;&#12289;&#37117;&#24066;&#12398;&#25991;&#21270;&#12524;&#12505;&#12523;&#12395;&#24540;&#12376;&#12390;&#25126;&#38360;&#34899;&#8544;&#65374;&#8549;&#12434;&#25345;&#12388;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MINUTEMEN</Tag>
+		<English>Minutemen</English>
+		<French>Minutemen</French>
+		<German>Minutemen</German>
+		<Italian>Minutemen</Italian>
+		<Spanish>Minutemen</Spanish>
+		<Japanese>&#12511;&#12491;&#12483;&#12488;&#12510;&#12531;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MINUTEMEN_SHORT</Tag>
+		<English>Min</English>
+		<French>Min</French>
+		<German>Min</German>
+		<Italian>Min</Italian>
+		<Spanish>Min</Spanish>
+		<Japanese>&#27665;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MINUTEMEN_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 5 or more</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 5 or more</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 5 or more</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 5 or more</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 5 or more</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#25126;&#20105;&#12364;&#22987;&#12414;&#12427;&#12392;&#65288;&#20132;&#25126;&#30456;&#25163;&#12364;&#12356;&#12394;&#12356;&#29366;&#24907;&#12363;&#12425;&#65289;&#12289;&#39318;&#37117;&#12392;&#20154;&#21475; 5 &#20197;&#19978;&#12398;&#37117;&#24066;&#12395;&#12289;&#12381;&#12398;&#37117;&#24066;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12364; 1 &#20307;&#12378;&#12388;&#29694;&#12428;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MINUTEMEN_WAR</Tag>
+		<English>Minutemen (at war)</English>
+		<French>Minutemen (at war)</French>
+		<German>Minutemen (at war)</German>
+		<Italian>Minutemen (at war)</Italian>
+		<Spanish>Minutemen (at war)</Spanish>
+		<Japanese>&#12511;&#12491;&#12483;&#12488;&#12510;&#12531;&#65288;&#25126;&#26178;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MINUTEMEN_WAR_SHORT</Tag>
+		<English>War</English>
+		<French>War</French>
+		<German>War</German>
+		<Italian>War</Italian>
+		<Spanish>War</Spanish>
+		<Japanese>&#25126;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MINUTEMEN_WAR_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 5 or more</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 5 or more</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 5 or more</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 5 or more</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 5 or more</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#24471;&#12383;&#12392;&#12365;&#12289;&#39318;&#37117;&#12392;&#20154;&#21475; 5 &#20197;&#19978;&#12398;&#37117;&#24066;&#12395;&#12289;&#12381;&#12398;&#37117;&#24066;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12364; 1 &#20307;&#12378;&#12388;&#29694;&#12428;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PAX_TOKUGAWA</Tag>
+		<English>Pax Tokugawa</English>
+		<French>Pax Tokugawa</French>
+		<German>Pax Tokugawa</German>
+		<Italian>Pax Tokugawa</Italian>
+		<Spanish>Pax Tokugawa</Spanish>
+		<Japanese>&#22825;&#19979;&#27888;&#24179;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PAX_TOKUGAWA_SHORT</Tag>
+		<English>Pax</English>
+		<French>Pax</French>
+		<German>Pax</German>
+		<Italian>Pax</Italian>
+		<Spanish>Pax</Spanish>
+		<Japanese>&#27888;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PAX_TOKUGAWA_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]When all wars end, Peace for 20 turns (scaled by game speed)</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]When all wars end, Peace for 20 turns (scaled by game speed)</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]When all wars end, Peace for 20 turns (scaled by game speed)</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]When all wars end, Peace for 20 turns (scaled by game speed)</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]When all wars end, Peace for 20 turns (scaled by game speed)</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#25126;&#20105;&#12364;&#32066;&#12431;&#12427;&#12392;&#65288;&#20132;&#25126;&#30456;&#25163;&#12364;&#12356;&#12394;&#12367;&#12394;&#12427;&#12392;&#65289;&#12289;20 &#12479;&#12540;&#12531;&#65288;&#12466;&#12540;&#12512;&#36895;&#24230;&#12391;&#22793;&#12431;&#12427;&#65289;&#27888;&#24179;&#24535;&#21521;&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PAX_TOKUGAWA_WAR</Tag>
+		<English>Pax Tokugawa (at war)</English>
+		<French>Pax Tokugawa (at war)</French>
+		<German>Pax Tokugawa (at war)</German>
+		<Italian>Pax Tokugawa (at war)</Italian>
+		<Spanish>Pax Tokugawa (at war)</Spanish>
+		<Japanese>&#22825;&#19979;&#27888;&#24179;&#65288;&#25126;&#26178;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PAX_TOKUGAWA_WAR_SHORT</Tag>
+		<English>War</English>
+		<French>War</French>
+		<German>War</German>
+		<Italian>War</Italian>
+		<Spanish>War</Spanish>
+		<Japanese>&#25126;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PAX_TOKUGAWA_WAR_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]When lost, Peace for 20 turns (scaled by game speed)</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]When lost, Peace for 20 turns (scaled by game speed)</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]When lost, Peace for 20 turns (scaled by game speed)</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]When lost, Peace for 20 turns (scaled by game speed)</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]When lost, Peace for 20 turns (scaled by game speed)</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#22833;&#12358;&#12392;&#12289;20 &#12479;&#12540;&#12531;&#65288;&#12466;&#12540;&#12512;&#36895;&#24230;&#12391;&#22793;&#12431;&#12427;&#65289;&#27888;&#24179;&#24535;&#21521;&#12434;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PAX_TOKUGAWA_PEACE</Tag>
+		<English>Peace</English>
+		<French>Peace</French>
+		<German>Peace</German>
+		<Italian>Peace</Italian>
+		<Spanish>Peace</Spanish>
+		<Japanese>&#27888;&#24179;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_PAX_TOKUGAWA_PEACE_SHORT</Tag>
+		<English>Pea</English>
+		<French>Pea</French>
+		<German>Pea</German>
+		<Italian>Pea</Italian>
+		<Spanish>Pea</Spanish>
+		<Japanese>&#24179;</Japanese>
+	</TEXT>
 </Civ4GameText>
