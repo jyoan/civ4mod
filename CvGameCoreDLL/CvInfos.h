@@ -4877,6 +4877,7 @@ public:
 	int getGoldenAgeSeaMovesChange() const;		// Exposed to Python
 	bool isInlandCanals() const;					// Exposed to Python
 	bool isBarbarianAlly() const;				// Exposed to Python
+	bool isBarbarianVision() const;				// Exposed to Python (added by this mod)
 	int getStartBiasCoastal() const;				// Exposed to Python: start bias (added by this mod)
 	int getStartBiasRiver() const;					// Exposed to Python
 	int getStartBiasTerrain(int i) const;			// Exposed to Python
@@ -5176,6 +5177,7 @@ protected:
 	int m_iGoldenAgeSeaMovesChange;
 	bool m_bInlandCanals;
 	bool m_bBarbarianAlly;
+	bool m_bBarbarianVision;
 	int m_iStartBiasCoastal;				// start bias (added by this mod)
 	int m_iStartBiasRiver;
 	int* m_piStartBiasTerrains;

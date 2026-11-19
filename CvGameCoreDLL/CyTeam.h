@@ -71,6 +71,7 @@ public:
 	bool isBarbarian();
 	bool isMinorCiv();
 	bool isBarbarianAlly();
+	bool isBarbarianVision();
 	int /*PlayerTypes*/ getLeaderID();
 	int /*PlayerTypes*/ getSecretaryID();
 	int /*HandicapTypes*/ getHandicapType();

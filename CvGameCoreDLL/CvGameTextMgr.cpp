@@ -4057,6 +4057,12 @@ void CvGameTextMgr::parseTraitTerritoryEffects(CvWStringBuffer& szHelpString, Tr
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_BARBARIAN_ALLY"));
 	}
 
+	// bBarbarianVision (added by this mod)
+	if (kTrait.isBarbarianVision())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_BARBARIAN_VISION"));
+	}
+
 	// bInlandCanals (added by this mod)
 	if (kTrait.isInlandCanals())
 	{

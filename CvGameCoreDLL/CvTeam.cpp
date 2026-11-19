@@ -931,6 +931,12 @@ void CvTeam::doTurn()
 				changeStolenVisibilityTimer(((TeamTypes)iI), -1);
 			}
 
+			// bBarbarianVision of the traits (added by this mod): back to 2 before the vision can end
+			if (iI == BARBARIAN_TEAM)
+			{
+				updateBarbarianVision(true);
+			}
+
 			if (getCounterespionageTurnsLeftAgainstTeam((TeamTypes) iI) > 0)
 			{
 				changeCounterespionageTurnsLeftAgainstTeam((TeamTypes) iI, -1);
@@ -2697,6 +2703,42 @@ void CvTeam::updateBarbarianAlly()
 	else if (!isAtWar(BARBARIAN_TEAM))
 	{
 		GET_TEAM(BARBARIAN_TEAM).declareWar(getID(), false, NO_WARPLAN);
+	}
+}
+
+// bBarbarianVision of the traits (added by this mod): a living player of the team has such a trait
+bool CvTeam::isBarbarianVision() const
+{
+	if (isBarbarian())
+	{
+		return false;
+	}
+
+	return hasPlayerTraitFlag(&CvTraitInfo::isBarbarianVision);
+}
+
+// The team sees what the barbarians see (their units, animals included, and their cities) while isBarbarianVision (added by
+// this mod). Uses the stolen visibility of BtS (the Steal Plans mission of the spies): a timer of turns, which this keeps at
+// 2 or more. Called when a player of the team gains or loses such a trait (it starts or ends at once), at the start of the
+// game, and in doTurn after the timers count down (bTurn: only tops it up, so a trait lost by other means ends within 2
+// turns)
+void CvTeam::updateBarbarianVision(bool bTurn)
+{
+	if (isBarbarian())
+	{
+		return;
+	}
+
+	if (isAlive() && isBarbarianVision())
+	{
+		if (getStolenVisibilityTimer(BARBARIAN_TEAM) < 2)
+		{
+			setStolenVisibilityTimer(BARBARIAN_TEAM, 2);
+		}
+	}
+	else if (!bTurn)
+	{
+		setStolenVisibilityTimer(BARBARIAN_TEAM, 0);
 	}
 }
 

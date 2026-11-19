@@ -366,6 +366,7 @@
 	<ElementType name="iGoldenAgeSeaMovesChange" content="textOnly" dt:type="int"/>
 	<ElementType name="bInlandCanals" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bBarbarianAlly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bBarbarianVision" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iNumUnits" content="textOnly" dt:type="int"/>
 	<ElementType name="bCoastalOnly" content="textOnly" dt:type="boolean"/>
 	<ElementType name="CityFoundedUnit" content="eltOnly">
@@ -1066,6 +1067,7 @@
 		<element type="iGoldenAgeSeaMovesChange" minOccurs="0"/>
 		<element type="bInlandCanals" minOccurs="0"/>
 		<element type="bBarbarianAlly" minOccurs="0"/>
+		<element type="bBarbarianVision" minOccurs="0"/>
 		<element type="iStartBiasCoastal" minOccurs="0"/>
 		<element type="iStartBiasRiver" minOccurs="0"/>
 		<element type="StartBiasTerrains" minOccurs="0"/>
