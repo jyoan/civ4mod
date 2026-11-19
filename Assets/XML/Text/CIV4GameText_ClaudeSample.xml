@@ -1367,4 +1367,40 @@
 		<Spanish>[ICON_BULLET]%D1%% Revenge (Trait)</Spanish>
 		<Japanese>[ICON_BULLET]&#24489;&#35728;&#65288;&#24535;&#21521;&#65289;: %D1%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_HAPPY</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Extra happiness: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Extra happiness: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Extra happiness: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Extra happiness: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Extra happiness: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#20313;&#21104;&#12398;&#24184;&#31119;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_HEALTHY</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Extra health: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Extra health: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Extra health: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Extra health: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Extra health: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#20313;&#21104;&#12398;&#34907;&#29983;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_HAPPY_COMMERCE</Tag>
+		<English>[ICON_BULLET]%D1%F2 from extra happiness</English>
+		<French>[ICON_BULLET]%D1%F2 from extra happiness</French>
+		<German>[ICON_BULLET]%D1%F2 from extra happiness</German>
+		<Italian>[ICON_BULLET]%D1%F2 from extra happiness</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 from extra happiness</Spanish>
+		<Japanese>[ICON_BULLET]&#20313;&#21104;&#12398;&#24184;&#31119;&#12424;&#12426;%F2%D1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_HEALTHY_COMMERCE</Tag>
+		<English>[ICON_BULLET]%D1%F2 from extra health</English>
+		<French>[ICON_BULLET]%D1%F2 from extra health</French>
+		<German>[ICON_BULLET]%D1%F2 from extra health</German>
+		<Italian>[ICON_BULLET]%D1%F2 from extra health</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 from extra health</Spanish>
+		<Japanese>[ICON_BULLET]&#20313;&#21104;&#12398;&#34907;&#29983;&#12424;&#12426;%F2%D1</Japanese>
+	</TEXT>
 </Civ4GameText>

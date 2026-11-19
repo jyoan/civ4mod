@@ -736,6 +736,46 @@
 	<ElementType name="BonusYieldChanges" content="eltOnly">
 		<element type="BonusYieldChange" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="iMaxExperienceAfterUpgrade" content="textOnly" dt:type="int"/>
+	<ElementType name="iExpOutsideBordersChange" content="textOnly" dt:type="int"/>
+	<ElementType name="iWeLoveTheKingChance" content="textOnly" dt:type="int"/>
+	<ElementType name="iSlots" content="textOnly" dt:type="int"/>
+	<ElementType name="SpecialistSlotChange" content="eltOnly">
+		<element type="SpecialistType"/>
+		<element type="iSlots"/>
+	</ElementType>
+	<ElementType name="SpecialistSlotChanges" content="eltOnly">
+		<element type="SpecialistSlotChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="UnitHurrys" content="eltOnly">
+		<element type="HurryType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="HurryUnitExperience" content="eltOnly">
+		<element type="HurryType"/>
+		<element type="iExperience"/>
+	</ElementType>
+	<ElementType name="HurryUnitExperiences" content="eltOnly">
+		<element type="HurryUnitExperience" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="ImprovedBonusYieldChange" content="eltOnly">
+		<element type="BonusType"/>
+		<element type="Yields"/>
+	</ElementType>
+	<ElementType name="ImprovedBonusYieldChanges" content="eltOnly">
+		<element type="ImprovedBonusYieldChange" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="HappyYieldPercents" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="HappyCommercePercents" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="HealthyYieldPercents" content="eltOnly">
+		<element type="iYield" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="HealthyCommercePercents" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="TraitInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -810,6 +850,12 @@
 		<element type="iMaxNationalWondersPerCity" minOccurs="0"/>
 		<element type="iMaxNationalWondersPerCityForOCC" minOccurs="0"/>
 		<element type="bHumanCanBeVassal" minOccurs="0"/>
+		<element type="iMaxExperienceAfterUpgrade" minOccurs="0"/>
+		<element type="iExpOutsideBordersChange" minOccurs="0"/>
+		<element type="iWeLoveTheKingChance" minOccurs="0"/>
+		<element type="SpecialistSlotChanges" minOccurs="0"/>
+		<element type="UnitHurrys" minOccurs="0"/>
+		<element type="HurryUnitExperiences" minOccurs="0"/>
 		<element type="iGoldenAgeModifier" minOccurs="0"/>
 		<element type="iGoldenAgeGreatPeopleRateModifier" minOccurs="0"/>
 		<element type="iCapitalBuildingProductionModifier" minOccurs="0"/>
@@ -884,6 +930,11 @@
 		<element type="UnhealthyYieldChanges" minOccurs="0"/>
 		<element type="UnhealthyCommerceChanges" minOccurs="0"/>
 		<element type="BonusYieldChanges" minOccurs="0"/>
+		<element type="ImprovedBonusYieldChanges" minOccurs="0"/>
+		<element type="HappyYieldPercents" minOccurs="0"/>
+		<element type="HappyCommercePercents" minOccurs="0"/>
+		<element type="HealthyYieldPercents" minOccurs="0"/>
+		<element type="HealthyCommercePercents" minOccurs="0"/>
 		<element type="FreePromotions"/>
 		<element type="FreePromotionUnitCombats"/>
 		<element type="FreePromotionSets" minOccurs="0"/>

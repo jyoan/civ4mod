@@ -2378,6 +2378,36 @@ bool CyPlayer::isConquestHeal()
 	return m_pPlayer ? m_pPlayer->isConquestHeal() : false;
 }
 
+int CyPlayer::getMaxExperienceAfterUpgrade()
+{
+	return m_pPlayer ? m_pPlayer->getMaxExperienceAfterUpgrade() : 0;
+}
+
+int CyPlayer::getExpOutsideBordersChange()
+{
+	return m_pPlayer ? m_pPlayer->getExpOutsideBordersChange() : 0;
+}
+
+int CyPlayer::getWeLoveTheKingChance()
+{
+	return m_pPlayer ? m_pPlayer->getWeLoveTheKingChance() : 0;
+}
+
+int CyPlayer::getTraitSpecialistSlotChange(int /*SpecialistTypes*/ eSpecialist)
+{
+	return m_pPlayer ? m_pPlayer->getTraitSpecialistSlotChange((SpecialistTypes)eSpecialist) : 0;
+}
+
+bool CyPlayer::isUnitHurry(int /*HurryTypes*/ eHurry)
+{
+	return m_pPlayer ? m_pPlayer->isUnitHurry((HurryTypes)eHurry) : false;
+}
+
+int CyPlayer::getHurryUnitExperience(int /*HurryTypes*/ eHurry)
+{
+	return m_pPlayer ? m_pPlayer->getHurryUnitExperience((HurryTypes)eHurry) : 0;
+}
+
 int CyPlayer::getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce)
 {
 	return m_pPlayer ? m_pPlayer->getSpecialistTypeExtraCommerce((SpecialistTypes)eSpecialist, (CommerceTypes)eCommerce) : 0;

@@ -440,6 +440,28 @@
 			<iMaxNationalWondersPerCity>4</iMaxNationalWondersPerCity>
 			<iMaxNationalWondersPerCityForOCC>-1</iMaxNationalWondersPerCityForOCC>
 			<bHumanCanBeVassal>1</bHumanCanBeVassal>
+			<iMaxExperienceAfterUpgrade>-1</iMaxExperienceAfterUpgrade>
+			<iExpOutsideBordersChange>1</iExpOutsideBordersChange>
+			<iWeLoveTheKingChance>100</iWeLoveTheKingChance>
+			<SpecialistSlotChanges>
+				<SpecialistSlotChange>
+					<SpecialistType>SPECIALIST_ENGINEER</SpecialistType>
+					<iSlots>1</iSlots>
+				</SpecialistSlotChange>
+				<SpecialistSlotChange>
+					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+					<iSlots>-1</iSlots>
+				</SpecialistSlotChange>
+			</SpecialistSlotChanges>
+			<UnitHurrys>
+				<HurryType>HURRY_GOLD</HurryType>
+			</UnitHurrys>
+			<HurryUnitExperiences>
+				<HurryUnitExperience>
+					<HurryType>HURRY_GOLD</HurryType>
+					<iExperience>3</iExperience>
+				</HurryUnitExperience>
+			</HurryUnitExperiences>
 			<iGoldenAgeModifier>50</iGoldenAgeModifier>
 			<iGoldenAgeGreatPeopleRateModifier>50</iGoldenAgeGreatPeopleRateModifier>
 			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>
@@ -880,6 +902,30 @@
 					</Yields>
 				</BonusYieldChange>
 			</BonusYieldChanges>
+			<ImprovedBonusYieldChanges>
+				<ImprovedBonusYieldChange>
+					<BonusType>BONUS_COPPER</BonusType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+						<iYield>3</iYield>
+					</Yields>
+				</ImprovedBonusYieldChange>
+				<ImprovedBonusYieldChange>
+					<BonusType>BONUS_CORN</BonusType>
+					<Yields>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</ImprovedBonusYieldChange>
+			</ImprovedBonusYieldChanges>
+			<HappyCommercePercents>
+				<iCommerce>100</iCommerce>
+			</HappyCommercePercents>
+			<HealthyYieldPercents>
+				<iYield>50</iYield>
+			</HealthyYieldPercents>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 			<FreePromotionSets>

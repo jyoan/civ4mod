@@ -154,5 +154,11 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("getKnownTechCostModifier", &CyPlayer::getKnownTechCostModifier, "int () - research cost % for each known civilization with the tech (traits, added by this mod)")
 		.def("getKnownTechCostLimit", &CyPlayer::getKnownTechCostLimit, "int () - the lowest research cost % of iKnownTechCostModifier (traits, added by this mod)")
 		.def("isConquestHeal", &CyPlayer::isConquestHeal, "bool () - the units that conquer a city are healed (traits, added by this mod)")
+		.def("getMaxExperienceAfterUpgrade", &CyPlayer::getMaxExperienceAfterUpgrade, "int () - the experience a unit keeps when upgraded, -1 for all (GlobalDefines or traits, added by this mod)")
+		.def("getExpOutsideBordersChange", &CyPlayer::getExpOutsideBordersChange, "int () - extra combat experience outside our borders (traits, added by this mod)")
+		.def("getWeLoveTheKingChance", &CyPlayer::getWeLoveTheKingChance, "int () - % chance that a city able to celebrate celebrates (traits, added by this mod)")
+		.def("getTraitSpecialistSlotChange", &CyPlayer::getTraitSpecialistSlotChange, "int (int eSpecialist) - slots of the specialist in every city, -1 for no limit (traits, added by this mod)")
+		.def("isUnitHurry", &CyPlayer::isUnitHurry, "bool (int eHurry) - can hurry units this way without the civic (UnitHurrys of the traits, added by this mod)")
+		.def("getHurryUnitExperience", &CyPlayer::getHurryUnitExperience, "int (int eHurry) - experience of a unit hurried this way (traits, added by this mod)")
 		;
 }

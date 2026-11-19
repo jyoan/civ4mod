@@ -277,6 +277,14 @@ public:
 	bool isNoTechCivic(CivicTypes eCivic) const;	// Exposed to Python (added by this mod)
 	int getMaxNationalWondersPerCity() const;	// Exposed to Python (added by this mod)
 	bool isHumanCanBeVassal() const;	// Exposed to Python (added by this mod)
+	// Batch of 2026-11-18 (added by this mod)
+	int getMaxExperienceAfterUpgrade() const;	// Exposed to Python: -1 = keeps all
+	int getExpOutsideBordersChange() const;		// Exposed to Python
+	int getWeLoveTheKingChance() const;			// Exposed to Python
+	int getTraitSpecialistSlotChange(SpecialistTypes eSpecialist) const;	// Exposed to Python: -1 = no limit
+	bool isUnitHurry(HurryTypes eHurry) const;	// Exposed to Python
+	int getHurryUnitExperience(HurryTypes eHurry) const;	// Exposed to Python
+	int getTraitImprovedBonusYieldChange(BonusTypes eBonus, YieldTypes eYield) const;
 	void doEnemyAttrition();	// added by this mod
 	int getFeatureProductionChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	int getFeatureGrowthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)

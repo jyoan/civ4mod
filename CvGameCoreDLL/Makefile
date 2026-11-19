@@ -136,6 +136,7 @@ OBJS = \
 	$(INTDIR)\CyInfoInterface1.obj \
 	$(INTDIR)\CyInfoInterface2.obj \
 	$(INTDIR)\CyInfoInterface3.obj \
+	$(INTDIR)\CyInfoInterface4.obj \
 	$(INTDIR)\CyMap.obj \
 	$(INTDIR)\CyMapGenerator.obj \
 	$(INTDIR)\CyMapGeneratorInterface.obj \

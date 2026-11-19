@@ -134,6 +134,7 @@ public:
 
 	bool canHurry(HurryTypes eHurry, bool bTestVisible = false) const;		// Exposed to Python
 	bool isWonderHurry(HurryTypes eHurry, BuildingTypes eBuilding) const;	// added by this mod: WonderHurrys of the traits
+	bool isUnitHurry(HurryTypes eHurry, UnitTypes eUnit) const;	// added by this mod: UnitHurrys of the traits
 	void hurry(HurryTypes eHurry);																						// Exposed to Python
 
 	UnitTypes getConscriptUnit() const;																// Exposed to Python
@@ -578,6 +579,7 @@ public:
 	void setAirliftTargeted(bool bNewValue);												// Exposed to Python
 
 	bool isWeLoveTheKingDay() const;														// Exposed to Python 
+	bool isTraitWeLoveTheKing() const;	// added by this mod: the roll of iWeLoveTheKingChance of the traits
 	void setWeLoveTheKingDay(bool bNewValue);
 
 	bool isCitizensAutomated() const;														// Exposed to Python 
@@ -1112,6 +1114,8 @@ protected:
 	PlayerTypes m_eOriginalOwner;
 	CultureLevelTypes m_eCultureLevel;
 	int m_iCultureRange;	// the culture level with iCultureRangeChange of the owner, as counted in the plots (added by this mod)
+	UnitTypes m_eHurriedUnit;	// the unit hurried this turn and how, for HurryUnitExperiences of the traits (added by this mod)
+	HurryTypes m_eHurriedUnitHurry;
 
 	int* m_aiSeaPlotYield;
 	int* m_aiRiverPlotYield;

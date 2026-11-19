@@ -4494,6 +4494,142 @@ void CvGameTextMgr::parseTraitMiseryAndLakeEffects(CvWStringBuffer& szHelpString
 	}
 }
 
+// A value in 1/100 as "+1" or "+0.50" (added by this mod)
+static CvWString formatHundredths(int iValue)
+{
+	CvWString szValue;
+
+	if (iValue % 100 == 0)
+	{
+		szValue.Format(L"%c%d", ((iValue < 0) ? L'-' : L'+'), abs(iValue) / 100);
+	}
+	else
+	{
+		szValue.Format(L"%c%d.%02d", ((iValue < 0) ? L'-' : L'+'), abs(iValue) / 100, abs(iValue) % 100);
+	}
+
+	return szValue;
+}
+
+// The tags of 2026-11-18 (added by this mod): upgrades, combat experience, celebration, specialist slots, hurry, improved
+// bonuses and the changes per extra happiness and health
+void CvGameTextMgr::parseTraitUnitAndCityEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	int iValue;
+	int iLast;
+	int iI, iJ;
+
+	iValue = kTrait.getMaxExperienceAfterUpgrade();
+	if (iValue < 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_KEEP_UPGRADE_EXPERIENCE"));
+	}
+	else if (iValue > 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_MAX_UPGRADE_EXPERIENCE", iValue));
+	}
+
+	if (kTrait.getExpOutsideBordersChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_EXP_OUTSIDE_BORDERS", kTrait.getExpOutsideBordersChange()));
+	}
+
+	iValue = kTrait.getWeLoveTheKingChance();
+	if (iValue >= 100)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_WE_LOVE_THE_KING_ALWAYS", GC.getDefineINT("WE_LOVE_THE_KING_POPULATION_MIN_POPULATION")));
+	}
+	else if (iValue > 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_WE_LOVE_THE_KING_CHANCE", iValue, GC.getDefineINT("WE_LOVE_THE_KING_POPULATION_MIN_POPULATION")));
+	}
+
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
+	{
+		iValue = kTrait.getSpecialistSlotChange(iI);
+		if (iValue != 0)
+		{
+			CvWString szSpecialist = getLinkText(GC.getSpecialistInfo((SpecialistTypes)iI).getDescription());
+			if (iValue < 0)
+			{
+				appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_SPECIALIST_UNLIMITED", szSpecialist.GetCString()));
+			}
+			else
+			{
+				appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_SPECIALIST_SLOTS", szSpecialist.GetCString(), iValue));
+			}
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumHurryInfos(); iI++)
+	{
+		if (kTrait.isUnitHurry(iI))
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_UNIT_HURRY", GC.getHurryInfo((HurryTypes)iI).getTextKeyWide()));
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumHurryInfos(); iI++)
+	{
+		if (kTrait.getHurryUnitExperience(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HURRY_UNIT_EXPERIENCE", kTrait.getHurryUnitExperience(iI), GC.getHurryInfo((HurryTypes)iI).getTextKeyWide()));
+		}
+	}
+
+	// ImprovedBonusYieldChanges: one line per yield and value, "+3 commerce from these developed resources: gold, silver"
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		iLast = 0;
+
+		for (iJ = 0; iJ < GC.getNumBonusInfos(); iJ++)
+		{
+			iValue = kTrait.getImprovedBonusYieldChange(iJ, iI);
+			if (iValue != 0)
+			{
+				CvWString szStart;
+				szStart.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_IMPROVED_BONUS_YIELD_CHANGE", iValue, GC.getYieldInfo((YieldTypes)iI).getChar()).c_str());
+				setListHelp(szHelpString, szStart.GetCString(), getLinkText(GC.getBonusInfo((BonusTypes)iJ).getDescription()).GetCString(), L", ", (iValue != iLast));
+				iLast = iValue;
+			}
+		}
+	}
+
+	// HappyYieldPercents and the like: "+0.50 food per extra happiness"
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		if (kTrait.getHappyYieldPercent(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HAPPY_PERCENT", formatHundredths(kTrait.getHappyYieldPercent(iI)).GetCString(), GC.getYieldInfo((YieldTypes)iI).getChar()));
+		}
+	}
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		if (kTrait.getHappyCommercePercent(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HAPPY_PERCENT", formatHundredths(kTrait.getHappyCommercePercent(iI)).GetCString(), GC.getCommerceInfo((CommerceTypes)iI).getChar()));
+		}
+	}
+
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		if (kTrait.getHealthyYieldPercent(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HEALTHY_PERCENT", formatHundredths(kTrait.getHealthyYieldPercent(iI)).GetCString(), GC.getYieldInfo((YieldTypes)iI).getChar()));
+		}
+	}
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		if (kTrait.getHealthyCommercePercent(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HEALTHY_PERCENT", formatHundredths(kTrait.getHealthyCommercePercent(iI)).GetCString(), GC.getCommerceInfo((CommerceTypes)iI).getChar()));
+		}
+	}
+}
+
 void CvGameTextMgr::parseTraitUniqueImprovements(CvWStringBuffer& szHelpString, TraitTypes eTrait)
 {
 	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
@@ -4734,6 +4870,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		parseTraitYieldEffects(szHelpString, eTrait);
 		parseTraitUniqueElements(szHelpString, eTrait);
 		parseTraitMiseryAndLakeEffects(szHelpString, eTrait);
+		parseTraitUnitAndCityEffects(szHelpString, eTrait);
 		parseTraitUniqueImprovements(szHelpString, eTrait);
 		parseTraitFeatureAndObsolescenceEffects(szHelpString, eTrait, eCivilization);
 
@@ -5806,6 +5943,13 @@ void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, Prom
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_PILLAGE_HEAL", GC.getPromotionInfo(ePromotion).getPillageHealPercent()));
+	}
+
+	// iPillageExperience (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getPillageExperience() > 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_PILLAGE_EXPERIENCE", GC.getPromotionInfo(ePromotion).getPillageExperience()));
 	}
 
 	// iOtherReligionCombatPercent, iStateReligionCityAttack (added by this mod)
@@ -15272,7 +15416,8 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 	int iAngryCommerce = city.getAngryCommerce(eCommerceType);
 	if (0 != iAngryCommerce)
 	{
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_ANGRY_COMMERCE", iAngryCommerce, info.getChar()));
+		// The same member keeps the change per extra happiness (HappyCommercePercents)
+		szBuffer.append(gDLL->getText(((city.angryPopulation() > 0) ? "TXT_KEY_MISC_HELP_ANGRY_COMMERCE" : "TXT_KEY_MISC_HELP_HAPPY_COMMERCE"), iAngryCommerce, info.getChar()));
 		szBuffer.append(NEWLINE);
 		iBaseCommerceRate += 100 * iAngryCommerce;
 	}
@@ -15280,7 +15425,7 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 	int iUnhealthyCommerce = city.getUnhealthyCommerce(eCommerceType);
 	if (0 != iUnhealthyCommerce)
 	{
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_UNHEALTHY_COMMERCE", iUnhealthyCommerce, info.getChar()));
+		szBuffer.append(gDLL->getText(((city.healthRate() < 0) ? "TXT_KEY_MISC_HELP_UNHEALTHY_COMMERCE" : "TXT_KEY_MISC_HELP_HEALTHY_COMMERCE"), iUnhealthyCommerce, info.getChar()));
 		szBuffer.append(NEWLINE);
 		iBaseCommerceRate += 100 * iUnhealthyCommerce;
 	}
@@ -15502,13 +15647,14 @@ void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity&
 
 	if (iAngry != 0)
 	{
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_ANGRY", iAngry, info.getChar()));
+		// The same member keeps the change per extra happiness (HappyYieldPercents)
+		szBuffer.append(gDLL->getText(((city.angryPopulation() > 0) ? "TXT_KEY_MISC_HELP_YIELD_ANGRY" : "TXT_KEY_MISC_HELP_YIELD_HAPPY"), iAngry, info.getChar()));
 		szBuffer.append(NEWLINE);
 	}
 
 	if (iUnhealthy != 0)
 	{
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_UNHEALTHY", iUnhealthy, info.getChar()));
+		szBuffer.append(gDLL->getText(((city.healthRate() < 0) ? "TXT_KEY_MISC_HELP_YIELD_UNHEALTHY" : "TXT_KEY_MISC_HELP_YIELD_HEALTHY"), iUnhealthy, info.getChar()));
 		szBuffer.append(NEWLINE);
 	}
 

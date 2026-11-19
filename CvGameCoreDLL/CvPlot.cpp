@@ -6729,6 +6729,13 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 		if (eBonus != NO_BONUS)
 		{
 			iYield += GC.getImprovementInfo(eImprovement).getImprovementBonusYield(eBonus, eYield);
+
+			// Trait ImprovedBonusYieldChanges (added by this mod): the improvement trades the bonus (the mine of a gold
+			// bonus, not a farm on it)
+			if (GC.getImprovementInfo(eImprovement).isImprovementBonusTrade(eBonus))
+			{
+				iYield += GET_PLAYER(ePlayer).getTraitImprovedBonusYieldChange(eBonus, eYield);
+			}
 		}
 
 		// Trait ImprovementYieldChanges (added by this mod)

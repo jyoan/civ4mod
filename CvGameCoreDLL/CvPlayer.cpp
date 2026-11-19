@@ -2986,6 +2986,7 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 		pLoopCity->updateFeatureHealth();
 		pLoopCity->updateReligionCommerce();
 		pLoopCity->updateCommerce();	// (Global)WorldWonderCommerceChanges
+		pLoopCity->updateMiseryChanges();	// AngryYieldChanges, HappyYieldPercents and the like
 	}
 
 	// Maintenance of the overseas cities (iOverseasMaintenanceModifier) and trade routes with distant cities
@@ -8584,6 +8585,99 @@ int CvPlayer::getMaxNationalWondersPerCity() const
 bool CvPlayer::isHumanCanBeVassal() const
 {
 	return hasTraitFlag(&CvTraitInfo::isHumanCanBeVassal);
+}
+
+// iMaxExperienceAfterUpgrade of the traits (added by this mod): the experience a unit keeps when upgraded (CvUnit::upgrade),
+// MAX_EXPERIENCE_AFTER_UPGRADE replaced by the traits. -1 (keeps all) wins, then the largest value; 0 = not set
+int CvPlayer::getMaxExperienceAfterUpgrade() const
+{
+	int iMax = 0;
+	int iValue;
+	int iI;
+
+	if (getLeaderType() != NO_LEADER)
+	{
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (hasTrait((TraitTypes)iI))
+			{
+				iValue = GC.getTraitInfo((TraitTypes)iI).getMaxExperienceAfterUpgrade();
+
+				if (iValue < 0)
+				{
+					return -1;
+				}
+
+				iMax = std::max(iMax, iValue);
+			}
+		}
+	}
+
+	if (iMax > 0)
+	{
+		return iMax;
+	}
+
+	return GC.getDefineINT("MAX_EXPERIENCE_AFTER_UPGRADE");
+}
+
+// iExpOutsideBordersChange of the traits (added by this mod): see CvUnit::changeExperience
+int CvPlayer::getExpOutsideBordersChange() const
+{
+	return sumTraitValues(&CvTraitInfo::getExpOutsideBordersChange);
+}
+
+// iWeLoveTheKingChance of the traits (added by this mod): see CvCity::doTurn
+int CvPlayer::getWeLoveTheKingChance() const
+{
+	return range(sumTraitValues(&CvTraitInfo::getWeLoveTheKingChance), 0, 100);
+}
+
+// SpecialistSlotChanges of the traits (added by this mod): -1 if a trait makes the specialist unlimited, else the slots the
+// traits add in every city (CvCity::getMaxSpecialistCount, isSpecialistValid)
+int CvPlayer::getTraitSpecialistSlotChange(SpecialistTypes eSpecialist) const
+{
+	int iSlots = 0;
+	int iValue;
+	int iI;
+
+	if (getLeaderType() != NO_LEADER)
+	{
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (hasTrait((TraitTypes)iI))
+			{
+				iValue = GC.getTraitInfo((TraitTypes)iI).getSpecialistSlotChange(eSpecialist);
+
+				if (iValue < 0)
+				{
+					return -1;
+				}
+
+				iSlots += iValue;
+			}
+		}
+	}
+
+	return iSlots;
+}
+
+// UnitHurrys of the traits (added by this mod): the player can hurry units this way without the civic (CvCity::isUnitHurry)
+bool CvPlayer::isUnitHurry(HurryTypes eHurry) const
+{
+	return hasTraitFlag(&CvTraitInfo::isUnitHurry, eHurry);
+}
+
+// HurryUnitExperiences of the traits (added by this mod): see CvCity::popOrder
+int CvPlayer::getHurryUnitExperience(HurryTypes eHurry) const
+{
+	return sumTraitValues(&CvTraitInfo::getHurryUnitExperience, eHurry);
+}
+
+// ImprovedBonusYieldChanges of the traits (added by this mod): see CvPlot::calculateImprovementYieldChange
+int CvPlayer::getTraitImprovedBonusYieldChange(BonusTypes eBonus, YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getImprovedBonusYieldChange, eBonus, eYield);
 }
 
 // bConquestStateReligion of the traits (added by this mod): see acquireCity
@@ -14567,7 +14661,8 @@ int CvPlayer::getSpecialistValidCount(SpecialistTypes eIndex) const
 
 bool CvPlayer::isSpecialistValid(SpecialistTypes eIndex) const
 {
-	return (getSpecialistValidCount(eIndex) > 0);
+	// SpecialistSlotChanges of the traits (added by this mod): -1 makes the specialist unlimited, as the civics
+	return (getSpecialistValidCount(eIndex) > 0) || (getTraitSpecialistSlotChange(eIndex) < 0);
 }
 
 

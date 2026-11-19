@@ -6,6 +6,10 @@
 // These are simple enough to be exposed directly - no wrappers
 //
 
+// The getters of CvTraitInfo added on 2026-11-18 and later, in CyInfoInterface4.cpp (added by this mod): more definitions
+// in this file overflow MSVC 7.1 (fatal error C1204)
+void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInfoBase> >& kTraitInfo);
+
 void CyInfoPythonInterface3()
 {
 	OutputDebugString("Python Extension Module - CyInfoPythonInterface3\n");
@@ -276,7 +280,8 @@ void CyInfoPythonInterface3()
 		.def("getYieldProduced", &CvCorporationInfo::getYieldProduced, "int (int i)")
 		;
 
-	python::class_<CvTraitInfo, python::bases<CvInfoBase> >("CvTraitInfo")
+	python::class_<CvTraitInfo, python::bases<CvInfoBase> > kTraitInfo("CvTraitInfo");
+	kTraitInfo
 		.def("getHealth", &CvTraitInfo::getHealth, "int ()")
 		.def("getHappiness", &CvTraitInfo::getHappiness, "int ()")
 		.def("getMaxAnarchy", &CvTraitInfo::getMaxAnarchy, "int ()")
@@ -446,6 +451,9 @@ void CyInfoPythonInterface3()
 		.def("isFreePromotionSetUnit", &CvTraitInfo::isFreePromotionSetUnit, "bool (int iSet, int iUnit)")
 		.def("isUnitFreePromotion", &CvTraitInfo::isUnitFreePromotion, "bool (int iUnit, int iPromotion)")
 		;
+
+	// The rest of CvTraitInfo in another function (added by this mod): more in this function overflows MSVC 7.1 (C1204)
+	CyInfoPythonInterfaceTrait2(kTraitInfo);
 
 	// CvWorldInfo
 	python::class_<CvWorldInfo, python::bases<CvInfoBase> >("CvWorldInfo")

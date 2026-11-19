@@ -1749,6 +1749,7 @@ m_bRiverNavigation(false),
 m_bFreeEmbark(false),
 m_bPillageNoMoveCost(false),
 m_iPillageHealPercent(0),
+m_iPillageExperience(0),
 m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
@@ -2348,6 +2349,12 @@ int CvPromotionInfo::getPillageHealPercent() const
 	return m_iPillageHealPercent;
 }
 
+// iPillageExperience (added by this mod): each pillage of an improvement gives this experience (added up over the promotions)
+int CvPromotionInfo::getPillageExperience() const
+{
+	return m_iPillageExperience;
+}
+
 const TCHAR* CvPromotionInfo::getSound() const										
 {
 	return m_szSound;
@@ -2768,13 +2775,20 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 		stream->Read(&m_bPillageNoMoveCost);
 		stream->Read(&m_iPillageHealPercent);
 	}
+
+	// uiFlag < 18: cache written before iPillageExperience existed
+	m_iPillageExperience = 0;
+	if (uiFlag > 17)
+	{
+		stream->Read(&m_iPillageExperience);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 17;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent (added by this mod)
+	uint uiFlag = 18;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2904,6 +2918,7 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_bFreeEmbark);
 	stream->Write(m_bPillageNoMoveCost);
 	stream->Write(m_iPillageHealPercent);
+	stream->Write(m_iPillageExperience);
 }
 
 // Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
@@ -3060,6 +3075,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bFreeEmbark, "bFreeEmbark");
 	pXML->GetChildXmlValByName(&m_bPillageNoMoveCost, "bPillageNoMoveCost");
 	pXML->GetChildXmlValByName(&m_iPillageHealPercent, "iPillageHealPercent");
+	pXML->GetChildXmlValByName(&m_iPillageExperience, "iPillageExperience");
 
 	pXML->GetChildXmlValByName(&m_iRiverCrossingDamagePercent, "iRiverCrossingDamagePercent");
 	pXML->GetChildXmlValByName(&m_bNoDamagePenalty, "bNoDamagePenalty");
@@ -20228,6 +20244,14 @@ m_pabNoTechCivic(NULL),
 m_iMaxNationalWondersPerCity(0),
 m_iMaxNationalWondersPerCityForOCC(0),
 m_bHumanCanBeVassal(false),
+m_iMaxExperienceAfterUpgrade(0),
+m_iExpOutsideBordersChange(0),
+m_iWeLoveTheKingChance(0),
+m_pabUnitHurry(NULL),
+m_paiHappyYieldPercent(NULL),
+m_paiHappyCommercePercent(NULL),
+m_paiHealthyYieldPercent(NULL),
+m_paiHealthyCommercePercent(NULL),
 m_bNewCityStateReligion(false),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
@@ -20305,6 +20329,11 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabNoTechCivic);
 	SAFE_DELETE_ARRAY(m_pabConquestReligionBuilding);
 	SAFE_DELETE_ARRAY(m_pabWonderHurry);
+	SAFE_DELETE_ARRAY(m_pabUnitHurry);
+	SAFE_DELETE_ARRAY(m_paiHappyYieldPercent);
+	SAFE_DELETE_ARRAY(m_paiHappyCommercePercent);
+	SAFE_DELETE_ARRAY(m_paiHealthyYieldPercent);
+	SAFE_DELETE_ARRAY(m_paiHealthyCommercePercent);
 	SAFE_DELETE_ARRAY(m_paiCommercePerReligion);
 	SAFE_DELETE_ARRAY(m_paiWorldWonderCommerceChange);
 	SAFE_DELETE_ARRAY(m_paiGlobalWorldWonderCommerceChange);
@@ -20964,6 +20993,113 @@ int CvTraitInfo::getMaxNationalWondersPerCityForOCC() const
 bool CvTraitInfo::isHumanCanBeVassal() const
 {
 	return m_bHumanCanBeVassal;
+}
+
+// iMaxExperienceAfterUpgrade (added by this mod): replaces MAX_EXPERIENCE_AFTER_UPGRADE, see
+// CvPlayer::getMaxExperienceAfterUpgrade
+int CvTraitInfo::getMaxExperienceAfterUpgrade() const
+{
+	return m_iMaxExperienceAfterUpgrade;
+}
+
+// iExpOutsideBordersChange (added by this mod): experience added to the combat experience outside our borders
+int CvTraitInfo::getExpOutsideBordersChange() const
+{
+	return m_iExpOutsideBordersChange;
+}
+
+// iWeLoveTheKingChance (added by this mod): % chance each turn that a city able to celebrate celebrates
+int CvTraitInfo::getWeLoveTheKingChance() const
+{
+	return m_iWeLoveTheKingChance;
+}
+
+// SpecialistSlotChanges (added by this mod): slots of the specialist in every city, -1 (any negative value) for no limit
+int CvTraitInfo::getSpecialistSlotChange(int iSpecialist) const
+{
+	if (iSpecialist < 0 || iSpecialist >= (int)m_aiSpecialistSlotChange.size())
+	{
+		return 0;
+	}
+	return m_aiSpecialistSlotChange[iSpecialist];
+}
+
+// UnitHurrys (added by this mod): the player can hurry units this way without the civic (CvCity::isUnitHurry)
+bool CvTraitInfo::isUnitHurry(int iHurry) const
+{
+	FAssertMsg(iHurry < GC.getNumHurryInfos(), "Index out of bounds");
+	FAssertMsg(iHurry > -1, "Index out of bounds");
+	return m_pabUnitHurry ? m_pabUnitHurry[iHurry] : false;
+}
+
+// HurryUnitExperiences (added by this mod): experience of a unit hurried this way
+int CvTraitInfo::getHurryUnitExperience(int iHurry) const
+{
+	if (iHurry < 0 || iHurry >= (int)m_aiHurryUnitExperience.size())
+	{
+		return 0;
+	}
+	return m_aiHurryUnitExperience[iHurry];
+}
+
+// ImprovedBonusYieldChanges (added by this mod): yields of a plot with the bonus and an improvement that trades it
+int CvTraitInfo::getImprovedBonusYieldChange(int iBonus, int iYield) const
+{
+	if ((iBonus < 0) || (iBonus >= (int)m_aaiImprovedBonusYieldChange.size()) || (iYield < 0) || (iYield >= NUM_YIELD_TYPES))
+	{
+		return 0;
+	}
+	return m_aaiImprovedBonusYieldChange[iBonus][iYield];
+}
+
+// HappyYieldPercents, HappyCommercePercents, HealthyYieldPercents and HealthyCommercePercents (added by this mod): the
+// yield or commerce per extra happiness (health) in 1/100, see CvCity::updateMiseryChanges
+int CvTraitInfo::getHappyYieldPercent(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiHappyYieldPercent ? m_paiHappyYieldPercent[i] : 0;
+}
+
+int* CvTraitInfo::getHappyYieldPercentArray() const
+{
+	return m_paiHappyYieldPercent;
+}
+
+int CvTraitInfo::getHappyCommercePercent(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiHappyCommercePercent ? m_paiHappyCommercePercent[i] : 0;
+}
+
+int* CvTraitInfo::getHappyCommercePercentArray() const
+{
+	return m_paiHappyCommercePercent;
+}
+
+int CvTraitInfo::getHealthyYieldPercent(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiHealthyYieldPercent ? m_paiHealthyYieldPercent[i] : 0;
+}
+
+int* CvTraitInfo::getHealthyYieldPercentArray() const
+{
+	return m_paiHealthyYieldPercent;
+}
+
+int CvTraitInfo::getHealthyCommercePercent(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiHealthyCommercePercent ? m_paiHealthyCommercePercent[i] : 0;
+}
+
+int* CvTraitInfo::getHealthyCommercePercentArray() const
+{
+	return m_paiHealthyCommercePercent;
 }
 
 const TCHAR* CvTraitInfo::getShortDescription() const
@@ -22293,6 +22429,26 @@ void CvTraitInfo::readPlotYieldChanges(CvXMLLoadUtility* pXML)
 	readCommerceChanges(pXML, "UnhealthyCommerceChanges", &m_paiUnhealthyCommerceChange);
 }
 
+// The part of read() for the tags of 2026-11-18: upgrades, combat experience, celebration, specialist slots, hurry, improved
+// bonuses and the changes per extra happiness and health (added by this mod)
+void CvTraitInfo::readUnitAndCityValues(CvXMLLoadUtility* pXML)
+{
+	pXML->GetChildXmlValByName(&m_iMaxExperienceAfterUpgrade, "iMaxExperienceAfterUpgrade");
+	pXML->GetChildXmlValByName(&m_iExpOutsideBordersChange, "iExpOutsideBordersChange");
+	pXML->GetChildXmlValByName(&m_iWeLoveTheKingChance, "iWeLoveTheKingChance");
+	// The specialists are loaded before the traits
+	readTypeValueList(pXML, "SpecialistSlotChanges", "SpecialistSlotChange", "SpecialistType", "iSlots", GC.getNumSpecialistInfos(), m_aiSpecialistSlotChange);
+	// The hurries are loaded after the traits: readPass3() finds the types
+	readTypeList(pXML, "UnitHurrys", m_aszUnitHurryTypes);
+	readTypeStringValueList(pXML, "HurryUnitExperiences", "HurryUnitExperience", "HurryType", "iExperience", m_aszHurryUnitExperienceTypes, m_aiHurryUnitExperienceValues);
+	// Same format as BonusYieldChanges. Resolved in readPass3()
+	readYieldChanges(pXML, "ImprovedBonusYieldChanges", "ImprovedBonusYieldChange", "BonusType", "Yields", m_aszImprovedBonusYieldChangeTypes, m_aaiImprovedBonusYieldChangeValues);
+	readYieldChanges(pXML, "HappyYieldPercents", &m_paiHappyYieldPercent);
+	readCommerceChanges(pXML, "HappyCommercePercents", &m_paiHappyCommercePercent);
+	readYieldChanges(pXML, "HealthyYieldPercents", &m_paiHealthyYieldPercent);
+	readCommerceChanges(pXML, "HealthyCommercePercents", &m_paiHealthyCommercePercent);
+}
+
 bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 {
 	CvString szTextVal;
@@ -22326,6 +22482,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	readConditionalFreeTraits(pXML);
 	readFreePromotionSets(pXML);
 	readPlotYieldChanges(pXML);
+	readUnitAndCityValues(pXML);
 
 	return true;
 }
@@ -22508,6 +22665,32 @@ bool CvTraitInfo::readPass3()
 	m_aszConquestReligionBuildingTypes.clear();
 	resolveTypeList("WonderHurrys", m_aszWonderHurryTypes, GC.getNumHurryInfos(), &m_pabWonderHurry);
 	m_aszWonderHurryTypes.clear();
+	resolveTypeList("UnitHurrys", m_aszUnitHurryTypes, GC.getNumHurryInfos(), &m_pabUnitHurry);
+	m_aszUnitHurryTypes.clear();
+
+	// HurryUnitExperiences (added by this mod)
+	m_aiHurryUnitExperience.clear();
+	for (i = 0; i < (int)m_aszHurryUnitExperienceTypes.size(); i++)
+	{
+		int iHurry = GC.getInfoTypeForString(m_aszHurryUnitExperienceTypes[i].GetCString(), true);
+		if (iHurry < 0 || iHurry >= GC.getNumHurryInfos())
+		{
+			sprintf(szMessage, "Tag: %s in HurryUnitExperiences of CIV4TraitInfos.xml was incorrect", m_aszHurryUnitExperienceTypes[i].GetCString());
+			gDLL->MessageBox(szMessage, "XML Error");
+			continue;
+		}
+		if (m_aiHurryUnitExperience.empty())
+		{
+			m_aiHurryUnitExperience.resize(GC.getNumHurryInfos(), 0);
+		}
+		m_aiHurryUnitExperience[iHurry] += m_aiHurryUnitExperienceValues[i];
+	}
+	m_aszHurryUnitExperienceTypes.clear();
+	m_aiHurryUnitExperienceValues.clear();
+
+	resolveYieldChanges("ImprovedBonusYieldChanges", m_aszImprovedBonusYieldChangeTypes, m_aaiImprovedBonusYieldChangeValues, GC.getNumBonusInfos(), m_aaiImprovedBonusYieldChange);
+	m_aszImprovedBonusYieldChangeTypes.clear();
+	m_aaiImprovedBonusYieldChangeValues.clear();
 	resolveTypeList("NoObsoleteBuildingClasses", m_aszNoObsoleteBuildingClassTypes, GC.getNumBuildingClassInfos(), &m_pabNoObsoleteBuildingClass);
 	m_aszNoObsoleteBuildingClassTypes.clear();
 	resolveTypeList("NoObsoleteSpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabNoObsoleteSpecialBuilding);

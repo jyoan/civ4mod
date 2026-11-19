@@ -538,6 +538,7 @@ public:
 	bool isFreeEmbark() const;			// Exposed to Python (added by this mod)
 	bool isPillageNoMoveCost() const;			// Exposed to Python (added by this mod)
 	int getPillageHealPercent() const;			// Exposed to Python (added by this mod)
+	int getPillageExperience() const;			// Exposed to Python (added by this mod)
 	// Python hooks (added by this mod): Python expressions that EntryPoints/CvHookInterface.py evaluates
 	const TCHAR* getPyOnCombatWin() const;	// Exposed to Python
 	const TCHAR* getPyOnCombatLoss() const;	// Exposed to Python
@@ -652,6 +653,7 @@ protected:
 	bool m_bFreeEmbark;	// added by this mod
 	bool m_bPillageNoMoveCost;	// added by this mod
 	int m_iPillageHealPercent;	// added by this mod
+	int m_iPillageExperience;	// added by this mod
 	CvString m_szPyOnCombatWin;	// added by this mod
 	CvString m_szPyOnCombatLoss;	// added by this mod
 	CvString m_szPyOnBeginTurn;	// added by this mod
@@ -4923,6 +4925,22 @@ public:
 	int getMaxNationalWondersPerCity() const;	// Exposed to Python (added by this mod)
 	int getMaxNationalWondersPerCityForOCC() const;	// Exposed to Python (added by this mod)
 	bool isHumanCanBeVassal() const;	// Exposed to Python (added by this mod)
+	// Batch of 2026-11-18 (added by this mod)
+	int getMaxExperienceAfterUpgrade() const;	// Exposed to Python: 0 = not set (MAX_EXPERIENCE_AFTER_UPGRADE), -1 = keeps all
+	int getExpOutsideBordersChange() const;		// Exposed to Python
+	int getWeLoveTheKingChance() const;			// Exposed to Python
+	int getSpecialistSlotChange(int iSpecialist) const;	// Exposed to Python: -1 (negative) = no limit
+	bool isUnitHurry(int iHurry) const;			// Exposed to Python
+	int getHurryUnitExperience(int iHurry) const;	// Exposed to Python
+	int getImprovedBonusYieldChange(int iBonus, int iYield) const;	// Exposed to Python
+	int getHappyYieldPercent(int i) const;		// Exposed to Python
+	int* getHappyYieldPercentArray() const;
+	int getHappyCommercePercent(int i) const;	// Exposed to Python
+	int* getHappyCommercePercentArray() const;
+	int getHealthyYieldPercent(int i) const;	// Exposed to Python
+	int* getHealthyYieldPercentArray() const;
+	int getHealthyCommercePercent(int i) const;	// Exposed to Python
+	int* getHealthyCommercePercentArray() const;
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -5025,6 +5043,7 @@ public:
 	void readConditionalFreeTraits(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readFreePromotionSets(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readPlotYieldChanges(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readUnitAndCityValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	bool readPass3();
 	void readUniqueUnits();							// added by this mod: after the units are loaded
 
@@ -5144,6 +5163,22 @@ protected:
 	int m_iMaxNationalWondersPerCity;	// added by this mod: 0 = not set, -1 = no limit
 	int m_iMaxNationalWondersPerCityForOCC;	// added by this mod: 0 = not set, -1 = no limit
 	bool m_bHumanCanBeVassal;	// added by this mod
+	int m_iMaxExperienceAfterUpgrade;	// added by this mod: 0 = not set, -1 = keeps all
+	int m_iExpOutsideBordersChange;	// added by this mod
+	int m_iWeLoveTheKingChance;	// added by this mod
+	std::vector<int> m_aiSpecialistSlotChange;	// added by this mod: [specialist], empty when not set
+	bool* m_pabUnitHurry;	// added by this mod: UnitHurrys, [hurry], NULL when not set
+	std::vector<CvString> m_aszUnitHurryTypes;	// read() keeps the types as strings until readPass3() (hurries are loaded after traits)
+	std::vector<int> m_aiHurryUnitExperience;	// added by this mod: [hurry], empty when not set
+	std::vector<CvString> m_aszHurryUnitExperienceTypes;	// as strings until readPass3()
+	std::vector<int> m_aiHurryUnitExperienceValues;
+	std::vector< std::vector<int> > m_aaiImprovedBonusYieldChange;	// added by this mod: [bonus][yield], empty when not set
+	std::vector<CvString> m_aszImprovedBonusYieldChangeTypes;	// as strings until readPass3() (bonuses are loaded after traits)
+	std::vector< std::vector<int> > m_aaiImprovedBonusYieldChangeValues;
+	int* m_paiHappyYieldPercent;	// added by this mod: [yield]
+	int* m_paiHappyCommercePercent;	// added by this mod: [commerce]
+	int* m_paiHealthyYieldPercent;	// added by this mod: [yield]
+	int* m_paiHealthyCommercePercent;	// added by this mod: [commerce]
 	bool m_bNewCityStateReligion;
 
 	CvString m_szShortDescription;

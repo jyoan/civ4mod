@@ -179,6 +179,7 @@ public:
 	void parseTraitYieldEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitUniqueElements(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitMiseryAndLakeEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitUnitAndCityEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitUniqueImprovements(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitFeatureAndObsolescenceEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait, CivilizationTypes eCivilization);	// added by this mod
 	void buildMiseryChangesString(CvWStringBuffer& szBuffer, const int* piAngryYield, const int* piAngryCommerce, const int* piUnhealthyYield, const int* piUnhealthyCommerce, bool bIndent);	// added by this mod
