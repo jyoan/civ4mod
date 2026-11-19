@@ -1663,6 +1663,11 @@
 				<iYield>1</iYield>
 				<iYield>0</iYield>
 			</LakePlotYieldChanges>
+			<LakePlotYieldChangesPerEra>
+				<iYield>0</iYield>
+				<iYield>0</iYield>
+				<iYield>1</iYield>
+			</LakePlotYieldChangesPerEra>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 		</TraitInfo>
@@ -2061,16 +2066,45 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<RevealBonuses>
+				<BonusType>BONUS_OIL</BonusType>
+			</RevealBonuses>
 			<StartBiasTerrains>
 				<StartBiasTerrain>
 					<TerrainType>TERRAIN_DESERT</TerrainType>
 					<iStartBias>10</iStartBias>
 				</StartBiasTerrain>
 			</StartBiasTerrains>
+			<StartBiasBonuses>
+				<StartBiasBonus>
+					<BonusType>BONUS_OIL</BonusType>
+					<iStartBias>50</iStartBias>
+				</StartBiasBonus>
+			</StartBiasBonuses>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>
 			<CommerceModifiers/>
+			<FeatureYieldChanges>
+				<FeatureYieldChange>
+					<FeatureType>FEATURE_OASIS</FeatureType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+						<iYield>1</iYield>
+					</Yields>
+				</FeatureYieldChange>
+			</FeatureYieldChanges>
+			<BonusYieldChanges>
+				<BonusYieldChange>
+					<BonusType>BONUS_OIL</BonusType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+						<iYield>2</iYield>
+					</Yields>
+				</BonusYieldChange>
+			</BonusYieldChanges>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
@@ -2131,12 +2165,22 @@
 				<TerrainYieldChange>
 					<TerrainType>TERRAIN_PEAK</TerrainType>
 					<Yields>
-						<iYield>1</iYield>
+						<iYield>2</iYield>
 						<iYield>1</iYield>
 						<iYield>0</iYield>
 					</Yields>
 				</TerrainYieldChange>
 			</TerrainYieldChanges>
+			<TerrainYieldChangesPerEra>
+				<TerrainYieldChangePerEra>
+					<TerrainType>TERRAIN_PEAK</TerrainType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+						<iYield>1</iYield>
+					</Yields>
+				</TerrainYieldChangePerEra>
+			</TerrainYieldChangesPerEra>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 		</TraitInfo>
@@ -3580,9 +3624,10 @@
 			</FreePromotionSets>
 		</TraitInfo>
 		<TraitInfo>
-			<Type>TRAIT_ADWA</Type>
-			<Description>TXT_KEY_TRAIT_ADWA</Description>
-			<ShortDescription>TXT_KEY_TRAIT_ADWA_SHORT</ShortDescription>
+			<Type>TRAIT_HIGHLAND_KINGDOM</Type>
+			<Description>TXT_KEY_TRAIT_HIGHLAND_KINGDOM</Description>
+			<ShortDescription>TXT_KEY_TRAIT_HIGHLAND_KINGDOM_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_HIGHLAND_KINGDOM_HELP</Help>
 			<iHealth>0</iHealth>
 			<iHappiness>0</iHappiness>
 			<iMaxAnarchy>-1</iMaxAnarchy>
@@ -3594,61 +3639,13 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<iExpInBorderModifier>50</iExpInBorderModifier>
+			<PyOnCityFounded>makeCityPlotHills(pCity, 'TERRAIN_PLAINS')</PyOnCityFounded>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>
 			<CommerceModifiers/>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
-			<FreePromotionSets>
-				<FreePromotionSet>
-					<FreePromotions>
-						<FreePromotion>
-							<PromotionType>PROMOTION_ADWA</PromotionType>
-							<bFreePromotion>1</bFreePromotion>
-						</FreePromotion>
-					</FreePromotions>
-					<FreePromotionUnitCombats>
-						<FreePromotionUnitCombat>
-							<UnitCombatType>UNITCOMBAT_RECON</UnitCombatType>
-							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
-						</FreePromotionUnitCombat>
-						<FreePromotionUnitCombat>
-							<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
-							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
-						</FreePromotionUnitCombat>
-						<FreePromotionUnitCombat>
-							<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
-							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
-						</FreePromotionUnitCombat>
-						<FreePromotionUnitCombat>
-							<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
-							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
-						</FreePromotionUnitCombat>
-						<FreePromotionUnitCombat>
-							<UnitCombatType>UNITCOMBAT_SIEGE</UnitCombatType>
-							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
-						</FreePromotionUnitCombat>
-						<FreePromotionUnitCombat>
-							<UnitCombatType>UNITCOMBAT_GUN</UnitCombatType>
-							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
-						</FreePromotionUnitCombat>
-						<FreePromotionUnitCombat>
-							<UnitCombatType>UNITCOMBAT_ARMOR</UnitCombatType>
-							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
-						</FreePromotionUnitCombat>
-						<FreePromotionUnitCombat>
-							<UnitCombatType>UNITCOMBAT_HELICOPTER</UnitCombatType>
-							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
-						</FreePromotionUnitCombat>
-						<FreePromotionUnitCombat>
-							<UnitCombatType>UNITCOMBAT_NAVAL</UnitCombatType>
-							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
-						</FreePromotionUnitCombat>
-					</FreePromotionUnitCombats>
-				</FreePromotionSet>
-			</FreePromotionSets>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_AMABUTHO</Type>
@@ -4210,6 +4207,125 @@
 					<iExperience>2</iExperience>
 				</Hurry>
 			</Hurrys>
+			<ExtraYieldThresholds/>
+			<TradeYieldModifiers/>
+			<CommerceChanges/>
+			<CommerceModifiers/>
+			<FreePromotions/>
+			<FreePromotionUnitCombats/>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_DRUID_FOREST</Type>
+			<Description>TXT_KEY_TRAIT_DRUID_FOREST</Description>
+			<ShortDescription>TXT_KEY_TRAIT_DRUID_FOREST_SHORT</ShortDescription>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iMaxAnarchy>-1</iMaxAnarchy>
+			<iUpkeepModifier>0</iUpkeepModifier>
+			<iLevelExperienceModifier>0</iLevelExperienceModifier>
+			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
+			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
+			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
+			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
+			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
+			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<FeatureHappinessChanges>
+				<FeatureHappinessChange>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<iHappinessChange>1</iHappinessChange>
+				</FeatureHappinessChange>
+			</FeatureHappinessChanges>
+			<FeatureHealChanges>
+				<FeatureHealChange>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<iHealChange>20</iHealChange>
+				</FeatureHealChange>
+			</FeatureHealChanges>
+			<StartBiasFeatures>
+				<StartBiasFeature>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<iStartBias>10</iStartBias>
+				</StartBiasFeature>
+			</StartBiasFeatures>
+			<ExtraYieldThresholds/>
+			<TradeYieldModifiers/>
+			<CommerceChanges/>
+			<CommerceModifiers/>
+			<FreePromotions/>
+			<FreePromotionUnitCombats/>
+			<FreePromotionSets>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_DRUID_FOREST</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<FreePromotionUnitCombats>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_RECON</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_SIEGE</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_GUN</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_ARMOR</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_HELICOPTER</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+					</FreePromotionUnitCombats>
+				</FreePromotionSet>
+			</FreePromotionSets>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_QHAPAQ_NAN</Type>
+			<Description>TXT_KEY_TRAIT_QHAPAQ_NAN</Description>
+			<ShortDescription>TXT_KEY_TRAIT_QHAPAQ_NAN_SHORT</ShortDescription>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iMaxAnarchy>-1</iMaxAnarchy>
+			<iUpkeepModifier>0</iUpkeepModifier>
+			<iLevelExperienceModifier>0</iLevelExperienceModifier>
+			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
+			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
+			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
+			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
+			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
+			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<TerrainTrades>
+				<TerrainTrade>
+					<TerrainType>TERRAIN_HILL</TerrainType>
+					<bTerrainTrade>1</bTerrainTrade>
+				</TerrainTrade>
+				<TerrainTrade>
+					<TerrainType>TERRAIN_PEAK</TerrainType>
+					<bTerrainTrade>1</bTerrainTrade>
+				</TerrainTrade>
+			</TerrainTrades>
+			<PassableTerrainsInBorders>
+				<TerrainType>TERRAIN_PEAK</TerrainType>
+			</PassableTerrainsInBorders>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

@@ -60,7 +60,7 @@ BtS の効果はそのままにして足す。
 | `iOccupationTimeModifier`、`iOverseasMaintenanceModifier` | 帝国主義志向 |
 | `FreePromotionSets` + `bNoDamagePenalty` の昇進 | 日本の武士道志向 |
 | `bInlandCanals` | メフメド２世 |
-| `LakePlotYieldChanges` | アステカ |
+| `LakePlotYieldChanges`、`LakePlotYieldChangesPerEra` | アステカ |
 | `iEnslavementChance` の昇進 | モンテスマ |
 | `iAnarchyGoldenAgePercent`、`iCombatPercent` | フランス |
 | `bRiverNavigation`・`bFreeEmbark` の昇進 | ヴァイキング |
@@ -68,9 +68,9 @@ BtS の効果はそのままにして足す。
 | `Hurrys`（`bWondersOnly`・`bIgnoreCostModifier`） | 始皇帝 |
 | `FeatureRoutes`・`MaintainFeatures` の森 | アメリカ先住民 |
 | `FeatureRoutes`・`MaintainFeatures`・`FeatureHealthChanges`・`FeatureYieldChanges` のジャングル | クメール |
-| 昇進の `TerrainDoubleMoves`・`TerrainDefenses` の砂漠、`StartBiasTerrains` の砂漠 | アラブ |
+| 昇進の `TerrainDoubleMoves`・`TerrainDefenses` の砂漠、`StartBiasTerrains` の砂漠、石油の `RevealBonuses`・`StartBiasBonuses`・`BonusYieldChanges`、オアシスの `FeatureYieldChanges` | アラブ |
 | `iHappinessPerReligion`、`CommercePerReligion` | インド |
-| `TerrainYieldChanges`・`StartBiasTerrains` の丘陵・山岳 | インカ |
+| `TerrainYieldChanges`・`StartBiasTerrains` の丘陵・山岳、`TerrainYieldChangesPerEra` の山岳 | インカ |
 | `iCorporationSpreadChange`、幹部への `bRivalTerritory` の昇進、`PyOnCorporationFounded` | オランダ |
 | `PrereqTech` + `YieldModifiers` の生産 | ドイツ |
 | `FeatureYieldChanges`・`FeatureHealthChanges`・`StartBiasFeatures` の氾濫原 | エジプト |
@@ -107,7 +107,7 @@ BtS の効果はそのままにして足す。
 | `bConquestLearnUniqueUnits`、`bConquestLearnUniqueBuildings` | アレクサンドロス |
 | `iRouteMovementModifierInBorders` | ローマ |
 | 昇進の `iCombatPercentOverseas`、艦船への `iMovesChange` の昇進 | イギリス |
-| `iExpInBorderModifier`、昇進の `iCombatPercentInBorders` | エチオピア |
+| 都市のタイルを丘陵にする（`PyOnCityFounded` の `makeCityPlotHills`） | エチオピア |
 | `iFreeExperience` | ズールー |
 | `GlobalWorldWonderCommerceChanges` の研究 | ヴィクトリア |
 | `iGoldenAgeModifier`、`iGoldenAgeGreatPeopleRateModifier` | ペリクレス |
@@ -121,6 +121,8 @@ BtS の効果はそのままにして足す。
 | `bConquestHeal` | ユリウス・カエサル |
 | `CapitalTerrainYieldPercents`、`TerrainTrades` の砂漠 | マリ |
 | `Hurrys` の資金（ユニットだけ、`iExperience`） | カルタゴ |
+| 昇進の `FeatureDoubleMoves`・`FeatureDefenses` の森、`FeatureHappinessChanges`・`StartBiasFeatures`・`FeatureHealChanges` の森 | ケルト |
+| `TerrainTrades` の丘陵・山岳、`PassableTerrainsInBorders` の山岳 | ワイナ・カパック |
 | `PyOnCityLost`（`createPartisans`） | ド・ゴール |
 | `bAtWar` + `PyOnGained`（`createCityConscripts`） | ワシントン |
 | `bAtWar` + `PyOnLost` で期間つきの志向（`CommerceModifiers` の文化、`iHappiness`） | 徳川家康 |
@@ -130,7 +132,7 @@ BtS の効果はそのままにして足す。
 | 対象 | 内容 | タグ | 状態（志向） |
 |---|---|---|---|
 | メフメド２世 | 艦隊の山越え: 艦船が、水に面していない要塞・都市にも入れる | `bInlandCanals` | 実装済み `TRAIT_OVERLAND_FLEET` |
-| アステカ（文明） | テノチティトラン: 湖のタイルの産出が増える | `LakePlotYieldChanges` | 実装済み `TRAIT_CHINAMPA` |
+| アステカ（文明） | テノチティトラン: 湖のタイルの産出が増える。時代が 1 つ進むごとに湖の商業 +1（2026-11-19 に追加） | `LakePlotYieldChanges`、`LakePlotYieldChangesPerEra` | 実装済み `TRAIT_CHINAMPA` |
 | モンテスマ | 花の戦争: 倒した敵を捕虜（労働者）にする | 昇進の `iEnslavementChance` | 実装済み `TRAIT_FLOWER_WAR` |
 | フランス（文明） | 革命: 無政府期間が明けると黄金期。無政府期間中は全ユニットの戦闘力が上がる | `iAnarchyGoldenAgePercent`、`iCombatPercent` を持つ志向を `ConditionalFreeTraits` の `bAnarchy` で与える | 実装済み `TRAIT_REVOLUTION` |
 | ヴァイキング（文明） | 古典時代までの艦船が川を進める。乗船・下船で移動力を余分に使わない | `FreePromotionSets` で、`bRiverNavigation` の昇進を作業船・ガレー船・三段櫂船に、`bFreeEmbark` の昇進を陸上ユニットに配る | 実装済み `TRAIT_LONGSHIP` |
@@ -139,9 +141,11 @@ BtS の効果はそのままにして足す。
 | アメリカ先住民（文明） | 森に特化: 自国の領土の森を道路として扱う（移動と交易網）。施設を作っても森が残る | `FeatureRoutes`（森 → `ROUTE_ROAD`）、`MaintainFeatures`（森） | 実装済み `TRAIT_FOREST_PEOPLE` |
 | クメール（文明） | ジャングルに特化: 自国の領土のジャングルを道路として扱う。ジャングルの不衛生がなくなる。ジャングルの食料 +2（BtS の -1 と合わせて +1）。施設を作ってもジャングルが残る | `FeatureRoutes`（ジャングル → `ROUTE_ROAD`）、`FeatureHealthChanges`（ジャングル +25。BtS の -25 と合わせて 0）、`FeatureYieldChanges`（ジャングル 食料 +2）、`MaintainFeatures`（ジャングル） | 実装済み、ゲームで確認済み `TRAIT_JUNGLE_PEOPLE` |
 | サラディン | 共存: 占領した都市に国教が広まり寺院が建つ、建物が残りやすい（+50%） | `bConquestStateReligion`、`ConquestReligionBuildings`（寺院）、`iConquestBuildingSurviveModifier` | 実装済み `TRAIT_COEXISTENCE` |
-| アラブ（文明） | ベドウィン: 騎乗ユニットが砂漠で移動 2 倍・防御 +25%。砂漠のバイアス | 昇進の `TerrainDoubleMoves`・`TerrainDefenses`、`StartBiasTerrains` | 実装済み `TRAIT_BEDOUIN` |
+| アラブ（文明） | ベドウィン: 騎乗ユニットが砂漠で移動 2 倍・防御 +25%。砂漠のバイアス。2026-11-19 に追加: 石油がゲーム開始時から見え、石油のバイアス（1 つにつき +50%）、石油のタイルの商業 +2、オアシスのタイルの生産 +1・商業 +1（マリの内向きの砂漠経済と分けて、資源とオアシスに寄せた。数値は仮） | 昇進の `TerrainDoubleMoves`・`TerrainDefenses`、`StartBiasTerrains`、`RevealBonuses`・`StartBiasBonuses`・`BonusYieldChanges`（石油）、`FeatureYieldChanges`（オアシス） | 実装済み `TRAIT_BEDOUIN` |
 | インド（文明） | 多宗教の受容: 都市の宗教 1 つにつき幸福 +1・文化 +1 | `iHappinessPerReligion`、`CommercePerReligion` | 実装済み `TRAIT_MULTI_RELIGION` |
-| インカ（文明） | アンデスの民: 丘陵 食料 +1、山岳 食料 +1・生産 +1（山岳も働かせられる）。丘陵・山岳のバイアス | `TerrainYieldChanges`、`StartBiasTerrains` | 実装済み `TRAIT_ANDES` |
+| インカ（文明） | アンデスの民: 丘陵 食料 +1、山岳 食料 +2・生産 +1、時代が 1 つ進むごとに山岳の商業 +1（山岳も働かせられる）。丘陵・山岳のバイアス（2026-11-19 に山岳を食料 +1・生産 +1 から変更） | `TerrainYieldChanges`、`TerrainYieldChangesPerEra`、`StartBiasTerrains` | 実装済み `TRAIT_ANDES` |
+| ワイナ・カパック | カパック・ニャン: 丘陵と山岳が交易網をつなぐ（山岳は通行不能でも交易網を止めない）。自国の領土の山岳にユニットが入れる（ダメージなし。ハンニバルは領土の外でも入れるがダメージを受ける）（2026-11-19） | `TerrainTrades`（`TERRAIN_HILL`・`TERRAIN_PEAK`）、`PassableTerrainsInBorders`（`TERRAIN_PEAK`） | 実装済み `TRAIT_QHAPAQ_NAN` |
+| ケルト（文明） | ドルイドの森: 全陸上ユニットが森で移動 2 倍・防御 +25%、森にいるユニットの回復 +20%、都市圏の森 1 つにつき幸福 +1、森のバイアス（2026-11-19。数値は仮。丘陵は固有ユニット・固有建造物に任せる） | `FreePromotionSets`（`PROMOTION_DRUID_FOREST`: `FeatureDoubleMoves`・`FeatureDefenses`）、`FeatureHappinessChanges`、`StartBiasFeatures`、`FeatureHealChanges` | 実装済み `TRAIT_DRUID_FOREST` |
 | オランダ（文明） | 東インド会社: 幹部の成功率 +50%、幹部が国境を閉じた国にも入れる、企業を設立すると本社に幹部 3 体 | `iCorporationSpreadChange`、昇進の `bRivalTerritory`、`PyOnCorporationFounded` | 実装済み `TRAIT_VOC` |
 | ドイツ（文明） | 産業化: 産業主義を得ると全都市の生産 +10% | `ConditionalFreeTraits` の `PrereqTech` で `TRAIT_INDUSTRIAL_POWER`（`YieldModifiers`） | 実装済み `TRAIT_INDUSTRIALIZATION` |
 | エジプト（文明） | ナイルの賜物: 氾濫原 生産 +1、不衛生なし。氾濫原のバイアス | `FeatureYieldChanges`、`FeatureHealthChanges`、`StartBiasFeatures` | 実装済み `TRAIT_NILE` |
@@ -178,7 +182,7 @@ BtS の効果はそのままにして足す。
 | シュメール（文明） | 両河の間: タイルの川の辺 1 本につき商業 +1、3 本で食料 +1。開始位置のバイアス 川沿い +100%（文明に直接） | `RiverEdgeYieldPercents`（商業 100・食料 34）、文明の `iStartBiasRiver` | 実装済み `TRAIT_MESOPOTAMIA`（バイアスはゲームで確認済み） |
 | アレクサンドロス | オリエンタリズム: 都市を征服すると、奪った相手の文明の固有ユニット・固有建造物を学ぶ（自分の固有がない種類だけ。同じ種類は後に学んだものに替わる）。既存の建物も建て替え（立地の条件は見ない）、作りかけのハンマーも引き継ぐ。今いるユニットはそのまま。ギリシャのファランクス・オデオンは替わらない | `bConquestLearnUniqueUnits`、`bConquestLearnUniqueBuildings` | 実装済み、ゲームで確認済み `TRAIT_ORIENTALISM` |
 | イギリス（文明） | 日の沈まぬ帝国: 海外（首都と別の地域）で戦うユニットの戦闘力 +15%。艦船の移動力 +1 | 昇進の `iCombatPercentOverseas`（全戦闘ユニット）、BtS の昇進の `iMovesChange`（海洋） | 実装済み、ゲームで確認済み `TRAIT_SUN_NEVER_SETS` |
-| エチオピア（文明） | アドワの戦い: 自国の領土での戦闘で得る経験値 +50%、自国の領土で戦うと戦闘力 +15% | `iExpInBorderModifier`、昇進の `iCombatPercentInBorders`（全戦闘ユニット） | 実装済み、ゲームで確認済み `TRAIT_ADWA` |
+| エチオピア（文明） | 高地の王国: 建設した都市のタイルが平原の丘陵になる（2026-11-19 にアドワの戦い（自国の領土の経験値 +50%・戦闘力 +15%）から作り直した。名前は仮） | `PyOnCityFounded` の `makeCityPlotHills` | 実装済み `TRAIT_HIGHLAND_KINGDOM` |
 | ズールー（文明） | アマブト（年齢連隊）: 都市で生産したユニットの経験値 +2 | `iFreeExperience` | 実装済み、ゲームで確認済み `TRAIT_AMABUTHO` |
 | ヴィクトリア | 万国博覧会: 持っている世界遺産 1 つにつき、全都市の研究 +1 | `GlobalWorldWonderCommerceChanges` | 実装済み、ゲームで確認済み `TRAIT_GREAT_EXHIBITION` |
 | ペリクレス | ペリクレス時代: 黄金時代の期間 +50%、黄金時代の偉人ポイント +100% | `iGoldenAgeModifier`、`iGoldenAgeGreatPeopleRateModifier` | 実装済み、ゲームで確認済み `TRAIT_AGE_OF_PERICLES` |

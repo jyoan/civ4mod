@@ -803,6 +803,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_DRUID_FOREST</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_ENGLAND</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_CELTS_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_CELTS_ORDER</CivilizationActionSound>
@@ -1274,7 +1280,7 @@
 			</Leaders>
 			<Traits>
 				<Trait>
-					<TraitType>TRAIT_ADWA</TraitType>
+					<TraitType>TRAIT_HIGHLAND_KINGDOM</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>

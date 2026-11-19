@@ -1119,24 +1119,6 @@
 		<Japanese>&#38525;</Japanese>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_TRAIT_ADWA</Tag>
-		<English>Battle of Adwa</English>
-		<French>Battle of Adwa</French>
-		<German>Battle of Adwa</German>
-		<Italian>Battle of Adwa</Italian>
-		<Spanish>Battle of Adwa</Spanish>
-		<Japanese>&#12450;&#12489;&#12527;&#12398;&#25126;&#12356;&#24535;&#21521;</Japanese>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_TRAIT_ADWA_SHORT</Tag>
-		<English>Adw</English>
-		<French>Adw</French>
-		<German>Adw</German>
-		<Italian>Adw</Italian>
-		<Spanish>Adw</Spanish>
-		<Japanese>&#23432;</Japanese>
-	</TEXT>
-	<TEXT>
 		<Tag>TXT_KEY_TRAIT_AMABUTHO</Tag>
 		<English>Amabutho</English>
 		<French>Amabutho</French>
@@ -1243,15 +1225,6 @@
 		<Italian>Royal Navy</Italian>
 		<Spanish>Royal Navy</Spanish>
 		<Japanese>&#29579;&#31435;&#28023;&#36557;</Japanese>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_PROMOTION_ADWA</Tag>
-		<English>Spirit of Adwa</English>
-		<French>Spirit of Adwa</French>
-		<German>Spirit of Adwa</German>
-		<Italian>Spirit of Adwa</Italian>
-		<Spanish>Spirit of Adwa</Spanish>
-		<Japanese>&#12450;&#12489;&#12527;&#12398;&#31934;&#31070;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_PROMOTION_VAE_VICTIS</Tag>
@@ -1576,5 +1549,77 @@
 		<Italian>Mer</Italian>
 		<Spanish>Mer</Spanish>
 		<Japanese>&#20653;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HIGHLAND_KINGDOM</Tag>
+		<English>Highland Kingdom</English>
+		<French>Highland Kingdom</French>
+		<German>Highland Kingdom</German>
+		<Italian>Highland Kingdom</Italian>
+		<Spanish>Highland Kingdom</Spanish>
+		<Japanese>&#39640;&#22320;&#12398;&#29579;&#22269;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HIGHLAND_KINGDOM_SHORT</Tag>
+		<English>Hig</English>
+		<French>Hig</French>
+		<German>Hig</German>
+		<Italian>Hig</Italian>
+		<Spanish>Hig</Spanish>
+		<Japanese>&#39640;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HIGHLAND_KINGDOM_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]A city it founds stands on a plains hill (the plot becomes one)</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]A city it founds stands on a plains hill (the plot becomes one)</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]A city it founds stands on a plains hill (the plot becomes one)</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]A city it founds stands on a plains hill (the plot becomes one)</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A city it founds stands on a plains hill (the plot becomes one)</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#24314;&#35373;&#12375;&#12383;&#37117;&#24066;&#12398;&#12479;&#12452;&#12523;&#12364;&#24179;&#21407;&#12398;&#19992;&#38517;&#12395;&#12394;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DRUID_FOREST</Tag>
+		<English>Druid Forest</English>
+		<French>Druid Forest</French>
+		<German>Druid Forest</German>
+		<Italian>Druid Forest</Italian>
+		<Spanish>Druid Forest</Spanish>
+		<Japanese>&#12489;&#12523;&#12452;&#12489;&#12398;&#26862;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DRUID_FOREST_SHORT</Tag>
+		<English>Dru</English>
+		<French>Dru</French>
+		<German>Dru</German>
+		<Italian>Dru</Italian>
+		<Spanish>Dru</Spanish>
+		<Japanese>&#26862;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_DRUID_FOREST</Tag>
+		<English>Druid Forest</English>
+		<French>Druid Forest</French>
+		<German>Druid Forest</German>
+		<Italian>Druid Forest</Italian>
+		<Spanish>Druid Forest</Spanish>
+		<Japanese>&#12489;&#12523;&#12452;&#12489;&#12398;&#26862;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_QHAPAQ_NAN</Tag>
+		<English>Qhapaq Nan</English>
+		<French>Qhapaq Nan</French>
+		<German>Qhapaq Nan</German>
+		<Italian>Qhapaq Nan</Italian>
+		<Spanish>Qhapaq Nan</Spanish>
+		<Japanese>&#12459;&#12497;&#12483;&#12463;&#12539;&#12491;&#12515;&#12531;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_QHAPAQ_NAN_SHORT</Tag>
+		<English>Qha</English>
+		<French>Qha</French>
+		<German>Qha</German>
+		<Italian>Qha</Italian>
+		<Spanish>Qha</Spanish>
+		<Japanese>&#36947;</Japanese>
 	</TEXT>
 </Civ4GameText>

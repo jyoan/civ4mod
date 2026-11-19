@@ -6209,8 +6209,8 @@
 			<Button>,Art/Interface/Buttons/Promotions/Navigation1.dds,Art/Interface/Buttons/Promotions_Atlas.dds,7,4</Button>
 		</PromotionInfo>
 		<PromotionInfo>
-			<Type>PROMOTION_ADWA</Type>
-			<Description>TXT_KEY_PROMOTION_ADWA</Description>
+			<Type>PROMOTION_DRUID_FOREST</Type>
+			<Description>TXT_KEY_PROMOTION_DRUID_FOREST</Description>
 			<Sound>AS2D_IF_LEVELUP</Sound>
 			<LayerAnimationPath>NONE</LayerAnimationPath>
 			<PromotionPrereq>NONE</PromotionPrereq>
@@ -6257,19 +6257,28 @@
 			<TerrainAttacks/>
 			<TerrainDefenses/>
 			<FeatureAttacks/>
-			<FeatureDefenses/>
+			<FeatureDefenses>
+				<FeatureDefense>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<iFeatureDefense>25</iFeatureDefense>
+				</FeatureDefense>
+			</FeatureDefenses>
 			<UnitCombatMods/>
 			<DomainMods/>
 			<TerrainDoubleMoves/>
-			<FeatureDoubleMoves/>
+			<FeatureDoubleMoves>
+				<FeatureDoubleMove>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<bFeatureDoubleMove>1</bFeatureDoubleMove>
+				</FeatureDoubleMove>
+			</FeatureDoubleMoves>
 			<UnitCombats/>
-			<iCombatPercentInBorders>15</iCombatPercentInBorders>
 			<HotKey/>
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>
 			<bCtrlDown>0</bCtrlDown>
 			<iHotKeyPriority>0</iHotKeyPriority>
-			<Button>,Art/Interface/Buttons/Promotions/Guerilla1.dds,Art/Interface/Buttons/Promotions_Atlas.dds,5,5</Button>
+			<Button>,Art/Interface/Buttons/Promotions/Woodsman1.dds,Art/Interface/Buttons/Promotions_Atlas.dds,6,6</Button>
 		</PromotionInfo>
 		<PromotionInfo>
 			<Type>PROMOTION_VAE_VICTIS</Type>
