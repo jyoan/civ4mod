@@ -1538,4 +1538,13 @@
 		<Spanish>[SPACE][SPACE][ICON_BULLET]Terrain around the capital (trait): %d1%F2</Spanish>
 		<Japanese>[SPACE][SPACE][ICON_BULLET]&#39318;&#37117;&#12398;&#37117;&#24066;&#22287;&#12398;&#22320;&#24418;&#65288;&#24535;&#21521;&#65289;: %F2%d1</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_PARTISANS_CREATED</Tag>
+		<English>%d2 partisans have risen near %s1!</English>
+		<French>%d2 partisans have risen near %s1!</French>
+		<German>%d2 partisans have risen near %s1!</German>
+		<Italian>%d2 partisans have risen near %s1!</Italian>
+		<Spanish>%d2 partisans have risen near %s1!</Spanish>
+		<Japanese>%s1&#12398;&#36817;&#12367;&#12391;&#12497;&#12523;&#12481;&#12470;&#12531; %d2 &#20307;&#12364;&#34562;&#36215;&#12375;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
 </Civ4GameText>

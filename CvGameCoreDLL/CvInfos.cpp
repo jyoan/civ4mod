@@ -21731,6 +21731,11 @@ const TCHAR* CvTraitInfo::getPyOnCorporationFounded() const
 	return m_aszPythonHook[TRAIT_PYHOOK_CORPORATION_FOUNDED];
 }
 
+const TCHAR* CvTraitInfo::getPyOnCityLost() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_CITY_LOST];
+}
+
 // ConditionalFreeTraits (added by this mod): the traits the player has while the conditions hold
 int CvTraitInfo::getNumConditionalFreeTraits() const
 {
@@ -22657,6 +22662,7 @@ void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_FOUNDED], "PyOnCityFounded");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_ACQUIRED], "PyOnCityAcquired");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CORPORATION_FOUNDED], "PyOnCorporationFounded");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_LOST], "PyOnCityLost");
 }
 
 // The part of read() for ConditionalFreeTraits (added by this mod)

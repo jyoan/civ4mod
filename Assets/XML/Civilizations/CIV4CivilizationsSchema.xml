@@ -598,6 +598,7 @@
 	<ElementType name="PyOnCityFounded" content="textOnly"/>
 	<ElementType name="PyOnCityAcquired" content="textOnly"/>
 	<ElementType name="PyOnCorporationFounded" content="textOnly"/>
+	<ElementType name="PyOnCityLost" content="textOnly"/>
 	<ElementType name="iHappinessPerReligion" content="textOnly" dt:type="int"/>
 	<ElementType name="CommercePerReligion" content="eltOnly">
 		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
@@ -1091,6 +1092,7 @@
 		<element type="PyOnCityFounded" minOccurs="0"/>
 		<element type="PyOnCityAcquired" minOccurs="0"/>
 		<element type="PyOnCorporationFounded" minOccurs="0"/>
+		<element type="PyOnCityLost" minOccurs="0"/>
 		<element type="ConditionalFreeTraits" minOccurs="0"/>
 		<element type="ExtraYieldThresholds"/>
 		<element type="TradeYieldModifiers"/>
