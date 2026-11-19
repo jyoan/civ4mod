@@ -65,7 +65,7 @@ BtS の効果はそのままにして足す。
 | `iAnarchyGoldenAgePercent`、`iCombatPercent` | フランス |
 | `bRiverNavigation`・`bFreeEmbark` の昇進 | ヴァイキング |
 | `bPillageNoMoveCost`・`iPillageHealPercent` の昇進 | ラグナル |
-| `WonderHurrys`、`bIgnoreWonderHurryCostModifier` | 始皇帝 |
+| `Hurrys`（`bWondersOnly`・`bIgnoreCostModifier`） | 始皇帝 |
 | `FeatureRoutes`・`MaintainFeatures` の森 | アメリカ先住民 |
 | `FeatureRoutes`・`MaintainFeatures`・`FeatureHealthChanges`・`FeatureYieldChanges` のジャングル | クメール |
 | 昇進の `TerrainDoubleMoves`・`TerrainDefenses` の砂漠、`StartBiasTerrains` の砂漠 | アラブ |
@@ -130,7 +130,7 @@ BtS の効果はそのままにして足す。
 | フランス（文明） | 革命: 無政府期間が明けると黄金期。無政府期間中は全ユニットの戦闘力が上がる | `iAnarchyGoldenAgePercent`、`iCombatPercent` を持つ志向を `ConditionalFreeTraits` の `bAnarchy` で与える | 実装済み `TRAIT_REVOLUTION` |
 | ヴァイキング（文明） | 古典時代までの艦船が川を進める。乗船・下船で移動力を余分に使わない | `FreePromotionSets` で、`bRiverNavigation` の昇進を作業船・ガレー船・三段櫂船に、`bFreeEmbark` の昇進を陸上ユニットに配る | 実装済み `TRAIT_LONGSHIP` |
 | ラグナル | 略奪で移動力を使わない。略奪するとユニットが回復する | `FreePromotionSets` で、`bPillageNoMoveCost`・`iPillageHealPercent` の昇進を陸上の戦闘ユニットに配る | 実装済み `TRAIT_RAIDING` |
-| 始皇帝 | 奴隷制なしで、遺産（世界遺産・国家遺産）を人口で緊急生産できる。遺産の緊急生産に追加の費用がかからない（人口でも資金でも。生産 0 のときの +50% と人口を使ったときの不満は残る） | `WonderHurrys`（`HURRY_POPULATION`）、`bIgnoreWonderHurryCostModifier` | 実装済み `TRAIT_CORVEE` |
+| 始皇帝 | 奴隷制なしで、遺産（世界遺産・国家遺産）を人口で緊急生産できる。遺産の人口による緊急生産に追加の費用がかからない（生産 0 のときの +50% と人口を使ったときの不満は残る。2026-11-19 に `Hurrys` へ書き換えたので、追加の費用の無視は人口による緊急生産だけになった。以前は資金による緊急生産にも効いていた） | `Hurrys`（`HURRY_POPULATION`、`bWondersOnly`、`bIgnoreCostModifier`） | 実装済み `TRAIT_CORVEE` |
 | アメリカ先住民（文明） | 森に特化: 自国の領土の森を道路として扱う（移動と交易網）。施設を作っても森が残る | `FeatureRoutes`（森 → `ROUTE_ROAD`）、`MaintainFeatures`（森） | 実装済み `TRAIT_FOREST_PEOPLE` |
 | クメール（文明） | ジャングルに特化: 自国の領土のジャングルを道路として扱う。ジャングルの不衛生がなくなる。ジャングルの食料 +2（BtS の -1 と合わせて +1）。施設を作ってもジャングルが残る | `FeatureRoutes`（ジャングル → `ROUTE_ROAD`）、`FeatureHealthChanges`（ジャングル +25。BtS の -25 と合わせて 0）、`FeatureYieldChanges`（ジャングル 食料 +2）、`MaintainFeatures`（ジャングル） | 実装済み、ゲームで確認済み `TRAIT_JUNGLE_PEOPLE` |
 | サラディン | 共存: 占領した都市に国教が広まり寺院が建つ、建物が残りやすい（+50%） | `bConquestStateReligion`、`ConquestReligionBuildings`（寺院）、`iConquestBuildingSurviveModifier` | 実装済み `TRAIT_COEXISTENCE` |

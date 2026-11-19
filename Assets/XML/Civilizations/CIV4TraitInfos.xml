@@ -1878,10 +1878,13 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<WonderHurrys>
-				<HurryType>HURRY_POPULATION</HurryType>
-			</WonderHurrys>
-			<bIgnoreWonderHurryCostModifier>1</bIgnoreWonderHurryCostModifier>
+			<Hurrys>
+				<Hurry>
+					<HurryType>HURRY_POPULATION</HurryType>
+					<bWondersOnly>1</bWondersOnly>
+					<bIgnoreCostModifier>1</bIgnoreCostModifier>
+				</Hurry>
+			</Hurrys>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>
