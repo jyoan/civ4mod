@@ -3993,9 +3993,32 @@ bool CvPlot::isNetworkRoute(TeamTypes eTeam) const
 }
 
 
+// TerrainTrades of TERRAIN_HILL / TERRAIN_PEAK (traits, added by this mod): these graphical only terrains stand for hill and
+// peak plots, as for the trait TerrainYieldChanges
+static bool isPlotShapeTerrainTrade(const CvPlot* pPlot, TeamTypes eTeam)
+{
+	TerrainTypes eShapeTerrain;
+
+	if (pPlot->isPeak())
+	{
+		eShapeTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_PEAK", true);
+	}
+	else if (pPlot->isHills())
+	{
+		eShapeTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_HILL", true);
+	}
+	else
+	{
+		return false;
+	}
+
+	return ((eShapeTerrain != NO_TERRAIN) && GET_TEAM(eTeam).isTerrainTrade(eShapeTerrain));
+}
+
 bool CvPlot::isTradeNetworkImpassable(TeamTypes eTeam) const
 {
-	return (isImpassable() && !isImprovementPassable() && !isRiverNetwork(eTeam));	// isImprovementPassable added by this mod
+	// isImprovementPassable added by this mod; and a peak whose TERRAIN_PEAK connects the trade network (traits, added by this mod)
+	return (isImpassable() && !isImprovementPassable() && !isRiverNetwork(eTeam) && !(isPeak() && isPlotShapeTerrainTrade(this, eTeam)));
 }
 
 bool CvPlot::isRiverNetwork(TeamTypes eTeam) const
@@ -4024,6 +4047,12 @@ bool CvPlot::isNetworkTerrain(TeamTypes eTeam) const
 	FAssertMsg(getTerrainType() != NO_TERRAIN, "TerrainType is not assigned a valid value");
 
 	if (GET_TEAM(eTeam).isTerrainTrade(getTerrainType()))
+	{
+		return true;
+	}
+
+	// TERRAIN_HILL / TERRAIN_PEAK stand for hill and peak plots (added by this mod)
+	if (isPlotShapeTerrainTrade(this, eTeam))
 	{
 		return true;
 	}
@@ -6926,12 +6955,14 @@ int CvPlot::calculateTraitYieldChange(YieldTypes eYield, PlayerTypes ePlayer) co
 		if (ePeakTerrain != NO_TERRAIN)
 		{
 			iYield += kPlayer.getTraitTerrainYieldChange(ePeakTerrain, eYield);
+			iYield += kPlayer.getTraitTerrainYieldChangePerEra(ePeakTerrain, eYield) * kPlayer.getCurrentEra();
 		}
 	}
 	else if (!isImpassable() || (getFeatureType() == NO_FEATURE))
 	{
 		// Passable, or impassable because of the terrain itself
 		iYield += kPlayer.getTraitTerrainYieldChange(getTerrainType(), eYield);
+		iYield += kPlayer.getTraitTerrainYieldChangePerEra(getTerrainType(), eYield) * kPlayer.getCurrentEra();	// TerrainYieldChangesPerEra (added by this mod)
 
 		if (isHills())
 		{
@@ -6939,6 +6970,7 @@ int CvPlot::calculateTraitYieldChange(YieldTypes eYield, PlayerTypes ePlayer) co
 			if (eHillTerrain != NO_TERRAIN)
 			{
 				iYield += kPlayer.getTraitTerrainYieldChange(eHillTerrain, eYield);
+				iYield += kPlayer.getTraitTerrainYieldChangePerEra(eHillTerrain, eYield) * kPlayer.getCurrentEra();
 			}
 		}
 	}

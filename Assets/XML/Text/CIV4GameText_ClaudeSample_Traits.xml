@@ -1433,4 +1433,13 @@
 		<Spanish>[ICON_BULLET]Sees what the barbarians see (their units, animals included, and their cities)</Spanish>
 		<Japanese>[ICON_BULLET]&#34542;&#26063;&#12398;&#35222;&#30028;&#12434;&#20849;&#26377;&#12377;&#12427;&#65288;&#34542;&#26063;&#12398;&#12518;&#12491;&#12483;&#12488;&#12539;&#21205;&#29289;&#12539;&#37117;&#24066;&#12364;&#35211;&#12390;&#12356;&#12427;&#12479;&#12452;&#12523;&#12364;&#35211;&#12360;&#12427;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_YIELD_CHANGE_PER_ERA</Tag>
+		<English>[ICON_BULLET]%D1_Change%F2_Icon for each era after the first from[SPACE]</English>
+		<French>[ICON_BULLET]%D1_Change%F2_Icon for each era after the first from[SPACE]</French>
+		<German>[ICON_BULLET]%D1_Change%F2_Icon for each era after the first from[SPACE]</German>
+		<Italian>[ICON_BULLET]%D1_Change%F2_Icon for each era after the first from[SPACE]</Italian>
+		<Spanish>[ICON_BULLET]%D1_Change%F2_Icon for each era after the first from[SPACE]</Spanish>
+		<Japanese>[ICON_BULLET]&#26178;&#20195;&#12364; 1 &#12388;&#36914;&#12416;&#12372;&#12392;&#12395;&#12289;&#27425;&#12398;&#12418;&#12398;&#12424;&#12426;%F2_Icon%D1_Change:[SPACE]</Japanese>
+	</TEXT>
 </Civ4GameText>

@@ -21890,6 +21890,16 @@ int CvTraitInfo::getTerrainYieldChange(int iTerrain, int iYield) const
 	return m_aaiTerrainYieldChange[iTerrain][iYield];
 }
 
+// TerrainYieldChangesPerEra (added by this mod): times the current era of the player (0 in the ancient era)
+int CvTraitInfo::getTerrainYieldChangePerEra(int iTerrain, int iYield) const
+{
+	if ((iTerrain < 0) || (iTerrain >= (int)m_aaiTerrainYieldChangePerEra.size()) || (iYield < 0) || (iYield >= NUM_YIELD_TYPES))
+	{
+		return 0;
+	}
+	return m_aaiTerrainYieldChangePerEra[iTerrain][iYield];
+}
+
 int CvTraitInfo::getFeatureYieldChange(int iFeature, int iYield) const
 {
 	FAssertMsg(iFeature < GC.getNumFeatureInfos(), "Index out of bounds");
@@ -22830,6 +22840,8 @@ void CvTraitInfo::readPlotYieldChanges(CvXMLLoadUtility* pXML)
 	std::vector< std::vector<int> > aaiYields;
 	readYieldChanges(pXML, "TerrainYieldChanges", "TerrainYieldChange", "TerrainType", "Yields", aszTypes, aaiYields);
 	resolveYieldChanges("TerrainYieldChanges", aszTypes, aaiYields, GC.getNumTerrainInfos(), m_aaiTerrainYieldChange);
+	readYieldChanges(pXML, "TerrainYieldChangesPerEra", "TerrainYieldChangePerEra", "TerrainType", "Yields", aszTypes, aaiYields);
+	resolveYieldChanges("TerrainYieldChangesPerEra", aszTypes, aaiYields, GC.getNumTerrainInfos(), m_aaiTerrainYieldChangePerEra);
 	readYieldChanges(pXML, "FeatureYieldChanges", "FeatureYieldChange", "FeatureType", "Yields", aszTypes, aaiYields);
 	resolveYieldChanges("FeatureYieldChanges", aszTypes, aaiYields, GC.getNumFeatureInfos(), m_aaiFeatureYieldChange);
 	// The features are loaded before the traits

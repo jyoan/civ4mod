@@ -7362,6 +7362,11 @@ int CvPlayer::getTraitTerrainYieldChange(TerrainTypes eTerrain, YieldTypes eYiel
 	return sumTraitValues(&CvTraitInfo::getTerrainYieldChange, eTerrain, eYield);
 }
 
+int CvPlayer::getTraitTerrainYieldChangePerEra(TerrainTypes eTerrain, YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getTerrainYieldChangePerEra, eTerrain, eYield);
+}
+
 int CvPlayer::getTraitFeatureYieldChange(FeatureTypes eFeature, YieldTypes eYield) const
 {
 	return sumTraitValues(&CvTraitInfo::getFeatureYieldChange, eFeature, eYield);
@@ -13709,6 +13714,17 @@ void CvPlayer::setCurrentEra(EraTypes eNewValue)
 
 		// ConditionalFreeTraits (EraMin, EraMax; added by this mod)
 		updateConditionalTraits();
+
+		// TerrainYieldChangesPerEra of the traits (added by this mod): the plot yields in our territory
+		for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
+		{
+			pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
+
+			if (pLoopPlot->getOwnerINLINE() == getID())
+			{
+				pLoopPlot->updateYield();
+			}
+		}
 
 		if (GC.getGameINLINE().getActiveTeam() != NO_TEAM)
 		{

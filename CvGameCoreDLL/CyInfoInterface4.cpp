@@ -12,6 +12,7 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 	kTraitInfo
 		.def("getPyOnCityLost", &CvTraitInfo::getPyOnCityLost, "string ()")
 		.def("isBarbarianVision", &CvTraitInfo::isBarbarianVision, "bool ()")
+		.def("getTerrainYieldChangePerEra", &CvTraitInfo::getTerrainYieldChangePerEra, "int (int iTerrain, int iYield) - times the current era")
 		.def("getPyOnGained", &CvTraitInfo::getPyOnGained, "string ()")
 		.def("getPyOnLost", &CvTraitInfo::getPyOnLost, "string ()")
 		.def("getMaxExperienceAfterUpgrade", &CvTraitInfo::getMaxExperienceAfterUpgrade, "int () - 0 = not set, -1 = keeps all")

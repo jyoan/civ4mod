@@ -105,6 +105,18 @@ def createCityConscripts(pPlayer, iMinPopulation):
 		CyInterface().addMessage(pPlayer.getID(), True, gc.getEVENT_MESSAGE_TIME(), szText, "AS2D_UNIT_BUILD_UNIT", InterfaceMessageTypes.MESSAGE_TYPE_MAJOR_EVENT, None, gc.getInfoTypeForString("COLOR_GREEN"), -1, -1, False, False)
 	return iNum
 
+def makeCityPlotHills(pCity, szTerrain):
+	"The plot of the city becomes a hill of the terrain ('TERRAIN_PLAINS'), e.g. from PyOnCityFounded. A feature that cannot stay on it is removed"
+	pPlot = pCity.plot()
+	if not pPlot.isHills():
+		pPlot.setPlotType(PlotTypes.PLOT_HILLS, True, True)
+	eTerrain = gc.getInfoTypeForString(szTerrain)
+	if eTerrain != -1 and pPlot.getTerrainType() != eTerrain:
+		pPlot.setTerrainType(eTerrain, True, True)
+	eFeature = pPlot.getFeatureType()
+	if eFeature != -1 and not pPlot.canHaveFeature(eFeature):
+		pPlot.setFeatureType(FeatureTypes.NO_FEATURE, -1)
+
 def gainTraitForTurns(pPlayer, szTrait, iTurns):
 	"The player has the trait for iTurns turns (CyPlayer.setTraitTurns). If it is already temporary, the longer of the two counts (no stacking). Scale by game speed with scaleBySpeed(iTurns, 'GoldenAge') if wanted"
 	eTrait = gc.getInfoTypeForString(szTrait)
