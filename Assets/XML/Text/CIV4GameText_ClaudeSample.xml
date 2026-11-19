@@ -1484,4 +1484,13 @@
 		<Spanish>[SPACE][SPACE][ICON_BULLET]World Wonders (trait): %d1%F2</Spanish>
 		<Japanese>[SPACE][SPACE][ICON_BULLET]&#19990;&#30028;&#36986;&#29987;&#65288;&#24535;&#21521;&#65289;: %F2%d1</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_GREATPEOPLE_TRAIT_STATE_RELIGION</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] for State Religion (%s2_trait)</English>
+		<French>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] for State Religion (%s2_trait)</French>
+		<German>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] for State Religion (%s2_trait)</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] for State Religion (%s2_trait)</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] for State Religion (%s2_trait)</Spanish>
+		<Japanese>[ICON_BULLET]&#22269;&#25945;&#65288;%s2_trait&#65289;&#12395;&#12424;&#12426;[ICON_GREATPEOPLE]%D1%%</Japanese>
+	</TEXT>
 </Civ4GameText>

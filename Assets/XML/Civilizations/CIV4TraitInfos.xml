@@ -380,6 +380,10 @@
 			<bConquestLearnUniqueBuildings>1</bConquestLearnUniqueBuildings>
 			<iStateReligionHappiness>1</iStateReligionHappiness>
 			<iStateReligionHealth>1</iStateReligionHealth>
+			<iStateReligionGreatPeopleRateModifier>25</iStateReligionGreatPeopleRateModifier>
+			<iStateReligionUnitProductionModifier>25</iStateReligionUnitProductionModifier>
+			<iStateReligionBuildingProductionModifier>25</iStateReligionBuildingProductionModifier>
+			<iStateReligionFreeExperience>2</iStateReligionFreeExperience>
 			<GreatPeopleClassRateModifiers>
 				<GreatPeopleClassRateModifier>
 					<UnitClassType>UNITCLASS_ENGINEER</UnitClassType>

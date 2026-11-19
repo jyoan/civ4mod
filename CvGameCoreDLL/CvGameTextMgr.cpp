@@ -3904,6 +3904,28 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_STATE_RELIGION_HEALTH", abs(kTrait.getStateReligionHealth()), ((kTrait.getStateReligionHealth() > 0) ? gDLL->getSymbolID(HEALTHY_CHAR) : gDLL->getSymbolID(UNHEALTHY_CHAR))));
 	}
 
+	// iStateReligionGreatPeopleRateModifier, iStateReligionUnitProductionModifier, iStateReligionBuildingProductionModifier,
+	// iStateReligionFreeExperience (added by this mod): the civic text keys
+	if (kTrait.getStateReligionGreatPeopleRateModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_GREAT_PEOPLE_MOD_STATE_RELIGION", kTrait.getStateReligionGreatPeopleRateModifier(), gDLL->getSymbolID(RELIGION_CHAR)));
+	}
+
+	if (kTrait.getStateReligionUnitProductionModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_STATE_REL_TRAIN_BONUS", kTrait.getStateReligionUnitProductionModifier()));
+	}
+
+	if (kTrait.getStateReligionBuildingProductionModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_STATE_REL_BUILDING_BONUS", kTrait.getStateReligionBuildingProductionModifier()));
+	}
+
+	if (kTrait.getStateReligionFreeExperience() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_STATE_REL_FREE_XP", kTrait.getStateReligionFreeExperience()));
+	}
+
 	if (kTrait.isAnyGreatPeopleClassRateModifier())
 	{
 		for (int iUnitClass = 0; iUnitClass < GC.getNumUnitClassInfos(); iUnitClass++)
@@ -16375,6 +16397,15 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 			if (0 != iTraitMod)
 			{
 				szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_GREATPEOPLE_TRAIT", iTraitMod, trait.getTextKeyWide()));
+				szBuffer.append(NEWLINE);
+				iModifier += iTraitMod;
+			}
+
+			// iStateReligionGreatPeopleRateModifier of the traits, in a city with the state religion (added by this mod)
+			iTraitMod = trait.getStateReligionGreatPeopleRateModifier();
+			if (0 != iTraitMod && owner.getStateReligion() != NO_RELIGION && city.isHasReligion(owner.getStateReligion()))
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_GREATPEOPLE_TRAIT_STATE_RELIGION", iTraitMod, trait.getTextKeyWide()));
 				szBuffer.append(NEWLINE);
 				iModifier += iTraitMod;
 			}

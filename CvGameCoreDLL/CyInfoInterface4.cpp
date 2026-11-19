@@ -37,5 +37,9 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getBuildingHealthChange", &CvTraitInfo::getBuildingHealthChange, "int (int iBuildingClass)")
 		.def("getBonusHappinessChange", &CvTraitInfo::getBonusHappinessChange, "int (int iBonus)")
 		.def("getBonusHealthChange", &CvTraitInfo::getBonusHealthChange, "int (int iBonus)")
+		.def("getStateReligionGreatPeopleRateModifier", &CvTraitInfo::getStateReligionGreatPeopleRateModifier, "int ()")
+		.def("getStateReligionUnitProductionModifier", &CvTraitInfo::getStateReligionUnitProductionModifier, "int ()")
+		.def("getStateReligionBuildingProductionModifier", &CvTraitInfo::getStateReligionBuildingProductionModifier, "int ()")
+		.def("getStateReligionFreeExperience", &CvTraitInfo::getStateReligionFreeExperience, "int ()")
 		;
 }

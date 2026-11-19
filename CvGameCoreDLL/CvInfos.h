@@ -4889,6 +4889,10 @@ public:
 	// Batch of 2026-11-17 (added by this mod)
 	int getStateReligionHappiness() const;			// Exposed to Python: as the civics
 	int getStateReligionHealth() const;				// Exposed to Python
+	int getStateReligionGreatPeopleRateModifier() const;	// Exposed to Python (added by this mod)
+	int getStateReligionUnitProductionModifier() const;	// Exposed to Python (added by this mod)
+	int getStateReligionBuildingProductionModifier() const;	// Exposed to Python (added by this mod)
+	int getStateReligionFreeExperience() const;	// Exposed to Python (added by this mod)
 	int getGreatPeopleClassRateModifier(int iUnitClass) const;	// Exposed to Python
 	bool isAnyGreatPeopleClassRateModifier() const;
 	int getEnemyMoveCostInBorders() const;			// Exposed to Python
@@ -5150,6 +5154,10 @@ protected:
 	bool m_bConquestLearnUniqueBuildings;	// added by this mod
 	int m_iStateReligionHappiness;	// added by this mod
 	int m_iStateReligionHealth;	// added by this mod
+	int m_iStateReligionGreatPeopleRateModifier;	// added by this mod
+	int m_iStateReligionUnitProductionModifier;	// added by this mod
+	int m_iStateReligionBuildingProductionModifier;	// added by this mod
+	int m_iStateReligionFreeExperience;	// added by this mod
 	int m_iEnemyMoveCostInBorders;	// added by this mod
 	int m_iRevengeCombatPercent;	// added by this mod
 	int m_iKnownTechCostModifier;	// added by this mod

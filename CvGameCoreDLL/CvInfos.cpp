@@ -20214,6 +20214,10 @@ m_bConquestLearnUniqueUnits(false),
 m_bConquestLearnUniqueBuildings(false),
 m_iStateReligionHappiness(0),
 m_iStateReligionHealth(0),
+m_iStateReligionGreatPeopleRateModifier(0),
+m_iStateReligionUnitProductionModifier(0),
+m_iStateReligionBuildingProductionModifier(0),
+m_iStateReligionFreeExperience(0),
 m_iEnemyMoveCostInBorders(0),
 m_iRevengeCombatPercent(0),
 m_iKnownTechCostModifier(0),
@@ -20779,6 +20783,30 @@ int CvTraitInfo::getStateReligionHappiness() const
 int CvTraitInfo::getStateReligionHealth() const
 {
 	return m_iStateReligionHealth;
+}
+
+// iStateReligionGreatPeopleRateModifier (added by this mod): as the civics, the great people rate of the cities with the state religion % (CvPlayer::processTrait)
+int CvTraitInfo::getStateReligionGreatPeopleRateModifier() const
+{
+	return m_iStateReligionGreatPeopleRateModifier;
+}
+
+// iStateReligionUnitProductionModifier (added by this mod): as the civics, the production % of the units in the cities with the state religion (CvPlayer::processTrait)
+int CvTraitInfo::getStateReligionUnitProductionModifier() const
+{
+	return m_iStateReligionUnitProductionModifier;
+}
+
+// iStateReligionBuildingProductionModifier (added by this mod): as the civics, the production % of the buildings in the cities with the state religion (CvPlayer::processTrait)
+int CvTraitInfo::getStateReligionBuildingProductionModifier() const
+{
+	return m_iStateReligionBuildingProductionModifier;
+}
+
+// iStateReligionFreeExperience (added by this mod): as the civics, the experience of the units built in the cities with the state religion (CvPlayer::processTrait)
+int CvTraitInfo::getStateReligionFreeExperience() const
+{
+	return m_iStateReligionFreeExperience;
 }
 
 // GreatPeopleClassRateModifiers (added by this mod): % of the great people points of a unit class (CvCity::getGreatPeopleUnitRateWithTraits)
@@ -22172,6 +22200,10 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bConquestLearnUniqueBuildings, "bConquestLearnUniqueBuildings");
 	pXML->GetChildXmlValByName(&m_iStateReligionHappiness, "iStateReligionHappiness");
 	pXML->GetChildXmlValByName(&m_iStateReligionHealth, "iStateReligionHealth");
+	pXML->GetChildXmlValByName(&m_iStateReligionGreatPeopleRateModifier, "iStateReligionGreatPeopleRateModifier");
+	pXML->GetChildXmlValByName(&m_iStateReligionUnitProductionModifier, "iStateReligionUnitProductionModifier");
+	pXML->GetChildXmlValByName(&m_iStateReligionBuildingProductionModifier, "iStateReligionBuildingProductionModifier");
+	pXML->GetChildXmlValByName(&m_iStateReligionFreeExperience, "iStateReligionFreeExperience");
 	pXML->GetChildXmlValByName(&m_iEnemyMoveCostInBorders, "iEnemyMoveCostInBorders");
 	pXML->GetChildXmlValByName(&m_iRevengeCombatPercent, "iRevengeCombatPercent");
 	pXML->GetChildXmlValByName(&m_iKnownTechCostModifier, "iKnownTechCostModifier");

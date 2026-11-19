@@ -19002,6 +19002,11 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	changeExpInBorderModifier(kTrait.getExpInBorderModifier() * iChange);
 	changeGoldenAgeModifier(kTrait.getGoldenAgeModifier() * iChange);
 	changeStateReligionHappiness(kTrait.getStateReligionHappiness() * iChange);	// added by this mod (as the civics)
+	// added by this mod (as the civics)
+	changeStateReligionGreatPeopleRateModifier(kTrait.getStateReligionGreatPeopleRateModifier() * iChange);
+	changeStateReligionUnitProductionModifier(kTrait.getStateReligionUnitProductionModifier() * iChange);
+	changeStateReligionBuildingProductionModifier(kTrait.getStateReligionBuildingProductionModifier() * iChange);
+	changeStateReligionFreeExperience(kTrait.getStateReligionFreeExperience() * iChange);
 	GET_TEAM(getTeam()).changeEnemyWarWearinessModifier(kTrait.getEnemyWarWearinessModifier() * iChange);	// added by this mod (the team value of the buildings)
 
 	for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)

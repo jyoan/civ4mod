@@ -399,6 +399,10 @@
 	<ElementType name="bConquestLearnUniqueBuildings" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iStateReligionHappiness" content="textOnly" dt:type="int"/>
 	<ElementType name="iStateReligionHealth" content="textOnly" dt:type="int"/>
+	<ElementType name="iStateReligionGreatPeopleRateModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iStateReligionUnitProductionModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iStateReligionBuildingProductionModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iStateReligionFreeExperience" content="textOnly" dt:type="int"/>
 	<ElementType name="GreatPeopleClassRateModifier" content="eltOnly">
 		<element type="UnitClassType"/>
 		<element type="iGreatPeopleRateModifier"/>
@@ -877,6 +881,10 @@
 		<element type="bConquestLearnUniqueBuildings" minOccurs="0"/>
 		<element type="iStateReligionHappiness" minOccurs="0"/>
 		<element type="iStateReligionHealth" minOccurs="0"/>
+		<element type="iStateReligionGreatPeopleRateModifier" minOccurs="0"/>
+		<element type="iStateReligionUnitProductionModifier" minOccurs="0"/>
+		<element type="iStateReligionBuildingProductionModifier" minOccurs="0"/>
+		<element type="iStateReligionFreeExperience" minOccurs="0"/>
 		<element type="GreatPeopleClassRateModifiers" minOccurs="0"/>
 		<element type="iEnemyMoveCostInBorders" minOccurs="0"/>
 		<element type="iRevengeCombatPercent" minOccurs="0"/>
