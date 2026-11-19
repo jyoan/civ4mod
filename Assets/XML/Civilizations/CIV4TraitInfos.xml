@@ -1242,6 +1242,7 @@
 			<bBuildingOnlyHealthy>1</bBuildingOnlyHealthy>
 			<bMilitaryFoodProduction>1</bMilitaryFoodProduction>
 			<bBarbarianAlly>1</bBarbarianAlly>
+			<bBarbarianVision>1</bBarbarianVision>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

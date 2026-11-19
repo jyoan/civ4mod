@@ -20192,6 +20192,7 @@ m_iGoldenAgeLandMovesChange(0),
 m_iGoldenAgeSeaMovesChange(0),
 m_bInlandCanals(false),
 m_bBarbarianAlly(false),
+m_bBarbarianVision(false),
 m_iStartBiasCoastal(0),
 m_iStartBiasRiver(0),
 m_piStartBiasTerrains(NULL),
@@ -20692,6 +20693,11 @@ bool CvTraitInfo::isCityFoundedUnitCoastalOnly(int i) const
 bool CvTraitInfo::isBarbarianAlly() const
 {
 	return m_bBarbarianAlly;
+}
+
+bool CvTraitInfo::isBarbarianVision() const
+{
+	return m_bBarbarianVision;
 }
 
 bool CvTraitInfo::isNoPillageInBorders() const
@@ -22333,6 +22339,7 @@ void CvTraitInfo::readModValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iGoldenAgeSeaMovesChange, "iGoldenAgeSeaMovesChange");
 	pXML->GetChildXmlValByName(&m_bInlandCanals, "bInlandCanals");
 	pXML->GetChildXmlValByName(&m_bBarbarianAlly, "bBarbarianAlly");
+	pXML->GetChildXmlValByName(&m_bBarbarianVision, "bBarbarianVision");
 }
 
 // The part of read() for CityFoundedUnits (added by this mod)

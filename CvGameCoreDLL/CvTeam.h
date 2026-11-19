@@ -101,6 +101,8 @@ public:
 	bool isMinorCiv() const;																														// Exposed to Python
 	bool isBarbarianAlly() const;		// added by this mod: a player of the team has a trait with bBarbarianAlly. Exposed to Python
 	void updateBarbarianAlly();			// added by this mod: peace or war with the barbarians as isBarbarianAlly says
+	bool isBarbarianVision() const;		// added by this mod: a player of the team has a trait with bBarbarianVision. Exposed to Python
+	void updateBarbarianVision(bool bTurn = false);	// added by this mod: sees what the barbarians see as isBarbarianVision says
 	PlayerTypes getLeaderID() const;																										// Exposed to Python
 	PlayerTypes getSecretaryID() const;																									// Exposed to Python
 	HandicapTypes getHandicapType() const;																							// Exposed to Python
