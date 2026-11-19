@@ -6996,6 +6996,7 @@ int CvPlot::calculateTraitYieldChange(YieldTypes eYield, PlayerTypes ePlayer) co
 	if (isLake())
 	{
 		iYield += kPlayer.getTraitLakePlotYieldChange(eYield);
+		iYield += kPlayer.getTraitLakePlotYieldChangePerEra(eYield) * kPlayer.getCurrentEra();	// LakePlotYieldChangesPerEra (added by this mod)
 	}
 
 	// BonusYieldChanges: a bonus the owner can see (its tech reveals it)

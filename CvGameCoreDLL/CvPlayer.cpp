@@ -7393,6 +7393,29 @@ int CvPlayer::getTraitLakePlotYieldChange(YieldTypes eYield) const
 	return sumTraitValues(&CvTraitInfo::getLakePlotYieldChange, eYield);
 }
 
+int CvPlayer::getTraitLakePlotYieldChangePerEra(YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getLakePlotYieldChangePerEra, eYield);
+}
+
+// The traits let the units of the player enter the impassable pPlot in its territory (the caller checks the territory).
+// Checked in the order of CvPlot::isImpassable: the peak (TERRAIN_PEAK), the feature, the terrain
+bool CvPlayer::isTraitPassableInBorders(const CvPlot* pPlot) const
+{
+	if (pPlot->isPeak())
+	{
+		TerrainTypes ePeakTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_PEAK", true);
+		return ((ePeakTerrain != NO_TERRAIN) && hasTraitFlag(&CvTraitInfo::isPassableTerrainInBorders, ePeakTerrain));
+	}
+
+	if (pPlot->getFeatureType() != NO_FEATURE)
+	{
+		return hasTraitFlag(&CvTraitInfo::isPassableFeatureInBorders, pPlot->getFeatureType());
+	}
+
+	return hasTraitFlag(&CvTraitInfo::isPassableTerrainInBorders, pPlot->getTerrainType());
+}
+
 // CITY_PLOTS_DEFAULT_RADIUS and the iCityRadiusChange of the traits whose CityRadiusCultureLevel the city has
 int CvPlayer::getCityRadius(CultureLevelTypes eCultureLevel) const
 {

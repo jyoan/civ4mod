@@ -4063,6 +4063,41 @@ void CvGameTextMgr::parseTraitTerritoryEffects(CvWStringBuffer& szHelpString, Tr
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_BARBARIAN_VISION"));
 	}
 
+	// PassableTerrainsInBorders / PassableFeaturesInBorders and FeatureHealChanges (added by this mod)
+	{
+		CvWString szNames;
+		int iK;
+
+		for (iK = 0; iK < GC.getNumTerrainInfos(); ++iK)
+		{
+			if (kTrait.isPassableTerrainInBorders(iK))
+			{
+				szNames += (szNames.empty() ? L"" : L", ") + getLinkText(GC.getTerrainInfo((TerrainTypes)iK).getDescription());
+			}
+		}
+
+		for (iK = 0; iK < GC.getNumFeatureInfos(); ++iK)
+		{
+			if (kTrait.isPassableFeatureInBorders(iK))
+			{
+				szNames += (szNames.empty() ? L"" : L", ") + getLinkText(GC.getFeatureInfo((FeatureTypes)iK).getDescription());
+			}
+		}
+
+		if (!szNames.empty())
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_PASSABLE_IN_BORDERS", szNames.GetCString()));
+		}
+
+		for (iK = 0; iK < GC.getNumFeatureInfos(); ++iK)
+		{
+			if (kTrait.getFeatureHealChange(iK) != 0)
+			{
+				appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FEATURE_HEAL", kTrait.getFeatureHealChange(iK), getLinkText(GC.getFeatureInfo((FeatureTypes)iK).getDescription()).GetCString()));
+			}
+		}
+	}
+
 	// bInlandCanals (added by this mod)
 	if (kTrait.isInlandCanals())
 	{
@@ -4512,6 +4547,13 @@ void CvGameTextMgr::parseTraitMiseryAndLakeEffects(CvWStringBuffer& szHelpString
 	{
 		szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_LAKE_PLOTS").c_str());
 		setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", kTrait.getLakePlotYieldChangeArray(), false, false);
+	}
+
+	// LakePlotYieldChangesPerEra (added by this mod)
+	if (kTrait.getLakePlotYieldChangePerEraArray() != NULL)
+	{
+		szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_LAKE_PLOTS_PER_ERA").c_str());
+		setYieldChangeHelp(szHelpString, szTempBuffer, L": ", L"", kTrait.getLakePlotYieldChangePerEraArray(), false, false);
 	}
 }
 

@@ -670,6 +670,15 @@
 			<iGoldenAgeLandMovesChange>1</iGoldenAgeLandMovesChange>
 			<iGoldenAgeSeaMovesChange>2</iGoldenAgeSeaMovesChange>
 			<bInlandCanals>1</bInlandCanals>
+			<PassableTerrainsInBorders>
+				<TerrainType>TERRAIN_PEAK</TerrainType>
+			</PassableTerrainsInBorders>
+			<FeatureHealChanges>
+				<FeatureHealChange>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<iHealChange>20</iHealChange>
+				</FeatureHealChange>
+			</FeatureHealChanges>
 			<iStartBiasRiver>50</iStartBiasRiver>
 			<StartBiasTerrains>
 				<StartBiasTerrain>
@@ -1062,6 +1071,11 @@
 				<iYield>1</iYield>
 				<iYield>0</iYield>
 			</LakePlotYieldChanges>
+			<LakePlotYieldChangesPerEra>
+				<iYield>0</iYield>
+				<iYield>0</iYield>
+				<iYield>1</iYield>
+			</LakePlotYieldChangesPerEra>
 			<AngryCommerceChanges>
 				<iCommerce>0</iCommerce>
 				<iCommerce>1</iCommerce>
