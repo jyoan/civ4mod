@@ -384,6 +384,12 @@
 			<iStateReligionUnitProductionModifier>25</iStateReligionUnitProductionModifier>
 			<iStateReligionBuildingProductionModifier>25</iStateReligionBuildingProductionModifier>
 			<iStateReligionFreeExperience>2</iStateReligionFreeExperience>
+			<iCoastalTradeRoutes>1</iCoastalTradeRoutes>
+			<iTradeRouteModifier>25</iTradeRouteModifier>
+			<iForeignTradeRouteModifier>50</iForeignTradeRouteModifier>
+			<iAllCityDefense>25</iAllCityDefense>
+			<iBombardDefense>50</iBombardDefense>
+			<iEspionageDefense>50</iEspionageDefense>
 			<GreatPeopleClassRateModifiers>
 				<GreatPeopleClassRateModifier>
 					<UnitClassType>UNITCLASS_ENGINEER</UnitClassType>

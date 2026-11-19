@@ -403,6 +403,12 @@
 	<ElementType name="iStateReligionUnitProductionModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iStateReligionBuildingProductionModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iStateReligionFreeExperience" content="textOnly" dt:type="int"/>
+	<ElementType name="iCoastalTradeRoutes" content="textOnly" dt:type="int"/>
+	<ElementType name="iTradeRouteModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iForeignTradeRouteModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iAllCityDefense" content="textOnly" dt:type="int"/>
+	<ElementType name="iBombardDefense" content="textOnly" dt:type="int"/>
+	<ElementType name="iEspionageDefense" content="textOnly" dt:type="int"/>
 	<ElementType name="GreatPeopleClassRateModifier" content="eltOnly">
 		<element type="UnitClassType"/>
 		<element type="iGreatPeopleRateModifier"/>
@@ -885,6 +891,12 @@
 		<element type="iStateReligionUnitProductionModifier" minOccurs="0"/>
 		<element type="iStateReligionBuildingProductionModifier" minOccurs="0"/>
 		<element type="iStateReligionFreeExperience" minOccurs="0"/>
+		<element type="iCoastalTradeRoutes" minOccurs="0"/>
+		<element type="iTradeRouteModifier" minOccurs="0"/>
+		<element type="iForeignTradeRouteModifier" minOccurs="0"/>
+		<element type="iAllCityDefense" minOccurs="0"/>
+		<element type="iBombardDefense" minOccurs="0"/>
+		<element type="iEspionageDefense" minOccurs="0"/>
 		<element type="GreatPeopleClassRateModifiers" minOccurs="0"/>
 		<element type="iEnemyMoveCostInBorders" minOccurs="0"/>
 		<element type="iRevengeCombatPercent" minOccurs="0"/>

@@ -41,5 +41,11 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getStateReligionUnitProductionModifier", &CvTraitInfo::getStateReligionUnitProductionModifier, "int ()")
 		.def("getStateReligionBuildingProductionModifier", &CvTraitInfo::getStateReligionBuildingProductionModifier, "int ()")
 		.def("getStateReligionFreeExperience", &CvTraitInfo::getStateReligionFreeExperience, "int ()")
+		.def("getCoastalTradeRoutes", &CvTraitInfo::getCoastalTradeRoutes, "int ()")
+		.def("getTradeRouteModifier", &CvTraitInfo::getTradeRouteModifier, "int ()")
+		.def("getForeignTradeRouteModifier", &CvTraitInfo::getForeignTradeRouteModifier, "int ()")
+		.def("getAllCityDefense", &CvTraitInfo::getAllCityDefense, "int ()")
+		.def("getBombardDefense", &CvTraitInfo::getBombardDefense, "int ()")
+		.def("getEspionageDefense", &CvTraitInfo::getEspionageDefense, "int ()")
 		;
 }

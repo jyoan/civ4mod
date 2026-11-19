@@ -4967,6 +4967,12 @@ public:
 	int getBonusHappinessChange(int iBonus) const;	// Exposed to Python
 	int getBonusHealthChange(int iBonus) const;		// Exposed to Python
 	bool isAnyBonusHappinessOrHealthChange() const;
+	int getCoastalTradeRoutes() const;	// Exposed to Python (added by this mod)
+	int getTradeRouteModifier() const;	// Exposed to Python (added by this mod)
+	int getForeignTradeRouteModifier() const;	// Exposed to Python (added by this mod)
+	int getAllCityDefense() const;	// Exposed to Python (added by this mod)
+	int getBombardDefense() const;	// Exposed to Python (added by this mod)
+	int getEspionageDefense() const;	// Exposed to Python (added by this mod)
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -5225,6 +5231,12 @@ protected:
 	int* m_paiGlobalWorldWonderYieldChange;	// added by this mod: [yield]
 	int* m_paiSpecialistExtraYield;	// added by this mod: SpecialistExtraYields, [yield]
 	int m_iNonStateReligionHappiness;	// added by this mod
+	int m_iCoastalTradeRoutes;	// added by this mod
+	int m_iTradeRouteModifier;	// added by this mod
+	int m_iForeignTradeRouteModifier;	// added by this mod
+	int m_iAllCityDefense;	// added by this mod
+	int m_iBombardDefense;	// added by this mod
+	int m_iEspionageDefense;	// added by this mod
 	std::vector<int> m_aiBuildingHappinessChange;	// added by this mod: [building class], empty when not set
 	std::vector<int> m_aiBuildingHealthChange;	// added by this mod: [building class], empty when not set
 	std::vector<int> m_aiBonusHappinessChange;	// added by this mod: [bonus], empty when not set

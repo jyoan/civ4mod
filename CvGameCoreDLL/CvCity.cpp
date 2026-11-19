@@ -7863,7 +7863,8 @@ void CvCity::changeTradeRouteModifier(int iChange)
 
 int CvCity::getForeignTradeRouteModifier() const
 {
-	return m_iForeignTradeRouteModifier;
+	// With iForeignTradeRouteModifier of the traits of the owner (added by this mod)
+	return m_iForeignTradeRouteModifier + GET_PLAYER(getOwnerINLINE()).getTraitForeignTradeRouteModifier();
 }
 
 void CvCity::changeForeignTradeRouteModifier(int iChange)
@@ -7899,7 +7900,8 @@ void CvCity::changeBuildingDefense(int iChange)
 
 int CvCity::getBuildingBombardDefense() const
 {
-	return m_iBuildingBombardDefense;
+	// With iBombardDefense of the traits of the owner (added by this mod)
+	return m_iBuildingBombardDefense + GET_PLAYER(getOwnerINLINE()).getTraitBombardDefense();
 }
 
 
@@ -8969,6 +8971,8 @@ int CvCity::totalTradeModifier(CvCity* pOtherCity) const
 	int iModifier = 100;
 
 	iModifier += getTradeRouteModifier();
+
+	iModifier += GET_PLAYER(getOwnerINLINE()).getTraitTradeRouteModifier();	// iTradeRouteModifier of the traits (added by this mod)
 
 	iModifier += getPopulationTradeModifier();
 
@@ -11379,7 +11383,8 @@ void CvCity::changeSpecialistFreeExperience(int iChange)
 
 int CvCity::getEspionageDefenseModifier() const
 {
-	return m_iEspionageDefenseModifier;
+	// With iEspionageDefense of the traits of the owner (added by this mod)
+	return m_iEspionageDefenseModifier + GET_PLAYER(getOwnerINLINE()).getTraitEspionageDefense();
 }
 
 

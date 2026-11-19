@@ -20267,6 +20267,12 @@ m_paiWorldWonderYieldChange(NULL),
 m_paiGlobalWorldWonderYieldChange(NULL),
 m_paiSpecialistExtraYield(NULL),
 m_iNonStateReligionHappiness(0),
+m_iCoastalTradeRoutes(0),
+m_iTradeRouteModifier(0),
+m_iForeignTradeRouteModifier(0),
+m_iAllCityDefense(0),
+m_iBombardDefense(0),
+m_iEspionageDefense(0),
 m_bNewCityStateReligion(false),
 m_paiExtraYieldThreshold(NULL),
 m_paiYieldModifier(NULL),
@@ -21207,6 +21213,42 @@ int CvTraitInfo::getBonusHealthChange(int iBonus) const
 bool CvTraitInfo::isAnyBonusHappinessOrHealthChange() const
 {
 	return (!m_aiBonusHappinessChange.empty() || !m_aiBonusHealthChange.empty());
+}
+
+// iCoastalTradeRoutes (added by this mod): as the buildings, trade routes of every coastal city (CvPlayer::processTrait)
+int CvTraitInfo::getCoastalTradeRoutes() const
+{
+	return m_iCoastalTradeRoutes;
+}
+
+// iTradeRouteModifier (added by this mod): as the buildings, trade route yield % of every city (CvCity::totalTradeModifier)
+int CvTraitInfo::getTradeRouteModifier() const
+{
+	return m_iTradeRouteModifier;
+}
+
+// iForeignTradeRouteModifier (added by this mod): as the buildings, foreign trade route yield % of every city (CvCity::getForeignTradeRouteModifier)
+int CvTraitInfo::getForeignTradeRouteModifier() const
+{
+	return m_iForeignTradeRouteModifier;
+}
+
+// iAllCityDefense (added by this mod): as the buildings, defense % of every city (CvPlayer::processTrait)
+int CvTraitInfo::getAllCityDefense() const
+{
+	return m_iAllCityDefense;
+}
+
+// iBombardDefense (added by this mod): as the buildings, % less damage to the defense of every city from bombardment (CvCity::getBuildingBombardDefense)
+int CvTraitInfo::getBombardDefense() const
+{
+	return m_iBombardDefense;
+}
+
+// iEspionageDefense (added by this mod): as the buildings, defense % of every city against espionage (CvCity::getEspionageDefenseModifier)
+int CvTraitInfo::getEspionageDefense() const
+{
+	return m_iEspionageDefense;
 }
 
 // HurryUnitExperiences (added by this mod): experience of a unit hurried this way
@@ -22660,6 +22702,13 @@ void CvTraitInfo::readCounterpartValues(CvXMLLoadUtility* pXML)
 	readTypeStringValueList(pXML, "BuildingHealthChanges", "BuildingHealthChange", "BuildingClassType", "iHealthChange", m_aszBuildingHealthChangeTypes, m_aiBuildingHealthChangeValues);
 	readTypeStringValueList(pXML, "BonusHappinessChanges", "BonusHappinessChange", "BonusType", "iHappinessChange", m_aszBonusHappinessChangeTypes, m_aiBonusHappinessChangeValues);
 	readTypeStringValueList(pXML, "BonusHealthChanges", "BonusHealthChange", "BonusType", "iHealthChange", m_aszBonusHealthChangeTypes, m_aiBonusHealthChangeValues);
+	// Trade routes and defense, as the buildings
+	pXML->GetChildXmlValByName(&m_iCoastalTradeRoutes, "iCoastalTradeRoutes");
+	pXML->GetChildXmlValByName(&m_iTradeRouteModifier, "iTradeRouteModifier");
+	pXML->GetChildXmlValByName(&m_iForeignTradeRouteModifier, "iForeignTradeRouteModifier");
+	pXML->GetChildXmlValByName(&m_iAllCityDefense, "iAllCityDefense");
+	pXML->GetChildXmlValByName(&m_iBombardDefense, "iBombardDefense");
+	pXML->GetChildXmlValByName(&m_iEspionageDefense, "iEspionageDefense");
 }
 
 // Turns the types and values of readTypeStringValueList() into a value per info (iNumInfos), the vector left empty when

@@ -298,6 +298,10 @@ public:
 	int getTraitBonusHappiness(BonusTypes eBonus) const;		// Exposed to Python
 	int getTraitBonusHealth(BonusTypes eBonus) const;		// Exposed to Python
 	bool isAnyTraitBonusHappinessOrHealth() const;
+	int getTraitTradeRouteModifier() const;			// Exposed to Python
+	int getTraitForeignTradeRouteModifier() const;	// Exposed to Python
+	int getTraitBombardDefense() const;				// Exposed to Python
+	int getTraitEspionageDefense() const;			// Exposed to Python
 	void doEnemyAttrition();	// added by this mod
 	int getFeatureProductionChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	int getFeatureGrowthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)

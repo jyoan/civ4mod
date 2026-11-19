@@ -4763,6 +4763,37 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 			iLast = iValue;
 		}
 	}
+
+	// Trade routes and defense: the building text keys
+	if (kTrait.getCoastalTradeRoutes() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_COASTAL_TRADE_ROUTES", kTrait.getCoastalTradeRoutes()));
+	}
+
+	if (kTrait.getTradeRouteModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_TRADE_ROUTE_MOD", kTrait.getTradeRouteModifier()));
+	}
+
+	if (kTrait.getForeignTradeRouteModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_FOREIGN_TRADE_ROUTE_MOD", kTrait.getForeignTradeRouteModifier()));
+	}
+
+	if (kTrait.getAllCityDefense() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_DEFENSE_MOD_ALL_CITIES", kTrait.getAllCityDefense()));
+	}
+
+	if (kTrait.getBombardDefense() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_BOMBARD_DEFENSE_MOD", -kTrait.getBombardDefense()));
+	}
+
+	if (kTrait.getEspionageDefense() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_ESPIONAGE_DEFENSE_MOD", kTrait.getEspionageDefense()));
+	}
 }
 
 // The part of the trait help for the tags of 2026-11-19: RevealBonuses, NoTechProcesses, bNoConscriptExperiencePenalty,
@@ -17566,6 +17597,15 @@ void CvGameTextMgr::setTradeRouteHelp(CvWStringBuffer &szBuffer, int iRoute, CvC
 						iModifier += iNewMod;
 					}
 				}
+			}
+
+			// iTradeRouteModifier of the traits (added by this mod)
+			iNewMod = GET_PLAYER(pCity->getOwnerINLINE()).getTraitTradeRouteModifier();
+			if (0 != iNewMod)
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(gDLL->getText("TXT_KEY_TRADE_ROUTE_MOD_TRAIT", iNewMod));
+				iModifier += iNewMod;
 			}
 
 			iNewMod = pCity->getPopulationTradeModifier();

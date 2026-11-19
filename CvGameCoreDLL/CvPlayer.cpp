@@ -8775,6 +8775,28 @@ bool CvPlayer::isAnyTraitBonusHappinessOrHealth() const
 	return hasTraitFlag(&CvTraitInfo::isAnyBonusHappinessOrHealthChange);
 }
 
+// iTradeRouteModifier, iForeignTradeRouteModifier, iBombardDefense and iEspionageDefense of the traits (added by this mod):
+// as the buildings, for every city (iCoastalTradeRoutes and iAllCityDefense: processTrait)
+int CvPlayer::getTraitTradeRouteModifier() const
+{
+	return sumTraitValues(&CvTraitInfo::getTradeRouteModifier);
+}
+
+int CvPlayer::getTraitForeignTradeRouteModifier() const
+{
+	return sumTraitValues(&CvTraitInfo::getForeignTradeRouteModifier);
+}
+
+int CvPlayer::getTraitBombardDefense() const
+{
+	return sumTraitValues(&CvTraitInfo::getBombardDefense);
+}
+
+int CvPlayer::getTraitEspionageDefense() const
+{
+	return sumTraitValues(&CvTraitInfo::getEspionageDefense);
+}
+
 // bConquestStateReligion of the traits (added by this mod): see acquireCity
 bool CvPlayer::isConquestStateReligion() const
 {
@@ -19007,6 +19029,8 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	changeStateReligionUnitProductionModifier(kTrait.getStateReligionUnitProductionModifier() * iChange);
 	changeStateReligionBuildingProductionModifier(kTrait.getStateReligionBuildingProductionModifier() * iChange);
 	changeStateReligionFreeExperience(kTrait.getStateReligionFreeExperience() * iChange);
+	changeCoastalTradeRoutes(kTrait.getCoastalTradeRoutes() * iChange);	// added by this mod (as the buildings)
+	changeCityDefenseModifier(kTrait.getAllCityDefense() * iChange);	// added by this mod (as the buildings)
 	GET_TEAM(getTeam()).changeEnemyWarWearinessModifier(kTrait.getEnemyWarWearinessModifier() * iChange);	// added by this mod (the team value of the buildings)
 
 	for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
