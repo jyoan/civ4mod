@@ -2268,16 +2268,6 @@ int CyPlayer::getTraitGlobalWorldWonderCommerce(int /*CommerceTypes*/ eCommerce)
 	return m_pPlayer ? m_pPlayer->getTraitGlobalWorldWonderCommerce((CommerceTypes)eCommerce) : 0;
 }
 
-bool CyPlayer::isWonderHurry(int /*HurryTypes*/ eHurry)
-{
-	return m_pPlayer ? m_pPlayer->isWonderHurry((HurryTypes)eHurry) : false;
-}
-
-bool CyPlayer::isIgnoreWonderHurryCostModifier()
-{
-	return m_pPlayer ? m_pPlayer->isIgnoreWonderHurryCostModifier() : false;
-}
-
 bool CyPlayer::hasStartBias()
 {
 	return m_pPlayer ? m_pPlayer->hasStartBias() : false;
@@ -2398,16 +2388,6 @@ int CyPlayer::getTraitSpecialistSlotChange(int /*SpecialistTypes*/ eSpecialist)
 	return m_pPlayer ? m_pPlayer->getTraitSpecialistSlotChange((SpecialistTypes)eSpecialist) : 0;
 }
 
-bool CyPlayer::isUnitHurry(int /*HurryTypes*/ eHurry)
-{
-	return m_pPlayer ? m_pPlayer->isUnitHurry((HurryTypes)eHurry) : false;
-}
-
-int CyPlayer::getHurryUnitExperience(int /*HurryTypes*/ eHurry)
-{
-	return m_pPlayer ? m_pPlayer->getHurryUnitExperience((HurryTypes)eHurry) : 0;
-}
-
 bool CyPlayer::isTraitRevealBonus(int /*BonusTypes*/ eBonus)
 {
 	return m_pPlayer ? m_pPlayer->isTraitRevealBonus((BonusTypes)eBonus) : false;
@@ -2421,6 +2401,31 @@ bool CyPlayer::isNoTechProcess(int /*ProcessTypes*/ eProcess)
 bool CyPlayer::isNoConscriptExperiencePenalty()
 {
 	return m_pPlayer ? m_pPlayer->isNoConscriptExperiencePenalty() : false;
+}
+
+bool CyPlayer::isTraitHurry(int /*HurryTypes*/ eHurry, int /*UnitTypes*/ eUnit, int /*BuildingTypes*/ eBuilding)
+{
+	return m_pPlayer ? m_pPlayer->isTraitHurry((HurryTypes)eHurry, (UnitTypes)eUnit, (BuildingTypes)eBuilding) : false;
+}
+
+int CyPlayer::getTraitHurryCostModifier(int /*HurryTypes*/ eHurry, int /*UnitTypes*/ eUnit, int /*BuildingTypes*/ eBuilding)
+{
+	return m_pPlayer ? m_pPlayer->getTraitHurryCostModifier((HurryTypes)eHurry, (UnitTypes)eUnit, (BuildingTypes)eBuilding) : 0;
+}
+
+int CyPlayer::getTraitHurryExperience(int /*HurryTypes*/ eHurry, int /*UnitTypes*/ eUnit)
+{
+	return m_pPlayer ? m_pPlayer->getTraitHurryExperience((HurryTypes)eHurry, (UnitTypes)eUnit) : 0;
+}
+
+int CyPlayer::getTraitCommerceHappiness(int /*CommerceTypes*/ eCommerce)
+{
+	return m_pPlayer ? m_pPlayer->getTraitCommerceHappiness((CommerceTypes)eCommerce) : 0;
+}
+
+int CyPlayer::getTraitCommerceHealth(int /*CommerceTypes*/ eCommerce)
+{
+	return m_pPlayer ? m_pPlayer->getTraitCommerceHealth((CommerceTypes)eCommerce) : 0;
 }
 
 int CyPlayer::getTraitYieldChange(int /*YieldTypes*/ eYield)

@@ -419,6 +419,66 @@
 			<iStateReligionUnitProductionModifier>25</iStateReligionUnitProductionModifier>
 			<iStateReligionBuildingProductionModifier>25</iStateReligionBuildingProductionModifier>
 			<iStateReligionFreeExperience>2</iStateReligionFreeExperience>
+			<iCoastalTradeRoutes>1</iCoastalTradeRoutes>
+			<iTradeRouteModifier>25</iTradeRouteModifier>
+			<iForeignTradeRouteModifier>50</iForeignTradeRouteModifier>
+			<iAllCityDefense>25</iAllCityDefense>
+			<iBombardDefense>50</iBombardDefense>
+			<iEspionageDefense>50</iEspionageDefense>
+			<iLargestCityHappiness>1</iLargestCityHappiness>
+			<iHappyPerMilitaryUnit>1</iHappyPerMilitaryUnit>
+			<iFoodKept>25</iFoodKept>
+			<iBaseFreeUnits>3</iBaseFreeUnits>
+			<iBaseFreeMilitaryUnits>2</iBaseFreeMilitaryUnits>
+			<iFreeUnitsPopulationPercent>10</iFreeUnitsPopulationPercent>
+			<iFreeMilitaryUnitsPopulationPercent>10</iFreeMilitaryUnitsPopulationPercent>
+			<iGoldPerUnit>-1</iGoldPerUnit>
+			<iGoldPerMilitaryUnit>1</iGoldPerMilitaryUnit>
+			<iCorporationMaintenanceModifier>-50</iCorporationMaintenanceModifier>
+			<iMaintenanceModifier>-20</iMaintenanceModifier>
+			<iMaxConscript>1</iMaxConscript>
+			<iHealRateChange>10</iHealRateChange>
+			<DomainFreeExperiences>
+				<DomainFreeExperience>
+					<DomainType>DOMAIN_SEA</DomainType>
+					<iExperience>2</iExperience>
+				</DomainFreeExperience>
+			</DomainFreeExperiences>
+			<DomainProductionModifiers>
+				<DomainProductionModifier>
+					<DomainType>DOMAIN_SEA</DomainType>
+					<iProductionModifier>25</iProductionModifier>
+				</DomainProductionModifier>
+			</DomainProductionModifiers>
+			<FreeBonuses>
+				<FreeBonus>
+					<BonusType>BONUS_WINE</BonusType>
+					<iNumBonuses>1</iNumBonuses>
+				</FreeBonus>
+			</FreeBonuses>
+			<BonusProductionModifiers>
+				<BonusProductionModifier>
+					<BonusType>BONUS_COPPER</BonusType>
+					<iProductionModifier>10</iProductionModifier>
+				</BonusProductionModifier>
+				<BonusProductionModifier>
+					<BonusType>BONUS_STONE</BonusType>
+					<iProductionModifier>50</iProductionModifier>
+					<bWorldWondersOnly>1</bWorldWondersOnly>
+				</BonusProductionModifier>
+			</BonusProductionModifiers>
+			<CommerceHappinesses>
+				<iCommerce>10</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+			</CommerceHappinesses>
+			<CommerceHealths>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>10</iCommerce>
+				<iCommerce>0</iCommerce>
+			</CommerceHealths>
 			<GreatPeopleClassRateModifiers>
 				<GreatPeopleClassRateModifier>
 					<UnitClassType>UNITCLASS_ENGINEER</UnitClassType>
@@ -446,10 +506,19 @@
 			<iTechCostModifier>-40</iTechCostModifier>
 			<iAttitudeChange>3</iAttitudeChange>
 			<iRouteMovementModifierInBorders>-50</iRouteMovementModifierInBorders>
-			<WonderHurrys>
-				<HurryType>HURRY_POPULATION</HurryType>
-			</WonderHurrys>
-			<bIgnoreWonderHurryCostModifier>1</bIgnoreWonderHurryCostModifier>
+			<Hurrys>
+				<Hurry>
+					<HurryType>HURRY_POPULATION</HurryType>
+					<bWondersOnly>1</bWondersOnly>
+					<bIgnoreCostModifier>1</bIgnoreCostModifier>
+				</Hurry>
+				<Hurry>
+					<HurryType>HURRY_GOLD</HurryType>
+					<bUnitsOnly>1</bUnitsOnly>
+					<iCostModifier>-25</iCostModifier>
+					<iExperience>3</iExperience>
+				</Hurry>
+			</Hurrys>
 			<iHappinessPerReligion>1</iHappinessPerReligion>
 			<CommercePerReligion>
 				<iCommerce>0</iCommerce>
@@ -492,15 +561,6 @@
 					<iSlots>-1</iSlots>
 				</SpecialistSlotChange>
 			</SpecialistSlotChanges>
-			<UnitHurrys>
-				<HurryType>HURRY_GOLD</HurryType>
-			</UnitHurrys>
-			<HurryUnitExperiences>
-				<HurryUnitExperience>
-					<HurryType>HURRY_GOLD</HurryType>
-					<iExperience>3</iExperience>
-				</HurryUnitExperience>
-			</HurryUnitExperiences>
 			<RevealBonuses>
 				<BonusType>BONUS_OIL</BonusType>
 				<BonusType>BONUS_URANIUM</BonusType>
@@ -1195,6 +1255,9 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<bNoUnhealthyPopulation>1</bNoUnhealthyPopulation>
+			<bBuildingOnlyHealthy>1</bBuildingOnlyHealthy>
+			<bMilitaryFoodProduction>1</bMilitaryFoodProduction>
 			<bBarbarianAlly>1</bBarbarianAlly>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>

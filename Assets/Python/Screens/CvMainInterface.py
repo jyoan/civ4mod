@@ -2086,6 +2086,17 @@ class CvMainInterface:
 								szTempBuffer = u", %d%c" %(-iHappiness, CyGame().getSymbolID(FontSymbols.UNHAPPY_CHAR))
 							szBuffer = szBuffer + szTempBuffer
 
+						# CommerceHealths of the traits (added by this mod): health per 100% of the rate, rounded toward 0 as CvCity::getTraitCommerceHealth
+						iHealthTimes100 = gc.getPlayer(pHeadSelectedCity.getOwner()).getTraitCommerceHealth(eCommerce) * gc.getPlayer(pHeadSelectedCity.getOwner()).getCommercePercent(eCommerce)
+						if (iHealthTimes100 >= 0):
+							iHealth = iHealthTimes100 / 100
+						else:
+							iHealth = -((-iHealthTimes100) / 100)
+						if (iHealth > 0):
+							szBuffer = szBuffer + u", %d%c" %(iHealth, CyGame().getSymbolID(FontSymbols.HEALTHY_CHAR))
+						elif (iHealth < 0):
+							szBuffer = szBuffer + u", %d%c" %(-iHealth, CyGame().getSymbolID(FontSymbols.UNHEALTHY_CHAR))
+
 						szName = "CityPercentText" + str(iCount)
 						screen.setLabel( szName, "Background", szBuffer, CvUtil.FONT_RIGHT_JUSTIFY, 220, 45 + (19 * iCount) + 4, -0.3, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_COMMERCE_MOD_HELP, eCommerce, -1 )
 						screen.show( szName )

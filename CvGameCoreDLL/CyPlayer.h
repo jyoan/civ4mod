@@ -507,8 +507,6 @@ public:
 	int getTraitRiverEdgeYieldPercent(int /*YieldTypes*/ eYield);	// added by this mod
 	int getTraitWorldWonderCommerce(int /*CommerceTypes*/ eCommerce);	// added by this mod
 	int getTraitGlobalWorldWonderCommerce(int /*CommerceTypes*/ eCommerce);	// added by this mod
-	bool isWonderHurry(int /*HurryTypes*/ eHurry);	// added by this mod
-	bool isIgnoreWonderHurryCostModifier();	// added by this mod
 	bool hasStartBias();	// added by this mod
 	int getStartBiasValue(CyPlot* pPlot, int iFoundValue);	// added by this mod
 	bool isConquestStateReligion();	// added by this mod
@@ -533,12 +531,15 @@ public:
 	int getExpOutsideBordersChange();	// added by this mod
 	int getWeLoveTheKingChance();	// added by this mod
 	int getTraitSpecialistSlotChange(int /*SpecialistTypes*/ eSpecialist);	// added by this mod
-	bool isUnitHurry(int /*HurryTypes*/ eHurry);	// added by this mod
-	int getHurryUnitExperience(int /*HurryTypes*/ eHurry);	// added by this mod
 	bool isTraitRevealBonus(int /*BonusTypes*/ eBonus);	// added by this mod
 	bool isNoTechProcess(int /*ProcessTypes*/ eProcess);	// added by this mod
 	bool isNoConscriptExperiencePenalty();	// added by this mod
 	int getTraitYieldChange(int /*YieldTypes*/ eYield);	// added by this mod
+	int getTraitCommerceHappiness(int /*CommerceTypes*/ eCommerce);	// added by this mod
+	int getTraitCommerceHealth(int /*CommerceTypes*/ eCommerce);	// added by this mod
+	bool isTraitHurry(int /*HurryTypes*/ eHurry, int /*UnitTypes*/ eUnit, int /*BuildingTypes*/ eBuilding);	// added by this mod
+	int getTraitHurryCostModifier(int /*HurryTypes*/ eHurry, int /*UnitTypes*/ eUnit, int /*BuildingTypes*/ eBuilding);	// added by this mod
+	int getTraitHurryExperience(int /*HurryTypes*/ eHurry, int /*UnitTypes*/ eUnit);	// added by this mod
 	int getHealthPerReligion();	// added by this mod
 	int getYieldPerReligion(int /*YieldTypes*/ eYield);	// added by this mod
 	int getTraitWorldWonderYield(int /*YieldTypes*/ eYield);	// added by this mod
