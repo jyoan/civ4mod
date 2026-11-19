@@ -1529,4 +1529,13 @@
 		<Spanish>%D1_Change[ICON_UNHEALTHY] from the Commerce Rates (Trait)</Spanish>
 		<Japanese>&#21830;&#26989;&#12398;&#37197;&#20998;&#65288;&#24535;&#21521;&#65289;&#12395;&#12424;&#12426;[ICON_UNHEALTHY]%D1_Change</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_TRAIT_CAPITAL_TERRAIN</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Terrain around the capital (trait): %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Terrain around the capital (trait): %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Terrain around the capital (trait): %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Terrain around the capital (trait): %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Terrain around the capital (trait): %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#39318;&#37117;&#12398;&#37117;&#24066;&#22287;&#12398;&#22320;&#24418;&#65288;&#24535;&#21521;&#65289;: %F2%d1</Japanese>
+	</TEXT>
 </Civ4GameText>

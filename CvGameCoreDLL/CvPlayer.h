@@ -300,6 +300,8 @@ public:
 	int getTraitEspionageDefense() const;			// Exposed to Python
 	int getTraitFoodKept() const;	// Exposed to Python
 	int getTraitMaintenanceModifier() const;	// Exposed to Python
+	int getTraitCapitalTerrainYieldPercent(TerrainTypes eTerrain, YieldTypes eYield) const;	// Exposed to Python
+	bool isAnyTraitCapitalTerrainYieldPercent() const;
 	bool isTraitHurry(HurryTypes eHurry, UnitTypes eUnit, BuildingTypes eBuilding) const;	// Exposed to Python
 	int getTraitHurryCostModifier(HurryTypes eHurry, UnitTypes eUnit, BuildingTypes eBuilding) const;	// Exposed to Python
 	bool isTraitHurryIgnoreCostModifier(HurryTypes eHurry, UnitTypes eUnit, BuildingTypes eBuilding) const;

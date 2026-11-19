@@ -8791,6 +8791,17 @@ int CvPlayer::getTraitMaintenanceModifier() const
 	return sumTraitValues(&CvTraitInfo::getMaintenanceModifier);
 }
 
+// CapitalTerrainYieldPercents of the traits (added by this mod): see CvCity::getTraitCapitalTerrainYield
+int CvPlayer::getTraitCapitalTerrainYieldPercent(TerrainTypes eTerrain, YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getCapitalTerrainYieldPercent, eTerrain, eYield);
+}
+
+bool CvPlayer::isAnyTraitCapitalTerrainYieldPercent() const
+{
+	return hasTraitFlag(&CvTraitInfo::isAnyCapitalTerrainYieldPercent);
+}
+
 // Hurrys of the traits (added by this mod): an item of a trait of the player for eHurry that applies to the unit or building
 // lets the player hurry it this way without the civic (CvCity::canHurry...)
 bool CvPlayer::isTraitHurry(HurryTypes eHurry, UnitTypes eUnit, BuildingTypes eBuilding) const
@@ -19200,6 +19211,15 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	changeGoldPerUnit(kTrait.getGoldPerUnit() * iChange);
 	changeGoldPerMilitaryUnit(kTrait.getGoldPerMilitaryUnit() * iChange);
 	changeCorporationMaintenanceModifier(kTrait.getCorporationMaintenanceModifier() * iChange);
+
+	// TerrainTrades (added by this mod): the count of the team, as the techs (it updates the trade networks)
+	for (iI = 0; iI < GC.getNumTerrainInfos(); iI++)
+	{
+		if (kTrait.isTerrainTrade(iI))
+		{
+			GET_TEAM(getTeam()).changeTerrainTradeCount((TerrainTypes)iI, iChange);
+		}
+	}
 	// iMaxConscript with the modifier of the world size, as getWorldSizeMaxConscript for the civics
 	changeMaxConscript(((kTrait.getMaxConscript() * std::max(0, (GC.getWorldInfo(GC.getMapINLINE().getWorldSize()).getMaxConscriptModifier() + 100))) / 100) * iChange);
 	GET_TEAM(getTeam()).changeEnemyWarWearinessModifier(kTrait.getEnemyWarWearinessModifier() * iChange);	// added by this mod (the team value of the buildings)

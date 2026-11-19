@@ -58,6 +58,8 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getGoldPerMilitaryUnit", &CvTraitInfo::getGoldPerMilitaryUnit, "int ()")
 		.def("getCorporationMaintenanceModifier", &CvTraitInfo::getCorporationMaintenanceModifier, "int ()")
 		.def("getMaintenanceModifier", &CvTraitInfo::getMaintenanceModifier, "int ()")
+		.def("isTerrainTrade", &CvTraitInfo::isTerrainTrade, "bool (int iTerrain)")
+		.def("getCapitalTerrainYieldPercent", &CvTraitInfo::getCapitalTerrainYieldPercent, "int (int iTerrain, int iYield) - in 1/100")
 		.def("getNumHurrys", &CvTraitInfo::getNumHurrys, "int ()")
 		.def("getHurryType", &CvTraitInfo::getHurryType, "int (int i)")
 		.def("getHurryCostModifier", &CvTraitInfo::getHurryCostModifier, "int (int i)")

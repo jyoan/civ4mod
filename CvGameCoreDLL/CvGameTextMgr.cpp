@@ -4885,6 +4885,41 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 		}
 	}
 
+	// TerrainTrades: "Connects the trade network: Desert"
+	bool bFirstTerrain = true;
+	for (iI = 0; iI < GC.getNumTerrainInfos(); iI++)
+	{
+		if (kTrait.isTerrainTrade(iI))
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_TERRAIN_TRADE").c_str());
+			szText = getLinkText(GC.getTerrainInfo((TerrainTypes)iI).getDescription());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirstTerrain);
+			bFirstTerrain = false;
+		}
+	}
+
+	// CapitalTerrainYieldPercents: "Desert in the city radius of the capital: +0.5[food], +1[commerce] each in the capital"
+	for (iI = 0; iI < GC.getNumTerrainInfos(); iI++)
+	{
+		CvWString szYields;
+		int iYield;
+		for (iYield = 0; iYield < NUM_YIELD_TYPES; iYield++)
+		{
+			iValue = kTrait.getCapitalTerrainYieldPercent(iI, iYield);
+			if (iValue != 0)
+			{
+				CvWString szOne;
+				szOne.Format(L"%s%c", formatHundredths(iValue).GetCString(), GC.getYieldInfo((YieldTypes)iYield).getChar());
+				szYields += (szYields.empty() ? L"" : L", ") + szOne;
+			}
+		}
+		if (!szYields.empty())
+		{
+			szText = getLinkText(GC.getTerrainInfo((TerrainTypes)iI).getDescription());
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CAPITAL_TERRAIN_YIELD", szText.GetCString(), szYields.GetCString()));
+		}
+	}
+
 	// Unit support and maintenance: the civic and building text keys
 	if (kTrait.getBaseFreeUnits() != 0)
 	{
@@ -16125,6 +16160,7 @@ void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity&
 	int iTraits = 0;
 	int iTraitReligions;
 	int iTraitWonders;
+	int iTraitCapitalTerrain;
 	int iTradeRoutes = 0;
 	int iCorporations = 0;
 	int iAngry;
@@ -16164,6 +16200,7 @@ void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity&
 	iBuildings -= iTraits;
 	iTraitReligions = GET_PLAYER(city.getOwnerINLINE()).getYieldPerReligion(eYieldType) * city.getReligionCount();
 	iTraitWonders = GET_PLAYER(city.getOwnerINLINE()).getTraitWorldWonderYield(eYieldType) * city.getNumWorldWonders() + GET_PLAYER(city.getOwnerINLINE()).getTraitGlobalWorldWonderYield(eYieldType) * GET_PLAYER(city.getOwnerINLINE()).getNumWorldWonders();
+	iTraitCapitalTerrain = city.getTraitCapitalTerrainYield(eYieldType);
 
 	iTradeRoutes = city.getTradeYield(eYieldType);
 	iCorporations = city.getCorporationYield(eYieldType);
@@ -16198,9 +16235,15 @@ void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity&
 		szBuffer.append(NEWLINE);
 	}
 
-	if (iTraits - iTraitReligions - iTraitWonders != 0)
+	if (iTraitCapitalTerrain != 0)
 	{
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_TRAITS", iTraits - iTraitReligions - iTraitWonders, info.getChar()));
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_TRAIT_CAPITAL_TERRAIN", iTraitCapitalTerrain, info.getChar()));
+		szBuffer.append(NEWLINE);
+	}
+
+	if (iTraits - iTraitReligions - iTraitWonders - iTraitCapitalTerrain != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_TRAITS", iTraits - iTraitReligions - iTraitWonders - iTraitCapitalTerrain, info.getChar()));
 		szBuffer.append(NEWLINE);
 	}
 
