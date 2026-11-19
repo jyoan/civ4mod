@@ -428,6 +428,7 @@ public:
 	int getTraitReligionHealth() const;	// added by this mod: iHealthPerReligion of the traits
 	int getTraitBonusHappiness(bool bGood) const;	// added by this mod: BonusHappinessChanges of the traits
 	int getTraitBonusHealth(bool bGood) const;	// added by this mod: BonusHealthChanges of the traits
+	int getTraitCapitalTerrainYield(YieldTypes eIndex) const;	// added by this mod: CapitalTerrainYieldPercents of the traits
 	int getTraitCommerceHealth() const;	// added by this mod: CommerceHealths of the traits
 	int getTraitYield(YieldTypes eIndex) const;	// added by this mod: YieldChanges, YieldPerReligion, (Global)WorldWonderYieldChanges of the traits
 	int getGreatPeopleUnitRateWithTraits(UnitTypes eIndex) const;	// added by this mod: GreatPeopleClassRateModifiers of the traits

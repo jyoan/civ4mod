@@ -4839,8 +4839,36 @@ int CvCity::getTraitYield(YieldTypes eIndex) const
 	iYield += kOwner.getYieldPerReligion(eIndex) * getReligionCount();
 	iYield += kOwner.getTraitWorldWonderYield(eIndex) * getNumWorldWonders();
 	iYield += kOwner.getTraitGlobalWorldWonderYield(eIndex) * kOwner.getNumWorldWonders();
+	iYield += getTraitCapitalTerrainYield(eIndex);
 
 	return iYield;
+}
+
+// CapitalTerrainYieldPercents of the traits of the owner (added by this mod): in the capital, the sum of the values (1/100)
+// of the terrains of the plots of its city radius the owner owns, rounded down. The city plot counts too. A part of the
+// dynamic yield: updated at the start of the turn, when the traits change and when the capital moves
+int CvCity::getTraitCapitalTerrainYield(YieldTypes eIndex) const
+{
+	const CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+	CvPlot* pLoopPlot;
+	int iTimes100 = 0;
+	int iI;
+
+	if (!isCapital() || !kOwner.isAnyTraitCapitalTerrainYieldPercent())
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < getNumCityPlots(); iI++)
+	{
+		pLoopPlot = getCityIndexPlot(iI);
+		if (pLoopPlot != NULL && pLoopPlot->getOwnerINLINE() == getOwnerINLINE() && pLoopPlot->getTerrainType() != NO_TERRAIN)
+		{
+			iTimes100 += kOwner.getTraitCapitalTerrainYieldPercent(pLoopPlot->getTerrainType(), eIndex);
+		}
+	}
+
+	return iTimes100 / 100;
 }
 
 int CvCity::unhappyLevel(int iExtra) const

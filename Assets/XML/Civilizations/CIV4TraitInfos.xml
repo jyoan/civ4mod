@@ -479,6 +479,22 @@
 				<iCommerce>10</iCommerce>
 				<iCommerce>0</iCommerce>
 			</CommerceHealths>
+			<TerrainTrades>
+				<TerrainTrade>
+					<TerrainType>TERRAIN_DESERT</TerrainType>
+					<bTerrainTrade>1</bTerrainTrade>
+				</TerrainTrade>
+			</TerrainTrades>
+			<CapitalTerrainYieldPercents>
+				<CapitalTerrainYieldPercent>
+					<TerrainType>TERRAIN_DESERT</TerrainType>
+					<Yields>
+						<iYield>50</iYield>
+						<iYield>0</iYield>
+						<iYield>100</iYield>
+					</Yields>
+				</CapitalTerrainYieldPercent>
+			</CapitalTerrainYieldPercents>
 			<GreatPeopleClassRateModifiers>
 				<GreatPeopleClassRateModifier>
 					<UnitClassType>UNITCLASS_ENGINEER</UnitClassType>

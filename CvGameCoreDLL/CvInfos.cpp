@@ -20264,6 +20264,7 @@ m_paiWorldWonderYieldChange(NULL),
 m_paiGlobalWorldWonderYieldChange(NULL),
 m_paiSpecialistExtraYield(NULL),
 m_iNonStateReligionHappiness(0),
+m_pabTerrainTrade(NULL),
 m_paiCommerceHappiness(NULL),
 m_paiCommerceHealth(NULL),
 m_iBaseFreeUnits(0),
@@ -20373,6 +20374,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_pabFreeTech);
 	SAFE_DELETE_ARRAY(m_paiYieldChange);
 	SAFE_DELETE_ARRAY(m_paiCommerceHappiness);
+	SAFE_DELETE_ARRAY(m_pabTerrainTrade);
 	SAFE_DELETE_ARRAY(m_paiCommerceHealth);
 	SAFE_DELETE_ARRAY(m_paiYieldPerReligion);
 	SAFE_DELETE_ARRAY(m_paiWorldWonderYieldChange);
@@ -21204,6 +21206,30 @@ int CvTraitInfo::getBonusHealthChange(int iBonus) const
 bool CvTraitInfo::isAnyBonusHappinessOrHealthChange() const
 {
 	return (!m_aiBonusHappinessChange.empty() || !m_aiBonusHealthChange.empty());
+}
+
+// TerrainTrades (added by this mod): as the techs, the terrain connects the trade network of the team (CvPlayer::processTrait)
+bool CvTraitInfo::isTerrainTrade(int iTerrain) const
+{
+	FAssertMsg(iTerrain < GC.getNumTerrainInfos(), "Index out of bounds");
+	FAssertMsg(iTerrain > -1, "Index out of bounds");
+	return m_pabTerrainTrade ? m_pabTerrainTrade[iTerrain] : false;
+}
+
+// CapitalTerrainYieldPercents (added by this mod): yield of the capital, in 1/100, for each plot of the terrain in its city
+// radius (CvCity::getTraitCapitalTerrainYield). Not a change of the plots of the terrain
+int CvTraitInfo::getCapitalTerrainYieldPercent(int iTerrain, int iYield) const
+{
+	if (iTerrain < 0 || iTerrain >= (int)m_aaiCapitalTerrainYieldPercent.size() || iYield < 0 || iYield >= NUM_YIELD_TYPES)
+	{
+		return 0;
+	}
+	return m_aaiCapitalTerrainYieldPercent[iTerrain][iYield];
+}
+
+bool CvTraitInfo::isAnyCapitalTerrainYieldPercent() const
+{
+	return !m_aaiCapitalTerrainYieldPercent.empty();
 }
 
 // The item applies to the unit or building (added by this mod). No flag: any unit or building
@@ -22958,6 +22984,15 @@ void CvTraitInfo::readCounterpartValues(CvXMLLoadUtility* pXML)
 	readTypeStringValueList(pXML, "BuildingHealthChanges", "BuildingHealthChange", "BuildingClassType", "iHealthChange", m_aszBuildingHealthChangeTypes, m_aiBuildingHealthChangeValues);
 	readTypeStringValueList(pXML, "BonusHappinessChanges", "BonusHappinessChange", "BonusType", "iHappinessChange", m_aszBonusHappinessChangeTypes, m_aiBonusHappinessChangeValues);
 	readTypeStringValueList(pXML, "BonusHealthChanges", "BonusHealthChange", "BonusType", "iHealthChange", m_aszBonusHealthChangeTypes, m_aiBonusHealthChangeValues);
+	// TerrainTrades (the format of the techs) and CapitalTerrainYieldPercents (the format of TerrainYieldChanges). The
+	// terrains are loaded before the traits
+	pXML->SetVariableListTagPair(&m_pabTerrainTrade, "TerrainTrades", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos(), false);
+	{
+		std::vector<CvString> aszTypes;
+		std::vector< std::vector<int> > aaiYields;
+		readYieldChanges(pXML, "CapitalTerrainYieldPercents", "CapitalTerrainYieldPercent", "TerrainType", "Yields", aszTypes, aaiYields);
+		resolveYieldChanges("CapitalTerrainYieldPercents", aszTypes, aaiYields, GC.getNumTerrainInfos(), m_aaiCapitalTerrainYieldPercent);
+	}
 	// Hurrys. The hurries are loaded after the traits: readPass3()
 	readTraitHurrys(pXML, m_aHurrys, m_aszHurryTypes);
 	// Bonuses and commerce rates. The bonuses are loaded after the traits: readPass3()

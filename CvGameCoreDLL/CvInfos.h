@@ -4981,6 +4981,9 @@ public:
 	int getBonusHappinessChange(int iBonus) const;	// Exposed to Python
 	int getBonusHealthChange(int iBonus) const;		// Exposed to Python
 	bool isAnyBonusHappinessOrHealthChange() const;
+	bool isTerrainTrade(int iTerrain) const;	// Exposed to Python (added by this mod)
+	int getCapitalTerrainYieldPercent(int iTerrain, int iYield) const;	// Exposed to Python (added by this mod)
+	bool isAnyCapitalTerrainYieldPercent() const;
 	int getNumHurrys() const;	// Exposed to Python (added by this mod)
 	const TraitHurry& getHurry(int i) const;
 	int getHurryType(int i) const;	// Exposed to Python (added by this mod)
@@ -5266,6 +5269,8 @@ protected:
 	int* m_paiGlobalWorldWonderYieldChange;	// added by this mod: [yield]
 	int* m_paiSpecialistExtraYield;	// added by this mod: SpecialistExtraYields, [yield]
 	int m_iNonStateReligionHappiness;	// added by this mod
+	bool* m_pabTerrainTrade;	// added by this mod: TerrainTrades, [terrain]
+	std::vector< std::vector<int> > m_aaiCapitalTerrainYieldPercent;	// added by this mod: [terrain][yield] in 1/100, empty when not set
 	std::vector<TraitHurry> m_aHurrys;	// added by this mod: Hurrys
 	std::vector<CvString> m_aszHurryTypes;	// the HurryType of each item as a string until readPass3() (hurries are loaded after traits)
 	std::vector<int> m_aiFreeBonus;	// added by this mod: FreeBonuses, [bonus], empty when not set

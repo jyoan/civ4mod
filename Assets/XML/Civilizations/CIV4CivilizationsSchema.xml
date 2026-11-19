@@ -904,6 +904,21 @@
 	<ElementType name="CommerceHealths" content="eltOnly">
 		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="bTerrainTrade" content="textOnly" dt:type="boolean"/>
+	<ElementType name="TerrainTrade" content="eltOnly">
+		<element type="TerrainType"/>
+		<element type="bTerrainTrade"/>
+	</ElementType>
+	<ElementType name="TerrainTrades" content="eltOnly">
+		<element type="TerrainTrade" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="CapitalTerrainYieldPercent" content="eltOnly">
+		<element type="TerrainType"/>
+		<element type="Yields"/>
+	</ElementType>
+	<ElementType name="CapitalTerrainYieldPercents" content="eltOnly">
+		<element type="CapitalTerrainYieldPercent" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="TraitInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -978,6 +993,8 @@
 		<element type="BonusProductionModifiers" minOccurs="0"/>
 		<element type="CommerceHappinesses" minOccurs="0"/>
 		<element type="CommerceHealths" minOccurs="0"/>
+		<element type="TerrainTrades" minOccurs="0"/>
+		<element type="CapitalTerrainYieldPercents" minOccurs="0"/>
 		<element type="GreatPeopleClassRateModifiers" minOccurs="0"/>
 		<element type="iEnemyMoveCostInBorders" minOccurs="0"/>
 		<element type="iRevengeCombatPercent" minOccurs="0"/>
