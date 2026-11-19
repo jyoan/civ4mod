@@ -62,6 +62,7 @@ CvPlayer::CvPlayer()
 	m_paiImprovementCount = NULL;
 	m_paiFreeTraitCount = NULL;
 	m_paiConditionalTraitCount = NULL;
+	m_paiTraitTurns = NULL;
 	m_paiLearnedUnit = NULL;
 	m_paiLearnedBuilding = NULL;
 	m_paiBuildingClassExtraCommerce = NULL;
@@ -282,6 +283,7 @@ void CvPlayer::uninit()
 	SAFE_DELETE_ARRAY(m_paiImprovementCount);
 	SAFE_DELETE_ARRAY(m_paiFreeTraitCount);
 	SAFE_DELETE_ARRAY(m_paiConditionalTraitCount);
+	SAFE_DELETE_ARRAY(m_paiTraitTurns);
 	SAFE_DELETE_ARRAY(m_paiLearnedUnit);
 	SAFE_DELETE_ARRAY(m_paiLearnedBuilding);
 	SAFE_DELETE_ARRAY(m_paiBuildingClassExtraCommerce);
@@ -600,6 +602,13 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
 		{
 			m_paiConditionalTraitCount[iI] = 0;
+		}
+
+		FAssertMsg(m_paiTraitTurns==NULL, "about to leak memory, CvPlayer::m_paiTraitTurns");
+		m_paiTraitTurns = new int [GC.getNumTraitInfos()];
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			m_paiTraitTurns[iI] = 0;
 		}
 
 		FAssertMsg(m_paiLearnedUnit==NULL, "about to leak memory, CvPlayer::m_paiLearnedUnit");
@@ -2698,7 +2707,100 @@ void CvPlayer::changeFreeTraitCount(TraitTypes eTrait, int iChange)
 		{
 			updateConditionalTraits();
 		}
+
+		doTraitGainedPythonHook(eTrait, hasTrait(eTrait));	// PyOnGained / PyOnLost (added by this mod)
 	}
+}
+
+// Temporary traits (added by this mod): turns left while the player has the trait for a limited time, 0 if not temporary
+int CvPlayer::getTraitTurns(TraitTypes eTrait) const
+{
+	FAssertMsg(eTrait >= 0, "eTrait is expected to be non-negative (invalid Index)");
+	FAssertMsg(eTrait < GC.getNumTraitInfos(), "eTrait is expected to be within maximum bounds (invalid Index)");
+	return ((m_paiTraitTurns != NULL) ? m_paiTraitTurns[eTrait] : 0);
+}
+
+// Gives the trait for iTurns turns (0 ends it). A temporary trait counts once in getFreeTraitCount while its turns are
+// above 0, so a trait the player also has otherwise stays. doTraitTurns counts the turns down. The player gets a message
+// when it gains or loses the trait this way. Python: gainTraitForTurns of CvHookUtils.py
+void CvPlayer::setTraitTurns(TraitTypes eTrait, int iTurns)
+{
+	CvWString szBuffer;
+	bool bOldHasTrait;
+	int iOldTurns;
+
+	FAssertMsg(eTrait >= 0, "eTrait is expected to be non-negative (invalid Index)");
+	FAssertMsg(eTrait < GC.getNumTraitInfos(), "eTrait is expected to be within maximum bounds (invalid Index)");
+
+	if (m_paiTraitTurns == NULL || getLeaderType() == NO_LEADER)
+	{
+		return;
+	}
+
+	iTurns = std::max(0, iTurns);
+	iOldTurns = m_paiTraitTurns[eTrait];
+	if (iOldTurns == iTurns)
+	{
+		return;
+	}
+
+	m_paiTraitTurns[eTrait] = iTurns;
+
+	if ((iOldTurns == 0) || (iTurns == 0))
+	{
+		bOldHasTrait = hasTrait(eTrait);
+		changeFreeTraitCount(eTrait, ((iTurns > 0) ? 1 : -1));
+
+		if (!bOldHasTrait && hasTrait(eTrait))
+		{
+			szBuffer = gDLL->getText("TXT_KEY_MISC_TEMPORARY_TRAIT_GAINED", GC.getTraitInfo(eTrait).getTextKeyWide(), iTurns);
+			gDLL->getInterfaceIFace()->addMessage(getID(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_GOLDAGESTART", MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
+		}
+		else if (bOldHasTrait && !hasTrait(eTrait))
+		{
+			szBuffer = gDLL->getText("TXT_KEY_MISC_TEMPORARY_TRAIT_ENDED", GC.getTraitInfo(eTrait).getTextKeyWide());
+			gDLL->getInterfaceIFace()->addMessage(getID(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_GOLDAGEEND", MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"));
+		}
+	}
+}
+
+// At the start of the player's turn: one turn less for each temporary trait (added by this mod)
+void CvPlayer::doTraitTurns()
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (getTraitTurns((TraitTypes)iI) > 0)
+		{
+			setTraitTurns((TraitTypes)iI, getTraitTurns((TraitTypes)iI) - 1);
+		}
+	}
+}
+
+// PyOnGained / PyOnLost of a trait (added by this mod): CvTraitInterface.py evaluates the expression with pPlayer and eTrait
+// when the player gains or loses the trait during the game (changeFreeTraitCount: conditions, FreeTraits, temporary
+// traits, Python). Not for the traits the player has when the game starts.
+void CvPlayer::doTraitGainedPythonHook(TraitTypes eTrait, bool bGained)
+{
+	TraitPythonHookTypes eHook = (bGained ? TRAIT_PYHOOK_GAINED : TRAIT_PYHOOK_LOST);
+
+	if (isObserver() || !GC.getGameINLINE().isFinalInitialized())
+	{
+		return;
+	}
+
+	if (CvString(GC.getTraitInfo(eTrait).getPythonHook(eHook)).empty())
+	{
+		return;
+	}
+
+	CyPlayer* pyPlayer = new CyPlayer(this);
+	CyArgsList argsList;
+	argsList.add(gDLL->getPythonIFace()->makePythonObject(pyPlayer));
+	argsList.add((int)eTrait);
+	gDLL->getPythonIFace()->callFunction(PYTraitModule, (bGained ? "onGained" : "onLost"), argsList.makeFunctionArgs());
+	delete pyPlayer;	// the python function must not hold on to it
 }
 
 // The part of getFreeTraitCount given by the ConditionalFreeTraits of the traits of the player (added by this mod)
@@ -3069,7 +3171,7 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 		return;
 	}
 
-	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost" };
+	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onGained", "onLost" };	// the last two: doTraitGainedPythonHook
 	CyPlayer* pyPlayer;
 	CyCity* pyCity;
 	int iI;
@@ -3432,6 +3534,7 @@ void CvPlayer::doTurn()
 
 	CvEventReporter::getInstance().beginPlayerTurn( GC.getGameINLINE().getGameTurn(),  getID());
 	updateConditionalTraits();	// ConditionalFreeTraits, also for changes the other calls miss (added by this mod)
+	doTraitTurns();	// temporary traits (added by this mod)
 	doTraitPythonHook(TRAIT_PYHOOK_BEGIN_TURN);	// PyOnBeginTurn (added by this mod)
 	doEnemyAttrition();	// iEnemyAttritionInBorders of the traits (added by this mod)
 
@@ -19836,6 +19939,12 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(MAX_PLAYERS, m_abCityConqueredBy);
 	}
+
+	// Temporary traits (uiFlag 12)
+	if (uiFlag > 11)
+	{
+		pStream->Read(GC.getNumTraitInfos(), m_paiTraitTurns);
+	}
 }
 
 //
@@ -19846,7 +19955,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 11;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy (added by this mod)
+	uint uiFlag = 12;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -20267,6 +20376,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(GC.getNumUnitClassInfos(), m_paiLearnedUnit);
 	pStream->Write(GC.getNumBuildingClassInfos(), m_paiLearnedBuilding);
 	pStream->Write(MAX_PLAYERS, m_abCityConqueredBy);
+	pStream->Write(GC.getNumTraitInfos(), m_paiTraitTurns);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

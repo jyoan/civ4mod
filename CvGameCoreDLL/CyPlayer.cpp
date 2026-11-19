@@ -2106,6 +2106,19 @@ int CyPlayer::getConditionalTraitCount(int /*TraitTypes*/ eTrait)
 	return m_pPlayer ? m_pPlayer->getConditionalTraitCount((TraitTypes)eTrait) : -1;
 }
 
+int CyPlayer::getTraitTurns(int /*TraitTypes*/ eTrait)
+{
+	return m_pPlayer ? m_pPlayer->getTraitTurns((TraitTypes)eTrait) : -1;
+}
+
+void CyPlayer::setTraitTurns(int /*TraitTypes*/ eTrait, int iTurns)
+{
+	if (m_pPlayer)
+	{
+		m_pPlayer->setTraitTurns((TraitTypes)eTrait, iTurns);
+	}
+}
+
 // The record of the player for ConditionalFreeTraits (added by this mod)
 int CyPlayer::getNumUnitsKilled()
 {

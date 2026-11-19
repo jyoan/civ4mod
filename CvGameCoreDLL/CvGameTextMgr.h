@@ -62,6 +62,7 @@ public:
 	DllExport void setScoreHelp(CvWStringBuffer &szString, PlayerTypes ePlayer);
 
 	DllExport void parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait, CivilizationTypes eCivilization = NO_CIVILIZATION, bool bDawnOfMan = false);
+	void parseTraitsWithTurns(CvWStringBuffer &szHelpString, TraitTypes eTrait, CivilizationTypes eCivilization, bool bDawnOfMan, int iTurnsLeft);	// added by this mod
 	DllExport void parseLeaderTraits(CvWStringBuffer &szInfoText, LeaderHeadTypes eLeader = NO_LEADER, CivilizationTypes eCivilization = NO_CIVILIZATION, bool bDawnOfMan = false, bool bCivilopediaText = false);
 	void parsePlayerLeaderTraits(CvWStringBuffer &szInfoText, PlayerTypes ePlayer, bool bDawnOfMan = false);
 	void buildLeaderTraitsString(CvWStringBuffer &szInfoText, LeaderHeadTypes eLeader, CivilizationTypes eCivilization, PlayerTypes ePlayer, bool bDawnOfMan, bool bCivilopediaText);

@@ -17,6 +17,12 @@
 ##                     loses the city by conquest, trade or culture. A conquered city is razed, if it is, only afterwards,
 ##                     so this is also the hook for a razed city, e.g.
 ##                     bConquest and createPartisans(pPlayer, pCity, 2 + iPopulation, iCultureLevel)
+##   PyOnGained        pPlayer, eTrait: when the player gains this trait during the game (conditions of
+##                     ConditionalFreeTraits, FreeTraits of civics, buildings and techs, temporary traits, Python).
+##                     Not for the traits the player has when the game starts
+##   PyOnLost          pPlayer, eTrait: when the player loses this trait (the player no longer has it)
+## Temporary traits: gainTraitForTurns(pPlayer, 'TRAIT_X', iTurns) gives a trait for some turns, e.g. from a hook.
+## To do two things in one hook, write a tuple: (addBuilding(pCity, 'BUILDINGCLASS_WALLS'), gainGold(pPlayer, 10))
 ## The common functions are in CvHookUtils.py (imported below), e.g.
 ##   <PyOnGameStart>gainGold(pPlayer, scaleBySpeed(100, 'Train'))</PyOnGameStart>
 ## The hooks change the game and are called on every computer of a multiplayer game: use CyGame().getSorenRandNum for
@@ -51,3 +57,11 @@ def onCorporationFounded(argsList):
 def onCityLost(argsList):
 	pPlayer, eTrait, pCity, iNewOwner, bConquest, bTrade, iPopulation, iCultureLevel = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnCityLost())
+
+def onGained(argsList):
+	pPlayer, eTrait = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnGained())
+
+def onLost(argsList):
+	pPlayer, eTrait = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnLost())

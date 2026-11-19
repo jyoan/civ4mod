@@ -88,6 +88,30 @@ def addPromotion(pUnit, szPromotion):
 	"The unit gains the promotion"
 	pUnit.setHasPromotion(gc.getInfoTypeForString(szPromotion), True)
 
+def createCityConscripts(pPlayer, iMinPopulation):
+	"""In the capital and in each city of at least iMinPopulation, one unit of what that city can conscript now
+	(CyCity.getConscriptUnit). The player gets a message with the number. Returns the number of units"""
+	iNum = 0
+	(pCity, iter) = pPlayer.firstCity(False)
+	while pCity is not None and not pCity.isNone():
+		if pCity.isCapital() or pCity.getPopulation() >= iMinPopulation:
+			eUnit = pCity.getConscriptUnit()
+			if eUnit != -1:
+				pPlayer.initUnit(eUnit, pCity.getX(), pCity.getY(), UnitAITypes.UNITAI_CITY_DEFENSE, DirectionTypes.DIRECTION_SOUTH)
+				iNum += 1
+		(pCity, iter) = pPlayer.nextCity(iter, False)
+	if iNum > 0:
+		szText = CyTranslator().getText("TXT_KEY_MISC_CITY_CONSCRIPTS_CREATED", (iNum, ))
+		CyInterface().addMessage(pPlayer.getID(), True, gc.getEVENT_MESSAGE_TIME(), szText, "AS2D_UNIT_BUILD_UNIT", InterfaceMessageTypes.MESSAGE_TYPE_MAJOR_EVENT, None, gc.getInfoTypeForString("COLOR_GREEN"), -1, -1, False, False)
+	return iNum
+
+def gainTraitForTurns(pPlayer, szTrait, iTurns):
+	"The player has the trait for iTurns turns (CyPlayer.setTraitTurns). If it is already temporary, the longer of the two counts (no stacking). Scale by game speed with scaleBySpeed(iTurns, 'GoldenAge') if wanted"
+	eTrait = gc.getInfoTypeForString(szTrait)
+	if eTrait == -1 or iTurns <= 0:
+		return
+	pPlayer.setTraitTurns(eTrait, max(pPlayer.getTraitTurns(eTrait), iTurns))
+
 def healUnit(pUnit, iPercent):
 	"The unit heals iPercent of its max hit points"
 	pUnit.changeDamage(-(pUnit.maxHitPoints() * iPercent / 100), PlayerTypes.NO_PLAYER)

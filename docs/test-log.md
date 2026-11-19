@@ -133,3 +133,4 @@
 - 2026-11-19: 志向の `FreeBonuses`（ワイン）・`BonusProductionModifiers`（銅で全生産、石材で世界遺産だけ `bWorldWondersOnly`）・`CommerceHappinesses`・`CommerceHealths`（配分の欄に衛生のアイコン）を検証用志向で確認
 - 2026-11-19: 志向の緊急生産を `Hurrys` に作り直し（`WonderHurrys`・`bIgnoreWonderHurryCostModifier`・`UnitHurrys`・`HurryUnitExperiences` を廃止）、検証用志向（遺産だけ人口・追加費用なし、ユニットだけ資金・費用 -25%・経験値 +3）で確認
 - 2026-11-19: 志向の `TerrainTrades`（砂漠が交易網をつなぐ）・`CapitalTerrainYieldPercents`（首都の都市圏の砂漠 1 タイルにつき首都の食料 +0.5・商業 +1、産出の内訳の行）を検証用志向で確認
+- 2026-11-19: 志向の `PyOnGained`・`PyOnLost` と期間つきの志向（`gainTraitForTurns`。得たとき・終わったときのメッセージ、指導者の説明の残りターン、期間中の再取得で残りが戻る）を、検証用志向（期間）でゲーム内で確認

@@ -68,12 +68,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_TEST_HELP</Tag>
-		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered, (population + 2) partisans near it (the unit the capital conscripts, with Combat promotions by the culture level of the city)</English>
-		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered, (population + 2) partisans near it (the unit the capital conscripts, with Combat promotions by the culture level of the city)</French>
-		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered, (population + 2) partisans near it (the unit the capital conscripts, with Combat promotions by the culture level of the city)</German>
-		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered, (population + 2) partisans near it (the unit the capital conscripts, with Combat promotions by the culture level of the city)</Italian>
-		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered, (population + 2) partisans near it (the unit the capital conscripts, with Combat promotions by the culture level of the city)</Spanish>
-		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#38283;&#22987;&#26178;&#12398;&#36039;&#37329; +100&#65288;&#38283;&#22987;&#26178;&#20195;&#12364; 1 &#12388;&#24460;&#12395;&#12394;&#12427;&#12372;&#12392;&#12395; +50&#12290;&#12466;&#12540;&#12512;&#36895;&#24230;&#12391;&#22793;&#12431;&#12427;&#65289;[NEWLINE][SPACE][SPACE][ICON_BULLET]5 &#12479;&#12540;&#12531;&#12372;&#12392;&#12395;&#39318;&#37117;&#12395;&#25126;&#22763;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#24314;&#35373;&#12375;&#12383;&#37117;&#24066;&#12395;&#22478;&#22721;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#29554;&#24471;&#12375;&#12383;&#37117;&#24066;&#12395;&#20853;&#33294;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#37117;&#24066;&#12434;&#21344;&#38936;&#12373;&#12428;&#12427;&#12392;&#12289;&#12381;&#12398;&#36817;&#12367;&#12395;&#12497;&#12523;&#12481;&#12470;&#12531;&#65288;&#20154;&#21475; + 2&#65289;&#20307;&#65288;&#39318;&#37117;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12290;&#37117;&#24066;&#12398;&#25991;&#21270;&#12524;&#12505;&#12523;&#12395;&#24540;&#12376;&#12390;&#25126;&#38360;&#34899;&#8544;&#65374;&#8549;&#65289;</Japanese>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds, and Test Trait (Temporary) for 3 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered, (population + 2) partisans near it (the unit the capital conscripts, with Combat promotions by the culture level of the city)</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds, and Test Trait (Temporary) for 3 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered, (population + 2) partisans near it (the unit the capital conscripts, with Combat promotions by the culture level of the city)</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds, and Test Trait (Temporary) for 3 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered, (population + 2) partisans near it (the unit the capital conscripts, with Combat promotions by the culture level of the city)</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds, and Test Trait (Temporary) for 3 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered, (population + 2) partisans near it (the unit the capital conscripts, with Combat promotions by the culture level of the city)</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Starting gold +100, +50 for each later starting era (scaled by game speed)[NEWLINE][SPACE][SPACE][ICON_BULLET]A Warrior in the capital every 5 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Walls in the cities it founds, and Test Trait (Temporary) for 3 turns[NEWLINE][SPACE][SPACE][ICON_BULLET]Barracks in the cities it acquires[NEWLINE][SPACE][SPACE][ICON_BULLET]When a city is conquered, (population + 2) partisans near it (the unit the capital conscripts, with Combat promotions by the culture level of the city)</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#38283;&#22987;&#26178;&#12398;&#36039;&#37329; +100&#65288;&#38283;&#22987;&#26178;&#20195;&#12364; 1 &#12388;&#24460;&#12395;&#12394;&#12427;&#12372;&#12392;&#12395; +50&#12290;&#12466;&#12540;&#12512;&#36895;&#24230;&#12391;&#22793;&#12431;&#12427;&#65289;[NEWLINE][SPACE][SPACE][ICON_BULLET]5 &#12479;&#12540;&#12531;&#12372;&#12392;&#12395;&#39318;&#37117;&#12395;&#25126;&#22763;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#24314;&#35373;&#12375;&#12383;&#37117;&#24066;&#12395;&#22478;&#22721;&#12289;&#37117;&#24066;&#12434;&#24314;&#35373;&#12377;&#12427;&#12392; 3 &#12479;&#12540;&#12531;&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;&#26399;&#38291;&#65289;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#29554;&#24471;&#12375;&#12383;&#37117;&#24066;&#12395;&#20853;&#33294;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#37117;&#24066;&#12434;&#21344;&#38936;&#12373;&#12428;&#12427;&#12392;&#12289;&#12381;&#12398;&#36817;&#12367;&#12395;&#12497;&#12523;&#12481;&#12470;&#12531;&#65288;&#20154;&#21475; + 2&#65289;&#20307;&#65288;&#39318;&#37117;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12290;&#37117;&#24066;&#12398;&#25991;&#21270;&#12524;&#12505;&#12523;&#12395;&#24540;&#12376;&#12390;&#25126;&#38360;&#34899;&#8544;&#65374;&#8549;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_CIVIC_TEST</Tag>
@@ -866,5 +866,32 @@
 		<Italian>Test Leader (Razer)</Italian>
 		<Spanish>Test Leader (Razer)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#25351;&#23566;&#32773;&#65288;&#30772;&#22730;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_TEMPORARY</Tag>
+		<English>Test Trait (Temporary)</English>
+		<French>Test Trait (Temporary)</French>
+		<German>Test Trait (Temporary)</German>
+		<Italian>Test Trait (Temporary)</Italian>
+		<Spanish>Test Trait (Temporary)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;&#26399;&#38291;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_TEMPORARY_SHORT</Tag>
+		<English>Tmp</English>
+		<French>Tmp</French>
+		<German>Tmp</German>
+		<Italian>Tmp</Italian>
+		<Spanish>Tmp</Spanish>
+		<Japanese>&#26399;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_TEMPORARY_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]+10 gold when gained, +20 gold when lost</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]+10 gold when gained, +20 gold when lost</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]+10 gold when gained, +20 gold when lost</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]+10 gold when gained, +20 gold when lost</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]+10 gold when gained, +20 gold when lost</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#24471;&#12427;&#12392;&#36039;&#37329; +10&#12289;&#22833;&#12358;&#12392;&#36039;&#37329; +20</Japanese>
 	</TEXT>
 </Civ4GameText>

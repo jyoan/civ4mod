@@ -1547,4 +1547,31 @@
 		<Spanish>%d2 partisans have risen near %s1!</Spanish>
 		<Japanese>%s1&#12398;&#36817;&#12367;&#12391;&#12497;&#12523;&#12481;&#12470;&#12531; %d2 &#20307;&#12364;&#34562;&#36215;&#12375;&#12414;&#12375;&#12383;&#65281;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_TEMPORARY_TRAIT_GAINED</Tag>
+		<English>You have gained %s1_Trait for %d2 turns!</English>
+		<French>You have gained %s1_Trait for %d2 turns!</French>
+		<German>You have gained %s1_Trait for %d2 turns!</German>
+		<Italian>You have gained %s1_Trait for %d2 turns!</Italian>
+		<Spanish>You have gained %s1_Trait for %d2 turns!</Spanish>
+		<Japanese>%s1_Trait&#12434;&#24471;&#12414;&#12375;&#12383;&#65288;%d2 &#12479;&#12540;&#12531;&#65289;&#65281;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_TEMPORARY_TRAIT_ENDED</Tag>
+		<English>%s1_Trait has ended.</English>
+		<French>%s1_Trait has ended.</French>
+		<German>%s1_Trait has ended.</German>
+		<Italian>%s1_Trait has ended.</Italian>
+		<Spanish>%s1_Trait has ended.</Spanish>
+		<Japanese>%s1_Trait&#12398;&#26399;&#38291;&#12364;&#32066;&#12431;&#12426;&#12414;&#12375;&#12383;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_CITY_CONSCRIPTS_CREATED</Tag>
+		<English>%d1 units have rallied in your cities!</English>
+		<French>%d1 units have rallied in your cities!</French>
+		<German>%d1 units have rallied in your cities!</German>
+		<Italian>%d1 units have rallied in your cities!</Italian>
+		<Spanish>%d1 units have rallied in your cities!</Spanish>
+		<Japanese>&#37117;&#24066;&#12395; %d1 &#20307;&#12398;&#20853;&#12364;&#38598;&#12414;&#12426;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
 </Civ4GameText>
