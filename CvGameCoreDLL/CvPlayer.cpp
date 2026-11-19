@@ -22799,18 +22799,8 @@ int CvPlayer::getEventTriggerWeight(EventTriggerTypes eTrigger) const
 
 	if (NO_CIVIC != kTrigger.getCivic())
 	{
-		bool bFoundValid = false;
-
-		for (int iI = 0; iI < GC.getNumCivicOptionInfos(); ++iI)
-		{
-			if (getCivics((CivicOptionTypes)iI) == kTrigger.getCivic())
-			{
-				bFoundValid = true;
-				break;
-			}
-		}
-
-		if (!bFoundValid)
+		// A civic that replaces it counts as it, as for the expiry of the quests (changed by this mod)
+		if (!isCivicOrReplacing((CivicTypes)kTrigger.getCivic()))
 		{
 			return 0;
 		}

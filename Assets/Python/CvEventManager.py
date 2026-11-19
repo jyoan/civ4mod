@@ -870,7 +870,8 @@ class CvEventManager:
 		iOwner = city.findHighestCulture()
 		
 		# Partisans!
-		if city.getPopulation > 1 and iOwner != -1 and iPlayer != -1:
+		# BtS compared the method getPopulation (no call) with 1, which is always true, so a city of size 1 also gave partisans (fixed by this mod)
+		if city.getPopulation() > 1 and iOwner != -1 and iPlayer != -1:
 			owner = gc.getPlayer(iOwner)
 			if not owner.isBarbarian() and owner.getNumCities() > 0:
 				if gc.getTeam(owner.getTeam()).isAtWar(gc.getPlayer(iPlayer).getTeam()):
