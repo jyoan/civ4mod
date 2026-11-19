@@ -37,6 +37,7 @@ build.bat clean      CvGameCoreDLL\Release\ を削除（配置はしない）
 - build.bat はビルド後（配置の前）に `tools\check_refs.ps1` を実行する（約 2 秒）。XML・Python の名前の参照と、ソースの形式（ASCII のみ・CRLF）を調べる。エラーがあっても配置は続ける（終了コードも変えない）ので、出力の `check_refs:` の行を見て、エラーが出ていたら直す。`build.bat deploy` では実行しない
 - 元ソースは `/W3` で**警告 0 件**。警告が出たら自分の変更が原因
 - `CyPlayerInterface1.cpp` は MSVC 7.1 のデバッグ情報の上限に達している（`.def` を足すと `fatal error C1067: compiler limit : debug information module size exceeded`）。この Mod で足す `CyPlayer` の `.def` は `CyPlayerInterface2.cpp` の末尾に書く。`CyCityInterface1.cpp` も同じ上限に達している。`CyCity` の `.def` は `CyCityInterface2.cpp` に書く
+- `CyInfoInterface3.cpp` は別の上限（`fatal error C1204: compiler limit : internal structure overflow`）に達している（2026-11-18。同じファイルの別の関数に分けても出る）。`CvTraitInfo` の `.def` は `CyInfoInterface4.cpp` の `CyInfoPythonInterfaceTrait2` に書く
 - 新しい `.cpp` を追加したら Makefile の `OBJS` に 1 行足す（ワイルドカードは使っていない）
 - Debug 構成は未整備（Release のみ）。Release では `FAssert` は無効
 - `Makefile` と `build.bat` は ASCII のみ・CRLF（日本語を書くと cmd / nmake で壊れる可能性がある）
@@ -118,8 +119,8 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - ゲームのログは `%USERPROFILE%\Documents\My Games\Beyond the Sword(J)\Logs`（`xml.log`・`PythonErr.log` など）
 - XML 内のタグの順序は Schema の順序に合わせる。新しいタグは Schema で `minOccurs="0"` にして、既存の項目には書かなくて済むようにする
 - 「なし」を表す値は型名ではなく **`NONE`** と書く（例: 維持費なしの社会制度は `<Upkeep>NONE</Upkeep>`。`UPKEEP_NONE` は存在せず、起動時に「Tag: UPKEEP_NONE in Info class was incorrect」になった）。既存の値を書き換えるときは、元の XML でその要素がどう書かれているかを先に確かめる
-- 書いた名前が実在するかは `tools\check_refs.ps1`（build.bat が自動で実行）が調べる。ゲームが読む XML（`<BTS>` → `<WL>` → `<CIV4>` の順で最初のもの）の `<Type>` と `GlobalTypes.xml`（`ARTSTYLE_` / `CONTACT_` / `FLAVOR_` / `FORMATION_` など）、テキストの `<Tag>` と照合する。見るもの: 定義されていない名前（接頭辞が既知のもの）、無いテキストキー、`<Type>` の重複、要素の種類と違う名前（警告。`<TraitType>` に `UNIT_` など）、Mod のテキストキーの重複（警告）、同じ引数を 2 回使うテキスト、Python と XML の `Py...` の式の中の引用符で囲んだ名前（コメント行を除く）。本体からコピーしたファイルにある本体と同じ誤りは数えるだけで表示しない
-- XML は `CvXMLLoadUtility::LoadPreMenuGlobals`（`CvXMLLoadUtilitySet.cpp`）に書かれた順に読み込まれ、`FindInInfoClass` で引けるのは**先に読み込まれた Info だけ**。例えば志向より後に読み込まれるのは施設・建物・社会制度・指導者・ユニット・文明など、先に読み込まれるのは地形・地形の特徴・昇進・兵科など。後に読み込まれる Info を参照するタグは、種類を文字列のまま持っておき、`readPass3()` で番号に変える（`CvTraitInfo::readPass3` が例）
+- 書いた名前が実在するかは `tools\check_refs.ps1`（build.bat が自動で実行）が調べる。ゲームが読む XML（`<BTS>` → `<WL>` → `<CIV4>` の順で最初のもの）の `<Type>` と `GlobalTypes.xml`（`ARTSTYLE_` / `CONTACT_` / `FLAVOR_` / `FORMATION_` など）、テキストの `<Tag>` と照合する。見るもの: 定義されていない名前（接頭辞が既知のもの）、無いテキストキー、`<Type>` の重複、要素の種類と違う名前（警告。`<TraitType>` に `UNIT_` など）、Mod のテキストキーの重複（警告）、志向の `ConditionalFreeTraits` の輪（警告。条件が外れても志向が残る）、同じ引数を 2 回使うテキスト、Python と XML の `Py...` の式の中の引用符で囲んだ名前（コメント行を除く）。本体からコピーしたファイルにある本体と同じ誤りは数えるだけで表示しない
+- XML は `CvXMLLoadUtility::LoadPreMenuGlobals`（`CvXMLLoadUtilitySet.cpp`）に書かれた順に読み込まれ、`FindInInfoClass` で引けるのは**先に読み込まれた Info だけ**。例えば志向より後に読み込まれるのは施設・建物・社会制度・指導者・ユニット・文明など、先に読み込まれるのは地形・地形の特徴・昇進・兵科など。後に読み込まれる Info を参照するタグは、種類を文字列のまま持っておき、`readPass3()` で番号に変える（`CvTraitInfo::readPass3` が例）。生産の種類（`ProcessInfo`）など `LoadPostMenuGlobals`（ゲームを始めるとき）で読み込まれる Info は `readPass3()` の時点でもまだ無いので、`CvTraitInfo::readPass4()` で番号に変える（ゲームの前の画面ではその数が 0）
 - Mod の XML は本体の同名ファイルを丸ごと置き換える（`ModularLoading = 0` のため）。`<BTS>` → `<WL>` → `<CIV4>` の順に探して最初に見つかったものを、同じ相対パスで `Assets\XML\...` にコピーしてから編集する（Schema も同様）
 - コピーした直後に**未改変のままコミット**し、編集は次のコミットにする（git の差分で Mod の変更だけが見えるように）
 - 新しいテキストキーは `Assets\XML\Text\` の分野ごとのファイルの末尾に足す（`XML\Text\` の xml はすべて読み込まれる）: 志向（`TXT_KEY_TRAIT_*`・`TXT_KEY_CONDITION_*`・`TXT_KEY_START_BIAS*`）は `CIV4GameText_ClaudeSample_Traits.xml`、昇進は `_Promotions.xml`、呪文は `_Spells.xml`、検証用の項目の名前は `_Test.xml`、それ以外（メッセージ、建物、社会制度、ゲームオプションなど）は `CIV4GameText_ClaudeSample.xml`
@@ -132,7 +133,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 ### XML キャッシュ
 
 - `CvCivilizationInfo` などストリーム版 `read` / `write` を持つ Info クラスは、exe が XML キャッシュ（`%LOCALAPPDATA%\My Games\Beyond the Sword(J)\cache`）経由でも読み込む。exe は `CvGlobals::read/write*InfoArray` を呼び、そこから各 Info の `read` / `write` が使われる
-- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする（現在 `CvCivilizationInfo` は `uiFlag=3`、`CvCivicInfo` は `uiFlag=8`、`CvBuildingInfo` は `uiFlag=18`、`CvUnitInfo` は `uiFlag=4`、`CvPromotionInfo` は `uiFlag=17`、`CvTechInfo` は `uiFlag=2`、`CvImprovementInfo` は `uiFlag=7`、`CvEventTriggerInfo` は `uiFlag=1`、`CvBonusInfo` は `uiFlag=2`）
+- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする（現在 `CvCivilizationInfo` は `uiFlag=3`、`CvCivicInfo` は `uiFlag=8`、`CvBuildingInfo` は `uiFlag=18`、`CvUnitInfo` は `uiFlag=4`、`CvPromotionInfo` は `uiFlag=18`、`CvTechInfo` は `uiFlag=2`、`CvImprovementInfo` は `uiFlag=7`、`CvEventTriggerInfo` は `uiFlag=1`、`CvBonusInfo` は `uiFlag=2`）
 - **Info の数が変わる変更（志向・昇進・技術・ユニットなどの追加や削除）をしたら、必ずキャッシュを消す**。ユニット・建物・指導者・文明などのキャッシュは「志向の数」などの数だけ配列を読むため、XML を変えていないファイルの古いキャッシュがずれて読まれ、データ破損や強制終了の原因になる
 - キャッシュを消すときは、Civ4 が起動していないことを確認してから、上記の cache フォルダ内の `*.dat` だけを消す（フォルダは残す。次回起動時に作り直される。BtS 本体や他の Mod も次回の起動が少し遅くなるだけ）
 - キャッシュが原因と思われる不具合が出たときも、同じ手順で消す

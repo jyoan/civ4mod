@@ -2986,6 +2986,12 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 		pLoopCity->updateFeatureHealth();
 		pLoopCity->updateReligionCommerce();
 		pLoopCity->updateCommerce();	// (Global)WorldWonderCommerceChanges
+		pLoopCity->updateMiseryChanges();	// AngryYieldChanges, HappyYieldPercents and the like
+		pLoopCity->updateFeatureHappiness();	// FeatureHappinessChanges
+		pLoopCity->updateExtraBuildingHappiness();	// BuildingHappinessChanges
+		pLoopCity->updateExtraBuildingHealth();	// BuildingHealthChanges
+		pLoopCity->updateReligionHappiness();	// iNonStateReligionHappiness
+		pLoopCity->updateDynamicBuildingYields();	// YieldChanges, YieldPerReligion, (Global)WorldWonderYieldChanges
 	}
 
 	// Maintenance of the overseas cities (iOverseasMaintenanceModifier) and trade routes with distant cities
@@ -6825,7 +6831,8 @@ bool CvPlayer::canCreate(ProjectTypes eProject, bool bContinue, bool bTestVisibl
 
 bool CvPlayer::canMaintain(ProcessTypes eProcess, bool bContinue) const
 {
-	if (!(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getProcessInfo(eProcess).getTechPrereq()))))
+	// NoTechProcesses of the traits (added by this mod): no tech needed
+	if (!(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getProcessInfo(eProcess).getTechPrereq()))) && !isNoTechProcess(eProcess))
 	{
 		return false;
 	}
@@ -7592,6 +7599,13 @@ void CvPlayer::updateTraitBonusPlots(TraitTypes eTrait, bool bAdd)
 	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
 	{
 		if (GC.getBonusInfo((BonusTypes)iI).getTechObsolete() != NO_TECH && GC.getTraitInfo(eTrait).isBonusObsolescenceIgnored(iI))
+		{
+			aiBonuses.push_back(iI);
+			continue;
+		}
+
+		// RevealBonuses (added by this mod)
+		if (GC.getTraitInfo(eTrait).isRevealBonus(iI))
 		{
 			aiBonuses.push_back(iI);
 			continue;
@@ -8584,6 +8598,181 @@ int CvPlayer::getMaxNationalWondersPerCity() const
 bool CvPlayer::isHumanCanBeVassal() const
 {
 	return hasTraitFlag(&CvTraitInfo::isHumanCanBeVassal);
+}
+
+// iMaxExperienceAfterUpgrade of the traits (added by this mod): the experience a unit keeps when upgraded (CvUnit::upgrade),
+// MAX_EXPERIENCE_AFTER_UPGRADE replaced by the traits. -1 (keeps all) wins, then the largest value; 0 = not set
+int CvPlayer::getMaxExperienceAfterUpgrade() const
+{
+	int iMax = 0;
+	int iValue;
+	int iI;
+
+	if (getLeaderType() != NO_LEADER)
+	{
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (hasTrait((TraitTypes)iI))
+			{
+				iValue = GC.getTraitInfo((TraitTypes)iI).getMaxExperienceAfterUpgrade();
+
+				if (iValue < 0)
+				{
+					return -1;
+				}
+
+				iMax = std::max(iMax, iValue);
+			}
+		}
+	}
+
+	if (iMax > 0)
+	{
+		return iMax;
+	}
+
+	return GC.getDefineINT("MAX_EXPERIENCE_AFTER_UPGRADE");
+}
+
+// iExpOutsideBordersChange of the traits (added by this mod): see CvUnit::changeExperience
+int CvPlayer::getExpOutsideBordersChange() const
+{
+	return sumTraitValues(&CvTraitInfo::getExpOutsideBordersChange);
+}
+
+// iWeLoveTheKingChance of the traits (added by this mod): see CvCity::doTurn
+int CvPlayer::getWeLoveTheKingChance() const
+{
+	return range(sumTraitValues(&CvTraitInfo::getWeLoveTheKingChance), 0, 100);
+}
+
+// SpecialistSlotChanges of the traits (added by this mod): -1 if a trait makes the specialist unlimited, else the slots the
+// traits add in every city (CvCity::getMaxSpecialistCount, isSpecialistValid)
+int CvPlayer::getTraitSpecialistSlotChange(SpecialistTypes eSpecialist) const
+{
+	int iSlots = 0;
+	int iValue;
+	int iI;
+
+	if (getLeaderType() != NO_LEADER)
+	{
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (hasTrait((TraitTypes)iI))
+			{
+				iValue = GC.getTraitInfo((TraitTypes)iI).getSpecialistSlotChange(eSpecialist);
+
+				if (iValue < 0)
+				{
+					return -1;
+				}
+
+				iSlots += iValue;
+			}
+		}
+	}
+
+	return iSlots;
+}
+
+// UnitHurrys of the traits (added by this mod): the player can hurry units this way without the civic (CvCity::isUnitHurry)
+bool CvPlayer::isUnitHurry(HurryTypes eHurry) const
+{
+	return hasTraitFlag(&CvTraitInfo::isUnitHurry, eHurry);
+}
+
+// HurryUnitExperiences of the traits (added by this mod): see CvCity::popOrder
+int CvPlayer::getHurryUnitExperience(HurryTypes eHurry) const
+{
+	return sumTraitValues(&CvTraitInfo::getHurryUnitExperience, eHurry);
+}
+
+// ImprovedBonusYieldChanges of the traits (added by this mod): see CvPlot::calculateImprovementYieldChange
+int CvPlayer::getTraitImprovedBonusYieldChange(BonusTypes eBonus, YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getImprovedBonusYieldChange, eBonus, eYield);
+}
+
+// RevealBonuses of the traits (added by this mod): see CvTeam::isTraitRevealedBonus
+bool CvPlayer::isTraitRevealBonus(BonusTypes eBonus) const
+{
+	return hasTraitFlag(&CvTraitInfo::isRevealBonus, eBonus);
+}
+
+// NoTechProcesses of the traits (added by this mod): the cities can maintain the process without its tech
+bool CvPlayer::isNoTechProcess(ProcessTypes eProcess) const
+{
+	return hasTraitFlag(&CvTraitInfo::isNoTechProcess, eProcess);
+}
+
+// bNoConscriptExperiencePenalty of the traits (added by this mod): see CvCity::addProductionExperience
+bool CvPlayer::isNoConscriptExperiencePenalty() const
+{
+	return hasTraitFlag(&CvTraitInfo::isNoConscriptExperiencePenalty);
+}
+
+// FreeTechs of the traits (added by this mod): the techs the traits give at the start of the game. CvGame::setInitialItems
+// calls this after ConditionalFreeTraits, so the traits given at the start also count. Like the free techs of the
+// civilizations (CvGame::initFreeState), the prerequisite techs are not needed
+void CvPlayer::initTraitFreeTechs()
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTechInfos(); iI++)
+	{
+		if (!GET_TEAM(getTeam()).isHasTech((TechTypes)iI) && hasTraitFlag(&CvTraitInfo::isFreeTech, iI))
+		{
+			GET_TEAM(getTeam()).setHasTech((TechTypes)iI, true, NO_PLAYER, false, false);
+			if (GC.getTechInfo((TechTypes)iI).isMapVisible())
+			{
+				GC.getMapINLINE().setRevealedPlots(getTeam(), true, true);
+			}
+		}
+	}
+}
+
+// YieldChanges of the traits (added by this mod): yield of every city (CvCity::getTraitYield)
+int CvPlayer::getTraitYieldChange(YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getYieldChange, eYield);
+}
+
+// iHealthPerReligion and YieldPerReligion of the traits (added by this mod): for each religion in the city
+int CvPlayer::getHealthPerReligion() const
+{
+	return sumTraitValues(&CvTraitInfo::getHealthPerReligion);
+}
+
+int CvPlayer::getYieldPerReligion(YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getYieldPerReligion, eYield);
+}
+
+// WorldWonderYieldChanges and GlobalWorldWonderYieldChanges of the traits (added by this mod): CvCity::getTraitYield
+int CvPlayer::getTraitWorldWonderYield(YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getWorldWonderYieldChange, eYield);
+}
+
+int CvPlayer::getTraitGlobalWorldWonderYield(YieldTypes eYield) const
+{
+	return sumTraitValues(&CvTraitInfo::getGlobalWorldWonderYieldChange, eYield);
+}
+
+// BonusHappinessChanges and BonusHealthChanges of the traits (added by this mod): CvCity::getTraitBonusHappiness
+int CvPlayer::getTraitBonusHappiness(BonusTypes eBonus) const
+{
+	return sumTraitValues(&CvTraitInfo::getBonusHappinessChange, eBonus);
+}
+
+int CvPlayer::getTraitBonusHealth(BonusTypes eBonus) const
+{
+	return sumTraitValues(&CvTraitInfo::getBonusHealthChange, eBonus);
+}
+
+bool CvPlayer::isAnyTraitBonusHappinessOrHealth() const
+{
+	return hasTraitFlag(&CvTraitInfo::isAnyBonusHappinessOrHealthChange);
 }
 
 // bConquestStateReligion of the traits (added by this mod): see acquireCity
@@ -12231,7 +12420,8 @@ void CvPlayer::changeStateReligionHappiness(int iChange)
 
 int CvPlayer::getNonStateReligionHappiness() const 
 {
-	return m_iNonStateReligionHappiness;
+	// With iNonStateReligionHappiness of the traits (added by this mod)
+	return m_iNonStateReligionHappiness + sumTraitValues(&CvTraitInfo::getNonStateReligionHappiness);
 }
 
 
@@ -14101,7 +14291,8 @@ int CvPlayer::getExtraBuildingHappiness(BuildingTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < GC.getNumBuildingInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
-	return m_paiExtraBuildingHappiness[eIndex];
+	// With BuildingHappinessChanges of the traits, for the buildings of the class (added by this mod)
+	return m_paiExtraBuildingHappiness[eIndex] + sumTraitValues(&CvTraitInfo::getBuildingHappinessChange, GC.getBuildingInfo(eIndex).getBuildingClassType());
 }
 
 
@@ -14122,7 +14313,8 @@ int CvPlayer::getExtraBuildingHealth(BuildingTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < GC.getNumBuildingInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
-	return m_paiExtraBuildingHealth[eIndex];
+	// With BuildingHealthChanges of the traits, for the buildings of the class (added by this mod)
+	return m_paiExtraBuildingHealth[eIndex] + sumTraitValues(&CvTraitInfo::getBuildingHealthChange, GC.getBuildingInfo(eIndex).getBuildingClassType());
 }
 
 
@@ -14144,7 +14336,8 @@ int CvPlayer::getFeatureHappiness(FeatureTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < GC.getNumFeatureInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
-	return m_paiFeatureHappiness[eIndex];
+	// With FeatureHappinessChanges of the traits (added by this mod)
+	return m_paiFeatureHappiness[eIndex] + sumTraitValues(&CvTraitInfo::getFeatureHappinessChange, eIndex);
 }
 
 
@@ -14567,7 +14760,8 @@ int CvPlayer::getSpecialistValidCount(SpecialistTypes eIndex) const
 
 bool CvPlayer::isSpecialistValid(SpecialistTypes eIndex) const
 {
-	return (getSpecialistValidCount(eIndex) > 0);
+	// SpecialistSlotChanges of the traits (added by this mod): -1 makes the specialist unlimited, as the civics
+	return (getSpecialistValidCount(eIndex) > 0) || (getTraitSpecialistSlotChange(eIndex) < 0);
 }
 
 
@@ -18808,6 +19002,11 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	changeExpInBorderModifier(kTrait.getExpInBorderModifier() * iChange);
 	changeGoldenAgeModifier(kTrait.getGoldenAgeModifier() * iChange);
 	changeStateReligionHappiness(kTrait.getStateReligionHappiness() * iChange);	// added by this mod (as the civics)
+	// added by this mod (as the civics)
+	changeStateReligionGreatPeopleRateModifier(kTrait.getStateReligionGreatPeopleRateModifier() * iChange);
+	changeStateReligionUnitProductionModifier(kTrait.getStateReligionUnitProductionModifier() * iChange);
+	changeStateReligionBuildingProductionModifier(kTrait.getStateReligionBuildingProductionModifier() * iChange);
+	changeStateReligionFreeExperience(kTrait.getStateReligionFreeExperience() * iChange);
 	GET_TEAM(getTeam()).changeEnemyWarWearinessModifier(kTrait.getEnemyWarWearinessModifier() * iChange);	// added by this mod (the team value of the buildings)
 
 	for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
@@ -18825,12 +19024,13 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 		changeSpecialistExtraCommerce(((CommerceTypes)iJ), kTrait.getSpecialistExtraCommerce(iJ) * iChange);
 	}
 
-	// SpecialistYieldChanges (as the buildings) and SpecialistCommerceChanges (added by this mod)
+	// SpecialistYieldChanges (as the buildings), SpecialistExtraYields (every specialist) and SpecialistCommerceChanges
+	// (added by this mod)
 	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
 	{
 		for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
 		{
-			changeSpecialistExtraYield(((SpecialistTypes)iI), ((YieldTypes)iJ), kTrait.getSpecialistYieldChange(iI, iJ) * iChange);
+			changeSpecialistExtraYield(((SpecialistTypes)iI), ((YieldTypes)iJ), (kTrait.getSpecialistYieldChange(iI, iJ) + kTrait.getSpecialistExtraYield(iJ)) * iChange);
 		}
 
 		for (iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)

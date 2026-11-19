@@ -398,4 +398,13 @@
 		<Spanish>[ICON_BULLET]Heals %d1%% of its hit points with each pillage</Spanish>
 		<Japanese>[ICON_BULLET]&#30053;&#22890;&#12377;&#12427;&#12383;&#12403;&#12395;HP&#12364;%d1%%&#22238;&#24489;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_PILLAGE_EXPERIENCE</Tag>
+		<English>[ICON_BULLET]+%d1 experience with each pillage of an improvement</English>
+		<French>[ICON_BULLET]+%d1 experience with each pillage of an improvement</French>
+		<German>[ICON_BULLET]+%d1 experience with each pillage of an improvement</German>
+		<Italian>[ICON_BULLET]+%d1 experience with each pillage of an improvement</Italian>
+		<Spanish>[ICON_BULLET]+%d1 experience with each pillage of an improvement</Spanish>
+		<Japanese>[ICON_BULLET]&#26045;&#35373;&#12434;&#30053;&#22890;&#12377;&#12427;&#12383;&#12403;&#12395;&#32076;&#39443;&#20516;+%d1</Japanese>
+	</TEXT>
 </Civ4GameText>

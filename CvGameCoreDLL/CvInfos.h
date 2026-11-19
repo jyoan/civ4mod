@@ -538,6 +538,7 @@ public:
 	bool isFreeEmbark() const;			// Exposed to Python (added by this mod)
 	bool isPillageNoMoveCost() const;			// Exposed to Python (added by this mod)
 	int getPillageHealPercent() const;			// Exposed to Python (added by this mod)
+	int getPillageExperience() const;			// Exposed to Python (added by this mod)
 	// Python hooks (added by this mod): Python expressions that EntryPoints/CvHookInterface.py evaluates
 	const TCHAR* getPyOnCombatWin() const;	// Exposed to Python
 	const TCHAR* getPyOnCombatLoss() const;	// Exposed to Python
@@ -652,6 +653,7 @@ protected:
 	bool m_bFreeEmbark;	// added by this mod
 	bool m_bPillageNoMoveCost;	// added by this mod
 	int m_iPillageHealPercent;	// added by this mod
+	int m_iPillageExperience;	// added by this mod
 	CvString m_szPyOnCombatWin;	// added by this mod
 	CvString m_szPyOnCombatLoss;	// added by this mod
 	CvString m_szPyOnBeginTurn;	// added by this mod
@@ -4887,6 +4889,10 @@ public:
 	// Batch of 2026-11-17 (added by this mod)
 	int getStateReligionHappiness() const;			// Exposed to Python: as the civics
 	int getStateReligionHealth() const;				// Exposed to Python
+	int getStateReligionGreatPeopleRateModifier() const;	// Exposed to Python (added by this mod)
+	int getStateReligionUnitProductionModifier() const;	// Exposed to Python (added by this mod)
+	int getStateReligionBuildingProductionModifier() const;	// Exposed to Python (added by this mod)
+	int getStateReligionFreeExperience() const;	// Exposed to Python (added by this mod)
 	int getGreatPeopleClassRateModifier(int iUnitClass) const;	// Exposed to Python
 	bool isAnyGreatPeopleClassRateModifier() const;
 	int getEnemyMoveCostInBorders() const;			// Exposed to Python
@@ -4923,6 +4929,44 @@ public:
 	int getMaxNationalWondersPerCity() const;	// Exposed to Python (added by this mod)
 	int getMaxNationalWondersPerCityForOCC() const;	// Exposed to Python (added by this mod)
 	bool isHumanCanBeVassal() const;	// Exposed to Python (added by this mod)
+	// Batch of 2026-11-18 (added by this mod)
+	int getMaxExperienceAfterUpgrade() const;	// Exposed to Python: 0 = not set (MAX_EXPERIENCE_AFTER_UPGRADE), -1 = keeps all
+	int getExpOutsideBordersChange() const;		// Exposed to Python
+	int getWeLoveTheKingChance() const;			// Exposed to Python
+	int getSpecialistSlotChange(int iSpecialist) const;	// Exposed to Python: -1 (negative) = no limit
+	bool isUnitHurry(int iHurry) const;			// Exposed to Python
+	int getHurryUnitExperience(int iHurry) const;	// Exposed to Python
+	int getImprovedBonusYieldChange(int iBonus, int iYield) const;	// Exposed to Python
+	int getHappyYieldPercent(int i) const;		// Exposed to Python
+	int* getHappyYieldPercentArray() const;
+	int getHappyCommercePercent(int i) const;	// Exposed to Python
+	int* getHappyCommercePercentArray() const;
+	int getHealthyYieldPercent(int i) const;	// Exposed to Python
+	int* getHealthyYieldPercentArray() const;
+	int getHealthyCommercePercent(int i) const;	// Exposed to Python
+	int* getHealthyCommercePercentArray() const;
+	// Batch of 2026-11-19 (added by this mod)
+	bool isRevealBonus(int iBonus) const;		// Exposed to Python
+	bool isNoTechProcess(int iProcess) const;	// Exposed to Python
+	bool isNoConscriptExperiencePenalty() const;	// Exposed to Python
+	bool isFreeTech(int iTech) const;			// Exposed to Python
+	void readPass4();	// added by this mod: the types loaded with LoadPostMenuGlobals (processes)
+	// Batch of 2026-11-19, the counterparts of the tags that existed for only one of happiness/health or yield/commerce
+	int getYieldChange(int i) const;			// Exposed to Python
+	int* getYieldChangeArray() const;
+	int getHealthPerReligion() const;			// Exposed to Python
+	int getYieldPerReligion(int i) const;		// Exposed to Python
+	int getFeatureHappinessChange(int iFeature) const;	// Exposed to Python
+	int getWorldWonderYieldChange(int i) const;	// Exposed to Python
+	int getGlobalWorldWonderYieldChange(int i) const;	// Exposed to Python
+	int getSpecialistExtraYield(int i) const;	// Exposed to Python
+	int* getSpecialistExtraYieldArray() const;
+	int getNonStateReligionHappiness() const;	// Exposed to Python
+	int getBuildingHappinessChange(int iBuildingClass) const;	// Exposed to Python
+	int getBuildingHealthChange(int iBuildingClass) const;		// Exposed to Python
+	int getBonusHappinessChange(int iBonus) const;	// Exposed to Python
+	int getBonusHealthChange(int iBonus) const;		// Exposed to Python
+	bool isAnyBonusHappinessOrHealthChange() const;
 
 	const TCHAR* getShortDescription() const;				// Exposed to Python
 	void setShortDescription(const TCHAR* szVal);			
@@ -5025,6 +5069,9 @@ public:
 	void readConditionalFreeTraits(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readFreePromotionSets(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readPlotYieldChanges(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readUnitAndCityValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readRevealAndStartValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readCounterpartValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	bool readPass3();
 	void readUniqueUnits();							// added by this mod: after the units are loaded
 
@@ -5107,6 +5154,10 @@ protected:
 	bool m_bConquestLearnUniqueBuildings;	// added by this mod
 	int m_iStateReligionHappiness;	// added by this mod
 	int m_iStateReligionHealth;	// added by this mod
+	int m_iStateReligionGreatPeopleRateModifier;	// added by this mod
+	int m_iStateReligionUnitProductionModifier;	// added by this mod
+	int m_iStateReligionBuildingProductionModifier;	// added by this mod
+	int m_iStateReligionFreeExperience;	// added by this mod
 	int m_iEnemyMoveCostInBorders;	// added by this mod
 	int m_iRevengeCombatPercent;	// added by this mod
 	int m_iKnownTechCostModifier;	// added by this mod
@@ -5144,6 +5195,49 @@ protected:
 	int m_iMaxNationalWondersPerCity;	// added by this mod: 0 = not set, -1 = no limit
 	int m_iMaxNationalWondersPerCityForOCC;	// added by this mod: 0 = not set, -1 = no limit
 	bool m_bHumanCanBeVassal;	// added by this mod
+	int m_iMaxExperienceAfterUpgrade;	// added by this mod: 0 = not set, -1 = keeps all
+	int m_iExpOutsideBordersChange;	// added by this mod
+	int m_iWeLoveTheKingChance;	// added by this mod
+	std::vector<int> m_aiSpecialistSlotChange;	// added by this mod: [specialist], empty when not set
+	bool* m_pabUnitHurry;	// added by this mod: UnitHurrys, [hurry], NULL when not set
+	std::vector<CvString> m_aszUnitHurryTypes;	// read() keeps the types as strings until readPass3() (hurries are loaded after traits)
+	std::vector<int> m_aiHurryUnitExperience;	// added by this mod: [hurry], empty when not set
+	std::vector<CvString> m_aszHurryUnitExperienceTypes;	// as strings until readPass3()
+	std::vector<int> m_aiHurryUnitExperienceValues;
+	std::vector< std::vector<int> > m_aaiImprovedBonusYieldChange;	// added by this mod: [bonus][yield], empty when not set
+	std::vector<CvString> m_aszImprovedBonusYieldChangeTypes;	// as strings until readPass3() (bonuses are loaded after traits)
+	std::vector< std::vector<int> > m_aaiImprovedBonusYieldChangeValues;
+	int* m_paiHappyYieldPercent;	// added by this mod: [yield]
+	int* m_paiHappyCommercePercent;	// added by this mod: [commerce]
+	int* m_paiHealthyYieldPercent;	// added by this mod: [yield]
+	int* m_paiHealthyCommercePercent;	// added by this mod: [commerce]
+	bool* m_pabRevealBonus;	// added by this mod: RevealBonuses, [bonus], NULL when not set
+	std::vector<CvString> m_aszRevealBonusTypes;	// as strings until readPass3() (bonuses are loaded after traits)
+	bool* m_pabNoTechProcess;	// added by this mod: NoTechProcesses, [process], NULL when not set
+	std::vector<CvString> m_aszNoTechProcessTypes;	// kept for readPass4() (processes are loaded with LoadPostMenuGlobals)
+	bool m_bNoConscriptExperiencePenalty;	// added by this mod
+	bool* m_pabFreeTech;	// added by this mod: FreeTechs, [tech]
+	int* m_paiYieldChange;	// added by this mod: YieldChanges, [yield]
+	int m_iHealthPerReligion;	// added by this mod
+	int* m_paiYieldPerReligion;	// added by this mod: [yield]
+	std::vector<int> m_aiFeatureHappinessChange;	// added by this mod: [feature], empty when not set
+	int* m_paiWorldWonderYieldChange;	// added by this mod: [yield]
+	int* m_paiGlobalWorldWonderYieldChange;	// added by this mod: [yield]
+	int* m_paiSpecialistExtraYield;	// added by this mod: SpecialistExtraYields, [yield]
+	int m_iNonStateReligionHappiness;	// added by this mod
+	std::vector<int> m_aiBuildingHappinessChange;	// added by this mod: [building class], empty when not set
+	std::vector<int> m_aiBuildingHealthChange;	// added by this mod: [building class], empty when not set
+	std::vector<int> m_aiBonusHappinessChange;	// added by this mod: [bonus], empty when not set
+	std::vector<int> m_aiBonusHealthChange;	// added by this mod: [bonus], empty when not set
+	// As strings and values until readPass3() (building classes and bonuses are loaded after traits)
+	std::vector<CvString> m_aszBuildingHappinessChangeTypes;
+	std::vector<int> m_aiBuildingHappinessChangeValues;
+	std::vector<CvString> m_aszBuildingHealthChangeTypes;
+	std::vector<int> m_aiBuildingHealthChangeValues;
+	std::vector<CvString> m_aszBonusHappinessChangeTypes;
+	std::vector<int> m_aiBonusHappinessChangeValues;
+	std::vector<CvString> m_aszBonusHealthChangeTypes;
+	std::vector<int> m_aiBonusHealthChangeValues;
 	bool m_bNewCityStateReligion;
 
 	CvString m_szShortDescription;

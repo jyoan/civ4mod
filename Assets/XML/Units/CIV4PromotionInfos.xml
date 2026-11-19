@@ -5364,6 +5364,7 @@
 			<bFreeEmbark>1</bFreeEmbark>
 			<bPillageNoMoveCost>1</bPillageNoMoveCost>
 			<iPillageHealPercent>20</iPillageHealPercent>
+			<iPillageExperience>2</iPillageExperience>
 			<HotKey/>
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>

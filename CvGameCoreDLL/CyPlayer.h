@@ -529,6 +529,20 @@ public:
 	int getKnownTechCostModifier();	// added by this mod
 	int getKnownTechCostLimit();	// added by this mod
 	bool isConquestHeal();	// added by this mod
+	int getMaxExperienceAfterUpgrade();	// added by this mod
+	int getExpOutsideBordersChange();	// added by this mod
+	int getWeLoveTheKingChance();	// added by this mod
+	int getTraitSpecialistSlotChange(int /*SpecialistTypes*/ eSpecialist);	// added by this mod
+	bool isUnitHurry(int /*HurryTypes*/ eHurry);	// added by this mod
+	int getHurryUnitExperience(int /*HurryTypes*/ eHurry);	// added by this mod
+	bool isTraitRevealBonus(int /*BonusTypes*/ eBonus);	// added by this mod
+	bool isNoTechProcess(int /*ProcessTypes*/ eProcess);	// added by this mod
+	bool isNoConscriptExperiencePenalty();	// added by this mod
+	int getTraitYieldChange(int /*YieldTypes*/ eYield);	// added by this mod
+	int getHealthPerReligion();	// added by this mod
+	int getYieldPerReligion(int /*YieldTypes*/ eYield);	// added by this mod
+	int getTraitWorldWonderYield(int /*YieldTypes*/ eYield);	// added by this mod
+	int getTraitGlobalWorldWonderYield(int /*YieldTypes*/ eYield);	// added by this mod
 	int getSpecialistTypeExtraCommerce(int /*SpecialistTypes*/ eSpecialist, int /*CommerceTypes*/ eCommerce);
 	int getBonusHealChange();
 	int getBonusHealChangeEnemy();

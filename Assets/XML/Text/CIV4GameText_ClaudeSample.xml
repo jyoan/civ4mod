@@ -1367,4 +1367,130 @@
 		<Spanish>[ICON_BULLET]%D1%% Revenge (Trait)</Spanish>
 		<Japanese>[ICON_BULLET]&#24489;&#35728;&#65288;&#24535;&#21521;&#65289;: %D1%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_HAPPY</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Extra happiness: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Extra happiness: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Extra happiness: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Extra happiness: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Extra happiness: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#20313;&#21104;&#12398;&#24184;&#31119;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_HEALTHY</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Extra health: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Extra health: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Extra health: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Extra health: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Extra health: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#20313;&#21104;&#12398;&#34907;&#29983;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_HAPPY_COMMERCE</Tag>
+		<English>[ICON_BULLET]%D1%F2 from extra happiness</English>
+		<French>[ICON_BULLET]%D1%F2 from extra happiness</French>
+		<German>[ICON_BULLET]%D1%F2 from extra happiness</German>
+		<Italian>[ICON_BULLET]%D1%F2 from extra happiness</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 from extra happiness</Spanish>
+		<Japanese>[ICON_BULLET]&#20313;&#21104;&#12398;&#24184;&#31119;&#12424;&#12426;%F2%D1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_HEALTHY_COMMERCE</Tag>
+		<English>[ICON_BULLET]%D1%F2 from extra health</English>
+		<French>[ICON_BULLET]%D1%F2 from extra health</French>
+		<German>[ICON_BULLET]%D1%F2 from extra health</German>
+		<Italian>[ICON_BULLET]%D1%F2 from extra health</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 from extra health</Spanish>
+		<Japanese>[ICON_BULLET]&#20313;&#21104;&#12398;&#34907;&#29983;&#12424;&#12426;%F2%D1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_TRAITS</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Traits: %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Traits: %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Traits: %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Traits: %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Traits: %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#24535;&#21521;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_GOOD_HEALTH_FROM_TRAIT_RELIGIONS</Tag>
+		<English>%D1_Change[ICON_HEALTHY] from the Religions in the City</English>
+		<French>%D1_Change[ICON_HEALTHY] from the Religions in the City</French>
+		<German>%D1_Change[ICON_HEALTHY] from the Religions in the City</German>
+		<Italian>%D1_Change[ICON_HEALTHY] from the Religions in the City</Italian>
+		<Spanish>%D1_Change[ICON_HEALTHY] from the Religions in the City</Spanish>
+		<Japanese>&#37117;&#24066;&#12398;&#23447;&#25945;&#12398;&#25968;&#12395;&#12424;&#12426;[ICON_HEALTHY]%D1_Change</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HEALTH_FROM_TRAIT_RELIGIONS</Tag>
+		<English>%D1_Change[ICON_UNHEALTHY] from the Religions in the City</English>
+		<French>%D1_Change[ICON_UNHEALTHY] from the Religions in the City</French>
+		<German>%D1_Change[ICON_UNHEALTHY] from the Religions in the City</German>
+		<Italian>%D1_Change[ICON_UNHEALTHY] from the Religions in the City</Italian>
+		<Spanish>%D1_Change[ICON_UNHEALTHY] from the Religions in the City</Spanish>
+		<Japanese>&#37117;&#24066;&#12398;&#23447;&#25945;&#12398;&#25968;&#12395;&#12424;&#12426;[ICON_UNHEALTHY]%D1_Change</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_GOOD_HEALTH_FROM_TRAIT_BONUSES</Tag>
+		<English>%D1_Change[ICON_HEALTHY] from Resources (Trait)</English>
+		<French>%D1_Change[ICON_HEALTHY] from Resources (Trait)</French>
+		<German>%D1_Change[ICON_HEALTHY] from Resources (Trait)</German>
+		<Italian>%D1_Change[ICON_HEALTHY] from Resources (Trait)</Italian>
+		<Spanish>%D1_Change[ICON_HEALTHY] from Resources (Trait)</Spanish>
+		<Japanese>&#36039;&#28304;&#65288;&#24535;&#21521;&#65289;&#12395;&#12424;&#12426;[ICON_HEALTHY]%D1_Change</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HEALTH_FROM_TRAIT_BONUSES</Tag>
+		<English>%D1_Change[ICON_UNHEALTHY] from Resources (Trait)</English>
+		<French>%D1_Change[ICON_UNHEALTHY] from Resources (Trait)</French>
+		<German>%D1_Change[ICON_UNHEALTHY] from Resources (Trait)</German>
+		<Italian>%D1_Change[ICON_UNHEALTHY] from Resources (Trait)</Italian>
+		<Spanish>%D1_Change[ICON_UNHEALTHY] from Resources (Trait)</Spanish>
+		<Japanese>&#36039;&#28304;&#65288;&#24535;&#21521;&#65289;&#12395;&#12424;&#12426;[ICON_UNHEALTHY]%D1_Change</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_HAPPY_TRAIT_BONUSES</Tag>
+		<English>+%d1_Change[ICON_HAPPY] from Resources (Trait)</English>
+		<French>+%d1_Change[ICON_HAPPY] from Resources (Trait)</French>
+		<German>+%d1_Change[ICON_HAPPY] from Resources (Trait)</German>
+		<Italian>+%d1_Change[ICON_HAPPY] from Resources (Trait)</Italian>
+		<Spanish>+%d1_Change[ICON_HAPPY] from Resources (Trait)</Spanish>
+		<Japanese>[ICON_HAPPY]+%d1_Change:&#36039;&#28304;&#65288;&#24535;&#21521;&#65289;&#12395;&#12424;&#12426;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ANGER_TRAIT_BONUSES</Tag>
+		<English>+%d1_Change[ICON_UNHAPPY] from Resources (Trait)</English>
+		<French>+%d1_Change[ICON_UNHAPPY] from Resources (Trait)</French>
+		<German>+%d1_Change[ICON_UNHAPPY] from Resources (Trait)</German>
+		<Italian>+%d1_Change[ICON_UNHAPPY] from Resources (Trait)</Italian>
+		<Spanish>+%d1_Change[ICON_UNHAPPY] from Resources (Trait)</Spanish>
+		<Japanese>[ICON_UNHAPPY]+%d1_Change:&#36039;&#28304;&#65288;&#24535;&#21521;&#65289;&#12395;&#12424;&#12426;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_TRAIT_RELIGIONS</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]Religions in the city (trait): %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]Religions in the city (trait): %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]Religions in the city (trait): %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]Religions in the city (trait): %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]Religions in the city (trait): %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#37117;&#24066;&#12398;&#23447;&#25945;&#65288;&#24535;&#21521;&#65289;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_TRAIT_WONDERS</Tag>
+		<English>[SPACE][SPACE][ICON_BULLET]World Wonders (trait): %d1%F2</English>
+		<French>[SPACE][SPACE][ICON_BULLET]World Wonders (trait): %d1%F2</French>
+		<German>[SPACE][SPACE][ICON_BULLET]World Wonders (trait): %d1%F2</German>
+		<Italian>[SPACE][SPACE][ICON_BULLET]World Wonders (trait): %d1%F2</Italian>
+		<Spanish>[SPACE][SPACE][ICON_BULLET]World Wonders (trait): %d1%F2</Spanish>
+		<Japanese>[SPACE][SPACE][ICON_BULLET]&#19990;&#30028;&#36986;&#29987;&#65288;&#24535;&#21521;&#65289;: %F2%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_GREATPEOPLE_TRAIT_STATE_RELIGION</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] for State Religion (%s2_trait)</English>
+		<French>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] for State Religion (%s2_trait)</French>
+		<German>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] for State Religion (%s2_trait)</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] for State Religion (%s2_trait)</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] for State Religion (%s2_trait)</Spanish>
+		<Japanese>[ICON_BULLET]&#22269;&#25945;&#65288;%s2_trait&#65289;&#12395;&#12424;&#12426;[ICON_GREATPEOPLE]%D1%%</Japanese>
+	</TEXT>
 </Civ4GameText>

@@ -6718,6 +6718,18 @@ bool CvUnit::pillage()
 		changeDamage(-std::min(iPillageHeal, getDamage()));
 	}
 
+	// iPillageExperience of the promotions (added by this mod): each pillage of an improvement (not of a route) gives this
+	// experience. Not combat experience: no great general points, no Leadership
+	if (eTempImprovement != NO_IMPROVEMENT)
+	{
+		int iPillageExperience = sumPromotionValues(&CvPromotionInfo::getPillageExperience);
+		if (iPillageExperience > 0)
+		{
+			changeExperience(iPillageExperience);
+			testPromotionReady();
+		}
+	}
+
 	if (pPlot->isActiveVisible(false))
 	{
 		// Pillage entity mission
@@ -9221,9 +9233,11 @@ void CvUnit::upgrade(UnitTypes eUnit)
 
 	if (pUpgradeUnit->getLeaderUnitType() == NO_UNIT)
 	{
-		if (pUpgradeUnit->getExperience() > GC.getDefineINT("MAX_EXPERIENCE_AFTER_UPGRADE"))
+		// iMaxExperienceAfterUpgrade of the traits (added by this mod) replaces MAX_EXPERIENCE_AFTER_UPGRADE, -1 keeps all
+		int iMaxExperience = GET_PLAYER(getOwnerINLINE()).getMaxExperienceAfterUpgrade();
+		if (iMaxExperience >= 0 && pUpgradeUnit->getExperience() > iMaxExperience)
 		{
-			pUpgradeUnit->setExperience(GC.getDefineINT("MAX_EXPERIENCE_AFTER_UPGRADE"));
+			pUpgradeUnit->setExperience(iMaxExperience);
 		}
 	}
 }
@@ -12416,6 +12430,12 @@ void CvUnit::changeExperience(int iChange, int iMax, bool bFromCombat, bool bInB
 		{
 			iCombatExperienceMod += kPlayer.getDomesticGreatGeneralRateModifier() + kPlayer.getExpInBorderModifier();
 			iUnitExperience += (iChange * kPlayer.getExpInBorderModifier()) / 100;
+		}
+		else
+		{
+			// iExpOutsideBordersChange of the traits (added by this mod): the combat plot is not ours. Only the unit, not the
+			// great general points
+			iUnitExperience += kPlayer.getExpOutsideBordersChange();
 		}
 
 		if (bUpdateGlobal)

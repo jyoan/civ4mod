@@ -415,6 +415,10 @@
 			<bConquestLearnUniqueBuildings>1</bConquestLearnUniqueBuildings>
 			<iStateReligionHappiness>1</iStateReligionHappiness>
 			<iStateReligionHealth>1</iStateReligionHealth>
+			<iStateReligionGreatPeopleRateModifier>25</iStateReligionGreatPeopleRateModifier>
+			<iStateReligionUnitProductionModifier>25</iStateReligionUnitProductionModifier>
+			<iStateReligionBuildingProductionModifier>25</iStateReligionBuildingProductionModifier>
+			<iStateReligionFreeExperience>2</iStateReligionFreeExperience>
 			<GreatPeopleClassRateModifiers>
 				<GreatPeopleClassRateModifier>
 					<UnitClassType>UNITCLASS_ENGINEER</UnitClassType>
@@ -475,6 +479,104 @@
 			<iMaxNationalWondersPerCity>4</iMaxNationalWondersPerCity>
 			<iMaxNationalWondersPerCityForOCC>-1</iMaxNationalWondersPerCityForOCC>
 			<bHumanCanBeVassal>1</bHumanCanBeVassal>
+			<iMaxExperienceAfterUpgrade>-1</iMaxExperienceAfterUpgrade>
+			<iExpOutsideBordersChange>1</iExpOutsideBordersChange>
+			<iWeLoveTheKingChance>100</iWeLoveTheKingChance>
+			<SpecialistSlotChanges>
+				<SpecialistSlotChange>
+					<SpecialistType>SPECIALIST_ENGINEER</SpecialistType>
+					<iSlots>1</iSlots>
+				</SpecialistSlotChange>
+				<SpecialistSlotChange>
+					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+					<iSlots>-1</iSlots>
+				</SpecialistSlotChange>
+			</SpecialistSlotChanges>
+			<UnitHurrys>
+				<HurryType>HURRY_GOLD</HurryType>
+			</UnitHurrys>
+			<HurryUnitExperiences>
+				<HurryUnitExperience>
+					<HurryType>HURRY_GOLD</HurryType>
+					<iExperience>3</iExperience>
+				</HurryUnitExperience>
+			</HurryUnitExperiences>
+			<RevealBonuses>
+				<BonusType>BONUS_OIL</BonusType>
+				<BonusType>BONUS_URANIUM</BonusType>
+			</RevealBonuses>
+			<NoTechProcesses>
+				<ProcessType>PROCESS_WEALTH</ProcessType>
+				<ProcessType>PROCESS_RESEARCH</ProcessType>
+			</NoTechProcesses>
+			<bNoConscriptExperiencePenalty>1</bNoConscriptExperiencePenalty>
+			<FreeTechs>
+				<FreeTech>
+					<TechType>TECH_THE_WHEEL</TechType>
+					<bFreeTech>1</bFreeTech>
+				</FreeTech>
+				<FreeTech>
+					<TechType>TECH_POTTERY</TechType>
+					<bFreeTech>1</bFreeTech>
+				</FreeTech>
+			</FreeTechs>
+			<YieldChanges>
+				<iYield>0</iYield>
+				<iYield>1</iYield>
+				<iYield>0</iYield>
+			</YieldChanges>
+			<iHealthPerReligion>1</iHealthPerReligion>
+			<YieldPerReligion>
+				<iYield>1</iYield>
+				<iYield>0</iYield>
+				<iYield>0</iYield>
+			</YieldPerReligion>
+			<FeatureHappinessChanges>
+				<FeatureHappinessChange>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<iHappinessChange>1</iHappinessChange>
+				</FeatureHappinessChange>
+			</FeatureHappinessChanges>
+			<WorldWonderYieldChanges>
+				<iYield>0</iYield>
+				<iYield>2</iYield>
+				<iYield>0</iYield>
+			</WorldWonderYieldChanges>
+			<GlobalWorldWonderYieldChanges>
+				<iYield>1</iYield>
+				<iYield>0</iYield>
+				<iYield>0</iYield>
+			</GlobalWorldWonderYieldChanges>
+			<SpecialistExtraYields>
+				<iYield>0</iYield>
+				<iYield>1</iYield>
+				<iYield>0</iYield>
+			</SpecialistExtraYields>
+			<iNonStateReligionHappiness>1</iNonStateReligionHappiness>
+			<BuildingHappinessChanges>
+				<BuildingHappinessChange>
+					<BuildingClassType>BUILDINGCLASS_GRANARY</BuildingClassType>
+					<iHappinessChange>1</iHappinessChange>
+				</BuildingHappinessChange>
+			</BuildingHappinessChanges>
+			<BuildingHealthChanges>
+				<BuildingHealthChange>
+					<BuildingClassType>BUILDINGCLASS_BARRACKS</BuildingClassType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+			</BuildingHealthChanges>
+			<BonusHappinessChanges>
+				<BonusHappinessChange>
+					<BonusType>BONUS_CORN</BonusType>
+					<iHappinessChange>1</iHappinessChange>
+				</BonusHappinessChange>
+			</BonusHappinessChanges>
+			<BonusHealthChanges>
+				<BonusHealthChange>
+					<BonusType>BONUS_STONE</BonusType>
+					<iHealthChange>1</iHealthChange>
+				</BonusHealthChange>
+			</BonusHealthChanges>
 			<iGoldenAgeModifier>50</iGoldenAgeModifier>
 			<iGoldenAgeGreatPeopleRateModifier>50</iGoldenAgeGreatPeopleRateModifier>
 			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>
@@ -915,6 +1017,30 @@
 					</Yields>
 				</BonusYieldChange>
 			</BonusYieldChanges>
+			<ImprovedBonusYieldChanges>
+				<ImprovedBonusYieldChange>
+					<BonusType>BONUS_COPPER</BonusType>
+					<Yields>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+						<iYield>3</iYield>
+					</Yields>
+				</ImprovedBonusYieldChange>
+				<ImprovedBonusYieldChange>
+					<BonusType>BONUS_CORN</BonusType>
+					<Yields>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</ImprovedBonusYieldChange>
+			</ImprovedBonusYieldChanges>
+			<HappyCommercePercents>
+				<iCommerce>100</iCommerce>
+			</HappyCommercePercents>
+			<HealthyYieldPercents>
+				<iYield>50</iYield>
+			</HealthyYieldPercents>
 			<FreePromotions/>
 			<FreePromotionUnitCombats/>
 			<FreePromotionSets>

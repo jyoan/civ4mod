@@ -300,6 +300,7 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 	updateFeatureHealth();
 	updateFeatureHappiness();
 	updatePowerHealth();
+	updateDynamicBuildingYields();	// YieldChanges of the traits (added by this mod)
 
 	GET_PLAYER(getOwnerINLINE()).updateMaintenance();
 
@@ -507,6 +508,8 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_eOriginalOwner = eOwner;
 	m_eCultureLevel = NO_CULTURELEVEL;
 	m_iCultureRange = NO_CULTURELEVEL;
+	m_eHurriedUnit = NO_UNIT;
+	m_eHurriedUnitHurry = NO_HURRY;
 
 	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
 	{
@@ -997,6 +1000,10 @@ void CvCity::doTurn()
 
 	doProduction(bAllowNoProduction);
 
+	// HurryUnitExperiences (added by this mod): a hurry counts only for the production of this turn
+	m_eHurriedUnit = NO_UNIT;
+	m_eHurriedUnitHurry = NO_HURRY;
+
 	doDecay();
 
 	doReligion();
@@ -1070,7 +1077,7 @@ void CvCity::doTurn()
 	{
 		setWeLoveTheKingDay(false);
 	}
-	else if ((getPopulation() >= GC.getDefineINT("WE_LOVE_THE_KING_POPULATION_MIN_POPULATION")) && (GC.getGameINLINE().getSorenRandNum(GC.getDefineINT("WE_LOVE_THE_KING_RAND"), "Do We Love The King?") < getPopulation()))
+	else if ((getPopulation() >= GC.getDefineINT("WE_LOVE_THE_KING_POPULATION_MIN_POPULATION")) && (isTraitWeLoveTheKing() || (GC.getGameINLINE().getSorenRandNum(GC.getDefineINT("WE_LOVE_THE_KING_RAND"), "Do We Love The King?") < getPopulation())))
 	{
 		setWeLoveTheKingDay(true);
 	}
@@ -2669,7 +2676,8 @@ void CvCity::addProductionExperience(CvUnit* pUnit, bool bConscript)
 
 	if (pUnit->canAcquirePromotionAny())
 	{
-		pUnit->changeExperience(getProductionExperience(pUnit->getUnitType()) / ((bConscript) ? 2 : 1));
+		// bNoConscriptExperiencePenalty of the traits (added by this mod): drafted units get all of it
+		pUnit->changeExperience(getProductionExperience(pUnit->getUnitType()) / ((bConscript && !GET_PLAYER(getOwnerINLINE()).isNoConscriptExperiencePenalty()) ? 2 : 1));
 	}
 
 	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
@@ -3548,9 +3556,21 @@ bool CvCity::isWonderHurry(HurryTypes eHurry, BuildingTypes eBuilding) const
 	return GET_PLAYER(getOwnerINLINE()).isWonderHurry(eHurry);
 }
 
+// UnitHurrys of the traits of the owner (added by this mod): eUnit is a unit the owner can hurry this way without the civic
+// that allows it
+bool CvCity::isUnitHurry(HurryTypes eHurry, UnitTypes eUnit) const
+{
+	if (eUnit == NO_UNIT)
+	{
+		return false;
+	}
+
+	return GET_PLAYER(getOwnerINLINE()).isUnitHurry(eHurry);
+}
+
 bool CvCity::canHurry(HurryTypes eHurry, bool bTestVisible) const
 {
-	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)) && !isWonderHurry(eHurry, getProductionBuilding()))
+	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)) && !isWonderHurry(eHurry, getProductionBuilding()) && !isUnitHurry(eHurry, getProductionUnit()))
 	{
 		return false;
 	}
@@ -3588,7 +3608,7 @@ bool CvCity::canHurry(HurryTypes eHurry, bool bTestVisible) const
 
 bool CvCity::canHurryUnit(HurryTypes eHurry, UnitTypes eUnit, bool bIgnoreNew) const
 {
-	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)))
+	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)) && !isUnitHurry(eHurry, eUnit))
 	{
 		return false;
 	}
@@ -3661,6 +3681,13 @@ void CvCity::hurry(HurryTypes eHurry)
 	iHurryGold = hurryGold(eHurry);
 	iHurryPopulation = hurryPopulation(eHurry);
 	iHurryAngerLength = hurryAngerLength(eHurry);
+
+	// HurryUnitExperiences of the traits (added by this mod): the unit completed this turn gets the experience (popOrder)
+	if (isProductionUnit())
+	{
+		m_eHurriedUnit = getProductionUnit();
+		m_eHurriedUnitHurry = eHurry;
+	}
 
 	changeProduction(hurryProduction(eHurry));
 
@@ -3895,6 +3922,9 @@ int CvCity::getBonusHealth(BonusTypes eBonus) const
 		iHealth += getNumActiveBuilding((BuildingTypes)iI) * GC.getBuildingInfo((BuildingTypes) iI).getBonusHealthChanges(eBonus);
 	}
 
+	// BonusHealthChanges of the traits of the owner (added by this mod): shown with the bonus on the city screen
+	iHealth += GET_PLAYER(getOwnerINLINE()).getTraitBonusHealth(eBonus);
+
 	return iHealth;
 }
 
@@ -3910,6 +3940,9 @@ int CvCity::getBonusHappiness(BonusTypes eBonus) const
 	{
 		iHappiness += getNumActiveBuilding((BuildingTypes)iI) * GC.getBuildingInfo((BuildingTypes) iI).getBonusHappinessChanges(eBonus);
 	}
+
+	// BonusHappinessChanges of the traits of the owner (added by this mod): shown with the bonus on the city screen
+	iHappiness += GET_PLAYER(getOwnerINLINE()).getTraitBonusHappiness(eBonus);
 
 	return iHappiness;
 }
@@ -4753,6 +4786,67 @@ int CvCity::getStateReligionTraitHealth() const
 	return GET_PLAYER(getOwnerINLINE()).getTraitStateReligionHealth();
 }
 
+// iHealthPerReligion of the traits of the owner (added by this mod): for each religion in the city
+int CvCity::getTraitReligionHealth() const
+{
+	int iPerReligion = GET_PLAYER(getOwnerINLINE()).getHealthPerReligion();
+	return ((iPerReligion != 0) ? (iPerReligion * getReligionCount()) : 0);
+}
+
+// The sum of BonusHappinessChanges (BonusHealthChanges) of the traits of the owner over the bonuses the city has (added by
+// this mod). bGood: the bonuses whose value is positive, else the negative ones, as the buildings in processBonus
+static int getTraitBonusTotal(const CvCity* pCity, int (CvPlayer::*pfValue)(BonusTypes) const, bool bGood)
+{
+	const CvPlayer& kOwner = GET_PLAYER(pCity->getOwnerINLINE());
+	int iTotal = 0;
+	int iValue;
+	int iI;
+
+	if (!kOwner.isAnyTraitBonusHappinessOrHealth())
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		if (pCity->hasBonus((BonusTypes)iI))
+		{
+			iValue = (kOwner.*pfValue)((BonusTypes)iI);
+			if ((bGood && iValue > 0) || (!bGood && iValue < 0))
+			{
+				iTotal += iValue;
+			}
+		}
+	}
+
+	return iTotal;
+}
+
+int CvCity::getTraitBonusHappiness(bool bGood) const
+{
+	return getTraitBonusTotal(this, &CvPlayer::getTraitBonusHappiness, bGood);
+}
+
+int CvCity::getTraitBonusHealth(bool bGood) const
+{
+	return getTraitBonusTotal(this, &CvPlayer::getTraitBonusHealth, bGood);
+}
+
+// YieldChanges, YieldPerReligion, WorldWonderYieldChanges and GlobalWorldWonderYieldChanges of the traits of the owner (added
+// by this mod). A part of calculateDynamicBuildingYield, so updateDynamicBuildingYields adds it to the base yield rate
+int CvCity::getTraitYield(YieldTypes eIndex) const
+{
+	const CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+	int iYield;
+
+	iYield = kOwner.getTraitYieldChange(eIndex);
+	iYield += kOwner.getYieldPerReligion(eIndex) * getReligionCount();
+	iYield += kOwner.getTraitWorldWonderYield(eIndex) * getNumWorldWonders();
+	iYield += kOwner.getTraitGlobalWorldWonderYield(eIndex) * kOwner.getNumWorldWonders();
+
+	return iYield;
+}
+
 int CvCity::unhappyLevel(int iExtra) const
 {
 	int iAngerPercent;
@@ -4791,6 +4885,7 @@ int CvCity::unhappyLevel(int iExtra) const
 		iUnhappiness -= std::min(0, getBonusBadHappiness());
 		iUnhappiness -= std::min(0, getSpecialistBadHappiness());	// added by this mod
 		iUnhappiness -= std::min(0, getTraitReligionHappiness());	// added by this mod
+		iUnhappiness -= getTraitBonusHappiness(false);	// added by this mod
 		iUnhappiness -= std::min(0, getReligionBadHappiness());
 		iUnhappiness -= std::min(0, getCommerceHappiness());
 		iUnhappiness -= std::min(0, area()->getBuildingHappiness(getOwnerINLINE()));
@@ -4820,6 +4915,7 @@ int CvCity::happyLevel() const
 	iHappiness += std::max(0, getBonusGoodHappiness());
 	iHappiness += std::max(0, getSpecialistGoodHappiness());	// added by this mod
 	iHappiness += std::max(0, getTraitReligionHappiness());	// added by this mod
+	iHappiness += getTraitBonusHappiness(true);	// added by this mod
 	iHappiness += std::max(0, getReligionGoodHappiness());
 	iHappiness += std::max(0, getCommerceHappiness());
 	iHappiness += std::max(0, area()->getBuildingHappiness(getOwnerINLINE()));
@@ -4966,6 +5062,14 @@ int CvCity::goodHealth() const
 		iTotalHealth += iHealth;
 	}
 
+	// iHealthPerReligion and BonusHealthChanges of the traits (added by this mod)
+	iHealth = getTraitReligionHealth();
+	if (iHealth > 0)
+	{
+		iTotalHealth += iHealth;
+	}
+	iTotalHealth += getTraitBonusHealth(true);
+
 	iHealth = totalGoodBuildingHealth();
 	if (iHealth > 0)
 	{
@@ -5038,6 +5142,14 @@ int CvCity::badHealth(bool bNoAngry, int iExtra) const
 	{
 		iTotalHealth += iHealth;
 	}
+
+	// iHealthPerReligion and BonusHealthChanges of the traits (added by this mod)
+	iHealth = getTraitReligionHealth();
+	if (iHealth < 0)
+	{
+		iTotalHealth += iHealth;
+	}
+	iTotalHealth += getTraitBonusHealth(false);
 
 	iHealth = totalBadBuildingHealth();
 	if (iHealth < 0)
@@ -5949,6 +6061,9 @@ int CvCity::calculateDynamicBuildingYield(YieldTypes eIndex) const
 		iYield += getDynamicBuildingYieldByBuilding(eIndex, (BuildingTypes)iI);
 	}
 
+	// The flat yields of the traits (added by this mod): they change with the religions and the world wonders as well
+	iYield += getTraitYield(eIndex);
+
 	return iYield;
 }
 
@@ -6044,6 +6159,10 @@ void CvCity::updateMiseryChanges()
 	int aiUnhealthyCommerce[NUM_COMMERCE_TYPES];
 	int iAngry = angryPopulation();
 	int iUnhealthy = std::max(0, -healthRate());
+	// HappyYieldPercents and the like of the traits (added by this mod): per extra happiness and health, in 1/100. A city has
+	// either angry citizens or extra happiness (either unhealthiness or extra health), so the same members keep both parts
+	int iHappy = std::max(0, happyLevel() - unhappyLevel());
+	int iHealthy = std::max(0, goodHealth() - badHealth());
 	int iNum;
 	int iI;
 
@@ -6057,6 +6176,49 @@ void CvCity::updateMiseryChanges()
 	{
 		aiAngryCommerce[iI] = 0;
 		aiUnhealthyCommerce[iI] = 0;
+	}
+
+	if (iHappy > 0 || iHealthy > 0)
+	{
+		int aiHappyYieldPercent[NUM_YIELD_TYPES];
+		int aiHealthyYieldPercent[NUM_YIELD_TYPES];
+		int aiHappyCommercePercent[NUM_COMMERCE_TYPES];
+		int aiHealthyCommercePercent[NUM_COMMERCE_TYPES];
+
+		for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+		{
+			aiHappyYieldPercent[iI] = 0;
+			aiHealthyYieldPercent[iI] = 0;
+		}
+
+		for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+		{
+			aiHappyCommercePercent[iI] = 0;
+			aiHealthyCommercePercent[iI] = 0;
+		}
+
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (kOwner.hasTrait((TraitTypes)iI))
+			{
+				const CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+				addMiseryChanges(aiHappyYieldPercent, aiHappyCommercePercent, 1, kTrait.getHappyYieldPercentArray(), kTrait.getHappyCommercePercentArray());
+				addMiseryChanges(aiHealthyYieldPercent, aiHealthyCommercePercent, 1, kTrait.getHealthyYieldPercentArray(), kTrait.getHealthyCommercePercentArray());
+			}
+		}
+
+		// The percents are added up first, then rounded down
+		for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+		{
+			aiAngryYield[iI] += (iHappy * aiHappyYieldPercent[iI]) / 100;
+			aiUnhealthyYield[iI] += (iHealthy * aiHealthyYieldPercent[iI]) / 100;
+		}
+
+		for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+		{
+			aiAngryCommerce[iI] += (iHappy * aiHappyCommercePercent[iI]) / 100;
+			aiUnhealthyCommerce[iI] += (iHealthy * aiHealthyCommercePercent[iI]) / 100;
+		}
 	}
 
 	if (iAngry > 0 || iUnhealthy > 0)
@@ -8156,6 +8318,20 @@ void CvCity::setPlundered(bool bNewValue)
 bool CvCity::isWeLoveTheKingDay() const
 {
 	return m_bWeLoveTheKingDay;
+}
+
+// iWeLoveTheKingChance of the traits of the owner (added by this mod): the roll of a city able to celebrate (doTurn), before
+// the roll of BtS (population / WE_LOVE_THE_KING_RAND). 100 always celebrates and uses no random number
+bool CvCity::isTraitWeLoveTheKing() const
+{
+	int iChance = GET_PLAYER(getOwnerINLINE()).getWeLoveTheKingChance();
+
+	if (iChance >= 100)
+	{
+		return true;
+	}
+
+	return (iChance > 0 && GC.getGameINLINE().getSorenRandNum(100, "Trait We Love The King") < iChance);
 }
 
 
@@ -10660,7 +10836,9 @@ int CvCity::getMaxSpecialistCount(SpecialistTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < GC.getNumSpecialistInfos(), "eIndex expected to be < GC.getNumSpecialistInfos()");
-	return m_paiMaxSpecialistCount[eIndex];
+	// SpecialistSlotChanges of the traits of the owner (added by this mod): slots in every city. No limit (-1) is
+	// CvPlayer::isSpecialistValid
+	return m_paiMaxSpecialistCount[eIndex] + std::max(0, GET_PLAYER(getOwnerINLINE()).getTraitSpecialistSlotChange(eIndex));
 }
 
 
@@ -11637,6 +11815,7 @@ void CvCity::setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce
 		updateMaintenance();
 		updateReligionHappiness();
 		updateReligionCommerce();
+		updateDynamicBuildingYields();	// YieldPerReligion of the traits (added by this mod)
 
 		AI_setAssignWorkDirty(true);
 
@@ -12254,6 +12433,19 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			pUnit->finishMoves();
 
 			addProductionExperience(pUnit);
+
+			// HurryUnitExperiences of the traits (added by this mod): the first such unit completed after the hurry
+			if (eTrainUnit == m_eHurriedUnit && m_eHurriedUnitHurry != NO_HURRY)
+			{
+				int iHurryExperience = GET_PLAYER(getOwnerINLINE()).getHurryUnitExperience(m_eHurriedUnitHurry);
+				if (iHurryExperience > 0 && pUnit->canAcquirePromotionAny())
+				{
+					pUnit->changeExperience(iHurryExperience);
+					pUnit->testPromotionReady();
+				}
+				m_eHurriedUnit = NO_UNIT;
+				m_eHurriedUnitHurry = NO_HURRY;
+			}
 
 			pRallyPlot = getRallyPlot();
 
@@ -13581,13 +13773,22 @@ void CvCity::read(FDataStreamBase* pStream)
 	{
 		m_iCultureRange = getCultureLevel();
 	}
+
+	// uiFlag < 6: saved before HurryUnitExperiences existed (added by this mod)
+	m_eHurriedUnit = NO_UNIT;
+	m_eHurriedUnitHurry = NO_HURRY;
+	if (uiFlag > 5)
+	{
+		pStream->Read((int*)&m_eHurriedUnit);
+		pStream->Read((int*)&m_eHurriedUnitHurry);
+	}
 }
 
 void CvCity::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=5;	// 1: plot radius, 2: m_aiDynamicBuildingYield, 3: m_paiBuildingChangeSpecialist, 4: m_aiAngryYield, m_aiUnhealthyYield, m_aiAngryCommerce, m_aiUnhealthyCommerce, 5: m_iCultureRange (added by this mod)
+	uint uiFlag=6;	// 1: plot radius, 2: m_aiDynamicBuildingYield, 3: m_paiBuildingChangeSpecialist, 4: m_aiAngryYield, m_aiUnhealthyYield, m_aiAngryCommerce, m_aiUnhealthyCommerce, 5: m_iCultureRange, 6: m_eHurriedUnit, m_eHurriedUnitHurry (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -13811,6 +14012,8 @@ void CvCity::write(FDataStreamBase* pStream)
 	pStream->Write(NUM_COMMERCE_TYPES, m_aiAngryCommerce);
 	pStream->Write(NUM_COMMERCE_TYPES, m_aiUnhealthyCommerce);
 	pStream->Write(m_iCultureRange);
+	pStream->Write(m_eHurriedUnit);
+	pStream->Write(m_eHurriedUnitHurry);
 }
 
 
