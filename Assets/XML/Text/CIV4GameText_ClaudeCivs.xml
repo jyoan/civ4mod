@@ -1622,4 +1622,40 @@
 		<Spanish>Qha</Spanish>
 		<Japanese>&#36947;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_YANGBAN</Tag>
+		<English>Yangban</English>
+		<French>Yangban</French>
+		<German>Yangban</German>
+		<Italian>Yangban</Italian>
+		<Spanish>Yangban</Spanish>
+		<Japanese>&#20001;&#29677;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_YANGBAN_SHORT</Tag>
+		<English>Yan</English>
+		<French>Yan</French>
+		<German>Yan</German>
+		<Italian>Yan</Italian>
+		<Spanish>Yan</Spanish>
+		<Japanese>&#29677;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MUNBAN</Tag>
+		<English>Munban</English>
+		<French>Munban</French>
+		<German>Munban</German>
+		<Italian>Munban</Italian>
+		<Spanish>Munban</Spanish>
+		<Japanese>&#25991;&#29677;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_MUNBAN_SHORT</Tag>
+		<English>Mun</English>
+		<French>Mun</French>
+		<German>Mun</German>
+		<Italian>Mun</Italian>
+		<Spanish>Mun</Spanish>
+		<Japanese>&#25991;</Japanese>
+	</TEXT>
 </Civ4GameText>
