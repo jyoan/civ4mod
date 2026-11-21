@@ -20254,6 +20254,9 @@ m_bHumanCanBeVassal(false),
 m_bBasicTrait(false),
 m_bGainTraitOnCapitalCapture(false),
 m_bGainTraitsOnElimination(false),
+m_bRandomBasicTraits(false),
+m_iRandomBasicTraitTurns(0),
+m_iRandomBasicTraitCount(0),
 m_iMaxExperienceAfterUpgrade(0),
 m_iExpOutsideBordersChange(0),
 m_iWeLoveTheKingChance(0),
@@ -20745,7 +20748,7 @@ bool CvTraitInfo::isNoPillageInBorders() const
 	return m_bNoPillageInBorders;
 }
 
-// Gold every turn: this % of the treasury, at most iGoldInterestMax (0: no limit; added by this mod, as in ex's
+// Gold every turn: this % of the treasury, at most GoldInterest/iMax (0: no limit; added by this mod, as in ex's
 // CivGoldEmpires)
 int CvTraitInfo::getGoldInterestPercent() const
 {
@@ -20907,7 +20910,7 @@ int CvTraitInfo::getSpecialBuildingProductionModifier(int iSpecialBuilding) cons
 	return (iSpecialBuilding >= 0 && iSpecialBuilding < (int)m_aiSpecialBuildingProductionModifier.size()) ? m_aiSpecialBuildingProductionModifier[iSpecialBuilding] : 0;
 }
 
-// iKnownTechCostModifier and iKnownTechCostLimit (added by this mod): see CvTeam::getResearchCost
+// KnownTechCost/iModifier and KnownTechCost/iLimit (added by this mod): see CvTeam::getResearchCost
 int CvTraitInfo::getKnownTechCostModifier() const
 {
 	return m_iKnownTechCostModifier;
@@ -20975,14 +20978,14 @@ int CvTraitInfo::getDistantTradeRouteModifier() const
 	return m_iDistantTradeRouteModifier;
 }
 
-// iEnemyAttritionInBorders (added by this mod): damage (% of the max HP) at the start of each turn of the player to the units
+// EnemyAttrition/iPercent (added by this mod): damage (% of the max HP) at the start of each turn of the player to the units
 // of the players at war with it in its territory (CvPlayer::doEnemyAttrition)
 int CvTraitInfo::getEnemyAttritionInBorders() const
 {
 	return m_iEnemyAttritionInBorders;
 }
 
-// iEnemyAttritionLimit (added by this mod): the attrition does not damage a unit beyond this % of its max HP (100, the
+// EnemyAttrition/iLimit (added by this mod): the attrition does not damage a unit beyond this % of its max HP (100, the
 // default: it can kill)
 int CvTraitInfo::getEnemyAttritionLimit() const
 {
@@ -21141,6 +21144,24 @@ bool CvTraitInfo::isGainTraitOnCapitalCapture() const
 bool CvTraitInfo::isGainTraitsOnElimination() const
 {
 	return m_bGainTraitsOnElimination;
+}
+
+// RandomBasicTraits (iTurns, iCount; added by this mod; the Insane trait of FFH2): every iTurns turns (scaled by the game
+// speed), the player gets iCount random basic traits in place of the ones it got last time (CvPlayer::doRandomBasicTraits).
+// isRandomBasicTraits: the element is there
+bool CvTraitInfo::isRandomBasicTraits() const
+{
+	return m_bRandomBasicTraits;
+}
+
+int CvTraitInfo::getRandomBasicTraitTurns() const
+{
+	return m_iRandomBasicTraitTurns;
+}
+
+int CvTraitInfo::getRandomBasicTraitCount() const
+{
+	return m_iRandomBasicTraitCount;
 }
 
 // iMaxExperienceAfterUpgrade (added by this mod): replaces MAX_EXPERIENCE_AFTER_UPGRADE, see
@@ -22552,11 +22573,22 @@ void CvTraitInfo::readStartBias(CvXMLLoadUtility* pXML)
 // The part of read() for gold interest, peace anger, culture range, ForbiddenCivics and the new cities (added by this mod)
 void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 {
-	pXML->GetChildXmlValByName(&m_iGoldInterestPercent, "iGoldInterestPercent");
-	pXML->GetChildXmlValByName(&m_iGoldInterestMax, "iGoldInterestMax");
-	pXML->GetChildXmlValByName(&m_iPeaceAngerPerTurn, "iPeaceAngerPerTurn");
-	pXML->GetChildXmlValByName(&m_iPeaceAngerDecayPerTurn, "iPeaceAngerDecayPerTurn");
-	pXML->GetChildXmlValByName(&m_iPeaceAngerMax, "iPeaceAngerMax");
+	// GoldInterest: iPercent, iMax (0 = no limit)
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "GoldInterest"))
+	{
+		pXML->GetChildXmlValByName(&m_iGoldInterestPercent, "iPercent");
+		pXML->GetChildXmlValByName(&m_iGoldInterestMax, "iMax");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+
+	// PeaceAnger: iPerTurn, iDecayPerTurn, iMax
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "PeaceAnger"))
+	{
+		pXML->GetChildXmlValByName(&m_iPeaceAngerPerTurn, "iPerTurn");
+		pXML->GetChildXmlValByName(&m_iPeaceAngerDecayPerTurn, "iDecayPerTurn");
+		pXML->GetChildXmlValByName(&m_iPeaceAngerMax, "iMax");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 	pXML->GetChildXmlValByName(&m_iCultureRangeChange, "iCultureRangeChange");
 	// Civics are loaded after the traits: readPass3() finds the types
 	readTypeList(pXML, "ForbiddenCivics", m_aszForbiddenCivicTypes);
@@ -22579,8 +22611,13 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iStateReligionFreeExperience, "iStateReligionFreeExperience");
 	pXML->GetChildXmlValByName(&m_iEnemyMoveCostInBorders, "iEnemyMoveCostInBorders");
 	pXML->GetChildXmlValByName(&m_iRevengeCombatPercent, "iRevengeCombatPercent");
-	pXML->GetChildXmlValByName(&m_iKnownTechCostModifier, "iKnownTechCostModifier");
-	pXML->GetChildXmlValByName(&m_iKnownTechCostLimit, "iKnownTechCostLimit");
+	// KnownTechCost: iModifier, iLimit (0 = no limit)
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "KnownTechCost"))
+	{
+		pXML->GetChildXmlValByName(&m_iKnownTechCostModifier, "iModifier");
+		pXML->GetChildXmlValByName(&m_iKnownTechCostLimit, "iLimit");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 	pXML->GetChildXmlValByName(&m_bConquestHeal, "bConquestHeal");
 	pXML->GetChildXmlValByName(&m_bStackCityDefense, "bStackCityDefense");
 	pXML->GetChildXmlValByName(&m_bRevealWonderProduction, "bRevealWonderProduction");
@@ -22593,8 +22630,13 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iOverseasCityPopulation, "iOverseasCityPopulation");
 	pXML->GetChildXmlValByName(&m_iOverseasMaintenanceModifier, "iOverseasMaintenanceModifier");
 	pXML->GetChildXmlValByName(&m_iDistantTradeRouteModifier, "iDistantTradeRouteModifier");
-	pXML->GetChildXmlValByName(&m_iEnemyAttritionInBorders, "iEnemyAttritionInBorders");
-	pXML->GetChildXmlValByName(&m_iEnemyAttritionLimit, "iEnemyAttritionLimit", 100);
+	// EnemyAttrition: iPercent, iLimit (100 when left out)
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "EnemyAttrition"))
+	{
+		pXML->GetChildXmlValByName(&m_iEnemyAttritionInBorders, "iPercent");
+		pXML->GetChildXmlValByName(&m_iEnemyAttritionLimit, "iLimit", 100);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 	pXML->GetChildXmlValByName(&m_iAnarchyGoldenAgePercent, "iAnarchyGoldenAgePercent");
 	pXML->GetChildXmlValByName(&m_iTechCostModifier, "iTechCostModifier");
 	pXML->GetChildXmlValByName(&m_iAttitudeChange, "iAttitudeChange");
@@ -22639,6 +22681,15 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bBasicTrait, "bBasicTrait");
 	pXML->GetChildXmlValByName(&m_bGainTraitOnCapitalCapture, "bGainTraitOnCapitalCapture");
 	pXML->GetChildXmlValByName(&m_bGainTraitsOnElimination, "bGainTraitsOnElimination");
+	// RandomBasicTraits: iTurns and iCount; on when the element is there
+	m_bRandomBasicTraits = false;
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "RandomBasicTraits"))
+	{
+		m_bRandomBasicTraits = true;
+		pXML->GetChildXmlValByName(&m_iRandomBasicTraitTurns, "iTurns");
+		pXML->GetChildXmlValByName(&m_iRandomBasicTraitCount, "iCount");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 }
 
 // The part of read() for the yield and commerce arrays, the unit combat arrays, the free promotions and MaintainFeatures (added by this mod)

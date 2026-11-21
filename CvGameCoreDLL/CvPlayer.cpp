@@ -63,6 +63,7 @@ CvPlayer::CvPlayer()
 	m_paiFreeTraitCount = NULL;
 	m_paiConditionalTraitCount = NULL;
 	m_paiTraitTurns = NULL;
+	m_paiRandomBasicTrait = NULL;
 	m_paiLearnedUnit = NULL;
 	m_paiLearnedBuilding = NULL;
 	m_paiBuildingClassExtraCommerce = NULL;
@@ -284,6 +285,7 @@ void CvPlayer::uninit()
 	SAFE_DELETE_ARRAY(m_paiFreeTraitCount);
 	SAFE_DELETE_ARRAY(m_paiConditionalTraitCount);
 	SAFE_DELETE_ARRAY(m_paiTraitTurns);
+	SAFE_DELETE_ARRAY(m_paiRandomBasicTrait);
 	SAFE_DELETE_ARRAY(m_paiLearnedUnit);
 	SAFE_DELETE_ARRAY(m_paiLearnedBuilding);
 	SAFE_DELETE_ARRAY(m_paiBuildingClassExtraCommerce);
@@ -437,6 +439,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_iNumUnitsKilled = 0;
 	m_iNumCitiesConquered = 0;
 	m_eLastConqueror = NO_PLAYER;
+	m_iRandomBasicTraitTurn = -1;
 	m_iWarWearinessModifier = 0;
 	m_iFreeSpecialist = 0;
 	m_iNoForeignTradeCount = 0;
@@ -610,6 +613,13 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
 		{
 			m_paiTraitTurns[iI] = 0;
+		}
+
+		FAssertMsg(m_paiRandomBasicTrait==NULL, "about to leak memory, CvPlayer::m_paiRandomBasicTrait");
+		m_paiRandomBasicTrait = new int [GC.getNumTraitInfos()];
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			m_paiRandomBasicTrait[iI] = 0;
 		}
 
 		FAssertMsg(m_paiLearnedUnit==NULL, "about to leak memory, CvPlayer::m_paiLearnedUnit");
@@ -2802,6 +2812,153 @@ void CvPlayer::doTraitTurns()
 	}
 }
 
+// RandomBasicTraits of the traits (added by this mod): whether the trait is one of the random basic traits given now
+bool CvPlayer::isRandomBasicTrait(TraitTypes eTrait) const
+{
+	FAssertMsg(eTrait >= 0, "eTrait is expected to be non-negative (invalid Index)");
+	FAssertMsg(eTrait < GC.getNumTraitInfos(), "eTrait is expected to be within maximum bounds (invalid Index)");
+	return ((m_paiRandomBasicTrait != NULL) && (m_paiRandomBasicTrait[eTrait] > 0));
+}
+
+int CvPlayer::getRandomBasicTraitTurn() const
+{
+	return m_iRandomBasicTraitTurn;
+}
+
+// iTurns of RandomBasicTraits scaled by the game speed (growth percent, as the event times), at least 1. Also for the help text,
+// so it works before a game is started
+int CvPlayer::getRandomBasicTraitTurnsForSpeed(int iTurns)
+{
+	GameSpeedTypes eSpeed = GC.getGameINLINE().getGameSpeedType();
+
+	if (eSpeed != NO_GAMESPEED)
+	{
+		iTurns = (iTurns * GC.getGameSpeedInfo(eSpeed).getGrowthPercent()) / 100;
+	}
+
+	return std::max(1, iTurns);
+}
+
+// RandomBasicTraits (iTurns, iCount) of the traits (added by this mod; the Insane trait of
+// FFH2). At the start of the turn (and at the start of the game, CvGame::setInitialItems): when the player has a trait with
+// RandomBasicTraits and iTurns (scaled by the game speed) have passed since the last change (or there was
+// none), the random basic traits given last time are replaced by iCount new ones. The candidates are the
+// basic traits (bBasicTrait) the player does not have otherwise (the ones given last time are candidates again); no trait
+// twice. Several such traits: the count is summed, the shortest interval is used. When the player no longer has such a
+// trait, the given traits are taken away. The player gets a message with the new traits
+void CvPlayer::doRandomBasicTraits()
+{
+	std::vector<TraitTypes> aeCandidates;
+	std::vector<bool> abNew;
+	CvWString szList;
+	CvWString szBuffer;
+	TraitTypes eSource;
+	int iTurns;
+	int iCount;
+	int iPick;
+	int iI;
+
+	if (m_paiRandomBasicTrait == NULL || getLeaderType() == NO_LEADER)
+	{
+		return;
+	}
+
+	eSource = NO_TRAIT;
+	iTurns = 0;
+	iCount = 0;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		const CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+		if (kTrait.isRandomBasicTraits() && kTrait.getRandomBasicTraitCount() > 0 && hasTrait((TraitTypes)iI))
+		{
+			if (eSource == NO_TRAIT)
+			{
+				eSource = (TraitTypes)iI;
+				iTurns = kTrait.getRandomBasicTraitTurns();
+			}
+			else
+			{
+				iTurns = std::min(iTurns, kTrait.getRandomBasicTraitTurns());
+			}
+			iCount += kTrait.getRandomBasicTraitCount();
+		}
+	}
+
+	if (eSource == NO_TRAIT)
+	{
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			if (m_paiRandomBasicTrait[iI] > 0)
+			{
+				m_paiRandomBasicTrait[iI] = 0;
+				changeFreeTraitCount((TraitTypes)iI, -1);
+			}
+		}
+		m_iRandomBasicTraitTurn = -1;
+		return;
+	}
+
+	if (m_iRandomBasicTraitTurn >= 0 && (GC.getGameINLINE().getGameTurn() - m_iRandomBasicTraitTurn) < getRandomBasicTraitTurnsForSpeed(iTurns))
+	{
+		return;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		abNew.push_back(false);
+
+		if (GC.getTraitInfo((TraitTypes)iI).isBasicTrait() && !hasBaseTrait((TraitTypes)iI) && (getFreeTraitCount((TraitTypes)iI) - m_paiRandomBasicTrait[iI]) <= 0)
+		{
+			aeCandidates.push_back((TraitTypes)iI);
+		}
+	}
+
+	while (iCount > 0 && !aeCandidates.empty())
+	{
+		iPick = GC.getGameINLINE().getSorenRandNum((int)aeCandidates.size(), "Random basic trait");
+		abNew[aeCandidates[iPick]] = true;
+		aeCandidates.erase(aeCandidates.begin() + iPick);
+		iCount--;
+	}
+
+	// The traits that stay are not taken away and given again (their effects and PyOnLost / PyOnGained do not run)
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (m_paiRandomBasicTrait[iI] > 0 && !abNew[iI])
+		{
+			m_paiRandomBasicTrait[iI] = 0;
+			changeFreeTraitCount((TraitTypes)iI, -1);
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (abNew[iI])
+		{
+			if (m_paiRandomBasicTrait[iI] == 0)
+			{
+				m_paiRandomBasicTrait[iI] = 1;
+				changeFreeTraitCount((TraitTypes)iI, 1);
+			}
+
+			if (!szList.empty())
+			{
+				szList += L", ";
+			}
+			szList += GC.getTraitInfo((TraitTypes)iI).getDescription();
+		}
+	}
+
+	m_iRandomBasicTraitTurn = GC.getGameINLINE().getGameTurn();
+
+	if (!szList.empty())
+	{
+		szBuffer = gDLL->getText("TXT_KEY_MISC_RANDOM_BASIC_TRAITS", GC.getTraitInfo(eSource).getTextKeyWide(), szList.GetCString());
+		gDLL->getInterfaceIFace()->addMessage(getID(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_GOLDAGESTART", MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
+	}
+}
+
 // PyOnGained / PyOnLost of a trait (added by this mod): CvTraitInterface.py evaluates the expression with pPlayer and eTrait
 // when the player gains or loses the trait during the game (changeFreeTraitCount: conditions, FreeTraits, temporary
 // traits, Python). Not for the traits the player has when the game starts.
@@ -3559,8 +3716,9 @@ void CvPlayer::doTurn()
 	CvEventReporter::getInstance().beginPlayerTurn( GC.getGameINLINE().getGameTurn(),  getID());
 	updateConditionalTraits();	// ConditionalFreeTraits, also for changes the other calls miss (added by this mod)
 	doTraitTurns();	// temporary traits (added by this mod)
+	doRandomBasicTraits();	// RandomBasicTraits of the traits (added by this mod)
 	doTraitPythonHook(TRAIT_PYHOOK_BEGIN_TURN);	// PyOnBeginTurn (added by this mod)
-	doEnemyAttrition();	// iEnemyAttritionInBorders of the traits (added by this mod)
+	doEnemyAttrition();	// EnemyAttrition/iPercent of the traits (added by this mod)
 
 	doUpdateCacheOnTurn();
 
@@ -7731,7 +7889,7 @@ bool CvPlayer::isNoPillageInBorders() const
 	return hasTraitFlag(&CvTraitInfo::isNoPillageInBorders);
 }
 
-// Gold this turn from iGoldInterestPercent / iGoldInterestMax of the traits (added by this mod): each trait gives its %
+// Gold this turn from GoldInterest/iPercent / GoldInterest/iMax of the traits (added by this mod): each trait gives its %
 // of the treasury, at most its maximum. Part of calculateGoldRate, so doGold gives it and the interface shows it.
 int CvPlayer::getGoldInterest() const
 {
@@ -8338,13 +8496,13 @@ int CvPlayer::getSpecialBuildingProductionModifier(SpecialBuildingTypes eSpecial
 	return sumTraitValues(&CvTraitInfo::getSpecialBuildingProductionModifier, eSpecialBuilding);
 }
 
-// iKnownTechCostModifier of the traits (added by this mod): see CvTeam::getResearchCost
+// KnownTechCost/iModifier of the traits (added by this mod): see CvTeam::getResearchCost
 int CvPlayer::getKnownTechCostModifier() const
 {
 	return sumTraitValues(&CvTraitInfo::getKnownTechCostModifier);
 }
 
-// iKnownTechCostLimit of the traits with iKnownTechCostModifier (added by this mod): the lowest one, -100 to 0. 0 means no limit
+// KnownTechCost/iLimit of the traits with KnownTechCost/iModifier (added by this mod): the lowest one, -100 to 0. 0 means no limit
 // (the cost goes down to the minimum of 1)
 int CvPlayer::getKnownTechCostLimit() const
 {
@@ -8409,7 +8567,7 @@ int CvPlayer::getPeaceAngerPercentAnger() const
 	return m_iPeaceAngerTimes100 / 100;
 }
 
-// iPeaceAngerPerTurn / iPeaceAngerDecayPerTurn / iPeaceAngerMax of the traits (added by this mod): the anger grows in the
+// PeaceAnger/iPerTurn / PeaceAnger/iDecayPerTurn / PeaceAnger/iMax of the traits (added by this mod): the anger grows in the
 // turns without a war against a full civilization and falls during such a war. The rates follow the game speed like the
 // other things counted in turns, so the anger is kept x100 to keep small rates from rounding to 0 at slow speeds
 void CvPlayer::doPeaceAnger()
@@ -8704,7 +8862,7 @@ int CvPlayer::getDistantTradeRouteModifier() const
 	return sumTraitValues(&CvTraitInfo::getDistantTradeRouteModifier);
 }
 
-// iEnemyAttritionInBorders of the traits (added by this mod): see doEnemyAttrition
+// EnemyAttrition/iPercent of the traits (added by this mod): see doEnemyAttrition
 int CvPlayer::getEnemyAttritionInBorders() const
 {
 	return sumTraitValues(&CvTraitInfo::getEnemyAttritionInBorders);
@@ -9249,7 +9407,7 @@ bool CvPlayer::isNoTechCivic(CivicTypes eCivic) const
 	return false;
 }
 
-// iEnemyAttritionLimit of the traits with iEnemyAttritionInBorders (added by this mod): the largest one, 0 to 100
+// EnemyAttrition/iLimit of the traits with EnemyAttrition/iPercent (added by this mod): the largest one, 0 to 100
 int CvPlayer::getEnemyAttritionLimit() const
 {
 	int iLimit = 0;
@@ -9266,9 +9424,9 @@ int CvPlayer::getEnemyAttritionLimit() const
 	return range(iLimit, 0, 100);
 }
 
-// iEnemyAttritionInBorders of the traits (added by this mod, as the Russian power of Rhye's and Fall of Civilization): at the
+// EnemyAttrition/iPercent of the traits (added by this mod, as the Russian power of Rhye's and Fall of Civilization): at the
 // start of the turn of this player, the units of the players at war with it in its territory lose that % of their max HP,
-// down to iEnemyAttritionLimit (a unit that reaches its max HP dies, killed by this player). All domains
+// down to EnemyAttrition/iLimit (a unit that reaches its max HP dies, killed by this player). All domains
 void CvPlayer::doEnemyAttrition()
 {
 	std::vector<IDInfo> aUnits;
@@ -20051,7 +20209,7 @@ void CvPlayer::read(FDataStreamBase* pStream)
 		pStream->Read(GC.getNumSpecialistInfos() * NUM_COMMERCE_TYPES, m_paiSpecialistTypeExtraCommerce);
 	}
 
-	// iPeaceAngerPerTurn of the traits (uiFlag 6)
+	// PeaceAnger/iPerTurn of the traits (uiFlag 6)
 	if (uiFlag > 5)
 	{
 		pStream->Read(&m_iPeaceAngerTimes100);
@@ -20095,6 +20253,13 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	{
 		pStream->Read((int*)&m_eLastConqueror);
 	}
+
+	// RandomBasicTraits of the traits (uiFlag 14)
+	if (uiFlag > 13)
+	{
+		pStream->Read(&m_iRandomBasicTraitTurn);
+		pStream->Read(GC.getNumTraitInfos(), m_paiRandomBasicTrait);
+	}
 }
 
 //
@@ -20105,7 +20270,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 13;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror (added by this mod)
+	uint uiFlag = 14;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -20528,6 +20693,8 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(MAX_PLAYERS, m_abCityConqueredBy);
 	pStream->Write(GC.getNumTraitInfos(), m_paiTraitTurns);
 	pStream->Write(m_eLastConqueror);
+	pStream->Write(m_iRandomBasicTraitTurn);
+	pStream->Write(GC.getNumTraitInfos(), m_paiRandomBasicTrait);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

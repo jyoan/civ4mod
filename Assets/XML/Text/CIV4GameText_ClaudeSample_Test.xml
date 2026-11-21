@@ -868,6 +868,24 @@
 		<Japanese>&#26908;&#35388;&#29992;&#25351;&#23566;&#32773;&#65288;&#30772;&#22730;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_INSANE</Tag>
+		<English>Test Trait (Insane)</English>
+		<French>Test Trait (Insane)</French>
+		<German>Test Trait (Insane)</German>
+		<Italian>Test Trait (Insane)</Italian>
+		<Spanish>Test Trait (Insane)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;&#29378;&#27671;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_INSANE_SHORT</Tag>
+		<English>Ins</English>
+		<French>Ins</French>
+		<German>Ins</German>
+		<Italian>Ins</Italian>
+		<Spanish>Ins</Spanish>
+		<Japanese>&#29378;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_TEST_TEMPORARY</Tag>
 		<English>Test Trait (Temporary)</English>
 		<French>Test Trait (Temporary)</French>

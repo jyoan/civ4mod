@@ -152,3 +152,5 @@
 - 2026-11-21: 志向の `bRevealWonderProduction`（建造中の世界遺産と都市）・`bRevealWarPlans`（戦争計画の文明と都市）のツールチップをゲーム内で確認
 - 2026-11-21: 志向の世界遺産の建造開始・戦争計画のアナウンスと `bRevealHiddenAttitude`（隠れた態度補正。AI 同士も）をゲーム内で確認
 - 2026-11-21: 志向の `bGainTraitOnCapitalCapture`（首都の占領で基本志向を 1 つ）・`bGainTraitsOnElimination`（滅亡で基本志向をすべて）をゲーム内で確認
+- 2026-11-21: 志向の `RandomBasicTraits`（`iTurns`・`iCount`。FFH2 の狂気志向。入れ替えとアナウンス）をゲーム内で確認
+- 2026-11-21: 志向のタグを親タグにまとめた `GoldInterest`・`PeaceAnger`・`KnownTechCost`・`EnemyAttrition` の読み込みをゲーム内で確認

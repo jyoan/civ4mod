@@ -3839,7 +3839,7 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ANARCHY_GOLDEN_AGE", kTrait.getAnarchyGoldenAgePercent()));
 	}
 
-	// iEnemyAttritionInBorders, iEnemyAttritionLimit (added by this mod)
+	// EnemyAttrition/iPercent, EnemyAttrition/iLimit (added by this mod)
 	if (kTrait.getEnemyAttritionInBorders() > 0)
 	{
 		if (kTrait.getEnemyAttritionLimit() < 100)
@@ -4130,7 +4130,7 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 	CvWString szText;
 	int iI;
 
-	// iGoldInterestPercent / iGoldInterestMax: "3% of the treasury as gold every turn (at most 25)" (added by this mod)
+	// GoldInterest/iPercent / GoldInterest/iMax: "3% of the treasury as gold every turn (at most 25)" (added by this mod)
 	if (kTrait.getGoldInterestPercent() > 0)
 	{
 		if (kTrait.getGoldInterestMax() > 0)
@@ -4149,7 +4149,7 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CULTURE_RANGE_CHANGE", kTrait.getCultureRangeChange()));
 	}
 
-	// iPeaceAngerPerTurn: "Cities grow angry in peace" (added by this mod)
+	// PeaceAnger/iPerTurn: "Cities grow angry in peace" (added by this mod)
 	if (kTrait.getPeaceAngerPerTurn() > 0 && kTrait.getPeaceAngerMax() > 0)
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_PEACE_ANGER", getPerMilleText(kTrait.getPeaceAngerPerTurn()).GetCString(), getPerMilleText(kTrait.getPeaceAngerMax()).GetCString(), getPerMilleText(kTrait.getPeaceAngerDecayPerTurn()).GetCString()));
@@ -4280,6 +4280,13 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 	if (kTrait.isGainTraitsOnElimination())
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GAIN_TRAITS_ON_ELIMINATION"));
+	}
+
+	// RandomBasicTraits: "Every 5 turns, gains 2 random basic traits in place of the last ones" (added by this mod). The turns
+	// are scaled by the game speed when it is known
+	if (kTrait.isRandomBasicTraits() && kTrait.getRandomBasicTraitCount() > 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_RANDOM_BASIC_TRAITS", CvPlayer::getRandomBasicTraitTurnsForSpeed(kTrait.getRandomBasicTraitTurns()), kTrait.getRandomBasicTraitCount()));
 	}
 
 	// iUnitCostModifier / iBuildingCostModifier: "-20% production cost of units" (added by this mod)
@@ -12468,7 +12475,7 @@ void CvGameTextMgr::setAngerHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		iOldAngerPercent = iNewAngerPercent;
 		iOldAnger = iNewAnger;
 
-		// iPeaceAngerPerTurn of the traits (added by this mod)
+		// PeaceAnger/iPerTurn of the traits (added by this mod)
 		iNewAngerPercent += GET_PLAYER(city.getOwnerINLINE()).getPeaceAngerPercentAnger();
 		iNewAnger += (((iNewAngerPercent * city.getPopulation()) / GC.getPERCENT_ANGER_DIVISOR()) - ((iOldAngerPercent * city.getPopulation()) / GC.getDefineINT("PERCENT_ANGER_DIVISOR")));
 		iAnger = ((iNewAnger - iOldAnger) + std::min(0, iOldAnger));

@@ -391,11 +391,21 @@
 	<ElementType name="CityFoundedUnits" content="eltOnly">
 		<element type="CityFoundedUnit" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
-	<ElementType name="iGoldInterestPercent" content="textOnly" dt:type="int"/>
-	<ElementType name="iGoldInterestMax" content="textOnly" dt:type="int"/>
-	<ElementType name="iPeaceAngerPerTurn" content="textOnly" dt:type="int"/>
-	<ElementType name="iPeaceAngerDecayPerTurn" content="textOnly" dt:type="int"/>
-	<ElementType name="iPeaceAngerMax" content="textOnly" dt:type="int"/>
+	<ElementType name="iPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iMax" content="textOnly" dt:type="int"/>
+	<ElementType name="iLimit" content="textOnly" dt:type="int"/>
+	<ElementType name="iModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iPerTurn" content="textOnly" dt:type="int"/>
+	<ElementType name="iDecayPerTurn" content="textOnly" dt:type="int"/>
+	<ElementType name="GoldInterest" content="eltOnly">
+		<element type="iPercent"/>
+		<element type="iMax" minOccurs="0"/>
+	</ElementType>
+	<ElementType name="PeaceAnger" content="eltOnly">
+		<element type="iPerTurn"/>
+		<element type="iDecayPerTurn" minOccurs="0"/>
+		<element type="iMax"/>
+	</ElementType>
 	<ElementType name="iCultureRangeChange" content="textOnly" dt:type="int"/>
 	<ElementType name="ForbiddenCivics" content="eltOnly">
 		<element type="CivicType" minOccurs="0" maxOccurs="*"/>
@@ -445,8 +455,10 @@
 	<ElementType name="SpecialBuildingProductionModifiers" content="eltOnly">
 		<element type="SpecialBuildingProductionModifier" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
-	<ElementType name="iKnownTechCostModifier" content="textOnly" dt:type="int"/>
-	<ElementType name="iKnownTechCostLimit" content="textOnly" dt:type="int"/>
+	<ElementType name="KnownTechCost" content="eltOnly">
+		<element type="iModifier"/>
+		<element type="iLimit" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="bConquestHeal" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bStackCityDefense" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bRevealWonderProduction" content="textOnly" dt:type="boolean"/>
@@ -455,12 +467,20 @@
 	<ElementType name="bBasicTrait" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bGainTraitOnCapitalCapture" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bGainTraitsOnElimination" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iTurns" content="textOnly" dt:type="int"/>
+	<ElementType name="iCount" content="textOnly" dt:type="int"/>
+	<ElementType name="RandomBasicTraits" content="eltOnly">
+		<element type="iTurns"/>
+		<element type="iCount"/>
+	</ElementType>
 	<ElementType name="iNewWorldCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasMaintenanceModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iDistantTradeRouteModifier" content="textOnly" dt:type="int"/>
-	<ElementType name="iEnemyAttritionInBorders" content="textOnly" dt:type="int"/>
-	<ElementType name="iEnemyAttritionLimit" content="textOnly" dt:type="int"/>
+	<ElementType name="EnemyAttrition" content="eltOnly">
+		<element type="iPercent"/>
+		<element type="iLimit" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="iAnarchyGoldenAgePercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iTechCostModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iAttitudeChange" content="textOnly" dt:type="int"/>
@@ -1035,8 +1055,7 @@
 		<element type="iEnemyMoveCostInBorders" minOccurs="0"/>
 		<element type="iRevengeCombatPercent" minOccurs="0"/>
 		<element type="SpecialBuildingProductionModifiers" minOccurs="0"/>
-		<element type="iKnownTechCostModifier" minOccurs="0"/>
-		<element type="iKnownTechCostLimit" minOccurs="0"/>
+		<element type="KnownTechCost" minOccurs="0"/>
 		<element type="bConquestHeal" minOccurs="0"/>
 		<element type="bStackCityDefense" minOccurs="0"/>
 		<element type="bRevealWonderProduction" minOccurs="0"/>
@@ -1044,12 +1063,12 @@
 		<element type="bRevealHiddenAttitude" minOccurs="0"/>
 		<element type="bGainTraitOnCapitalCapture" minOccurs="0"/>
 		<element type="bGainTraitsOnElimination" minOccurs="0"/>
+		<element type="RandomBasicTraits" minOccurs="0"/>
 		<element type="iNewWorldCityPopulation" minOccurs="0"/>
 		<element type="iOverseasCityPopulation" minOccurs="0"/>
 		<element type="iOverseasMaintenanceModifier" minOccurs="0"/>
 		<element type="iDistantTradeRouteModifier" minOccurs="0"/>
-		<element type="iEnemyAttritionInBorders" minOccurs="0"/>
-		<element type="iEnemyAttritionLimit" minOccurs="0"/>
+		<element type="EnemyAttrition" minOccurs="0"/>
 		<element type="iAnarchyGoldenAgePercent" minOccurs="0"/>
 		<element type="iTechCostModifier" minOccurs="0"/>
 		<element type="iAttitudeChange" minOccurs="0"/>
@@ -1115,11 +1134,8 @@
 		<element type="StartBiasFeatures" minOccurs="0"/>
 		<element type="StartBiasBonuses" minOccurs="0"/>
 		<element type="CityFoundedUnits" minOccurs="0"/>
-		<element type="iGoldInterestPercent" minOccurs="0"/>
-		<element type="iGoldInterestMax" minOccurs="0"/>
-		<element type="iPeaceAngerPerTurn" minOccurs="0"/>
-		<element type="iPeaceAngerDecayPerTurn" minOccurs="0"/>
-		<element type="iPeaceAngerMax" minOccurs="0"/>
+		<element type="GoldInterest" minOccurs="0"/>
+		<element type="PeaceAnger" minOccurs="0"/>
 		<element type="iCultureRangeChange" minOccurs="0"/>
 		<element type="ForbiddenCivics" minOccurs="0"/>
 		<element type="NewCityCultureLevel" minOccurs="0"/>
