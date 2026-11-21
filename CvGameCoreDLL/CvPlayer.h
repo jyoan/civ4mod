@@ -83,6 +83,11 @@ public:
 	int getTraitTurns(TraitTypes eTrait) const;					// Exposed to Python: turns left of a temporary trait (added by this mod)
 	void setTraitTurns(TraitTypes eTrait, int iTurns);			// Exposed to Python
 	void doTraitTurns();
+	// RandomBasicTraits of the traits (added by this mod)
+	bool isRandomBasicTrait(TraitTypes eTrait) const;			// Exposed to Python: given by RandomBasicTraits now
+	int getRandomBasicTraitTurn() const;						// Exposed to Python: game turn of the last change, -1 if none
+	void doRandomBasicTraits();
+	static int getRandomBasicTraitTurnsForSpeed(int iTurns);
 	void doTraitGainedPythonHook(TraitTypes eTrait, bool bGained);	// PyOnGained / PyOnLost of the trait
 	bool isConditionalFreeTraitActive(const ConditionalFreeTrait& kCondition) const;
 	void updateConditionalTraits(bool bNotify = false);								// Exposed to Python
@@ -345,7 +350,7 @@ public:
 	int getGoldenAgeMovesChange(DomainTypes eDomain) const;				// Exposed to Python: iGoldenAgeLandMovesChange / iGoldenAgeSeaMovesChange of the traits
 	bool isInlandCanals() const;										// Exposed to Python: bInlandCanals of the traits
 	int getGoldInterest() const;									// Exposed to Python: gold of this turn from the traits
-	int getPeaceAngerPercentAnger() const;						// Exposed to Python: anger from iPeaceAngerPerTurn of the traits
+	int getPeaceAngerPercentAnger() const;						// Exposed to Python: anger from PeaceAnger/iPerTurn of the traits
 	void doPeaceAnger();										// added by this mod
 	int sumTraitValues(int (CvTraitInfo::*pGetter)() const) const;								// added by this mod
 	int sumTraitValues(int (CvTraitInfo::*pGetter)(int) const, int iArg) const;				// added by this mod
@@ -1431,6 +1436,8 @@ protected:
 	int* m_paiLearnedBuilding;				// the building learned by conquest per building class, NO_BUILDING if none (added by this mod)
 	PlayerTypes m_eLastConqueror;			// the player that conquered the last city of this player (bGainTraitsOnElimination, added by this mod)
 	bool* m_abCityConqueredBy;				// the players that have conquered a city of this player (iRevengeCombatPercent, added by this mod)
+	int* m_paiRandomBasicTrait;				// 1 for the traits given by RandomBasicTraits now (added by this mod)
+	int m_iRandomBasicTraitTurn;			// game turn of the last change of RandomBasicTraits, -1 if none (added by this mod)
 	int* m_paiTraitTurns;					// turns left of the temporary traits, 0 if not temporary (added by this mod)
 	int* m_paiFreeBuildingCount;
 	int* m_paiExtraBuildingHappiness;

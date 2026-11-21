@@ -2486,8 +2486,8 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 		iCost /= 100;
 	}
 
-	// iKnownTechCostModifier of the traits (added by this mod): % for each known full civilization (team) that has the tech,
-	// down to iKnownTechCostLimit. The member with the strongest one counts
+	// KnownTechCost/iModifier of the traits (added by this mod): % for each known full civilization (team) that has the tech,
+	// down to KnownTechCost/iLimit. The member with the strongest one counts
 	int iKnownModifier = getKnownTechCostModifier(eTech);
 	if (iKnownModifier != 0)
 	{
@@ -2498,7 +2498,7 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 	return std::max(1, iCost);
 }
 
-// iKnownTechCostModifier and iKnownTechCostLimit of the traits of the members (added by this mod): the % of the research cost
+// KnownTechCost/iModifier and KnownTechCost/iLimit of the traits of the members (added by this mod): the % of the research cost
 // of eTech, 0 if none. The other alive teams of full civilizations that this team has met and that have the tech are counted
 int CvTeam::getKnownTechCostModifier(TechTypes eTech) const
 {

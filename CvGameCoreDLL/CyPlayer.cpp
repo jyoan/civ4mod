@@ -2111,6 +2111,16 @@ int CyPlayer::getTraitTurns(int /*TraitTypes*/ eTrait)
 	return m_pPlayer ? m_pPlayer->getTraitTurns((TraitTypes)eTrait) : -1;
 }
 
+bool CyPlayer::isRandomBasicTrait(int /*TraitTypes*/ eTrait)
+{
+	return m_pPlayer ? m_pPlayer->isRandomBasicTrait((TraitTypes)eTrait) : false;
+}
+
+int CyPlayer::getRandomBasicTraitTurn()
+{
+	return m_pPlayer ? m_pPlayer->getRandomBasicTraitTurn() : -1;
+}
+
 void CyPlayer::setTraitTurns(int /*TraitTypes*/ eTrait, int iTurns)
 {
 	if (m_pPlayer)

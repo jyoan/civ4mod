@@ -285,6 +285,7 @@ void CvGame::setInitialItems()
 		if (GET_PLAYER((PlayerTypes)iI).isAlive())
 		{
 			GET_PLAYER((PlayerTypes)iI).updateConditionalTraits();
+			GET_PLAYER((PlayerTypes)iI).doRandomBasicTraits();	// RandomBasicTraits of the traits (added by this mod)
 			GET_PLAYER((PlayerTypes)iI).initTraitFreeTechs();	// FreeTechs of the traits (added by this mod)
 			GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam()).updateBarbarianVision();	// bBarbarianVision of the traits (added by this mod)
 			GET_PLAYER((PlayerTypes)iI).doTraitPythonHook(TRAIT_PYHOOK_GAME_START);

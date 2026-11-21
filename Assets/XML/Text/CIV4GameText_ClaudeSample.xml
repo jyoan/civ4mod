@@ -517,6 +517,15 @@
 		<Japanese>%s1_Leader&#12434;&#28357;&#12412;&#12375;&#12289;%s2_Trait&#12434;&#24471;&#12414;&#12375;&#12383;&#65281;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_MISC_RANDOM_BASIC_TRAITS</Tag>
+		<English>%s1_Trait has given you the following traits: %s2_Traits</English>
+		<French>%s1_Trait has given you the following traits: %s2_Traits</French>
+		<German>%s1_Trait has given you the following traits: %s2_Traits</German>
+		<Italian>%s1_Trait has given you the following traits: %s2_Traits</Italian>
+		<Spanish>%s1_Trait has given you the following traits: %s2_Traits</Spanish>
+		<Japanese>%s1_Trait&#12395;&#12424;&#12426;&#12289;&#27425;&#12398;&#24535;&#21521;&#12364;&#20184;&#19982;&#12373;&#12428;&#12414;&#12375;&#12383;&#12290;%s2_Traits</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_CIVIC_FAVORITE_GIVES_TRAIT</Tag>
 		<English>[ICON_BULLET]Favorite civic: gives %s1_Trait</English>
 		<French>[ICON_BULLET]Favorite civic: gives %s1_Trait</French>
