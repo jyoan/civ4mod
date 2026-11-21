@@ -285,6 +285,11 @@ public:
 	int getStartBiasTerrain(TerrainTypes eTerrain) const;	// added by this mod: StartBiasTerrains of the civilization and the traits
 	bool hasStartBias() const;	// Exposed to Python (added by this mod)
 	int getStartBiasValue(const CvPlot* pPlot, int iFoundValue) const;	// Exposed to Python (added by this mod)
+	bool isSeaStart() const;	// SeaStart of the traits (added by this mod)
+	UnitTypes getSeaStartShip() const;
+	CvPlot* findSeaStartingPlot() const;
+	void moveStartingPlotToSea();
+	void loadSeaStartUnits();
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(SpecialBuildingTypes eSpecialBuilding) const;	// Exposed to Python (added by this mod)
 	bool isNoTechCivic(CivicTypes eCivic) const;	// Exposed to Python (added by this mod)

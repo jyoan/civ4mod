@@ -20198,6 +20198,8 @@ m_iStartBiasRiver(0),
 m_piStartBiasTerrains(NULL),
 m_piStartBiasFeatures(NULL),
 m_piStartBiasBonuses(NULL),
+m_bSeaStart(false),
+m_iSeaStartUnitClass(NO_UNITCLASS),
 m_iGoldInterestPercent(0),
 m_iGoldInterestMax(0),
 m_iPeaceAngerPerTurn(0),
@@ -20680,6 +20682,19 @@ int CvTraitInfo::getStartBiasFeature(int i) const
 int CvTraitInfo::getStartBiasBonus(int i) const
 {
 	return (m_piStartBiasBonuses != NULL && i > -1 && i < GC.getNumBonusInfos()) ? m_piStartBiasBonuses[i] : 0;
+}
+
+// SeaStart (added by this mod): the player starts at sea (CvPlayer::moveStartingPlotToSea) with its starting units on ships
+// of the class ShipUnitClass (CvPlayer::loadSeaStartUnits)
+bool CvTraitInfo::isSeaStart() const
+{
+	return m_bSeaStart;
+}
+
+// SeaStart/ShipUnitClass: NO_UNITCLASS without SeaStart or for NONE (no ships)
+int CvTraitInfo::getSeaStartUnitClass() const
+{
+	return m_iSeaStartUnitClass;
 }
 
 // CityFoundedUnits (added by this mod): units the player gets in each city it founds
@@ -22581,6 +22596,18 @@ void CvTraitInfo::readStartBias(CvXMLLoadUtility* pXML)
 			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 		}
 
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+
+	// SeaStart: ShipUnitClass (the unit classes are loaded before the traits). NONE: no ships
+	m_bSeaStart = false;
+	m_iSeaStartUnitClass = NO_UNITCLASS;
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "SeaStart"))
+	{
+		CvString szShipClass;
+		m_bSeaStart = true;
+		pXML->GetChildXmlValByName(szShipClass, "ShipUnitClass");
+		m_iSeaStartUnitClass = pXML->FindInInfoClass(szShipClass);
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 }

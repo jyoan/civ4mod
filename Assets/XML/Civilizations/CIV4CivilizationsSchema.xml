@@ -819,6 +819,10 @@
 	<ElementType name="StartBiasBonuses" content="eltOnly">
 		<element type="StartBiasBonus" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="ShipUnitClass" content="textOnly"/>
+	<ElementType name="SeaStart" content="eltOnly">
+		<element type="ShipUnitClass"/>
+	</ElementType>
 	<ElementType name="BonusYieldChange" content="eltOnly">
 		<element type="BonusType"/>
 		<element type="Yields"/>
@@ -1138,6 +1142,7 @@
 		<element type="StartBiasTerrains" minOccurs="0"/>
 		<element type="StartBiasFeatures" minOccurs="0"/>
 		<element type="StartBiasBonuses" minOccurs="0"/>
+		<element type="SeaStart" minOccurs="0"/>
 		<element type="CityFoundedUnits" minOccurs="0"/>
 		<element type="GoldInterest" minOccurs="0"/>
 		<element type="PeaceAnger" minOccurs="0"/>

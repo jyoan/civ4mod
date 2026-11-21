@@ -4888,6 +4888,8 @@ public:
 	int getStartBiasTerrain(int i) const;			// Exposed to Python
 	int getStartBiasFeature(int i) const;			// Exposed to Python
 	int getStartBiasBonus(int i) const;				// Exposed to Python
+	bool isSeaStart() const;						// Exposed to Python: SeaStart (added by this mod)
+	int getSeaStartUnitClass() const;				// Exposed to Python
 	int getNumCityFoundedUnits() const;			// Exposed to Python: CityFoundedUnits (added by this mod)
 	int getCityFoundedUnitClass(int i) const;		// Exposed to Python
 	int getCityFoundedUnitNum(int i) const;			// Exposed to Python
@@ -5207,6 +5209,8 @@ protected:
 	int* m_piStartBiasBonuses;
 	std::vector<CvString> m_aszStartBiasBonusTypes;	// as strings until readPass3(): the bonuses are loaded after the traits
 	std::vector<int> m_aiStartBiasBonusValues;
+	bool m_bSeaStart;						// SeaStart (added by this mod)
+	int m_iSeaStartUnitClass;				// SeaStart/ShipUnitClass, NO_UNITCLASS without SeaStart or for NONE
 	std::vector<int> m_aiCityFoundedUnitClasses;	// CityFoundedUnits (added by this mod)
 	std::vector<int> m_aiCityFoundedUnitNums;
 	std::vector<bool> m_abCityFoundedUnitCoastalOnly;

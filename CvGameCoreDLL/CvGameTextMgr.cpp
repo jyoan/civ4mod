@@ -4056,6 +4056,25 @@ void CvGameTextMgr::parseTraitTerritoryEffects(CvWStringBuffer& szHelpString, Tr
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_START_BIAS", szStartBias.GetCString()));
 	}
 
+	// SeaStart (added by this mod): "Starts at sea with the starting units on Galleons (...)"
+	if (kTrait.isSeaStart())
+	{
+		int iShip = NO_UNIT;
+		if (kTrait.getSeaStartUnitClass() != NO_UNITCLASS)
+		{
+			iShip = GC.getUnitClassInfo((UnitClassTypes)kTrait.getSeaStartUnitClass()).getDefaultUnitIndex();
+		}
+		if (iShip != NO_UNIT)
+		{
+			CvWString szShip = getLinkText(GC.getUnitInfo((UnitTypes)iShip).getDescription());
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_SEA_START", szShip.GetCString()));
+		}
+		else
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_SEA_START_NO_SHIP"));
+		}
+	}
+
 	// bBarbarianAlly (added by this mod)
 	if (kTrait.isBarbarianAlly())
 	{

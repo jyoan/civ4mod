@@ -145,3 +145,4 @@
 - 2026-11-21: 志向の `RandomBasicTraits`（`iTurns`・`iCount`。FFH2 の狂気志向。入れ替えとアナウンス）をゲーム内で確認
 - 2026-11-21: 志向のタグを親タグにまとめた `GoldInterest`・`PeaceAnger`・`KnownTechCost`・`EnemyAttrition` の読み込みをゲーム内で確認
 - 2026-11-22: 志向の `GainTraitsOnFriendly`（AI の指導者が親密になると基本志向を得る。`bAll` 0 / 1）をゲーム内で確認
+- 2026-11-22: 志向の `SeaStart`（Civ6 のマオリ。外洋でガレオン船に乗って開始、AI の上陸と都市の建設、上陸前の制覇勝利の抑止）をゲーム内で確認

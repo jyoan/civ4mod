@@ -275,6 +275,15 @@ void CvGame::setInitialItems()
 	initFreeState();
 	assignStartingPlots();
 	normalizeStartingPlots();
+	// SeaStart of the traits (added by this mod): after the land starting plots are assigned and normalized (the swaps of
+	// normalizeStartingPlotLocations would give a sea start to another player), before the regions (a sea start is in none)
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		{
+			GET_PLAYER((PlayerTypes)iI).moveStartingPlotToSea();
+		}
+	}
 	// Regions (added by this mod): after the starting plots and the lakes and hills the normalization may add
 	GC.getMapINLINE().calculateRegions();
 	initFreeUnits();
@@ -7016,6 +7025,21 @@ bool CvGame::testVictory(VictoryTypes eVictory, TeamTypes eTeam, bool* pbEndScor
 							if (GET_TEAM((TeamTypes)iK).getNumCities() > 0)
 							{
 								bFound = true;
+								break;
+							}
+
+							// SeaStart of the traits (added by this mod): a player still at sea before its first city
+							for (int iL = 0; iL < MAX_CIV_PLAYERS; iL++)
+							{
+								CvPlayer& kSeaPlayer = GET_PLAYER((PlayerTypes)iL);
+								if (kSeaPlayer.isAlive() && kSeaPlayer.getTeam() == iK && !kSeaPlayer.isFoundedFirstCity() && kSeaPlayer.isSeaStart())
+								{
+									bFound = true;
+									break;
+								}
+							}
+							if (bFound)
+							{
 								break;
 							}
 						}
