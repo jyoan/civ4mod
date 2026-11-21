@@ -4746,6 +4746,10 @@
 					<TechType>TECH_THE_WHEEL</TechType>
 					<bFreeTech>1</bFreeTech>
 				</FreeTech>
+				<FreeTech>
+					<TechType>TECH_TEST_DIPLOMACY</TechType>
+					<bFreeTech>1</bFreeTech>
+				</FreeTech>
 			</FreeTechs>
 			<DisableTechs/>
 			<InitialCivics>
@@ -4785,6 +4789,109 @@
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_JAPAN_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_JAPAN_ORDER</CivilizationActionSound>
+		</CivilizationInfo>
+		<CivilizationInfo>
+			<Type>CIVILIZATION_TEST_AI</Type>
+			<Description>TXT_KEY_CIV_TEST_AI_DESC</Description>
+			<ShortDescription>TXT_KEY_CIV_TEST_AI_SHORT_DESC</ShortDescription>
+			<Adjective>TXT_KEY_CIV_TEST_AI_ADJECTIVE</Adjective>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<DefaultPlayerColor>PLAYERCOLOR_RED_AND_GOLD</DefaultPlayerColor>
+			<ArtDefineTag>ART_DEF_CIVILIZATION_AZTEC</ArtDefineTag>
+			<ArtStyleType>ARTSTYLE_SOUTH_AMERICA</ArtStyleType>
+			<UnitArtStyleType>UNIT_ARTSTYLE_SOUTH_AMERICA</UnitArtStyleType>
+			<bPlayable>1</bPlayable>
+			<bAIPlayable>0</bAIPlayable>
+			<Cities>
+				<City>TXT_KEY_CITY_NAME_TENOCHTITLAN</City>
+				<City>TXT_KEY_CITY_NAME_TEOTIHUACAN</City>
+				<City>TXT_KEY_CITY_NAME_TLATELOLCO</City>
+				<City>TXT_KEY_CITY_NAME_TEXCOCO</City>
+				<City>TXT_KEY_CITY_NAME_TLAXCALA</City>
+				<City>TXT_KEY_CITY_NAME_CALIXTLAHUACA</City>
+				<City>TXT_KEY_CITY_NAME_XOCHICALCO</City>
+				<City>TXT_KEY_CITY_NAME_TLACOPAN</City>
+				<City>TXT_KEY_CITY_NAME_ATZCAPOTZALCO</City>
+				<City>TXT_KEY_CITY_NAME_TZINTZUNTZEN</City>
+				<City>TXT_KEY_CITY_NAME_MALINALCO</City>
+				<City>TXT_KEY_CITY_NAME_TULA</City>
+				<City>TXT_KEY_CITY_NAME_TAMUIN</City>
+				<City>TXT_KEY_CITY_NAME_TEAYO</City>
+				<City>TXT_KEY_CITY_NAME_CEMPOALA</City>
+				<City>TXT_KEY_CITY_NAME_CHALCO</City>
+				<City>TXT_KEY_CITY_NAME_TLALMANALCO</City>
+				<City>TXT_KEY_CITY_NAME_IXTAPALUCA</City>
+				<City>TXT_KEY_CITY_NAME_HUEXOTLA</City>
+				<City>TXT_KEY_CITY_NAME_TEPEXPAN</City>
+				<City>TXT_KEY_CITY_NAME_TEPETLAOXTOC</City>
+				<City>TXT_KEY_CITY_NAME_CHICONAUTLA</City>
+				<City>TXT_KEY_CITY_NAME_ZITLALTEPEC</City>
+				<City>TXT_KEY_CITY_NAME_COYOTEPEC</City>
+				<City>TXT_KEY_CITY_NAME_TEQUIXQUIAC</City>
+				<City>TXT_KEY_CITY_NAME_JILOTZINGO</City>
+				<City>TXT_KEY_CITY_NAME_TLAPANALOYA</City>
+				<City>TXT_KEY_CITY_NAME_TULTITAN</City>
+				<City>TXT_KEY_CITY_NAME_ECATEPEC</City>
+				<City>TXT_KEY_CITY_NAME_COATEPEC</City>
+				<City>TXT_KEY_CITY_NAME_CHALCHIUITES</City>
+				<City>TXT_KEY_CITY_NAME_CHIAUHITA</City>
+				<City>TXT_KEY_CITY_NAME_CHAPULTEPEC</City>
+				<City>TXT_KEY_CITY_NAME_ITZAPALAPA</City>
+				<City>TXT_KEY_CITY_NAME_AYOTZINCO</City>
+				<City>TXT_KEY_CITY_NAME_IZTAPAM</City>
+			</Cities>
+			<Buildings/>
+			<Units/>
+			<FreeUnitClasses>
+				<FreeUnitClass>
+					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
+					<iFreeUnits>1</iFreeUnits>
+				</FreeUnitClass>
+				<FreeUnitClass>
+					<UnitClassType>UNITCLASS_ARCHER</UnitClassType>
+					<iFreeUnits>3</iFreeUnits>
+				</FreeUnitClass>
+			</FreeUnitClasses>
+			<FreeBuildingClasses>
+				<FreeBuildingClass>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<bFreeBuildingClass>1</bFreeBuildingClass>
+				</FreeBuildingClass>
+			</FreeBuildingClasses>
+			<FreeTechs>
+				<FreeTech>
+					<TechType>TECH_MYSTICISM</TechType>
+					<bFreeTech>1</bFreeTech>
+				</FreeTech>
+				<FreeTech>
+					<TechType>TECH_HUNTING</TechType>
+					<bFreeTech>1</bFreeTech>
+				</FreeTech>
+			</FreeTechs>
+			<DisableTechs/>
+			<InitialCivics>
+				<CivicType>CIVIC_DESPOTISM</CivicType>
+				<CivicType>CIVIC_BARBARISM</CivicType>
+				<CivicType>CIVIC_TRIBALISM</CivicType>
+				<CivicType>CIVIC_DECENTRALIZATION</CivicType>
+				<CivicType>CIVIC_PAGANISM</CivicType>
+			</InitialCivics>
+			<Leaders>
+				<Leader>
+					<LeaderName>LEADER_TEST_DEMANDER</LeaderName>
+					<bLeaderAvailability>1</bLeaderAvailability>
+				</Leader>
+			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_TEST_AI</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
+			<UniqueBuilds/>
+			<DerivativeCiv>NONE</DerivativeCiv>
+			<CivilizationSelectionSound>AS3D_AZTEC_SELECT</CivilizationSelectionSound>
+			<CivilizationActionSound>AS3D_AZTEC_ORDER</CivilizationActionSound>
 		</CivilizationInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</CivilizationInfos>
