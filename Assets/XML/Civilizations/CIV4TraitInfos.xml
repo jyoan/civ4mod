@@ -478,6 +478,9 @@
 			<iKnownTechCostLimit>-75</iKnownTechCostLimit>
 			<bConquestHeal>1</bConquestHeal>
 			<bStackCityDefense>1</bStackCityDefense>
+			<bRevealWonderProduction>1</bRevealWonderProduction>
+			<bRevealWarPlans>1</bRevealWarPlans>
+			<bRevealHiddenAttitude>1</bRevealHiddenAttitude>
 			<iNewWorldCityPopulation>2</iNewWorldCityPopulation>
 			<iOverseasCityPopulation>1</iOverseasCityPopulation>
 			<iOverseasMaintenanceModifier>-50</iOverseasMaintenanceModifier>

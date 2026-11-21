@@ -2386,6 +2386,21 @@ bool CyPlayer::isStackCityDefense()
 	return m_pPlayer ? m_pPlayer->isStackCityDefense() : false;
 }
 
+bool CyPlayer::isRevealWonderProduction()
+{
+	return m_pPlayer ? m_pPlayer->isRevealWonderProduction() : false;
+}
+
+bool CyPlayer::isRevealWarPlans()
+{
+	return m_pPlayer ? m_pPlayer->isRevealWarPlans() : false;
+}
+
+bool CyPlayer::isRevealHiddenAttitude()
+{
+	return m_pPlayer ? m_pPlayer->isRevealHiddenAttitude() : false;
+}
+
 int CyPlayer::getMaxExperienceAfterUpgrade()
 {
 	return m_pPlayer ? m_pPlayer->getMaxExperienceAfterUpgrade() : 0;

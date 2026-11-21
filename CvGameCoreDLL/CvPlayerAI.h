@@ -10,6 +10,21 @@
 
 class CvEventTriggerInfo;
 
+// The parts of the attitude that the BtS diplomacy tooltip does not show (added by this mod): CvPlayerAI::AI_getHiddenAttitude
+enum HiddenAttitudeTypes
+{
+	HIDDEN_ATTITUDE_PERSONALITY,		// iBaseAttitude of the leader
+	HIDDEN_ATTITUDE_HANDICAP,			// iAttitudeChange of the handicap of the other player
+	HIDDEN_ATTITUDE_PEACE_WEIGHT,		// AI players only: similar peace weights
+	HIDDEN_ATTITUDE_WARMONGER_RESPECT,	// AI players only: the smaller iWarmongerRespect
+	HIDDEN_ATTITUDE_TEAM_SIZE,			// the other team has more members
+	HIDDEN_ATTITUDE_RANK_DIFFERENCE,	// iWorseRankDifferenceAttitudeChange / iBetterRankDifferenceAttitudeChange
+	HIDDEN_ATTITUDE_LOWER_RANKS,		// both players are in the lower half of the ranks
+	HIDDEN_ATTITUDE_LOST_WAR,			// iLostWarAttitudeChange
+
+	NUM_HIDDEN_ATTITUDE_TYPES
+};
+
 class CvPlayerAI : public CvPlayer
 {
 
@@ -101,6 +116,7 @@ public:
 
 	AttitudeTypes AI_getAttitude(PlayerTypes ePlayer, bool bForced = true) const;
 	int AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced = true) const;
+	int AI_getHiddenAttitude(PlayerTypes ePlayer, HiddenAttitudeTypes eType) const;	// added by this mod
 	static AttitudeTypes AI_getAttitudeFromValue(int iAttitudeVal);
 
 	int AI_calculateStolenCityRadiusPlots(PlayerTypes ePlayer) const;

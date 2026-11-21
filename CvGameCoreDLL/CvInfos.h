@@ -4926,6 +4926,9 @@ public:
 	int getKnownTechCostLimit() const;				// Exposed to Python
 	bool isConquestHeal() const;					// Exposed to Python
 	bool isStackCityDefense() const;				// Exposed to Python
+	bool isRevealWonderProduction() const;			// Exposed to Python
+	bool isRevealWarPlans() const;					// Exposed to Python
+	bool isRevealHiddenAttitude() const;			// Exposed to Python
 	// Regions (added by this mod): see CvMap::calculateRegions
 	int getNewWorldCityPopulation() const;			// Exposed to Python
 	int getOverseasCityPopulation() const;			// Exposed to Python
@@ -5232,6 +5235,9 @@ protected:
 	int m_iKnownTechCostLimit;	// added by this mod
 	bool m_bConquestHeal;	// added by this mod
 	bool m_bStackCityDefense;	// added by this mod
+	bool m_bRevealWonderProduction;	// added by this mod
+	bool m_bRevealWarPlans;	// added by this mod
+	bool m_bRevealHiddenAttitude;	// added by this mod
 	std::vector<int> m_aiGreatPeopleClassRateModifier;		// per unit class, empty when not set (added by this mod)
 	std::vector<int> m_aiSpecialBuildingProductionModifier;	// per special building, empty when not set (added by this mod)
 	std::vector<CvString> m_aszSpecialBuildingProductionTypes;	// read before the special buildings are loaded, resolved in readPass3

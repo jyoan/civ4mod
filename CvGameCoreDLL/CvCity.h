@@ -315,6 +315,7 @@ public:
 	int getMiseryYieldByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const;			// Exposed to Python
 	int getMiseryCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const;	// Exposed to Python
 	void updateMiseryChanges();										// added by this mod
+	void doRevealedWonderAnnouncement();								// added by this mod
 	void doBuildingPythonHook(BuildingTypes eBuilding, bool bBuilt);	// added by this mod: PyOnBuilt / PyOnBeginTurn
 	bool isBuildingChangeActive(int iSourceType, int iSource) const;	// added by this mod
 	int getBuildingChangeTotal(BuildingTypes eBuilding, int iEffect, int iIndex) const;	// added by this mod: for one building
@@ -1118,6 +1119,7 @@ protected:
 	PlayerTypes m_eOriginalOwner;
 	CultureLevelTypes m_eCultureLevel;
 	int m_iCultureRange;	// the culture level with iCultureRangeChange of the owner, as counted in the plots (added by this mod)
+	BuildingTypes m_eRevealedWonderProduction;	// the world wonder of the production at the last check, not saved (bRevealWonderProduction, added by this mod)
 	UnitTypes m_eHurriedUnit;	// the unit hurried this turn and how, for HurryUnitExperiences of the traits (added by this mod)
 	HurryTypes m_eHurriedUnitHurry;
 

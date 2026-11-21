@@ -510,6 +510,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iCultureRange = NO_CULTURELEVEL;
 	m_eHurriedUnit = NO_UNIT;
 	m_eHurriedUnitHurry = NO_HURRY;
+	m_eRevealedWonderProduction = NO_BUILDING;
 
 	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
 	{
@@ -1003,6 +1004,9 @@ void CvCity::doTurn()
 	// HurryUnitExperiences (added by this mod): a hurry counts only for the production of this turn
 	m_eHurriedUnit = NO_UNIT;
 	m_eHurriedUnitHurry = NO_HURRY;
+
+	// bRevealWonderProduction (added by this mod): checked once a turn, after the AI has chosen its production
+	doRevealedWonderAnnouncement();
 
 	doDecay();
 
@@ -13832,6 +13836,60 @@ void CvCity::read(FDataStreamBase* pStream)
 	{
 		pStream->Read((int*)&m_eHurriedUnit);
 		pStream->Read((int*)&m_eHurriedUnitHurry);
+	}
+
+	// not saved (added by this mod): the wonder in production when the game was saved counts as announced
+	m_eRevealedWonderProduction = getProductionBuilding();
+	if (m_eRevealedWonderProduction != NO_BUILDING && !isWorldWonderClass((BuildingClassTypes)GC.getBuildingInfo(m_eRevealedWonderProduction).getBuildingClassType()))
+	{
+		m_eRevealedWonderProduction = NO_BUILDING;
+	}
+}
+
+// bRevealWonderProduction of the traits (added by this mod): when the world wonder at the head of the production has
+// changed since the last turn, tells the human players whose traits reveal it: "Mongolia: Building Pyramids: Kyoto".
+// Checked at the end of the turn of the city, not when the order queue changes: the AI clears its queue and pushes
+// the orders again, and every order becomes the head for a moment
+void CvCity::doRevealedWonderAnnouncement()
+{
+	BuildingTypes eBuilding;
+	CvWString szBuffer;
+	TeamTypes eLoopTeam;
+	int iI;
+
+	eBuilding = getProductionBuilding();
+	if (eBuilding != NO_BUILDING && !isWorldWonderClass((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType()))
+	{
+		eBuilding = NO_BUILDING;
+	}
+
+	if (eBuilding == m_eRevealedWonderProduction)
+	{
+		return;
+	}
+	m_eRevealedWonderProduction = eBuilding;
+
+	if (eBuilding == NO_BUILDING)
+	{
+		return;
+	}
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iI);
+		eLoopTeam = kLoopPlayer.getTeam();
+		if (kLoopPlayer.isAlive() && kLoopPlayer.isHuman() && eLoopTeam != getTeam() && GET_TEAM(eLoopTeam).isHasMet(getTeam()) && kLoopPlayer.isRevealWonderProduction())
+		{
+			szBuffer = gDLL->getText("TXT_KEY_REVEALED_ANNOUNCE", GET_PLAYER(getOwnerINLINE()).getCivilizationShortDescription(), GAMETEXT.getRevealedWonderText(this, eBuilding, eLoopTeam).GetCString());
+			if (isRevealed(eLoopTeam, false))
+			{
+				gDLL->getInterfaceIFace()->addMessage(((PlayerTypes)iI), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, GC.getBuildingInfo(eBuilding).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_BUILDING_TEXT"), getX_INLINE(), getY_INLINE(), true, true);
+			}
+			else
+			{
+				gDLL->getInterfaceIFace()->addMessage(((PlayerTypes)iI), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, GC.getBuildingInfo(eBuilding).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_BUILDING_TEXT"));
+			}
+		}
 	}
 }
 

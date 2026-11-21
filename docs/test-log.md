@@ -139,3 +139,5 @@
 - 2026-11-19: 志向の `TerrainTrades` の `TERRAIN_PEAK`（山岳が交易網をつなぎ、通行不能でも止めない）と `TerrainYieldChangesPerEra`（時代が 1 つ進むごとにツンドラの商業 +1）を、検証用志向でゲーム内で確認
 - 2026-11-19: 志向の `PassableTerrainsInBorders`（自国の領土の山岳にダメージなしで入れる）・`FeatureHealChanges`（森での回復 +20%）・`LakePlotYieldChangesPerEra`（時代ごとに湖の商業 +1）を、検証用志向でゲーム内で確認
 - 2026-11-21: 志向の `bStackCityDefense`（都市の文化による防御と建造物の防御の合計、説明文）をゲーム内で確認
+- 2026-11-21: 志向の `bRevealWonderProduction`（建造中の世界遺産と都市）・`bRevealWarPlans`（戦争計画の文明と都市）のツールチップをゲーム内で確認
+- 2026-11-21: 志向の世界遺産の建造開始・戦争計画のアナウンスと `bRevealHiddenAttitude`（隠れた態度補正。AI 同士も）をゲーム内で確認

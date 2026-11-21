@@ -1250,6 +1250,78 @@
 		<Japanese>%D1: &#24535;&#21521;&#12395;&#12424;&#12427;&#21360;&#35937;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_MISC_ATTITUDE_HIDDEN_PERSONALITY</Tag>
+		<English>%D1: Leader personality</English>
+		<French>%D1: Leader personality</French>
+		<German>%D1: Leader personality</German>
+		<Italian>%D1: Leader personality</Italian>
+		<Spanish>%D1: Leader personality</Spanish>
+		<Japanese>%D1: &#25351;&#23566;&#32773;&#12398;&#24615;&#26684;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_ATTITUDE_HIDDEN_HANDICAP</Tag>
+		<English>%D1: Difficulty level</English>
+		<French>%D1: Difficulty level</French>
+		<German>%D1: Difficulty level</German>
+		<Italian>%D1: Difficulty level</Italian>
+		<Spanish>%D1: Difficulty level</Spanish>
+		<Japanese>%D1: &#38627;&#26131;&#24230;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_ATTITUDE_HIDDEN_PEACE_WEIGHT</Tag>
+		<English>%D1: Similar views on peace</English>
+		<French>%D1: Similar views on peace</French>
+		<German>%D1: Similar views on peace</German>
+		<Italian>%D1: Similar views on peace</Italian>
+		<Spanish>%D1: Similar views on peace</Spanish>
+		<Japanese>%D1: &#21644;&#24179;&#12408;&#12398;&#23039;&#21218;&#12398;&#36817;&#12373;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_ATTITUDE_HIDDEN_WARMONGER_RESPECT</Tag>
+		<English>%D1: Respect for warmongers</English>
+		<French>%D1: Respect for warmongers</French>
+		<German>%D1: Respect for warmongers</German>
+		<Italian>%D1: Respect for warmongers</Italian>
+		<Spanish>%D1: Respect for warmongers</Spanish>
+		<Japanese>%D1: &#22909;&#25126;&#24615;&#12408;&#12398;&#25964;&#24847;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_ATTITUDE_HIDDEN_TEAM_SIZE</Tag>
+		<English>%D1: Their team is larger</English>
+		<French>%D1: Their team is larger</French>
+		<German>%D1: Their team is larger</German>
+		<Italian>%D1: Their team is larger</Italian>
+		<Spanish>%D1: Their team is larger</Spanish>
+		<Japanese>%D1: &#12481;&#12540;&#12512;&#12398;&#20154;&#25968;&#12398;&#24046;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_ATTITUDE_HIDDEN_RANK_DIFFERENCE</Tag>
+		<English>%D1: Difference in rank</English>
+		<French>%D1: Difference in rank</French>
+		<German>%D1: Difference in rank</German>
+		<Italian>%D1: Difference in rank</Italian>
+		<Spanish>%D1: Difference in rank</Spanish>
+		<Japanese>%D1: &#38918;&#20301;&#12398;&#24046;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_ATTITUDE_HIDDEN_LOWER_RANKS</Tag>
+		<English>%D1: Both in the lower ranks</English>
+		<French>%D1: Both in the lower ranks</French>
+		<German>%D1: Both in the lower ranks</German>
+		<Italian>%D1: Both in the lower ranks</Italian>
+		<Spanish>%D1: Both in the lower ranks</Spanish>
+		<Japanese>%D1: &#12392;&#12418;&#12395;&#19979;&#20301;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_ATTITUDE_HIDDEN_LOST_WAR</Tag>
+		<English>%D1: They are winning the war against us</English>
+		<French>%D1: They are winning the war against us</French>
+		<German>%D1: They are winning the war against us</German>
+		<Italian>%D1: They are winning the war against us</Italian>
+		<Spanish>%D1: They are winning the war against us</Spanish>
+		<Japanese>%D1: &#25126;&#20105;&#12391;&#12398;&#21155;&#21218;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_CIVIC_NO_TECH_TRAITS</Tag>
 		<English>[ICON_BULLET]No technology needed with: </English>
 		<French>[ICON_BULLET]No technology needed with: </French>

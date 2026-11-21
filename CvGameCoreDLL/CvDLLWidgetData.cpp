@@ -3316,6 +3316,9 @@ void CvDLLWidgetData::parseContactCivHelp(CvWidgetDataStruct &widgetDataStruct, 
 		}
 		else
 		{
+			// added by this mod: getAttitudeString adds it for the AI players
+			GAMETEXT.getRevealedPlansString(szBuffer, ((PlayerTypes)widgetDataStruct.m_iData1), GC.getGameINLINE().getActivePlayer());
+
 			szBuffer.append(NEWLINE);
 			GAMETEXT.getEspionageString(szBuffer, ((PlayerTypes)widgetDataStruct.m_iData1), GC.getGameINLINE().getActivePlayer());
 		}
