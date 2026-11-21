@@ -473,6 +473,10 @@
 		<element type="iTurns"/>
 		<element type="iCount"/>
 	</ElementType>
+	<ElementType name="bAll" content="textOnly" dt:type="boolean"/>
+	<ElementType name="GainTraitsOnFriendly" content="eltOnly">
+		<element type="bAll" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="iNewWorldCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasMaintenanceModifier" content="textOnly" dt:type="int"/>
@@ -1064,6 +1068,7 @@
 		<element type="bGainTraitOnCapitalCapture" minOccurs="0"/>
 		<element type="bGainTraitsOnElimination" minOccurs="0"/>
 		<element type="RandomBasicTraits" minOccurs="0"/>
+		<element type="GainTraitsOnFriendly" minOccurs="0"/>
 		<element type="iNewWorldCityPopulation" minOccurs="0"/>
 		<element type="iOverseasCityPopulation" minOccurs="0"/>
 		<element type="iOverseasMaintenanceModifier" minOccurs="0"/>

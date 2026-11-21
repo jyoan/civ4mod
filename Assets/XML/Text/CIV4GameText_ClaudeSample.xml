@@ -517,6 +517,15 @@
 		<Japanese>%s1_Leader&#12434;&#28357;&#12412;&#12375;&#12289;%s2_Trait&#12434;&#24471;&#12414;&#12375;&#12383;&#65281;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_MISC_TRAIT_GAINED_BY_FRIENDLY</Tag>
+		<English>Your friendship with %s1_Leader has earned you %s2_Trait!</English>
+		<French>Your friendship with %s1_Leader has earned you %s2_Trait!</French>
+		<German>Your friendship with %s1_Leader has earned you %s2_Trait!</German>
+		<Italian>Your friendship with %s1_Leader has earned you %s2_Trait!</Italian>
+		<Spanish>Your friendship with %s1_Leader has earned you %s2_Trait!</Spanish>
+		<Japanese>%s1_Leader&#12392;&#35242;&#23494;&#12395;&#12394;&#12426;&#12289;%s2_Trait&#12434;&#24471;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_MISC_RANDOM_BASIC_TRAITS</Tag>
 		<English>%s1_Trait has given you the following traits: %s2_Traits</English>
 		<French>%s1_Trait has given you the following traits: %s2_Traits</French>

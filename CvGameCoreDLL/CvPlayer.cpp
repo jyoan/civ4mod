@@ -56,6 +56,7 @@ CvPlayer::CvPlayer()
 	m_abFeatAccomplished = new bool[NUM_FEAT_TYPES];
 	m_abOptions = new bool[NUM_PLAYEROPTION_TYPES];
 	m_abCityConqueredBy = new bool[MAX_PLAYERS];	// added by this mod
+	m_abFriendlyTraitGainedFrom = new bool[MAX_PLAYERS];	// added by this mod
 
 	m_paiBonusExport = NULL;
 	m_paiBonusImport = NULL;
@@ -131,6 +132,7 @@ CvPlayer::~CvPlayer()
 	SAFE_DELETE_ARRAY(m_abFeatAccomplished);
 	SAFE_DELETE_ARRAY(m_abOptions);
 	SAFE_DELETE_ARRAY(m_abCityConqueredBy);
+	SAFE_DELETE_ARRAY(m_abFriendlyTraitGainedFrom);
 }
 
 
@@ -569,6 +571,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	for (iI = 0; iI < MAX_PLAYERS; iI++)
 	{
 		m_abCityConqueredBy[iI] = false;
+		m_abFriendlyTraitGainedFrom[iI] = false;
 	}
 
 	m_szScriptData = "";
@@ -2095,7 +2098,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		// bGainTraitOnCapitalCapture of the traits (added by this mod)
 		if (bCapitalConquest && hasTraitFlag(&CvTraitInfo::isGainTraitOnCapitalCapture))
 		{
-			gainBasicTraitsOf(eOldOwner, false);
+			gainBasicTraitsOf(eOldOwner, false, "TXT_KEY_MISC_TRAIT_GAINED_BY_CAPITAL");
 		}
 	}
 
@@ -2808,6 +2811,58 @@ void CvPlayer::doTraitTurns()
 		if (getTraitTurns((TraitTypes)iI) > 0)
 		{
 			setTraitTurns((TraitTypes)iI, getTraitTurns((TraitTypes)iI) - 1);
+		}
+	}
+}
+
+// GainTraitsOnFriendly of the traits (added by this mod): whether the traits of ePlayer were checked when ePlayer became friendly
+bool CvPlayer::isFriendlyTraitGainedFrom(PlayerTypes ePlayer) const
+{
+	return (ePlayer >= 0 && ePlayer < MAX_PLAYERS) ? m_abFriendlyTraitGainedFrom[ePlayer] : false;
+}
+
+// GainTraitsOnFriendly of the traits (added by this mod): at the start of the turn of this player, while it has a trait with
+// GainTraitsOnFriendly, each AI player (alive, met, not barbarian) whose true attitude to this player (AI_getAttitude with bForced
+// false, without the automatic friendly of the team and the vassals) is friendly gives its basic traits (gainBasicTraitsOf; bAll of
+// any of the traits gives all of them, otherwise one at random). Once per AI player: it is marked even when nothing is gained (all
+// the candidates are had already), and it is not checked again when it becomes friendly again later
+void CvPlayer::doGainTraitsOnFriendly()
+{
+	PlayerTypes eLoopPlayer;
+	bool bAll;
+	int iI;
+
+	if (getLeaderType() == NO_LEADER || !hasTraitFlag(&CvTraitInfo::isGainTraitsOnFriendly))
+	{
+		return;
+	}
+
+	bAll = hasTraitFlag(&CvTraitInfo::isGainTraitsOnFriendlyAll);
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		eLoopPlayer = (PlayerTypes)iI;
+
+		if (eLoopPlayer == getID() || m_abFriendlyTraitGainedFrom[iI])
+		{
+			continue;
+		}
+
+		CvPlayerAI& kLoopPlayer = GET_PLAYER(eLoopPlayer);
+		if (!kLoopPlayer.isAlive() || kLoopPlayer.isHuman() || kLoopPlayer.isBarbarian() || kLoopPlayer.getLeaderType() == NO_LEADER)
+		{
+			continue;
+		}
+
+		if (!GET_TEAM(getTeam()).isHasMet(kLoopPlayer.getTeam()))
+		{
+			continue;
+		}
+
+		if (kLoopPlayer.AI_getAttitude(getID(), false) >= ATTITUDE_FRIENDLY)
+		{
+			m_abFriendlyTraitGainedFrom[iI] = true;
+			gainBasicTraitsOf(eLoopPlayer, bAll, "TXT_KEY_MISC_TRAIT_GAINED_BY_FRIENDLY");
 		}
 	}
 }
@@ -3717,6 +3772,7 @@ void CvPlayer::doTurn()
 	updateConditionalTraits();	// ConditionalFreeTraits, also for changes the other calls miss (added by this mod)
 	doTraitTurns();	// temporary traits (added by this mod)
 	doRandomBasicTraits();	// RandomBasicTraits of the traits (added by this mod)
+	doGainTraitsOnFriendly();	// GainTraitsOnFriendly of the traits (added by this mod)
 	doTraitPythonHook(TRAIT_PYHOOK_BEGIN_TURN);	// PyOnBeginTurn (added by this mod)
 	doEnemyAttrition();	// EnemyAttrition/iPercent of the traits (added by this mod)
 
@@ -8222,12 +8278,14 @@ int CvPlayer::getLearnedBuilding(int iBuildingClass) const
 	return ((m_paiLearnedBuilding != NULL && iBuildingClass >= 0 && iBuildingClass < GC.getNumBuildingClassInfos()) ? m_paiLearnedBuilding[iBuildingClass] : NO_BUILDING);
 }
 
-// bGainTraitOnCapitalCapture (bAll false: acquireCity, when this player conquers the capital of eFrom) and
-// bGainTraitsOnElimination (bAll true: setAlive, when eFrom is eliminated) of the traits (added by this mod). The candidates are
+// bGainTraitOnCapitalCapture (bAll false: acquireCity, when this player conquers the capital of eFrom),
+// bGainTraitsOnElimination (bAll true: setAlive, when eFrom is eliminated) and GainTraitsOnFriendly (doGainTraitsOnFriendly, when
+// eFrom becomes friendly) of the traits (added by this mod). The candidates are
 // the basic traits (bBasicTrait) of the leader and the civilization of eFrom (hasBaseTrait, not the traits eFrom gained during
 // the game) that this player does not have yet. bAll false gives one of them at random, bAll true gives all of them. Nothing
-// when there is no candidate. The traits are given for good (changeFreeTraitCount), with a message to this player
-void CvPlayer::gainBasicTraitsOf(PlayerTypes eFrom, bool bAll)
+// when there is no candidate. The traits are given for good (changeFreeTraitCount), with the message szMessageKey (%s1 the leader
+// of eFrom, %s2 the trait) to this player
+void CvPlayer::gainBasicTraitsOf(PlayerTypes eFrom, bool bAll, const char* szMessageKey)
 {
 	std::vector<TraitTypes> aeTraits;
 	CvWString szBuffer;
@@ -8254,7 +8312,7 @@ void CvPlayer::gainBasicTraitsOf(PlayerTypes eFrom, bool bAll)
 
 	if (!bAll)
 	{
-		eTrait = aeTraits[GC.getGameINLINE().getSorenRandNum((int)aeTraits.size(), "Capital capture trait")];
+		eTrait = aeTraits[GC.getGameINLINE().getSorenRandNum((int)aeTraits.size(), "Gain basic trait")];
 		aeTraits.clear();
 		aeTraits.push_back(eTrait);
 	}
@@ -8263,7 +8321,7 @@ void CvPlayer::gainBasicTraitsOf(PlayerTypes eFrom, bool bAll)
 	{
 		changeFreeTraitCount(aeTraits[iI], 1);
 
-		szBuffer = gDLL->getText((bAll ? "TXT_KEY_MISC_TRAIT_GAINED_BY_ELIMINATION" : "TXT_KEY_MISC_TRAIT_GAINED_BY_CAPITAL"), GET_PLAYER(eFrom).getNameKey(), GC.getTraitInfo(aeTraits[iI]).getTextKeyWide());
+		szBuffer = gDLL->getText(szMessageKey, GET_PLAYER(eFrom).getNameKey(), GC.getTraitInfo(aeTraits[iI]).getTextKeyWide());
 		gDLL->getInterfaceIFace()->addMessage(getID(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_GOLDAGESTART", MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
 	}
 }
@@ -13545,7 +13603,7 @@ void CvPlayer::setAlive(bool bNewValue)
 			{
 				if (GET_PLAYER(m_eLastConqueror).isAlive() && GET_PLAYER(m_eLastConqueror).hasTraitFlag(&CvTraitInfo::isGainTraitsOnElimination))
 				{
-					GET_PLAYER(m_eLastConqueror).gainBasicTraitsOf(getID(), true);
+					GET_PLAYER(m_eLastConqueror).gainBasicTraitsOf(getID(), true, "TXT_KEY_MISC_TRAIT_GAINED_BY_ELIMINATION");
 				}
 			}
 			m_eLastConqueror = NO_PLAYER;
@@ -20260,6 +20318,12 @@ void CvPlayer::read(FDataStreamBase* pStream)
 		pStream->Read(&m_iRandomBasicTraitTurn);
 		pStream->Read(GC.getNumTraitInfos(), m_paiRandomBasicTrait);
 	}
+
+	// GainTraitsOnFriendly of the traits (uiFlag 15)
+	if (uiFlag > 14)
+	{
+		pStream->Read(MAX_PLAYERS, m_abFriendlyTraitGainedFrom);
+	}
 }
 
 //
@@ -20270,7 +20334,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 14;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait (added by this mod)
+	uint uiFlag = 15;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -20695,6 +20759,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(m_eLastConqueror);
 	pStream->Write(m_iRandomBasicTraitTurn);
 	pStream->Write(GC.getNumTraitInfos(), m_paiRandomBasicTrait);
+	pStream->Write(MAX_PLAYERS, m_abFriendlyTraitGainedFrom);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

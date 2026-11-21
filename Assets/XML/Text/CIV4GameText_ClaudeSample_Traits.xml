@@ -1560,6 +1560,24 @@
 		<Japanese>[ICON_BULLET]&#25126;&#20105;&#12391;&#25991;&#26126;&#12434;&#28357;&#12412;&#12377;&#12392;&#12289;&#12381;&#12398;&#25351;&#23566;&#32773;&#12398;&#22522;&#26412;&#24535;&#21521;&#12434;&#12377;&#12409;&#12390;&#24471;&#12427;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GAIN_TRAIT_ON_FRIENDLY</Tag>
+		<English>[ICON_BULLET]When an AI leader becomes friendly, gives one random basic trait of that leader</English>
+		<French>[ICON_BULLET]When an AI leader becomes friendly, gives one random basic trait of that leader</French>
+		<German>[ICON_BULLET]When an AI leader becomes friendly, gives one random basic trait of that leader</German>
+		<Italian>[ICON_BULLET]When an AI leader becomes friendly, gives one random basic trait of that leader</Italian>
+		<Spanish>[ICON_BULLET]When an AI leader becomes friendly, gives one random basic trait of that leader</Spanish>
+		<Japanese>[ICON_BULLET]AI&#12398;&#25351;&#23566;&#32773;&#12364;&#35242;&#23494;&#12395;&#12394;&#12427;&#12392;&#12289;&#12381;&#12398;&#25351;&#23566;&#32773;&#12398;&#22522;&#26412;&#24535;&#21521;&#12434;1&#12388;&#12521;&#12531;&#12480;&#12512;&#12395;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GAIN_TRAITS_ON_FRIENDLY_ALL</Tag>
+		<English>[ICON_BULLET]When an AI leader becomes friendly, gives all basic traits of that leader</English>
+		<French>[ICON_BULLET]When an AI leader becomes friendly, gives all basic traits of that leader</French>
+		<German>[ICON_BULLET]When an AI leader becomes friendly, gives all basic traits of that leader</German>
+		<Italian>[ICON_BULLET]When an AI leader becomes friendly, gives all basic traits of that leader</Italian>
+		<Spanish>[ICON_BULLET]When an AI leader becomes friendly, gives all basic traits of that leader</Spanish>
+		<Japanese>[ICON_BULLET]AI&#12398;&#25351;&#23566;&#32773;&#12364;&#35242;&#23494;&#12395;&#12394;&#12427;&#12392;&#12289;&#12381;&#12398;&#25351;&#23566;&#32773;&#12398;&#22522;&#26412;&#24535;&#21521;&#12434;&#12377;&#12409;&#12390;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_RANDOM_BASIC_TRAITS</Tag>
 		<English>[ICON_BULLET]Every %d1 turns, gains %d2 random basic traits in place of the last ones</English>
 		<French>[ICON_BULLET]Every %d1 turns, gains %d2 random basic traits in place of the last ones</French>

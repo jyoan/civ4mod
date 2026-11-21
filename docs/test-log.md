@@ -154,3 +154,4 @@
 - 2026-11-21: 志向の `bGainTraitOnCapitalCapture`（首都の占領で基本志向を 1 つ）・`bGainTraitsOnElimination`（滅亡で基本志向をすべて）をゲーム内で確認
 - 2026-11-21: 志向の `RandomBasicTraits`（`iTurns`・`iCount`。FFH2 の狂気志向。入れ替えとアナウンス）をゲーム内で確認
 - 2026-11-21: 志向のタグを親タグにまとめた `GoldInterest`・`PeaceAnger`・`KnownTechCost`・`EnemyAttrition` の読み込みをゲーム内で確認
+- 2026-11-22: 志向の `GainTraitsOnFriendly`（AI の指導者が親密になると基本志向を得る。`bAll` 0 / 1）をゲーム内で確認

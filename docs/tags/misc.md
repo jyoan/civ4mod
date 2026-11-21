@@ -18,6 +18,17 @@
 
 志向の付け外し（タグではなく仕組み）: `CvPlayer::changeFreeTraitCount(eTrait, iChange)` でゲームの途中に志向を与える・取り上げる（Python は `CyPlayer.changeFreeTraitCount` / `getFreeTraitCount` / `hasBaseTrait`）。`CvPlayer::hasTrait()` は「指導者・文明の志向（`hasBaseTrait`）」か「与えられた数（`m_paiFreeTraitCount`。セーブに保存、`CvPlayer` の `uiFlag=3`）が 1 以上」。数を数えるので、2 か所から与えて 1 か所が取り上げても残る。元から持つ志向を与えても二重には効かない。志向を得た・失ったときは、ゲーム開始時に 1 回だけ足していた効果（`CvPlayer::processTrait`。`init()` もこれを使う）を足し引きし、志向で決まる保存された値を計算し直す（`CvPlayer::updateTraitDependents`: 無政府期間の上限、金融志向などの閾値、陳腐化を無視する建物の効果、都市圏の半径、自国の領土のタイルの産出、`FeatureRoutes` があれば交易網）。その他の志向の効果はそのつど合計しているので、すぐに反映される。志向の昇進（`FreePromotions`・`FreePromotionSets`）は生産したユニットだけに付き、今いるユニットには付けない・外さない。ゲーム状態を変えるので、すべてのマシンで同じように呼ぶ（呪文の `PyResult` など。画面の Python からは呼ばない）
 
+基本志向（2026-11-22 に一段落）: BtS の指導者の志向 11 個（攻撃・防衛・カリスマ・帝国主義・金融・組織・創造・勤労・哲学・拡張・宗教）に `bBasicTrait` を付け、ほかの指導者から基本志向を得る・入れ替える志向のタグを作った。どれも候補はほかの経路で持っていない基本志向で、相手から得るものは相手の指導者と文明の志向（`hasBaseTrait`）が候補になる。仕様は `docs/tags/trait-military.md`。
+
+| タグ | 契機 | 得る数 | 失うか |
+|---|---|---|---|
+| `bGainTraitOnCapitalCapture` | 戦争で相手の首都を占領 | 1 つ（ランダム） | 失わない |
+| `bGainTraitsOnElimination` | 相手を滅ぼす（最後の都市を占領したプレイヤー） | すべて | 失わない |
+| `GainTraitsOnFriendly`（`bAll`） | AI の指導者が親密になる（1 人につき 1 回） | 1 つ（ランダム）／ `bAll` 1 ですべて | 失わない |
+| `RandomBasicTraits`（`iTurns`・`iCount`） | `iTurns` ターンごと（ゲーム速度で変わる） | `iCount` 個（ランダム） | 次の入れ替えで外れる |
+
+共通の処理は `CvPlayer::gainBasicTraitsOf`（相手から得る 3 つ）と `CvPlayer::doRandomBasicTraits`。新しい契機を足すときは `gainBasicTraitsOf(eFrom, bAll, szMessageKey)` を呼ぶ（メッセージの `%s1` は相手の指導者、`%s2` は志向）。
+
 ## ゲームルール（`GlobalDefinesAlt.xml`）
 
 - `RIVER_CROSSING_MOVE_COST`: 陸上ユニットが川を渡るときの追加の移動コスト（移動力。0 で BtS と同じ）。`CvPlot::movementCost` で地形のコストに足し、ユニットの移動力が上限（大きな値にすると渡河で移動が終わる。移動力 1 のユニットはもともと 1 タイルで止まるので変わらない）。経路探索も同じ関数なので、AI も避ける。払わないのは、川の戦闘ペナルティを無視するユニット（`isRiver`。水陸両用）、地形のコストを無視するユニット（`ignoreTerrainCost`）、橋梁建設を持ち道路でつながっている移動（道路のコストが優先）

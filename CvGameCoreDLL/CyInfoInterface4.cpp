@@ -22,6 +22,8 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("isRandomBasicTraits", &CvTraitInfo::isRandomBasicTraits, "bool ()")
 		.def("getRandomBasicTraitTurns", &CvTraitInfo::getRandomBasicTraitTurns, "int () - before the game speed")
 		.def("getRandomBasicTraitCount", &CvTraitInfo::getRandomBasicTraitCount, "int ()")
+		.def("isGainTraitsOnFriendly", &CvTraitInfo::isGainTraitsOnFriendly, "bool ()")
+		.def("isGainTraitsOnFriendlyAll", &CvTraitInfo::isGainTraitsOnFriendlyAll, "bool () - bAll of GainTraitsOnFriendly")
 		.def("isPassableTerrainInBorders", &CvTraitInfo::isPassableTerrainInBorders, "bool (int iTerrain)")
 		.def("isPassableFeatureInBorders", &CvTraitInfo::isPassableFeatureInBorders, "bool (int iFeature)")
 		.def("getFeatureHealChange", &CvTraitInfo::getFeatureHealChange, "int (int iFeature)")

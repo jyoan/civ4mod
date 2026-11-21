@@ -476,6 +476,7 @@ public:
 	void setTraitTurns(int /*TraitTypes*/ eTrait, int iTurns);
 	bool isRandomBasicTrait(int /*TraitTypes*/ eTrait);	// added by this mod
 	int getRandomBasicTraitTurn();	// added by this mod
+	bool isFriendlyTraitGainedFrom(int /*PlayerTypes*/ ePlayer);	// added by this mod
 	int getBuildingClassExtraCommerce(int /*BuildingClassTypes*/ eBuildingClass, int /*CommerceTypes*/ eCommerce);
 	void updateConditionalTraits();
 	int getNumUnitsKilled();

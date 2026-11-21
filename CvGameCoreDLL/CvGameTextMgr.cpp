@@ -4282,6 +4282,12 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GAIN_TRAITS_ON_ELIMINATION"));
 	}
 
+	// GainTraitsOnFriendly (added by this mod)
+	if (kTrait.isGainTraitsOnFriendly())
+	{
+		appendTraitLine(szHelpString, gDLL->getText(kTrait.isGainTraitsOnFriendlyAll() ? "TXT_KEY_TRAIT_GAIN_TRAITS_ON_FRIENDLY_ALL" : "TXT_KEY_TRAIT_GAIN_TRAIT_ON_FRIENDLY"));
+	}
+
 	// RandomBasicTraits: "Every 5 turns, gains 2 random basic traits in place of the last ones" (added by this mod). The turns
 	// are scaled by the game speed when it is known
 	if (kTrait.isRandomBasicTraits() && kTrait.getRandomBasicTraitCount() > 0)
