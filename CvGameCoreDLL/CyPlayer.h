@@ -529,6 +529,7 @@ public:
 	int getKnownTechCostModifier();	// added by this mod
 	int getKnownTechCostLimit();	// added by this mod
 	bool isConquestHeal();	// added by this mod
+	bool isStackCityDefense();	// added by this mod
 	int getMaxExperienceAfterUpgrade();	// added by this mod
 	int getExpOutsideBordersChange();	// added by this mod
 	int getWeLoveTheKingChance();	// added by this mod

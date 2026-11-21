@@ -512,6 +512,7 @@
 			<iKnownTechCostModifier>-10</iKnownTechCostModifier>
 			<iKnownTechCostLimit>-75</iKnownTechCostLimit>
 			<bConquestHeal>1</bConquestHeal>
+			<bStackCityDefense>1</bStackCityDefense>
 			<iNewWorldCityPopulation>2</iNewWorldCityPopulation>
 			<iOverseasCityPopulation>1</iOverseasCityPopulation>
 			<iOverseasMaintenanceModifier>-50</iOverseasMaintenanceModifier>

@@ -8193,6 +8193,12 @@ int CvCity::getNaturalDefense() const
 
 int CvCity::getTotalDefense(bool bIgnoreBuilding) const
 {
+	// bStackCityDefense of the traits of the owner (added by this mod): the building defense is added to the culture defense
+	if (GET_PLAYER(getOwnerINLINE()).isStackCityDefense())
+	{
+		return (((bIgnoreBuilding) ? 0 : getBuildingDefense()) + getNaturalDefense() + GET_PLAYER(getOwnerINLINE()).getCityDefenseModifier());
+	}
+
 	return (std::max(((bIgnoreBuilding) ? 0 : getBuildingDefense()), getNaturalDefense()) + GET_PLAYER(getOwnerINLINE()).getCityDefenseModifier());
 }
 

@@ -2890,7 +2890,15 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 				{
 					if ((GC.getGameINLINE().getBestLandUnit() == NO_UNIT) || !(GC.getUnitInfo(GC.getGameINLINE().getBestLandUnit()).isIgnoreBuildingDefense()))
 					{
-						iValue += (std::max(0, std::min(((kBuilding.getDefenseModifier() + getBuildingDefense()) - getNaturalDefense() - 10), kBuilding.getDefenseModifier())) / 4);
+						// bStackCityDefense of the traits (added by this mod): the culture defense does not hide the building defense
+						if (GET_PLAYER(getOwnerINLINE()).isStackCityDefense())
+						{
+							iValue += kBuilding.getDefenseModifier() / 4;
+						}
+						else
+						{
+							iValue += (std::max(0, std::min(((kBuilding.getDefenseModifier() + getBuildingDefense()) - getNaturalDefense() - 10), kBuilding.getDefenseModifier())) / 4);
+						}
 					}
 				}
 

@@ -20224,6 +20224,7 @@ m_iRevengeCombatPercent(0),
 m_iKnownTechCostModifier(0),
 m_iKnownTechCostLimit(0),
 m_bConquestHeal(false),
+m_bStackCityDefense(false),
 m_iNewWorldCityPopulation(0),
 m_iOverseasCityPopulation(0),
 m_iOverseasMaintenanceModifier(0),
@@ -20915,6 +20916,13 @@ int CvTraitInfo::getKnownTechCostLimit() const
 bool CvTraitInfo::isConquestHeal() const
 {
 	return m_bConquestHeal;
+}
+
+// bStackCityDefense (added by this mod): the culture defense and the building defense of the cities are added
+// instead of using the larger one (CvCity::getTotalDefense)
+bool CvTraitInfo::isStackCityDefense() const
+{
+	return m_bStackCityDefense;
 }
 
 // iNewWorldCityPopulation (added by this mod): population of the cities the player founds in the New World
@@ -22527,6 +22535,7 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iKnownTechCostModifier, "iKnownTechCostModifier");
 	pXML->GetChildXmlValByName(&m_iKnownTechCostLimit, "iKnownTechCostLimit");
 	pXML->GetChildXmlValByName(&m_bConquestHeal, "bConquestHeal");
+	pXML->GetChildXmlValByName(&m_bStackCityDefense, "bStackCityDefense");
 	// GreatPeopleClassRateModifiers: the unit classes are loaded before the traits
 	readTypeValueList(pXML, "GreatPeopleClassRateModifiers", "GreatPeopleClassRateModifier", "UnitClassType", "iGreatPeopleRateModifier", GC.getNumUnitClassInfos(), m_aiGreatPeopleClassRateModifier);
 	readSpecialBuildingProductionModifiers(pXML);
