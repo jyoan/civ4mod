@@ -16,3 +16,15 @@
 - DLL 側: `WIDGET_PEDIA_JUMP_TO_TRAIT`（クリックで Python の `pediaJumpToTrait`、マウスオーバーで志向の効果）、`CyGameTextMgr.parseTraits(iTrait, iCiv, bDawnOfMan)` を追加。列挙型はどちらも末尾に足した（既存の値は変わらない。`NUM_WIDGET_TYPES` は DLL 側だけの定義）
 - **画面番号の落とし穴**: `CvScreenEnums.py` では `PEDIA_X = CIVILOPEDIA_PAGE_X + 200` だが、`PEDIA_HISTORY = PEDIA_HINTS + 1` が決め打ち。末尾に足したページ種別に + 200 すると `PEDIA_HISTORY` と同じ値になるので、`PEDIA_TRAIT = PEDIA_HISTORY + 1` にしている（呪文のペディアは `PEDIA_SPELL = PEDIA_TRAIT + 1`）
 - 志向の名前は説明文の中で `<link=literal>` のリンクになっている（`parseTraits` の見出し、文明の説明の志向一覧）。ペディアでクリックすると志向のページへ移動する
+
+## Mod に入れている Python
+
+元の Python ファイルをどこからコピーしたか（`Assets\Python\` からの相対パス）。
+
+- BtS(J) のコピーに追記: `Screens\CvPediaMain.py`・`Screens\CvPediaCivilization.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`・`Screens\CvVictoryScreen.py`・`Screens\CvMainInterface.py`・`Screens\CvTechChooser.py`・`CvEventManager.py`
+- 無印 Civ4(J) のコピーに追記: `Screens\CvCivicsScreen.py`（BtS(J)・Warlords(J) には無く、無印のものが使われている）
+- Warlords(J) のコピーに追記: `Screens\CvFinanceAdvisor.py`（BtS(J) には無い）
+- BtS(J) のコピーに Unofficial Patch の修正: `CvAdvisorUtils.py`・`Screens\CvDomesticAdvisor.py`・`EntryPoints\CvRandomEventInterface.py`
+- Warlords(J) のコピーに Unofficial Patch の修正: `CvMapGeneratorUtil.py`
+- 無印 Civ4(J) のコピーに Unofficial Patch の修正: `pyHelper\Popup.py`
+- 新規: `Screens\CvPediaTrait.py`・`Screens\CvPediaSpell.py`・`EntryPoints\CvSpellInterface.py`・`EntryPoints\CvTraitInterface.py`・`EntryPoints\CvHookInterface.py`・`CvHookUtils.py`（XML の Python の式の共通の関数は `CvHookUtils.py`）
