@@ -20251,6 +20251,9 @@ m_pabNoTechCivic(NULL),
 m_iMaxNationalWondersPerCity(0),
 m_iMaxNationalWondersPerCityForOCC(0),
 m_bHumanCanBeVassal(false),
+m_bBasicTrait(false),
+m_bGainTraitOnCapitalCapture(false),
+m_bGainTraitsOnElimination(false),
 m_iMaxExperienceAfterUpgrade(0),
 m_iExpOutsideBordersChange(0),
 m_iWeLoveTheKingChance(0),
@@ -21117,6 +21120,27 @@ int CvTraitInfo::getMaxNationalWondersPerCityForOCC() const
 bool CvTraitInfo::isHumanCanBeVassal() const
 {
 	return m_bHumanCanBeVassal;
+}
+
+// bBasicTrait (added by this mod): one of the basic traits (the 11 leader traits of BtS). bGainTraitOnCapitalCapture and
+// bGainTraitsOnElimination take these from the leader of the conquered player (CvPlayer::gainBasicTraitsOf)
+bool CvTraitInfo::isBasicTrait() const
+{
+	return m_bBasicTrait;
+}
+
+// bGainTraitOnCapitalCapture (added by this mod): conquering the capital of a player gives one random basic trait of that
+// player that we do not have (CvPlayer::acquireCity)
+bool CvTraitInfo::isGainTraitOnCapitalCapture() const
+{
+	return m_bGainTraitOnCapitalCapture;
+}
+
+// bGainTraitsOnElimination (added by this mod): eliminating a player gives all basic traits of that player that we do not
+// have (CvPlayer::setAlive; the player who conquered its last city)
+bool CvTraitInfo::isGainTraitsOnElimination() const
+{
+	return m_bGainTraitsOnElimination;
 }
 
 // iMaxExperienceAfterUpgrade (added by this mod): replaces MAX_EXPERIENCE_AFTER_UPGRADE, see
@@ -22612,6 +22636,9 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iMaxNationalWondersPerCity, "iMaxNationalWondersPerCity");
 	pXML->GetChildXmlValByName(&m_iMaxNationalWondersPerCityForOCC, "iMaxNationalWondersPerCityForOCC");
 	pXML->GetChildXmlValByName(&m_bHumanCanBeVassal, "bHumanCanBeVassal");
+	pXML->GetChildXmlValByName(&m_bBasicTrait, "bBasicTrait");
+	pXML->GetChildXmlValByName(&m_bGainTraitOnCapitalCapture, "bGainTraitOnCapitalCapture");
+	pXML->GetChildXmlValByName(&m_bGainTraitsOnElimination, "bGainTraitsOnElimination");
 }
 
 // The part of read() for the yield and commerce arrays, the unit combat arrays, the free promotions and MaintainFeatures (added by this mod)

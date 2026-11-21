@@ -4271,6 +4271,17 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HUMAN_CAN_BE_VASSAL"));
 	}
 
+	// bGainTraitOnCapitalCapture / bGainTraitsOnElimination (added by this mod)
+	if (kTrait.isGainTraitOnCapitalCapture())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GAIN_TRAIT_ON_CAPITAL_CAPTURE"));
+	}
+
+	if (kTrait.isGainTraitsOnElimination())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GAIN_TRAITS_ON_ELIMINATION"));
+	}
+
 	// iUnitCostModifier / iBuildingCostModifier: "-20% production cost of units" (added by this mod)
 	if (kTrait.getUnitCostModifier() != 0)
 	{

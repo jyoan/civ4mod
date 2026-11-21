@@ -4955,6 +4955,9 @@ public:
 	int getMaxNationalWondersPerCity() const;	// Exposed to Python (added by this mod)
 	int getMaxNationalWondersPerCityForOCC() const;	// Exposed to Python (added by this mod)
 	bool isHumanCanBeVassal() const;	// Exposed to Python (added by this mod)
+	bool isBasicTrait() const;	// Exposed to Python (added by this mod)
+	bool isGainTraitOnCapitalCapture() const;	// Exposed to Python (added by this mod)
+	bool isGainTraitsOnElimination() const;	// Exposed to Python (added by this mod)
 	// Batch of 2026-11-18 (added by this mod)
 	int getMaxExperienceAfterUpgrade() const;	// Exposed to Python: 0 = not set (MAX_EXPERIENCE_AFTER_UPGRADE), -1 = keeps all
 	int getExpOutsideBordersChange() const;		// Exposed to Python
@@ -5267,6 +5270,9 @@ protected:
 	int m_iMaxNationalWondersPerCity;	// added by this mod: 0 = not set, -1 = no limit
 	int m_iMaxNationalWondersPerCityForOCC;	// added by this mod: 0 = not set, -1 = no limit
 	bool m_bHumanCanBeVassal;	// added by this mod
+	bool m_bBasicTrait;	// added by this mod
+	bool m_bGainTraitOnCapitalCapture;	// added by this mod
+	bool m_bGainTraitsOnElimination;	// added by this mod
 	int m_iMaxExperienceAfterUpgrade;	// added by this mod: 0 = not set, -1 = keeps all
 	int m_iExpOutsideBordersChange;	// added by this mod
 	int m_iWeLoveTheKingChance;	// added by this mod
