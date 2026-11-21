@@ -88,6 +88,9 @@ public:
 	int getRandomBasicTraitTurn() const;						// Exposed to Python: game turn of the last change, -1 if none
 	void doRandomBasicTraits();
 	static int getRandomBasicTraitTurnsForSpeed(int iTurns);
+	// GainTraitsOnFriendly of the traits (added by this mod)
+	bool isFriendlyTraitGainedFrom(PlayerTypes ePlayer) const;	// Exposed to Python: the traits of ePlayer were checked when it became friendly
+	void doGainTraitsOnFriendly();
 	void doTraitGainedPythonHook(TraitTypes eTrait, bool bGained);	// PyOnGained / PyOnLost of the trait
 	bool isConditionalFreeTraitActive(const ConditionalFreeTrait& kCondition) const;
 	void updateConditionalTraits(bool bNotify = false);								// Exposed to Python
@@ -371,7 +374,7 @@ public:
 	int getLearnedUnit(int iUnitClass) const;			// Exposed to Python: NO_UNIT if none
 	int getLearnedBuilding(int iBuildingClass) const;	// Exposed to Python: NO_BUILDING if none
 	void learnConquestUniques(PlayerTypes eOldOwner);
-	void gainBasicTraitsOf(PlayerTypes eFrom, bool bAll);	// bGainTraitOnCapitalCapture / bGainTraitsOnElimination (added by this mod)
+	void gainBasicTraitsOf(PlayerTypes eFrom, bool bAll, const char* szMessageKey);	// bGainTraitOnCapitalCapture / bGainTraitsOnElimination / GainTraitsOnFriendly (added by this mod)
 	// Batch of 2026-11-17 of the traits (added by this mod)
 	int getTraitStateReligionHealth() const;			// Exposed to Python
 	int getGreatPeopleClassRateModifier(UnitClassTypes eUnitClass) const;	// Exposed to Python
@@ -1436,6 +1439,7 @@ protected:
 	int* m_paiLearnedBuilding;				// the building learned by conquest per building class, NO_BUILDING if none (added by this mod)
 	PlayerTypes m_eLastConqueror;			// the player that conquered the last city of this player (bGainTraitsOnElimination, added by this mod)
 	bool* m_abCityConqueredBy;				// the players that have conquered a city of this player (iRevengeCombatPercent, added by this mod)
+	bool* m_abFriendlyTraitGainedFrom;		// the AI players whose traits were checked when they became friendly (GainTraitsOnFriendly, added by this mod)
 	int* m_paiRandomBasicTrait;				// 1 for the traits given by RandomBasicTraits now (added by this mod)
 	int m_iRandomBasicTraitTurn;			// game turn of the last change of RandomBasicTraits, -1 if none (added by this mod)
 	int* m_paiTraitTurns;					// turns left of the temporary traits, 0 if not temporary (added by this mod)

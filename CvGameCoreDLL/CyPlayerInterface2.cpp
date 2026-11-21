@@ -177,5 +177,6 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("setTraitTurns", &CyPlayer::setTraitTurns, "void (int /*TraitTypes*/ eTrait, int iTurns) - has the trait for iTurns turns, 0 ends it (added by this mod)")
 		.def("isRandomBasicTrait", &CyPlayer::isRandomBasicTrait, "bool (int /*TraitTypes*/ eTrait) - given by RandomBasicTraits now (added by this mod)")
 		.def("getRandomBasicTraitTurn", &CyPlayer::getRandomBasicTraitTurn, "int () - game turn of the last change of RandomBasicTraits, -1 if none (added by this mod)")
+		.def("isFriendlyTraitGainedFrom", &CyPlayer::isFriendlyTraitGainedFrom, "bool (int /*PlayerTypes*/ ePlayer) - GainTraitsOnFriendly checked ePlayer already (added by this mod)")
 		;
 }

@@ -20257,6 +20257,8 @@ m_bGainTraitsOnElimination(false),
 m_bRandomBasicTraits(false),
 m_iRandomBasicTraitTurns(0),
 m_iRandomBasicTraitCount(0),
+m_bGainTraitsOnFriendly(false),
+m_bGainTraitsOnFriendlyAll(false),
 m_iMaxExperienceAfterUpgrade(0),
 m_iExpOutsideBordersChange(0),
 m_iWeLoveTheKingChance(0),
@@ -21162,6 +21164,19 @@ int CvTraitInfo::getRandomBasicTraitTurns() const
 int CvTraitInfo::getRandomBasicTraitCount() const
 {
 	return m_iRandomBasicTraitCount;
+}
+
+// GainTraitsOnFriendly (bAll; added by this mod): when an AI player first becomes friendly to the player, the player gets the
+// basic traits of that player it does not have yet (CvPlayer::doGainTraitsOnFriendly). bAll 0: one of them at random, 1: all.
+// isGainTraitsOnFriendly: the element is there
+bool CvTraitInfo::isGainTraitsOnFriendly() const
+{
+	return m_bGainTraitsOnFriendly;
+}
+
+bool CvTraitInfo::isGainTraitsOnFriendlyAll() const
+{
+	return m_bGainTraitsOnFriendlyAll;
 }
 
 // iMaxExperienceAfterUpgrade (added by this mod): replaces MAX_EXPERIENCE_AFTER_UPGRADE, see
@@ -22688,6 +22703,15 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 		m_bRandomBasicTraits = true;
 		pXML->GetChildXmlValByName(&m_iRandomBasicTraitTurns, "iTurns");
 		pXML->GetChildXmlValByName(&m_iRandomBasicTraitCount, "iCount");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	// GainTraitsOnFriendly: bAll; on when the element is there
+	m_bGainTraitsOnFriendly = false;
+	m_bGainTraitsOnFriendlyAll = false;
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "GainTraitsOnFriendly"))
+	{
+		m_bGainTraitsOnFriendly = true;
+		pXML->GetChildXmlValByName(&m_bGainTraitsOnFriendlyAll, "bAll");
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 }

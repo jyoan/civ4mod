@@ -496,6 +496,9 @@
 			<bRevealHiddenAttitude>1</bRevealHiddenAttitude>
 			<bGainTraitOnCapitalCapture>1</bGainTraitOnCapitalCapture>
 			<bGainTraitsOnElimination>1</bGainTraitsOnElimination>
+			<GainTraitsOnFriendly>
+				<bAll>0</bAll>
+			</GainTraitsOnFriendly>
 			<iNewWorldCityPopulation>2</iNewWorldCityPopulation>
 			<iOverseasCityPopulation>1</iOverseasCityPopulation>
 			<iOverseasMaintenanceModifier>-50</iOverseasMaintenanceModifier>

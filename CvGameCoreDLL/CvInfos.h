@@ -4961,6 +4961,8 @@ public:
 	bool isRandomBasicTraits() const;	// Exposed to Python (added by this mod)
 	int getRandomBasicTraitTurns() const;	// Exposed to Python (added by this mod)
 	int getRandomBasicTraitCount() const;	// Exposed to Python (added by this mod)
+	bool isGainTraitsOnFriendly() const;	// Exposed to Python (added by this mod)
+	bool isGainTraitsOnFriendlyAll() const;	// Exposed to Python (added by this mod)
 	// Batch of 2026-11-18 (added by this mod)
 	int getMaxExperienceAfterUpgrade() const;	// Exposed to Python: 0 = not set (MAX_EXPERIENCE_AFTER_UPGRADE), -1 = keeps all
 	int getExpOutsideBordersChange() const;		// Exposed to Python
@@ -5279,6 +5281,8 @@ protected:
 	bool m_bRandomBasicTraits;	// added by this mod
 	int m_iRandomBasicTraitTurns;	// added by this mod
 	int m_iRandomBasicTraitCount;	// added by this mod
+	bool m_bGainTraitsOnFriendly;	// added by this mod
+	bool m_bGainTraitsOnFriendlyAll;	// added by this mod
 	int m_iMaxExperienceAfterUpgrade;	// added by this mod: 0 = not set, -1 = keeps all
 	int m_iExpOutsideBordersChange;	// added by this mod
 	int m_iWeLoveTheKingChance;	// added by this mod

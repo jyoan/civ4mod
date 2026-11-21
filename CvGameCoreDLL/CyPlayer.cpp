@@ -2121,6 +2121,11 @@ int CyPlayer::getRandomBasicTraitTurn()
 	return m_pPlayer ? m_pPlayer->getRandomBasicTraitTurn() : -1;
 }
 
+bool CyPlayer::isFriendlyTraitGainedFrom(int /*PlayerTypes*/ ePlayer)
+{
+	return m_pPlayer ? m_pPlayer->isFriendlyTraitGainedFrom((PlayerTypes)ePlayer) : false;
+}
+
 void CyPlayer::setTraitTurns(int /*TraitTypes*/ eTrait, int iTurns)
 {
 	if (m_pPlayer)
