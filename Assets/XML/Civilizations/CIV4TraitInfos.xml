@@ -195,7 +195,9 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<iGoldInterestPercent>1</iGoldInterestPercent>
+			<GoldInterest>
+				<iPercent>1</iPercent>
+			</GoldInterest>
 			<ExtraYieldThresholds>
 				<iExtraYieldThreshold>0</iExtraYieldThreshold>
 				<iExtraYieldThreshold>0</iExtraYieldThreshold>
@@ -2961,8 +2963,10 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<iEnemyAttritionInBorders>10</iEnemyAttritionInBorders>
-			<iEnemyAttritionLimit>50</iEnemyAttritionLimit>
+			<EnemyAttrition>
+				<iPercent>10</iPercent>
+				<iLimit>50</iLimit>
+			</EnemyAttrition>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>
@@ -4013,8 +4017,10 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<iKnownTechCostModifier>-10</iKnownTechCostModifier>
-			<iKnownTechCostLimit>-75</iKnownTechCostLimit>
+			<KnownTechCost>
+				<iModifier>-10</iModifier>
+				<iLimit>-75</iLimit>
+			</KnownTechCost>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

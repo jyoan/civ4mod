@@ -32,7 +32,7 @@ BtS の効果はそのままにして足す。
 | 攻撃 | 略奪で得る資金 +100%、都市を征服したときの資金 +100% | `iPillageGoldModifier` 100、`iCityCaptureGoldModifier` 100 |
 | 防衛 | 自国の領土では敵が略奪できない、弓兵のアップグレード費 -50% | `bNoPillageInBorders`、`UnitCombatUpgradeDiscounts` 弓兵 50 |
 | 拡張 | 新しい都市の人口 +1、労働者の作業速度 +25% | `iNewCityPopulation` 1、`iWorkerSpeedModifier` 25 |
-| 金融 | 国庫の利子 毎ターン 1%（上限なし）、交易路の収入 +25% | `iGoldInterestPercent` 1、`TradeYieldModifiers` 商業 25 |
+| 金融 | 国庫の利子 毎ターン 1%（上限なし）、交易路の収入 +25% | `GoldInterest` の `iPercent` 1、`TradeYieldModifiers` 商業 25 |
 | 組織 | 距離による維持費 -25%、都市数による維持費 -25% | `iDistanceMaintenanceModifier` -25、`iNumCitiesMaintenanceModifier` -25 |
 | 哲学 | 専門家 1 人につき研究 +1 | `SpecialistExtraCommerces` 研究 1 |
 | 宗教 | 宣教師の布教の成功率 +25% | `iReligionSpreadChange` 25 |
@@ -50,7 +50,7 @@ BtS の効果はそのままにして足す。
 | `iPillageGoldModifier`、`iCityCaptureGoldModifier` | 攻撃志向 |
 | `bNoPillageInBorders`、`UnitCombatUpgradeDiscounts` | 防衛志向 |
 | `iNewCityPopulation`、`iWorkerSpeedModifier` | 拡張志向 |
-| `iGoldInterestPercent`、`TradeYieldModifiers` | 金融志向 |
+| `GoldInterest`、`TradeYieldModifiers` | 金融志向 |
 | `iDistanceMaintenanceModifier`、`iNumCitiesMaintenanceModifier` | 組織志向 |
 | `SpecialistExtraCommerces` | 哲学志向 |
 | `iReligionSpreadChange` | 宗教志向 |
@@ -90,7 +90,7 @@ BtS の効果はそのままにして足す。
 | `NoObsoleteBuildingClasses` の城壁・城 | ギルガメッシュ |
 | `bNewCityStateReligion` | ザラ・ヤコブ |
 | `bBarbarianAlly`、`PrereqTech`（騎乗）+ `bBarbarianVision` | チンギス・ハーン |
-| `iEnemyAttritionInBorders` | スターリン |
+| `EnemyAttrition` | スターリン |
 | `iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | ガンジー |
 | `NoObsoleteBuildingClasses` の世界遺産 | ラムセス２世 |
 | `PrereqTech` + `iFreeSpecialist` | リンカーン |
@@ -117,7 +117,7 @@ BtS の効果はそのままにして足す。
 | `GreatPeopleClassRateModifiers` の大技術者 | スレイマン |
 | `iEnemyMoveCostInBorders` | オラニエ公ヴィレム1世 |
 | `iRevengeCombatPercent` | ブーディカ |
-| `iKnownTechCostModifier`、`iKnownTechCostLimit` | ピョートル |
+| `KnownTechCost` | ピョートル |
 | `bConquestHeal` | ユリウス・カエサル |
 | `CapitalTerrainYieldPercents`、`TerrainTrades` の砂漠 | マリ |
 | `Hurrys` の資金（ユニットだけ、`iExperience`） | カルタゴ |
@@ -167,7 +167,7 @@ BtS の効果はそのままにして足す。
 | ギルガメッシュ | ウルクの城壁: 城壁と城が陳腐化しない | `NoObsoleteBuildingClasses` | 実装済み `TRAIT_WALLS_OF_URUK` |
 | ザラ・ヤコブ | 信仰の王: 新しい都市に国教が広まる | `bNewCityStateReligion` | 実装済み `TRAIT_KING_OF_FAITH` |
 | チンギス・ハーン | 草原の統一: 蛮族と平和。騎乗を得ると蛮族の視界を共有する（蛮族のユニット・動物・都市が見ているタイルが見える。2026-11-19 に追加。視界は強力なので騎乗を条件にした） | `bBarbarianAlly`、`ConditionalFreeTraits` の `PrereqTech`（`TECH_HORSEBACK_RIDING`）で `TRAIT_STEPPE_UNITY_VISION`（`bBarbarianVision`） | 実装済み `TRAIT_STEPPE_UNITY` |
-| スターリン | 焦土: 自国の領土にいる交戦中の敵が毎ターン最大 HP の 10% を失う（50% まで） | `iEnemyAttritionInBorders`・`iEnemyAttritionLimit` | 実装済み `TRAIT_SCORCHED_EARTH` |
+| スターリン | 焦土: 自国の領土にいる交戦中の敵が毎ターン最大 HP の 10% を失う（50% まで） | `EnemyAttrition` | 実装済み `TRAIT_SCORCHED_EARTH` |
 | ガンジー | 非暴力不服従: 防衛時の戦闘力 +10%、敵の厭戦感情 +50% | `iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | 実装済み `TRAIT_SATYAGRAHA` |
 | ラムセス２世 | 永遠の記念碑: すべての世界遺産が陳腐化しない（BtS で陳腐化する 13 個を並べた） | `NoObsoleteBuildingClasses` | 実装済み `TRAIT_ETERNAL_MONUMENTS` |
 | リンカーン | 奴隷解放: 自由主義を得ると全都市に無償の専門家 +1 | `PrereqTech` で `TRAIT_EMANCIPATION_ACT`（`iFreeSpecialist`） | 実装済み、ゲームで確認済み `TRAIT_EMANCIPATION` |
@@ -194,7 +194,7 @@ BtS の効果はそのままにして足す。
 | スレイマン | 大建築家スィナン: 大技術者の偉人ポイント +100% | `GreatPeopleClassRateModifiers`（大技術者） | 実装済み、ゲームで確認済み `TRAIT_SINAN` |
 | オラニエ公ヴィレム1世 | ライデンの解放: 自国の領土では、交戦中の敵の陸上ユニットの移動コスト +1 | `iEnemyMoveCostInBorders` | 実装済み、ゲームで確認済み `TRAIT_RELIEF_OF_LEIDEN` |
 | ブーディカ | 復讐の女王: 自分の都市を一度でも征服した文明との戦闘力 +25% | `iRevengeCombatPercent` | 実装済み、ゲームで確認済み `TRAIT_REVENGE_QUEEN` |
-| ピョートル | 大使節団: その技術を持つ既知の文明 1 つにつき研究費 -10%（-75% まで） | `iKnownTechCostModifier`、`iKnownTechCostLimit` | 実装済み、ゲームで確認済み `TRAIT_GRAND_EMBASSY` |
+| ピョートル | 大使節団: その技術を持つ既知の文明 1 つにつき研究費 -10%（-75% まで） | `KnownTechCost` | 実装済み、ゲームで確認済み `TRAIT_GRAND_EMBASSY` |
 | ユリウス・カエサル | 来た、見た、勝った: 都市を征服すると全ユニットが全回復 | `bConquestHeal` | 実装済み、ゲームで確認済み `TRAIT_VENI_VIDI_VICI` |
 | マリ（文明） | サハラ交易: 首都の都市圏の砂漠 1 タイルにつき、首都の食料 +0.5・商業 +1（砂漠のタイルそのものは変わらない）。砂漠が交易網をつなぐ。砂漠のバイアス | `CapitalTerrainYieldPercents`（砂漠 食料 50・商業 100）、`TerrainTrades`（砂漠）、`StartBiasTerrains`（砂漠 10） | 実装済み `TRAIT_TRANS_SAHARAN` |
 | カルタゴ（文明） | 傭兵: 普通選挙なしで、資金でユニットを緊急生産できる。資金で緊急生産したユニットは経験値 +2（普通選挙で緊急生産した場合も）（2026-11-19） | `Hurrys`（`HURRY_GOLD`、`bUnitsOnly`、`iExperience` 2） | 実装済み `TRAIT_MERCENARIES` |
