@@ -1586,4 +1586,22 @@
 		<Spanish>[ICON_BULLET]Every %d1 turns, gains %d2 random basic traits in place of the last ones</Spanish>
 		<Japanese>[ICON_BULLET]%d1 &#12479;&#12540;&#12531;&#12372;&#12392;&#12395;&#12289;&#22522;&#26412;&#24535;&#21521;&#12434; %d2 &#20491;&#12521;&#12531;&#12480;&#12512;&#12395;&#24471;&#12427;&#65288;&#21069;&#22238;&#24471;&#12383;&#24535;&#21521;&#12392;&#20837;&#12428;&#26367;&#12431;&#12427;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SEA_START</Tag>
+		<English>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on %s1_Unit (no start bias)</English>
+		<French>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on %s1_Unit (no start bias)</French>
+		<German>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on %s1_Unit (no start bias)</German>
+		<Italian>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on %s1_Unit (no start bias)</Italian>
+		<Spanish>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on %s1_Unit (no start bias)</Spanish>
+		<Japanese>[ICON_BULLET]&#22806;&#27915;&#65288;&#12394;&#12369;&#12428;&#12400;&#36817;&#28023;&#65289;&#12391;&#12289;&#21021;&#26399;&#12518;&#12491;&#12483;&#12488;&#12434;%s1_Unit&#12395;&#20055;&#12379;&#12390;&#38283;&#22987;&#12377;&#12427;&#65288;&#38283;&#22987;&#20301;&#32622;&#12398;&#22909;&#12415;&#12399;&#28961;&#21177;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SEA_START_NO_SHIP</Tag>
+		<English>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on the water without ships (no start bias)</English>
+		<French>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on the water without ships (no start bias)</French>
+		<German>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on the water without ships (no start bias)</German>
+		<Italian>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on the water without ships (no start bias)</Italian>
+		<Spanish>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on the water without ships (no start bias)</Spanish>
+		<Japanese>[ICON_BULLET]&#22806;&#27915;&#65288;&#12394;&#12369;&#12428;&#12400;&#36817;&#28023;&#65289;&#12391;&#12289;&#21021;&#26399;&#12518;&#12491;&#12483;&#12488;&#12364;&#33337;&#12394;&#12375;&#12391;&#28023;&#19978;&#12395;&#12356;&#12427;&#29366;&#24907;&#12391;&#38283;&#22987;&#12377;&#12427;&#65288;&#38283;&#22987;&#20301;&#32622;&#12398;&#22909;&#12415;&#12399;&#28961;&#21177;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

@@ -975,4 +975,31 @@
 		<Spanish>Test Diplomacy</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#25216;&#34899;&#65288;&#22806;&#20132;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_SEA</Tag>
+		<English>Test Trait (Sea)</English>
+		<French>Test Trait (Sea)</French>
+		<German>Test Trait (Sea)</German>
+		<Italian>Test Trait (Sea)</Italian>
+		<Spanish>Test Trait (Sea)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;&#28023;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_SEA_SHORT</Tag>
+		<English>TSea</English>
+		<French>TSea</French>
+		<German>TSea</German>
+		<Italian>TSea</Italian>
+		<Spanish>TSea</Spanish>
+		<Japanese>&#26908; &#28023;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TEST_SEA</Tag>
+		<English>Test Leader (Sea)</English>
+		<French>Test Leader (Sea)</French>
+		<German>Test Leader (Sea)</German>
+		<Italian>Test Leader (Sea)</Italian>
+		<Spanish>Test Leader (Sea)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#25351;&#23566;&#32773;&#65288;&#28023;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

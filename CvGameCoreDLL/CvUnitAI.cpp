@@ -5022,6 +5022,20 @@ void CvUnitAI::AI_settlerSeaMove()
 	int iSettlerCount = getUnitAICargo(UNITAI_SETTLE);
 	int iWorkerCount = getUnitAICargo(UNITAI_WORKER);
 
+	// SeaStart of the traits (added by this mod): before the first city, a ship with a settler takes it to a city site at
+	// once (below, BtS waits for a full ship or a defender and a worker), or looks for land when it knows no site
+	if ((iSettlerCount > 0) && (GET_PLAYER(getOwnerINLINE()).getNumCities() == 0))
+	{
+		if (AI_settlerSeaTransport())
+		{
+			return;
+		}
+		if (AI_seaStartExplore())
+		{
+			return;
+		}
+	}
+
 	if ((iSettlerCount > 0) && (isFull() ||
 			((getUnitAICargo(UNITAI_CITY_DEFENSE) > 0) &&
 			 (getUnitAICargo(UNITAI_WORKER) > 0) &&
@@ -12755,6 +12769,95 @@ bool CvUnitAI::AI_settlerSeaTransport()
 		}
 	}
 	return false;
+}
+
+
+// SeaStart of the traits (added by this mod): a ship with a settler before the first city that knows no city site moves for
+// one turn toward the water plot next to the most unrevealed plots (and to revealed land), nearer plots first. One turn
+// only, so that it looks again for a city site each turn (AI_explore pushes a mission of many turns). Falls back to
+// AI_explore.
+bool CvUnitAI::AI_seaStartExplore()
+{
+	PROFILE_FUNC();
+
+	CvPlot* pLoopPlot;
+	CvPlot* pAdjacentPlot;
+	CvPlot* pBestPlot;
+	CvPlot* pBestTargetPlot;
+	int iRange;
+	int iUnrevealed;
+	int iLand;
+	int iBaseValue;
+	int iValue;
+	int iBestValue;
+	int iPathTurns;
+	int iDX, iDY, iJ;
+
+	iRange = 10;
+	iBestValue = 0;
+	pBestPlot = NULL;
+	pBestTargetPlot = NULL;
+
+	for (iDX = -iRange; iDX <= iRange; iDX++)
+	{
+		for (iDY = -iRange; iDY <= iRange; iDY++)
+		{
+			pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+			if (pLoopPlot == NULL || atPlot(pLoopPlot) || !pLoopPlot->isWater() || !AI_plotValid(pLoopPlot))
+			{
+				continue;
+			}
+
+			iUnrevealed = (pLoopPlot->isRevealed(getTeam(), false) ? 0 : 1);
+			iLand = 0;
+			for (iJ = 0; iJ < NUM_DIRECTION_TYPES; iJ++)
+			{
+				pAdjacentPlot = plotDirection(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), (DirectionTypes)iJ);
+				if (pAdjacentPlot != NULL)
+				{
+					if (!pAdjacentPlot->isRevealed(getTeam(), false))
+					{
+						iUnrevealed++;
+					}
+					else if (!pAdjacentPlot->isWater())
+					{
+						iLand++;
+					}
+				}
+			}
+
+			if (iUnrevealed == 0)
+			{
+				continue;
+			}
+
+			iBaseValue = (1000 * iUnrevealed) + (2000 * std::min(iLand, 1)) + GC.getGameINLINE().getSorenRandNum(100, "AI Sea Start Explore");
+			// The best value it could have (a path of 0 turns): skip the path when it cannot be better
+			if ((iBaseValue * 100) <= iBestValue)
+			{
+				continue;
+			}
+
+			if (!pLoopPlot->isVisibleEnemyUnit(this) && generatePath(pLoopPlot, MOVE_NO_ENEMY_TERRITORY, true, &iPathTurns))
+			{
+				iValue = (iBaseValue * 100) / (1 + iPathTurns);
+				if (iValue > iBestValue)
+				{
+					iBestValue = iValue;
+					pBestPlot = getPathEndTurnPlot();
+					pBestTargetPlot = pLoopPlot;
+				}
+			}
+		}
+	}
+
+	if (pBestPlot != NULL && pBestTargetPlot != NULL && !atPlot(pBestPlot))
+	{
+		getGroup()->pushMission(MISSION_MOVE_TO, pBestPlot->getX_INLINE(), pBestPlot->getY_INLINE(), MOVE_NO_ENEMY_TERRITORY, false, false, MISSIONAI_EXPLORE, pBestTargetPlot);
+		return true;
+	}
+
+	return AI_explore();
 }
 
 

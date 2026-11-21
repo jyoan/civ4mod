@@ -942,6 +942,8 @@ void CvPlayer::initFreeUnits()
 		{
 			addFreeUnitAI(UNITAI_EXPLORE, iFreeCount);
 		}
+
+		loadSeaStartUnits();	// SeaStart of the traits (added by this mod)
 	}
 }
 
@@ -1039,7 +1041,8 @@ void CvPlayer::addFreeUnit(UnitTypes eUnit, UnitAITypes eUnitAI)
 	{
 		pBestPlot = NULL;
 
-		if (isHuman())
+		// A sea start (SeaStart of the traits, added by this mod) keeps all the units on the starting plot, for the ships
+		if (isHuman() && !pStartingPlot->isWater())
 		{
 			long lResult=0;
 			gDLL->getPythonIFace()->callFunction(gDLL->getPythonIFace()->getMapScriptModule(), "startHumansOnSameTile", NULL, &lResult);
@@ -1225,6 +1228,23 @@ int CvPlayer::findStartingArea() const
 }
 
 
+// SeaStart of the traits (added by this mod): whether the map has an ocean (a water area that is not a lake) to start in
+static bool hasSeaStartOcean()
+{
+	CvArea* pLoopArea;
+	int iLoop;
+
+	for (pLoopArea = GC.getMapINLINE().firstArea(&iLoop); pLoopArea != NULL; pLoopArea = GC.getMapINLINE().nextArea(&iLoop))
+	{
+		if (pLoopArea->isWater() && pLoopArea->getNumTiles() >= GC.getMIN_WATER_SIZE_FOR_OCEAN())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 // Start bias of the civilization and the traits of a player (added by this mod), summed once before the plots are compared
 struct StartBias
 {
@@ -1252,6 +1272,13 @@ static bool buildStartBias(const CvPlayer& kPlayer, StartBias& kBias)
 	kBias.aiBonus.assign(GC.getNumBonusInfos(), 0);
 
 	if (kPlayer.getLeaderType() == NO_LEADER)
+	{
+		return false;
+	}
+
+	// SeaStart of the traits: no bias when the player will start at sea (it starts on land, with its bias, on a map without
+	// an ocean)
+	if (kPlayer.isSeaStart() && hasSeaStartOcean())
 	{
 		return false;
 	}
@@ -1389,6 +1416,353 @@ int CvPlayer::getStartBiasValue(const CvPlot* pPlot, int iFoundValue) const
 	}
 
 	return (iFoundValue * std::max(0, 100 + getStartBiasPercent(pPlot, kStartBias))) / 100;
+}
+
+// SeaStart of the traits (added by this mod): the player starts at sea. Not with Advanced Start, nor in a scenario that
+// places the players (its starting plots are kept).
+bool CvPlayer::isSeaStart() const
+{
+	if (getLeaderType() == NO_LEADER || isBarbarian())
+	{
+		return false;
+	}
+
+	if (GC.getGameINLINE().isOption(GAMEOPTION_ADVANCED_START))
+	{
+		return false;
+	}
+
+	if (GC.getInitCore().getWBMapScript() && !GC.getInitCore().getWBMapNoPlayers())
+	{
+		return false;
+	}
+
+	return hasTraitFlag(&CvTraitInfo::isSeaStart);
+}
+
+// The ship of SeaStart: the unit of ShipUnitClass of the first trait with SeaStart, for the civilization of the player.
+// NO_UNIT for NONE, a class the civilization does not have, or a unit that is not a ship (the units stay on the water).
+UnitTypes CvPlayer::getSeaStartShip() const
+{
+	UnitTypes eShip;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (GC.getTraitInfo((TraitTypes)iI).isSeaStart() && hasTrait((TraitTypes)iI))
+		{
+			if (GC.getTraitInfo((TraitTypes)iI).getSeaStartUnitClass() == NO_UNITCLASS)
+			{
+				return NO_UNIT;
+			}
+
+			eShip = (UnitTypes)getCivilizationUnit(GC.getTraitInfo((TraitTypes)iI).getSeaStartUnitClass());
+			if (eShip == NO_UNIT || GC.getUnitInfo(eShip).getDomainType() != DOMAIN_SEA)
+			{
+				return NO_UNIT;
+			}
+
+			return eShip;
+		}
+	}
+
+	return NO_UNIT;
+}
+
+// A plot of the terrain where SeaStart may put the player: water of an ocean (not a lake), passable (no ice), that the ship
+// can enter, without units, and not the starting plot of another player
+static bool isSeaStartPlotValid(const CvPlot* pPlot, TerrainTypes eTerrain, UnitTypes eShip, PlayerTypes ePlayer)
+{
+	int iI;
+
+	if (!pPlot->isWater() || pPlot->getTerrainType() != eTerrain || pPlot->isImpassable() || pPlot->isUnit())
+	{
+		return false;
+	}
+
+	if (pPlot->area()->getNumTiles() < GC.getMIN_WATER_SIZE_FOR_OCEAN())
+	{
+		return false;
+	}
+
+	if (eShip != NO_UNIT)
+	{
+		if (GC.getUnitInfo(eShip).getTerrainImpassable(eTerrain))
+		{
+			return false;
+		}
+		if (pPlot->getFeatureType() != NO_FEATURE && GC.getUnitInfo(eShip).getFeatureImpassable(pPlot->getFeatureType()))
+		{
+			return false;
+		}
+	}
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		if (iI != ePlayer && GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getStartingPlot() == pPlot)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+// The plot where SeaStart puts the player: a random plot of ocean (TERRAIN_OCEAN), or of coast (TERRAIN_COAST) when no
+// ocean plot is valid. First 2 to 5 plots from land (coast: 1 to 5) and as far from the other starting plots as the land
+// starts are from each other (startingPlotRange), then 1 to 8 plots and half that distance, then anywhere. NULL without
+// a valid plot (the player starts on land).
+CvPlot* CvPlayer::findSeaStartingPlot() const
+{
+	std::vector<int> aiLandDistance;
+	std::vector<int> aiQueue;
+	TerrainTypes aeTerrain[2];
+	UnitTypes eShip;
+	CvPlot* pLoopPlot;
+	CvPlot* pAdjacentPlot;
+	CvPlot* pBestPlot;
+	int iNumPlots;
+	int iHead;
+	int iMinLand;
+	int iMaxLand;
+	int iMinStart;
+	int iStartRange;
+	int iValue;
+	int iBestValue;
+	int iPass;
+	int iRelax;
+	int iI, iJ, iK;
+
+	aeTerrain[0] = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_OCEAN", true);
+	aeTerrain[1] = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_COAST", true);
+	eShip = getSeaStartShip();
+	iNumPlots = GC.getMapINLINE().numPlotsINLINE();
+
+	// The distance of each plot to the nearest land plot (as plotDistance: the adjacent plots, wrapping as the map)
+	aiLandDistance.assign(iNumPlots, -1);
+	for (iI = 0; iI < iNumPlots; iI++)
+	{
+		if (!GC.getMapINLINE().plotByIndexINLINE(iI)->isWater())
+		{
+			aiLandDistance[iI] = 0;
+			aiQueue.push_back(iI);
+		}
+	}
+	for (iHead = 0; iHead < (int)aiQueue.size(); iHead++)
+	{
+		pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(aiQueue[iHead]);
+		for (iJ = 0; iJ < NUM_DIRECTION_TYPES; iJ++)
+		{
+			pAdjacentPlot = plotDirection(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), (DirectionTypes)iJ);
+			if (pAdjacentPlot != NULL)
+			{
+				iK = GC.getMapINLINE().plotNumINLINE(pAdjacentPlot->getX_INLINE(), pAdjacentPlot->getY_INLINE());
+				if (aiLandDistance[iK] == -1)
+				{
+					aiLandDistance[iK] = aiLandDistance[aiQueue[iHead]] + 1;
+					aiQueue.push_back(iK);
+				}
+			}
+		}
+	}
+
+	iStartRange = startingPlotRange();
+
+	for (iPass = 0; iPass < 2; iPass++)
+	{
+		if (aeTerrain[iPass] == NO_TERRAIN)
+		{
+			continue;
+		}
+
+		for (iRelax = 0; iRelax < 3; iRelax++)
+		{
+			if (iRelax == 0)
+			{
+				iMinLand = ((iPass == 0) ? 2 : 1);
+				iMaxLand = 5;
+				iMinStart = iStartRange;
+			}
+			else if (iRelax == 1)
+			{
+				iMinLand = 1;
+				iMaxLand = 8;
+				iMinStart = iStartRange / 2;
+			}
+			else
+			{
+				iMinLand = -1;
+				iMaxLand = MAX_INT;
+				iMinStart = 0;
+			}
+
+			pBestPlot = NULL;
+			iBestValue = 0;
+
+			for (iI = 0; iI < iNumPlots; iI++)
+			{
+				pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
+
+				if (!isSeaStartPlotValid(pLoopPlot, aeTerrain[iPass], eShip, getID()))
+				{
+					continue;
+				}
+
+				// -1: no land on the map
+				if (iRelax < 2 && (aiLandDistance[iI] < iMinLand || aiLandDistance[iI] > iMaxLand))
+				{
+					continue;
+				}
+
+				if (iMinStart > 0)
+				{
+					bool bTooClose = false;
+					for (iJ = 0; iJ < MAX_CIV_PLAYERS; iJ++)
+					{
+						CvPlot* pOtherStart = GET_PLAYER((PlayerTypes)iJ).getStartingPlot();
+						if (iJ != getID() && GET_PLAYER((PlayerTypes)iJ).isAlive() && pOtherStart != NULL)
+						{
+							if (plotDistance(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), pOtherStart->getX_INLINE(), pOtherStart->getY_INLINE()) < iMinStart)
+							{
+								bTooClose = true;
+								break;
+							}
+						}
+					}
+					if (bTooClose)
+					{
+						continue;
+					}
+				}
+
+				iValue = 1 + GC.getGameINLINE().getSorenRandNum(1000, "Sea Starting Plot");
+				if (iValue > iBestValue)
+				{
+					iBestValue = iValue;
+					pBestPlot = pLoopPlot;
+				}
+			}
+
+			if (pBestPlot != NULL)
+			{
+				return pBestPlot;
+			}
+		}
+	}
+
+	return NULL;
+}
+
+// SeaStart: moves the starting plot to the sea (CvGame::setInitialItems, after the land starting plots are assigned and
+// normalized). It stays on land without a valid plot.
+void CvPlayer::moveStartingPlotToSea()
+{
+	CvPlot* pSeaPlot;
+
+	if (!isSeaStart() || getStartingPlot() == NULL)
+	{
+		return;
+	}
+
+	pSeaPlot = findSeaStartingPlot();
+	if (pSeaPlot != NULL)
+	{
+		setStartingPlot(pSeaPlot, true);
+	}
+}
+
+// SeaStart: puts the land units on the water starting plot into ships of ShipUnitClass, as many ships as they need (the
+// extra units of the AI included). The units a ship cannot carry (cargo, special cargo) stay on the water, as placed with
+// the World Builder (CvPlot::verifyUnitValidPlot moves them to land when it checks the plot). With units it cannot carry
+// only, one ship.
+void CvPlayer::loadSeaStartUnits()
+{
+	std::vector<CvUnit*> apLandUnits;
+	std::vector<CvUnit*> apShips;
+	CLLNode<IDInfo>* pUnitNode;
+	CvUnit* pLoopUnit;
+	CvUnit* pShip;
+	CvPlot* pPlot;
+	UnitTypes eShip;
+	UnitAITypes eShipAI;
+	bool bCanCarry;
+	int iI, iJ;
+
+	pPlot = getStartingPlot();
+	if (pPlot == NULL || !pPlot->isWater() || !isSeaStart())
+	{
+		return;
+	}
+
+	eShip = getSeaStartShip();
+	if (eShip == NO_UNIT)
+	{
+		return;
+	}
+	CvUnitInfo& kShip = GC.getUnitInfo(eShip);
+
+	pUnitNode = pPlot->headUnitNode();
+	while (pUnitNode != NULL)
+	{
+		pLoopUnit = ::getUnit(pUnitNode->m_data);
+		pUnitNode = pPlot->nextUnitNode(pUnitNode);
+		if (pLoopUnit != NULL && pLoopUnit->getOwnerINLINE() == getID() && pLoopUnit->getDomainType() == DOMAIN_LAND && !pLoopUnit->isCargo())
+		{
+			apLandUnits.push_back(pLoopUnit);
+		}
+	}
+
+	// The ships carry the settlers (UNITAI_SETTLER_SEA) when they can carry anything
+	eShipAI = NO_UNITAI;
+	if (kShip.getCargoSpace() > 0 && (kShip.getDomainCargo() == NO_DOMAIN || kShip.getDomainCargo() == DOMAIN_LAND))
+	{
+		eShipAI = UNITAI_SETTLER_SEA;
+	}
+
+	for (iI = 0; iI < (int)apLandUnits.size(); iI++)
+	{
+		pLoopUnit = apLandUnits[iI];
+
+		bCanCarry = (kShip.getCargoSpace() > 0);
+		bCanCarry = bCanCarry && (kShip.getSpecialCargo() == NO_SPECIALUNIT || kShip.getSpecialCargo() == pLoopUnit->getSpecialUnitType());
+		bCanCarry = bCanCarry && (kShip.getDomainCargo() == NO_DOMAIN || kShip.getDomainCargo() == pLoopUnit->getDomainType());
+		if (!bCanCarry)
+		{
+			continue;
+		}
+
+		pShip = NULL;
+		for (iJ = 0; iJ < (int)apShips.size(); iJ++)
+		{
+			if (apShips[iJ]->cargoSpaceAvailable(pLoopUnit->getSpecialUnitType(), pLoopUnit->getDomainType()) > 0)
+			{
+				pShip = apShips[iJ];
+				break;
+			}
+		}
+
+		if (pShip == NULL)
+		{
+			pShip = initUnit(eShip, pPlot->getX_INLINE(), pPlot->getY_INLINE(), eShipAI);
+			if (pShip == NULL)
+			{
+				break;
+			}
+			apShips.push_back(pShip);
+			// A new ship that cannot carry what its info says (changed by a promotion): no more ships
+			if (pShip->cargoSpaceAvailable(pLoopUnit->getSpecialUnitType(), pLoopUnit->getDomainType()) <= 0)
+			{
+				break;
+			}
+		}
+
+		pLoopUnit->setTransportUnit(pShip);
+	}
+
+	if (apShips.empty())
+	{
+		initUnit(eShip, pPlot->getX_INLINE(), pPlot->getY_INLINE(), eShipAI);
+	}
 }
 
 CvPlot* CvPlayer::findStartingPlot(bool bRandomize)

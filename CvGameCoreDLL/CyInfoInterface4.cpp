@@ -95,5 +95,7 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getHealRateChange", &CvTraitInfo::getHealRateChange, "int ()")
 		.def("getDomainFreeExperience", &CvTraitInfo::getDomainFreeExperience, "int (int iDomain)")
 		.def("getDomainProductionModifier", &CvTraitInfo::getDomainProductionModifier, "int (int iDomain)")
+		.def("isSeaStart", &CvTraitInfo::isSeaStart, "bool ()")
+		.def("getSeaStartUnitClass", &CvTraitInfo::getSeaStartUnitClass, "int ()")
 		;
 }

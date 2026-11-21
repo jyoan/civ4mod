@@ -163,6 +163,7 @@ protected:
 	bool AI_foundRange(int iRange, bool bFollow = false);
 	bool AI_assaultSeaTransport(bool bBarbarian = false);
 	bool AI_settlerSeaTransport();
+	bool AI_seaStartExplore();	// SeaStart of the traits (added by this mod)
 	bool AI_settlerSeaFerry();
 	bool AI_specialSeaTransportMissionary();
 	bool AI_specialSeaTransportSpy();
