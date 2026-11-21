@@ -1658,4 +1658,22 @@
 		<Spanish>Mun</Spanish>
 		<Japanese>&#25991;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LATER_THREE_KINGDOMS</Tag>
+		<English>Unification of the Later Three Kingdoms</English>
+		<French>Unification of the Later Three Kingdoms</French>
+		<German>Unification of the Later Three Kingdoms</German>
+		<Italian>Unification of the Later Three Kingdoms</Italian>
+		<Spanish>Unification of the Later Three Kingdoms</Spanish>
+		<Japanese>&#24460;&#19977;&#22269;&#32113;&#19968;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LATER_THREE_KINGDOMS_SHORT</Tag>
+		<English>Uni</English>
+		<French>Uni</French>
+		<German>Uni</German>
+		<Italian>Uni</Italian>
+		<Spanish>Uni</Spanish>
+		<Japanese>&#32113;</Japanese>
+	</TEXT>
 </Civ4GameText>

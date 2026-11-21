@@ -26908,6 +26908,10 @@
 					<TraitType>TRAIT_PROTECTIVE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_LATER_THREE_KINGDOMS</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
