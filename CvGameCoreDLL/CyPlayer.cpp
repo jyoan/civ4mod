@@ -2381,6 +2381,11 @@ bool CyPlayer::isConquestHeal()
 	return m_pPlayer ? m_pPlayer->isConquestHeal() : false;
 }
 
+bool CyPlayer::isStackCityDefense()
+{
+	return m_pPlayer ? m_pPlayer->isStackCityDefense() : false;
+}
+
 int CyPlayer::getMaxExperienceAfterUpgrade()
 {
 	return m_pPlayer ? m_pPlayer->getMaxExperienceAfterUpgrade() : 0;

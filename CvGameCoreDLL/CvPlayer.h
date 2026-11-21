@@ -378,6 +378,7 @@ public:
 	int getKnownTechCostModifier() const;			// Exposed to Python
 	int getKnownTechCostLimit() const;				// Exposed to Python
 	bool isConquestHeal() const;					// Exposed to Python
+	bool isStackCityDefense() const;				// Exposed to Python
 	bool isCivicReplaced(CivicTypes eCivic) const;				// Exposed to Python: ReplacedCivic
 	bool canDoCivicByTraits(CivicTypes eCivic) const;			// Exposed to Python: PrereqOrTraits and ReplacedCivic, without the techs
 	bool isCivicOrReplacing(CivicTypes eCivic) const;			// added by this mod

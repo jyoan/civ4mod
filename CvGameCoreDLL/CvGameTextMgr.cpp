@@ -3964,6 +3964,11 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_HEAL"));
 	}
 
+	if (kTrait.isStackCityDefense())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_STACK_CITY_DEFENSE"));
+	}
+
 	// iMinCityRangeChange: the range of this trait alone (added by this mod)
 	if (kTrait.getMinCityRangeChange() != 0)
 	{

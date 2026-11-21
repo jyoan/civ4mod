@@ -8309,6 +8309,12 @@ bool CvPlayer::isConquestHeal() const
 	return hasTraitFlag(&CvTraitInfo::isConquestHeal);
 }
 
+// bStackCityDefense of the traits (added by this mod): see CvCity::getTotalDefense
+bool CvPlayer::isStackCityDefense() const
+{
+	return hasTraitFlag(&CvTraitInfo::isStackCityDefense);
+}
+
 // iCultureRangeChange of the traits (added by this mod)
 int CvPlayer::getCultureRangeChange() const
 {
