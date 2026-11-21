@@ -4963,7 +4963,6 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 {
 	PROFILE_FUNC();
 
-	int iRankDifference;
 	int iAttitude;
 	int iI;
 
@@ -4982,10 +4981,6 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 		}
 	}
 
-	iAttitude = GC.getLeaderHeadInfo(getPersonalityType()).getBaseAttitude();
-
-	iAttitude += GC.getHandicapInfo(GET_PLAYER(ePlayer).getHandicapType()).getAttitudeChange();
-
 //	if (GC.getGameINLINE().isOption(GAMEOPTION_AGGRESSIVE_AI))
 //	{
 //		if (GET_PLAYER(ePlayer).isHuman())
@@ -4994,34 +4989,11 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 //		}
 //	}
 
-	if (!(GET_PLAYER(ePlayer).isHuman()))
+	// the parts the BtS tooltip does not show are moved to AI_getHiddenAttitude (by this mod, same values)
+	iAttitude = 0;
+	for (iI = 0; iI < NUM_HIDDEN_ATTITUDE_TYPES; iI++)
 	{
-		iAttitude += (4 - abs(AI_getPeaceWeight() - GET_PLAYER(ePlayer).AI_getPeaceWeight()));
-		iAttitude += std::min(GC.getLeaderHeadInfo(getPersonalityType()).getWarmongerRespect(), GC.getLeaderHeadInfo(GET_PLAYER(ePlayer).getPersonalityType()).getWarmongerRespect());
-	}
-
-	iAttitude -= std::max(0, (GET_TEAM(GET_PLAYER(ePlayer).getTeam()).getNumMembers() - GET_TEAM(getTeam()).getNumMembers()));
-
-	iRankDifference = (GC.getGameINLINE().getPlayerRank(getID()) - GC.getGameINLINE().getPlayerRank(ePlayer));
-
-	if (iRankDifference > 0)
-	{
-		iAttitude += ((GC.getLeaderHeadInfo(getPersonalityType()).getWorseRankDifferenceAttitudeChange() * iRankDifference) / (GC.getGameINLINE().countCivPlayersEverAlive() + 1));
-	}
-	else
-	{
-		iAttitude += ((GC.getLeaderHeadInfo(getPersonalityType()).getBetterRankDifferenceAttitudeChange() * -(iRankDifference)) / (GC.getGameINLINE().countCivPlayersEverAlive() + 1));
-	}
-
-	if ((GC.getGameINLINE().getPlayerRank(getID()) >= (GC.getGameINLINE().countCivPlayersEverAlive() / 2)) &&
-		  (GC.getGameINLINE().getPlayerRank(ePlayer) >= (GC.getGameINLINE().countCivPlayersEverAlive() / 2)))
-	{
-		iAttitude++;
-	}
-
-	if (GET_TEAM(GET_PLAYER(ePlayer).getTeam()).AI_getWarSuccess(getTeam()) > GET_TEAM(getTeam()).AI_getWarSuccess(GET_PLAYER(ePlayer).getTeam()))
-	{
-		iAttitude += GC.getLeaderHeadInfo(getPersonalityType()).getLostWarAttitudeChange();
+		iAttitude += AI_getHiddenAttitude(ePlayer, (HiddenAttitudeTypes)iI);
 	}
 
 	iAttitude += AI_getCloseBordersAttitude(ePlayer);
@@ -5049,6 +5021,69 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 	iAttitude += GET_PLAYER(ePlayer).getAttitudeChange();	// iAttitudeChange of the traits of ePlayer (added by this mod)
 
 	return range(iAttitude, -100, 100);
+}
+
+// added by this mod: one of the parts of AI_getAttitudeVal that the BtS diplomacy tooltip does not show. Moved from
+// AI_getAttitudeVal without changing the values. Shown by CvGameTextMgr::getAttitudeString (bRevealHiddenAttitude)
+int CvPlayerAI::AI_getHiddenAttitude(PlayerTypes ePlayer, HiddenAttitudeTypes eType) const
+{
+	int iRankDifference;
+
+	switch (eType)
+	{
+	case HIDDEN_ATTITUDE_PERSONALITY:
+		return GC.getLeaderHeadInfo(getPersonalityType()).getBaseAttitude();
+
+	case HIDDEN_ATTITUDE_HANDICAP:
+		return GC.getHandicapInfo(GET_PLAYER(ePlayer).getHandicapType()).getAttitudeChange();
+
+	case HIDDEN_ATTITUDE_PEACE_WEIGHT:
+		if (!(GET_PLAYER(ePlayer).isHuman()))
+		{
+			return (4 - abs(AI_getPeaceWeight() - GET_PLAYER(ePlayer).AI_getPeaceWeight()));
+		}
+		return 0;
+
+	case HIDDEN_ATTITUDE_WARMONGER_RESPECT:
+		if (!(GET_PLAYER(ePlayer).isHuman()))
+		{
+			return std::min(GC.getLeaderHeadInfo(getPersonalityType()).getWarmongerRespect(), GC.getLeaderHeadInfo(GET_PLAYER(ePlayer).getPersonalityType()).getWarmongerRespect());
+		}
+		return 0;
+
+	case HIDDEN_ATTITUDE_TEAM_SIZE:
+		return -std::max(0, (GET_TEAM(GET_PLAYER(ePlayer).getTeam()).getNumMembers() - GET_TEAM(getTeam()).getNumMembers()));
+
+	case HIDDEN_ATTITUDE_RANK_DIFFERENCE:
+		iRankDifference = (GC.getGameINLINE().getPlayerRank(getID()) - GC.getGameINLINE().getPlayerRank(ePlayer));
+
+		if (iRankDifference > 0)
+		{
+			return ((GC.getLeaderHeadInfo(getPersonalityType()).getWorseRankDifferenceAttitudeChange() * iRankDifference) / (GC.getGameINLINE().countCivPlayersEverAlive() + 1));
+		}
+		return ((GC.getLeaderHeadInfo(getPersonalityType()).getBetterRankDifferenceAttitudeChange() * -(iRankDifference)) / (GC.getGameINLINE().countCivPlayersEverAlive() + 1));
+
+	case HIDDEN_ATTITUDE_LOWER_RANKS:
+		if ((GC.getGameINLINE().getPlayerRank(getID()) >= (GC.getGameINLINE().countCivPlayersEverAlive() / 2)) &&
+			  (GC.getGameINLINE().getPlayerRank(ePlayer) >= (GC.getGameINLINE().countCivPlayersEverAlive() / 2)))
+		{
+			return 1;
+		}
+		return 0;
+
+	case HIDDEN_ATTITUDE_LOST_WAR:
+		if (GET_TEAM(GET_PLAYER(ePlayer).getTeam()).AI_getWarSuccess(getTeam()) > GET_TEAM(getTeam()).AI_getWarSuccess(GET_PLAYER(ePlayer).getTeam()))
+		{
+			return GC.getLeaderHeadInfo(getPersonalityType()).getLostWarAttitudeChange();
+		}
+		return 0;
+
+	default:
+		FAssertMsg(false, "unknown HiddenAttitudeTypes");
+		break;
+	}
+
+	return 0;
 }
 
 

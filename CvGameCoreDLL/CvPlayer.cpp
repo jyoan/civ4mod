@@ -8315,6 +8315,24 @@ bool CvPlayer::isStackCityDefense() const
 	return hasTraitFlag(&CvTraitInfo::isStackCityDefense);
 }
 
+// bRevealWonderProduction of the traits (added by this mod): see CvGameTextMgr::getRevealedPlansString
+bool CvPlayer::isRevealWonderProduction() const
+{
+	return hasTraitFlag(&CvTraitInfo::isRevealWonderProduction);
+}
+
+// bRevealWarPlans of the traits (added by this mod): see CvGameTextMgr::getRevealedPlansString
+bool CvPlayer::isRevealWarPlans() const
+{
+	return hasTraitFlag(&CvTraitInfo::isRevealWarPlans);
+}
+
+// bRevealHiddenAttitude of the traits (added by this mod): see CvGameTextMgr::getAttitudeString
+bool CvPlayer::isRevealHiddenAttitude() const
+{
+	return hasTraitFlag(&CvTraitInfo::isRevealHiddenAttitude);
+}
+
 // iCultureRangeChange of the traits (added by this mod)
 int CvPlayer::getCultureRangeChange() const
 {

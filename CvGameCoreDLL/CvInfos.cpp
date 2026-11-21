@@ -20225,6 +20225,9 @@ m_iKnownTechCostModifier(0),
 m_iKnownTechCostLimit(0),
 m_bConquestHeal(false),
 m_bStackCityDefense(false),
+m_bRevealWonderProduction(false),
+m_bRevealWarPlans(false),
+m_bRevealHiddenAttitude(false),
 m_iNewWorldCityPopulation(0),
 m_iOverseasCityPopulation(0),
 m_iOverseasMaintenanceModifier(0),
@@ -20923,6 +20926,26 @@ bool CvTraitInfo::isConquestHeal() const
 bool CvTraitInfo::isStackCityDefense() const
 {
 	return m_bStackCityDefense;
+}
+
+// bRevealWonderProduction (added by this mod): the player sees the world wonders the other players are building
+// (CvGameTextMgr::getRevealedPlansString)
+bool CvTraitInfo::isRevealWonderProduction() const
+{
+	return m_bRevealWonderProduction;
+}
+
+// bRevealWarPlans (added by this mod): the player sees the war plans of the other players (CvGameTextMgr::getRevealedPlansString)
+bool CvTraitInfo::isRevealWarPlans() const
+{
+	return m_bRevealWarPlans;
+}
+
+// bRevealHiddenAttitude (added by this mod): the player sees the parts of the attitude of the AI players that BtS does
+// not show (CvPlayerAI::AI_getHiddenAttitude), also between two AI players
+bool CvTraitInfo::isRevealHiddenAttitude() const
+{
+	return m_bRevealHiddenAttitude;
 }
 
 // iNewWorldCityPopulation (added by this mod): population of the cities the player founds in the New World
@@ -22536,6 +22559,9 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iKnownTechCostLimit, "iKnownTechCostLimit");
 	pXML->GetChildXmlValByName(&m_bConquestHeal, "bConquestHeal");
 	pXML->GetChildXmlValByName(&m_bStackCityDefense, "bStackCityDefense");
+	pXML->GetChildXmlValByName(&m_bRevealWonderProduction, "bRevealWonderProduction");
+	pXML->GetChildXmlValByName(&m_bRevealWarPlans, "bRevealWarPlans");
+	pXML->GetChildXmlValByName(&m_bRevealHiddenAttitude, "bRevealHiddenAttitude");
 	// GreatPeopleClassRateModifiers: the unit classes are loaded before the traits
 	readTypeValueList(pXML, "GreatPeopleClassRateModifiers", "GreatPeopleClassRateModifier", "UnitClassType", "iGreatPeopleRateModifier", GC.getNumUnitClassInfos(), m_aiGreatPeopleClassRateModifier);
 	readSpecialBuildingProductionModifiers(pXML);

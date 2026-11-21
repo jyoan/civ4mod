@@ -513,6 +513,9 @@
 			<iKnownTechCostLimit>-75</iKnownTechCostLimit>
 			<bConquestHeal>1</bConquestHeal>
 			<bStackCityDefense>1</bStackCityDefense>
+			<bRevealWonderProduction>1</bRevealWonderProduction>
+			<bRevealWarPlans>1</bRevealWarPlans>
+			<bRevealHiddenAttitude>1</bRevealHiddenAttitude>
 			<iNewWorldCityPopulation>2</iNewWorldCityPopulation>
 			<iOverseasCityPopulation>1</iOverseasCityPopulation>
 			<iOverseasMaintenanceModifier>-50</iOverseasMaintenanceModifier>
@@ -1539,6 +1542,34 @@
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<PyOnGained>gainGold(pPlayer, 10)</PyOnGained>
 			<PyOnLost>gainGold(pPlayer, 20)</PyOnLost>
+			<ExtraYieldThresholds/>
+			<TradeYieldModifiers/>
+			<CommerceChanges/>
+			<CommerceModifiers/>
+			<FreePromotions/>
+			<FreePromotionUnitCombats/>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_TEST_AI</Type>
+			<Description>TXT_KEY_TRAIT_TEST_AI</Description>
+			<ShortDescription>TXT_KEY_TRAIT_TEST_AI_SHORT</ShortDescription>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iMaxAnarchy>-1</iMaxAnarchy>
+			<iUpkeepModifier>0</iUpkeepModifier>
+			<iLevelExperienceModifier>0</iLevelExperienceModifier>
+			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
+			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
+			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
+			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
+			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
+			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<FreeTechs>
+				<FreeTech>
+					<TechType>TECH_TEST_DIPLOMACY</TechType>
+					<bFreeTech>1</bFreeTech>
+				</FreeTech>
+			</FreeTechs>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

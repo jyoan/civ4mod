@@ -14,6 +14,7 @@
 #include "FProfiler.h"
 #include "CyArgsList.h"
 #include "CvDLLPythonIFaceBase.h"
+#include "CvGameTextMgr.h"
 
 // statics
 
@@ -919,7 +920,57 @@ int CvTeamAI::AI_chooseElection(const VoteSelectionData& kVoteSelectionData) con
 }
 
 
-int CvTeamAI::AI_startWarVal(TeamTypes eTeam) const
+// bRevealWarPlans of the traits (added by this mod): tells the human players whose traits reveal it that this AI team
+// has a new war plan against eTarget: "Mongolia: War plan Aztec: Tenochtitlan" (same text as the tooltip,
+// CvGameTextMgr::getRevealedWarPlanText). The city is chosen for the team leader
+void CvTeamAI::AI_announceWarPlan(TeamTypes eTarget)
+{
+	PlayerTypes eLeader;
+	CvCity* pCity;
+	CvWString szBuffer;
+	TeamTypes eLoopTeam;
+	int iI;
+
+	if (!GC.getGameINLINE().isFinalInitialized() || isHuman() || isBarbarian() || eTarget >= MAX_CIV_TEAMS)
+	{
+		return;
+	}
+
+	eLeader = getLeaderID();
+	if (eLeader == NO_PLAYER)
+	{
+		return;
+	}
+
+	pCity = NULL;
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iI);
+		eLoopTeam = kLoopPlayer.getTeam();
+		if (kLoopPlayer.isAlive() && kLoopPlayer.isHuman() && eLoopTeam != getID() && GET_TEAM(eLoopTeam).isHasMet(getID()) && kLoopPlayer.isRevealWarPlans())
+		{
+			if (pCity == NULL)
+			{
+				pCity = GAMETEXT.getRevealedWarPlanCity(eLeader, eTarget);
+			}
+
+			szBuffer = gDLL->getText("TXT_KEY_REVEALED_ANNOUNCE", GET_PLAYER(eLeader).getCivilizationShortDescription(), GAMETEXT.getRevealedWarPlanText(eTarget, pCity, eLoopTeam).GetCString());
+			if (pCity != NULL && pCity->isRevealed(eLoopTeam, false))
+			{
+				gDLL->getInterfaceIFace()->addMessage(((PlayerTypes)iI), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"), pCity->getX_INLINE(), pCity->getY_INLINE(), true, true);
+			}
+			else
+			{
+				gDLL->getInterfaceIFace()->addMessage(((PlayerTypes)iI), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"));
+			}
+		}
+	}
+}
+
+// bIgnoreCloseness (added by this mod): skips AI_teamCloseness, which refreshes the closeness caches of the cities
+// (CvCityAI::AI_playerCloseness). Used by the display code (CvGameTextMgr::getRevealedPlansString) so that it does not
+// change any state
+int CvTeamAI::AI_startWarVal(TeamTypes eTeam, bool bIgnoreCloseness) const
 {
 	PROFILE_FUNC();
 
@@ -929,12 +980,15 @@ int CvTeamAI::AI_startWarVal(TeamTypes eTeam) const
 
 	iValue += (3 * AI_calculateCapitalProximity(eTeam)) / ((iValue > 0) ? 2 : 3);
 	
-	int iClosenessValue = AI_teamCloseness(eTeam);
-	if (iClosenessValue == 0)
+	if (!bIgnoreCloseness)
 	{
-		iValue /= (GC.getGameINLINE().isOption(GAMEOPTION_AGGRESSIVE_AI) ? 4 : 2);
+		int iClosenessValue = AI_teamCloseness(eTeam);
+		if (iClosenessValue == 0)
+		{
+			iValue /= (GC.getGameINLINE().isOption(GAMEOPTION_AGGRESSIVE_AI) ? 4 : 2);
+		}
+		iValue += iClosenessValue;
 	}
-	iValue += iClosenessValue;
 	
 	int iOurVictoryCountdown = AI_getLowestVictoryCountdown();
 	int iTheirVictoryCountdown = GET_TEAM(eTeam).AI_getLowestVictoryCountdown();
@@ -2674,7 +2728,15 @@ void CvTeamAI::AI_setWarPlan(TeamTypes eIndex, WarPlanTypes eNewValue, bool bWar
 	{
 		if (bWar || !isAtWar(eIndex))
 		{
+			// bRevealWarPlans (added by this mod): a new war plan, not a change of its type
+			bool bNewPlan = (AI_getWarPlan(eIndex) == NO_WARPLAN);
+
 			m_aeWarPlan[eIndex] = eNewValue;
+
+			if (bNewPlan)
+			{
+				AI_announceWarPlan(eIndex);
+			}
 
 			AI_setWarPlanStateCounter(eIndex, 0);
 

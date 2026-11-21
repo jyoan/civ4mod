@@ -151,6 +151,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 | `docs/city-radius.md` | 都市圏の半径（都市圏のタイルを扱うコードを書くとき） |
 | `docs/spells.md` | 呪文 |
 | `docs/python-screens.md` | 社会制度の画面、ペディア（画面番号の落とし穴）、Mod に入れている Python の一覧 |
+| `docs/ai-hidden-behavior.md` | AI の隠れた態度補正・宣戦の判定・狙う文明と都市・世界遺産・難易度補正 |
 | `docs/test-log.md` | 動作確認の記録 |
 | `docs/civ-design.md` | 実在の文明のデザイン（`civ-design` ブランチだけにある） |
 

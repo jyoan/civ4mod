@@ -449,6 +449,9 @@
 	<ElementType name="iKnownTechCostLimit" content="textOnly" dt:type="int"/>
 	<ElementType name="bConquestHeal" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bStackCityDefense" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bRevealWonderProduction" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bRevealWarPlans" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bRevealHiddenAttitude" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iNewWorldCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasMaintenanceModifier" content="textOnly" dt:type="int"/>
@@ -1032,6 +1035,9 @@
 		<element type="iKnownTechCostLimit" minOccurs="0"/>
 		<element type="bConquestHeal" minOccurs="0"/>
 		<element type="bStackCityDefense" minOccurs="0"/>
+		<element type="bRevealWonderProduction" minOccurs="0"/>
+		<element type="bRevealWarPlans" minOccurs="0"/>
+		<element type="bRevealHiddenAttitude" minOccurs="0"/>
 		<element type="iNewWorldCityPopulation" minOccurs="0"/>
 		<element type="iOverseasCityPopulation" minOccurs="0"/>
 		<element type="iOverseasMaintenanceModifier" minOccurs="0"/>

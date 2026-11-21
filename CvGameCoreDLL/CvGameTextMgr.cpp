@@ -5081,6 +5081,21 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 		}
 	}
 
+	if (kTrait.isRevealWonderProduction())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_REVEAL_WONDER_PRODUCTION"));
+	}
+
+	if (kTrait.isRevealWarPlans())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_REVEAL_WAR_PLANS"));
+	}
+
+	if (kTrait.isRevealHiddenAttitude())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_REVEAL_HIDDEN_ATTITUDE"));
+	}
+
 	// "Can build without the technology: Research". The processes are loaded when a game is launched: none on the screens
 	// before (GC.getNumProcessInfos() is 0)
 	bFirst = true;
@@ -14870,6 +14885,24 @@ void CvGameTextMgr::getAttitudeString(CvWStringBuffer& szBuffer, PlayerTypes ePl
 	CvPlayerAI& kPlayer = GET_PLAYER(ePlayer);
 	TeamTypes eTeam = (TeamTypes) kPlayer.getTeam();
 	CvTeamAI& kTeam = GET_TEAM(eTeam);
+	// bRevealHiddenAttitude of the traits of the active player (added by this mod): also between two AI players
+	static const char* aszHiddenAttitudeKeys[NUM_HIDDEN_ATTITUDE_TYPES] =
+	{
+		"TXT_KEY_MISC_ATTITUDE_HIDDEN_PERSONALITY",
+		"TXT_KEY_MISC_ATTITUDE_HIDDEN_HANDICAP",
+		"TXT_KEY_MISC_ATTITUDE_HIDDEN_PEACE_WEIGHT",
+		"TXT_KEY_MISC_ATTITUDE_HIDDEN_WARMONGER_RESPECT",
+		"TXT_KEY_MISC_ATTITUDE_HIDDEN_TEAM_SIZE",
+		"TXT_KEY_MISC_ATTITUDE_HIDDEN_RANK_DIFFERENCE",
+		"TXT_KEY_MISC_ATTITUDE_HIDDEN_LOWER_RANKS",
+		"TXT_KEY_MISC_ATTITUDE_HIDDEN_LOST_WAR"
+	};
+	bool bRevealHidden = false;
+	PlayerTypes eActivePlayer = GC.getGameINLINE().getActivePlayer();
+	if (NO_PLAYER != eTargetPlayer && NO_PLAYER != eActivePlayer && GC.getGameINLINE().isFinalInitialized() && GET_PLAYER(eActivePlayer).getLeaderType() != NO_LEADER)
+	{
+		bRevealHidden = GET_PLAYER(eActivePlayer).isRevealHiddenAttitude();
+	}
 		
 	szBuffer.append(gDLL->getText("TXT_KEY_ATTITUDE_TOWARDS", GC.getAttitudeInfo(GET_PLAYER(ePlayer).AI_getAttitude(eTargetPlayer)).getTextKeyWide(), GET_PLAYER(eTargetPlayer).getNameKey()));
 
@@ -15049,6 +15082,21 @@ void CvGameTextMgr::getAttitudeString(CvWStringBuffer& szBuffer, PlayerTypes ePl
 				szBuffer.append(szTempBuffer);
 			}
 		}
+
+		// the hidden parts (added by this mod)
+		if (bRevealHidden)
+		{
+			for (iI = 0; iI < NUM_HIDDEN_ATTITUDE_TYPES; ++iI)
+			{
+				iAttitudeChange = kPlayer.AI_getHiddenAttitude(eTargetPlayer, (HiddenAttitudeTypes)iI);
+				if ((iPass == 0) ? (iAttitudeChange > 0) : (iAttitudeChange < 0))
+				{
+					szTempBuffer.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR((iAttitudeChange > 0) ? "COLOR_POSITIVE_TEXT" : "COLOR_NEGATIVE_TEXT"), gDLL->getText(aszHiddenAttitudeKeys[iI], iAttitudeChange).GetCString());
+					szBuffer.append(NEWLINE);
+					szBuffer.append(szTempBuffer);
+				}
+			}
+		}
 	}
 
 	if (NO_PLAYER != eTargetPlayer)
@@ -15061,6 +15109,165 @@ void CvGameTextMgr::getAttitudeString(CvWStringBuffer& szBuffer, PlayerTypes ePl
 		}
 	}
 
+	// added by this mod: the plans of ePlayer revealed by the traits of the active player. Only when the attitude
+	// towards the active player is shown (scoreboard, diplomacy screen), not between two other players (foreign advisor)
+	if (NO_PLAYER != eTargetPlayer && eTargetPlayer == GC.getGameINLINE().getActivePlayer())
+	{
+		getRevealedPlansString(szBuffer, ePlayer, eTargetPlayer);
+	}
+}
+
+// added by this mod: the world wonders ePlayer is building (bRevealWonderProduction) and the war plan of ePlayer
+// (bRevealWarPlans), when the traits of eViewer reveal them. Each line starts with a newline.
+// Display only: AI_startWarVal skips the closeness (it refreshes caches) and AI_targetCityValue is not randomized
+void CvGameTextMgr::getRevealedPlansString(CvWStringBuffer& szBuffer, PlayerTypes ePlayer, PlayerTypes eViewer)
+{
+	CvCity* pLoopCity;
+	TeamTypes eViewerTeam;
+	TeamTypes eTargetTeam;
+	BuildingTypes eBuilding;
+	int iLoop;
+
+	if (NO_PLAYER == ePlayer || NO_PLAYER == eViewer || ePlayer == eViewer)
+	{
+		return;
+	}
+
+	// the screens before the game (no leaders yet) must not call hasTrait
+	if (!GC.getGameINLINE().isFinalInitialized() || GET_PLAYER(eViewer).getLeaderType() == NO_LEADER)
+	{
+		return;
+	}
+
+	CvPlayerAI& kPlayer = GET_PLAYER(ePlayer);
+	if (!kPlayer.isAlive())
+	{
+		return;
+	}
+
+	eViewerTeam = GET_PLAYER(eViewer).getTeam();
+	if (!GET_TEAM(eViewerTeam).isHasMet(kPlayer.getTeam()))
+	{
+		return;
+	}
+
+	// "Building Pyramids: Kyoto" for each city whose current production is a world wonder
+	if (GET_PLAYER(eViewer).isRevealWonderProduction())
+	{
+		for (pLoopCity = kPlayer.firstCity(&iLoop); pLoopCity != NULL; pLoopCity = kPlayer.nextCity(&iLoop))
+		{
+			eBuilding = pLoopCity->getProductionBuilding();
+			if (eBuilding != NO_BUILDING && isWorldWonderClass((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType()))
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(getRevealedWonderText(pLoopCity, eBuilding, eViewerTeam));
+			}
+		}
+	}
+
+	// "War plan Aztec: Tenochtitlan". Humans have no AI war plans
+	if (GET_PLAYER(eViewer).isRevealWarPlans() && !kPlayer.isHuman())
+	{
+		eTargetTeam = getRevealedWarPlanTeam(ePlayer);
+		if (eTargetTeam != NO_TEAM)
+		{
+			szBuffer.append(NEWLINE);
+			szBuffer.append(getRevealedWarPlanText(eTargetTeam, getRevealedWarPlanCity(ePlayer, eTargetTeam), eViewerTeam));
+		}
+	}
+}
+
+// added by this mod: the name of the city, or "???" when eViewerTeam has not revealed its plot
+CvWString CvGameTextMgr::getRevealedCityName(CvCity* pCity, TeamTypes eViewerTeam)
+{
+	if (pCity != NULL && pCity->isRevealed(eViewerTeam, false))
+	{
+		return pCity->getName();
+	}
+	return gDLL->getText("TXT_KEY_REVEALED_UNKNOWN");
+}
+
+// added by this mod: "Building Pyramids: Kyoto" (bRevealWonderProduction). Also used by the announcement (CvCity::doRevealedWonderAnnouncement)
+CvWString CvGameTextMgr::getRevealedWonderText(CvCity* pCity, BuildingTypes eBuilding, TeamTypes eViewerTeam)
+{
+	return gDLL->getText("TXT_KEY_REVEALED_WONDER_PRODUCTION", GC.getBuildingInfo(eBuilding).getDescription(), getRevealedCityName(pCity, eViewerTeam).GetCString());
+}
+
+// added by this mod: among the teams the team of ePlayer has any war plan against, the one with the highest AI_startWarVal
+// (without the closeness, which refreshes the caches of the cities). NO_TEAM when there is no war plan
+TeamTypes CvGameTextMgr::getRevealedWarPlanTeam(PlayerTypes ePlayer)
+{
+	CvTeamAI& kTeam = GET_TEAM(GET_PLAYER(ePlayer).getTeam());
+	TeamTypes eBestTeam = NO_TEAM;
+	int iBestValue = 0;
+	int iValue;
+	int iI;
+
+	for (iI = 0; iI < MAX_CIV_TEAMS; iI++)
+	{
+		if (iI != kTeam.getID() && GET_TEAM((TeamTypes)iI).isAlive() && kTeam.AI_getWarPlan((TeamTypes)iI) != NO_WARPLAN)
+		{
+			iValue = kTeam.AI_startWarVal((TeamTypes)iI, true);
+			if (eBestTeam == NO_TEAM || iValue > iBestValue)
+			{
+				iBestValue = iValue;
+				eBestTeam = (TeamTypes)iI;
+			}
+		}
+	}
+
+	return eBestTeam;
+}
+
+// added by this mod: the city of eTargetTeam with the highest AI_targetCityValue (not randomized) for ePlayer, or NULL
+CvCity* CvGameTextMgr::getRevealedWarPlanCity(PlayerTypes ePlayer, TeamTypes eTargetTeam)
+{
+	CvPlayerAI& kPlayer = GET_PLAYER(ePlayer);
+	CvCity* pLoopCity;
+	CvCity* pBestCity = NULL;
+	int iBestValue = 0;
+	int iValue;
+	int iLoop;
+	int iI;
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == eTargetTeam)
+		{
+			for (pLoopCity = GET_PLAYER((PlayerTypes)iI).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)iI).nextCity(&iLoop))
+			{
+				iValue = kPlayer.AI_targetCityValue(pLoopCity, false);
+				if (pBestCity == NULL || iValue > iBestValue)
+				{
+					iBestValue = iValue;
+					pBestCity = pLoopCity;
+				}
+			}
+		}
+	}
+
+	return pBestCity;
+}
+
+// added by this mod: "War plan Aztec: Tenochtitlan" (bRevealWarPlans). The civilization of the target city, or of the team
+// leader when there is no city; "???" for a team eViewerTeam has not met or a city it has not revealed.
+// Also used by the announcement (CvTeamAI::AI_announceWarPlan)
+CvWString CvGameTextMgr::getRevealedWarPlanText(TeamTypes eTargetTeam, CvCity* pTargetCity, TeamTypes eViewerTeam)
+{
+	PlayerTypes eTargetPlayer;
+	CvWString szCiv;
+
+	eTargetPlayer = (pTargetCity != NULL) ? pTargetCity->getOwnerINLINE() : GET_TEAM(eTargetTeam).getLeaderID();
+	if (eTargetPlayer != NO_PLAYER && (eTargetTeam == eViewerTeam || GET_TEAM(eViewerTeam).isHasMet(eTargetTeam)))
+	{
+		szCiv = GET_PLAYER(eTargetPlayer).getCivilizationShortDescription();
+	}
+	else
+	{
+		szCiv = gDLL->getText("TXT_KEY_REVEALED_UNKNOWN");
+	}
+
+	return gDLL->getText("TXT_KEY_REVEALED_WAR_PLAN", szCiv.GetCString(), getRevealedCityName(pTargetCity, eViewerTeam).GetCString());
 }
 
 void CvGameTextMgr::getEspionageString(CvWStringBuffer& szBuffer, PlayerTypes ePlayer, PlayerTypes eTargetPlayer)

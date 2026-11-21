@@ -64,7 +64,8 @@ public:
 
 	int AI_chooseElection(const VoteSelectionData& kVoteSelectionData) const;
 
-	int AI_startWarVal(TeamTypes eTeam) const;
+	int AI_startWarVal(TeamTypes eTeam, bool bIgnoreCloseness = false) const;
+	void AI_announceWarPlan(TeamTypes eTarget);	// added by this mod
 	int AI_endWarVal(TeamTypes eTeam) const;
 
 	int AI_techTradeVal(TechTypes eTech, TeamTypes eTeam) const;

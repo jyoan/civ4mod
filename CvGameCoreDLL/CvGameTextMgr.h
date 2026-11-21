@@ -199,6 +199,12 @@ public:
 
 	void getWarplanString(CvWStringBuffer& szString, WarPlanTypes eWarPlan);
 	DllExport void getAttitudeString(CvWStringBuffer& szBuffer, PlayerTypes ePlayer, PlayerTypes eTargetPlayer);
+	void getRevealedPlansString(CvWStringBuffer& szBuffer, PlayerTypes ePlayer, PlayerTypes eViewer);	// added by this mod
+	CvWString getRevealedCityName(CvCity* pCity, TeamTypes eViewerTeam);	// added by this mod
+	CvWString getRevealedWonderText(CvCity* pCity, BuildingTypes eBuilding, TeamTypes eViewerTeam);	// added by this mod
+	TeamTypes getRevealedWarPlanTeam(PlayerTypes ePlayer);	// added by this mod
+	CvCity* getRevealedWarPlanCity(PlayerTypes ePlayer, TeamTypes eTargetTeam);	// added by this mod
+	CvWString getRevealedWarPlanText(TeamTypes eTargetTeam, CvCity* pTargetCity, TeamTypes eViewerTeam);	// added by this mod
 	DllExport void getEspionageString(CvWStringBuffer& szBuffer, PlayerTypes ePlayer, PlayerTypes eTargetPlayer);
 	DllExport void getTradeString(CvWStringBuffer& szBuffer, const TradeData& tradeData, PlayerTypes ePlayer1, PlayerTypes ePlayer2);
 	DllExport void getDealString(CvWStringBuffer& szString, CvDeal& deal, PlayerTypes ePlayerPerspective = NO_PLAYER);

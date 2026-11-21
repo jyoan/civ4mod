@@ -894,4 +894,67 @@
 		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]+10 gold when gained, +20 gold when lost</Spanish>
 		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#24471;&#12427;&#12392;&#36039;&#37329; +10&#12289;&#22833;&#12358;&#12392;&#36039;&#37329; +20</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_TEST_AI_DESC</Tag>
+		<English>Test AI Civilization</English>
+		<French>Test AI Civilization</French>
+		<German>Test AI Civilization</German>
+		<Italian>Test AI Civilization</Italian>
+		<Spanish>Test AI Civilization</Spanish>
+		<Japanese>&#26908;&#35388;&#29992; AI &#25991;&#26126;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_TEST_AI_SHORT_DESC</Tag>
+		<English>Test AI</English>
+		<French>Test AI</French>
+		<German>Test AI</German>
+		<Italian>Test AI</Italian>
+		<Spanish>Test AI</Spanish>
+		<Japanese>&#26908;&#35388; AI</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_TEST_AI_ADJECTIVE</Tag>
+		<English>Test AI</English>
+		<French>Test AI</French>
+		<German>Test AI</German>
+		<Italian>Test AI</Italian>
+		<Spanish>Test AI</Spanish>
+		<Japanese>&#26908;&#35388;&#29992; AI</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TEST_DEMANDER</Tag>
+		<English>Test Leader (Demands)</English>
+		<French>Test Leader (Demands)</French>
+		<German>Test Leader (Demands)</German>
+		<Italian>Test Leader (Demands)</Italian>
+		<Spanish>Test Leader (Demands)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#25351;&#23566;&#32773;&#65288;&#35201;&#27714;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_AI</Tag>
+		<English>Test Trait (AI)</English>
+		<French>Test Trait (AI)</French>
+		<German>Test Trait (AI)</German>
+		<Italian>Test Trait (AI)</Italian>
+		<Spanish>Test Trait (AI)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;AI&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_AI_SHORT</Tag>
+		<English>TAI</English>
+		<French>TAI</French>
+		<German>TAI</German>
+		<Italian>TAI</Italian>
+		<Spanish>TAI</Spanish>
+		<Japanese>&#26908; AI</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TECH_TEST_DIPLOMACY</Tag>
+		<English>Test Diplomacy</English>
+		<French>Test Diplomacy</French>
+		<German>Test Diplomacy</German>
+		<Italian>Test Diplomacy</Italian>
+		<Spanish>Test Diplomacy</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#25216;&#34899;&#65288;&#22806;&#20132;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>
