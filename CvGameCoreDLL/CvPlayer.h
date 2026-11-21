@@ -366,6 +366,7 @@ public:
 	int getLearnedUnit(int iUnitClass) const;			// Exposed to Python: NO_UNIT if none
 	int getLearnedBuilding(int iBuildingClass) const;	// Exposed to Python: NO_BUILDING if none
 	void learnConquestUniques(PlayerTypes eOldOwner);
+	void gainBasicTraitsOf(PlayerTypes eFrom, bool bAll);	// bGainTraitOnCapitalCapture / bGainTraitsOnElimination (added by this mod)
 	// Batch of 2026-11-17 of the traits (added by this mod)
 	int getTraitStateReligionHealth() const;			// Exposed to Python
 	int getGreatPeopleClassRateModifier(UnitClassTypes eUnitClass) const;	// Exposed to Python
@@ -1428,6 +1429,7 @@ protected:
 	int* m_paiConditionalTraitCount;		// the part of m_paiFreeTraitCount given by ConditionalFreeTraits (added by this mod)
 	int* m_paiLearnedUnit;					// the unit learned by conquest per unit class, NO_UNIT if none (added by this mod)
 	int* m_paiLearnedBuilding;				// the building learned by conquest per building class, NO_BUILDING if none (added by this mod)
+	PlayerTypes m_eLastConqueror;			// the player that conquered the last city of this player (bGainTraitsOnElimination, added by this mod)
 	bool* m_abCityConqueredBy;				// the players that have conquered a city of this player (iRevengeCombatPercent, added by this mod)
 	int* m_paiTraitTurns;					// turns left of the temporary traits, 0 if not temporary (added by this mod)
 	int* m_paiFreeBuildingCount;

@@ -1541,4 +1541,22 @@
 		<Spanish>Lake Tiles for each era after the first</Spanish>
 		<Japanese>&#26178;&#20195;&#12364; 1 &#12388;&#36914;&#12416;&#12372;&#12392;&#12395;&#28246;&#12473;&#12463;&#12456;&#12450;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GAIN_TRAIT_ON_CAPITAL_CAPTURE</Tag>
+		<English>[ICON_BULLET]Conquering the capital of a civilization gives one basic trait of its leader (at random, among those you do not have)</English>
+		<French>[ICON_BULLET]Conquering the capital of a civilization gives one basic trait of its leader (at random, among those you do not have)</French>
+		<German>[ICON_BULLET]Conquering the capital of a civilization gives one basic trait of its leader (at random, among those you do not have)</German>
+		<Italian>[ICON_BULLET]Conquering the capital of a civilization gives one basic trait of its leader (at random, among those you do not have)</Italian>
+		<Spanish>[ICON_BULLET]Conquering the capital of a civilization gives one basic trait of its leader (at random, among those you do not have)</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#20105;&#12391;&#25991;&#26126;&#12398;&#39318;&#37117;&#12434;&#38501;&#33853;&#12373;&#12379;&#12427;&#12392;&#12289;&#12381;&#12398;&#25351;&#23566;&#32773;&#12398;&#22522;&#26412;&#24535;&#21521;&#12434; 1 &#12388;&#24471;&#12427;&#65288;&#25345;&#12387;&#12390;&#12356;&#12394;&#12356;&#12418;&#12398;&#12363;&#12425;&#12521;&#12531;&#12480;&#12512;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GAIN_TRAITS_ON_ELIMINATION</Tag>
+		<English>[ICON_BULLET]Eliminating a civilization gives all basic traits of its leader</English>
+		<French>[ICON_BULLET]Eliminating a civilization gives all basic traits of its leader</French>
+		<German>[ICON_BULLET]Eliminating a civilization gives all basic traits of its leader</German>
+		<Italian>[ICON_BULLET]Eliminating a civilization gives all basic traits of its leader</Italian>
+		<Spanish>[ICON_BULLET]Eliminating a civilization gives all basic traits of its leader</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#20105;&#12391;&#25991;&#26126;&#12434;&#28357;&#12412;&#12377;&#12392;&#12289;&#12381;&#12398;&#25351;&#23566;&#32773;&#12398;&#22522;&#26412;&#24535;&#21521;&#12434;&#12377;&#12409;&#12390;&#24471;&#12427;</Japanese>
+	</TEXT>
 </Civ4GameText>

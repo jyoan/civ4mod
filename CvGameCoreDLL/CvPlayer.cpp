@@ -436,6 +436,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_iAnarchyTurnsSpent = 0;
 	m_iNumUnitsKilled = 0;
 	m_iNumCitiesConquered = 0;
+	m_eLastConqueror = NO_PLAYER;
 	m_iWarWearinessModifier = 0;
 	m_iFreeSpecialist = 0;
 	m_iNoForeignTradeCount = 0;
@@ -1534,6 +1535,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	bool bRecapture;
 	bool bRaze;
 	bool bGift;
+	bool bCapitalConquest;
 	int iRange;
 	int iCaptureGold;
 	int iGameTurnFounded;
@@ -1552,6 +1554,9 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	std::vector<int> aeFreeSpecialists;
 
 	pCityPlot = pOldCity->plot();
+
+	// bGainTraitOnCapitalCapture of the traits (added by this mod): before the old owner moves its palace
+	bCapitalConquest = (bConquest && pOldCity->isCapital());
 
 	// bConquestLearnUniqueUnits and bConquestLearnUniqueBuildings of the traits (added by this mod): learn the uniques of the old
 	// owner first, so that the buildings of this city are given below as the learned ones
@@ -2069,6 +2074,19 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	if (bConquest)
 	{
 		changeNumCitiesConquered(1);
+
+		// bGainTraitsOnElimination of the traits (added by this mod): setAlive gives the traits to the player who conquered
+		// the last city
+		if (eOldOwner != NO_PLAYER)
+		{
+			GET_PLAYER(eOldOwner).m_eLastConqueror = getID();
+		}
+
+		// bGainTraitOnCapitalCapture of the traits (added by this mod)
+		if (bCapitalConquest && hasTraitFlag(&CvTraitInfo::isGainTraitOnCapitalCapture))
+		{
+			gainBasicTraitsOf(eOldOwner, false);
+		}
 	}
 
 	// iMinCities, iMaxCities, PrereqBuildingClass of ConditionalFreeTraits (added by this mod): a city and its buildings
@@ -8046,6 +8064,52 @@ int CvPlayer::getLearnedBuilding(int iBuildingClass) const
 	return ((m_paiLearnedBuilding != NULL && iBuildingClass >= 0 && iBuildingClass < GC.getNumBuildingClassInfos()) ? m_paiLearnedBuilding[iBuildingClass] : NO_BUILDING);
 }
 
+// bGainTraitOnCapitalCapture (bAll false: acquireCity, when this player conquers the capital of eFrom) and
+// bGainTraitsOnElimination (bAll true: setAlive, when eFrom is eliminated) of the traits (added by this mod). The candidates are
+// the basic traits (bBasicTrait) of the leader and the civilization of eFrom (hasBaseTrait, not the traits eFrom gained during
+// the game) that this player does not have yet. bAll false gives one of them at random, bAll true gives all of them. Nothing
+// when there is no candidate. The traits are given for good (changeFreeTraitCount), with a message to this player
+void CvPlayer::gainBasicTraitsOf(PlayerTypes eFrom, bool bAll)
+{
+	std::vector<TraitTypes> aeTraits;
+	CvWString szBuffer;
+	TraitTypes eTrait;
+	int iI;
+
+	if (eFrom == NO_PLAYER || eFrom == getID() || GET_PLAYER(eFrom).getLeaderType() == NO_LEADER)
+	{
+		return;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (GC.getTraitInfo((TraitTypes)iI).isBasicTrait() && GET_PLAYER(eFrom).hasBaseTrait((TraitTypes)iI) && !hasTrait((TraitTypes)iI))
+		{
+			aeTraits.push_back((TraitTypes)iI);
+		}
+	}
+
+	if (aeTraits.empty())
+	{
+		return;
+	}
+
+	if (!bAll)
+	{
+		eTrait = aeTraits[GC.getGameINLINE().getSorenRandNum((int)aeTraits.size(), "Capital capture trait")];
+		aeTraits.clear();
+		aeTraits.push_back(eTrait);
+	}
+
+	for (iI = 0; iI < (int)aeTraits.size(); iI++)
+	{
+		changeFreeTraitCount(aeTraits[iI], 1);
+
+		szBuffer = gDLL->getText((bAll ? "TXT_KEY_MISC_TRAIT_GAINED_BY_ELIMINATION" : "TXT_KEY_MISC_TRAIT_GAINED_BY_CAPITAL"), GET_PLAYER(eFrom).getNameKey(), GC.getTraitInfo(aeTraits[iI]).getTextKeyWide());
+		gDLL->getInterfaceIFace()->addMessage(getID(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_GOLDAGESTART", MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
+	}
+}
+
 // bConquestLearnUniqueUnits and bConquestLearnUniqueBuildings of the traits (added by this mod): called by acquireCity when this
 // player conquers a city of eOldOwner, before the buildings of the city are given to this player. This player learns the unique
 // units and buildings of the civilization of eOldOwner (CIV4CivilizationInfos.xml, not the traits of eOldOwner) for the classes
@@ -13316,6 +13380,17 @@ void CvPlayer::setAlive(bool bNewValue)
 					GC.getGameINLINE().addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, getID(), szBuffer, -1, -1, (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"));
 				}
 			}
+
+			// bGainTraitsOnElimination of the traits (added by this mod): the player who conquered our last city gets all our
+			// basic traits. The leader of this player is still set
+			if (m_eLastConqueror != NO_PLAYER && m_eLastConqueror != getID())
+			{
+				if (GET_PLAYER(m_eLastConqueror).isAlive() && GET_PLAYER(m_eLastConqueror).hasTraitFlag(&CvTraitInfo::isGainTraitsOnElimination))
+				{
+					GET_PLAYER(m_eLastConqueror).gainBasicTraitsOf(getID(), true);
+				}
+			}
+			m_eLastConqueror = NO_PLAYER;
 		}
 
 		GC.getGameINLINE().setScoreDirty(true);
@@ -20014,6 +20089,12 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(GC.getNumTraitInfos(), m_paiTraitTurns);
 	}
+
+	// bGainTraitsOnElimination of the traits (uiFlag 13)
+	if (uiFlag > 12)
+	{
+		pStream->Read((int*)&m_eLastConqueror);
+	}
 }
 
 //
@@ -20024,7 +20105,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 12;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns (added by this mod)
+	uint uiFlag = 13;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -20446,6 +20527,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(GC.getNumBuildingClassInfos(), m_paiLearnedBuilding);
 	pStream->Write(MAX_PLAYERS, m_abCityConqueredBy);
 	pStream->Write(GC.getNumTraitInfos(), m_paiTraitTurns);
+	pStream->Write(m_eLastConqueror);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

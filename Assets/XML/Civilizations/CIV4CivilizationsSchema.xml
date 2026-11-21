@@ -452,6 +452,9 @@
 	<ElementType name="bRevealWonderProduction" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bRevealWarPlans" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bRevealHiddenAttitude" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bBasicTrait" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bGainTraitOnCapitalCapture" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bGainTraitsOnElimination" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iNewWorldCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="iOverseasMaintenanceModifier" content="textOnly" dt:type="int"/>
@@ -956,6 +959,7 @@
 		<element type="Description"/>
 		<element type="ShortDescription"/>
 		<element type="Help" minOccurs="0"/>
+		<element type="bBasicTrait" minOccurs="0"/>
 		<element type="iHealth"/>
 		<element type="iHappiness"/>
 		<element type="iMaxAnarchy"/>
@@ -1038,6 +1042,8 @@
 		<element type="bRevealWonderProduction" minOccurs="0"/>
 		<element type="bRevealWarPlans" minOccurs="0"/>
 		<element type="bRevealHiddenAttitude" minOccurs="0"/>
+		<element type="bGainTraitOnCapitalCapture" minOccurs="0"/>
+		<element type="bGainTraitsOnElimination" minOccurs="0"/>
 		<element type="iNewWorldCityPopulation" minOccurs="0"/>
 		<element type="iOverseasCityPopulation" minOccurs="0"/>
 		<element type="iOverseasMaintenanceModifier" minOccurs="0"/>

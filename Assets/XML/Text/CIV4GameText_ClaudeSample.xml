@@ -499,6 +499,24 @@
 		<Japanese>&#25126;&#32318;&#12395;&#12424;&#12426;%s1_Trait&#12434;&#24471;&#12414;&#12375;&#12383;&#65281;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_MISC_TRAIT_GAINED_BY_CAPITAL</Tag>
+		<English>Conquering the capital of %s1_Leader has earned you %s2_Trait!</English>
+		<French>Conquering the capital of %s1_Leader has earned you %s2_Trait!</French>
+		<German>Conquering the capital of %s1_Leader has earned you %s2_Trait!</German>
+		<Italian>Conquering the capital of %s1_Leader has earned you %s2_Trait!</Italian>
+		<Spanish>Conquering the capital of %s1_Leader has earned you %s2_Trait!</Spanish>
+		<Japanese>%s1_Leader&#12398;&#39318;&#37117;&#12434;&#38501;&#33853;&#12373;&#12379;&#12289;%s2_Trait&#12434;&#24471;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_TRAIT_GAINED_BY_ELIMINATION</Tag>
+		<English>Eliminating %s1_Leader has earned you %s2_Trait!</English>
+		<French>Eliminating %s1_Leader has earned you %s2_Trait!</French>
+		<German>Eliminating %s1_Leader has earned you %s2_Trait!</German>
+		<Italian>Eliminating %s1_Leader has earned you %s2_Trait!</Italian>
+		<Spanish>Eliminating %s1_Leader has earned you %s2_Trait!</Spanish>
+		<Japanese>%s1_Leader&#12434;&#28357;&#12412;&#12375;&#12289;%s2_Trait&#12434;&#24471;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_CIVIC_FAVORITE_GIVES_TRAIT</Tag>
 		<English>[ICON_BULLET]Favorite civic: gives %s1_Trait</English>
 		<French>[ICON_BULLET]Favorite civic: gives %s1_Trait</French>
