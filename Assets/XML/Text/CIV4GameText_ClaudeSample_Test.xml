@@ -1029,4 +1029,13 @@
 		<Spanish>Espionage (Test)</Spanish>
 		<Japanese>&#35548;&#22577;&#65288;&#26908;&#35388;&#29992;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_BUILDING</Tag>
+		<English>Test Promotion (Buildings)</English>
+		<French>Test Promotion (Buildings)</French>
+		<German>Test Promotion (Buildings)</German>
+		<Italian>Test Promotion (Buildings)</Italian>
+		<Spanish>Test Promotion (Buildings)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#24314;&#36896;&#29289;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

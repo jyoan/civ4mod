@@ -203,6 +203,12 @@ void CyInfoPythonInterface1()
 		.def("isFeatureSpreadForce", &CvPromotionInfo::isFeatureSpreadForce, "bool (int i)")
 		.def("isHiddenNationality", &CvPromotionInfo::isHiddenNationality, "bool ()")
 		.def("getBonusAffinity", &CvPromotionInfo::getBonusAffinity, "int (int iBonus)")
+		.def("getNumBuildingCombatPercents", &CvPromotionInfo::getNumBuildingCombatPercents, "int ()")
+		.def("getBuildingCombatBuildingClass", &CvPromotionInfo::getBuildingCombatBuildingClass, "int (int i)")
+		.def("getBuildingCombatSpecialBuilding", &CvPromotionInfo::getBuildingCombatSpecialBuilding, "int (int i)")
+		.def("getBuildingCombatPercent", &CvPromotionInfo::getBuildingCombatPercent, "int (int i)")
+		.def("isBuildingCombatStateReligion", &CvPromotionInfo::isBuildingCombatStateReligion, "bool (int i)")
+		.def("getBuildingCombatMaxPercent", &CvPromotionInfo::getBuildingCombatMaxPercent, "int ()")
 
 		.def("getSound", &CvPromotionInfo::getSound, "string ()")
 

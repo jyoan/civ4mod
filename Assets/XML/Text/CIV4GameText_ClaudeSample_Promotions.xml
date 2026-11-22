@@ -407,4 +407,40 @@
 		<Spanish>[ICON_BULLET]+%d1 experience with each pillage of an improvement</Spanish>
 		<Japanese>[ICON_BULLET]&#26045;&#35373;&#12434;&#30053;&#22890;&#12377;&#12427;&#12383;&#12403;&#12395;&#32076;&#39443;&#20516;+%d1</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_BUILDING_COMBAT</Tag>
+		<English>[ICON_BULLET]%D1%% Strength for each %s2 in your cities</English>
+		<French>[ICON_BULLET]%D1%% Strength for each %s2 in your cities</French>
+		<German>[ICON_BULLET]%D1%% Strength for each %s2 in your cities</German>
+		<Italian>[ICON_BULLET]%D1%% Strength for each %s2 in your cities</Italian>
+		<Spanish>[ICON_BULLET]%D1%% Strength for each %s2 in your cities</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;%s2 1&#12388;&#12395;&#12388;&#12365;&#25126;&#38360;&#21147;%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_BUILDING_COMBAT_STATE_RELIGION</Tag>
+		<English> (of your state religion)</English>
+		<French> (of your state religion)</French>
+		<German> (of your state religion)</German>
+		<Italian> (of your state religion)</Italian>
+		<Spanish> (of your state religion)</Spanish>
+		<Japanese>&#65288;&#22269;&#25945;&#12398;&#12418;&#12398;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_BUILDING_COMBAT_MAX</Tag>
+		<English>[ICON_BULLET]Strength from your buildings: up to +%d1%%</English>
+		<French>[ICON_BULLET]Strength from your buildings: up to +%d1%%</French>
+		<German>[ICON_BULLET]Strength from your buildings: up to +%d1%%</German>
+		<Italian>[ICON_BULLET]Strength from your buildings: up to +%d1%%</Italian>
+		<Spanish>[ICON_BULLET]Strength from your buildings: up to +%d1%%</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#24314;&#36896;&#29289;&#12395;&#12424;&#12427;&#25126;&#38360;&#21147;&#12399;&#26368;&#22823;+%d1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_BUILDING_COMBAT_NOW</Tag>
+		<English> (%D1%% from your buildings)</English>
+		<French> (%D1%% from your buildings)</French>
+		<German> (%D1%% from your buildings)</German>
+		<Italian> (%D1%% from your buildings)</Italian>
+		<Spanish> (%D1%% from your buildings)</Spanish>
+		<Japanese>&#65288;&#12358;&#12385;&#24314;&#36896;&#29289;&#12363;&#12425;%D1%%&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

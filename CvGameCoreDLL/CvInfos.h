@@ -563,7 +563,16 @@ public:
 	bool isHiddenNationality() const;			// Exposed to Python
 	// BonusAffinities (added by this mod, FFH2): strength for each copy of the bonus the owner has
 	int getBonusAffinity(int iBonus) const;			// Exposed to Python
-	bool readPass3();					// added by this mod: the bonuses are loaded after the promotions
+	// BuildingCombatPercents (added by this mod): combat % for each building of the class (or of the special building) in the
+	// cities of the owner; the other type is -1. iBuildingCombatMaxPercent caps their total (-1: no cap)
+	int getNumBuildingCombatPercents() const;			// Exposed to Python
+	int getBuildingCombatBuildingClass(int i) const;	// Exposed to Python
+	int getBuildingCombatSpecialBuilding(int i) const;	// Exposed to Python
+	int getBuildingCombatPercent(int i) const;			// Exposed to Python
+	bool isBuildingCombatStateReligion(int i) const;	// Exposed to Python
+	int getBuildingCombatMaxPercent() const;			// Exposed to Python
+	bool isBuildingCombat() const;						// has BuildingCombatPercents
+	bool readPass3();					// added by this mod: the bonuses and building classes are loaded after the promotions
 
 	const TCHAR* getSound() const;				// Exposed to Python
 	void setSound(const TCHAR* szVal);
@@ -678,6 +687,13 @@ protected:
 	std::vector<int> m_aiBonusAffinity;		// BonusAffinities, [bonus], empty when not set (added by this mod)
 	std::vector<CvString> m_aszBonusAffinityTypes;	// as strings until readPass3()
 	std::vector<int> m_aiBonusAffinityValues;
+	std::vector<int> m_aiBuildingCombatBuildingClass;	// BuildingCombatPercents (added by this mod)
+	std::vector<int> m_aiBuildingCombatSpecialBuilding;
+	std::vector<int> m_aiBuildingCombatPercent;
+	std::vector<int> m_aiBuildingCombatStateReligion;	// 0 or 1
+	std::vector<CvString> m_aszBuildingCombatBuildingClassTypes;	// as strings until readPass3()
+	std::vector<CvString> m_aszBuildingCombatSpecialBuildingTypes;
+	int m_iBuildingCombatMaxPercent;
 
 	bool m_bLeader;
 	bool m_bBlitz;									

@@ -548,6 +548,19 @@
 	<ElementType name="BonusAffinities" content="eltOnly">
 		<element type="BonusAffinity" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="BuildingClassType" content="textOnly"/>
+	<ElementType name="SpecialBuildingType" content="textOnly"/>
+	<ElementType name="bStateReligion" content="textOnly" dt:type="boolean"/>
+	<ElementType name="BuildingCombatPercent" content="eltOnly">
+		<element type="BuildingClassType" minOccurs="0"/>
+		<element type="SpecialBuildingType" minOccurs="0"/>
+		<element type="iCombatPercent"/>
+		<element type="bStateReligion" minOccurs="0"/>
+	</ElementType>
+	<ElementType name="BuildingCombatPercents" content="eltOnly">
+		<element type="BuildingCombatPercent" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iBuildingCombatMaxPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="PyOnCreated" content="textOnly"/>
 	<ElementType name="PyOnDeath" content="textOnly"/>
 	<ElementType name="UnitInfo" content="eltOnly">
@@ -1031,6 +1044,8 @@
 		<element type="FeatureSpreads" minOccurs="0"/>
 		<element type="bHiddenNationality" minOccurs="0"/>
 		<element type="BonusAffinities" minOccurs="0"/>
+		<element type="BuildingCombatPercents" minOccurs="0"/>
+		<element type="iBuildingCombatMaxPercent" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

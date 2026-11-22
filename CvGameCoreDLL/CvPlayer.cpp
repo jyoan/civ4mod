@@ -8211,6 +8211,64 @@ int CvPlayer::getNumWorldWonders() const
 	return iCount;
 }
 
+// BuildingCombatPercents (added by this mod): the buildings of the class, or of all the classes of the special building, in
+// all the cities of the player. getBuildingClassCount leaves out the obsolete buildings (CvCity::processBuilding), and keeps
+// those a trait keeps from becoming obsolete. The class goes by its default building (special building and religion). With
+// bStateReligion, only the classes of the state religion of the player count (none without a state religion).
+int CvPlayer::getNumActiveBuildingsForCombat(BuildingClassTypes eBuildingClass, SpecialBuildingTypes eSpecialBuilding, bool bStateReligion) const
+{
+	BuildingTypes eDefaultBuilding;
+	int iReligion;
+	int iCount = 0;
+	int iI;
+
+	if (bStateReligion && getStateReligion() == NO_RELIGION)
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
+	{
+		if (eBuildingClass != NO_BUILDINGCLASS && iI != eBuildingClass)
+		{
+			continue;
+		}
+
+		if (getBuildingClassCount((BuildingClassTypes)iI) <= 0)
+		{
+			continue;
+		}
+
+		eDefaultBuilding = (BuildingTypes)GC.getBuildingClassInfo((BuildingClassTypes)iI).getDefaultBuildingIndex();
+		if (eDefaultBuilding == NO_BUILDING)
+		{
+			continue;
+		}
+
+		if (eBuildingClass == NO_BUILDINGCLASS && GC.getBuildingInfo(eDefaultBuilding).getSpecialBuildingType() != eSpecialBuilding)
+		{
+			continue;
+		}
+
+		if (bStateReligion)
+		{
+			iReligion = GC.getBuildingInfo(eDefaultBuilding).getReligionType();
+			if (iReligion == NO_RELIGION)
+			{
+				iReligion = GC.getBuildingInfo(eDefaultBuilding).getPrereqReligion();
+			}
+			if (iReligion != getStateReligion())
+			{
+				continue;
+			}
+		}
+
+		iCount += getBuildingClassCount((BuildingClassTypes)iI);
+	}
+
+	return iCount;
+}
+
 // After a world wonder or a building with the world wonder changes is added or removed (added by this mod): the yields
 // and the building commerce of all the cities
 // What GlobalBuildingExtraCommerces of the player's buildings add to one building of the class (added by this mod)
