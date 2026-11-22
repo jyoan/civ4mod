@@ -1027,6 +1027,21 @@ public:
 	int getSingleCivicUpkeep(CivicTypes eCivic, bool bIgnoreAnarchy = false) const;										// Exposed to Python					
 	int getCivicUpkeep(CivicTypes* paeCivics = NULL, bool bIgnoreAnarchy = false) const;							// Exposed to Python					
 	void setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue);															// Exposed to Python					
+	// Civic slots (added by this mod): CivicOptionExtraSlots of the traits let a player adopt more than one civic of a civic
+	// option. Every civic array of the player (m_paeCivics, the arrays of revolution, canRevolution, getCivicAnarchyLength
+	// and getCivicUpkeep) has getNumCivicEntries() entries: entry iSlot * GC.getNumCivicOptionInfos() + iCivicOption, so
+	// the first GC.getNumCivicOptionInfos() entries are slot 0, the civics of BtS (getCivics). An unused slot is NO_CIVIC.
+	static int getNumCivicEntries();
+	static int getCivicEntry(CivicOptionTypes eCivicOption, int iSlot);
+	CivicTypes getCivicByEntry(int iEntry) const;
+	int getNumCivicSlots(CivicOptionTypes eCivicOption) const;		// Exposed to Python: 1 + the traits, up to MAX_CIVIC_SLOTS
+	CivicTypes getCivicSlot(CivicOptionTypes eCivicOption, int iSlot) const;	// Exposed to Python
+	void setCivicSlot(CivicOptionTypes eCivicOption, int iSlot, CivicTypes eNewValue);
+	void getCivicsArray(CivicTypes* paeCivics) const;		// the current civics in an array of getNumCivicEntries()
+	void verifyCivicSlots();	// empties the slots the traits no longer give
+	static void addCivicToArray(CivicTypes* paeCivics, CivicTypes eCivic);	// slot 0 of its option, unless it is in the array
+	static bool isCivicInArray(const CivicTypes* paeCivics, CivicTypes eCivic);
+	bool isCivicOptionChanged(const CivicTypes* paeNewCivics, CivicOptionTypes eCivicOption) const;
 
 	int getSpecialistExtraYield(SpecialistTypes eIndex1, YieldTypes eIndex2) const;										// Exposed to Python
 	void changeSpecialistExtraYield(SpecialistTypes eIndex1, YieldTypes eIndex2, int iChange);
@@ -1476,7 +1491,8 @@ protected:
 
 	std::vector<EventTriggerTypes> m_triggersFired;
 
-	CivicTypes* m_paeCivics;
+	CivicTypes* m_paeCivics;	// getNumCivicEntries() entries (civic slots, changed by this mod)
+	int m_iCivicChangeDepth;	// added by this mod, not saved: setCivicSlot calls in progress (verifyCivicSlots waits for them)
 
 	int** m_ppaaiSpecialistExtraYield;
 	int** m_ppaaiImprovementYieldChange;
@@ -1533,6 +1549,7 @@ protected:
 	void verifyGoldCommercePercent();
 
 	void processCivics(CivicTypes eCivic, int iChange);
+	void arrangeCivicSlots(CivicTypes* paeNewCivics) const;	// added by this mod: kept civics stay in their slots
 	void processTrait(TraitTypes eTrait, int iChange);
 	void updateTraitDependents(std::vector<bool>& abObsoleteBuilding);
 

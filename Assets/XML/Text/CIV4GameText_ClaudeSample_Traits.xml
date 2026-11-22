@@ -804,6 +804,15 @@
 		<Japanese>[ICON_BULLET]&#25216;&#34899;&#12394;&#12375;&#12391;&#25505;&#29992;&#12391;&#12365;&#12427;&#31038;&#20250;&#21046;&#24230;: </Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CIVIC_OPTION_EXTRA_SLOTS</Tag>
+		<English>[ICON_BULLET]Can adopt %d2 more civics of %s1 at the same time</English>
+		<French>[ICON_BULLET]Can adopt %d2 more civics of %s1 at the same time</French>
+		<German>[ICON_BULLET]Can adopt %d2 more civics of %s1 at the same time</German>
+		<Italian>[ICON_BULLET]Can adopt %d2 more civics of %s1 at the same time</Italian>
+		<Spanish>[ICON_BULLET]Can adopt %d2 more civics of %s1 at the same time</Spanish>
+		<Japanese>[ICON_BULLET]%s1&#12398;&#31038;&#20250;&#21046;&#24230;&#12434;&#21516;&#26178;&#12395;&#12373;&#12425;&#12395;%d2&#12388;&#25505;&#29992;&#12391;&#12365;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_ROUTE_MOVEMENT_IN_BORDERS</Tag>
 		<English>[ICON_BULLET]%D1_Percent%% movement cost of routes in your territory</English>
 		<French>[ICON_BULLET]%D1_Percent%% movement cost of routes in your territory</French>

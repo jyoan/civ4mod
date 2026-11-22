@@ -35,6 +35,10 @@
 // The ModNetMessage of bChooseGoody: the DLL handles it, Python does not see it (added by this mod)
 #define MOD_NET_MESSAGE_CHOOSE_GOODY								(-20261110)
 #define MAX_TEAMS															(MAX_PLAYERS)
+
+// The most civics of one civic option a player can adopt at the same time: 1 + CivicOptionExtraSlots of the traits, up to
+// this (added by this mod). See CvPlayer::getNumCivicSlots
+#define MAX_CIVIC_SLOTS												(3)
 #define BARBARIAN_PLAYER											((PlayerTypes)MAX_CIV_PLAYERS)
 #define BARBARIAN_TEAM												((TeamTypes)MAX_CIV_TEAMS)
 

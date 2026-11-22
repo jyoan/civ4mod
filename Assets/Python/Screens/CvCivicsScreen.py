@@ -72,9 +72,12 @@ class CvCivicsScreen:
 
 		self.iActivePlayer = -1
 
+		# Changed by this mod (civic slots): the civic lists have an entry for each slot of each civic option,
+		# entry iSlot * NumCivicOptionInfos + iCivicOption (see entry()); slot 0 is the civic of BtS, an empty slot is -1
 		self.m_paeCurrentCivics = []
 		self.m_paeDisplayCivics = []
 		self.m_paeOriginalCivics = []
+		self.m_paeHelpCivics = []		# added by this mod: the civic of the help text of each civic option
 
 	def getScreen(self):
 		return CyGInterfaceScreen(self.SCREEN_NAME, CvScreenEnums.CIVICS_SCREEN)
@@ -87,10 +90,68 @@ class CvCivicsScreen:
 		self.m_paeCurrentCivics = []
 		self.m_paeDisplayCivics = []
 		self.m_paeOriginalCivics = []
+		self.m_paeHelpCivics = []
+		for iSlot in range(activePlayer.getMaxCivicSlots()):
+			for i in range (gc.getNumCivicOptionInfos()):
+				self.m_paeCurrentCivics.append(activePlayer.getCivicSlot(i, iSlot))
+				self.m_paeDisplayCivics.append(activePlayer.getCivicSlot(i, iSlot))
+				self.m_paeOriginalCivics.append(activePlayer.getCivicSlot(i, iSlot))
 		for i in range (gc.getNumCivicOptionInfos()):
-			self.m_paeCurrentCivics.append(activePlayer.getCivics(i));
-			self.m_paeDisplayCivics.append(activePlayer.getCivics(i));
-			self.m_paeOriginalCivics.append(activePlayer.getCivics(i));
+			self.m_paeHelpCivics.append(activePlayer.getCivics(i))
+
+	# Added by this mod (civic slots): the entry of the slot in the civic lists
+	def entry(self, iCivicOption, iSlot):
+		return iSlot * gc.getNumCivicOptionInfos() + iCivicOption
+
+	# Added by this mod (civic slots): how many civics of the civic option the player can adopt (1 while a resolution forces the option)
+	def getNumSlots(self, iCivicOption):
+		if gc.getGame().isForceCivicOption(iCivicOption):
+			return 1
+		return gc.getPlayer(self.iActivePlayer).getNumCivicSlots(iCivicOption)
+
+	# Added by this mod (civic slots): the civics of the civic option in the list
+	def getOptionCivics(self, paeCivics, iCivicOption):
+		aeCivics = []
+		for iSlot in range(gc.getPlayer(self.iActivePlayer).getMaxCivicSlots()):
+			iCivic = paeCivics[self.entry(iCivicOption, iSlot)]
+			if iCivic != -1:
+				aeCivics.append(iCivic)
+		return aeCivics
+
+	def isSelected(self, paeCivics, iCivic):
+		return iCivic in self.getOptionCivics(paeCivics, gc.getCivicInfo(iCivic).getCivicOptionType())
+
+	# Added by this mod (civic slots): a copy of the list after a click on the civic. With one slot the civic replaces
+	# the old one. With more slots a click adds the civic to the empty slot, or to the last slot when every slot is
+	# used, and a click on a selected civic takes it away (not the last one)
+	def getClickedCivics(self, paeCivics, iCivic):
+		paeNew = paeCivics[:]
+		iCivicOption = gc.getCivicInfo(iCivic).getCivicOptionType()
+		iNumSlots = self.getNumSlots(iCivicOption)
+		aeCivics = self.getOptionCivics(paeCivics, iCivicOption)
+		if iNumSlots <= 1:
+			aeCivics = [iCivic]
+		elif iCivic in aeCivics:
+			if len(aeCivics) > 1:
+				aeCivics.remove(iCivic)
+		elif len(aeCivics) < iNumSlots:
+			aeCivics.append(iCivic)
+		else:
+			aeCivics[iNumSlots - 1] = iCivic
+		for iSlot in range(gc.getPlayer(self.iActivePlayer).getMaxCivicSlots()):
+			if iSlot < len(aeCivics):
+				paeNew[self.entry(iCivicOption, iSlot)] = aeCivics[iSlot]
+			else:
+				paeNew[self.entry(iCivicOption, iSlot)] = -1
+		return paeNew
+
+	# Added by this mod (civic slots): whether a civic option has other civics than in the original list (slot order does not count)
+	def isOptionChanged(self, paeCivics, iCivicOption):
+		aeNew = self.getOptionCivics(paeCivics, iCivicOption)
+		aeOld = self.getOptionCivics(self.m_paeOriginalCivics, iCivicOption)
+		aeNew.sort()
+		aeOld.sort()
+		return aeNew != aeOld
 
 	def interfaceScreen (self):
 
@@ -149,9 +210,9 @@ class CvCivicsScreen:
 		for j in range(gc.getNumCivicInfos()):
 
 			if (gc.getCivicInfo(j).getCivicOptionType() == iCivicOption and self.isCivicShown(j)):										
-				screen.setState(self.getCivicsButtonName(j), self.m_paeCurrentCivics[iCivicOption] == j)
+				screen.setState(self.getCivicsButtonName(j), self.isSelected(self.m_paeCurrentCivics, j))	# civic slots (changed by this mod)
 							
-				if (self.m_paeDisplayCivics[iCivicOption] == j):
+				if (self.isSelected(self.m_paeDisplayCivics, j) or self.m_paeHelpCivics[iCivicOption] == j):
 					#screen.setState(self.getCivicsButtonName(j), True)
 					screen.show(self.getCivicsButtonName(j))
 				elif (activePlayer.canDoCivics(j)):
@@ -170,7 +231,11 @@ class CvCivicsScreen:
 			szAreaID = self.AREA_NAME + str(i)
 			screen = self.getScreen()
 			screen.addPanel(szAreaID, "", "", True, True, fX, fY, self.HEADINGS_WIDTH, self.HEADINGS_BOTTOM - self.HEADINGS_TOP, PanelStyles.PANEL_STYLE_MAIN)
-			screen.setLabel("", "Background",  u"<font=3>" + gc.getCivicOptionInfo(i).getDescription().upper() + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, fX + self.HEADINGS_WIDTH/2, self.HEADINGS_TOP + self.TEXT_MARGIN, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
+			# Added by this mod (civic slots): the number of civics the player can adopt after the name, when more than one
+			szHeading = gc.getCivicOptionInfo(i).getDescription().upper()
+			if self.getNumSlots(i) > 1:
+				szHeading += u" (%d)" % self.getNumSlots(i)
+			screen.setLabel("", "Background",  u"<font=3>" + szHeading + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, fX + self.HEADINGS_WIDTH/2, self.HEADINGS_TOP + self.TEXT_MARGIN, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
 			fY += self.TEXT_MARGIN
 			
@@ -196,7 +261,7 @@ class CvCivicsScreen:
 	# The civic the player has now is always listed.
 	def isCivicShown(self, iCivic):
 		info = gc.getCivicInfo(iCivic)
-		if self.m_paeOriginalCivics[info.getCivicOptionType()] == iCivic:
+		if self.isSelected(self.m_paeOriginalCivics, iCivic):	# any civic slot
 			return True
 		activePlayer = gc.getPlayer(self.iActivePlayer)
 		if activePlayer.isCivicReplaced(iCivic):
@@ -222,43 +287,46 @@ class CvCivicsScreen:
 		self.HEADINGS_BOTTOM = self.HEADINGS_TOP + self.TEXT_MARGIN + self.iRowHeight * iMaxRows + self.HEADINGS_BOTTOM_MARGIN
 		self.HELP_TOP = self.HEADINGS_BOTTOM + self.BIG_BUTTON_SIZE + 6
 
+	# Changed by this mod (civic slots): the display list is what a click on the civic would make (the help text and
+	# the anarchy and upkeep show it); nothing changes for a civic that is selected already
 	def highlight(self, iCivic):
 		iCivicOption = gc.getCivicInfo(iCivic).getCivicOptionType()
-		if self.m_paeDisplayCivics[iCivicOption] != iCivic:
-			self.m_paeDisplayCivics[iCivicOption] = iCivic
-			self.drawCivicOptionButtons(iCivicOption)
-			return True
-		return False
+		if self.m_paeHelpCivics[iCivicOption] == iCivic:
+			return False
+		self.m_paeHelpCivics[iCivicOption] = iCivic
+		if self.isSelected(self.m_paeCurrentCivics, iCivic) or not gc.getPlayer(self.iActivePlayer).canDoCivics(iCivic):
+			self.m_paeDisplayCivics = self.m_paeCurrentCivics[:]
+		else:
+			self.m_paeDisplayCivics = self.getClickedCivics(self.m_paeCurrentCivics, iCivic)
+		self.drawCivicOptionButtons(iCivicOption)
+		return True
 		
 	def unHighlight(self, iCivic):		
 		iCivicOption = gc.getCivicInfo(iCivic).getCivicOptionType()
-		if self.m_paeDisplayCivics[iCivicOption] != self.m_paeCurrentCivics[iCivicOption]:
-			self.m_paeDisplayCivics[iCivicOption] = self.m_paeCurrentCivics[iCivicOption]
+		if self.m_paeDisplayCivics != self.m_paeCurrentCivics or not self.isSelected(self.m_paeCurrentCivics, self.m_paeHelpCivics[iCivicOption]):
+			self.m_paeDisplayCivics = self.m_paeCurrentCivics[:]
+			if not self.isSelected(self.m_paeCurrentCivics, self.m_paeHelpCivics[iCivicOption]):
+				self.m_paeHelpCivics[iCivicOption] = self.m_paeCurrentCivics[iCivicOption]
 			self.drawCivicOptionButtons(iCivicOption)
 			return True
 		return False
 		
 	def select(self, iCivic):
 		activePlayer = gc.getPlayer(self.iActivePlayer)
-		if (not activePlayer.canDoCivics(iCivic)):
+		if (not activePlayer.canDoCivics(iCivic) and not self.isSelected(self.m_paeCurrentCivics, iCivic)):
 			# If you can't even do this, get out....
 			return 0
 			
 		iCivicOption = gc.getCivicInfo(iCivic).getCivicOptionType()
 		
-		# Set the previous widget
-		iCivicPrev = self.m_paeCurrentCivics[iCivicOption]
-		
-		# Switch the widgets
-		self.m_paeCurrentCivics[iCivicOption] = iCivic
-		
-		# Unighlight the previous widget
-		self.unHighlight(iCivicPrev)
-		self.getScreen().setState(self.getCivicsButtonName(iCivicPrev), False)
-
-		# highlight the new widget
-		self.highlight(iCivic)		
-		self.getScreen().setState(self.getCivicsButtonName(iCivic), True)
+		# Changed by this mod (civic slots): the civic is added, replaces one, or is taken away
+		self.m_paeCurrentCivics = self.getClickedCivics(self.m_paeCurrentCivics, iCivic)
+		self.m_paeDisplayCivics = self.m_paeCurrentCivics[:]
+		if self.isSelected(self.m_paeCurrentCivics, iCivic):
+			self.m_paeHelpCivics[iCivicOption] = iCivic
+		else:
+			self.m_paeHelpCivics[iCivicOption] = self.m_paeCurrentCivics[iCivicOption]
+		self.drawCivicOptionButtons(iCivicOption)
 		
 		return 0
 
@@ -288,7 +356,7 @@ class CvCivicsScreen:
 	def drawHelpText(self, iCivicOption):
 		
 		activePlayer = gc.getPlayer(self.iActivePlayer)
-		iCivic = self.m_paeDisplayCivics[iCivicOption]
+		iCivic = self.m_paeHelpCivics[iCivicOption]	# civic slots (changed by this mod)
 
 		szPaneID = "CivicsHelpTextBackground" + str(iCivicOption)
 		screen = self.getScreen()
@@ -305,7 +373,7 @@ class CvCivicsScreen:
 
 		fX = self.HEADINGS_SPACING  + (self.HEADINGS_WIDTH + self.HEADINGS_SPACING) * iCivicOption
 
-		screen.setLabel(self.HELP_HEADER_NAME + str(iCivicOption), "Background",  u"<font=3>" + gc.getCivicInfo(self.m_paeDisplayCivics[iCivicOption]).getDescription().upper() + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, fX + self.HEADINGS_WIDTH/2, self.HELP_TOP + self.TEXT_MARGIN, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
+		screen.setLabel(self.HELP_HEADER_NAME + str(iCivicOption), "Background",  u"<font=3>" + gc.getCivicInfo(iCivic).getDescription().upper() + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, fX + self.HEADINGS_WIDTH/2, self.HELP_TOP + self.TEXT_MARGIN, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
 		fY = self.HELP_TOP - self.BIG_BUTTON_SIZE
 		szHelpImageID = self.HELP_IMAGE_NAME + str(iCivicOption)		
@@ -339,7 +407,7 @@ class CvCivicsScreen:
 		bChange = False
 		i = 0
 		while (i  < gc.getNumCivicOptionInfos() and not bChange):
-			if (self.m_paeCurrentCivics[i] != self.m_paeOriginalCivics[i]):
+			if (self.isOptionChanged(self.m_paeCurrentCivics, i)):	# civic slots (changed by this mod)
 				bChange = True
 			i += 1		
 		
@@ -374,7 +442,7 @@ class CvCivicsScreen:
 		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED) :
 			if (activePlayer.canRevolution(0)):
 				messageControl = CyMessageControl()
-				messageControl.sendUpdateCivics(self.m_paeDisplayCivics)			
+				messageControl.sendUpdateCivics(self.m_paeCurrentCivics)	# every civic slot (changed by this mod)
 			screen = self.getScreen()
 			screen.hideScreen()
 
@@ -382,9 +450,11 @@ class CvCivicsScreen:
 	def Cancel(self, inputClass):
 		screen = self.getScreen()
 		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED) :
+			# Changed by this mod (civic slots): every slot
+			self.m_paeCurrentCivics = self.m_paeOriginalCivics[:]
+			self.m_paeDisplayCivics = self.m_paeOriginalCivics[:]
 			for i in range (gc.getNumCivicOptionInfos()):
-				self.m_paeCurrentCivics[i] = self.m_paeOriginalCivics[i]
-				self.m_paeDisplayCivics[i] = self.m_paeOriginalCivics[i]
+				self.m_paeHelpCivics[i] = self.m_paeOriginalCivics[i]
 			
 			self.drawContents()
 			

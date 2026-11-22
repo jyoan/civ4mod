@@ -90,6 +90,7 @@ CvPlayer::CvPlayer()
 	m_pabLoyalMember = NULL;
 
 	m_paeCivics = NULL;
+	m_iCivicChangeDepth = 0;
 
 	m_ppaaiSpecialistExtraYield = NULL;
 	m_ppaaiImprovementYieldChange = NULL;
@@ -712,13 +713,17 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		FAssertMsg(m_paiNoCivicUpkeepCount==NULL, "about to leak memory, CvPlayer::m_paiNoCivicUpkeepCount");
 		m_paiNoCivicUpkeepCount = new int[GC.getNumCivicOptionInfos()];
 		FAssertMsg(m_paeCivics==NULL, "about to leak memory, CvPlayer::m_paeCivics");
-		m_paeCivics = new CivicTypes [GC.getNumCivicOptionInfos()];
+		m_paeCivics = new CivicTypes [getNumCivicEntries()];	// civic slots (changed by this mod)
 		for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
 		{
 			m_paiHasCivicOptionCount[iI] = 0;
 			m_paiNoCivicUpkeepCount[iI] = 0;
+		}
+		for (iI = 0; iI < getNumCivicEntries(); iI++)
+		{
 			m_paeCivics[iI] = NO_CIVIC;
 		}
+		m_iCivicChangeDepth = 0;
 
 		FAssertMsg(m_paiHasReligionCount==NULL, "about to leak memory, CvPlayer::m_paiHasReligionCount");
 		m_paiHasReligionCount = new int[GC.getNumReligionInfos()];
@@ -4325,6 +4330,9 @@ void CvPlayer::doTurnUnits()
 void CvPlayer::verifyCivics()
 {
 	int iI, iJ;
+	int iSlot;
+
+	verifyCivicSlots();	// civic slots (added by this mod)
 
 	if (!isAnarchy())
 	{
@@ -4332,10 +4340,10 @@ void CvPlayer::verifyCivics()
 		{
 			if (!canDoCivics(getCivics((CivicOptionTypes)iI)))
 			{
-				// The civic that replaces it comes first (added by this mod)
+				// The civic that replaces it comes first (added by this mod). Not a civic of another slot (civic slots)
 				for (iJ = 0; iJ < GC.getNumCivicInfos(); iJ++)
 				{
-					if (GC.getCivicInfo((CivicTypes)iJ).getReplacedCivic() == getCivics((CivicOptionTypes)iI) && canDoCivics((CivicTypes)iJ))
+					if (GC.getCivicInfo((CivicTypes)iJ).getReplacedCivic() == getCivics((CivicOptionTypes)iI) && canDoCivics((CivicTypes)iJ) && !isCivic((CivicTypes)iJ))
 					{
 						setCivics(((CivicOptionTypes)iI), ((CivicTypes)iJ));
 						break;
@@ -4351,12 +4359,50 @@ void CvPlayer::verifyCivics()
 				{
 					if (GC.getCivicInfo((CivicTypes)iJ).getCivicOptionType() == iI)
 					{
-						if (canDoCivics((CivicTypes)iJ))
+						if (canDoCivics((CivicTypes)iJ) && !isCivic((CivicTypes)iJ))
 						{
 							setCivics(((CivicOptionTypes)iI), ((CivicTypes)iJ));
 							break;
 						}
 					}
+				}
+
+				// Civic slots (added by this mod): every civic the player can adopt is in another slot, so one moves to slot 0
+				if (!canDoCivics(getCivics((CivicOptionTypes)iI)))
+				{
+					for (iSlot = 1; iSlot < MAX_CIVIC_SLOTS; iSlot++)
+					{
+						CivicTypes eOther = getCivicSlot((CivicOptionTypes)iI, iSlot);
+						if (eOther != NO_CIVIC && canDoCivics(eOther))
+						{
+							setCivicSlot((CivicOptionTypes)iI, iSlot, NO_CIVIC);
+							setCivics((CivicOptionTypes)iI, eOther);
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		// The other civic slots (added by this mod): a civic the player can no longer adopt gives way to the civic that
+		// replaces it, or leaves its slot empty
+		for (iSlot = 1; iSlot < MAX_CIVIC_SLOTS; iSlot++)
+		{
+			for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+			{
+				CivicTypes eCivic = getCivicSlot((CivicOptionTypes)iI, iSlot);
+				if (eCivic != NO_CIVIC && !canDoCivics(eCivic))
+				{
+					CivicTypes eNewCivic = NO_CIVIC;
+					for (iJ = 0; iJ < GC.getNumCivicInfos(); iJ++)
+					{
+						if (GC.getCivicInfo((CivicTypes)iJ).getReplacedCivic() == eCivic && canDoCivics((CivicTypes)iJ) && !isCivic((CivicTypes)iJ))
+						{
+							eNewCivic = (CivicTypes)iJ;
+							break;
+						}
+					}
+					setCivicSlot((CivicOptionTypes)iI, iSlot, eNewCivic);
 				}
 			}
 		}
@@ -5368,16 +5414,13 @@ void CvPlayer::handleDiploEvent(DiploEventTypes eDiploEvent, PlayerTypes ePlayer
 	case DIPLOEVENT_REVOLUTION:
 		AI_changeMemoryCount(ePlayer, MEMORY_ACCEPTED_CIVIC, 1);
 
-		paeNewCivics = new CivicTypes[GC.getNumCivicOptionInfos()];
+		paeNewCivics = new CivicTypes[getNumCivicEntries()];	// civic slots (changed by this mod)
 
-		for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
-		{
-			paeNewCivics[iI] = GET_PLAYER(ePlayer).getCivics((CivicOptionTypes)iI);
-		}
+		GET_PLAYER(ePlayer).getCivicsArray(paeNewCivics);
 
 		FAssertMsg(GC.getLeaderHeadInfo(getPersonalityType()).getFavoriteCivic() != NO_CIVIC, "getFavoriteCivic() must be valid");
 
-		paeNewCivics[GC.getCivicInfo((CivicTypes)(GC.getLeaderHeadInfo(getPersonalityType())).getFavoriteCivic()).getCivicOptionType()] = ((CivicTypes)(GC.getLeaderHeadInfo(getPersonalityType()).getFavoriteCivic()));
+		addCivicToArray(paeNewCivics, (CivicTypes)(GC.getLeaderHeadInfo(getPersonalityType()).getFavoriteCivic()));
 
 		GET_PLAYER(ePlayer).revolution(paeNewCivics, true);
 
@@ -7924,11 +7967,11 @@ int CvPlayer::getUnitCombatFreeExperience(UnitCombatTypes eUnitCombat) const
 	FAssertMsg(eUnitCombat >= 0, "eUnitCombat is expected to be non-negative");
 	FAssertMsg(eUnitCombat < GC.getNumUnitCombatInfos(), "eUnitCombat is expected to be within maximum bounds");
 
-	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	for (iI = 0; iI < getNumCivicEntries(); iI++)	// every civic slot (changed by this mod)
 	{
-		if (getCivics((CivicOptionTypes)iI) != NO_CIVIC)
+		if (getCivicByEntry(iI) != NO_CIVIC)
 		{
-			iExperience += GC.getCivicInfo(getCivics((CivicOptionTypes)iI)).getUnitCombatFreeExperience(eUnitCombat);
+			iExperience += GC.getCivicInfo(getCivicByEntry(iI)).getUnitCombatFreeExperience(eUnitCombat);
 		}
 	}
 
@@ -7943,11 +7986,11 @@ int CvPlayer::getUnitCombatProductionModifier(UnitCombatTypes eUnitCombat) const
 	FAssertMsg(eUnitCombat >= 0, "eUnitCombat is expected to be non-negative");
 	FAssertMsg(eUnitCombat < GC.getNumUnitCombatInfos(), "eUnitCombat is expected to be within maximum bounds");
 
-	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	for (iI = 0; iI < getNumCivicEntries(); iI++)	// every civic slot (changed by this mod)
 	{
-		if (getCivics((CivicOptionTypes)iI) != NO_CIVIC)
+		if (getCivicByEntry(iI) != NO_CIVIC)
 		{
-			iModifier += GC.getCivicInfo(getCivics((CivicOptionTypes)iI)).getUnitCombatProductionModifier(eUnitCombat);
+			iModifier += GC.getCivicInfo(getCivicByEntry(iI)).getUnitCombatProductionModifier(eUnitCombat);
 		}
 	}
 
@@ -7962,11 +8005,11 @@ int CvPlayer::getUnitCombatUpgradeDiscount(UnitCombatTypes eUnitCombat) const
 	FAssertMsg(eUnitCombat >= 0, "eUnitCombat is expected to be non-negative");
 	FAssertMsg(eUnitCombat < GC.getNumUnitCombatInfos(), "eUnitCombat is expected to be within maximum bounds");
 
-	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	for (iI = 0; iI < getNumCivicEntries(); iI++)	// every civic slot (changed by this mod)
 	{
-		if (getCivics((CivicOptionTypes)iI) != NO_CIVIC)
+		if (getCivicByEntry(iI) != NO_CIVIC)
 		{
-			iDiscount += GC.getCivicInfo(getCivics((CivicOptionTypes)iI)).getUnitCombatUpgradeDiscount(eUnitCombat);
+			iDiscount += GC.getCivicInfo(getCivicByEntry(iI)).getUnitCombatUpgradeDiscount(eUnitCombat);
 		}
 	}
 
@@ -9967,11 +10010,11 @@ bool CvPlayer::isUpgradeAnywhere(UnitCombatTypes eUnitCombat, bool bEnemyTerrito
 		}
 	}
 
-	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	for (iI = 0; iI < getNumCivicEntries(); iI++)	// every civic slot (changed by this mod)
 	{
-		if (getCivics((CivicOptionTypes)iI) != NO_CIVIC)
+		if (getCivicByEntry(iI) != NO_CIVIC)
 		{
-			CvCivicInfo& kCivic = GC.getCivicInfo(getCivics((CivicOptionTypes)iI));
+			CvCivicInfo& kCivic = GC.getCivicInfo(getCivicByEntry(iI));
 			if (kCivic.isUpgradeAnywhereUnitCombat(eUnitCombat) && !(bEnemyTerritory && kCivic.isUpgradeAnywhereExcludeEnemy(eUnitCombat)))
 			{
 				return true;
@@ -11060,9 +11103,9 @@ bool CvPlayer::isCivic(CivicTypes eCivic) const
 {
 	int iI;
 
-	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	for (iI = 0; iI < getNumCivicEntries(); iI++)	// every civic slot (changed by this mod)
 	{
-		if (getCivics((CivicOptionTypes)iI) == eCivic)
+		if (getCivicByEntry(iI) == eCivic)
 		{
 			return true;
 		}
@@ -11151,6 +11194,8 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 bool CvPlayer::canRevolution(CivicTypes* paeNewCivics) const
 {
 	int iI;
+	int iSlot;
+	int iOtherSlot;
 
 	if (isAnarchy())
 	{
@@ -11169,7 +11214,7 @@ bool CvPlayer::canRevolution(CivicTypes* paeNewCivics) const
 		{
 			if (canDoCivics((CivicTypes)iI))
 			{
-				if (getCivics((CivicOptionTypes)GC.getCivicInfo((CivicTypes) iI).getCivicOptionType()) != iI)
+				if (!isCivic((CivicTypes)iI))	// any civic slot (changed by this mod)
 				{
 					return true;
 				}
@@ -11182,11 +11227,37 @@ bool CvPlayer::canRevolution(CivicTypes* paeNewCivics) const
 		// relies on the civics screen and the popups to offer only valid civics, but the popup for a new tech offers the
 		// civics of the tech without checking canDoCivics: the revolution set the civic, gave anarchy, and verifyCivics
 		// took the civic back at the start of the turn. This also keeps that popup from appearing.
-		for (iI = 0; iI < GC.getNumCivicOptionInfos(); ++iI)
+		// Civic slots (added by this mod): every slot, and a civic the player already runs in another slot is not new.
+		for (iI = 0; iI < getNumCivicEntries(); ++iI)
 		{
-			if (paeNewCivics[iI] != NO_CIVIC && getCivics((CivicOptionTypes)iI) != paeNewCivics[iI] && !canDoCivics(paeNewCivics[iI]))
+			if (paeNewCivics[iI] != NO_CIVIC && !isCivic(paeNewCivics[iI]) && !canDoCivics(paeNewCivics[iI]))
 			{
 				return false;
+			}
+		}
+
+		// Civic slots (added by this mod): a civic only in the slots of its own civic option that the traits give, and
+		// not twice
+		for (iI = 0; iI < GC.getNumCivicOptionInfos(); ++iI)
+		{
+			for (iSlot = 0; iSlot < MAX_CIVIC_SLOTS; ++iSlot)
+			{
+				CivicTypes eCivic = paeNewCivics[getCivicEntry((CivicOptionTypes)iI, iSlot)];
+				if (eCivic == NO_CIVIC)
+				{
+					continue;
+				}
+				if (GC.getCivicInfo(eCivic).getCivicOptionType() != iI || iSlot >= getNumCivicSlots((CivicOptionTypes)iI))
+				{
+					return false;
+				}
+				for (iOtherSlot = 0; iOtherSlot < iSlot; ++iOtherSlot)
+				{
+					if (paeNewCivics[getCivicEntry((CivicOptionTypes)iI, iOtherSlot)] == eCivic)
+					{
+						return false;
+					}
+				}
 			}
 		}
 
@@ -11194,13 +11265,22 @@ bool CvPlayer::canRevolution(CivicTypes* paeNewCivics) const
 		{
 			if (GC.getGameINLINE().isForceCivicOption((CivicOptionTypes)iI))
 			{
-				if (!GC.getGameINLINE().isForceCivic(paeNewCivics[iI]))
+				if (paeNewCivics[iI] == NO_CIVIC || !GC.getGameINLINE().isForceCivic(paeNewCivics[iI]))
 				{
 					return false;
 				}
+
+				// Civic slots (added by this mod): the other slots of a forced civic option stay empty
+				for (iSlot = 1; iSlot < MAX_CIVIC_SLOTS; ++iSlot)
+				{
+					if (paeNewCivics[getCivicEntry((CivicOptionTypes)iI, iSlot)] != NO_CIVIC)
+					{
+						return false;
+					}
+				}
 			}
 
-			if (getCivics((CivicOptionTypes)iI) != paeNewCivics[iI])
+			if (isCivicOptionChanged(paeNewCivics, (CivicOptionTypes)iI))	// as a set of civics (civic slots, changed by this mod)
 			{
 				return true;
 			}
@@ -11227,19 +11307,21 @@ void CvPlayer::revolution(CivicTypes* paeNewCivics, bool bForce)
 	{
 		m_iRevolutionAnarchyTurns += iAnarchyLength;	// iAnarchyGoldenAgePercent (added by this mod)
 		changeAnarchyTurns(iAnarchyLength);
+	}
 
-		for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
-		{
-			setCivics(((CivicOptionTypes)iI), paeNewCivics[iI]);
-		}
-	}
-	else
+	// Civic slots (changed by this mod): every slot. The civics the player keeps stay in their slots, so that moving a civic
+	// to another slot is no adoption. verifyCivicSlots waits until every slot is set: a civic of one option can take away
+	// the slots of another option (a trait with PrereqCivic), and they are emptied after the civics in them are set
+	std::vector<CivicTypes> aeNewCivics(paeNewCivics, paeNewCivics + getNumCivicEntries());
+	arrangeCivicSlots(&aeNewCivics[0]);
+
+	m_iCivicChangeDepth++;
+	for (iI = 0; iI < getNumCivicEntries(); iI++)
 	{
-		for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
-		{
-			setCivics(((CivicOptionTypes)iI), paeNewCivics[iI]);
-		}
+		setCivicSlot((CivicOptionTypes)(iI % GC.getNumCivicOptionInfos()), iI / GC.getNumCivicOptionInfos(), aeNewCivics[iI]);
 	}
+	m_iCivicChangeDepth--;
+	verifyCivicSlots();
 
 	setRevolutionTimer(std::max(1, ((100 + getAnarchyModifier()) * GC.getDefineINT("MIN_REVOLUTION_TURNS")) / 100) + iAnarchyLength);
 
@@ -11261,7 +11343,7 @@ int CvPlayer::getCivicPercentAnger(CivicTypes eCivic, bool bIgnore) const
 		return 0;
 	}
 
-	if (!bIgnore && (getCivics((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())) == eCivic))
+	if (!bIgnore && isCivic(eCivic))	// any civic slot (changed by this mod)
 	{
 		return 0;
 	}
@@ -11275,7 +11357,7 @@ int CvPlayer::getCivicPercentAnger(CivicTypes eCivic, bool bIgnore) const
 		{
 			if (GET_PLAYER((PlayerTypes)iI).getTeam() != getTeam())
 			{
-				if (GET_PLAYER((PlayerTypes)iI).getCivics((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())) == eCivic)
+				if (GET_PLAYER((PlayerTypes)iI).isCivic(eCivic))	// any civic slot (changed by this mod)
 				{
 					iCount += GET_PLAYER((PlayerTypes)iI).getNumCities();
 				}
@@ -11627,13 +11709,21 @@ int CvPlayer::getCivicAnarchyLength(CivicTypes* paeNewCivics) const
 
 	bChange = false;
 
+	// Civic slots (changed by this mod): a civic option changes when its set of civics changes, and each civic the player does
+	// not run yet adds its anarchy
 	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
 	{
-		if (paeNewCivics[iI] != getCivics((CivicOptionTypes)iI))
+		if (isCivicOptionChanged(paeNewCivics, (CivicOptionTypes)iI))
+		{
+			bChange = true;
+		}
+	}
+
+	for (iI = 0; iI < getNumCivicEntries(); iI++)
+	{
+		if (paeNewCivics[iI] != NO_CIVIC && !isCivic(paeNewCivics[iI]))
 		{
 			iAnarchyLength += GC.getCivicInfo(paeNewCivics[iI]).getAnarchyLength();
-
-			bChange = true;
 		}
 	}
 
@@ -15951,7 +16041,7 @@ int CvPlayer::getCivicUpkeep(CivicTypes* paeCivics, bool bIgnoreAnarchy) const
 
 	iTotalUpkeep = 0;
 
-	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	for (iI = 0; iI < getNumCivicEntries(); iI++)	// every civic slot (changed by this mod)
 	{
 		iTotalUpkeep += getSingleCivicUpkeep(paeCivics[iI], bIgnoreAnarchy);
 	}
@@ -15962,28 +16052,280 @@ int CvPlayer::getCivicUpkeep(CivicTypes* paeCivics, bool bIgnoreAnarchy) const
 
 void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 {
+	int iSlot;
+
+	// Civic slots (changed by this mod): slot 0. A civic of another slot (events and Python call this) moves to slot 0
+	// without being revoked, and the civic of slot 0 is revoked
+	if (eNewValue != NO_CIVIC)
+	{
+		for (iSlot = 1; iSlot < MAX_CIVIC_SLOTS; iSlot++)
+		{
+			if (getCivicSlot(eIndex, iSlot) == eNewValue)
+			{
+				m_paeCivics[getCivicEntry(eIndex, iSlot)] = getCivics(eIndex);
+				m_paeCivics[getCivicEntry(eIndex, 0)] = eNewValue;
+				setCivicSlot(eIndex, iSlot, NO_CIVIC);
+				return;
+			}
+		}
+	}
+
+	setCivicSlot(eIndex, 0, eNewValue);
+}
+
+
+// Civic slots (added by this mod): see CvPlayer.h
+int CvPlayer::getNumCivicEntries()
+{
+	return GC.getNumCivicOptionInfos() * MAX_CIVIC_SLOTS;
+}
+
+
+int CvPlayer::getCivicEntry(CivicOptionTypes eCivicOption, int iSlot)
+{
+	return iSlot * GC.getNumCivicOptionInfos() + eCivicOption;
+}
+
+
+CivicTypes CvPlayer::getCivicByEntry(int iEntry) const
+{
+	FAssertMsg(iEntry >= 0 && iEntry < getNumCivicEntries(), "iEntry is expected to be within bounds");
+	return m_paeCivics[iEntry];
+}
+
+
+// 1 + CivicOptionExtraSlots of the traits, from 1 to MAX_CIVIC_SLOTS
+int CvPlayer::getNumCivicSlots(CivicOptionTypes eCivicOption) const
+{
+	if (getLeaderType() == NO_LEADER)
+	{
+		return 1;
+	}
+
+	return range(1 + sumTraitValues(&CvTraitInfo::getCivicOptionExtraSlots, eCivicOption), 1, MAX_CIVIC_SLOTS);
+}
+
+
+CivicTypes CvPlayer::getCivicSlot(CivicOptionTypes eCivicOption, int iSlot) const
+{
+	FAssertMsg(eCivicOption >= 0 && eCivicOption < GC.getNumCivicOptionInfos(), "eCivicOption is expected to be within bounds");
+	FAssertMsg(iSlot >= 0 && iSlot < MAX_CIVIC_SLOTS, "iSlot is expected to be within bounds");
+	return m_paeCivics[getCivicEntry(eCivicOption, iSlot)];
+}
+
+
+void CvPlayer::getCivicsArray(CivicTypes* paeCivics) const
+{
+	int iI;
+
+	for (iI = 0; iI < getNumCivicEntries(); iI++)
+	{
+		paeCivics[iI] = m_paeCivics[iI];
+	}
+}
+
+
+// Empties the slots the traits no longer give, and the other slots of a civic option a resolution forces. Not while
+// setCivicSlot or revolution is changing the civics: the last of them calls this
+void CvPlayer::verifyCivicSlots()
+{
+	int iI;
+	int iSlot;
+
+	if (m_iCivicChangeDepth > 0 || m_paeCivics == NULL)
+	{
+		return;
+	}
+
+	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	{
+		int iNumSlots = -1;	// only looked up for a civic option with a civic in another slot
+
+		for (iSlot = MAX_CIVIC_SLOTS - 1; iSlot > 0; iSlot--)
+		{
+			if (getCivicSlot((CivicOptionTypes)iI, iSlot) != NO_CIVIC)
+			{
+				if (iNumSlots < 0)
+				{
+					iNumSlots = GC.getGameINLINE().isForceCivicOption((CivicOptionTypes)iI) ? 1 : getNumCivicSlots((CivicOptionTypes)iI);
+				}
+				if (iSlot >= iNumSlots)
+				{
+					setCivicSlot((CivicOptionTypes)iI, iSlot, NO_CIVIC);
+				}
+			}
+		}
+	}
+}
+
+
+// Puts the civic in slot 0 of its civic option, unless the array already has it in a slot of that option
+void CvPlayer::addCivicToArray(CivicTypes* paeCivics, CivicTypes eCivic)
+{
+	if (eCivic == NO_CIVIC || isCivicInArray(paeCivics, eCivic))
+	{
+		return;
+	}
+
+	paeCivics[GC.getCivicInfo(eCivic).getCivicOptionType()] = eCivic;
+}
+
+
+bool CvPlayer::isCivicInArray(const CivicTypes* paeCivics, CivicTypes eCivic)
+{
+	int iSlot;
+
+	if (eCivic == NO_CIVIC)
+	{
+		return false;
+	}
+
+	for (iSlot = 0; iSlot < MAX_CIVIC_SLOTS; iSlot++)
+	{
+		if (paeCivics[getCivicEntry((CivicOptionTypes)GC.getCivicInfo(eCivic).getCivicOptionType(), iSlot)] == eCivic)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+// Whether the set of civics of the civic option differs from the player's (the order of the slots does not count)
+bool CvPlayer::isCivicOptionChanged(const CivicTypes* paeNewCivics, CivicOptionTypes eCivicOption) const
+{
+	int iSlot;
+
+	for (iSlot = 0; iSlot < MAX_CIVIC_SLOTS; iSlot++)
+	{
+		CivicTypes eNewCivic = paeNewCivics[getCivicEntry(eCivicOption, iSlot)];
+		if (eNewCivic != NO_CIVIC && !isCivic(eNewCivic))
+		{
+			return true;
+		}
+
+		CivicTypes eOldCivic = getCivicSlot(eCivicOption, iSlot);
+		if (eOldCivic != NO_CIVIC && !isCivicInArray(paeNewCivics, eOldCivic))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+// Rearranges the new civics of each civic option: a civic the player keeps stays in its slot, the new civics fill the other
+// slots in order, slot 0 is not empty while another slot has a civic, and a civic is in the array only once
+void CvPlayer::arrangeCivicSlots(CivicTypes* paeNewCivics) const
+{
+	CivicTypes aeNew[MAX_CIVIC_SLOTS];
+	CivicTypes aeResult[MAX_CIVIC_SLOTS];
+	int iI;
+	int iSlot;
+	int iOtherSlot;
+
+	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	{
+		for (iSlot = 0; iSlot < MAX_CIVIC_SLOTS; iSlot++)
+		{
+			aeNew[iSlot] = paeNewCivics[getCivicEntry((CivicOptionTypes)iI, iSlot)];
+			aeResult[iSlot] = NO_CIVIC;
+			for (iOtherSlot = 0; iOtherSlot < iSlot; iOtherSlot++)
+			{
+				if (aeNew[iOtherSlot] == aeNew[iSlot])
+				{
+					aeNew[iSlot] = NO_CIVIC;
+					break;
+				}
+			}
+		}
+
+		// The civics the player keeps, in their slots
+		for (iSlot = 0; iSlot < MAX_CIVIC_SLOTS; iSlot++)
+		{
+			if (aeNew[iSlot] == NO_CIVIC)
+			{
+				continue;
+			}
+			for (iOtherSlot = 0; iOtherSlot < MAX_CIVIC_SLOTS; iOtherSlot++)
+			{
+				if (getCivicSlot((CivicOptionTypes)iI, iOtherSlot) == aeNew[iSlot])
+				{
+					aeResult[iOtherSlot] = aeNew[iSlot];
+					aeNew[iSlot] = NO_CIVIC;
+					break;
+				}
+			}
+		}
+
+		// The new civics, in the empty slots
+		for (iSlot = 0; iSlot < MAX_CIVIC_SLOTS; iSlot++)
+		{
+			if (aeNew[iSlot] == NO_CIVIC)
+			{
+				continue;
+			}
+			for (iOtherSlot = 0; iOtherSlot < MAX_CIVIC_SLOTS; iOtherSlot++)
+			{
+				if (aeResult[iOtherSlot] == NO_CIVIC)
+				{
+					aeResult[iOtherSlot] = aeNew[iSlot];
+					break;
+				}
+			}
+		}
+
+		// Slot 0 not empty
+		if (aeResult[0] == NO_CIVIC)
+		{
+			for (iSlot = 1; iSlot < MAX_CIVIC_SLOTS; iSlot++)
+			{
+				if (aeResult[iSlot] != NO_CIVIC)
+				{
+					aeResult[0] = aeResult[iSlot];
+					aeResult[iSlot] = NO_CIVIC;
+					break;
+				}
+			}
+		}
+
+		for (iSlot = 0; iSlot < MAX_CIVIC_SLOTS; iSlot++)
+		{
+			paeNewCivics[getCivicEntry((CivicOptionTypes)iI, iSlot)] = aeResult[iSlot];
+		}
+	}
+}
+
+
+void CvPlayer::setCivicSlot(CivicOptionTypes eIndex, int iSlot, CivicTypes eNewValue)
+{
 	CvWString szBuffer;
 	CivicTypes eOldCivic;
 	int iI;
 
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < GC.getNumCivicOptionInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
-	FAssertMsg(eNewValue >= 0, "eNewValue is expected to be non-negative (invalid Index)");
+	FAssertMsg(iSlot >= 0 && iSlot < MAX_CIVIC_SLOTS, "iSlot is expected to be within bounds");
+	FAssertMsg(eNewValue >= NO_CIVIC, "eNewValue is expected to be NO_CIVIC or more (invalid Index)");
 	FAssertMsg(eNewValue < GC.getNumCivicInfos(), "eNewValue is expected to be within maximum bounds (invalid Index)");
 
-	eOldCivic = getCivics(eIndex);
+	eOldCivic = getCivicSlot(eIndex, iSlot);
 
 	if (eOldCivic != eNewValue)
 	{
-		m_paeCivics[eIndex] = eNewValue;
+		m_iCivicChangeDepth++;	// civic slots (added by this mod): verifyCivicSlots waits until the end
+
+		m_paeCivics[getCivicEntry(eIndex, iSlot)] = eNewValue;
 
 		if (eOldCivic != NO_CIVIC)
 		{
 			processCivics(eOldCivic, -1);
 		}
-		if (getCivics(eIndex) != NO_CIVIC)
+		if (getCivicSlot(eIndex, iSlot) != NO_CIVIC)
 		{
-			processCivics(getCivics(eIndex), 1);
+			processCivics(getCivicSlot(eIndex, iSlot), 1);
 		}
 
 		// ConditionalFreeTraits (PrereqCivic, bFavoriteCivic, StateReligion; added by this mod)
@@ -15996,9 +16338,9 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 			{
 				doCivicPythonHook(eOldCivic, false);
 			}
-			if (getCivics(eIndex) != NO_CIVIC && GC.getCivicInfo(getCivics(eIndex)).getPyOnAdopt()[0] != '\0')
+			if (getCivicSlot(eIndex, iSlot) != NO_CIVIC && GC.getCivicInfo(getCivicSlot(eIndex, iSlot)).getPyOnAdopt()[0] != '\0')
 			{
-				doCivicPythonHook(getCivics(eIndex), true);
+				doCivicPythonHook(getCivicSlot(eIndex, iSlot), true);
 			}
 		}
 
@@ -16015,9 +16357,9 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 
 			if (!isBarbarian())
 			{
-				if (getCivics(eIndex) != NO_CIVIC)
+				if (getCivicSlot(eIndex, iSlot) != NO_CIVIC)
 				{
-					if (getCivics(eIndex) != getInitialCivic(eIndex))	// with ReplacedCivic (changed by this mod)
+					if (getCivicSlot(eIndex, iSlot) != getInitialCivic(eIndex))	// with ReplacedCivic (changed by this mod)
 					{
 						for (iI = 0; iI < MAX_PLAYERS; iI++)
 						{
@@ -16025,18 +16367,22 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 							{
 								if (GET_TEAM(getTeam()).isHasMet(GET_PLAYER((PlayerTypes)iI).getTeam()))
 								{
-									szBuffer = gDLL->getText("TXT_KEY_MISC_PLAYER_ADOPTED_CIVIC", getNameKey(), GC.getCivicInfo(getCivics(eIndex)).getTextKeyWide());
+									szBuffer = gDLL->getText("TXT_KEY_MISC_PLAYER_ADOPTED_CIVIC", getNameKey(), GC.getCivicInfo(getCivicSlot(eIndex, iSlot)).getTextKeyWide());
 									gDLL->getInterfaceIFace()->addMessage(((PlayerTypes)iI), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_CIVIC_ADOPT", MESSAGE_TYPE_MAJOR_EVENT);
 								}
 							}
 						}
 
-						szBuffer = gDLL->getText("TXT_KEY_MISC_PLAYER_ADOPTED_CIVIC", getNameKey(), GC.getCivicInfo(getCivics(eIndex)).getTextKeyWide());
+						szBuffer = gDLL->getText("TXT_KEY_MISC_PLAYER_ADOPTED_CIVIC", getNameKey(), GC.getCivicInfo(getCivicSlot(eIndex, iSlot)).getTextKeyWide());
 						GC.getGameINLINE().addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, getID(), szBuffer);
 					}
 				}
 			}
 		}
+
+		// Civic slots (added by this mod): a trait this civic gave or took away may change the slots
+		m_iCivicChangeDepth--;
+		verifyCivicSlots();
 	}
 }
 
@@ -20181,6 +20527,12 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 			changeNoCivicUpkeepCount(((CivicOptionTypes)iJ), iChange);
 		}
 	}
+
+	// CivicOptionExtraSlots (added by this mod): the civics in the slots the player loses are revoked without anarchy
+	if (iChange < 0)
+	{
+		verifyCivicSlots();
+	}
 }
 
 void CvPlayer::showMissedMessages()
@@ -20764,6 +21116,15 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(MAX_PLAYERS, m_abFriendlyTraitGainedFrom);
 	}
+
+	// Civic slots (uiFlag 16): the slots after slot 0, read above. Older saves have them empty (reset)
+	if (uiFlag > 15)
+	{
+		for (iI = GC.getNumCivicOptionInfos(); iI < getNumCivicEntries(); iI++)
+		{
+			pStream->Read((int*)&m_paeCivics[iI]);
+		}
+	}
 }
 
 //
@@ -20774,7 +21135,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 15;	// 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
+	uint uiFlag = 16;	// 16: the civic slots after slot 0 (m_paeCivics). 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -21200,6 +21561,12 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(m_iRandomBasicTraitTurn);
 	pStream->Write(GC.getNumTraitInfos(), m_paiRandomBasicTrait);
 	pStream->Write(MAX_PLAYERS, m_abFriendlyTraitGainedFrom);
+
+	// Civic slots (uiFlag 16, added by this mod): the slots after slot 0
+	for (iI = GC.getNumCivicOptionInfos(); iI < getNumCivicEntries(); iI++)
+	{
+		pStream->Write(m_paeCivics[iI]);
+	}
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

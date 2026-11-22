@@ -24,7 +24,9 @@ void CyMessageControl::sendUpdateCivics(boost::python::list& iCivics)
 	int *PYiCivics = NULL;		//	do not delete this memory
 	gDLL->getPythonIFace()->putSeqInArray(iCivics.ptr(), &PYiCivics);
 	std::vector<CivicTypes> aiCivics;
-	for (int i = 0; i < GC.getNumCivicOptionInfos(); ++i)
+	// Civic slots (changed by this mod): a list of slot 0 only keeps the other slots (CvNetUpdateCivics)
+	int iNumCivics = std::min((int)PyObject_Length(iCivics.ptr()), CvPlayer::getNumCivicEntries());
+	for (int i = 0; i < iNumCivics; ++i)
 	{
 		aiCivics.push_back((CivicTypes) PYiCivics[i]);
 	}

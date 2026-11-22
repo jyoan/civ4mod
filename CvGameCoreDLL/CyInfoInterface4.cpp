@@ -67,6 +67,7 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getAllCityDefense", &CvTraitInfo::getAllCityDefense, "int ()")
 		.def("getBombardDefense", &CvTraitInfo::getBombardDefense, "int ()")
 		.def("getEspionageDefense", &CvTraitInfo::getEspionageDefense, "int ()")
+		.def("getCivicOptionExtraSlots", &CvTraitInfo::getCivicOptionExtraSlots, "int (int iCivicOption)")
 		.def("getLargestCityHappiness", &CvTraitInfo::getLargestCityHappiness, "int ()")
 		.def("getHappyPerMilitaryUnit", &CvTraitInfo::getHappyPerMilitaryUnit, "int ()")
 		.def("getFoodKept", &CvTraitInfo::getFoodKept, "int ()")

@@ -68,7 +68,6 @@ void CvDLLButtonPopup::OnAltExecute(CvPopup& popup, const PopupReturn& popupRetu
 void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, CvPopupInfo &info)
 {
 	int iExamineCityID;
-	int iI;
 
 	switch (info.getButtonPopupType())
 	{
@@ -358,12 +357,10 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 	case BUTTONPOPUP_CHANGECIVIC:
 		if (pPopupReturn->getButtonClicked() == 0)
 		{
-			std::vector<CivicTypes> aeNewCivics(GC.getNumCivicOptionInfos());
-			for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
-			{
-				aeNewCivics[iI] = GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCivics((CivicOptionTypes)iI);
-			}
-			aeNewCivics[info.getData1()] = ((CivicTypes)(info.getData2()));
+			// Civic slots (changed by this mod): every slot; the new civic goes in slot 0
+			std::vector<CivicTypes> aeNewCivics(CvPlayer::getNumCivicEntries());
+			GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCivicsArray(&aeNewCivics[0]);
+			CvPlayer::addCivicToArray(&aeNewCivics[0], (CivicTypes)(info.getData2()));
 
 			CvMessageControl::getInstance().sendUpdateCivics(aeNewCivics);
 		}
@@ -1561,29 +1558,20 @@ bool CvDLLButtonPopup::launchChooseTechPopup(CvPopup* pPopup, CvPopupInfo &info)
 
 bool CvDLLButtonPopup::launchChangeCivicsPopup(CvPopup* pPopup, CvPopupInfo &info)
 {
-	CivicTypes* paeNewCivics = new CivicTypes[GC.getNumCivicOptionInfos()];
+	CivicTypes* paeNewCivics = new CivicTypes[CvPlayer::getNumCivicEntries()];	// civic slots (changed by this mod)
 	if (NULL == paeNewCivics)
 	{
 		return (false);
 	}
 
-	CivicOptionTypes eCivicOptionType = (CivicOptionTypes)info.getData1();
 	CivicTypes eCivicType = (CivicTypes)info.getData2();
 	bool bValid = false;
 
 	if (eCivicType != NO_CIVIC)
 	{
-		for (int iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
-		{
-			if (iI == eCivicOptionType)
-			{
-				paeNewCivics[iI] = eCivicType;
-			}
-			else
-			{
-				paeNewCivics[iI] = GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCivics((CivicOptionTypes)iI);
-			}
-		}
+		// Civic slots (changed by this mod): every slot; the new civic goes in slot 0
+		GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCivicsArray(paeNewCivics);
+		CvPlayer::addCivicToArray(paeNewCivics, eCivicType);
 
 		if (GET_PLAYER(GC.getGameINLINE().getActivePlayer()).canRevolution(paeNewCivics))
 		{
