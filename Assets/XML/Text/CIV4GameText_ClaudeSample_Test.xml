@@ -1020,4 +1020,13 @@
 		<Spanish>Foment Unhappiness (Test)</Spanish>
 		<Japanese>&#19981;&#28288;&#12434;&#29053;&#12427;&#65288;&#26908;&#35388;&#29992;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROCESS_TEST_ESPIONAGE</Tag>
+		<English>Espionage (Test)</English>
+		<French>Espionage (Test)</French>
+		<German>Espionage (Test)</German>
+		<Italian>Espionage (Test)</Italian>
+		<Spanish>Espionage (Test)</Spanish>
+		<Japanese>&#35548;&#22577;&#65288;&#26908;&#35388;&#29992;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

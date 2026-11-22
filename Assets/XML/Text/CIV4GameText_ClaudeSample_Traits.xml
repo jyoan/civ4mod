@@ -1622,4 +1622,13 @@
 		<Spanish>[ICON_BULLET]Cannot do the espionage missions: </Spanish>
 		<Japanese>[ICON_BULLET]&#20351;&#12360;&#12394;&#12356;&#35548;&#22577;&#20219;&#21209;: </Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_PROCESSES</Tag>
+		<English>[ICON_BULLET]Unique process: </English>
+		<French>[ICON_BULLET]Unique process: </French>
+		<German>[ICON_BULLET]Unique process: </German>
+		<Italian>[ICON_BULLET]Unique process: </Italian>
+		<Spanish>[ICON_BULLET]Unique process: </Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#12398;&#29983;&#29987;: </Japanese>
+	</TEXT>
 </Civ4GameText>

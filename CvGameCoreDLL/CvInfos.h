@@ -4451,6 +4451,7 @@ public:
 	virtual ~CvProcessInfo();
 
 	int getTechPrereq() const;				// Exposed to Python
+	const std::vector<int>& getPrereqOrTraitsVector() const;	// added by this mod
 
 	// Arrays
 
@@ -4462,6 +4463,7 @@ public:
 protected:
 
 	int m_iTechPrereq;
+	std::vector<int> m_aiPrereqOrTraits;	// added by this mod
 
 	// Arrays
 
@@ -7463,8 +7465,8 @@ public:
 	int getCounterespionageNumTurns() const;
 	int getCounterespionageMod() const;
 	int getDifficultyMod() const;
-	int getPrereqTrait() const;	// added by this mod
-	int getDisableTrait() const;	// added by this mod
+	const std::vector<int>& getPrereqOrTraitsVector() const;	// added by this mod
+	const std::vector<int>& getDisableTraitsVector() const;	// added by this mod
 	bool isKillGreatPerson() const;	// added by this mod
 	bool isKidnapGreatPerson() const;	// added by this mod
 
@@ -7506,8 +7508,8 @@ protected:
 	int m_iCounterespionageNumTurns;
 	int m_iCounterespionageMod;
 	int m_iDifficultyMod;
-	int m_iPrereqTrait;	// added by this mod
-	int m_iDisableTrait;	// added by this mod
+	std::vector<int> m_aiPrereqOrTraits;	// added by this mod
+	std::vector<int> m_aiDisableTraits;	// added by this mod
 	bool m_bKillGreatPerson;	// added by this mod
 	bool m_bKidnapGreatPerson;	// added by this mod
 };

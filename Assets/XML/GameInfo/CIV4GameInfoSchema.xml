@@ -106,6 +106,7 @@
 		<element type="Description"/>
 		<element type="Strategy"/>
 		<element type="TechPrereq"/>
+		<element type="PrereqOrTraits" minOccurs="0"/>
 		<element type="ProductionToCommerceModifiers"/>
 		<element type="Button"/>
 	</ElementType>
@@ -1237,8 +1238,9 @@
 	<ElementType name="iPlayerAnarchyCounter" content="textOnly" dt:type="int"/>
 	<ElementType name="iCounterespionageNumTurns" content="textOnly" dt:type="int"/>
 	<ElementType name="iCounterespionageMod" content="textOnly" dt:type="int"/>
-	<ElementType name="PrereqTrait" content="textOnly"/>
-	<ElementType name="DisableTrait" content="textOnly"/>
+	<ElementType name="DisableTraits" content="eltOnly">
+		<element type="TraitType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="bKillGreatPerson" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bKidnapGreatPerson" content="textOnly" dt:type="boolean"/>
 	<ElementType name="EspionageMissionInfo" content="eltOnly">
@@ -1275,8 +1277,8 @@
 		<element type="iPlayerAnarchyCounter"/>
 		<element type="iCounterespionageNumTurns"/>
 		<element type="iCounterespionageMod"/>
-		<element type="PrereqTrait" minOccurs="0"/>
-		<element type="DisableTrait" minOccurs="0"/>
+		<element type="PrereqOrTraits" minOccurs="0"/>
+		<element type="DisableTraits" minOccurs="0"/>
 		<element type="bKillGreatPerson" minOccurs="0"/>
 		<element type="bKidnapGreatPerson" minOccurs="0"/>
 	</ElementType>
