@@ -3073,7 +3073,6 @@
 			<Type>TRAIT_AGE_OF_DISCOVERY</Type>
 			<Description>TXT_KEY_TRAIT_AGE_OF_DISCOVERY</Description>
 			<ShortDescription>TXT_KEY_TRAIT_AGE_OF_DISCOVERY_SHORT</ShortDescription>
-			<Help>TXT_KEY_TRAIT_AGE_OF_DISCOVERY_HELP</Help>
 			<iHealth>0</iHealth>
 			<iHappiness>0</iHappiness>
 			<iMaxAnarchy>-1</iMaxAnarchy>
@@ -3085,9 +3084,28 @@
 			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<iNewWorldCityPopulation>1</iNewWorldCityPopulation>
-			<iOverseasCityPopulation>1</iOverseasCityPopulation>
-			<PyOnCityFounded>[isCoastalCity(pCity) and (isOverseasCity(pCity) or isNewWorldCity(pCity)) and addBuilding(pCity, 'BUILDINGCLASS_LIGHTHOUSE'), isCoastalCity(pCity) and isNewWorldCity(pCity) and addBuilding(pCity, 'BUILDINGCLASS_HARBOR')]</PyOnCityFounded>
+			<ExplorationRewards>
+				<ExplorationReward>
+					<ExplorePlotType>EXPLORE_PLOT_OVERSEAS_OLD_WORLD</ExplorePlotType>
+					<CommerceType>COMMERCE_GOLD</CommerceType>
+					<iPercent>100</iPercent>
+				</ExplorationReward>
+				<ExplorationReward>
+					<ExplorePlotType>EXPLORE_PLOT_OVERSEAS_OLD_WORLD</ExplorePlotType>
+					<CommerceType>COMMERCE_RESEARCH</CommerceType>
+					<iPercent>100</iPercent>
+				</ExplorationReward>
+				<ExplorationReward>
+					<ExplorePlotType>EXPLORE_PLOT_OVERSEAS_NEW_WORLD</ExplorePlotType>
+					<CommerceType>COMMERCE_GOLD</CommerceType>
+					<iPercent>200</iPercent>
+				</ExplorationReward>
+				<ExplorationReward>
+					<ExplorePlotType>EXPLORE_PLOT_OVERSEAS_NEW_WORLD</ExplorePlotType>
+					<CommerceType>COMMERCE_RESEARCH</CommerceType>
+					<iPercent>200</iPercent>
+				</ExplorationReward>
+			</ExplorationRewards>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>
@@ -4676,6 +4694,32 @@
 					<iExtraSlots>1</iExtraSlots>
 				</CivicOptionExtraSlot>
 			</CivicOptionExtraSlots>
+			<ExtraYieldThresholds/>
+			<TradeYieldModifiers/>
+			<CommerceChanges/>
+			<CommerceModifiers/>
+			<FreePromotions/>
+			<FreePromotionUnitCombats/>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_NEW_WORLD_EXPLORATION</Type>
+			<Description>TXT_KEY_TRAIT_NEW_WORLD_EXPLORATION</Description>
+			<ShortDescription>TXT_KEY_TRAIT_NEW_WORLD_EXPLORATION_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_NEW_WORLD_EXPLORATION_HELP</Help>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iMaxAnarchy>-1</iMaxAnarchy>
+			<iUpkeepModifier>0</iUpkeepModifier>
+			<iLevelExperienceModifier>0</iLevelExperienceModifier>
+			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
+			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
+			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
+			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
+			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
+			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
+			<iNewWorldCityPopulation>1</iNewWorldCityPopulation>
+			<iOverseasCityPopulation>1</iOverseasCityPopulation>
+			<PyOnCityFounded>[isCoastalCity(pCity) and (isOverseasCity(pCity) or isNewWorldCity(pCity)) and addBuilding(pCity, 'BUILDINGCLASS_LIGHTHOUSE'), isCoastalCity(pCity) and isNewWorldCity(pCity) and addBuilding(pCity, 'BUILDINGCLASS_HARBOR')]</PyOnCityFounded>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

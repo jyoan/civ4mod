@@ -741,15 +741,6 @@
 		<Japanese>&#33322;</Japanese>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_TRAIT_AGE_OF_DISCOVERY_HELP</Tag>
-		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</English>
-		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</French>
-		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</German>
-		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</Italian>
-		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</Spanish>
-		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#28023;&#22806;&#12363;&#26032;&#19990;&#30028;&#12395;&#24314;&#12390;&#12383;&#27839;&#23736;&#12398;&#37117;&#24066;&#12395;&#28783;&#21488;&#12289;&#26032;&#19990;&#30028;&#12394;&#12425;&#28207;&#12418;&#24314;&#12388;</Japanese>
-	</TEXT>
-	<TEXT>
 		<Tag>TXT_KEY_TRAIT_VOC_HELP</Tag>
 		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a corporation gives 3 of its executives in the headquarters</English>
 		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a corporation gives 3 of its executives in the headquarters</French>
@@ -1747,5 +1738,32 @@
 		<Italian>Code</Italian>
 		<Spanish>Code</Spanish>
 		<Japanese>&#20856;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NEW_WORLD_EXPLORATION</Tag>
+		<English>New World Exploration</English>
+		<French>New World Exploration</French>
+		<German>New World Exploration</German>
+		<Italian>New World Exploration</Italian>
+		<Spanish>New World Exploration</Spanish>
+		<Japanese>&#26032;&#19990;&#30028;&#25506;&#26908;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NEW_WORLD_EXPLORATION_SHORT</Tag>
+		<English>NWE</English>
+		<French>NWE</French>
+		<German>NWE</German>
+		<Italian>NWE</Italian>
+		<Spanish>NWE</Spanish>
+		<Japanese>&#25506;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NEW_WORLD_EXPLORATION_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#28023;&#22806;&#12363;&#26032;&#19990;&#30028;&#12395;&#24314;&#12390;&#12383;&#27839;&#23736;&#12398;&#37117;&#24066;&#12395;&#28783;&#21488;&#12289;&#26032;&#19990;&#30028;&#12394;&#12425;&#28207;&#12418;&#24314;&#12388;</Japanese>
 	</TEXT>
 </Civ4GameText>

@@ -77,7 +77,8 @@ BtS の効果はそのままにして足す。
 | `iCultureRangeChange` | ロシア |
 | `ImprovementYieldChanges` の牧草地、`UnitCombatFreeExperiences` の騎乗、`StartBiasBonuses` の馬 | モンゴル |
 | `iCapitalBuildingProductionModifier` | アウグストゥス |
-| `iOverseasCityPopulation`、`iNewWorldCityPopulation`、艦船への歩哨の昇進 | ポルトガル |
+| `iOverseasCityPopulation`、`iNewWorldCityPopulation` | スペイン |
+| `ExplorationRewards` の海外の旧世界・新世界、金・研究、艦船への歩哨の昇進 | ポルトガル |
 | `bConquestStateReligion`、`ConquestReligionBuildings`、`iConquestBuildingSurviveModifier` | サラディン |
 | `FeatureGrowthChanges` の森 | シッティング・ブル |
 | フリゲートへの `bHiddenNationality` の昇進 | エリザベス |
@@ -157,7 +158,8 @@ BtS の効果はそのままにして足す。
 | モンゴル（文明） | 騎馬の民: 牧草地 食料 +1、騎乗ユニットの経験値 +2。馬のバイアス | `ImprovementYieldChanges`、`UnitCombatFreeExperiences`、`StartBiasBonuses` | 実装済み `TRAIT_HORSE_PEOPLE` |
 | ローマ（文明） | アッピア街道: 自国の領土の道路・鉄道の移動コスト -50%（道路で 2 倍進める） | `iRouteMovementModifierInBorders` | 実装済み `TRAIT_APPIAN_WAY` |
 | アウグストゥス | パクス・ロマーナ: 首都にある建物を他の都市で建てるとき生産 +50%（2026-11-17 にローマの文明志向から移した） | `iCapitalBuildingProductionModifier` | 実装済み `TRAIT_PAX_ROMANA` |
-| ポルトガル（文明） | 大航海時代: 海外に建てた都市の人口 +1、新世界に建てた都市の人口 +1（重なる）。そのうち沿岸の都市には灯台、新世界なら港も。艦船に歩哨 | `iOverseasCityPopulation`、`iNewWorldCityPopulation`、`PyOnCityFounded`、`FreePromotionSets`（`PROMOTION_SENTRY`） | 実装済み `TRAIT_AGE_OF_DISCOVERY` |
+| ポルトガル（文明） | 大航海時代: そのターンに初めて見えた海外の陸地 1 タイルにつき、旧世界なら金 +1・研究 +1、新世界なら金 +2・研究 +2（ターンの終わりにまとめて。端数は持ち越し）。艦船に歩哨（2026-11-22 に作り直した。歩哨のほかの前の内容はスペインへ移した。地図によって弱く、外洋に出られるのも遅いので数値は大きめ。数値は仮） | `ExplorationRewards`（`EXPLORE_PLOT_OVERSEAS_OLD_WORLD` 金・研究 100、`EXPLORE_PLOT_OVERSEAS_NEW_WORLD` 金・研究 200）、`FreePromotionSets`（`PROMOTION_SENTRY`） | 実装済み `TRAIT_AGE_OF_DISCOVERY` |
+| スペイン（文明） | 新世界探検: 海外に建てた都市の人口 +1、新世界に建てた都市の人口 +1（重なる）。そのうち沿岸の都市には灯台、新世界なら港も（2026-11-22 にポルトガルの前の志向「大航海時代」を移して改名。艦船の歩哨はポルトガルに残した） | `iOverseasCityPopulation`、`iNewWorldCityPopulation`、`PyOnCityFounded` | 実装済み `TRAIT_NEW_WORLD_EXPLORATION` |
 | シッティング・ブル | 森を育む: 領土の森が広がりやすい | `FeatureGrowthChanges` | 実装済み `TRAIT_FOREST_KEEPER` |
 | エリザベス | 私掠免状: フリゲートが国籍を隠す | 昇進の `bHiddenNationality` | 実装済み `TRAIT_LETTERS_OF_MARQUE` |
 | チャーチル | 最も輝ける時: 戦時は全都市の生産 +15% | `bAtWar` で `TRAIT_FINEST_HOUR_WAR`（`YieldModifiers`） | 実装済み `TRAIT_FINEST_HOUR` |
@@ -213,7 +215,7 @@ BtS の効果はそのままにして足す。
 - 3 回目（2026-11-15）の仮の数値: 小屋の成長 +50%、遠い交易路 +50%、アンコールは文化レベル「洗練」から、黄金時代の戦闘力 +15%、沿岸・川のバイアス +100%
 - 4 回目（2026-11-15）の仮の数値: ワンガラ商人の移動力 3（大商人は 2）、交易任務の金 1.5 倍（基本 750・倍率 300。大商人は 500・200）
 - ギリシャの前の案（都市の間隔 `iMinCityRangeChange`）は空いた。ペリクレスの前の案（芸術家 文化 +2）はギリシャと数値の違いしかなくなったので、別の案にする（黄金時代の案など）
-- カルタゴ・スペイン（ポルトガルと同じタグになった）とユスティニアヌス1世（サラディンと同じタグになった）は別の案を考える
+- カルタゴ（2026-11-19 に傭兵）・スペイン（2026-11-22 に新世界探検）とユスティニアヌス1世（サラディンと同じタグになった）は別の案を考える
 - 数値はユーザーが決めていないものを仮に入れた（変えてよい）: 湖のタイル 食料 +1・生産 +1、花の戦争 25% で労働者、革命 黄金期は無政府期間の 200%・無政府期間中の戦闘力 +25%、略奪 1 回で HP 25% 回復、開始位置のバイアス 森・ジャングル 1 タイルにつき +10%
 - これからは、確定したものをその都度 XML に入れる（2026-11-15 にユーザーの指示）
 - 2026-11-17: ローマの文明志向をアッピア街道に替え、パクス・ロマーナはアウグストゥスに移した（ユーザーの管理票のメモから）。仮の数値: 道路の移動コスト -50%。移す先の指導者はユーザーが指定していないので、パクス・ロマーナを始めたアウグストゥスにした
