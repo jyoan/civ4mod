@@ -5171,6 +5171,41 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 	}
 }
 
+// The part of the trait help for PrereqTrait and DisableTrait of the espionage missions (added by this mod). The missions
+// are loaded when a game is launched: none on the screens before (GC.getNumEspionageMissionInfos() is 0)
+void CvGameTextMgr::parseTraitEspionageMissions(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	CvWString szTempBuffer;
+	bool bFirst;
+	int iI;
+
+	// "Espionage missions: Assassinate a Great Person"
+	bFirst = true;
+	for (iI = 0; iI < GC.getNumEspionageMissionInfos(); iI++)
+	{
+		CvEspionageMissionInfo& kMission = GC.getEspionageMissionInfo((EspionageMissionTypes)iI);
+		if (kMission.getPrereqTrait() == eTrait && kMission.getDisableTrait() != eTrait && kMission.getCost() != -1)
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_ENABLED_ESPIONAGE_MISSIONS").c_str());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), kMission.getDescription(), L", ", bFirst);
+			bFirst = false;
+		}
+	}
+
+	// "Cannot do the espionage missions: Poison Water"
+	bFirst = true;
+	for (iI = 0; iI < GC.getNumEspionageMissionInfos(); iI++)
+	{
+		CvEspionageMissionInfo& kMission = GC.getEspionageMissionInfo((EspionageMissionTypes)iI);
+		if (kMission.getDisableTrait() == eTrait && kMission.getCost() != -1)
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_DISABLED_ESPIONAGE_MISSIONS").c_str());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), kMission.getDescription(), L", ", bFirst);
+			bFirst = false;
+		}
+	}
+}
+
 void CvGameTextMgr::parseTraitUniqueImprovements(CvWStringBuffer& szHelpString, TraitTypes eTrait)
 {
 	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
@@ -5426,6 +5461,7 @@ void CvGameTextMgr::parseTraitsWithTurns(CvWStringBuffer &szHelpString, TraitTyp
 		parseTraitMiseryAndLakeEffects(szHelpString, eTrait);
 		parseTraitUnitAndCityEffects(szHelpString, eTrait);
 		parseTraitRevealAndStartEffects(szHelpString, eTrait);
+		parseTraitEspionageMissions(szHelpString, eTrait);
 		parseTraitCounterpartEffects(szHelpString, eTrait);
 		parseTraitUniqueImprovements(szHelpString, eTrait);
 		parseTraitFeatureAndObsolescenceEffects(szHelpString, eTrait, eCivilization);
@@ -18387,6 +18423,34 @@ void CvGameTextMgr::setEspionageCostHelp(CvWStringBuffer &szBuffer, EspionageMis
 
 				szBuffer.append(gDLL->getText("TXT_KEY_ESPIONAGE_HELP_INSERT_CULTURE", pCity->getNameKey(), iCultureAmount, kMission.getCityInsertCultureAmountFactor()));
 				szBuffer.append(NEWLINE);
+			}
+		}
+	}
+
+	// bKillGreatPerson and bKidnapGreatPerson (added by this mod)
+	if (kMission.isKillGreatPerson() || kMission.isKidnapGreatPerson())
+	{
+		if (NULL != pPlot)
+		{
+			CvCity* pCity = pPlot->getPlotCity();
+			SpecialistTypes eSpecialist = kPlayer.getSpyGreatPersonTarget(pCity, iExtraData);
+
+			if (NULL != pCity && NO_SPECIALIST != eSpecialist)
+			{
+				if (kMission.isKidnapGreatPerson())
+				{
+					CvCity* pCapital = kPlayer.getCapitalCity();
+					if (NULL != pCapital)
+					{
+						szBuffer.append(gDLL->getText("TXT_KEY_ESPIONAGE_HELP_KIDNAP_GREAT_PERSON", GC.getSpecialistInfo(eSpecialist).getTextKeyWide(), pCity->getNameKey(), pCapital->getNameKey()));
+						szBuffer.append(NEWLINE);
+					}
+				}
+				else
+				{
+					szBuffer.append(gDLL->getText("TXT_KEY_ESPIONAGE_HELP_KILL_GREAT_PERSON", GC.getSpecialistInfo(eSpecialist).getTextKeyWide(), pCity->getNameKey()));
+					szBuffer.append(NEWLINE);
+				}
 			}
 		}
 	}

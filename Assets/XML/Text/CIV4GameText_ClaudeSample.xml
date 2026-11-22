@@ -1682,4 +1682,76 @@
 		<Spanish>%d1 units have rallied in your cities!</Spanish>
 		<Japanese>&#37117;&#24066;&#12395; %d1 &#20307;&#12398;&#20853;&#12364;&#38598;&#12414;&#12426;&#12414;&#12375;&#12383;&#65281;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_KILL_GREAT_PERSON</Tag>
+		<English>Assassinate a Great Person</English>
+		<French>Assassinate a Great Person</French>
+		<German>Assassinate a Great Person</German>
+		<Italian>Assassinate a Great Person</Italian>
+		<Spanish>Assassinate a Great Person</Spanish>
+		<Japanese>&#35201;&#20154;&#12398;&#27578;&#23475;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_KIDNAP_GREAT_PERSON</Tag>
+		<English>Kidnap a Great Person</English>
+		<French>Kidnap a Great Person</French>
+		<German>Kidnap a Great Person</German>
+		<Italian>Kidnap a Great Person</Italian>
+		<Spanish>Kidnap a Great Person</Spanish>
+		<Japanese>&#35201;&#20154;&#12398;&#35480;&#25296;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_GREAT_PERSON_TARGET_COST</Tag>
+		<English>%s1_GreatPerson x%d2 (%d3[ICON_ESPIONAGE])</English>
+		<French>%s1_GreatPerson x%d2 (%d3[ICON_ESPIONAGE])</French>
+		<German>%s1_GreatPerson x%d2 (%d3[ICON_ESPIONAGE])</German>
+		<Italian>%s1_GreatPerson x%d2 (%d3[ICON_ESPIONAGE])</Italian>
+		<Spanish>%s1_GreatPerson x%d2 (%d3[ICON_ESPIONAGE])</Spanish>
+		<Japanese>%s1_GreatPerson x%d2 (%d3[ICON_ESPIONAGE])</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_HELP_KILL_GREAT_PERSON</Tag>
+		<English>Assassinate a %s1_GreatPerson settled in %s2_city</English>
+		<French>Assassinate a %s1_GreatPerson settled in %s2_city</French>
+		<German>Assassinate a %s1_GreatPerson settled in %s2_city</German>
+		<Italian>Assassinate a %s1_GreatPerson settled in %s2_city</Italian>
+		<Spanish>Assassinate a %s1_GreatPerson settled in %s2_city</Spanish>
+		<Japanese>%s2_city&#12395;&#23450;&#20303;&#12375;&#12383;%s1_GreatPerson&#12434;&#27578;&#23475;&#12375;&#12414;&#12377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_HELP_KIDNAP_GREAT_PERSON</Tag>
+		<English>Kidnap a %s1_GreatPerson settled in %s2_city and bring them to %s3_capital</English>
+		<French>Kidnap a %s1_GreatPerson settled in %s2_city and bring them to %s3_capital</French>
+		<German>Kidnap a %s1_GreatPerson settled in %s2_city and bring them to %s3_capital</German>
+		<Italian>Kidnap a %s1_GreatPerson settled in %s2_city and bring them to %s3_capital</Italian>
+		<Spanish>Kidnap a %s1_GreatPerson settled in %s2_city and bring them to %s3_capital</Spanish>
+		<Japanese>%s2_city&#12395;&#23450;&#20303;&#12375;&#12383;%s1_GreatPerson&#12434;&#35480;&#25296;&#12375;&#12289;%s3_capital&#12395;&#36899;&#12428;&#24112;&#12426;&#12414;&#12377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_TARGET_GREAT_PERSON_KILLED</Tag>
+		<English>A %s1_GreatPerson settled in %s2_CityName was assassinated by enemy infiltrators!</English>
+		<French>A %s1_GreatPerson settled in %s2_CityName was assassinated by enemy infiltrators!</French>
+		<German>A %s1_GreatPerson settled in %s2_CityName was assassinated by enemy infiltrators!</German>
+		<Italian>A %s1_GreatPerson settled in %s2_CityName was assassinated by enemy infiltrators!</Italian>
+		<Spanish>A %s1_GreatPerson settled in %s2_CityName was assassinated by enemy infiltrators!</Spanish>
+		<Japanese>%s2_CityName&#12395;&#23450;&#20303;&#12375;&#12383;%s1_GreatPerson&#12364;&#25973;&#12473;&#12497;&#12452;&#12395;&#12424;&#12387;&#12390;&#27578;&#23475;&#12373;&#12428;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_TARGET_GREAT_PERSON_KIDNAPPED</Tag>
+		<English>A %s1_GreatPerson settled in %s2_CityName was kidnapped by enemy infiltrators!</English>
+		<French>A %s1_GreatPerson settled in %s2_CityName was kidnapped by enemy infiltrators!</French>
+		<German>A %s1_GreatPerson settled in %s2_CityName was kidnapped by enemy infiltrators!</German>
+		<Italian>A %s1_GreatPerson settled in %s2_CityName was kidnapped by enemy infiltrators!</Italian>
+		<Spanish>A %s1_GreatPerson settled in %s2_CityName was kidnapped by enemy infiltrators!</Spanish>
+		<Japanese>%s2_CityName&#12395;&#23450;&#20303;&#12375;&#12383;%s1_GreatPerson&#12364;&#25973;&#12473;&#12497;&#12452;&#12395;&#12424;&#12387;&#12390;&#35480;&#25296;&#12373;&#12428;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_GREAT_PERSON_KIDNAPPED_TO</Tag>
+		<English>Our spy has brought a %s1_Unit to %s2_CityName!</English>
+		<French>Our spy has brought a %s1_Unit to %s2_CityName!</French>
+		<German>Our spy has brought a %s1_Unit to %s2_CityName!</German>
+		<Italian>Our spy has brought a %s1_Unit to %s2_CityName!</Italian>
+		<Spanish>Our spy has brought a %s1_Unit to %s2_CityName!</Spanish>
+		<Japanese>&#12473;&#12497;&#12452;&#12364;%s1_Unit&#12434;%s2_CityName&#12395;&#36899;&#12428;&#24112;&#12426;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
 </Civ4GameText>

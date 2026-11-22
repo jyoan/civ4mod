@@ -259,6 +259,7 @@ bool isWorldUnitClass(UnitClassTypes eUnitClass);											// Exposed to Python
 bool isTeamUnitClass(UnitClassTypes eUnitClass);											// Exposed to Python
 bool isNationalUnitClass(UnitClassTypes eUnitClass);									// Exposed to Python
 bool isLimitedUnitClass(UnitClassTypes eUnitClass);										// Exposed to Python
+UnitClassTypes getGreatPersonUnitClass(SpecialistTypes eSpecialist);	// added by this mod
 
 bool isWorldWonderClass(BuildingClassTypes eBuildingClass);						// Exposed to Python
 bool isTeamWonderClass(BuildingClassTypes eBuildingClass);						// Exposed to Python

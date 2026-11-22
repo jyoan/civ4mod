@@ -523,6 +523,30 @@ bool isLimitedUnitClass(UnitClassTypes eUnitClass)
 	return (isWorldUnitClass(eUnitClass) || isTeamUnitClass(eUnitClass) || isNationalUnitClass(eUnitClass));
 }
 
+// The unit class of the great person that settles as eSpecialist: the first class whose default unit has eSpecialist in
+// GreatPeoples. NO_UNITCLASS when no great person settles as it (added by this mod: bKillGreatPerson and
+// bKidnapGreatPerson of the espionage missions)
+UnitClassTypes getGreatPersonUnitClass(SpecialistTypes eSpecialist)
+{
+	int iI;
+
+	if (eSpecialist == NO_SPECIALIST)
+	{
+		return NO_UNITCLASS;
+	}
+
+	for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
+	{
+		UnitTypes eUnit = (UnitTypes)GC.getUnitClassInfo((UnitClassTypes)iI).getDefaultUnitIndex();
+		if (eUnit != NO_UNIT && GC.getUnitInfo(eUnit).getGreatPeoples(eSpecialist))
+		{
+			return (UnitClassTypes)iI;
+		}
+	}
+
+	return NO_UNITCLASS;
+}
+
 bool isWorldWonderClass(BuildingClassTypes eBuildingClass)
 {
 	return (GC.getBuildingClassInfo(eBuildingClass).getMaxGlobalInstances() != -1);

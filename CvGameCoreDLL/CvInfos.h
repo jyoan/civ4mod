@@ -7463,6 +7463,10 @@ public:
 	int getCounterespionageNumTurns() const;
 	int getCounterespionageMod() const;
 	int getDifficultyMod() const;
+	int getPrereqTrait() const;	// added by this mod
+	int getDisableTrait() const;	// added by this mod
+	bool isKillGreatPerson() const;	// added by this mod
+	bool isKidnapGreatPerson() const;	// added by this mod
 
 	bool read(CvXMLLoadUtility* pXML);
 
@@ -7502,6 +7506,10 @@ protected:
 	int m_iCounterespionageNumTurns;
 	int m_iCounterespionageMod;
 	int m_iDifficultyMod;
+	int m_iPrereqTrait;	// added by this mod
+	int m_iDisableTrait;	// added by this mod
+	bool m_bKillGreatPerson;	// added by this mod
+	bool m_bKidnapGreatPerson;	// added by this mod
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -17358,6 +17358,12 @@ int CvPlayer::getEspionageMissionBaseCost(EspionageMissionTypes eMission, Player
 		return -1;
 	}
 
+	// PrereqTrait and DisableTrait of the mission (added by this mod)
+	if (!isEspionageMissionAllowed(eMission))
+	{
+		return -1;
+	}
+
 	CvCity* pCity = NULL;
 	if (NULL != pPlot)
 	{
@@ -17682,6 +17688,20 @@ int CvPlayer::getEspionageMissionBaseCost(EspionageMissionTypes eMission, Player
 			}
 		}
 	}
+	else if (kMission.isKillGreatPerson() || kMission.isKidnapGreatPerson())
+	{
+		// bKillGreatPerson and bKidnapGreatPerson (added by this mod): a settled great person of the city (iExtraData: the
+		// specialist, -1 for the first one). Kidnapping needs a capital, where the unit appears. The cost: iCost, as the
+		// missions without a cost factor
+		SpecialistTypes eSpecialist = getSpyGreatPersonTarget(pCity, iExtraData);
+		if (NO_SPECIALIST != eSpecialist)
+		{
+			if (!kMission.isKidnapGreatPerson() || (getCapitalCity() != NULL && getGreatPersonUnit(eSpecialist) != NO_UNIT))
+			{
+				iMissionCost = (iBaseMissionCost * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getResearchPercent()) / 100;
+			}
+		}
+	}
 	else if (kMission.getCityPoisonWaterCounter() > 0)
 	{
 		FAssert(NULL != pCity);
@@ -17925,6 +17945,42 @@ bool CvPlayer::doEspionageMission(EspionageMissionTypes eMission, PlayerTypes eT
 
 				bSomethingHappened = true;
 				bShowExplosion = true;
+			}
+		}
+	}
+
+	//////////////////////////////
+	// Kill or kidnap a settled great person (added by this mod)
+
+	if (kMission.isKillGreatPerson() || kMission.isKidnapGreatPerson())
+	{
+		if (NULL != pPlot)
+		{
+			CvCity* pCity = pPlot->getPlotCity();
+			SpecialistTypes eSpecialist = getSpyGreatPersonTarget(pCity, iExtraData);
+
+			if (NULL != pCity && NO_SPECIALIST != eSpecialist)
+			{
+				CvCity* pCapital = getCapitalCity();
+				UnitTypes eUnit = getGreatPersonUnit(eSpecialist);
+
+				if (kMission.isKidnapGreatPerson())
+				{
+					if (NULL != pCapital && NO_UNIT != eUnit)
+					{
+						szBuffer = gDLL->getText("TXT_KEY_ESPIONAGE_TARGET_GREAT_PERSON_KIDNAPPED", GC.getSpecialistInfo(eSpecialist).getTextKeyWide(), pCity->getNameKey()).GetCString();
+						pCity->changeFreeSpecialistCount(eSpecialist, -1);
+						initUnit(eUnit, pCapital->getX_INLINE(), pCapital->getY_INLINE(), NO_UNITAI);
+						gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(), gDLL->getText("TXT_KEY_ESPIONAGE_GREAT_PERSON_KIDNAPPED_TO", GC.getUnitInfo(eUnit).getTextKeyWide(), pCapital->getNameKey()), "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, GC.getUnitInfo(eUnit).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pCapital->getX_INLINE(), pCapital->getY_INLINE());
+						bSomethingHappened = true;
+					}
+				}
+				else
+				{
+					szBuffer = gDLL->getText("TXT_KEY_ESPIONAGE_TARGET_GREAT_PERSON_KILLED", GC.getSpecialistInfo(eSpecialist).getTextKeyWide(), pCity->getNameKey()).GetCString();
+					pCity->changeFreeSpecialistCount(eSpecialist, -1);
+					bSomethingHappened = true;
+				}
 			}
 		}
 	}
@@ -25008,6 +25064,78 @@ bool CvPlayer::canSpyDestroyBuilding(PlayerTypes eTarget, BuildingTypes eBuildin
 	}
 
 	return true;
+}
+
+// PrereqTrait and DisableTrait of the espionage missions (added by this mod): a mission with PrereqTrait needs the trait,
+// a mission with DisableTrait is off for a player with the trait
+bool CvPlayer::isEspionageMissionAllowed(EspionageMissionTypes eMission) const
+{
+	CvEspionageMissionInfo& kMission = GC.getEspionageMissionInfo(eMission);
+
+	if (getLeaderType() == NO_LEADER)
+	{
+		return (kMission.getPrereqTrait() == NO_TRAIT);
+	}
+
+	if (kMission.getPrereqTrait() != NO_TRAIT && !hasTrait((TraitTypes)kMission.getPrereqTrait()))
+	{
+		return false;
+	}
+
+	if (kMission.getDisableTrait() != NO_TRAIT && hasTrait((TraitTypes)kMission.getDisableTrait()))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+// The settled great person that bKillGreatPerson or bKidnapGreatPerson targets in pCity (added by this mod): iExtraData
+// is the specialist the player chose, -1 for the first one. Settled great persons are the free specialists a great
+// person unit settles as, without those of the buildings (CvCity::getAddedFreeSpecialistCount). NO_SPECIALIST when
+// there is none
+SpecialistTypes CvPlayer::getSpyGreatPersonTarget(const CvCity* pCity, int iExtraData) const
+{
+	int iI;
+
+	if (NULL == pCity)
+	{
+		return NO_SPECIALIST;
+	}
+
+	if (iExtraData >= 0)
+	{
+		if (iExtraData < GC.getNumSpecialistInfos() && ::getGreatPersonUnitClass((SpecialistTypes)iExtraData) != NO_UNITCLASS
+			&& pCity->getAddedFreeSpecialistCount((SpecialistTypes)iExtraData) > 0)
+		{
+			return (SpecialistTypes)iExtraData;
+		}
+		return NO_SPECIALIST;
+	}
+
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
+	{
+		if (::getGreatPersonUnitClass((SpecialistTypes)iI) != NO_UNITCLASS && pCity->getAddedFreeSpecialistCount((SpecialistTypes)iI) > 0)
+		{
+			return (SpecialistTypes)iI;
+		}
+	}
+
+	return NO_SPECIALIST;
+}
+
+// The great person unit of this player that settles as eSpecialist (added by this mod: bKidnapGreatPerson). The unique
+// units of the civilization and the traits count. NO_UNIT when there is none
+UnitTypes CvPlayer::getGreatPersonUnit(SpecialistTypes eSpecialist) const
+{
+	UnitClassTypes eUnitClass = ::getGreatPersonUnitClass(eSpecialist);
+
+	if (eUnitClass == NO_UNITCLASS)
+	{
+		return NO_UNIT;
+	}
+
+	return (UnitTypes)getCivilizationUnit(eUnitClass);
 }
 
 bool CvPlayer::canSpyDestroyProject(PlayerTypes eTarget, ProjectTypes eProject) const
