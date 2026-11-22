@@ -17,6 +17,9 @@
 ##                     loses the city by conquest, trade or culture. A conquered city is razed, if it is, only afterwards,
 ##                     so this is also the hook for a razed city, e.g.
 ##                     bConquest and createPartisans(pPlayer, pCity, 2 + iPopulation, iCultureLevel)
+##   PyOnBuildingBuilt pPlayer, eTrait, pCity, eBuilding: after a city of the player completes the building by production
+##                     (the same buildings as PyOnBuilt of CIV4BuildingInfos.xml: not the free ones), e.g.
+##                     isBuildingClassIn(eBuilding, ['BUILDINGCLASS_GRANARY']) and pCity.changePopulation(1)
 ##   PyOnGained        pPlayer, eTrait: when the player gains this trait during the game (conditions of
 ##                     ConditionalFreeTraits, FreeTraits of civics, buildings and techs, temporary traits, Python).
 ##                     Not for the traits the player has when the game starts
@@ -57,6 +60,10 @@ def onCorporationFounded(argsList):
 def onCityLost(argsList):
 	pPlayer, eTrait, pCity, iNewOwner, bConquest, bTrade, iPopulation, iCultureLevel = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnCityLost())
+
+def onBuildingBuilt(argsList):
+	pPlayer, eTrait, pCity, eBuilding = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnBuildingBuilt())
 
 def onGained(argsList):
 	pPlayer, eTrait = argsList

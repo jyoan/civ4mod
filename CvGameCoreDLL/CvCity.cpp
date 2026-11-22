@@ -12631,6 +12631,8 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			{
 				doBuildingPythonHook(eConstructBuilding, true);
 			}
+			// PyOnBuildingBuilt of the traits of the owner (added by this mod): the same buildings as PyOnBuilt
+			GET_PLAYER(getOwnerINLINE()).doTraitPythonHook(TRAIT_PYHOOK_BUILDING_BUILT, this, NO_PLAYER, false, false, NO_CORPORATION, 0, NO_CULTURELEVEL, eConstructBuilding);
 
 			CvEventReporter::getInstance().buildingBuilt(this, eConstructBuilding);
 		}

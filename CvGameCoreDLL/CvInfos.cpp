@@ -21891,6 +21891,11 @@ const TCHAR* CvTraitInfo::getPyOnCityLost() const
 	return m_aszPythonHook[TRAIT_PYHOOK_CITY_LOST];
 }
 
+const TCHAR* CvTraitInfo::getPyOnBuildingBuilt() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_BUILDING_BUILT];
+}
+
 const TCHAR* CvTraitInfo::getPyOnGained() const
 {
 	return m_aszPythonHook[TRAIT_PYHOOK_GAINED];
@@ -22901,6 +22906,7 @@ void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_ACQUIRED], "PyOnCityAcquired");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CORPORATION_FOUNDED], "PyOnCorporationFounded");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CITY_LOST], "PyOnCityLost");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_BUILDING_BUILT], "PyOnBuildingBuilt");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_GAINED], "PyOnGained");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_LOST], "PyOnLost");
 }

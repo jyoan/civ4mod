@@ -11,6 +11,7 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 {
 	kTraitInfo
 		.def("getPyOnCityLost", &CvTraitInfo::getPyOnCityLost, "string ()")
+		.def("getPyOnBuildingBuilt", &CvTraitInfo::getPyOnBuildingBuilt, "string ()")
 		.def("isBarbarianVision", &CvTraitInfo::isBarbarianVision, "bool ()")
 		.def("isStackCityDefense", &CvTraitInfo::isStackCityDefense, "bool ()")
 		.def("isRevealWonderProduction", &CvTraitInfo::isRevealWonderProduction, "bool ()")
