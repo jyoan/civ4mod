@@ -1002,4 +1002,22 @@
 		<Spanish>Test Leader (Sea)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#25351;&#23566;&#32773;&#65288;&#28023;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_TEST_CITY_POISON_WATER</Tag>
+		<English>Poison Water (Test)</English>
+		<French>Poison Water (Test)</French>
+		<German>Poison Water (Test)</German>
+		<Italian>Poison Water (Test)</Italian>
+		<Spanish>Poison Water (Test)</Spanish>
+		<Japanese>&#27700;&#28304;&#12408;&#12398;&#27602;&#28151;&#20837;&#65288;&#26908;&#35388;&#29992;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_TEST_CITY_UNHAPPINESS</Tag>
+		<English>Foment Unhappiness (Test)</English>
+		<French>Foment Unhappiness (Test)</French>
+		<German>Foment Unhappiness (Test)</German>
+		<Italian>Foment Unhappiness (Test)</Italian>
+		<Spanish>Foment Unhappiness (Test)</Spanish>
+		<Japanese>&#19981;&#28288;&#12434;&#29053;&#12427;&#65288;&#26908;&#35388;&#29992;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

@@ -29737,7 +29737,11 @@ bool CvEventInfo::readPass2(CvXMLLoadUtility* pXML)
 //  PURPOSE :   Default constructor
 //
 //------------------------------------------------------------------------------------------------------
-CvEspionageMissionInfo::CvEspionageMissionInfo()
+CvEspionageMissionInfo::CvEspionageMissionInfo() :
+m_iPrereqTrait(NO_TRAIT),
+m_iDisableTrait(NO_TRAIT),
+m_bKillGreatPerson(false),
+m_bKidnapGreatPerson(false)
 {
 }
 
@@ -29907,6 +29911,33 @@ int CvEspionageMissionInfo::getDifficultyMod() const
 	return m_iDifficultyMod;
 }
 
+// PrereqTrait (added by this mod): only the players with the trait can do the mission (CvPlayer::isEspionageMissionAllowed)
+int CvEspionageMissionInfo::getPrereqTrait() const
+{
+	return m_iPrereqTrait;
+}
+
+// DisableTrait (added by this mod): the players with the trait cannot do the mission. With PrereqTrait on a stronger
+// copy of a mission, a trait replaces the mission (CvPlayer::isEspionageMissionAllowed)
+int CvEspionageMissionInfo::getDisableTrait() const
+{
+	return m_iDisableTrait;
+}
+
+// bKillGreatPerson (added by this mod): removes a settled great person (a free specialist of a great person) of the
+// city. Two phases: the player chooses the type, as the buildings of ESPIONAGEMISSION_DESTROY_BUILDING
+bool CvEspionageMissionInfo::isKillGreatPerson() const
+{
+	return m_bKillGreatPerson;
+}
+
+// bKidnapGreatPerson (added by this mod): as bKillGreatPerson, and the great person unit appears in the capital of the
+// player who does the mission
+bool CvEspionageMissionInfo::isKidnapGreatPerson() const
+{
+	return m_bKidnapGreatPerson;
+}
+
 bool CvEspionageMissionInfo::read(CvXMLLoadUtility* pXML)
 {
 	CvString szTextVal;
@@ -29950,6 +29981,17 @@ bool CvEspionageMissionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCounterespionageNumTurns, "iCounterespionageNumTurns");
 	pXML->GetChildXmlValByName(&m_iCounterespionageMod, "iCounterespionageMod");
 	pXML->GetChildXmlValByName(&m_iDifficultyMod, "iDifficultyMod");
+	// Added by this mod. The traits are loaded before the espionage missions (LoadPostMenuGlobals)
+	{
+		CvString szPrereqTrait;
+		CvString szDisableTrait;
+		pXML->GetChildXmlValByName(szPrereqTrait, "PrereqTrait");
+		m_iPrereqTrait = szPrereqTrait.empty() ? NO_TRAIT : pXML->FindInInfoClass(szPrereqTrait);
+		pXML->GetChildXmlValByName(szDisableTrait, "DisableTrait");
+		m_iDisableTrait = szDisableTrait.empty() ? NO_TRAIT : pXML->FindInInfoClass(szDisableTrait);
+	}
+	pXML->GetChildXmlValByName(&m_bKillGreatPerson, "bKillGreatPerson");
+	pXML->GetChildXmlValByName(&m_bKidnapGreatPerson, "bKidnapGreatPerson");
 
 	return true;
 }

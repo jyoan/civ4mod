@@ -182,6 +182,7 @@ public:
 	void parseTraitMiseryAndLakeEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitUnitAndCityEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
+	void parseTraitEspionageMissions(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitUniqueImprovements(CvWStringBuffer& szHelpString, TraitTypes eTrait);	// added by this mod
 	void parseTraitFeatureAndObsolescenceEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait, CivilizationTypes eCivilization);	// added by this mod

@@ -2126,6 +2126,16 @@ bool CyPlayer::isFriendlyTraitGainedFrom(int /*PlayerTypes*/ ePlayer)
 	return m_pPlayer ? m_pPlayer->isFriendlyTraitGainedFrom((PlayerTypes)ePlayer) : false;
 }
 
+bool CyPlayer::isEspionageMissionAllowed(int /*EspionageMissionTypes*/ eMission)
+{
+	return m_pPlayer ? m_pPlayer->isEspionageMissionAllowed((EspionageMissionTypes)eMission) : false;
+}
+
+int CyPlayer::getGreatPersonUnit(int /*SpecialistTypes*/ eSpecialist)
+{
+	return m_pPlayer ? (int)m_pPlayer->getGreatPersonUnit((SpecialistTypes)eSpecialist) : (int)NO_UNIT;
+}
+
 void CyPlayer::setTraitTurns(int /*TraitTypes*/ eTrait, int iTurns)
 {
 	if (m_pPlayer)

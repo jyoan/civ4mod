@@ -1604,4 +1604,22 @@
 		<Spanish>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on the water without ships (no start bias)</Spanish>
 		<Japanese>[ICON_BULLET]&#22806;&#27915;&#65288;&#12394;&#12369;&#12428;&#12400;&#36817;&#28023;&#65289;&#12391;&#12289;&#21021;&#26399;&#12518;&#12491;&#12483;&#12488;&#12364;&#33337;&#12394;&#12375;&#12391;&#28023;&#19978;&#12395;&#12356;&#12427;&#29366;&#24907;&#12391;&#38283;&#22987;&#12377;&#12427;&#65288;&#38283;&#22987;&#20301;&#32622;&#12398;&#22909;&#12415;&#12399;&#28961;&#21177;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ENABLED_ESPIONAGE_MISSIONS</Tag>
+		<English>[ICON_BULLET]Espionage missions: </English>
+		<French>[ICON_BULLET]Espionage missions: </French>
+		<German>[ICON_BULLET]Espionage missions: </German>
+		<Italian>[ICON_BULLET]Espionage missions: </Italian>
+		<Spanish>[ICON_BULLET]Espionage missions: </Spanish>
+		<Japanese>[ICON_BULLET]&#20351;&#12360;&#12427;&#35548;&#22577;&#20219;&#21209;: </Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DISABLED_ESPIONAGE_MISSIONS</Tag>
+		<English>[ICON_BULLET]Cannot do the espionage missions: </English>
+		<French>[ICON_BULLET]Cannot do the espionage missions: </French>
+		<German>[ICON_BULLET]Cannot do the espionage missions: </German>
+		<Italian>[ICON_BULLET]Cannot do the espionage missions: </Italian>
+		<Spanish>[ICON_BULLET]Cannot do the espionage missions: </Spanish>
+		<Japanese>[ICON_BULLET]&#20351;&#12360;&#12394;&#12356;&#35548;&#22577;&#20219;&#21209;: </Japanese>
+	</TEXT>
 </Civ4GameText>

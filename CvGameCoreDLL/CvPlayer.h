@@ -540,6 +540,10 @@ public:
 	bool canSpyBribeUnit(PlayerTypes eTarget, CvUnit& kUnit) const;
 	bool canSpyDestroyBuilding(PlayerTypes eTarget, BuildingTypes eBuilding) const;
 	bool canSpyDestroyProject(PlayerTypes eTarget, ProjectTypes eProject) const;
+	// Espionage (added by this mod)
+	bool isEspionageMissionAllowed(EspionageMissionTypes eMission) const;	// Exposed to Python
+	SpecialistTypes getSpyGreatPersonTarget(const CvCity* pCity, int iExtraData) const;
+	UnitTypes getGreatPersonUnit(SpecialistTypes eSpecialist) const;	// Exposed to Python
 
 	DllExport void doAdvancedStartAction(AdvancedStartActionTypes eAction, int iX, int iY, int iData, bool bAdd);
 	DllExport int getAdvancedStartUnitCost(UnitTypes eUnit, bool bAdd, CvPlot* pPlot = NULL) const;																													// Exposed to Python 

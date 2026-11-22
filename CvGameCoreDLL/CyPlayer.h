@@ -477,6 +477,8 @@ public:
 	bool isRandomBasicTrait(int /*TraitTypes*/ eTrait);	// added by this mod
 	int getRandomBasicTraitTurn();	// added by this mod
 	bool isFriendlyTraitGainedFrom(int /*PlayerTypes*/ ePlayer);	// added by this mod
+	bool isEspionageMissionAllowed(int /*EspionageMissionTypes*/ eMission);	// added by this mod
+	int getGreatPersonUnit(int /*SpecialistTypes*/ eSpecialist);	// added by this mod
 	int getBuildingClassExtraCommerce(int /*BuildingClassTypes*/ eBuildingClass, int /*CommerceTypes*/ eCommerce);
 	void updateConditionalTraits();
 	int getNumUnitsKilled();

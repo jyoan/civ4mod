@@ -1929,6 +1929,23 @@ bool CvDLLButtonPopup::launchDoEspionageTargetPopup(CvPopup* pPopup, CvPopupInfo
 			}
 		}
 	}
+	else if (kMission.isKillGreatPerson() || kMission.isKidnapGreatPerson())
+	{
+		// Settled great persons (added by this mod): one button for each type, as the buildings above
+		if (NULL != pCity)
+		{
+			for (int iSpecialist = 0; iSpecialist < GC.getNumSpecialistInfos(); ++iSpecialist)
+			{
+				if (kPlayer.getSpyGreatPersonTarget(pCity, iSpecialist) == iSpecialist && kPlayer.canDoEspionageMission(eMission, eTargetPlayer, pPlot, iSpecialist, pUnit))
+				{
+					CvSpecialistInfo& kSpecialist = GC.getSpecialistInfo((SpecialistTypes)iSpecialist);
+					int iCost = kPlayer.getEspionageMissionCost(eMission, eTargetPlayer, pPlot, iSpecialist, pUnit);
+					CvWString szBuffer = gDLL->getText("TXT_KEY_ESPIONAGE_GREAT_PERSON_TARGET_COST", kSpecialist.getDescription(), pCity->getAddedFreeSpecialistCount((SpecialistTypes)iSpecialist), iCost);
+					gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, szBuffer, kSpecialist.getButton(), iSpecialist, WIDGET_HELP_ESPIONAGE_COST, eMission, iSpecialist);
+				}
+			}
+		}
+	}
 	else if (kMission.getDestroyUnitCostFactor() > 0)
 	{
 		CLLNode<IDInfo>* pUnitNode = pPlot->headUnitNode();

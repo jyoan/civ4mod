@@ -178,5 +178,7 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("isRandomBasicTrait", &CyPlayer::isRandomBasicTrait, "bool (int /*TraitTypes*/ eTrait) - given by RandomBasicTraits now (added by this mod)")
 		.def("getRandomBasicTraitTurn", &CyPlayer::getRandomBasicTraitTurn, "int () - game turn of the last change of RandomBasicTraits, -1 if none (added by this mod)")
 		.def("isFriendlyTraitGainedFrom", &CyPlayer::isFriendlyTraitGainedFrom, "bool (int /*PlayerTypes*/ ePlayer) - GainTraitsOnFriendly checked ePlayer already (added by this mod)")
+		.def("isEspionageMissionAllowed", &CyPlayer::isEspionageMissionAllowed, "bool (int eMission) - PrereqTrait and DisableTrait of the mission (added by this mod)")
+		.def("getGreatPersonUnit", &CyPlayer::getGreatPersonUnit, "int (int eSpecialist) - the great person unit of the player that settles as the specialist (added by this mod)")
 		;
 }
