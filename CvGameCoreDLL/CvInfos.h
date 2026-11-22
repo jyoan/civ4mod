@@ -4957,6 +4957,11 @@ public:
 	bool isConquestReligionBuilding(int iSpecialBuilding) const;	// Exposed to Python (added by this mod)
 	bool isNoTechCivic(int i) const;		// Exposed to Python (added by this mod)
 	int getCivicOptionExtraSlots(int iCivicOption) const;	// Exposed to Python (added by this mod): see CvPlayer::getNumCivicSlots
+	int getNumExplorationRewards() const;	// Exposed to Python (added by this mod): see CvPlayer::doExplorationRewards
+	int getExplorationRewardPlotType(int iIndex) const;	// Exposed to Python (added by this mod): ExplorePlotTypes
+	int getExplorationRewardCommerceType(int iIndex) const;	// Exposed to Python (added by this mod)
+	int getExplorationRewardPercent(int iIndex) const;	// Exposed to Python (added by this mod)
+	int getExplorationRewardPercentFor(int iExplorePlot, int iCommerce) const;	// Exposed to Python (added by this mod): sum of the entries
 	int getMaxNationalWondersPerCity() const;	// Exposed to Python (added by this mod)
 	int getMaxNationalWondersPerCityForOCC() const;	// Exposed to Python (added by this mod)
 	bool isHumanCanBeVassal() const;	// Exposed to Python (added by this mod)
@@ -5142,6 +5147,7 @@ public:
 	void readCityFoundedUnits(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readSpecialBuildingProductionModifiers(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readCivicOptionExtraSlots(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readExplorationRewards(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readStartBias(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readCityAndEconomyValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readYieldAndUnitArrays(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
@@ -5284,6 +5290,9 @@ protected:
 	std::vector<int> m_aiCivicOptionExtraSlots;	// added by this mod: [civic option], empty when not set
 	std::vector<CvString> m_aszCivicOptionExtraSlotTypes;	// as strings until readPass3() (civic options are loaded after traits)
 	std::vector<int> m_aiCivicOptionExtraSlotValues;
+	std::vector<int> m_aiExplorationRewardPlotType;	// added by this mod: [entry] ExplorePlotTypes
+	std::vector<int> m_aiExplorationRewardCommerceType;	// [entry] CommerceTypes
+	std::vector<int> m_aiExplorationRewardPercent;	// [entry]
 	int m_iMaxNationalWondersPerCity;	// added by this mod: 0 = not set, -1 = no limit
 	int m_iMaxNationalWondersPerCityForOCC;	// added by this mod: 0 = not set, -1 = no limit
 	bool m_bHumanCanBeVassal;	// added by this mod

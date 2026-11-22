@@ -5178,6 +5178,73 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 			bFirst = false;
 		}
 	}
+
+	parseTraitExplorationRewards(szHelpString, eTrait);
+}
+
+// ExplorationRewards (added by this mod): "Each 10 water plots revealed: +1 gold", one line per entry, then one note with a
+// link to the concept of the regions
+void CvGameTextMgr::parseTraitExplorationRewards(CvWStringBuffer& szHelpString, TraitTypes eTrait)
+{
+	static const char* aszPlotKeys[NUM_EXPLORE_PLOT_TYPES] =
+	{
+		"TXT_KEY_EXPLORE_PLOT_WATER",
+		"TXT_KEY_EXPLORE_PLOT_HOME",
+		"TXT_KEY_EXPLORE_PLOT_OVERSEAS_OLD_WORLD",
+		"TXT_KEY_EXPLORE_PLOT_OVERSEAS_NEW_WORLD",
+	};
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szAmount;
+	CvWString szText;
+	int iPlotType;
+	int iCommerce;
+	int iPercent;
+	int iPlots;
+	int iI;
+
+	if (kTrait.getNumExplorationRewards() <= 0)
+	{
+		return;
+	}
+
+	for (iI = 0; iI < kTrait.getNumExplorationRewards(); iI++)
+	{
+		iPlotType = kTrait.getExplorationRewardPlotType(iI);
+		iCommerce = kTrait.getExplorationRewardCommerceType(iI);
+		iPercent = kTrait.getExplorationRewardPercent(iI);
+		if (iPlotType < 0 || iPlotType >= NUM_EXPLORE_PLOT_TYPES || iCommerce < 0 || iCommerce >= NUM_COMMERCE_TYPES || iPercent <= 0)
+		{
+			continue;
+		}
+
+		// 10 -> each 10 plots +1; 250 -> each plot +2.5; 30 -> each plot +0.3
+		if ((100 % iPercent) == 0)
+		{
+			iPlots = 100 / iPercent;
+			szAmount = L"1";
+		}
+		else
+		{
+			iPlots = 1;
+			if ((iPercent % 10) == 0)
+			{
+				szAmount.Format(L"%d.%d", iPercent / 100, (iPercent % 100) / 10);
+			}
+			else
+			{
+				szAmount.Format(L"%d.%02d", iPercent / 100, iPercent % 100);
+			}
+		}
+		if ((iPercent % 100) == 0)
+		{
+			szAmount.Format(L"%d", iPercent / 100);
+		}
+
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_EXPLORATION_REWARD", gDLL->getText(aszPlotKeys[iPlotType]).GetCString(), iPlots, szAmount.GetCString(), GC.getCommerceInfo((CommerceTypes)iCommerce).getChar()));
+	}
+
+	szText = getLinkText(gDLL->getText("TXT_KEY_CONCEPT_REGIONS").GetCString());
+	appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_EXPLORATION_REWARD_NOTE", szText.GetCString()));
 }
 
 static bool isTypeInList(const std::vector<int>& aiTypes, int iType)

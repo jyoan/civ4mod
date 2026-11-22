@@ -594,6 +594,33 @@
 					<iExtraSlots>1</iExtraSlots>
 				</CivicOptionExtraSlot>
 			</CivicOptionExtraSlots>
+			<ExplorationRewards>
+				<ExplorationReward>
+					<ExplorePlotType>EXPLORE_PLOT_WATER</ExplorePlotType>
+					<CommerceType>COMMERCE_GOLD</CommerceType>
+					<iPercent>10</iPercent>
+				</ExplorationReward>
+				<ExplorationReward>
+					<ExplorePlotType>EXPLORE_PLOT_HOME</ExplorePlotType>
+					<CommerceType>COMMERCE_CULTURE</CommerceType>
+					<iPercent>50</iPercent>
+				</ExplorationReward>
+				<ExplorationReward>
+					<ExplorePlotType>EXPLORE_PLOT_HOME</ExplorePlotType>
+					<CommerceType>COMMERCE_GOLD</CommerceType>
+					<iPercent>25</iPercent>
+				</ExplorationReward>
+				<ExplorationReward>
+					<ExplorePlotType>EXPLORE_PLOT_OVERSEAS_OLD_WORLD</ExplorePlotType>
+					<CommerceType>COMMERCE_ESPIONAGE</CommerceType>
+					<iPercent>100</iPercent>
+				</ExplorationReward>
+				<ExplorationReward>
+					<ExplorePlotType>EXPLORE_PLOT_OVERSEAS_NEW_WORLD</ExplorePlotType>
+					<CommerceType>COMMERCE_RESEARCH</CommerceType>
+					<iPercent>250</iPercent>
+				</ExplorationReward>
+			</ExplorationRewards>
 			<iMaxNationalWondersPerCity>4</iMaxNationalWondersPerCity>
 			<iMaxNationalWondersPerCityForOCC>-1</iMaxNationalWondersPerCityForOCC>
 			<bHumanCanBeVassal>1</bHumanCanBeVassal>

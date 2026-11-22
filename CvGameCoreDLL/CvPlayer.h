@@ -334,6 +334,10 @@ public:
 	int getTraitDomainFreeExperience(DomainTypes eDomain) const;	// Exposed to Python
 	int getTraitDomainProductionModifier(DomainTypes eDomain) const;	// Exposed to Python
 	void doEnemyAttrition();	// added by this mod
+	ExplorePlotTypes getExplorePlotType(const CvPlot* pPlot) const;	// added by this mod: ExplorationRewards of the traits
+	int getExploredPlotCount(ExplorePlotTypes eExplorePlot) const;	// Exposed to Python (added by this mod)
+	void onPlotExplored(const CvPlot* pPlot);	// added by this mod: called by CvPlot::setRevealed
+	void doExplorationRewards();	// added by this mod
 	int getFeatureProductionChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	int getFeatureGrowthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
 	int getFeatureHealthChange(FeatureTypes eFeature) const;	// Exposed to Python (added by this mod)
@@ -522,7 +526,7 @@ public:
 	DllExport void setAdvancedStartPoints(int iNewValue);																													// Exposed to Python
 	DllExport void changeAdvancedStartPoints(int iChange);																													// Exposed to Python
 
-	int getEspionageSpending(TeamTypes eAgainstTeam) const;																								// Exposed to Python
+	int getEspionageSpending(TeamTypes eAgainstTeam, int iTotalPoints = -1) const;	// Exposed to Python. iTotalPoints: -1 = the espionage commerce rate (added by this mod)
 	DllExport bool canDoEspionageMission(EspionageMissionTypes eMission, PlayerTypes eTargetPlayer, const CvPlot* pPlot, int iExtraData, const CvUnit* pUnit) const;		// Exposed to Python
 	int getEspionageMissionBaseCost(EspionageMissionTypes eMission, PlayerTypes eTargetPlayer, const CvPlot* pPlot, int iExtraData, const CvUnit* pSpyUnit) const;
 	int getEspionageMissionCost(EspionageMissionTypes eMission, PlayerTypes eTargetPlayer, const CvPlot* pPlot = NULL, int iExtraData = -1, const CvUnit* pSpyUnit = NULL) const;		// Exposed to Python
@@ -1466,6 +1470,8 @@ protected:
 	bool* m_abFriendlyTraitGainedFrom;		// the AI players whose traits were checked when they became friendly (GainTraitsOnFriendly, added by this mod)
 	int* m_paiRandomBasicTrait;				// 1 for the traits given by RandomBasicTraits now (added by this mod)
 	int m_iRandomBasicTraitTurn;			// game turn of the last change of RandomBasicTraits, -1 if none (added by this mod)
+	int m_aiExploredPlotCount[NUM_EXPLORE_PLOT_TYPES];	// plots revealed during this turn, per kind (ExplorationRewards, added by this mod)
+	int m_aiExplorationRemainder[NUM_EXPLORE_PLOT_TYPES * NUM_COMMERCE_TYPES];	// 1/100 of the rewards carried to the next turn
 	int* m_paiTraitTurns;					// turns left of the temporary traits, 0 if not temporary (added by this mod)
 	int* m_paiFreeBuildingCount;
 	int* m_paiExtraBuildingHappiness;

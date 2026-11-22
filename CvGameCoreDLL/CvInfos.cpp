@@ -21137,6 +21137,45 @@ int CvTraitInfo::getCivicOptionExtraSlots(int iCivicOption) const
 	return (iCivicOption >= 0 && iCivicOption < (int)m_aiCivicOptionExtraSlots.size()) ? m_aiCivicOptionExtraSlots[iCivicOption] : 0;
 }
 
+// ExplorationRewards (added by this mod): each entry gives iPercent/100 of the commerce for each plot of the kind the player
+// reveals during its turn (CvPlayer::doExplorationRewards)
+int CvTraitInfo::getNumExplorationRewards() const
+{
+	return (int)m_aiExplorationRewardPercent.size();
+}
+
+int CvTraitInfo::getExplorationRewardPlotType(int iIndex) const
+{
+	return (iIndex >= 0 && iIndex < getNumExplorationRewards()) ? m_aiExplorationRewardPlotType[iIndex] : NO_EXPLORE_PLOT;
+}
+
+int CvTraitInfo::getExplorationRewardCommerceType(int iIndex) const
+{
+	return (iIndex >= 0 && iIndex < getNumExplorationRewards()) ? m_aiExplorationRewardCommerceType[iIndex] : NO_COMMERCE;
+}
+
+int CvTraitInfo::getExplorationRewardPercent(int iIndex) const
+{
+	return (iIndex >= 0 && iIndex < getNumExplorationRewards()) ? m_aiExplorationRewardPercent[iIndex] : 0;
+}
+
+// The sum of iPercent of the entries with this kind of plot and commerce
+int CvTraitInfo::getExplorationRewardPercentFor(int iExplorePlot, int iCommerce) const
+{
+	int iPercent = 0;
+	int iI;
+
+	for (iI = 0; iI < getNumExplorationRewards(); iI++)
+	{
+		if (m_aiExplorationRewardPlotType[iI] == iExplorePlot && m_aiExplorationRewardCommerceType[iI] == iCommerce)
+		{
+			iPercent += m_aiExplorationRewardPercent[iI];
+		}
+	}
+
+	return iPercent;
+}
+
 // iMaxNationalWondersPerCity (added by this mod): replaces MAX_NATIONAL_WONDERS_PER_CITY of GlobalDefines for the player
 // (CvPlayer::getMaxNationalWondersPerCity). 0: not set, -1: no limit
 int CvTraitInfo::getMaxNationalWondersPerCity() const
@@ -22622,6 +22661,81 @@ void CvTraitInfo::readCivicOptionExtraSlots(CvXMLLoadUtility* pXML)
 	}
 }
 
+// The part of read() for ExplorationRewards (added by this mod). The commerce infos are loaded after the traits, so the
+// names are matched here (CommerceTypes is a fixed enum, in the order of CIV4CommerceInfo.xml)
+void CvTraitInfo::readExplorationRewards(CvXMLLoadUtility* pXML)
+{
+	static const char* aszExplorePlotNames[NUM_EXPLORE_PLOT_TYPES] =
+	{
+		"EXPLORE_PLOT_WATER",
+		"EXPLORE_PLOT_HOME",
+		"EXPLORE_PLOT_OVERSEAS_OLD_WORLD",
+		"EXPLORE_PLOT_OVERSEAS_NEW_WORLD",
+	};
+	static const char* aszCommerceNames[NUM_COMMERCE_TYPES] =
+	{
+		"COMMERCE_GOLD",
+		"COMMERCE_RESEARCH",
+		"COMMERCE_CULTURE",
+		"COMMERCE_ESPIONAGE",
+	};
+	CvString szTextVal;
+	int iPlotType;
+	int iCommerce;
+	int iPercent;
+	int iI;
+
+	m_aiExplorationRewardPlotType.clear();
+	m_aiExplorationRewardCommerceType.clear();
+	m_aiExplorationRewardPercent.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ExplorationRewards"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ExplorationReward"))
+		{
+			do
+			{
+				iPlotType = NO_EXPLORE_PLOT;
+				pXML->GetChildXmlValByName(szTextVal, "ExplorePlotType");
+				for (iI = 0; iI < NUM_EXPLORE_PLOT_TYPES; iI++)
+				{
+					if (szTextVal == aszExplorePlotNames[iI])
+					{
+						iPlotType = iI;
+					}
+				}
+				FAssertMsg(iPlotType != NO_EXPLORE_PLOT, CvString::format("ExplorationRewards: unknown ExplorePlotType %s", szTextVal.c_str()).c_str());
+
+				pXML->GetChildXmlValByName(szTextVal, "CommerceType");
+				iCommerce = NO_COMMERCE;
+				for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+				{
+					if (szTextVal == aszCommerceNames[iI])
+					{
+						iCommerce = iI;
+					}
+				}
+				FAssertMsg(iCommerce != NO_COMMERCE, CvString::format("ExplorationRewards: unknown CommerceType %s", szTextVal.c_str()).c_str());
+
+				iPercent = 0;
+				pXML->GetChildXmlValByName(&iPercent, "iPercent", 0);
+
+				// Negative rewards are not supported (the remainder carried to the next turn is never negative)
+				if (iPlotType != NO_EXPLORE_PLOT && iCommerce >= 0 && iCommerce < NUM_COMMERCE_TYPES && iPercent > 0)
+				{
+					m_aiExplorationRewardPlotType.push_back(iPlotType);
+					m_aiExplorationRewardCommerceType.push_back(iCommerce);
+					m_aiExplorationRewardPercent.push_back(iPercent);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "ExplorationReward"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
 // The part of read() for the start bias (added by this mod)
 void CvTraitInfo::readStartBias(CvXMLLoadUtility* pXML)
 {
@@ -22772,6 +22886,7 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	readTypeList(pXML, "ConquestReligionBuildings", m_aszConquestReligionBuildingTypes);	// special buildings: readPass3()
 	readTypeList(pXML, "NoTechCivics", m_aszNoTechCivicTypes);	// civics are loaded later: readPass3()
 	readCivicOptionExtraSlots(pXML);
+	readExplorationRewards(pXML);
 	pXML->GetChildXmlValByName(&m_iMaxNationalWondersPerCity, "iMaxNationalWondersPerCity");
 	pXML->GetChildXmlValByName(&m_iMaxNationalWondersPerCityForOCC, "iMaxNationalWondersPerCityForOCC");
 	pXML->GetChildXmlValByName(&m_bHumanCanBeVassal, "bHumanCanBeVassal");

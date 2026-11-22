@@ -527,6 +527,16 @@
 	<ElementType name="CivicOptionExtraSlots" content="eltOnly">
 		<element type="CivicOptionExtraSlot" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="ExplorePlotType" content="textOnly"/>
+	<ElementType name="CommerceType" content="textOnly"/>
+	<ElementType name="ExplorationReward" content="eltOnly">
+		<element type="ExplorePlotType"/>
+		<element type="CommerceType"/>
+		<element type="iPercent"/>
+	</ElementType>
+	<ElementType name="ExplorationRewards" content="eltOnly">
+		<element type="ExplorationReward" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="iMaxNationalWondersPerCity" content="textOnly" dt:type="int"/>
 	<ElementType name="iMaxNationalWondersPerCityForOCC" content="textOnly" dt:type="int"/>
 	<ElementType name="bHumanCanBeVassal" content="textOnly" dt:type="boolean"/>
@@ -1104,6 +1114,7 @@
 		<element type="ConquestReligionBuildings" minOccurs="0"/>
 		<element type="NoTechCivics" minOccurs="0"/>
 		<element type="CivicOptionExtraSlots" minOccurs="0"/>
+		<element type="ExplorationRewards" minOccurs="0"/>
 		<element type="iMaxNationalWondersPerCity" minOccurs="0"/>
 		<element type="iMaxNationalWondersPerCityForOCC" minOccurs="0"/>
 		<element type="bHumanCanBeVassal" minOccurs="0"/>

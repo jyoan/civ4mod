@@ -2862,6 +2862,12 @@ int CyPlayer::getNumCivicSlots(int /*CivicOptionTypes*/ eCivicOption)
 	return m_pPlayer ? m_pPlayer->getNumCivicSlots((CivicOptionTypes)eCivicOption) : 1;
 }
 
+// ExplorationRewards of the traits (added by this mod)
+int CyPlayer::getExploredPlotCount(int /*ExplorePlotTypes*/ eExplorePlot)
+{
+	return m_pPlayer ? m_pPlayer->getExploredPlotCount((ExplorePlotTypes)eExplorePlot) : 0;
+}
+
 int CyPlayer::getCivicSlot(int /*CivicOptionTypes*/ eCivicOption, int iSlot)
 {
 	if (m_pPlayer == NULL || eCivicOption < 0 || eCivicOption >= GC.getNumCivicOptionInfos() || iSlot < 0 || iSlot >= MAX_CIVIC_SLOTS)
