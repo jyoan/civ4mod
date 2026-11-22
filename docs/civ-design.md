@@ -129,6 +129,7 @@ BtS の効果はそのままにして足す。
 | `bAtWar` + `PyOnGained`（`createCityConscripts`） | ワシントン |
 | `bAtWar` + `PyOnLost` で期間つきの志向（`CommerceModifiers` の文化、`iHappiness`） | 徳川家康 |
 | `HealthyCommercePercents`（研究）、`PyOnBuildingBuilt`（`isBuildingClassIn`） | バビロニア |
+| `CivicOptionExtraSlots`（法律） | ハンムラビ |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -205,6 +206,7 @@ BtS の効果はそのままにして足す。
 | 朝鮮（文明） | 両班: ゲーム開始時から全都市で全専門家（聖職者・芸術家・科学者・商人・技術者・スパイ）の枠 +1。教育を得ると全専門家の枠が無制限になる（2026-11-21。名前は仮） | `SpecialistSlotChanges`（各 1）、`PrereqTech`（`TECH_EDUCATION`）で `TRAIT_MUNBAN`（文班。`SpecialistSlotChanges` 各 -1） | 実装済み、ゲームで確認済み `TRAIT_YANGBAN` |
 | 王建 | 後三国統一: 征服した都市のほかの文明の文化の 50% を自分の文化に移す。都市の文化による防御と建造物の防御を合計する（2026-11-21。新羅の帰順・甄萱の亡命を受け入れた統一。防衛志向・火車の守りと合わせる） | `iConquestCulturePercent` 50、`bStackCityDefense` | 実装済み、ゲームで確認済み `TRAIT_LATER_THREE_KINGDOMS` |
 | バビロニア（文明） | 空中庭園: 余剰の衛生 2 につき、その都市の研究 +1。穀物庫・水道橋・雑貨商・病院・リサイクル施設を生産で建てるたびに、その都市の人口 +1（2026-11-22） | `HealthyCommercePercents`（研究 50）、`PyOnBuildingBuilt` で `isBuildingClassIn` と `pCity.changePopulation(1)` | 実装済み、ゲームで確認済み `TRAIT_HANGING_GARDENS` |
+| ハンムラビ | 法典: 法律の社会制度を同時にさらに 1 つ採用できる | `CivicOptionExtraSlots`（`CIVICOPTION_LEGAL` 1） | 実装済み、ゲームで確認済み `TRAIT_LAW_CODE` |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
 - 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%
@@ -219,6 +221,7 @@ BtS の効果はそのままにして足す。
 - 始皇帝の最初の案「長城線」（万里の長城が陳腐化しない）は取り下げた。BtS の万里の長城はもともと陳腐化しない（`ObsoleteTech` が `NONE`）
 - 2026-11-19: マリの文明志向（ユーザーの管理票の記入「都市圏内の砂漠タイル 1 つにつき、首都タイルの食料と商業にボーナス」から）。仮の数値: 砂漠 1 タイルにつき食料 +0.5・商業 +1、砂漠のバイアス 1 タイルにつき +10%（アラブと同じ）。砂漠を交易網にするのはユーザーの指示
 - 2026-11-22: バビロニアの文明志向（ユーザーの指定）。余剰の衛生は UB の庭園（衛生 +2）・世界遺産の空中庭園と合う。建物で人口を得る効果のために、master に志向のフック `PyOnBuildingBuilt` を足した
+- 2026-11-22: ハンムラビの指導者志向「法典」（ユーザーの指定）。このために master に社会制度の枠（`CivicOptionExtraSlots`）を足した。略称の「法」はアショーカのダルマ志向が使っているので「典」
 
 ## 文明
 

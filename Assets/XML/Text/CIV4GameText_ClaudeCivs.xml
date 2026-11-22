@@ -1730,4 +1730,22 @@
 		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Population +1 in a city that completes a Granary, an Aqueduct, a Grocer, a Hospital or a Recycling Center</Spanish>
 		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#31296;&#29289;&#24235;&#12539;&#27700;&#36947;&#27211;&#12539;&#38609;&#36008;&#21830;&#12539;&#30149;&#38498;&#12539;&#12522;&#12469;&#12452;&#12463;&#12523;&#26045;&#35373;&#12434;&#24314;&#12390;&#12383;&#37117;&#24066;&#12398;&#20154;&#21475; +1</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LAW_CODE</Tag>
+		<English>Law Code</English>
+		<French>Law Code</French>
+		<German>Law Code</German>
+		<Italian>Law Code</Italian>
+		<Spanish>Law Code</Spanish>
+		<Japanese>&#27861;&#20856;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LAW_CODE_SHORT</Tag>
+		<English>Code</English>
+		<French>Code</French>
+		<German>Code</German>
+		<Italian>Code</Italian>
+		<Spanish>Code</Spanish>
+		<Japanese>&#20856;</Japanese>
+	</TEXT>
 </Civ4GameText>
