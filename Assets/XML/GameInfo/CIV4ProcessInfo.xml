@@ -59,5 +59,21 @@
 			<Button>Art/Interface/Buttons/Process/ProcessResearch.dds</Button>
 		</ProcessInfo>
 		<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
+		<ProcessInfo>
+			<Type>PROCESS_ESPIONAGE</Type>
+			<Description>TXT_KEY_PROCESS_ESPIONAGE</Description>
+			<Strategy>TXT_KEY_PROCESS_ESPIONAGE_STRATEGY</Strategy>
+			<TechPrereq>NONE</TechPrereq>
+			<PrereqOrTraits>
+				<TraitType>TRAIT_CHEKA</TraitType>
+			</PrereqOrTraits>
+			<ProductionToCommerceModifiers>
+				<iProductionToCommerceModifier>0</iProductionToCommerceModifier>
+				<iProductionToCommerceModifier>0</iProductionToCommerceModifier>
+				<iProductionToCommerceModifier>0</iProductionToCommerceModifier>
+				<iProductionToCommerceModifier>100</iProductionToCommerceModifier>
+			</ProductionToCommerceModifiers>
+			<Button>Art/Interface/Buttons/Process/ProcessEspionage.dds</Button>
+		</ProcessInfo>
 	</ProcessInfos>
 </Civ4ProcessInfo>

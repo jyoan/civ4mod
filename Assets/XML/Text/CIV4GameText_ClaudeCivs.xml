@@ -1658,4 +1658,49 @@
 		<Spanish>Uni</Spanish>
 		<Japanese>&#32113;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CHEKA</Tag>
+		<English>Cheka</English>
+		<French>Cheka</French>
+		<German>Cheka</German>
+		<Italian>Cheka</Italian>
+		<Spanish>Cheka</Spanish>
+		<Japanese>&#12481;&#12455;&#12459;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CHEKA_SHORT</Tag>
+		<English>Che</English>
+		<French>Che</French>
+		<German>Che</German>
+		<Italian>Che</Italian>
+		<Spanish>Che</Spanish>
+		<Japanese>&#12481;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_CHEKIST</Tag>
+		<English>Chekist</English>
+		<French>Chekist</French>
+		<German>Chekist</German>
+		<Italian>Chekist</Italian>
+		<Spanish>Chekist</Spanish>
+		<Japanese>&#12481;&#12455;&#12461;&#12473;&#12488;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROCESS_ESPIONAGE</Tag>
+		<English>Espionage</English>
+		<French>Espionage</French>
+		<German>Espionage</German>
+		<Italian>Espionage</Italian>
+		<Spanish>Espionage</Spanish>
+		<Japanese>&#35548;&#22577;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROCESS_ESPIONAGE_STRATEGY</Tag>
+		<English>Converts the production of the city into espionage points.</English>
+		<French>Converts the production of the city into espionage points.</French>
+		<German>Converts the production of the city into espionage points.</German>
+		<Italian>Converts the production of the city into espionage points.</Italian>
+		<Spanish>Converts the production of the city into espionage points.</Spanish>
+		<Japanese>&#37117;&#24066;&#12398;&#29983;&#29987;&#21147;&#12434;&#35548;&#22577;&#12509;&#12452;&#12531;&#12488;&#12395;&#22793;&#25563;&#12375;&#12414;&#12377;&#12290;</Japanese>
+	</TEXT>
 </Civ4GameText>

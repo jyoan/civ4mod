@@ -159,3 +159,4 @@
 - 2026-11-22: 諜報任務の `PrereqTrait`・`DisableTrait`（検証用の強化版の毒混入・不満を煽るへの置き換え）と `bKillGreatPerson`・`bKidnapGreatPerson`（要人の殺害・誘拐、標的の選択）をゲーム内で確認
 - 2026-11-22: 諜報任務の `PrereqOrTraits`・`DisableTraits`（リストに変えた後）と生産の種類の `PrereqOrTraits`（`TechPrereq` `NONE`）を civ-design のチェカ志向でゲーム内で確認
 - 2026-11-22: 志向の `iCultureRangeChange` で、建設したその場で国境が広がることをゲーム内で確認（広大な大地志向）
+- 2026-11-22: チェカ志向 `TRAIT_CHEKA`（生産「諜報」、固有ユニット「チェキスト」、諜報 +25%、要人の殺害・誘拐、強化版の毒混入・不満を煽る）をゲーム内で確認
