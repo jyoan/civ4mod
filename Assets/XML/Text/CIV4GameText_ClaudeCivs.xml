@@ -1182,6 +1182,15 @@
 		<Japanese>&#32854;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HAGIA_SOPHIA_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#23447;&#25945;&#12434;&#21109;&#22987;&#12377;&#12427;&#12392;&#12289;&#32854;&#37117;&#12395;&#12381;&#12398;&#23447;&#25945;&#12398;&#23459;&#25945;&#24107;&#12364;2&#20307;&#21152;&#12431;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_PROMOTION_SUN_NEVER_SETS</Tag>
 		<English>The Sun Never Sets</English>
 		<French>The Sun Never Sets</French>

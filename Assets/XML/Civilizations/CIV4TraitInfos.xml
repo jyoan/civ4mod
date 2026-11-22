@@ -3958,6 +3958,7 @@
 			<Type>TRAIT_HAGIA_SOPHIA</Type>
 			<Description>TXT_KEY_TRAIT_HAGIA_SOPHIA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_HAGIA_SOPHIA_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_HAGIA_SOPHIA_HELP</Help>
 			<iHealth>0</iHealth>
 			<iHappiness>0</iHappiness>
 			<iMaxAnarchy>-1</iMaxAnarchy>
@@ -3972,6 +3973,7 @@
 			<NoObsoleteSpecialBuildings>
 				<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
 			</NoObsoleteSpecialBuildings>
+			<PyOnReligionFounded>createMissionaries(pPlayer, eReligion, 2, pCity)</PyOnReligionFounded>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

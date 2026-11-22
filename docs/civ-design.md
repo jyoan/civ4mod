@@ -113,7 +113,7 @@ BtS の効果はそのままにして足す。
 | `GlobalWorldWonderCommerceChanges` の研究 | ヴィクトリア |
 | `iGoldenAgeModifier`、`iGoldenAgeGreatPeopleRateModifier` | ペリクレス |
 | 昇進の `iGoldFromCombat` | ブレヌス |
-| `NoObsoleteSpecialBuildings` の僧院 | ユスティニアヌス1世 |
+| `NoObsoleteSpecialBuildings` の僧院、`PyOnReligionFounded` | ユスティニアヌス1世 |
 | 昇進の `BuildingCombatPercents`（国教の僧院・寺院・大聖堂・聖地） | ビザンチン |
 | `iStateReligionHappiness`、`iStateReligionHealth` | アショーカ |
 | `GreatPeopleClassRateModifiers` の大技術者 | スレイマン |
@@ -194,7 +194,7 @@ BtS の効果はそのままにして足す。
 | ヴィクトリア | 万国博覧会: 持っている世界遺産 1 つにつき、全都市の研究 +1 | `GlobalWorldWonderCommerceChanges` | 実装済み、ゲームで確認済み `TRAIT_GREAT_EXHIBITION` |
 | ペリクレス | ペリクレス時代: 黄金時代の期間 +50%、黄金時代の偉人ポイント +100% | `iGoldenAgeModifier`、`iGoldenAgeGreatPeopleRateModifier` | 実装済み、ゲームで確認済み `TRAIT_AGE_OF_PERICLES` |
 | ブレヌス | 敗者に災いあれ: 戦闘に勝つたびに金 +5 | 昇進の `iGoldFromCombat`（全戦闘ユニット） | 実装済み、ゲームで確認済み `TRAIT_VAE_VICTIS` |
-| ユスティニアヌス1世 | ハギア・ソフィア: 僧院が陳腐化しない（寺院・大聖堂の生産 +100% は master の新しいタグを待つ） | `NoObsoleteSpecialBuildings`（`SPECIALBUILDING_MONASTERY`） | 実装済み、ゲームで確認済み `TRAIT_HAGIA_SOPHIA` |
+| ユスティニアヌス1世 | ハギア・ソフィア: 僧院が陳腐化しない。宗教を創始すると、聖都にその宗教の宣教師 +2 体（BtS の 1 体と合わせて 3 体。2026-11-22 に追加）（寺院・大聖堂の生産 +100% は master の新しいタグを待つ） | `NoObsoleteSpecialBuildings`（`SPECIALBUILDING_MONASTERY`）、`PyOnReligionFounded`（`createMissionaries(pPlayer, eReligion, 2, pCity)`）、`Help` | 実装済み `TRAIT_HAGIA_SOPHIA`（僧院はゲームで確認済み） |
 | ビザンチン（文明） | 位階（Civ6 の位階から）: 航空以外の全戦闘ユニットが、国教の僧院 1 つにつき戦闘力 +2%、寺院 +3%、大聖堂 +5%、聖地 +10%（合計の上限 +50%）。陳腐化した僧院は数えないが、ユスティニアヌス1世なら僧院が陳腐化しないので残る | `FreePromotionSets`（`PROMOTION_RANKS`。昇進の `BuildingCombatPercents` の `bStateReligion`、聖地は 7 宗教の建物クラスを 1 つずつ、`iBuildingCombatMaxPercent` 50） | 実装済み `TRAIT_RANKS` |
 | アショーカ | ダルマの勅令: 国教の広まった都市の幸福 +1・衛生 +1 | `iStateReligionHappiness`、`iStateReligionHealth` | 実装済み、ゲームで確認済み `TRAIT_DHAMMA` |
 | スレイマン | 大建築家スィナン: 大技術者の偉人ポイント +100% | `GreatPeopleClassRateModifiers`（大技術者） | 実装済み、ゲームで確認済み `TRAIT_SINAN` |
