@@ -114,6 +114,7 @@ BtS の効果はそのままにして足す。
 | `iGoldenAgeModifier`、`iGoldenAgeGreatPeopleRateModifier` | ペリクレス |
 | 昇進の `iGoldFromCombat` | ブレヌス |
 | `NoObsoleteSpecialBuildings` の僧院 | ユスティニアヌス1世 |
+| 昇進の `BuildingCombatPercents`（国教の僧院・寺院・大聖堂・聖地） | ビザンチン |
 | `iStateReligionHappiness`、`iStateReligionHealth` | アショーカ |
 | `GreatPeopleClassRateModifiers` の大技術者 | スレイマン |
 | `iEnemyMoveCostInBorders` | オラニエ公ヴィレム1世 |
@@ -194,6 +195,7 @@ BtS の効果はそのままにして足す。
 | ペリクレス | ペリクレス時代: 黄金時代の期間 +50%、黄金時代の偉人ポイント +100% | `iGoldenAgeModifier`、`iGoldenAgeGreatPeopleRateModifier` | 実装済み、ゲームで確認済み `TRAIT_AGE_OF_PERICLES` |
 | ブレヌス | 敗者に災いあれ: 戦闘に勝つたびに金 +5 | 昇進の `iGoldFromCombat`（全戦闘ユニット） | 実装済み、ゲームで確認済み `TRAIT_VAE_VICTIS` |
 | ユスティニアヌス1世 | ハギア・ソフィア: 僧院が陳腐化しない（寺院・大聖堂の生産 +100% は master の新しいタグを待つ） | `NoObsoleteSpecialBuildings`（`SPECIALBUILDING_MONASTERY`） | 実装済み、ゲームで確認済み `TRAIT_HAGIA_SOPHIA` |
+| ビザンチン（文明） | 位階（Civ6 の位階から）: 航空以外の全戦闘ユニットが、国教の僧院 1 つにつき戦闘力 +2%、寺院 +3%、大聖堂 +5%、聖地 +10%（合計の上限 +50%）。陳腐化した僧院は数えないが、ユスティニアヌス1世なら僧院が陳腐化しないので残る | `FreePromotionSets`（`PROMOTION_RANKS`。昇進の `BuildingCombatPercents` の `bStateReligion`、聖地は 7 宗教の建物クラスを 1 つずつ、`iBuildingCombatMaxPercent` 50） | 実装済み `TRAIT_RANKS` |
 | アショーカ | ダルマの勅令: 国教の広まった都市の幸福 +1・衛生 +1 | `iStateReligionHappiness`、`iStateReligionHealth` | 実装済み、ゲームで確認済み `TRAIT_DHAMMA` |
 | スレイマン | 大建築家スィナン: 大技術者の偉人ポイント +100% | `GreatPeopleClassRateModifiers`（大技術者） | 実装済み、ゲームで確認済み `TRAIT_SINAN` |
 | オラニエ公ヴィレム1世 | 洪水線: 自国の領土では、交戦中の敵の陸上ユニットの移動コスト +1。自国の領土にいる交戦中の敵が毎ターン最大 HP の 10% を失う（50% まで） | `iEnemyMoveCostInBorders`、`EnemyAttrition` | 実装済み `TRAIT_RELIEF_OF_LEIDEN`（移動コストはゲームで確認済み。2026-11-22 に「ライデンの解放」から改名し、損耗をスターリンから移した） |

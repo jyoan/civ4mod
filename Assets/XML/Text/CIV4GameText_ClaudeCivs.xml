@@ -1766,4 +1766,31 @@
 		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</Spanish>
 		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#28023;&#22806;&#12363;&#26032;&#19990;&#30028;&#12395;&#24314;&#12390;&#12383;&#27839;&#23736;&#12398;&#37117;&#24066;&#12395;&#28783;&#21488;&#12289;&#26032;&#19990;&#30028;&#12394;&#12425;&#28207;&#12418;&#24314;&#12388;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RANKS</Tag>
+		<English>Court Ranks</English>
+		<French>Court Ranks</French>
+		<German>Court Ranks</German>
+		<Italian>Court Ranks</Italian>
+		<Spanish>Court Ranks</Spanish>
+		<Japanese>&#20301;&#38542;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RANKS_SHORT</Tag>
+		<English>Rnk</English>
+		<French>Rnk</French>
+		<German>Rnk</German>
+		<Italian>Rnk</Italian>
+		<Spanish>Rnk</Spanish>
+		<Japanese>&#20301;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_RANKS</Tag>
+		<English>Court Ranks</English>
+		<French>Court Ranks</French>
+		<German>Court Ranks</German>
+		<Italian>Court Ranks</Italian>
+		<Spanish>Court Ranks</Spanish>
+		<Japanese>&#20301;&#38542;</Japanese>
+	</TEXT>
 </Civ4GameText>
