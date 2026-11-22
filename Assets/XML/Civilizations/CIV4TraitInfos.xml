@@ -2977,32 +2977,6 @@
 			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
-			<Type>TRAIT_SCORCHED_EARTH</Type>
-			<Description>TXT_KEY_TRAIT_SCORCHED_EARTH</Description>
-			<ShortDescription>TXT_KEY_TRAIT_SCORCHED_EARTH_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<EnemyAttrition>
-				<iPercent>10</iPercent>
-				<iLimit>50</iLimit>
-			</EnemyAttrition>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
-		</TraitInfo>
-		<TraitInfo>
 			<Type>TRAIT_MULTI_RELIGION</Type>
 			<Description>TXT_KEY_TRAIT_MULTI_RELIGION</Description>
 			<ShortDescription>TXT_KEY_TRAIT_MULTI_RELIGION_SHORT</ShortDescription>
@@ -4000,6 +3974,10 @@
 			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iEnemyMoveCostInBorders>1</iEnemyMoveCostInBorders>
+			<EnemyAttrition>
+				<iPercent>10</iPercent>
+				<iLimit>50</iLimit>
+			</EnemyAttrition>
 			<ExtraYieldThresholds/>
 			<TradeYieldModifiers/>
 			<CommerceChanges/>

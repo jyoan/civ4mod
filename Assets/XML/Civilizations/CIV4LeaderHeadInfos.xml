@@ -24064,10 +24064,6 @@
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
-				<Trait>
-					<TraitType>TRAIT_SCORCHED_EARTH</TraitType>
-					<bTrait>1</bTrait>
-				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>

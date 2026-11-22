@@ -90,7 +90,7 @@ BtS の効果はそのままにして足す。
 | `NoObsoleteBuildingClasses` の城壁・城 | ギルガメッシュ |
 | `bNewCityStateReligion` | ザラ・ヤコブ |
 | `bBarbarianAlly`、`PrereqTech`（騎乗）+ `bBarbarianVision` | チンギス・ハーン |
-| `EnemyAttrition` | スターリン |
+| `EnemyAttrition` | オラニエ公ヴィレム1世 |
 | `iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | ガンジー |
 | `NoObsoleteBuildingClasses` の世界遺産 | ラムセス２世 |
 | `PrereqTech` + `iFreeSpecialist` | リンカーン |
@@ -167,7 +167,7 @@ BtS の効果はそのままにして足す。
 | ギルガメッシュ | ウルクの城壁: 城壁と城が陳腐化しない | `NoObsoleteBuildingClasses` | 実装済み `TRAIT_WALLS_OF_URUK` |
 | ザラ・ヤコブ | 信仰の王: 新しい都市に国教が広まる | `bNewCityStateReligion` | 実装済み `TRAIT_KING_OF_FAITH` |
 | チンギス・ハーン | 草原の統一: 蛮族と平和。騎乗を得ると蛮族の視界を共有する（蛮族のユニット・動物・都市が見ているタイルが見える。2026-11-19 に追加。視界は強力なので騎乗を条件にした） | `bBarbarianAlly`、`ConditionalFreeTraits` の `PrereqTech`（`TECH_HORSEBACK_RIDING`）で `TRAIT_STEPPE_UNITY_VISION`（`bBarbarianVision`） | 実装済み `TRAIT_STEPPE_UNITY` |
-| スターリン | 焦土: 自国の領土にいる交戦中の敵が毎ターン最大 HP の 10% を失う（50% まで） | `EnemyAttrition` | 実装済み `TRAIT_SCORCHED_EARTH` |
+| スターリン | （焦土 `TRAIT_SCORCHED_EARTH` は 2026-11-22 に削除。`EnemyAttrition` はヴィレムへ移した） | | 未定 |
 | ガンジー | 非暴力不服従: 防衛時の戦闘力 +10%、敵の厭戦感情 +50% | `iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | 実装済み `TRAIT_SATYAGRAHA` |
 | ラムセス２世 | 永遠の記念碑: すべての世界遺産が陳腐化しない（BtS で陳腐化する 13 個を並べた） | `NoObsoleteBuildingClasses` | 実装済み `TRAIT_ETERNAL_MONUMENTS` |
 | リンカーン | 奴隷解放: 自由主義を得ると全都市に無償の専門家 +1 | `PrereqTech` で `TRAIT_EMANCIPATION_ACT`（`iFreeSpecialist`） | 実装済み、ゲームで確認済み `TRAIT_EMANCIPATION` |
@@ -192,7 +192,7 @@ BtS の効果はそのままにして足す。
 | ユスティニアヌス1世 | ハギア・ソフィア: 僧院が陳腐化しない（寺院・大聖堂の生産 +100% は master の新しいタグを待つ） | `NoObsoleteSpecialBuildings`（`SPECIALBUILDING_MONASTERY`） | 実装済み、ゲームで確認済み `TRAIT_HAGIA_SOPHIA` |
 | アショーカ | ダルマの勅令: 国教の広まった都市の幸福 +1・衛生 +1 | `iStateReligionHappiness`、`iStateReligionHealth` | 実装済み、ゲームで確認済み `TRAIT_DHAMMA` |
 | スレイマン | 大建築家スィナン: 大技術者の偉人ポイント +100% | `GreatPeopleClassRateModifiers`（大技術者） | 実装済み、ゲームで確認済み `TRAIT_SINAN` |
-| オラニエ公ヴィレム1世 | ライデンの解放: 自国の領土では、交戦中の敵の陸上ユニットの移動コスト +1 | `iEnemyMoveCostInBorders` | 実装済み、ゲームで確認済み `TRAIT_RELIEF_OF_LEIDEN` |
+| オラニエ公ヴィレム1世 | 洪水線: 自国の領土では、交戦中の敵の陸上ユニットの移動コスト +1。自国の領土にいる交戦中の敵が毎ターン最大 HP の 10% を失う（50% まで） | `iEnemyMoveCostInBorders`、`EnemyAttrition` | 実装済み `TRAIT_RELIEF_OF_LEIDEN`（移動コストはゲームで確認済み。2026-11-22 に「ライデンの解放」から改名し、損耗をスターリンから移した） |
 | ブーディカ | 復讐の女王: 自分の都市を一度でも征服した文明との戦闘力 +25% | `iRevengeCombatPercent` | 実装済み、ゲームで確認済み `TRAIT_REVENGE_QUEEN` |
 | ピョートル | 大使節団: その技術を持つ既知の文明 1 つにつき研究費 -10%（-75% まで） | `KnownTechCost` | 実装済み、ゲームで確認済み `TRAIT_GRAND_EMBASSY` |
 | ユリウス・カエサル | 来た、見た、勝った: 都市を征服すると全ユニットが全回復 | `bConquestHeal` | 実装済み、ゲームで確認済み `TRAIT_VENI_VIDI_VICI` |
