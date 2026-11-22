@@ -217,6 +217,35 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 		}
 	}
 
+	// iCultureRangeChange of the traits (added by this mod): the plots in the wider borders get the free culture of the
+	// adjacent plots, so they belong to the city from its founding rather than from the next turn
+	if (GET_PLAYER(getOwnerINLINE()).getCultureRangeChange() > 0)
+	{
+		int iDX, iDY;
+		int iDistance;
+		CvPlot* pLoopPlot;
+
+		for (iDX = -getCultureRange(); iDX <= getCultureRange(); iDX++)
+		{
+			for (iDY = -getCultureRange(); iDY <= getCultureRange(); iDY++)
+			{
+				iDistance = cultureDistance(iDX, iDY);
+				if (iDistance > 1 && iDistance <= getCultureRange())
+				{
+					pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+					if (pLoopPlot != NULL && pLoopPlot->isPotentialCityWorkForArea(area(), getPlotRadius()))
+					{
+						if (pLoopPlot->getCulture(getOwnerINLINE()) < GC.getDefineINT("FREE_CITY_ADJACENT_CULTURE"))
+						{
+							pLoopPlot->setCulture(getOwnerINLINE(), GC.getDefineINT("FREE_CITY_ADJACENT_CULTURE"), bBumpUnits, false);
+						}
+						pLoopPlot->updateCulture(bBumpUnits, false);
+					}
+				}
+			}
+		}
+	}
+
 	for (iI = 0; iI < MAX_TEAMS; iI++)
 	{
 		if (GET_TEAM(getTeam()).isVassal((TeamTypes)iI))
@@ -8602,6 +8631,11 @@ void CvCity::updateCultureRange(bool bUpdatePlotGroups)
 
 	if (iNewRange != NO_CULTURELEVEL)
 	{
+		// A wider range counts a city without culture yet (just founded) as the first level, so the borders grow at once
+		if (GET_PLAYER(getOwnerINLINE()).getCultureRangeChange() > 0)
+		{
+			iNewRange = std::max(1, iNewRange);
+		}
 		iNewRange = std::max(std::min(1, iNewRange), iNewRange + GET_PLAYER(getOwnerINLINE()).getCultureRangeChange());
 	}
 
