@@ -4200,6 +4200,15 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		}
 	}
 
+	// CivicOptionExtraSlots: "Can adopt 1 more civics of Legal at the same time" (added by this mod)
+	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	{
+		if (kTrait.getCivicOptionExtraSlots(iI) > 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CIVIC_OPTION_EXTRA_SLOTS", GC.getCivicOptionInfo((CivicOptionTypes)iI).getTextKeyWide(), kTrait.getCivicOptionExtraSlots(iI)));
+		}
+	}
+
 	// iRouteMovementModifierInBorders, bConquestStateReligion, bConquestReligionBuildings (added by this mod)
 	if (kTrait.getRouteMovementModifierInBorders() != 0)
 	{
@@ -15716,9 +15725,9 @@ void CvGameTextMgr::buildFinanceCivicUpkeepString(CvWStringBuffer& szBuffer, Pla
 	}
 	CvPlayer& player = GET_PLAYER(ePlayer);
 	CvWString szCivicOptionCosts;
-	for (int iI = 0; iI < GC.getNumCivicOptionInfos(); ++iI)
+	for (int iI = 0; iI < CvPlayer::getNumCivicEntries(); ++iI)	// every civic slot (changed by this mod)
 	{
-		CivicTypes eCivic = player.getCivics((CivicOptionTypes)iI);
+		CivicTypes eCivic = player.getCivicByEntry(iI);
 		if (NO_CIVIC != eCivic)
 		{
 			CvWString szTemp;
@@ -15863,9 +15872,9 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		// Civics (UnitCombatProductionModifiers)
 		if ((unit.getUnitCombatType() != NO_UNITCOMBAT) && (NO_PLAYER != city.getOwnerINLINE()))
 		{
-			for (int i = 0; i < GC.getNumCivicOptionInfos(); i++)
+			for (int i = 0; i < CvPlayer::getNumCivicEntries(); i++)	// every civic slot (changed by this mod)
 			{
-				CivicTypes eCivic = GET_PLAYER(city.getOwnerINLINE()).getCivics((CivicOptionTypes)i);
+				CivicTypes eCivic = GET_PLAYER(city.getOwnerINLINE()).getCivicByEntry(i);
 				if (NO_CIVIC != eCivic)
 				{
 					int iCivicMod = GC.getCivicInfo(eCivic).getUnitCombatProductionModifier(unit.getUnitCombatType());
@@ -16465,11 +16474,11 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 
 	// Civics
 	int iCivicMod = 0;
-	for (int i = 0; i < GC.getNumCivicOptionInfos(); i++)
+	for (int i = 0; i < CvPlayer::getNumCivicEntries(); i++)	// every civic slot (changed by this mod)
 	{
-		if (NO_CIVIC != owner.getCivics((CivicOptionTypes)i))
+		if (NO_CIVIC != owner.getCivicByEntry(i))
 		{
-			iCivicMod += GC.getCivicInfo(owner.getCivics((CivicOptionTypes)i)).getCommerceModifier(eCommerceType);
+			iCivicMod += GC.getCivicInfo(owner.getCivicByEntry(i)).getCommerceModifier(eCommerceType);
 		}
 	}
 	if (0 != iCivicMod)
@@ -16786,11 +16795,11 @@ void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldT
 
 	// Civics
 	int iCivicMod = 0;
-	for (int i = 0; i < GC.getNumCivicOptionInfos(); i++)
+	for (int i = 0; i < CvPlayer::getNumCivicEntries(); i++)	// every civic slot (changed by this mod)
 	{
-		if (NO_CIVIC != owner.getCivics((CivicOptionTypes)i))
+		if (NO_CIVIC != owner.getCivicByEntry(i))
 		{
-			iCivicMod += GC.getCivicInfo(owner.getCivics((CivicOptionTypes)i)).getYieldModifier(eYieldType);
+			iCivicMod += GC.getCivicInfo(owner.getCivicByEntry(i)).getYieldModifier(eYieldType);
 		}
 	}
 	if (0 != iCivicMod)
@@ -17030,14 +17039,14 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 
 	// Civics
 	int iCivicMod = 0;
-	for (int i = 0; i < GC.getNumCivicOptionInfos(); i++)
+	for (int i = 0; i < CvPlayer::getNumCivicEntries(); i++)	// every civic slot (changed by this mod)
 	{
-		if (NO_CIVIC != owner.getCivics((CivicOptionTypes)i))
+		if (NO_CIVIC != owner.getCivicByEntry(i))
 		{
-			iCivicMod += GC.getCivicInfo(owner.getCivics((CivicOptionTypes)i)).getGreatPeopleRateModifier();
+			iCivicMod += GC.getCivicInfo(owner.getCivicByEntry(i)).getGreatPeopleRateModifier();
 			if (owner.getStateReligion() != NO_RELIGION && city.isHasReligion(owner.getStateReligion()))
 			{
-				iCivicMod += GC.getCivicInfo(owner.getCivics((CivicOptionTypes)i)).getStateReligionGreatPeopleRateModifier();
+				iCivicMod += GC.getCivicInfo(owner.getCivicByEntry(i)).getStateReligionGreatPeopleRateModifier();
 			}
 		}
 	}
@@ -18780,9 +18789,13 @@ void CvGameTextMgr::getTradeScreenTitleIcon(CvString& szButton, CvWidgetDataStru
 void CvGameTextMgr::getTradeScreenIcons(std::vector< std::pair<CvString, CvWidgetDataStruct> >& aIconInfos, PlayerTypes ePlayer)
 {
 	aIconInfos.clear();
-	for (int i = 0; i < GC.getNumCivicOptionInfos(); i++)
+	for (int i = 0; i < CvPlayer::getNumCivicEntries(); i++)	// every civic slot (changed by this mod)
 	{
-		CivicTypes eCivic = GET_PLAYER(ePlayer).getCivics((CivicOptionTypes)i);
+		CivicTypes eCivic = GET_PLAYER(ePlayer).getCivicByEntry(i);
+		if (eCivic == NO_CIVIC)
+		{
+			continue;
+		}
 		CvWidgetDataStruct widgetData;
 		widgetData.m_eWidgetType = WIDGET_PEDIA_JUMP_TO_CIVIC;
 		widgetData.m_iData1 = eCivic;

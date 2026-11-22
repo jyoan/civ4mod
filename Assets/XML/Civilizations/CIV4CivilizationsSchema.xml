@@ -518,6 +518,15 @@
 	<ElementType name="NoTechCivics" content="eltOnly">
 		<element type="CivicType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="CivicOptionType" content="textOnly"/>
+	<ElementType name="iExtraSlots" content="textOnly" dt:type="int"/>
+	<ElementType name="CivicOptionExtraSlot" content="eltOnly">
+		<element type="CivicOptionType"/>
+		<element type="iExtraSlots"/>
+	</ElementType>
+	<ElementType name="CivicOptionExtraSlots" content="eltOnly">
+		<element type="CivicOptionExtraSlot" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="iMaxNationalWondersPerCity" content="textOnly" dt:type="int"/>
 	<ElementType name="iMaxNationalWondersPerCityForOCC" content="textOnly" dt:type="int"/>
 	<ElementType name="bHumanCanBeVassal" content="textOnly" dt:type="boolean"/>
@@ -1094,6 +1103,7 @@
 		<element type="bConquestStateReligion" minOccurs="0"/>
 		<element type="ConquestReligionBuildings" minOccurs="0"/>
 		<element type="NoTechCivics" minOccurs="0"/>
+		<element type="CivicOptionExtraSlots" minOccurs="0"/>
 		<element type="iMaxNationalWondersPerCity" minOccurs="0"/>
 		<element type="iMaxNationalWondersPerCityForOCC" minOccurs="0"/>
 		<element type="bHumanCanBeVassal" minOccurs="0"/>

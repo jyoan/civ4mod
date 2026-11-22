@@ -4956,6 +4956,7 @@ public:
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(int iSpecialBuilding) const;	// Exposed to Python (added by this mod)
 	bool isNoTechCivic(int i) const;		// Exposed to Python (added by this mod)
+	int getCivicOptionExtraSlots(int iCivicOption) const;	// Exposed to Python (added by this mod): see CvPlayer::getNumCivicSlots
 	int getMaxNationalWondersPerCity() const;	// Exposed to Python (added by this mod)
 	int getMaxNationalWondersPerCityForOCC() const;	// Exposed to Python (added by this mod)
 	bool isHumanCanBeVassal() const;	// Exposed to Python (added by this mod)
@@ -5140,6 +5141,7 @@ public:
 	void readModValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readCityFoundedUnits(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readSpecialBuildingProductionModifiers(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
+	void readCivicOptionExtraSlots(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readStartBias(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readCityAndEconomyValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	void readYieldAndUnitArrays(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
@@ -5279,6 +5281,9 @@ protected:
 	std::vector<CvString> m_aszConquestReligionBuildingTypes;	// read() keeps the types as strings until readPass3()
 	bool* m_pabNoTechCivic;	// added by this mod, NULL when not set
 	std::vector<CvString> m_aszNoTechCivicTypes;	// read() keeps the types as strings until readPass3() (civics are loaded later)
+	std::vector<int> m_aiCivicOptionExtraSlots;	// added by this mod: [civic option], empty when not set
+	std::vector<CvString> m_aszCivicOptionExtraSlotTypes;	// as strings until readPass3() (civic options are loaded after traits)
+	std::vector<int> m_aiCivicOptionExtraSlotValues;
 	int m_iMaxNationalWondersPerCity;	// added by this mod: 0 = not set, -1 = no limit
 	int m_iMaxNationalWondersPerCityForOCC;	// added by this mod: 0 = not set, -1 = no limit
 	bool m_bHumanCanBeVassal;	// added by this mod

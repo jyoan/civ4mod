@@ -819,14 +819,10 @@ bool CvDeal::startTrade(TradeData trade, PlayerTypes eFromPlayer, PlayerTypes eT
 		break;
 
 	case TRADE_CIVIC:
-		paeNewCivics = new CivicTypes[GC.getNumCivicOptionInfos()];
-
-		for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
-		{
-			paeNewCivics[iI] = GET_PLAYER(eFromPlayer).getCivics((CivicOptionTypes)iI);
-		}
-
-		paeNewCivics[GC.getCivicInfo((CivicTypes)trade.m_iData).getCivicOptionType()] = ((CivicTypes)trade.m_iData);
+		// Civic slots (changed by this mod): every slot; the civic goes in slot 0 unless the player runs it
+		paeNewCivics = new CivicTypes[CvPlayer::getNumCivicEntries()];
+		GET_PLAYER(eFromPlayer).getCivicsArray(paeNewCivics);
+		CvPlayer::addCivicToArray(paeNewCivics, (CivicTypes)trade.m_iData);
 
 		GET_PLAYER(eFromPlayer).revolution(paeNewCivics, true);
 

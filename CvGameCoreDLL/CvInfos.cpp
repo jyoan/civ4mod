@@ -21131,6 +21131,12 @@ bool CvTraitInfo::isNoTechCivic(int i) const
 	return m_pabNoTechCivic ? m_pabNoTechCivic[i] : false;
 }
 
+// CivicOptionExtraSlots (added by this mod): more civics of the civic option the player can adopt at the same time
+int CvTraitInfo::getCivicOptionExtraSlots(int iCivicOption) const
+{
+	return (iCivicOption >= 0 && iCivicOption < (int)m_aiCivicOptionExtraSlots.size()) ? m_aiCivicOptionExtraSlots[iCivicOption] : 0;
+}
+
 // iMaxNationalWondersPerCity (added by this mod): replaces MAX_NATIONAL_WONDERS_PER_CITY of GlobalDefines for the player
 // (CvPlayer::getMaxNationalWondersPerCity). 0: not set, -1: no limit
 int CvTraitInfo::getMaxNationalWondersPerCity() const
@@ -22583,6 +22589,39 @@ void CvTraitInfo::readSpecialBuildingProductionModifiers(CvXMLLoadUtility* pXML)
 	}
 }
 
+// The part of read() for CivicOptionExtraSlots (added by this mod): the civic options are loaded after the traits, so the
+// types are kept as strings and resolved in readPass3
+void CvTraitInfo::readCivicOptionExtraSlots(CvXMLLoadUtility* pXML)
+{
+	CvString szTextVal;
+	int iValue;
+
+	m_aszCivicOptionExtraSlotTypes.clear();
+	m_aiCivicOptionExtraSlotValues.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CivicOptionExtraSlots"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CivicOptionExtraSlot"))
+		{
+			do
+			{
+				iValue = 0;
+				pXML->GetChildXmlValByName(szTextVal, "CivicOptionType");
+				pXML->GetChildXmlValByName(&iValue, "iExtraSlots", 0);
+				if (!szTextVal.empty() && szTextVal != "NONE" && iValue != 0)
+				{
+					m_aszCivicOptionExtraSlotTypes.push_back(szTextVal);
+					m_aiCivicOptionExtraSlotValues.push_back(iValue);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "CivicOptionExtraSlot"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
 // The part of read() for the start bias (added by this mod)
 void CvTraitInfo::readStartBias(CvXMLLoadUtility* pXML)
 {
@@ -22732,6 +22771,7 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bConquestStateReligion, "bConquestStateReligion");
 	readTypeList(pXML, "ConquestReligionBuildings", m_aszConquestReligionBuildingTypes);	// special buildings: readPass3()
 	readTypeList(pXML, "NoTechCivics", m_aszNoTechCivicTypes);	// civics are loaded later: readPass3()
+	readCivicOptionExtraSlots(pXML);
 	pXML->GetChildXmlValByName(&m_iMaxNationalWondersPerCity, "iMaxNationalWondersPerCity");
 	pXML->GetChildXmlValByName(&m_iMaxNationalWondersPerCityForOCC, "iMaxNationalWondersPerCityForOCC");
 	pXML->GetChildXmlValByName(&m_bHumanCanBeVassal, "bHumanCanBeVassal");
@@ -23624,6 +23664,26 @@ bool CvTraitInfo::readPass3()
 	}
 	m_aszSpecialBuildingProductionTypes.clear();
 	m_aiSpecialBuildingProductionValues.clear();
+
+	// CivicOptionExtraSlots (added by this mod)
+	m_aiCivicOptionExtraSlots.clear();
+	for (i = 0; i < (int)m_aszCivicOptionExtraSlotTypes.size(); i++)
+	{
+		int iCivicOption = GC.getInfoTypeForString(m_aszCivicOptionExtraSlotTypes[i].GetCString(), true);
+		if (iCivicOption < 0 || iCivicOption >= GC.getNumCivicOptionInfos())
+		{
+			sprintf(szMessage, "Tag: %s in CivicOptionExtraSlots of CIV4TraitInfos.xml was incorrect", m_aszCivicOptionExtraSlotTypes[i].GetCString());
+			gDLL->MessageBox(szMessage, "XML Error");
+			continue;
+		}
+		if (m_aiCivicOptionExtraSlots.empty())
+		{
+			m_aiCivicOptionExtraSlots.resize(GC.getNumCivicOptionInfos(), 0);
+		}
+		m_aiCivicOptionExtraSlots[iCivicOption] += m_aiCivicOptionExtraSlotValues[i];
+	}
+	m_aszCivicOptionExtraSlotTypes.clear();
+	m_aiCivicOptionExtraSlotValues.clear();
 
 	return true;
 }

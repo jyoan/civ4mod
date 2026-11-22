@@ -660,14 +660,35 @@ void CyPlayer::foundCorporation(int /*CorporationTypes*/ iIndex)
 		m_pPlayer->foundCorporation((CorporationTypes)iIndex);
 }
 
+// Civic slots (added by this mod): a Python list of civics as an array of CvPlayer::getNumCivicEntries(). A list of slot 0
+// only (the BtS screens) keeps the other slots of the player
+static void getCivicsFromList(const CvPlayer& kPlayer, boost::python::list& kList, std::vector<CivicTypes>& aeCivics)
+{
+	int* piCivics = NULL;
+	int iI;
+	int iLength = std::min((int)PyObject_Length(kList.ptr()), CvPlayer::getNumCivicEntries());
+
+	aeCivics.resize(CvPlayer::getNumCivicEntries());
+	kPlayer.getCivicsArray(&aeCivics[0]);
+
+	gDLL->getPythonIFace()->putSeqInArray(kList.ptr() /*src*/, &piCivics /*dst*/);
+	for (iI = 0; iI < iLength; iI++)
+	{
+		aeCivics[iI] = (CivicTypes)piCivics[iI];
+	}
+	delete [] piCivics;
+}
+
 int CyPlayer::getCivicAnarchyLength(boost::python::list& /*CivicTypes**/ paeNewCivics)
 {
-	int* pCivics = NULL;
-	gDLL->getPythonIFace()->putSeqInArray(paeNewCivics.ptr() /*src*/, &pCivics /*dst*/);
+	if (m_pPlayer == NULL)
+	{
+		return -1;
+	}
 
-	int iRet = m_pPlayer ? m_pPlayer->getCivicAnarchyLength((CivicTypes*)pCivics) : -1;
-	delete [] pCivics;
-	return iRet;
+	std::vector<CivicTypes> aeCivics;
+	getCivicsFromList(*m_pPlayer, paeNewCivics, aeCivics);	// civic slots (changed by this mod)
+	return m_pPlayer->getCivicAnarchyLength(&aeCivics[0]);
 }
 
 int CyPlayer::getReligionAnarchyLength()
@@ -1787,11 +1808,14 @@ int CyPlayer::getSingleCivicUpkeep(int /*CivicTypes*/ eCivic, bool bIgnoreAnarch
 
 int CyPlayer::getCivicUpkeep(boost::python::list& /*CivicTypes*/ paiCivics, bool bIgnoreAnarchy)
 {
-	int* pCivics = NULL;
-	gDLL->getPythonIFace()->putSeqInArray(paiCivics.ptr() /*src*/, &pCivics /*dst*/);
-	int iRet = m_pPlayer ? m_pPlayer->getCivicUpkeep((CivicTypes*)pCivics, bIgnoreAnarchy) : -1;
-	delete [] pCivics;
-	return iRet;
+	if (m_pPlayer == NULL)
+	{
+		return -1;
+	}
+
+	std::vector<CivicTypes> aeCivics;
+	getCivicsFromList(*m_pPlayer, paiCivics, aeCivics);	// civic slots (changed by this mod)
+	return m_pPlayer->getCivicUpkeep(&aeCivics[0], bIgnoreAnarchy);
 }
 
 void CyPlayer::setCivics(int /*CivicOptionTypes*/ eIndex, int /*CivicTypes*/ eNewValue)
@@ -2830,4 +2854,24 @@ void  CyPlayer::forcePeace(int iPlayer)
 {
 	if (m_pPlayer)
 		m_pPlayer->forcePeace((PlayerTypes)iPlayer);
+}
+
+// Civic slots (added by this mod)
+int CyPlayer::getNumCivicSlots(int /*CivicOptionTypes*/ eCivicOption)
+{
+	return m_pPlayer ? m_pPlayer->getNumCivicSlots((CivicOptionTypes)eCivicOption) : 1;
+}
+
+int CyPlayer::getCivicSlot(int /*CivicOptionTypes*/ eCivicOption, int iSlot)
+{
+	if (m_pPlayer == NULL || eCivicOption < 0 || eCivicOption >= GC.getNumCivicOptionInfos() || iSlot < 0 || iSlot >= MAX_CIVIC_SLOTS)
+	{
+		return NO_CIVIC;
+	}
+	return m_pPlayer->getCivicSlot((CivicOptionTypes)eCivicOption, iSlot);
+}
+
+int CyPlayer::getMaxCivicSlots()
+{
+	return MAX_CIVIC_SLOTS;
 }

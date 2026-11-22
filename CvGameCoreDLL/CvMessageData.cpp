@@ -308,12 +308,28 @@ void CvNetDoTask::SetFromBuffer(FDataStreamBase* pStream)
 	pStream->Read(&m_bCtrl);
 }
 
-CvNetUpdateCivics::CvNetUpdateCivics() : CvMessageData(GAMEMESSAGE_UPDATE_CIVICS), m_ePlayer(NO_PLAYER), m_aeCivics(GC.getNumCivicOptionInfos(), NO_CIVIC)
+// Civic slots (changed by this mod): CvPlayer::getNumCivicEntries() civics. A shorter array (slot 0 only) keeps the other
+// slots of the player
+CvNetUpdateCivics::CvNetUpdateCivics() : CvMessageData(GAMEMESSAGE_UPDATE_CIVICS), m_ePlayer(NO_PLAYER), m_aeCivics(CvPlayer::getNumCivicEntries(), NO_CIVIC)
 {
 }
 
 CvNetUpdateCivics::CvNetUpdateCivics(PlayerTypes ePlayer, const std::vector<CivicTypes>& aeCivics) : CvMessageData(GAMEMESSAGE_UPDATE_CIVICS), m_ePlayer(ePlayer), m_aeCivics(aeCivics)
 {
+	int iI;
+
+	if ((int)m_aeCivics.size() < CvPlayer::getNumCivicEntries())
+	{
+		iI = (int)m_aeCivics.size();
+		m_aeCivics.resize(CvPlayer::getNumCivicEntries(), NO_CIVIC);
+		if (ePlayer != NO_PLAYER)
+		{
+			for (; iI < CvPlayer::getNumCivicEntries(); iI++)
+			{
+				m_aeCivics[iI] = GET_PLAYER(ePlayer).getCivicByEntry(iI);
+			}
+		}
+	}
 }
 
 
@@ -333,7 +349,7 @@ void CvNetUpdateCivics::Execute()
 void CvNetUpdateCivics::PutInBuffer(FDataStreamBase* pStream)
 {
 	pStream->Write(m_ePlayer);
-	for (int i = 0; i < GC.getNumCivicOptionInfos(); i++) 
+	for (int i = 0; i < CvPlayer::getNumCivicEntries(); i++)	// civic slots (changed by this mod)
 	{
 		pStream->Write(m_aeCivics[i]);
 	}
@@ -342,7 +358,7 @@ void CvNetUpdateCivics::PutInBuffer(FDataStreamBase* pStream)
 void CvNetUpdateCivics::SetFromBuffer(FDataStreamBase* pStream)
 {
 	pStream->Read((int*)&m_ePlayer);
-	for (int i = 0; i < GC.getNumCivicOptionInfos(); i++) 
+	for (int i = 0; i < CvPlayer::getNumCivicEntries(); i++)	// civic slots (changed by this mod)
 	{
 		pStream->Read((int*)&m_aeCivics[i]);
 	}

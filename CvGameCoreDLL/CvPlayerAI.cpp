@@ -11241,16 +11241,14 @@ void CvPlayerAI::AI_doCivics()
 
 	FAssertMsg(AI_getCivicTimer() == 0, "AI Civic timer is expected to be 0");
 
-	paeBestCivic = new CivicTypes[GC.getNumCivicOptionInfos()];
+	// Civic slots (changed by this mod): the AI keeps the other slots as they are, and the best civic goes in slot 0 unless
+	// it is in another slot
+	paeBestCivic = new CivicTypes[getNumCivicEntries()];
+	getCivicsArray(paeBestCivic);
 
 	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
 	{
-		paeBestCivic[iI] = AI_bestCivic((CivicOptionTypes)iI);
-
-		if (paeBestCivic[iI] == NO_CIVIC)
-		{
-			paeBestCivic[iI] = getCivics((CivicOptionTypes)iI);
-		}
+		addCivicToArray(paeBestCivic, AI_bestCivic((CivicOptionTypes)iI));
 	}
 
 	// XXX AI skips revolution???

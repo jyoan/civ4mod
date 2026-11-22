@@ -150,3 +150,4 @@
 - 2026-11-22: 諜報任務の `PrereqOrTraits`・`DisableTraits`（リストに変えた後）と生産の種類の `PrereqOrTraits`（`TechPrereq` `NONE`）を civ-design のチェカ志向でゲーム内で確認
 - 2026-11-22: 志向の `iCultureRangeChange` で、建設したその場で国境が広がることをゲーム内で確認（広大な大地志向）
 - 2026-11-22: 志向の `PyOnBuildingBuilt`（検証用志向で、穀物庫・検証用建物を生産で完成した都市の人口 +1、ほかの建物では増えない、説明文の行）と `isBuildingClassIn` をゲーム内で確認
+- 2026-11-22: 志向の `CivicOptionExtraSlots`（社会制度の枠）をゲーム内で確認（法律の 2 枠・画面の追加と取り消し・2 つの効果、検証用社会制度をやめて労働の 2 枠目が外れる、セーブと読み込み）

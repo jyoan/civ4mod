@@ -551,6 +551,12 @@
 				<CivicType>CIVIC_ORGANIZED_RELIGION</CivicType>
 				<CivicType>CIVIC_EMANCIPATION</CivicType>
 			</NoTechCivics>
+			<CivicOptionExtraSlots>
+				<CivicOptionExtraSlot>
+					<CivicOptionType>CIVICOPTION_LEGAL</CivicOptionType>
+					<iExtraSlots>1</iExtraSlots>
+				</CivicOptionExtraSlot>
+			</CivicOptionExtraSlots>
 			<iMaxNationalWondersPerCity>4</iMaxNationalWondersPerCity>
 			<iMaxNationalWondersPerCityForOCC>-1</iMaxNationalWondersPerCityForOCC>
 			<bHumanCanBeVassal>1</bHumanCanBeVassal>
@@ -1288,6 +1294,12 @@
 			<bNoUnhealthyPopulation>1</bNoUnhealthyPopulation>
 			<bBuildingOnlyHealthy>1</bBuildingOnlyHealthy>
 			<bMilitaryFoodProduction>1</bMilitaryFoodProduction>
+			<CivicOptionExtraSlots>
+				<CivicOptionExtraSlot>
+					<CivicOptionType>CIVICOPTION_LABOR</CivicOptionType>
+					<iExtraSlots>1</iExtraSlots>
+				</CivicOptionExtraSlot>
+			</CivicOptionExtraSlots>
 			<bBarbarianAlly>1</bBarbarianAlly>
 			<bBarbarianVision>1</bBarbarianVision>
 			<ExtraYieldThresholds/>
