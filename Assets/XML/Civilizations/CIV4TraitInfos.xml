@@ -837,6 +837,7 @@
 			<PyOnCorporationFounded>createExecutives(pPlayer, eCorporation, 3, pCity)</PyOnCorporationFounded>
 			<PyOnCityLost>bConquest and createPartisans(pPlayer, pCity, 2 + iPopulation, iCultureLevel)</PyOnCityLost>
 			<PyOnBuildingBuilt>isBuildingClassIn(eBuilding, ['BUILDINGCLASS_GRANARY', 'BUILDINGCLASS_TEST']) and pCity.changePopulation(1)</PyOnBuildingBuilt>
+			<PyOnReligionFounded>createMissionaries(pPlayer, eReligion, 2, pCity)</PyOnReligionFounded>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>

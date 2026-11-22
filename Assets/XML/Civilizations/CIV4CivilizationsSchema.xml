@@ -665,6 +665,7 @@
 	<ElementType name="PyOnCorporationFounded" content="textOnly"/>
 	<ElementType name="PyOnCityLost" content="textOnly"/>
 	<ElementType name="PyOnBuildingBuilt" content="textOnly"/>
+	<ElementType name="PyOnReligionFounded" content="textOnly"/>
 	<ElementType name="PyOnGained" content="textOnly"/>
 	<ElementType name="PyOnLost" content="textOnly"/>
 	<ElementType name="iHappinessPerReligion" content="textOnly" dt:type="int"/>
@@ -1187,6 +1188,7 @@
 		<element type="PyOnCorporationFounded" minOccurs="0"/>
 		<element type="PyOnCityLost" minOccurs="0"/>
 		<element type="PyOnBuildingBuilt" minOccurs="0"/>
+		<element type="PyOnReligionFounded" minOccurs="0"/>
 		<element type="PyOnGained" minOccurs="0"/>
 		<element type="PyOnLost" minOccurs="0"/>
 		<element type="ConditionalFreeTraits" minOccurs="0"/>
