@@ -1338,6 +1338,20 @@
 						<DomainType>DOMAIN_LAND</DomainType>
 					</FreePromotionDomains>
 				</FreePromotionSet>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_TEST_BUILDING</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<FreePromotionUnitCombats>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+					</FreePromotionUnitCombats>
+				</FreePromotionSet>
 			</FreePromotionSets>
 		</TraitInfo>
 		<TraitInfo>

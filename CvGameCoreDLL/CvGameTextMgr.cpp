@@ -943,6 +943,12 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szString, const CvUnit* pUnit, 
 		{
 			szString.append(NEWLINE);
 			szString.append(gDLL->getText("TXT_KEY_PROMOTION_STRENGTH_TEXT", pUnit->getExtraCombatPercent()));
+
+			// BuildingCombatPercents (added by this mod): the part from the buildings of the owner
+			if (pUnit->getBuildingCombatPercent() != 0)
+			{
+				szString.append(gDLL->getText("TXT_KEY_UNIT_BUILDING_COMBAT_NOW", pUnit->getBuildingCombatPercent()));
+			}
 		}
 
 		// BonusAffinities (added by this mod): per copy, and what the owner has now
@@ -6563,6 +6569,45 @@ void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, Prom
 			szBuffer.append(pcNewline);
 			szBuffer.append(gDLL->getText("TXT_KEY_BONUS_AFFINITY", GC.getPromotionInfo(ePromotion).getBonusAffinity(iAffinityBonus), getLinkText(GC.getBonusInfo((BonusTypes)iAffinityBonus).getDescription()).GetCString()));
 		}
+	}
+
+	// BuildingCombatPercents (added by this mod): a building class by its default building (with a link), a special
+	// building by its name (no Civilopedia page)
+	for (int iBuildingCombat = 0; iBuildingCombat < GC.getPromotionInfo(ePromotion).getNumBuildingCombatPercents(); ++iBuildingCombat)
+	{
+		CvWString szBuildingName;
+		int iCombatBuildingClass = GC.getPromotionInfo(ePromotion).getBuildingCombatBuildingClass(iBuildingCombat);
+		int iCombatSpecialBuilding = GC.getPromotionInfo(ePromotion).getBuildingCombatSpecialBuilding(iBuildingCombat);
+
+		if (iCombatBuildingClass != NO_BUILDINGCLASS)
+		{
+			BuildingTypes eCombatBuilding = (BuildingTypes)GC.getBuildingClassInfo((BuildingClassTypes)iCombatBuildingClass).getDefaultBuildingIndex();
+			if (eCombatBuilding != NO_BUILDING)
+			{
+				szBuildingName = getLinkText(GC.getBuildingInfo(eCombatBuilding).getDescription());
+			}
+			else
+			{
+				szBuildingName = GC.getBuildingClassInfo((BuildingClassTypes)iCombatBuildingClass).getDescription();
+			}
+		}
+		else if (iCombatSpecialBuilding != NO_SPECIALBUILDING)
+		{
+			szBuildingName = GC.getSpecialBuildingInfo((SpecialBuildingTypes)iCombatSpecialBuilding).getDescription();
+		}
+
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_BUILDING_COMBAT", GC.getPromotionInfo(ePromotion).getBuildingCombatPercent(iBuildingCombat), szBuildingName.GetCString()));
+		if (GC.getPromotionInfo(ePromotion).isBuildingCombatStateReligion(iBuildingCombat))
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_BUILDING_COMBAT_STATE_RELIGION"));
+		}
+	}
+
+	if (GC.getPromotionInfo(ePromotion).isBuildingCombat() && GC.getPromotionInfo(ePromotion).getBuildingCombatMaxPercent() >= 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_BUILDING_COMBAT_MAX", GC.getPromotionInfo(ePromotion).getBuildingCombatMaxPercent()));
 	}
 
 	// bHiddenNationality (added by this mod)

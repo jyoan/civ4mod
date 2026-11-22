@@ -1750,6 +1750,7 @@ m_bFreeEmbark(false),
 m_bPillageNoMoveCost(false),
 m_iPillageHealPercent(0),
 m_iPillageExperience(0),
+m_iBuildingCombatMaxPercent(-1),
 m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
@@ -2250,12 +2251,104 @@ int CvPromotionInfo::getBonusAffinity(int iBonus) const
 	return ((iBonus > -1) && (iBonus < (int)m_aiBonusAffinity.size())) ? m_aiBonusAffinity[iBonus] : 0;
 }
 
-// BonusAffinities: the bonuses are loaded after the promotions (added by this mod). Nothing to do for infos from the cache
+// BuildingCombatPercents (added by this mod)
+int CvPromotionInfo::getNumBuildingCombatPercents() const
+{
+	return (int)m_aiBuildingCombatPercent.size();
+}
+
+int CvPromotionInfo::getBuildingCombatBuildingClass(int i) const
+{
+	return (i > -1 && i < getNumBuildingCombatPercents()) ? m_aiBuildingCombatBuildingClass[i] : NO_BUILDINGCLASS;
+}
+
+int CvPromotionInfo::getBuildingCombatSpecialBuilding(int i) const
+{
+	return (i > -1 && i < getNumBuildingCombatPercents()) ? m_aiBuildingCombatSpecialBuilding[i] : NO_SPECIALBUILDING;
+}
+
+int CvPromotionInfo::getBuildingCombatPercent(int i) const
+{
+	return (i > -1 && i < getNumBuildingCombatPercents()) ? m_aiBuildingCombatPercent[i] : 0;
+}
+
+// Only the buildings of the state religion of the owner count
+bool CvPromotionInfo::isBuildingCombatStateReligion(int i) const
+{
+	return (i > -1 && i < getNumBuildingCombatPercents()) ? (m_aiBuildingCombatStateReligion[i] != 0) : false;
+}
+
+// The cap of the total of BuildingCombatPercents of this promotion (-1: no cap)
+int CvPromotionInfo::getBuildingCombatMaxPercent() const
+{
+	return m_iBuildingCombatMaxPercent;
+}
+
+bool CvPromotionInfo::isBuildingCombat() const
+{
+	return !m_aiBuildingCombatPercent.empty();
+}
+
+// BonusAffinities and BuildingCombatPercents: the bonuses, special buildings and building classes are loaded after the
+// promotions (added by this mod). Nothing to do for infos from the cache
 bool CvPromotionInfo::readPass3()
 {
 	char szMessage[1024];
 	int iBonus;
 	int i;
+
+	// BuildingCombatPercents: an item with a building class or a special building that is not found is dropped
+	if (!m_aszBuildingCombatBuildingClassTypes.empty())
+	{
+		std::vector<int> aiPercent = m_aiBuildingCombatPercent;
+		std::vector<int> aiStateReligion = m_aiBuildingCombatStateReligion;
+		int iBuildingClass;
+		int iSpecialBuilding;
+
+		m_aiBuildingCombatBuildingClass.clear();
+		m_aiBuildingCombatSpecialBuilding.clear();
+		m_aiBuildingCombatPercent.clear();
+		m_aiBuildingCombatStateReligion.clear();
+
+		for (i = 0; i < (int)m_aszBuildingCombatBuildingClassTypes.size(); i++)
+		{
+			iBuildingClass = NO_BUILDINGCLASS;
+			iSpecialBuilding = NO_SPECIALBUILDING;
+
+			if (!m_aszBuildingCombatBuildingClassTypes[i].empty() && m_aszBuildingCombatBuildingClassTypes[i] != "NONE")
+			{
+				iBuildingClass = GC.getInfoTypeForString(m_aszBuildingCombatBuildingClassTypes[i].GetCString(), true);
+				if (iBuildingClass < 0)
+				{
+					sprintf(szMessage, "Tag: %s in BuildingCombatPercents of CIV4PromotionInfos.xml was incorrect", m_aszBuildingCombatBuildingClassTypes[i].GetCString());
+					gDLL->MessageBox(szMessage, "XML Error");
+					continue;
+				}
+			}
+			else if (!m_aszBuildingCombatSpecialBuildingTypes[i].empty() && m_aszBuildingCombatSpecialBuildingTypes[i] != "NONE")
+			{
+				iSpecialBuilding = GC.getInfoTypeForString(m_aszBuildingCombatSpecialBuildingTypes[i].GetCString(), true);
+				if (iSpecialBuilding < 0)
+				{
+					sprintf(szMessage, "Tag: %s in BuildingCombatPercents of CIV4PromotionInfos.xml was incorrect", m_aszBuildingCombatSpecialBuildingTypes[i].GetCString());
+					gDLL->MessageBox(szMessage, "XML Error");
+					continue;
+				}
+			}
+			else
+			{
+				continue;
+			}
+
+			m_aiBuildingCombatBuildingClass.push_back(iBuildingClass);
+			m_aiBuildingCombatSpecialBuilding.push_back(iSpecialBuilding);
+			m_aiBuildingCombatPercent.push_back(aiPercent[i]);
+			m_aiBuildingCombatStateReligion.push_back(aiStateReligion[i]);
+		}
+
+		m_aszBuildingCombatBuildingClassTypes.clear();
+		m_aszBuildingCombatSpecialBuildingTypes.clear();
+	}
 
 	if (m_aszBonusAffinityTypes.empty())
 	{
@@ -2782,13 +2875,40 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iPillageExperience);
 	}
+
+	// uiFlag < 19: cache written before BuildingCombatPercents existed
+	m_aiBuildingCombatBuildingClass.clear();
+	m_aiBuildingCombatSpecialBuilding.clear();
+	m_aiBuildingCombatPercent.clear();
+	m_aiBuildingCombatStateReligion.clear();
+	m_iBuildingCombatMaxPercent = -1;
+	if (uiFlag > 18)
+	{
+		int iNumBuildingCombat;
+		int iBuildingCombat;
+		int iBuildingCombatValue;
+
+		stream->Read(&iNumBuildingCombat);
+		for (iBuildingCombat = 0; iBuildingCombat < iNumBuildingCombat; iBuildingCombat++)
+		{
+			stream->Read(&iBuildingCombatValue);
+			m_aiBuildingCombatBuildingClass.push_back(iBuildingCombatValue);
+			stream->Read(&iBuildingCombatValue);
+			m_aiBuildingCombatSpecialBuilding.push_back(iBuildingCombatValue);
+			stream->Read(&iBuildingCombatValue);
+			m_aiBuildingCombatPercent.push_back(iBuildingCombatValue);
+			stream->Read(&iBuildingCombatValue);
+			m_aiBuildingCombatStateReligion.push_back(iBuildingCombatValue);
+		}
+		stream->Read(&m_iBuildingCombatMaxPercent);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 18;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience (added by this mod)
+	uint uiFlag = 19;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience, 19: BuildingCombatPercents, iBuildingCombatMaxPercent (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -2919,6 +3039,16 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_bPillageNoMoveCost);
 	stream->Write(m_iPillageHealPercent);
 	stream->Write(m_iPillageExperience);
+
+	stream->Write(getNumBuildingCombatPercents());
+	for (int iBuildingCombat = 0; iBuildingCombat < getNumBuildingCombatPercents(); iBuildingCombat++)
+	{
+		stream->Write(m_aiBuildingCombatBuildingClass[iBuildingCombat]);
+		stream->Write(m_aiBuildingCombatSpecialBuilding[iBuildingCombat]);
+		stream->Write(m_aiBuildingCombatPercent[iBuildingCombat]);
+		stream->Write(m_aiBuildingCombatStateReligion[iBuildingCombat]);
+	}
+	stream->Write(m_iBuildingCombatMaxPercent);
 }
 
 // Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
@@ -3083,6 +3213,46 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bHiddenNationality, "bHiddenNationality");
 	// BonusAffinities (added by this mod): resolved in readPass3(), after the bonuses are loaded
 	readTypeStringValueList(pXML, "BonusAffinities", "BonusAffinity", "BonusType", "iAffinity", m_aszBonusAffinityTypes, m_aiBonusAffinityValues);
+
+	// BuildingCombatPercents (added by this mod): the building classes and special buildings are resolved in readPass3()
+	m_aiBuildingCombatBuildingClass.clear();
+	m_aiBuildingCombatSpecialBuilding.clear();
+	m_aiBuildingCombatPercent.clear();
+	m_aiBuildingCombatStateReligion.clear();
+	m_aszBuildingCombatBuildingClassTypes.clear();
+	m_aszBuildingCombatSpecialBuildingTypes.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "BuildingCombatPercents"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "BuildingCombatPercent"))
+		{
+			do
+			{
+				CvString szBuildingClass = "";
+				CvString szSpecialBuilding = "";
+				int iBuildingCombatPercent = 0;
+				bool bStateReligion = false;
+
+				pXML->GetChildXmlValByName(szBuildingClass, "BuildingClassType");
+				pXML->GetChildXmlValByName(szSpecialBuilding, "SpecialBuildingType");
+				pXML->GetChildXmlValByName(&iBuildingCombatPercent, "iCombatPercent");
+				pXML->GetChildXmlValByName(&bStateReligion, "bStateReligion");
+
+				if (iBuildingCombatPercent != 0 && (!szBuildingClass.empty() || !szSpecialBuilding.empty()))
+				{
+					m_aszBuildingCombatBuildingClassTypes.push_back(szBuildingClass);
+					m_aszBuildingCombatSpecialBuildingTypes.push_back(szSpecialBuilding);
+					m_aiBuildingCombatPercent.push_back(iBuildingCombatPercent);
+					m_aiBuildingCombatStateReligion.push_back(bStateReligion ? 1 : 0);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "BuildingCombatPercent"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	pXML->GetChildXmlValByName(&m_iBuildingCombatMaxPercent, "iBuildingCombatMaxPercent", -1);
 
 	// FeatureSpreads (added by this mod): the features are loaded before the promotions
 	m_aiFeatureSpreadFeature.clear();

@@ -345,6 +345,7 @@ public:
 	bool isMaintainFeatures(FeatureTypes eFeature) const;				// Exposed to Python
 	int getMaxCities() const;											// Exposed to Python
 	int getNumWorldWonders() const;									// Exposed to Python: in all the cities (added by this mod)
+	int getNumActiveBuildingsForCombat(BuildingClassTypes eBuildingClass, SpecialBuildingTypes eSpecialBuilding, bool bStateReligion) const;	// added by this mod: BuildingCombatPercents
 	void updateWorldWonderEffects();									// added by this mod
 	void updateBuildingChangeEffects();									// added by this mod
 	int getBuildingClassExtraCommerce(BuildingClassTypes eBuildingClass, CommerceTypes eCommerce) const;	// added by this mod

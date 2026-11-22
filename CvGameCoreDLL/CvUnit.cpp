@@ -342,6 +342,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iRivalTerritoryCount = 0;
 	m_iRiverNavigationCount = 0;
 	m_iFreeEmbarkCount = 0;
+	m_iBuildingCombatCount = 0;
 	m_iNoDamagePenaltyCount = 0;
 	m_iHiddenNationalityCount = 0;
 	m_iExtraCityAttackPercent = 0;
@@ -11052,6 +11053,7 @@ void CvUnit::updatePromotionCounts()
 	m_iRivalTerritoryCount = countPromotions(&CvPromotionInfo::isRivalTerritory);
 	m_iRiverNavigationCount = countPromotions(&CvPromotionInfo::isRiverNavigation);
 	m_iFreeEmbarkCount = countPromotions(&CvPromotionInfo::isFreeEmbark);
+	m_iBuildingCombatCount = countPromotions(&CvPromotionInfo::isBuildingCombat);
 	m_iNoDamagePenaltyCount = countPromotions(&CvPromotionInfo::isNoDamagePenalty);
 	m_iHiddenNationalityCount = countPromotions(&CvPromotionInfo::isHiddenNationality);
 
@@ -11115,6 +11117,54 @@ int CvUnit::getBonusAffinityStrength() const
 	}
 
 	return iStrength;
+}
+
+// BuildingCombatPercents of the promotions (added by this mod): for each promotion, the % of each item times the buildings
+// of the owner (CvPlayer::getNumActiveBuildingsForCombat), capped by iBuildingCombatMaxPercent of the promotion; added up
+// over the promotions. Worked out each time, so it follows the buildings at once
+int CvUnit::getBuildingCombatPercent() const
+{
+	int iPercent = 0;
+	int iPromotionPercent;
+	int iMaxPercent;
+	int iPromotion;
+	int iI;
+
+	if (m_iBuildingCombatCount <= 0 || getOwnerINLINE() == NO_PLAYER)
+	{
+		return 0;
+	}
+
+	for (iPromotion = 0; iPromotion < GC.getNumPromotionInfos(); iPromotion++)
+	{
+		if (!isHasPromotion((PromotionTypes)iPromotion))
+		{
+			continue;
+		}
+
+		CvPromotionInfo& kPromotion = GC.getPromotionInfo((PromotionTypes)iPromotion);
+		if (!kPromotion.isBuildingCombat())
+		{
+			continue;
+		}
+
+		iPromotionPercent = 0;
+		for (iI = 0; iI < kPromotion.getNumBuildingCombatPercents(); iI++)
+		{
+			iPromotionPercent += kPromotion.getBuildingCombatPercent(iI) * GET_PLAYER(getOwnerINLINE()).getNumActiveBuildingsForCombat((BuildingClassTypes)kPromotion.getBuildingCombatBuildingClass(iI),
+				(SpecialBuildingTypes)kPromotion.getBuildingCombatSpecialBuilding(iI), kPromotion.isBuildingCombatStateReligion(iI));
+		}
+
+		iMaxPercent = kPromotion.getBuildingCombatMaxPercent();
+		if (iMaxPercent >= 0 && iPromotionPercent > iMaxPercent)
+		{
+			iPromotionPercent = iMaxPercent;
+		}
+
+		iPercent += iPromotionPercent;
+	}
+
+	return iPercent;
 }
 
 // bChooseGoody of the promotions (added by this mod)
@@ -12966,6 +13016,9 @@ int CvUnit::getExtraCombatPercent() const
 		iPercent += m_iCombatPercentOverseas;
 	}
 
+	// BuildingCombatPercents of the promotions (added by this mod)
+	iPercent += getBuildingCombatPercent();
+
 	// iCombatPercent of the traits of the owner (added by this mod)
 	iPercent += GET_PLAYER(getOwnerINLINE()).getTraitCombatPercent();
 
@@ -13990,6 +14043,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		m_iRivalTerritoryCount += (GC.getPromotionInfo(eIndex).isRivalTerritory() ? iChange : 0);
 		m_iRiverNavigationCount += (GC.getPromotionInfo(eIndex).isRiverNavigation() ? iChange : 0);
 		m_iFreeEmbarkCount += (GC.getPromotionInfo(eIndex).isFreeEmbark() ? iChange : 0);
+		m_iBuildingCombatCount += (GC.getPromotionInfo(eIndex).isBuildingCombat() ? iChange : 0);
 		m_iNoDamagePenaltyCount += (GC.getPromotionInfo(eIndex).isNoDamagePenalty() ? iChange : 0);
 
 		// BonusAffinities (added by this mod)

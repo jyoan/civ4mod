@@ -639,6 +639,11 @@ bool CyUnit::isRiverNavigation()
 	return m_pUnit ? m_pUnit->isRiverNavigation() : false;
 }
 
+int CyUnit::getBuildingCombatPercent()
+{
+	return m_pUnit ? m_pUnit->getBuildingCombatPercent() : 0;
+}
+
 bool CyUnit::isFreeEmbark()
 {
 	return m_pUnit ? m_pUnit->isFreeEmbark() : false;
