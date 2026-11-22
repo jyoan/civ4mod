@@ -3736,7 +3736,7 @@ void CvPlayer::updateTraitDependents(std::vector<bool>& abObsoleteBuilding)
 // (PyOnGameStart etc.), calls the function of CvTraitInterface.py that evaluates it. The arguments are the player and the
 // trait, then the city (PyOnCityFounded, PyOnCityAcquired), then the old owner, bConquest and bTrade (PyOnCityAcquired).
 // PyOnCityLost: the city (now of the new owner), the new owner (in eOldOwner), bConquest, bTrade, and the population and
-// the culture level of the city before it was lost.
+// the culture level of the city before it was lost. PyOnBuildingBuilt: the city and the building it completed.
 // Called where CvEventReporter reports the Python events, which happens the same way on every computer.
 // PyOnDiscovered of a tech (added by this mod): CvHookInterface.py evaluates the expression with pPlayer, eTech and bFirst
 // (the team of the player is the first to have it)
@@ -3773,7 +3773,7 @@ void CvPlayer::doCivicPythonHook(CivicTypes eCivic, bool bAdopt)
 	delete pyPlayer;	// the python function must not hold on to it
 }
 
-void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, PlayerTypes eOldOwner, bool bConquest, bool bTrade, CorporationTypes eCorporation, int iPopulation, CultureLevelTypes eCultureLevel)
+void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, PlayerTypes eOldOwner, bool bConquest, bool bTrade, CorporationTypes eCorporation, int iPopulation, CultureLevelTypes eCultureLevel, BuildingTypes eBuilding)
 {
 	// Not for the player watching in the AI observe mode, who has nothing to act on
 	if (isObserver())
@@ -3781,7 +3781,7 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 		return;
 	}
 
-	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onGained", "onLost" };	// the last two: doTraitGainedPythonHook
+	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onBuildingBuilt", "onGained", "onLost" };	// the last two: doTraitGainedPythonHook
 	CyPlayer* pyPlayer;
 	CyCity* pyCity;
 	int iI;
@@ -3820,6 +3820,10 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 			else if (eHook == TRAIT_PYHOOK_CORPORATION_FOUNDED)
 			{
 				argsList.add((int)eCorporation);
+			}
+			else if (eHook == TRAIT_PYHOOK_BUILDING_BUILT)
+			{
+				argsList.add((int)eBuilding);
 			}
 
 			gDLL->getPythonIFace()->callFunction(PYTraitModule, aszFunctions[eHook], argsList.makeFunctionArgs());

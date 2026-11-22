@@ -47,6 +47,14 @@ def isNewWorldCity(pCity):
 	"The city is in a region where no player started (CyPlot.isNewWorld)"
 	return pCity.plot().isNewWorld()
 
+def isBuildingClassIn(eBuilding, lszBuildingClasses):
+	"True if the building is of one of the building classes (['BUILDINGCLASS_GRANARY', 'BUILDINGCLASS_AQUEDUCT']), unique buildings too"
+	iBuildingClass = gc.getBuildingInfo(eBuilding).getBuildingClassType()
+	for szBuildingClass in lszBuildingClasses:
+		if iBuildingClass == gc.getInfoTypeForString(szBuildingClass):
+			return True
+	return False
+
 def isOnFeature(pUnit, szFeature):
 	"True if the unit is on a plot with the feature ('FEATURE_FOREST')"
 	return pUnit.plot().getFeatureType() == gc.getInfoTypeForString(szFeature)
