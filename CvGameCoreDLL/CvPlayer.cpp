@@ -3787,7 +3787,7 @@ void CvPlayer::doCivicPythonHook(CivicTypes eCivic, bool bAdopt)
 	delete pyPlayer;	// the python function must not hold on to it
 }
 
-void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, PlayerTypes eOldOwner, bool bConquest, bool bTrade, CorporationTypes eCorporation, int iPopulation, CultureLevelTypes eCultureLevel, BuildingTypes eBuilding)
+void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, PlayerTypes eOldOwner, bool bConquest, bool bTrade, CorporationTypes eCorporation, int iPopulation, CultureLevelTypes eCultureLevel, BuildingTypes eBuilding, ReligionTypes eReligion)
 {
 	// Not for the player watching in the AI observe mode, who has nothing to act on
 	if (isObserver())
@@ -3795,7 +3795,7 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 		return;
 	}
 
-	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onBuildingBuilt", "onGained", "onLost" };	// the last two: doTraitGainedPythonHook
+	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onBuildingBuilt", "onReligionFounded", "onGained", "onLost" };	// the last two: doTraitGainedPythonHook
 	CyPlayer* pyPlayer;
 	CyCity* pyCity;
 	int iI;
@@ -3838,6 +3838,10 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 			else if (eHook == TRAIT_PYHOOK_BUILDING_BUILT)
 			{
 				argsList.add((int)eBuilding);
+			}
+			else if (eHook == TRAIT_PYHOOK_RELIGION_FOUNDED)
+			{
+				argsList.add((int)eReligion);
 			}
 
 			gDLL->getPythonIFace()->callFunction(PYTraitModule, aszFunctions[eHook], argsList.makeFunctionArgs());
@@ -11810,6 +11814,14 @@ void CvPlayer::foundReligion(ReligionTypes eReligion, ReligionTypes eSlotReligio
 					}
 				}
 			}
+		}
+
+		// PyOnReligionFounded of the traits of the founder (added by this mod), with the holy city, after the free units. Also
+		// for a religion given without the free units (CvGame::doHolyCity). Not in the world builder nor before the game
+		// starts, as the other hooks
+		if (GC.getGameINLINE().isFinalInitialized() && !gDLL->GetWorldBuilderMode())
+		{
+			doTraitPythonHook(TRAIT_PYHOOK_RELIGION_FOUNDED, pBestCity, NO_PLAYER, false, false, NO_CORPORATION, 0, NO_CULTURELEVEL, NO_BUILDING, eReligion);
 		}
 	}
 }

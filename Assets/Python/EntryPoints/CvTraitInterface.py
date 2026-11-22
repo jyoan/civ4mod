@@ -20,6 +20,8 @@
 ##   PyOnBuildingBuilt pPlayer, eTrait, pCity, eBuilding: after a city of the player completes the building by production
 ##                     (the same buildings as PyOnBuilt of CIV4BuildingInfos.xml: not the free ones), e.g.
 ##                     isBuildingClassIn(eBuilding, ['BUILDINGCLASS_GRANARY']) and pCity.changePopulation(1)
+##   PyOnReligionFounded  pPlayer, eTrait, pCity (the holy city), eReligion: after the player founds the religion (after
+##                     the free missionary of the religion, if any), e.g. createMissionaries(pPlayer, eReligion, 2, pCity)
 ##   PyOnGained        pPlayer, eTrait: when the player gains this trait during the game (conditions of
 ##                     ConditionalFreeTraits, FreeTraits of civics, buildings and techs, temporary traits, Python).
 ##                     Not for the traits the player has when the game starts
@@ -64,6 +66,10 @@ def onCityLost(argsList):
 def onBuildingBuilt(argsList):
 	pPlayer, eTrait, pCity, eBuilding = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnBuildingBuilt())
+
+def onReligionFounded(argsList):
+	pPlayer, eTrait, pCity, eReligion = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnReligionFounded())
 
 def onGained(argsList):
 	pPlayer, eTrait = argsList

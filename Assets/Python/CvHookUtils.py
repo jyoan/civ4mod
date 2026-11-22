@@ -81,6 +81,14 @@ def createExecutives(pPlayer, eCorporation, iNum, pCity):
 			createUnits(pPlayer, gc.getUnitClassInfo(iUnitClass).getType(), iNum, pCity.plot())
 			return
 
+def createMissionaries(pPlayer, eReligion, iNum, pCity):
+	"Creates iNum units that spread the religion (the missionary of the player's civilization) in the city"
+	for iUnitClass in range(gc.getNumUnitClassInfos()):
+		eUnit = pPlayer.getCivilizationUnit(iUnitClass)
+		if eUnit != -1 and gc.getUnitInfo(eUnit).getReligionSpreads(eReligion) > 0:
+			createUnits(pPlayer, gc.getUnitClassInfo(iUnitClass).getType(), iNum, pCity.plot())
+			return
+
 def addBuilding(pCity, szBuildingClass):
 	"The city gets the building of the building class (the building of the owner's civilization)"
 	pOwner = gc.getPlayer(pCity.getOwner())
