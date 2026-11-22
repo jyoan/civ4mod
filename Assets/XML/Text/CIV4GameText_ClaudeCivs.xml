@@ -1703,4 +1703,31 @@
 		<Spanish>Converts the production of the city into espionage points.</Spanish>
 		<Japanese>&#37117;&#24066;&#12398;&#29983;&#29987;&#21147;&#12434;&#35548;&#22577;&#12509;&#12452;&#12531;&#12488;&#12395;&#22793;&#25563;&#12375;&#12414;&#12377;&#12290;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HANGING_GARDENS</Tag>
+		<English>Hanging Gardens</English>
+		<French>Hanging Gardens</French>
+		<German>Hanging Gardens</German>
+		<Italian>Hanging Gardens</Italian>
+		<Spanish>Hanging Gardens</Spanish>
+		<Japanese>&#31354;&#20013;&#24237;&#22290;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HANGING_GARDENS_SHORT</Tag>
+		<English>Gar</English>
+		<French>Gar</French>
+		<German>Gar</German>
+		<Italian>Gar</Italian>
+		<Spanish>Gar</Spanish>
+		<Japanese>&#24237;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HANGING_GARDENS_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Population +1 in a city that completes a Granary, an Aqueduct, a Grocer, a Hospital or a Recycling Center</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Population +1 in a city that completes a Granary, an Aqueduct, a Grocer, a Hospital or a Recycling Center</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Population +1 in a city that completes a Granary, an Aqueduct, a Grocer, a Hospital or a Recycling Center</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Population +1 in a city that completes a Granary, an Aqueduct, a Grocer, a Hospital or a Recycling Center</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Population +1 in a city that completes a Granary, an Aqueduct, a Grocer, a Hospital or a Recycling Center</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#31296;&#29289;&#24235;&#12539;&#27700;&#36947;&#27211;&#12539;&#38609;&#36008;&#21830;&#12539;&#30149;&#38498;&#12539;&#12522;&#12469;&#12452;&#12463;&#12523;&#26045;&#35373;&#12434;&#24314;&#12390;&#12383;&#37117;&#24066;&#12398;&#20154;&#21475; +1</Japanese>
+	</TEXT>
 </Civ4GameText>
