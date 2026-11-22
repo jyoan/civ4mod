@@ -7563,8 +7563,14 @@ bool CvPlayer::canCreate(ProjectTypes eProject, bool bContinue, bool bTestVisibl
 
 bool CvPlayer::canMaintain(ProcessTypes eProcess, bool bContinue) const
 {
-	// NoTechProcesses of the traits (added by this mod): no tech needed
-	if (!(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getProcessInfo(eProcess).getTechPrereq()))) && !isNoTechProcess(eProcess))
+	// NoTechProcesses of the traits (added by this mod): no tech needed. TechPrereq NONE: no tech needed
+	if (GC.getProcessInfo(eProcess).getTechPrereq() != NO_TECH && !(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getProcessInfo(eProcess).getTechPrereq()))) && !isNoTechProcess(eProcess))
+	{
+		return false;
+	}
+
+	// PrereqOrTraits of the process (added by this mod)
+	if (getLeaderType() == NO_LEADER ? !GC.getProcessInfo(eProcess).getPrereqOrTraitsVector().empty() : !hasPrereqOrTrait(GC.getProcessInfo(eProcess).getPrereqOrTraitsVector()))
 	{
 		return false;
 	}
@@ -25066,23 +25072,23 @@ bool CvPlayer::canSpyDestroyBuilding(PlayerTypes eTarget, BuildingTypes eBuildin
 	return true;
 }
 
-// PrereqTrait and DisableTrait of the espionage missions (added by this mod): a mission with PrereqTrait needs the trait,
-// a mission with DisableTrait is off for a player with the trait
+// PrereqOrTraits and DisableTraits of the espionage missions (added by this mod): a mission with PrereqOrTraits needs one
+// of the traits, a mission with DisableTraits is off for a player with one of the traits
 bool CvPlayer::isEspionageMissionAllowed(EspionageMissionTypes eMission) const
 {
 	CvEspionageMissionInfo& kMission = GC.getEspionageMissionInfo(eMission);
 
 	if (getLeaderType() == NO_LEADER)
 	{
-		return (kMission.getPrereqTrait() == NO_TRAIT);
+		return kMission.getPrereqOrTraitsVector().empty();
 	}
 
-	if (kMission.getPrereqTrait() != NO_TRAIT && !hasTrait((TraitTypes)kMission.getPrereqTrait()))
+	if (!hasPrereqOrTrait(kMission.getPrereqOrTraitsVector()))
 	{
 		return false;
 	}
 
-	if (kMission.getDisableTrait() != NO_TRAIT && hasTrait((TraitTypes)kMission.getDisableTrait()))
+	if (!kMission.getDisableTraitsVector().empty() && hasPrereqOrTrait(kMission.getDisableTraitsVector()))
 	{
 		return false;
 	}

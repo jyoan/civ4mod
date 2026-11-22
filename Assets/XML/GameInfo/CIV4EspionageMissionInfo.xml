@@ -425,7 +425,9 @@
 			<iPlayerAnarchyCounter>0</iPlayerAnarchyCounter>
 			<iCounterespionageNumTurns>0</iCounterespionageNumTurns>
 			<iCounterespionageMod>0</iCounterespionageMod>
-			<DisableTrait>TRAIT_TEST</DisableTrait>
+			<DisableTraits>
+				<TraitType>TRAIT_TEST</TraitType>
+			</DisableTraits>
 		</EspionageMissionInfo>
 		<EspionageMissionInfo>
 			<Type>ESPIONAGEMISSION_CITY_UNHAPPINESS</Type>
@@ -461,7 +463,9 @@
 			<iPlayerAnarchyCounter>0</iPlayerAnarchyCounter>
 			<iCounterespionageNumTurns>0</iCounterespionageNumTurns>
 			<iCounterespionageMod>0</iCounterespionageMod>
-			<DisableTrait>TRAIT_TEST</DisableTrait>
+			<DisableTraits>
+				<TraitType>TRAIT_TEST</TraitType>
+			</DisableTraits>
 		</EspionageMissionInfo>
 		<EspionageMissionInfo>
 			<Type>ESPIONAGEMISSION_CITY_REVOLT</Type>
@@ -744,7 +748,9 @@
 			<iPlayerAnarchyCounter>0</iPlayerAnarchyCounter>
 			<iCounterespionageNumTurns>0</iCounterespionageNumTurns>
 			<iCounterespionageMod>0</iCounterespionageMod>
-			<PrereqTrait>TRAIT_TEST</PrereqTrait>
+			<PrereqOrTraits>
+				<TraitType>TRAIT_TEST</TraitType>
+			</PrereqOrTraits>
 		</EspionageMissionInfo>
 		<EspionageMissionInfo>
 			<Type>ESPIONAGEMISSION_TEST_CITY_UNHAPPINESS</Type>
@@ -780,7 +786,10 @@
 			<iPlayerAnarchyCounter>0</iPlayerAnarchyCounter>
 			<iCounterespionageNumTurns>0</iCounterespionageNumTurns>
 			<iCounterespionageMod>0</iCounterespionageMod>
-			<PrereqTrait>TRAIT_TEST</PrereqTrait>
+			<PrereqOrTraits>
+				<TraitType>TRAIT_TEST</TraitType>
+			</PrereqOrTraits>
 		</EspionageMissionInfo>
+		<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</EspionageMissionInfos>
 </Civ4EspionageMissionInfo>

@@ -5171,20 +5171,38 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 	}
 }
 
-// The part of the trait help for PrereqTrait and DisableTrait of the espionage missions (added by this mod). The missions
-// are loaded when a game is launched: none on the screens before (GC.getNumEspionageMissionInfos() is 0)
+static bool isTypeInList(const std::vector<int>& aiTypes, int iType)
+{
+	return (std::find(aiTypes.begin(), aiTypes.end(), iType) != aiTypes.end());
+}
+
+// The part of the trait help for PrereqOrTraits and DisableTraits of the espionage missions and PrereqOrTraits of the
+// processes (added by this mod). The missions and the processes are loaded when a game is launched: none on the screens
+// before (GC.getNumEspionageMissionInfos() is 0)
 void CvGameTextMgr::parseTraitEspionageMissions(CvWStringBuffer& szHelpString, TraitTypes eTrait)
 {
 	CvWString szTempBuffer;
 	bool bFirst;
 	int iI;
 
+	// "Unique process: Espionage"
+	bFirst = true;
+	for (iI = 0; iI < GC.getNumProcessInfos(); iI++)
+	{
+		if (isTypeInList(GC.getProcessInfo((ProcessTypes)iI).getPrereqOrTraitsVector(), eTrait))
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_UNIQUE_PROCESSES").c_str());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), GC.getProcessInfo((ProcessTypes)iI).getDescription(), L", ", bFirst);
+			bFirst = false;
+		}
+	}
+
 	// "Espionage missions: Assassinate a Great Person"
 	bFirst = true;
 	for (iI = 0; iI < GC.getNumEspionageMissionInfos(); iI++)
 	{
 		CvEspionageMissionInfo& kMission = GC.getEspionageMissionInfo((EspionageMissionTypes)iI);
-		if (kMission.getPrereqTrait() == eTrait && kMission.getDisableTrait() != eTrait && kMission.getCost() != -1)
+		if (isTypeInList(kMission.getPrereqOrTraitsVector(), eTrait) && !isTypeInList(kMission.getDisableTraitsVector(), eTrait) && kMission.getCost() != -1)
 		{
 			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_ENABLED_ESPIONAGE_MISSIONS").c_str());
 			setListHelp(szHelpString, szTempBuffer.GetCString(), kMission.getDescription(), L", ", bFirst);
@@ -5197,7 +5215,7 @@ void CvGameTextMgr::parseTraitEspionageMissions(CvWStringBuffer& szHelpString, T
 	for (iI = 0; iI < GC.getNumEspionageMissionInfos(); iI++)
 	{
 		CvEspionageMissionInfo& kMission = GC.getEspionageMissionInfo((EspionageMissionTypes)iI);
-		if (kMission.getDisableTrait() == eTrait && kMission.getCost() != -1)
+		if (isTypeInList(kMission.getDisableTraitsVector(), eTrait) && kMission.getCost() != -1)
 		{
 			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_DISABLED_ESPIONAGE_MISSIONS").c_str());
 			setListHelp(szHelpString, szTempBuffer.GetCString(), kMission.getDescription(), L", ", bFirst);

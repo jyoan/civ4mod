@@ -19152,6 +19152,13 @@ int CvProcessInfo::getTechPrereq() const
 	return m_iTechPrereq; 
 }
 
+// PrereqOrTraits (added by this mod): only the players with one of the traits can use the process (CvPlayer::canMaintain).
+// Empty: everyone
+const std::vector<int>& CvProcessInfo::getPrereqOrTraitsVector() const
+{
+	return m_aiPrereqOrTraits;
+}
+
 // Arrays
 
 int CvProcessInfo::getProductionToCommerceModifier(int i) const	
@@ -19171,6 +19178,9 @@ bool CvProcessInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->GetChildXmlValByName(szTextVal, "TechPrereq");
 	m_iTechPrereq = pXML->FindInInfoClass(szTextVal);
+
+	// PrereqOrTraits (added by this mod): the traits are loaded before the processes (LoadPostMenuGlobals)
+	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(),"ProductionToCommerceModifiers"))
 	{
@@ -29738,8 +29748,6 @@ bool CvEventInfo::readPass2(CvXMLLoadUtility* pXML)
 //
 //------------------------------------------------------------------------------------------------------
 CvEspionageMissionInfo::CvEspionageMissionInfo() :
-m_iPrereqTrait(NO_TRAIT),
-m_iDisableTrait(NO_TRAIT),
 m_bKillGreatPerson(false),
 m_bKidnapGreatPerson(false)
 {
@@ -29911,17 +29919,18 @@ int CvEspionageMissionInfo::getDifficultyMod() const
 	return m_iDifficultyMod;
 }
 
-// PrereqTrait (added by this mod): only the players with the trait can do the mission (CvPlayer::isEspionageMissionAllowed)
-int CvEspionageMissionInfo::getPrereqTrait() const
+// PrereqOrTraits (added by this mod): only the players with one of the traits can do the mission
+// (CvPlayer::isEspionageMissionAllowed). Empty: everyone
+const std::vector<int>& CvEspionageMissionInfo::getPrereqOrTraitsVector() const
 {
-	return m_iPrereqTrait;
+	return m_aiPrereqOrTraits;
 }
 
-// DisableTrait (added by this mod): the players with the trait cannot do the mission. With PrereqTrait on a stronger
-// copy of a mission, a trait replaces the mission (CvPlayer::isEspionageMissionAllowed)
-int CvEspionageMissionInfo::getDisableTrait() const
+// DisableTraits (added by this mod): the players with one of the traits cannot do the mission. With PrereqOrTraits on a
+// stronger copy of a mission, a trait replaces the mission (CvPlayer::isEspionageMissionAllowed)
+const std::vector<int>& CvEspionageMissionInfo::getDisableTraitsVector() const
 {
-	return m_iDisableTrait;
+	return m_aiDisableTraits;
 }
 
 // bKillGreatPerson (added by this mod): removes a settled great person (a free specialist of a great person) of the
@@ -29982,14 +29991,8 @@ bool CvEspionageMissionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCounterespionageMod, "iCounterespionageMod");
 	pXML->GetChildXmlValByName(&m_iDifficultyMod, "iDifficultyMod");
 	// Added by this mod. The traits are loaded before the espionage missions (LoadPostMenuGlobals)
-	{
-		CvString szPrereqTrait;
-		CvString szDisableTrait;
-		pXML->GetChildXmlValByName(szPrereqTrait, "PrereqTrait");
-		m_iPrereqTrait = szPrereqTrait.empty() ? NO_TRAIT : pXML->FindInInfoClass(szPrereqTrait);
-		pXML->GetChildXmlValByName(szDisableTrait, "DisableTrait");
-		m_iDisableTrait = szDisableTrait.empty() ? NO_TRAIT : pXML->FindInInfoClass(szDisableTrait);
-	}
+	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
+	readTypeList(pXML, "DisableTraits", m_aiDisableTraits);
 	pXML->GetChildXmlValByName(&m_bKillGreatPerson, "bKillGreatPerson");
 	pXML->GetChildXmlValByName(&m_bKidnapGreatPerson, "bKidnapGreatPerson");
 

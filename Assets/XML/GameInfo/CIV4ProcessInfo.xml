@@ -42,5 +42,22 @@
 			</ProductionToCommerceModifiers>
 			<Button>Art/Interface/Buttons/Process/ProcessCulture.dds</Button>
 		</ProcessInfo>
+		<ProcessInfo>
+			<Type>PROCESS_TEST_ESPIONAGE</Type>
+			<Description>TXT_KEY_PROCESS_TEST_ESPIONAGE</Description>
+			<Strategy>TXT_KEY_CLAUDE_TEST_PEDIA</Strategy>
+			<TechPrereq>NONE</TechPrereq>
+			<PrereqOrTraits>
+				<TraitType>TRAIT_TEST</TraitType>
+			</PrereqOrTraits>
+			<ProductionToCommerceModifiers>
+				<iProductionToCommerceModifier>0</iProductionToCommerceModifier>
+				<iProductionToCommerceModifier>0</iProductionToCommerceModifier>
+				<iProductionToCommerceModifier>0</iProductionToCommerceModifier>
+				<iProductionToCommerceModifier>100</iProductionToCommerceModifier>
+			</ProductionToCommerceModifiers>
+			<Button>Art/Interface/Buttons/Process/ProcessResearch.dds</Button>
+		</ProcessInfo>
+		<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</ProcessInfos>
 </Civ4ProcessInfo>
