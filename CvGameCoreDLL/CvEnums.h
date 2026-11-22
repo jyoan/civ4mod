@@ -2809,4 +2809,18 @@ enum TraitPythonHookTypes
 	NUM_TRAIT_PYHOOK_TYPES
 };
 
+// Kinds of plots of ExplorationRewards of the traits (added by this mod): see CvPlayer::getExplorePlotType. The names are
+// the values of <ExplorePlotType> in the XML
+enum ExplorePlotTypes
+{
+	NO_EXPLORE_PLOT = -1,
+
+	EXPLORE_PLOT_WATER,					// any water plot (ocean, coast, lake)
+	EXPLORE_PLOT_HOME,					// land in the region of the capital (CvPlot::isOverseas is false)
+	EXPLORE_PLOT_OVERSEAS_OLD_WORLD,	// land overseas, not in the New World
+	EXPLORE_PLOT_OVERSEAS_NEW_WORLD,	// land overseas, in the New World
+
+	NUM_EXPLORE_PLOT_TYPES
+};
+
 #endif	// CVENUMS_h

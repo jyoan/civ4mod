@@ -480,6 +480,7 @@ public:
 	bool isEspionageMissionAllowed(int /*EspionageMissionTypes*/ eMission);	// added by this mod
 	int getGreatPersonUnit(int /*SpecialistTypes*/ eSpecialist);	// added by this mod
 	int getNumCivicSlots(int /*CivicOptionTypes*/ eCivicOption);	// added by this mod (civic slots)
+	int getExploredPlotCount(int /*ExplorePlotTypes*/ eExplorePlot);	// added by this mod (ExplorationRewards)
 	int getCivicSlot(int /*CivicOptionTypes*/ eCivicOption, int iSlot);	// added by this mod (civic slots)
 	int getMaxCivicSlots();	// added by this mod (civic slots)
 	int getBuildingClassExtraCommerce(int /*BuildingClassTypes*/ eBuildingClass, int /*CommerceTypes*/ eCommerce);

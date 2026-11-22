@@ -575,6 +575,15 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		m_abFriendlyTraitGainedFrom[iI] = false;
 	}
 
+	for (iI = 0; iI < NUM_EXPLORE_PLOT_TYPES; iI++)
+	{
+		m_aiExploredPlotCount[iI] = 0;
+	}
+	for (iI = 0; iI < NUM_EXPLORE_PLOT_TYPES * NUM_COMMERCE_TYPES; iI++)
+	{
+		m_aiExplorationRemainder[iI] = 0;
+	}
+
 	m_szScriptData = "";
 
 	if (!bConstructorCall)
@@ -4185,6 +4194,8 @@ void CvPlayer::doTurn()
 	}
 
 	verifyGoldCommercePercent();
+
+	doExplorationRewards();	// ExplorationRewards of the traits (added by this mod)
 
 	doGold();
 
@@ -9966,6 +9977,166 @@ void CvPlayer::doEnemyAttrition()
 		if (iNewDamage > pLoopUnit->getDamage())
 		{
 			pLoopUnit->setDamage(iNewDamage, getID());
+		}
+	}
+}
+
+// ExplorationRewards of the traits (added by this mod): the kind of a plot for this player. Land is home (the region of the
+// capital, CvPlot::isOverseas), else overseas in the New World or not (CvPlot::isNewWorld). Home goes first, so the land of
+// a capital in the New World is home
+ExplorePlotTypes CvPlayer::getExplorePlotType(const CvPlot* pPlot) const
+{
+	if (pPlot == NULL)
+	{
+		return NO_EXPLORE_PLOT;
+	}
+
+	if (pPlot->isWater())
+	{
+		return EXPLORE_PLOT_WATER;
+	}
+
+	if (!pPlot->isOverseas(getID()))
+	{
+		return EXPLORE_PLOT_HOME;
+	}
+
+	return (pPlot->isNewWorld() ? EXPLORE_PLOT_OVERSEAS_NEW_WORLD : EXPLORE_PLOT_OVERSEAS_OLD_WORLD);
+}
+
+int CvPlayer::getExploredPlotCount(ExplorePlotTypes eExplorePlot) const
+{
+	return (eExplorePlot >= 0 && eExplorePlot < NUM_EXPLORE_PLOT_TYPES) ? m_aiExploredPlotCount[eExplorePlot] : 0;
+}
+
+// A plot was revealed to the team of this player for the first time (CvPlot::setRevealed decides which reveals count). The
+// kind is decided now, so moving the capital later in the turn does not change it. Every player counts, so a trait gained
+// later in the turn gets the plots of the whole turn
+void CvPlayer::onPlotExplored(const CvPlot* pPlot)
+{
+	ExplorePlotTypes eExplorePlot;
+
+	// Not during the advanced start (the visibility bought there can be sold back)
+	if (!isAlive() || getAdvancedStartPoints() >= 0)
+	{
+		return;
+	}
+
+	eExplorePlot = getExplorePlotType(pPlot);
+	if (eExplorePlot != NO_EXPLORE_PLOT)
+	{
+		m_aiExploredPlotCount[eExplorePlot]++;
+	}
+}
+
+// ExplorationRewards of the traits (added by this mod): at the end of the turn of this player (the start of doTurn), each
+// plot revealed during the turn gives the sum of iPercent of its kind and the commerce in 1/100. What is less than 1 is
+// carried to the next turn. Gold to the treasury, research to the current research (to the overflow without one), culture
+// to the capital, espionage divided among the teams by the espionage weights. Then the counts start again from 0
+void CvPlayer::doExplorationRewards()
+{
+	CvWString szRewards;
+	CvWString szTemp;
+	CvCity* pCapital;
+	TechTypes eCurrentTech;
+	int aiReward[NUM_COMMERCE_TYPES];
+	int iPercent;
+	int iTotal;
+	int iSpending;
+	int iModifier;
+	int iI;
+	int iJ;
+
+	for (iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)
+	{
+		aiReward[iJ] = 0;
+	}
+
+	for (iI = 0; iI < NUM_EXPLORE_PLOT_TYPES; iI++)
+	{
+		for (iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)
+		{
+			iPercent = sumTraitValues(&CvTraitInfo::getExplorationRewardPercentFor, iI, iJ);
+			if (iPercent <= 0)
+			{
+				continue;
+			}
+
+			iTotal = m_aiExploredPlotCount[iI] * iPercent + m_aiExplorationRemainder[iI * NUM_COMMERCE_TYPES + iJ];
+			aiReward[iJ] += iTotal / 100;
+			m_aiExplorationRemainder[iI * NUM_COMMERCE_TYPES + iJ] = iTotal % 100;
+		}
+	}
+
+	for (iI = 0; iI < NUM_EXPLORE_PLOT_TYPES; iI++)
+	{
+		m_aiExploredPlotCount[iI] = 0;
+	}
+
+	if (aiReward[COMMERCE_GOLD] > 0)
+	{
+		changeGold(aiReward[COMMERCE_GOLD]);
+	}
+
+	if (aiReward[COMMERCE_RESEARCH] > 0)
+	{
+		eCurrentTech = getCurrentResearch();
+		if (eCurrentTech != NO_TECH)
+		{
+			GET_TEAM(getTeam()).changeResearchProgress(eCurrentTech, aiReward[COMMERCE_RESEARCH], getID());
+		}
+		else
+		{
+			// The overflow gets the research modifier when it is used (doResearch), so it is stored without it
+			iModifier = std::max(1, calculateResearchModifier(NO_TECH));
+			changeOverflowResearch((aiReward[COMMERCE_RESEARCH] * 100) / iModifier);
+		}
+	}
+
+	if (aiReward[COMMERCE_CULTURE] > 0)
+	{
+		pCapital = getCapitalCity();
+		if (pCapital != NULL)
+		{
+			pCapital->changeCulture(getID(), aiReward[COMMERCE_CULTURE], true, true);
+		}
+		else
+		{
+			aiReward[COMMERCE_CULTURE] = 0;
+		}
+	}
+
+	if (aiReward[COMMERCE_ESPIONAGE] > 0)
+	{
+		GET_TEAM(getTeam()).changeEspionagePointsEver(aiReward[COMMERCE_ESPIONAGE]);
+		for (iI = 0; iI < MAX_CIV_TEAMS; iI++)
+		{
+			if (iI != getTeam() && GET_TEAM((TeamTypes)iI).isAlive() && GET_TEAM(getTeam()).isHasMet((TeamTypes)iI))
+			{
+				iSpending = getEspionageSpending((TeamTypes)iI, aiReward[COMMERCE_ESPIONAGE]);
+				if (iSpending > 0)
+				{
+					GET_TEAM(getTeam()).changeEspionagePointsAgainstTeam((TeamTypes)iI, iSpending);
+				}
+			}
+		}
+	}
+
+	// One message for the turn
+	if (isHuman())
+	{
+		for (iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)
+		{
+			if (aiReward[iJ] > 0)
+			{
+				szTemp.Format(L"%s+%d%c", (szRewards.empty() ? L"" : L", "), aiReward[iJ], GC.getCommerceInfo((CommerceTypes)iJ).getChar());
+				szRewards += szTemp;
+			}
+		}
+
+		if (!szRewards.empty())
+		{
+			gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(), gDLL->getText("TXT_KEY_MISC_EXPLORATION_REWARD", szRewards.GetCString()), NULL, MESSAGE_TYPE_MINOR_EVENT);
 		}
 	}
 }
@@ -17534,11 +17705,15 @@ void CvPlayer::doEspionagePoints()
 	}	
 }
 
-int CvPlayer::getEspionageSpending(TeamTypes eAgainstTeam) const
+int CvPlayer::getEspionageSpending(TeamTypes eAgainstTeam, int iTotalPoints) const
 {
 	int iSpendingValue = 0;
 
-	int iTotalPoints = getCommerceRate(COMMERCE_ESPIONAGE);
+	// iTotalPoints (added by this mod): other points to divide (ExplorationRewards), -1 for the espionage commerce rate
+	if (iTotalPoints < 0)
+	{
+		iTotalPoints = getCommerceRate(COMMERCE_ESPIONAGE);
+	}
 	int iAvailablePoints = iTotalPoints;
 
 	int iTotalWeight = 0;
@@ -21125,6 +21300,13 @@ void CvPlayer::read(FDataStreamBase* pStream)
 			pStream->Read((int*)&m_paeCivics[iI]);
 		}
 	}
+
+	// ExplorationRewards of the traits (uiFlag 17)
+	if (uiFlag > 16)
+	{
+		pStream->Read(NUM_EXPLORE_PLOT_TYPES, m_aiExploredPlotCount);
+		pStream->Read(NUM_EXPLORE_PLOT_TYPES * NUM_COMMERCE_TYPES, m_aiExplorationRemainder);
+	}
 }
 
 //
@@ -21135,7 +21317,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 16;	// 16: the civic slots after slot 0 (m_paeCivics). 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
+	uint uiFlag = 17;	// 17: m_aiExploredPlotCount and m_aiExplorationRemainder. 16: the civic slots after slot 0 (m_paeCivics). 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -21567,6 +21749,10 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	{
 		pStream->Write(m_paeCivics[iI]);
 	}
+
+	// ExplorationRewards of the traits (uiFlag 17, added by this mod)
+	pStream->Write(NUM_EXPLORE_PLOT_TYPES, m_aiExploredPlotCount);
+	pStream->Write(NUM_EXPLORE_PLOT_TYPES * NUM_COMMERCE_TYPES, m_aiExplorationRemainder);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

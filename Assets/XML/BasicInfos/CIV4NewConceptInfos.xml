@@ -111,5 +111,11 @@
 			<Description>TXT_KEY_CONCEPT_LIBERATION</Description>
 			<Civilopedia>TXT_KEY_CONCEPT_LIBERATION_PEDIA</Civilopedia>
 		</NewConceptInfo>
+		<NewConceptInfo>
+			<Type>CONCEPT_REGIONS</Type>
+			<Description>TXT_KEY_CONCEPT_REGIONS</Description>
+			<Civilopedia>TXT_KEY_CONCEPT_REGIONS_PEDIA</Civilopedia>
+		</NewConceptInfo>
+		<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</NewConceptInfos>
 </Civ4NewConceptInfos>

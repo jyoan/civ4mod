@@ -1640,4 +1640,58 @@
 		<Spanish>[ICON_BULLET]Unique process: </Spanish>
 		<Japanese>[ICON_BULLET]&#22266;&#26377;&#12398;&#29983;&#29987;: </Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_EXPLORATION_REWARD</Tag>
+		<English>[ICON_BULLET]+%s3%F4 for each %d2 %s1 revealed during the turn</English>
+		<French>[ICON_BULLET]+%s3%F4 for each %d2 %s1 revealed during the turn</French>
+		<German>[ICON_BULLET]+%s3%F4 for each %d2 %s1 revealed during the turn</German>
+		<Italian>[ICON_BULLET]+%s3%F4 for each %d2 %s1 revealed during the turn</Italian>
+		<Spanish>[ICON_BULLET]+%s3%F4 for each %d2 %s1 revealed during the turn</Spanish>
+		<Japanese>[ICON_BULLET]&#12479;&#12540;&#12531;&#20013;&#12395;&#26126;&#12425;&#12363;&#12395;&#12375;&#12383;%s1 %d2&#26522;&#12372;&#12392;&#12395;+%s3%F4</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_EXPLORATION_REWARD_NOTE</Tag>
+		<English>(Given at the end of the turn. For home, overseas and the New World see %s1. Plots revealed by the team count too. Fractions are carried to the next turn. Plots revealed by the visibility at the start of the game, a map trade, a team joining or a map revealed by a technology do not count)</English>
+		<French>(Given at the end of the turn. For home, overseas and the New World see %s1. Plots revealed by the team count too. Fractions are carried to the next turn. Plots revealed by the visibility at the start of the game, a map trade, a team joining or a map revealed by a technology do not count)</French>
+		<German>(Given at the end of the turn. For home, overseas and the New World see %s1. Plots revealed by the team count too. Fractions are carried to the next turn. Plots revealed by the visibility at the start of the game, a map trade, a team joining or a map revealed by a technology do not count)</German>
+		<Italian>(Given at the end of the turn. For home, overseas and the New World see %s1. Plots revealed by the team count too. Fractions are carried to the next turn. Plots revealed by the visibility at the start of the game, a map trade, a team joining or a map revealed by a technology do not count)</Italian>
+		<Spanish>(Given at the end of the turn. For home, overseas and the New World see %s1. Plots revealed by the team count too. Fractions are carried to the next turn. Plots revealed by the visibility at the start of the game, a map trade, a team joining or a map revealed by a technology do not count)</Spanish>
+		<Japanese>&#65288;&#12479;&#12540;&#12531;&#32066;&#20102;&#26178;&#12395;&#24471;&#12427;&#12290;&#26412;&#22269;&#12539;&#28023;&#22806;&#12539;&#26032;&#19990;&#30028;&#12399;%s1&#12434;&#21442;&#29031;&#12290;&#12481;&#12540;&#12512;&#12398;&#20210;&#38291;&#12364;&#26126;&#12425;&#12363;&#12395;&#12375;&#12383;&#12479;&#12452;&#12523;&#12418;&#25968;&#12360;&#12427;&#12290;1&#26410;&#28288;&#12398;&#31471;&#25968;&#12399;&#27425;&#12398;&#12479;&#12540;&#12531;&#12395;&#25345;&#12385;&#36234;&#12377;&#12290;&#12466;&#12540;&#12512;&#38283;&#22987;&#26178;&#12398;&#35222;&#30028;&#12289;&#22320;&#22259;&#12398;&#21462;&#24341;&#12289;&#12481;&#12540;&#12512;&#12398;&#21512;&#27969;&#12289;&#25216;&#34899;&#12395;&#12424;&#12427;&#22320;&#22259;&#12398;&#20844;&#38283;&#12391;&#26126;&#12425;&#12363;&#12395;&#12394;&#12387;&#12383;&#12479;&#12452;&#12523;&#12399;&#25968;&#12360;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_EXPLORE_PLOT_WATER</Tag>
+		<English>water plots (sea, lakes)</English>
+		<French>water plots (sea, lakes)</French>
+		<German>water plots (sea, lakes)</German>
+		<Italian>water plots (sea, lakes)</Italian>
+		<Spanish>water plots (sea, lakes)</Spanish>
+		<Japanese>&#27700;&#12479;&#12452;&#12523;&#65288;&#28023;&#12539;&#28246;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_EXPLORE_PLOT_HOME</Tag>
+		<English>land plots at home</English>
+		<French>land plots at home</French>
+		<German>land plots at home</German>
+		<Italian>land plots at home</Italian>
+		<Spanish>land plots at home</Spanish>
+		<Japanese>&#26412;&#22269;&#12398;&#38520;&#22320;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_EXPLORE_PLOT_OVERSEAS_OLD_WORLD</Tag>
+		<English>overseas land plots in the Old World</English>
+		<French>overseas land plots in the Old World</French>
+		<German>overseas land plots in the Old World</German>
+		<Italian>overseas land plots in the Old World</Italian>
+		<Spanish>overseas land plots in the Old World</Spanish>
+		<Japanese>&#28023;&#22806;&#12398;&#26087;&#19990;&#30028;&#12398;&#38520;&#22320;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_EXPLORE_PLOT_OVERSEAS_NEW_WORLD</Tag>
+		<English>overseas land plots in the New World</English>
+		<French>overseas land plots in the New World</French>
+		<German>overseas land plots in the New World</German>
+		<Italian>overseas land plots in the New World</Italian>
+		<Spanish>overseas land plots in the New World</Spanish>
+		<Japanese>&#28023;&#22806;&#12398;&#26032;&#19990;&#30028;&#12398;&#38520;&#22320;</Japanese>
+	</TEXT>
 </Civ4GameText>

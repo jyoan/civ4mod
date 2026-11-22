@@ -181,6 +181,7 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("isEspionageMissionAllowed", &CyPlayer::isEspionageMissionAllowed, "bool (int eMission) - PrereqTrait and DisableTrait of the mission (added by this mod)")
 		.def("getGreatPersonUnit", &CyPlayer::getGreatPersonUnit, "int (int eSpecialist) - the great person unit of the player that settles as the specialist (added by this mod)")
 		.def("getNumCivicSlots", &CyPlayer::getNumCivicSlots, "int (int eCivicOption) - how many civics of the option the player can adopt: 1 + CivicOptionExtraSlots of the traits (added by this mod)")
+		.def("getExploredPlotCount", &CyPlayer::getExploredPlotCount, "int (int eExplorePlot) - plots of the kind revealed this turn, for ExplorationRewards of the traits (added by this mod)")
 		.def("getCivicSlot", &CyPlayer::getCivicSlot, "int (int eCivicOption, int iSlot) - the civic in the slot, NO_CIVIC if empty; slot 0 is getCivics (added by this mod)")
 		.def("getMaxCivicSlots", &CyPlayer::getMaxCivicSlots, "int () - MAX_CIVIC_SLOTS; civic lists for getCivicAnarchyLength, getCivicUpkeep and sendUpdateCivics have getMaxCivicSlots() * NumCivicOptionInfos entries, slot by slot (added by this mod)")
 		;

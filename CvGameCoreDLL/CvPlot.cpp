@@ -8137,6 +8137,20 @@ void CvPlot::setRevealed(TeamTypes eTeam, bool bNewValue, bool bTerrainOnly, Tea
 		{
 			// ONEVENT - PlotRevealed
 			CvEventReporter::getInstance().plotRevealed(this, eTeam);
+
+			// ExplorationRewards of the traits (added by this mod): the players of the team count the plot. Not before the
+			// game starts (the starting visibility), not from another team (map trades, a team joining, a colony) and not
+			// terrain only (the map revealed by a tech, the visibility of the advanced start)
+			if (bNewValue && !bTerrainOnly && eFromTeam == NO_TEAM && GC.getGameINLINE().isFinalInitialized())
+			{
+				for (iI = 0; iI < MAX_PLAYERS; iI++)
+				{
+					if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == eTeam)
+					{
+						GET_PLAYER((PlayerTypes)iI).onPlotExplored(this);
+					}
+				}
+			}
 		}
 	}
 
