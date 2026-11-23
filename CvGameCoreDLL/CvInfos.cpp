@@ -20789,7 +20789,7 @@ int CvTraitInfo::getPillageGoldModifier() const
 	return m_iPillageGoldModifier;
 }
 
-// Gold % from conquering cities
+// Conquest/iGoldModifier: gold % from conquering cities
 int CvTraitInfo::getCityCaptureGoldModifier() const
 {
 	return m_iCityCaptureGoldModifier;
@@ -20854,7 +20854,7 @@ bool CvTraitInfo::isInlandCanals() const
 	return m_bInlandCanals;
 }
 
-// Start bias of the trait (added by this mod), as the civilizations
+// StartBias of the trait (added by this mod), as the civilizations: iCoastal, iRiver, Terrains, Features, BonusBiases
 int CvTraitInfo::getStartBiasCoastal() const
 {
 	return m_iStartBiasCoastal;
@@ -20880,14 +20880,14 @@ int CvTraitInfo::getStartBiasBonus(int i) const
 	return (m_piStartBiasBonuses != NULL && i > -1 && i < GC.getNumBonusInfos()) ? m_piStartBiasBonuses[i] : 0;
 }
 
-// SeaStart (added by this mod): the player starts at sea (CvPlayer::moveStartingPlotToSea) with its starting units on ships
+// StartBias/SeaStart (added by this mod): the player starts at sea (CvPlayer::moveStartingPlotToSea) with its starting units on ships
 // of the class ShipUnitClass (CvPlayer::loadSeaStartUnits)
 bool CvTraitInfo::isSeaStart() const
 {
 	return m_bSeaStart;
 }
 
-// SeaStart/ShipUnitClass: NO_UNITCLASS without SeaStart or for NONE (no ships)
+// StartBias/SeaStart/ShipUnitClass: NO_UNITCLASS without SeaStart or for NONE (no ships)
 int CvTraitInfo::getSeaStartUnitClass() const
 {
 	return m_iSeaStartUnitClass;
@@ -21055,6 +21055,7 @@ int CvTraitInfo::getOccupationTimeModifier() const
 	return m_iOccupationTimeModifier;
 }
 
+// Conquest/iCulturePercent, iBuildingSurviveModifier, bNoPopulationLoss, bNoAutoRaze (added by this mod)
 int CvTraitInfo::getConquestCulturePercent() const
 {
 	return m_iConquestCulturePercent;
@@ -21075,7 +21076,7 @@ bool CvTraitInfo::isNoAutoRaze() const
 	return m_bNoAutoRaze;
 }
 
-// bConquestLearnUniqueUnits and bConquestLearnUniqueBuildings (added by this mod): see CvPlayer::learnConquestUniques
+// Conquest/bLearnUniqueUnits and bLearnUniqueBuildings (added by this mod): see CvPlayer::learnConquestUniques
 bool CvTraitInfo::isConquestLearnUniqueUnits() const
 {
 	return m_bConquestLearnUniqueUnits;
@@ -21162,7 +21163,7 @@ int CvTraitInfo::getKnownTechCostLimit() const
 	return m_iKnownTechCostLimit;
 }
 
-// bConquestHeal (added by this mod): the units that conquer a city are healed (CvUnit::setXY)
+// Conquest/bHeal (added by this mod): the units that conquer a city are healed (CvUnit::setXY)
 bool CvTraitInfo::isConquestHeal() const
 {
 	return m_bConquestHeal;
@@ -21209,28 +21210,28 @@ bool CvTraitInfo::isImprovementUpgradeUnworked() const
 	return m_bImprovementUpgradeUnworked;
 }
 
-// bNoCultureFlip (added by this mod): the cities of the player do not flip to another player by culture. The revolts still
+// CultureFlip/bNoFlip (added by this mod): the cities of the player do not flip to another player by culture. The revolts still
 // occur (occupation, damage to the defenders) (CvPlot::doCulture)
 bool CvTraitInfo::isNoCultureFlip() const
 {
 	return m_bNoCultureFlip;
 }
 
-// bNoRevoltAndNoCultureFlip (added by this mod): no revolt by foreign culture occurs in the cities of the player, so they
+// CultureFlip/bNoRevoltAndNoFlip (added by this mod): no revolt by foreign culture occurs in the cities of the player, so they
 // do not flip either (CvCity::getRevoltTestProbability)
 bool CvTraitInfo::isNoRevoltAndNoCultureFlip() const
 {
 	return m_bNoRevoltAndNoCultureFlip;
 }
 
-// bInstantCultureFlip (added by this mod): foreign cities flip to the player at the first revolt by the culture of the
+// CultureFlip/bInstantFlip (added by this mod): foreign cities flip to the player at the first revolt by the culture of the
 // player, without the warning revolts (NUM_WARNING_REVOLTS) (CvPlot::doCulture)
 bool CvTraitInfo::isInstantCultureFlip() const
 {
 	return m_bInstantCultureFlip;
 }
 
-// iCultureRevoltChance (added by this mod): percent change of the chance of revolt in foreign cities by the culture of the
+// CultureFlip/iRevoltChance (added by this mod): percent change of the chance of revolt in foreign cities by the culture of the
 // player (CvCity::getRevoltTestProbability)
 int CvTraitInfo::getCultureRevoltChance() const
 {
@@ -21364,13 +21365,13 @@ int CvTraitInfo::getEnemyWarWearinessModifier() const
 	return m_iEnemyWarWearinessModifier;
 }
 
-// bConquestStateReligion (added by this mod): the state religion spreads to the cities the player conquers
+// Conquest/bStateReligion (added by this mod): the state religion spreads to the cities the player conquers
 bool CvTraitInfo::isConquestStateReligion() const
 {
 	return m_bConquestStateReligion;
 }
 
-// ConquestReligionBuildings (added by this mod): the special buildings (temple, monastery, cathedral) of the state religion
+// Conquest/ReligionBuildings (added by this mod): the special buildings (temple, monastery, cathedral) of the state religion
 // a conquered city gets, when it could build them (CvPlayer::acquireCity)
 bool CvTraitInfo::isConquestReligionBuilding(int iSpecialBuilding) const
 {
@@ -22145,13 +22146,13 @@ int CvTraitInfo::getFeatureRouteType(int i) const
 	return m_paiFeatureRoute ? m_paiFeatureRoute[i] : NO_ROUTE;
 }
 
-// No building of the player becomes obsolete (added by this mod)
+// NoObsolescence/bAllBuildings: no building of the player becomes obsolete (added by this mod)
 bool CvTraitInfo::isIgnoreBuildingObsolescence() const
 {
 	return m_bIgnoreBuildingObsolescence;
 }
 
-// The buildings of the building class do not become obsolete for the player (added by this mod)
+// NoObsolescence/BuildingClasses: the buildings of the building class do not become obsolete for the player (added by this mod)
 bool CvTraitInfo::isNoObsoleteBuildingClass(int i) const
 {
 	FAssertMsg(i < GC.getNumBuildingClassInfos(), "Index out of bounds");
@@ -22160,7 +22161,7 @@ bool CvTraitInfo::isNoObsoleteBuildingClass(int i) const
 }
 
 // The buildings of the special building type (monasteries) do not become obsolete for the player (added by this mod)
-// bIgnoreBonusObsolescence / NoObsoleteBonuses (added by this mod): the bonuses of the team do not become obsolete
+// NoObsolescence/bAllBonuses and Bonuses (added by this mod): the bonuses of the team do not become obsolete
 bool CvTraitInfo::isIgnoreBonusObsolescence() const
 {
 	return m_bIgnoreBonusObsolescence;
@@ -22758,7 +22759,7 @@ static void resolveYieldChanges(const TCHAR* szListTag, const std::vector<CvStri
 	}
 }
 
-// Reads a list of types such as <NoObsoleteBuildingClasses>, which holds any number of type tags (BuildingClassType).
+// Reads a list of types such as <NoObsolescence><BuildingClasses>, which holds any number of type tags (BuildingClassType).
 // The types are kept as strings, because some (building classes) are loaded after traits.
 static void readTypeList(CvXMLLoadUtility* pXML, const TCHAR* szListTag, std::vector<CvString>& aszTypes)
 {
@@ -22886,7 +22887,6 @@ void CvTraitInfo::readModValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iGoldenAgeGreatPeopleRateModifier, "iGoldenAgeGreatPeopleRateModifier");
 	pXML->GetChildXmlValByName(&m_iCapitalBuildingProductionModifier, "iCapitalBuildingProductionModifier");
 	pXML->GetChildXmlValByName(&m_iPillageGoldModifier, "iPillageGoldModifier");
-	pXML->GetChildXmlValByName(&m_iCityCaptureGoldModifier, "iCityCaptureGoldModifier");
 	pXML->GetChildXmlValByName(&m_iUnitCostModifier, "iUnitCostModifier");
 	pXML->GetChildXmlValByName(&m_iBuildingCostModifier, "iBuildingCostModifier");
 	pXML->GetChildXmlValByName(&m_bNoPillageInBorders, "bNoPillageInBorders");
@@ -23090,43 +23090,49 @@ void CvTraitInfo::readExplorationRewards(CvXMLLoadUtility* pXML)
 // The part of read() for the start bias (added by this mod)
 void CvTraitInfo::readStartBias(CvXMLLoadUtility* pXML)
 {
-	// Start bias (added by this mod). The terrains and features are loaded before the traits, the bonuses after them
-	pXML->GetChildXmlValByName(&m_iStartBiasCoastal, "iStartBiasCoastal");
-	pXML->GetChildXmlValByName(&m_iStartBiasRiver, "iStartBiasRiver");
-	pXML->SetVariableListTagPair(&m_piStartBiasTerrains, "StartBiasTerrains", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());
-	pXML->SetVariableListTagPair(&m_piStartBiasFeatures, "StartBiasFeatures", sizeof(GC.getFeatureInfo((FeatureTypes)0)), GC.getNumFeatureInfos());
+	// StartBias (added by this mod): iCoastal, iRiver, Terrains, Features, BonusBiases, SeaStart.
+	// The terrains and features are loaded before the traits, the bonuses after them
 	m_aszStartBiasBonusTypes.clear();
 	m_aiStartBiasBonusValues.clear();
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "StartBiasBonuses"))
+	m_bSeaStart = false;
+	m_iSeaStartUnitClass = NO_UNITCLASS;
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "StartBias"))
 	{
-		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "StartBiasBonus"))
+		pXML->GetChildXmlValByName(&m_iStartBiasCoastal, "iCoastal");
+		pXML->GetChildXmlValByName(&m_iStartBiasRiver, "iRiver");
+		pXML->SetVariableListTagPair(&m_piStartBiasTerrains, "Terrains", sizeof(GC.getTerrainInfo((TerrainTypes)0)), GC.getNumTerrainInfos());
+		pXML->SetVariableListTagPair(&m_piStartBiasFeatures, "Features", sizeof(GC.getFeatureInfo((FeatureTypes)0)), GC.getNumFeatureInfos());
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "BonusBiases"))
 		{
-			do
+			if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "StartBiasBonus"))
 			{
-				CvString szBiasBonus;
-				int iBiasBonus = 0;
-				pXML->GetChildXmlValByName(szBiasBonus, "BonusType");
-				pXML->GetChildXmlValByName(&iBiasBonus, "iStartBias");
-				m_aszStartBiasBonusTypes.push_back(szBiasBonus);
-				m_aiStartBiasBonusValues.push_back(iBiasBonus);
+				do
+				{
+					CvString szBiasBonus;
+					int iBiasBonus = 0;
+					pXML->GetChildXmlValByName(szBiasBonus, "BonusType");
+					pXML->GetChildXmlValByName(&iBiasBonus, "iStartBias");
+					m_aszStartBiasBonusTypes.push_back(szBiasBonus);
+					m_aiStartBiasBonusValues.push_back(iBiasBonus);
+				}
+				while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "StartBiasBonus"));
+
+				gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 			}
-			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "StartBiasBonus"));
 
 			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 		}
 
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
+		// SeaStart: ShipUnitClass (the unit classes are loaded before the traits). NONE: no ships
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "SeaStart"))
+		{
+			CvString szShipClass;
+			m_bSeaStart = true;
+			pXML->GetChildXmlValByName(szShipClass, "ShipUnitClass");
+			m_iSeaStartUnitClass = pXML->FindInInfoClass(szShipClass);
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
 
-	// SeaStart: ShipUnitClass (the unit classes are loaded before the traits). NONE: no ships
-	m_bSeaStart = false;
-	m_iSeaStartUnitClass = NO_UNITCLASS;
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "SeaStart"))
-	{
-		CvString szShipClass;
-		m_bSeaStart = true;
-		pXML->GetChildXmlValByName(szShipClass, "ShipUnitClass");
-		m_iSeaStartUnitClass = pXML->FindInInfoClass(szShipClass);
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 
@@ -23174,12 +23180,22 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iNewCityPopulation, "iNewCityPopulation");
 	pXML->GetChildXmlValByName(&m_bNewCityStateReligion, "bNewCityStateReligion");
 	pXML->GetChildXmlValByName(&m_iOccupationTimeModifier, "iOccupationTimeModifier");
-	pXML->GetChildXmlValByName(&m_iConquestCulturePercent, "iConquestCulturePercent");
-	pXML->GetChildXmlValByName(&m_iConquestBuildingSurviveModifier, "iConquestBuildingSurviveModifier");
-	pXML->GetChildXmlValByName(&m_bNoConquestPopulationLoss, "bNoConquestPopulationLoss");
-	pXML->GetChildXmlValByName(&m_bNoAutoRaze, "bNoAutoRaze");
-	pXML->GetChildXmlValByName(&m_bConquestLearnUniqueUnits, "bConquestLearnUniqueUnits");
-	pXML->GetChildXmlValByName(&m_bConquestLearnUniqueBuildings, "bConquestLearnUniqueBuildings");
+	// Conquest: iCulturePercent, iBuildingSurviveModifier, bNoPopulationLoss, bNoAutoRaze, bLearnUniqueUnits, bLearnUniqueBuildings,
+	// bHeal, bStateReligion, ReligionBuildings (special buildings: readPass3()), iGoldModifier
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Conquest"))
+	{
+		pXML->GetChildXmlValByName(&m_iConquestCulturePercent, "iCulturePercent");
+		pXML->GetChildXmlValByName(&m_iConquestBuildingSurviveModifier, "iBuildingSurviveModifier");
+		pXML->GetChildXmlValByName(&m_bNoConquestPopulationLoss, "bNoPopulationLoss");
+		pXML->GetChildXmlValByName(&m_bNoAutoRaze, "bNoAutoRaze");
+		pXML->GetChildXmlValByName(&m_bConquestLearnUniqueUnits, "bLearnUniqueUnits");
+		pXML->GetChildXmlValByName(&m_bConquestLearnUniqueBuildings, "bLearnUniqueBuildings");
+		pXML->GetChildXmlValByName(&m_bConquestHeal, "bHeal");
+		pXML->GetChildXmlValByName(&m_bConquestStateReligion, "bStateReligion");
+		readTypeList(pXML, "ReligionBuildings", m_aszConquestReligionBuildingTypes);
+		pXML->GetChildXmlValByName(&m_iCityCaptureGoldModifier, "iGoldModifier");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 	pXML->GetChildXmlValByName(&m_iStateReligionHappiness, "iStateReligionHappiness");
 	pXML->GetChildXmlValByName(&m_iStateReligionHealth, "iStateReligionHealth");
 	pXML->GetChildXmlValByName(&m_iStateReligionGreatPeopleRateModifier, "iStateReligionGreatPeopleRateModifier");
@@ -23195,17 +23211,21 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 		pXML->GetChildXmlValByName(&m_iKnownTechCostLimit, "iLimit");
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
-	pXML->GetChildXmlValByName(&m_bConquestHeal, "bConquestHeal");
 	pXML->GetChildXmlValByName(&m_bStackCityDefense, "bStackCityDefense");
 	pXML->GetChildXmlValByName(&m_bRevealWonderProduction, "bRevealWonderProduction");
 	pXML->GetChildXmlValByName(&m_bRevealWarPlans, "bRevealWarPlans");
 	pXML->GetChildXmlValByName(&m_bRevealHiddenAttitude, "bRevealHiddenAttitude");
 	pXML->GetChildXmlValByName(&m_bLongCountCalendar, "bLongCountCalendar");
 	pXML->GetChildXmlValByName(&m_bImprovementUpgradeUnworked, "bImprovementUpgradeUnworked");
-	pXML->GetChildXmlValByName(&m_bNoCultureFlip, "bNoCultureFlip");
-	pXML->GetChildXmlValByName(&m_bNoRevoltAndNoCultureFlip, "bNoRevoltAndNoCultureFlip");
-	pXML->GetChildXmlValByName(&m_bInstantCultureFlip, "bInstantCultureFlip");
-	pXML->GetChildXmlValByName(&m_iCultureRevoltChance, "iCultureRevoltChance");
+	// CultureFlip: bNoFlip, bNoRevoltAndNoFlip, bInstantFlip, iRevoltChance
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CultureFlip"))
+	{
+		pXML->GetChildXmlValByName(&m_bNoCultureFlip, "bNoFlip");
+		pXML->GetChildXmlValByName(&m_bNoRevoltAndNoCultureFlip, "bNoRevoltAndNoFlip");
+		pXML->GetChildXmlValByName(&m_bInstantCultureFlip, "bInstantFlip");
+		pXML->GetChildXmlValByName(&m_iCultureRevoltChance, "iRevoltChance");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 	// GreatPeopleClassRateModifiers: the unit classes are loaded before the traits
 	readTypeValueList(pXML, "GreatPeopleClassRateModifiers", "GreatPeopleClassRateModifier", "UnitClassType", "iGreatPeopleRateModifier", GC.getNumUnitClassInfos(), m_aiGreatPeopleClassRateModifier);
 	readSpecialBuildingProductionModifiers(pXML);
@@ -23255,8 +23275,6 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 		pXML->InitList(&m_paiGlobalWorldWonderCommerceChange, NUM_COMMERCE_TYPES);
 	}
 	pXML->GetChildXmlValByName(&m_iEnemyWarWearinessModifier, "iEnemyWarWearinessModifier");
-	pXML->GetChildXmlValByName(&m_bConquestStateReligion, "bConquestStateReligion");
-	readTypeList(pXML, "ConquestReligionBuildings", m_aszConquestReligionBuildingTypes);	// special buildings: readPass3()
 	readTypeList(pXML, "NoTechCivics", m_aszNoTechCivicTypes);	// civics are loaded later: readPass3()
 	readCivicOptionExtraSlots(pXML);
 	readExplorationRewards(pXML);
@@ -23420,12 +23438,17 @@ void CvTraitInfo::readFeatureRoutes(CvXMLLoadUtility* pXML)
 // The part of read() for the obsolescence lists and the Python hooks (added by this mod)
 void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 {
-	// Building obsolescence: building classes are loaded after the traits, so readPass3() finds the types
-	pXML->GetChildXmlValByName(&m_bIgnoreBuildingObsolescence, "bIgnoreBuildingObsolescence");
-	readTypeList(pXML, "NoObsoleteBuildingClasses", m_aszNoObsoleteBuildingClassTypes);
-	readTypeList(pXML, "NoObsoleteSpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes);
-	pXML->GetChildXmlValByName(&m_bIgnoreBonusObsolescence, "bIgnoreBonusObsolescence");
-	readTypeList(pXML, "NoObsoleteBonuses", m_aszNoObsoleteBonusTypes);
+	// NoObsolescence: bAllBuildings, BuildingClasses, SpecialBuildings, bAllBonuses, Bonuses.
+	// Building classes and bonuses are loaded after the traits, so readPass3() finds the types
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "NoObsolescence"))
+	{
+		pXML->GetChildXmlValByName(&m_bIgnoreBuildingObsolescence, "bAllBuildings");
+		readTypeList(pXML, "BuildingClasses", m_aszNoObsoleteBuildingClassTypes);
+		readTypeList(pXML, "SpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes);
+		pXML->GetChildXmlValByName(&m_bIgnoreBonusObsolescence, "bAllBonuses");
+		readTypeList(pXML, "Bonuses", m_aszNoObsoleteBonusTypes);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 
 	// Python hooks: expressions evaluated in CvTraitInterface.py
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_GAME_START], "PyOnGameStart");
@@ -24007,7 +24030,7 @@ bool CvTraitInfo::readPass3()
 	int iRoute;
 	int i;
 
-	// StartBiasBonuses (added by this mod)
+	// StartBias/BonusBiases (added by this mod)
 	SAFE_DELETE_ARRAY(m_piStartBiasBonuses);
 	if (!m_aszStartBiasBonusTypes.empty())
 	{
@@ -24125,7 +24148,7 @@ bool CvTraitInfo::readPass3()
 	m_aszForbiddenCivicTypes.clear();
 	resolveTypeList("NoTechCivics", m_aszNoTechCivicTypes, GC.getNumCivicInfos(), &m_pabNoTechCivic);
 	m_aszNoTechCivicTypes.clear();
-	resolveTypeList("ConquestReligionBuildings", m_aszConquestReligionBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabConquestReligionBuilding);
+	resolveTypeList("Conquest/ReligionBuildings", m_aszConquestReligionBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabConquestReligionBuilding);
 	m_aszConquestReligionBuildingTypes.clear();
 	resolveTypeList("RevealBonuses", m_aszRevealBonusTypes, GC.getNumBonusInfos(), &m_pabRevealBonus);
 	m_aszRevealBonusTypes.clear();
@@ -24180,11 +24203,11 @@ bool CvTraitInfo::readPass3()
 	resolveYieldChanges("ImprovedBonusYieldChanges", m_aszImprovedBonusYieldChangeTypes, m_aaiImprovedBonusYieldChangeValues, GC.getNumBonusInfos(), m_aaiImprovedBonusYieldChange);
 	m_aszImprovedBonusYieldChangeTypes.clear();
 	m_aaiImprovedBonusYieldChangeValues.clear();
-	resolveTypeList("NoObsoleteBuildingClasses", m_aszNoObsoleteBuildingClassTypes, GC.getNumBuildingClassInfos(), &m_pabNoObsoleteBuildingClass);
+	resolveTypeList("NoObsolescence/BuildingClasses", m_aszNoObsoleteBuildingClassTypes, GC.getNumBuildingClassInfos(), &m_pabNoObsoleteBuildingClass);
 	m_aszNoObsoleteBuildingClassTypes.clear();
-	resolveTypeList("NoObsoleteSpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabNoObsoleteSpecialBuilding);
+	resolveTypeList("NoObsolescence/SpecialBuildings", m_aszNoObsoleteSpecialBuildingTypes, GC.getNumSpecialBuildingInfos(), &m_pabNoObsoleteSpecialBuilding);
 	m_aszNoObsoleteSpecialBuildingTypes.clear();
-	resolveTypeList("NoObsoleteBonuses", m_aszNoObsoleteBonusTypes, GC.getNumBonusInfos(), &m_pabNoObsoleteBonus);
+	resolveTypeList("NoObsolescence/Bonuses", m_aszNoObsoleteBonusTypes, GC.getNumBonusInfos(), &m_pabNoObsoleteBonus);
 	m_aszNoObsoleteBonusTypes.clear();
 
 	// SpecialBuildingProductionModifiers (added by this mod)

@@ -638,7 +638,7 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 	LoadGlobalClassInfo(GC.getCivicInfo(), "CIV4CivicInfos", "GameInfo", "Civ4CivicInfos/CivicInfos/CivicInfo", false, &CvDLLUtilityIFaceBase::createCivicInfoCacheObject);
 	for (int i=0; i < GC.getNumTraitInfos(); ++i)
 	{
-		// Trait ImprovementYieldChanges, NoObsoleteBuildingClasses and ConditionalFreeTraits (added by this mod):
+		// Trait ImprovementYieldChanges, NoObsolescence/BuildingClasses and ConditionalFreeTraits (added by this mod):
 		// improvements, building classes and civics are loaded after traits
 		GC.getTraitInfo((TraitTypes)i).readPass3();
 	}

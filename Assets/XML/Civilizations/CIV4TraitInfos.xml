@@ -184,12 +184,21 @@
 			<iNewCityPopulation>1</iNewCityPopulation>
 			<bNewCityStateReligion>1</bNewCityStateReligion>
 			<iOccupationTimeModifier>-50</iOccupationTimeModifier>
-			<iConquestCulturePercent>50</iConquestCulturePercent>
-			<iConquestBuildingSurviveModifier>100</iConquestBuildingSurviveModifier>
-			<bNoConquestPopulationLoss>1</bNoConquestPopulationLoss>
-			<bNoAutoRaze>1</bNoAutoRaze>
-			<bConquestLearnUniqueUnits>1</bConquestLearnUniqueUnits>
-			<bConquestLearnUniqueBuildings>1</bConquestLearnUniqueBuildings>
+			<Conquest>
+				<iCulturePercent>50</iCulturePercent>
+				<iBuildingSurviveModifier>100</iBuildingSurviveModifier>
+				<bNoPopulationLoss>1</bNoPopulationLoss>
+				<bNoAutoRaze>1</bNoAutoRaze>
+				<bLearnUniqueUnits>1</bLearnUniqueUnits>
+				<bLearnUniqueBuildings>1</bLearnUniqueBuildings>
+				<bHeal>1</bHeal>
+				<bStateReligion>1</bStateReligion>
+				<ReligionBuildings>
+					<SpecialBuildingType>SPECIALBUILDING_TEMPLE</SpecialBuildingType>
+					<SpecialBuildingType>SPECIALBUILDING_CATHEDRAL</SpecialBuildingType>
+				</ReligionBuildings>
+				<iGoldModifier>200</iGoldModifier>
+			</Conquest>
 			<iStateReligionHappiness>1</iStateReligionHappiness>
 			<iStateReligionHealth>1</iStateReligionHealth>
 			<iStateReligionGreatPeopleRateModifier>25</iStateReligionGreatPeopleRateModifier>
@@ -298,14 +307,15 @@
 				<iModifier>-10</iModifier>
 				<iLimit>-75</iLimit>
 			</KnownTechCost>
-			<bConquestHeal>1</bConquestHeal>
 			<bStackCityDefense>1</bStackCityDefense>
 			<bRevealWonderProduction>1</bRevealWonderProduction>
 			<bRevealWarPlans>1</bRevealWarPlans>
 			<bRevealHiddenAttitude>1</bRevealHiddenAttitude>
 			<bImprovementUpgradeUnworked>1</bImprovementUpgradeUnworked>
-			<bInstantCultureFlip>1</bInstantCultureFlip>
-			<iCultureRevoltChance>100</iCultureRevoltChance>
+			<CultureFlip>
+				<bInstantFlip>1</bInstantFlip>
+				<iRevoltChance>100</iRevoltChance>
+			</CultureFlip>
 			<bGainTraitOnCapitalCapture>1</bGainTraitOnCapitalCapture>
 			<bGainTraitsOnElimination>1</bGainTraitsOnElimination>
 			<GainTraitsOnFriendly>
@@ -353,11 +363,6 @@
 				<iCommerce>1</iCommerce>
 			</GlobalWorldWonderCommerceChanges>
 			<iEnemyWarWearinessModifier>50</iEnemyWarWearinessModifier>
-			<bConquestStateReligion>1</bConquestStateReligion>
-			<ConquestReligionBuildings>
-				<SpecialBuildingType>SPECIALBUILDING_TEMPLE</SpecialBuildingType>
-				<SpecialBuildingType>SPECIALBUILDING_CATHEDRAL</SpecialBuildingType>
-			</ConquestReligionBuildings>
 			<NoTechCivics>
 				<CivicType>CIVIC_CASTE_SYSTEM</CivicType>
 				<CivicType>CIVIC_ORGANIZED_RELIGION</CivicType>
@@ -491,7 +496,6 @@
 			<iGoldenAgeGreatPeopleRateModifier>50</iGoldenAgeGreatPeopleRateModifier>
 			<iCapitalBuildingProductionModifier>25</iCapitalBuildingProductionModifier>
 			<iPillageGoldModifier>200</iPillageGoldModifier>
-			<iCityCaptureGoldModifier>200</iCityCaptureGoldModifier>
 			<iUnitCostModifier>-20</iUnitCostModifier>
 			<iBuildingCostModifier>-50</iBuildingCostModifier>
 			<bNoPillageInBorders>1</bNoPillageInBorders>
@@ -512,29 +516,31 @@
 					<iHealChange>20</iHealChange>
 				</FeatureHealChange>
 			</FeatureHealChanges>
-			<iStartBiasRiver>50</iStartBiasRiver>
-			<StartBiasTerrains>
-				<StartBiasTerrain>
-					<TerrainType>TERRAIN_DESERT</TerrainType>
-					<iStartBias>40</iStartBias>
-				</StartBiasTerrain>
-			</StartBiasTerrains>
-			<StartBiasFeatures>
-				<StartBiasFeature>
-					<FeatureType>FEATURE_FOREST</FeatureType>
-					<iStartBias>20</iStartBias>
-				</StartBiasFeature>
-				<StartBiasFeature>
-					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<iStartBias>20</iStartBias>
-				</StartBiasFeature>
-			</StartBiasFeatures>
-			<StartBiasBonuses>
-				<StartBiasBonus>
-					<BonusType>BONUS_HORSE</BonusType>
-					<iStartBias>100</iStartBias>
-				</StartBiasBonus>
-			</StartBiasBonuses>
+			<StartBias>
+				<iRiver>50</iRiver>
+				<Terrains>
+					<StartBiasTerrain>
+						<TerrainType>TERRAIN_DESERT</TerrainType>
+						<iStartBias>40</iStartBias>
+					</StartBiasTerrain>
+				</Terrains>
+				<Features>
+					<StartBiasFeature>
+						<FeatureType>FEATURE_FOREST</FeatureType>
+						<iStartBias>20</iStartBias>
+					</StartBiasFeature>
+					<StartBiasFeature>
+						<FeatureType>FEATURE_JUNGLE</FeatureType>
+						<iStartBias>20</iStartBias>
+					</StartBiasFeature>
+				</Features>
+				<BonusBiases>
+					<StartBiasBonus>
+						<BonusType>BONUS_HORSE</BonusType>
+						<iStartBias>100</iStartBias>
+					</StartBiasBonus>
+				</BonusBiases>
+			</StartBias>
 			<CityFoundedUnits>
 				<CityFoundedUnit>
 					<UnitClassType>UNITCLASS_GALLEY</UnitClassType>
@@ -593,17 +599,19 @@
 					<BuildingType>BUILDING_TEST_GRANARY</BuildingType>
 				</UniqueBuilding>
 			</UniqueBuildings>
-			<NoObsoleteBuildingClasses>
-				<BuildingClassType>BUILDINGCLASS_CASTLE</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_GREAT_LIBRARY</BuildingClassType>
-			</NoObsoleteBuildingClasses>
-			<NoObsoleteSpecialBuildings>
-				<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
-			</NoObsoleteSpecialBuildings>
-			<NoObsoleteBonuses>
-				<BonusType>BONUS_FUR</BonusType>
-				<BonusType>BONUS_IVORY</BonusType>
-			</NoObsoleteBonuses>
+			<NoObsolescence>
+				<BuildingClasses>
+					<BuildingClassType>BUILDINGCLASS_CASTLE</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_GREAT_LIBRARY</BuildingClassType>
+				</BuildingClasses>
+				<SpecialBuildings>
+					<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
+				</SpecialBuildings>
+				<Bonuses>
+					<BonusType>BONUS_FUR</BonusType>
+					<BonusType>BONUS_IVORY</BonusType>
+				</Bonuses>
+			</NoObsolescence>
 			<PyOnGameStart>gainGold(pPlayer, scaleBySpeed(100 + 50 * startEra(), 'Train'))</PyOnGameStart>
 			<PyOnBeginTurn>isEveryTurns(5) and createUnits(pPlayer, 'UNITCLASS_WARRIOR', 1, capitalPlot(pPlayer))</PyOnBeginTurn>
 			<PyOnCityFounded>(addBuilding(pCity, 'BUILDINGCLASS_WALLS'), gainTraitForTurns(pPlayer, 'TRAIT_TEST_TEMPORARY', 3))</PyOnCityFounded>
@@ -1215,7 +1223,9 @@
 			<Type>TRAIT_TEST_AI</Type>
 			<Description>TXT_KEY_TRAIT_TEST_AI</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_AI_SHORT</ShortDescription>
-			<bNoCultureFlip>1</bNoCultureFlip>
+			<CultureFlip>
+				<bNoFlip>1</bNoFlip>
+			</CultureFlip>
 			<FreeTechs>
 				<FreeTech>
 					<TechType>TECH_TEST_DIPLOMACY</TechType>
@@ -1236,9 +1246,11 @@
 			<Type>TRAIT_TEST_SEA</Type>
 			<Description>TXT_KEY_TRAIT_TEST_SEA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_SEA_SHORT</ShortDescription>
-			<SeaStart>
-				<ShipUnitClass>UNITCLASS_GALLEON</ShipUnitClass>
-			</SeaStart>
+			<StartBias>
+				<SeaStart>
+					<ShipUnitClass>UNITCLASS_GALLEON</ShipUnitClass>
+				</SeaStart>
+			</StartBias>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_FOUNDING_VASSAL</Type>
