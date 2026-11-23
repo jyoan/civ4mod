@@ -84,6 +84,9 @@ public:
 	int getTraitTurns(TraitTypes eTrait) const;					// Exposed to Python: turns left of a temporary trait (added by this mod)
 	void setTraitTurns(TraitTypes eTrait, int iTurns);			// Exposed to Python
 	void doTraitTurns();
+	int getTraitCounter(TraitTypes eTrait) const;				// Exposed to Python: a number the hooks of the trait can count with (added by this mod)
+	void setTraitCounter(TraitTypes eTrait, int iValue);		// Exposed to Python
+	void changeTraitCounter(TraitTypes eTrait, int iChange);	// Exposed to Python
 	// RandomBasicTraits of the traits (added by this mod)
 	bool isRandomBasicTrait(TraitTypes eTrait) const;			// Exposed to Python: given by RandomBasicTraits now
 	int getRandomBasicTraitTurn() const;						// Exposed to Python: game turn of the last change, -1 if none
@@ -100,6 +103,8 @@ public:
 	int getNumCitiesConquered() const;							// Exposed to Python: iMinCitiesConquered of ConditionalFreeTraits
 	void changeNumCitiesConquered(int iChange);
 	void doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity = NULL, PlayerTypes eOldOwner = NO_PLAYER, bool bConquest = false, bool bTrade = false, CorporationTypes eCorporation = NO_CORPORATION, int iPopulation = 0, CultureLevelTypes eCultureLevel = NO_CULTURELEVEL, BuildingTypes eBuilding = NO_BUILDING, ReligionTypes eReligion = NO_RELIGION);	// PyOnGameStart etc. of the traits
+	void doTraitPythonHookInts(TraitPythonHookTypes eHook, int iNumArgs = 0, int iArg1 = 0, int iArg2 = 0);	// the hooks with only ints after pPlayer and eTrait
+	void callTraitPythonHook(TraitPythonHookTypes eHook, CvUnit* pUnit, CvCity* pCity, const std::vector<int>& aiArgs);	// the common part of the two above
 	void doTechPythonHook(TechTypes eTech, bool bFirst);	// added by this mod: PyOnDiscovered
 	void doCivicPythonHook(CivicTypes eCivic, bool bAdopt);	// added by this mod: PyOnAdopt / PyOnRevoke
 	DllExport bool isHuman() const;																																							// Exposed to Python						
@@ -1482,6 +1487,7 @@ protected:
 	int m_aiExploredPlotCount[NUM_EXPLORE_PLOT_TYPES];	// plots revealed during this turn, per kind (ExplorationRewards, added by this mod)
 	int m_aiExplorationRemainder[NUM_EXPLORE_PLOT_TYPES * NUM_COMMERCE_TYPES];	// 1/100 of the rewards carried to the next turn
 	int* m_paiTraitTurns;					// turns left of the temporary traits, 0 if not temporary (added by this mod)
+	int* m_paiTraitCounter;					// the counters of the traits for their Python hooks (added by this mod)
 	int* m_paiFreeBuildingCount;
 	int* m_paiExtraBuildingHappiness;
 	int* m_paiExtraBuildingHealth;

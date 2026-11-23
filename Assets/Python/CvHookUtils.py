@@ -55,6 +55,21 @@ def isBuildingClassIn(eBuilding, lszBuildingClasses):
 			return True
 	return False
 
+def isUnitClassIn(pUnit, lszUnitClasses):
+	"True if the unit is of one of the unit classes (['UNITCLASS_GREAT_GENERAL', 'UNITCLASS_ENGINEER']), unique units too"
+	iUnitClass = pUnit.getUnitClassType()
+	for szUnitClass in lszUnitClasses:
+		if iUnitClass == gc.getInfoTypeForString(szUnitClass):
+			return True
+	return False
+
+def isTechIn(eTech, lszTechs):
+	"True if the tech is one of the techs (['TECH_WRITING', 'TECH_ALPHABET'])"
+	for szTech in lszTechs:
+		if eTech == gc.getInfoTypeForString(szTech):
+			return True
+	return False
+
 def isOnFeature(pUnit, szFeature):
 	"True if the unit is on a plot with the feature ('FEATURE_FOREST')"
 	return pUnit.plot().getFeatureType() == gc.getInfoTypeForString(szFeature)
@@ -139,6 +154,22 @@ def gainTraitForTurns(pPlayer, szTrait, iTurns):
 	if eTrait == -1 or iTurns <= 0:
 		return
 	pPlayer.setTraitTurns(eTrait, max(pPlayer.getTraitTurns(eTrait), iTurns))
+
+def addTraitCounter(pPlayer, eTrait, iChange):
+	"Adds iChange to the counter of the trait (CyPlayer.changeTraitCounter; eTrait of the hook, or the name of a trait as a string) and returns the new value"
+	if isinstance(eTrait, str):
+		eTrait = gc.getInfoTypeForString(eTrait)
+	pPlayer.changeTraitCounter(eTrait, iChange)
+	return pPlayer.getTraitCounter(eTrait)
+
+def countEvery(pPlayer, eTrait, iEvery):
+	"Adds 1 to the counter of the trait and returns True every iEvery-th time (the counter is then 0 again)"
+	if isinstance(eTrait, str):
+		eTrait = gc.getInfoTypeForString(eTrait)
+	if addTraitCounter(pPlayer, eTrait, 1) >= iEvery:
+		pPlayer.setTraitCounter(eTrait, 0)
+		return True
+	return False
 
 def healUnit(pUnit, iPercent):
 	"The unit heals iPercent of its max hit points"

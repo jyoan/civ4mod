@@ -22159,6 +22159,41 @@ const TCHAR* CvTraitInfo::getPyOnLost() const
 	return m_aszPythonHook[TRAIT_PYHOOK_LOST];
 }
 
+const TCHAR* CvTraitInfo::getPyOnTechAcquired() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_TECH_ACQUIRED];
+}
+
+const TCHAR* CvTraitInfo::getPyOnGreatPersonBorn() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_GREAT_PERSON_BORN];
+}
+
+const TCHAR* CvTraitInfo::getPyOnGoldenAgeStart() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_GOLDEN_AGE_START];
+}
+
+const TCHAR* CvTraitInfo::getPyOnGoldenAgeEnd() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_GOLDEN_AGE_END];
+}
+
+const TCHAR* CvTraitInfo::getPyOnWarDeclared() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_WAR_DECLARED];
+}
+
+const TCHAR* CvTraitInfo::getPyOnPeaceMade() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_PEACE_MADE];
+}
+
+const TCHAR* CvTraitInfo::getPyOnEraChanged() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_ERA_CHANGED];
+}
+
 // ConditionalFreeTraits (added by this mod): the traits the player has while the conditions hold
 int CvTraitInfo::getNumConditionalFreeTraits() const
 {
@@ -23289,6 +23324,13 @@ void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_RELIGION_FOUNDED], "PyOnReligionFounded");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_GAINED], "PyOnGained");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_LOST], "PyOnLost");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_TECH_ACQUIRED], "PyOnTechAcquired");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_GREAT_PERSON_BORN], "PyOnGreatPersonBorn");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_GOLDEN_AGE_START], "PyOnGoldenAgeStart");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_GOLDEN_AGE_END], "PyOnGoldenAgeEnd");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_WAR_DECLARED], "PyOnWarDeclared");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_PEACE_MADE], "PyOnPeaceMade");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_ERA_CHANGED], "PyOnEraChanged");
 }
 
 // The part of read() for ConditionalFreeTraits (added by this mod)

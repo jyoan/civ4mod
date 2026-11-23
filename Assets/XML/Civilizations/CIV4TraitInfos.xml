@@ -602,6 +602,13 @@
 			<PyOnCityLost>bConquest and createPartisans(pPlayer, pCity, 2 + iPopulation, iCultureLevel)</PyOnCityLost>
 			<PyOnBuildingBuilt>isBuildingClassIn(eBuilding, ['BUILDINGCLASS_GRANARY', 'BUILDINGCLASS_TEST']) and pCity.changePopulation(1)</PyOnBuildingBuilt>
 			<PyOnReligionFounded>createMissionaries(pPlayer, eReligion, 2, pCity)</PyOnReligionFounded>
+			<PyOnTechAcquired>(bFirst and gainGold(pPlayer, 25), countEvery(pPlayer, eTrait, 3) and createUnits(pPlayer, 'UNITCLASS_SCOUT', 1, capitalPlot(pPlayer)))</PyOnTechAcquired>
+			<PyOnGreatPersonBorn>(gainTraitForTurns(pPlayer, 'TRAIT_TEST_TEMPORARY', 5), pCity.isNone() or addCulture(pCity, 100))</PyOnGreatPersonBorn>
+			<PyOnGoldenAgeStart>gainGold(pPlayer, 100)</PyOnGoldenAgeStart>
+			<PyOnGoldenAgeEnd>gainTraitForTurns(pPlayer, 'TRAIT_TEST_TEMPORARY', 3)</PyOnGoldenAgeEnd>
+			<PyOnWarDeclared>(bAggressor and gainGold(pPlayer, 50), bAggressor or createCityConscripts(pPlayer, 3))</PyOnWarDeclared>
+			<PyOnPeaceMade>gainGold(pPlayer, 30)</PyOnPeaceMade>
+			<PyOnEraChanged>createUnits(pPlayer, 'UNITCLASS_ENGINEER', 1, capitalPlot(pPlayer))</PyOnEraChanged>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>
