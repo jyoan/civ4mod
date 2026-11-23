@@ -95,7 +95,7 @@ BtS の効果はそのままにして足す。
 | `iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | ガンジー |
 | `NoObsoleteBuildingClasses` の世界遺産 | ラムセス２世 |
 | `PrereqTech` + `iFreeSpecialist` | リンカーン |
-| `iImprovementUpgradeRateModifier` | アメリカ |
+| `iImprovementUpgradeRateModifier`、`bImprovementUpgradeUnworked` | アメリカ |
 | `iDistantTradeRouteModifier` | ハトシェプスト |
 | `iCityRadiusChange` | スーリヤヴァルマン2世 |
 | `iGoldenAgeLandMovesChange`、`bGoldenAge` + `iCombatPercent` | ペルシャ |
@@ -177,7 +177,7 @@ BtS の効果はそのままにして足す。
 | ガンジー | 非暴力不服従: 防衛時の戦闘力 +10%、敵の厭戦感情 +50% | `iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | 実装済み `TRAIT_SATYAGRAHA` |
 | ラムセス２世 | 永遠の記念碑: すべての世界遺産が陳腐化しない（BtS で陳腐化する 13 個を並べた） | `NoObsoleteBuildingClasses` | 実装済み `TRAIT_ETERNAL_MONUMENTS` |
 | リンカーン | 奴隷解放: 自由主義を得ると全都市に無償の専門家 +1 | `PrereqTech` で `TRAIT_EMANCIPATION_ACT`（`iFreeSpecialist`） | 実装済み、ゲームで確認済み `TRAIT_EMANCIPATION` |
-| アメリカ（文明） | ホームステッド法: 小屋などの成長 +50% | `iImprovementUpgradeRateModifier` | 実装済み、ゲームで確認済み `TRAIT_HOMESTEAD` |
+| アメリカ（文明） | ホームステッド法: 小屋などの成長 +50%。文化圏の施設は市民を配置しなくても成長する（2026-11-23 に追加） | `iImprovementUpgradeRateModifier`、`bImprovementUpgradeUnworked` | 実装済み、ゲームで確認済み `TRAIT_HOMESTEAD` |
 | ハトシェプスト | プント遠征: 遠く離れた都市との交易路 +50% | `iDistantTradeRouteModifier` | 実装済み、ゲームで確認済み `TRAIT_PUNT` |
 | スーリヤヴァルマン2世 | アンコール: 文化レベル「洗練」以上の都市は都市圏の半径 +1 | `iCityRadiusChange` + `CityRadiusCultureLevel` | 実装済み、ゲームで確認済み `TRAIT_ANGKOR` |
 | ペルシャ（文明） | 黄金の帝国: 黄金時代は陸上ユニットの移動力 +1、全ユニットの戦闘力 +15% | `iGoldenAgeLandMovesChange`、`bGoldenAge` で `TRAIT_GOLDEN_EMPIRE_AGE`（`iCombatPercent`） | 実装済み、ゲームで確認済み `TRAIT_GOLDEN_EMPIRE` |

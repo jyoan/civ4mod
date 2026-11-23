@@ -2152,6 +2152,7 @@
 			<Description>TXT_KEY_TRAIT_HOMESTEAD</Description>
 			<ShortDescription>TXT_KEY_TRAIT_HOMESTEAD_SHORT</ShortDescription>
 			<iImprovementUpgradeRateModifier>50</iImprovementUpgradeRateModifier>
+			<bImprovementUpgradeUnworked>1</bImprovementUpgradeUnworked>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_PUNT</Type>
