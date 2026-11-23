@@ -2818,6 +2818,7 @@ enum TraitPythonHookTypes
 	TRAIT_PYHOOK_VASSAL_GAINED,		// PyOnVassalGained
 	TRAIT_PYHOOK_RELIGION_SPREAD,	// PyOnReligionSpread
 	TRAIT_PYHOOK_CIVIC_CHANGED,		// PyOnCivicChanged
+	TRAIT_PYHOOK_CIRCUMNAVIGATED,	// PyOnCircumnavigated
 
 	NUM_TRAIT_PYHOOK_TYPES
 };

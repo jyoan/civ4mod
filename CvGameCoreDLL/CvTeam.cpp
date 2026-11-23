@@ -173,6 +173,7 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 	m_iEnemyWarWearinessModifier = 0;
 	m_iRiverTradeCount = 0;
 	m_iEspionagePointsEver = 0;
+	m_iCircumnavigatedOrder = 0;
 
 	m_bMapCentering = false;
 	m_bCapitulated = false;
@@ -3391,6 +3392,11 @@ void CvTeam::changeEnemyWarWearinessModifier(int iChange)
 	m_iEnemyWarWearinessModifier += iChange;
 }
 
+int CvTeam::getCircumnavigatedOrder() const
+{
+	return m_iCircumnavigatedOrder;
+}
+
 bool CvTeam::isMapCentering() const
 {
 	return m_bMapCentering;
@@ -5631,13 +5637,37 @@ void CvTeam::testCircumnavigated()
 	CvWString szBuffer;
 	bool bFoundVisible;
 	int iX, iY;
+	int iOrder;
+	int iI;
 
 	if (isBarbarian())
 	{
 		return;
 	}
 
-	if (!GC.getGameINLINE().circumnavigationAvailable())
+	// Each team circumnavigates the globe once (changed by this mod: only the first team did), for PyOnCircumnavigated of
+	// the traits. iOrder: 1 for the first team, 2 for the second...
+	if (getCircumnavigatedOrder() > 0)
+	{
+		return;
+	}
+
+	if (!GC.getGameINLINE().isCircumnavigationMap())
+	{
+		return;
+	}
+
+	iOrder = 1;
+	for (iI = 0; iI < MAX_TEAMS; iI++)
+	{
+		if (GET_TEAM((TeamTypes)iI).getCircumnavigatedOrder() > 0)
+		{
+			iOrder++;
+		}
+	}
+
+	// A game saved before this change does not know which team was the first: no later circumnavigation there
+	if (GC.getGameINLINE().isCircumnavigated() && iOrder == 1)
 	{
 		return;
 	}
@@ -5690,15 +5720,19 @@ void CvTeam::testCircumnavigated()
 		}
 	}
 
+	m_iCircumnavigatedOrder = iOrder;
 	GC.getGameINLINE().makeCircumnavigated();
 
 	if (GC.getGameINLINE().getElapsedGameTurns() > 0)
 	{
-		if (GC.getDefineINT("CIRCUMNAVIGATE_FREE_MOVES") != 0)
+		// The bonus moves and the messages: only the first team, as in the original game. A later team gets something only
+		// from PyOnCircumnavigated of its traits (e.g. gainCircumnavigationMoves of CvHookUtils.py)
+		if (iOrder == 1)
 		{
+			// CIRCUMNAVIGATE_FREE_MOVES is not 0 here (isCircumnavigationMap)
 			changeExtraMoves(DOMAIN_SEA, GC.getDefineINT("CIRCUMNAVIGATE_FREE_MOVES"));
 
-			for (int iI = 0; iI < MAX_PLAYERS; iI++)
+			for (iI = 0; iI < MAX_PLAYERS; iI++)
 			{
 				if (GET_PLAYER((PlayerTypes)iI).isAlive())
 				{
@@ -5720,6 +5754,15 @@ void CvTeam::testCircumnavigated()
 
 			szBuffer = gDLL->getText("TXT_KEY_MISC_SOMEONE_CIRC_GLOBE", getName().GetCString());
 			GC.getGameINLINE().addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, getLeaderID(), szBuffer, -1, -1, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
+		}
+
+		// PyOnCircumnavigated of the traits of the players of this team (added by this mod), after the bonus moves
+		for (iI = 0; iI < MAX_PLAYERS; iI++)
+		{
+			if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
+			{
+				GET_PLAYER((PlayerTypes)iI).doTraitPythonHookInts(TRAIT_PYHOOK_CIRCUMNAVIGATED, 1, iOrder);
+			}
 		}
 	}
 }
@@ -6398,6 +6441,12 @@ void CvTeam::read(FDataStreamBase* pStream)
 		pStream->Read((int*)&eBonus);
 		m_aeRevealedBonuses.push_back(eBonus);
 	}
+
+	// added by this mod
+	if (uiFlag > 0)
+	{
+		pStream->Read(&m_iCircumnavigatedOrder);
+	}
 }
 
 
@@ -6405,7 +6454,7 @@ void CvTeam::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 0;
+	uint uiFlag = 1;	// 1: m_iCircumnavigatedOrder (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iNumMembers);
@@ -6490,6 +6539,8 @@ void CvTeam::write(FDataStreamBase* pStream)
 	{
 		pStream->Write(*it);
 	}
+
+	pStream->Write(m_iCircumnavigatedOrder);	// added by this mod
 }
 
 // CACHE: cache frequently used values

@@ -25,6 +25,7 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getPyOnVassalGained", &CvTraitInfo::getPyOnVassalGained, "string ()")
 		.def("getPyOnReligionSpread", &CvTraitInfo::getPyOnReligionSpread, "string ()")
 		.def("getPyOnCivicChanged", &CvTraitInfo::getPyOnCivicChanged, "string ()")
+		.def("getPyOnCircumnavigated", &CvTraitInfo::getPyOnCircumnavigated, "string ()")
 		.def("isBarbarianVision", &CvTraitInfo::isBarbarianVision, "bool ()")
 		.def("isStackCityDefense", &CvTraitInfo::isStackCityDefense, "bool ()")
 		.def("isRevealWonderProduction", &CvTraitInfo::isRevealWonderProduction, "bool ()")

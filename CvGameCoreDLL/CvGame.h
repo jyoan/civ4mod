@@ -257,6 +257,7 @@ public:
 	bool isCircumnavigated() const;																// Exposed to Python
 	void makeCircumnavigated();																		// Exposed to Python
 	bool circumnavigationAvailable() const;
+	bool isCircumnavigationMap() const;		// added by this mod
 
 	bool isDiploVote(VoteSourceTypes eVoteSource) const;																			// Exposed to Python
 	int getDiploVoteCount(VoteSourceTypes eVoteSource) const;

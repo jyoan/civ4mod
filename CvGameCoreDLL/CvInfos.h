@@ -5171,6 +5171,7 @@ public:
 	const TCHAR* getPyOnVassalGained() const;		// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnReligionSpread() const;	// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnCivicChanged() const;		// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnCircumnavigated() const;	// Exposed to Python (added by this mod)
 	int getNumConditionalFreeTraits() const;		// Exposed to Python
 	int getConditionalFreeTraitType(int i) const;	// Exposed to Python
 	const ConditionalFreeTrait& getConditionalFreeTrait(int i) const;
