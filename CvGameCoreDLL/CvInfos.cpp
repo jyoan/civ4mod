@@ -20331,7 +20331,7 @@ bool CvCorporationInfo::read(CvXMLLoadUtility* pXML)
 CvTraitInfo::CvTraitInfo() :
 m_iHealth(0),													
 m_iHappiness(0),													
-m_iMaxAnarchy(0),											
+m_iMaxAnarchy(-1),											
 m_iUpkeepModifier(0),									
 m_iLevelExperienceModifier(0),									
 m_iGreatPeopleRateModifier(0),						
@@ -23722,7 +23722,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->GetChildXmlValByName(&m_iHealth, "iHealth");
 	pXML->GetChildXmlValByName(&m_iHappiness, "iHappiness");
-	pXML->GetChildXmlValByName(&m_iMaxAnarchy, "iMaxAnarchy");
+	pXML->GetChildXmlValByName(&m_iMaxAnarchy, "iMaxAnarchy", -1);
 	pXML->GetChildXmlValByName(&m_iUpkeepModifier, "iUpkeepModifier");
 	pXML->GetChildXmlValByName(&m_iLevelExperienceModifier, "iLevelExperienceModifier");
 	pXML->GetChildXmlValByName(&m_iGreatPeopleRateModifier, "iGreatPeopleRateModifier");

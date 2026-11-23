@@ -1019,17 +1019,17 @@
 		<element type="ShortDescription"/>
 		<element type="Help" minOccurs="0"/>
 		<element type="bBasicTrait" minOccurs="0"/>
-		<element type="iHealth"/>
-		<element type="iHappiness"/>
-		<element type="iMaxAnarchy"/>
-		<element type="iUpkeepModifier"/>
-		<element type="iLevelExperienceModifier"/>
-		<element type="iGreatPeopleRateModifier"/>
-		<element type="iGreatGeneralRateModifier"/>
-		<element type="iDomesticGreatGeneralRateModifier"/>
-		<element type="iMaxGlobalBuildingProductionModifier"/>
-		<element type="iMaxTeamBuildingProductionModifier"/>
-		<element type="iMaxPlayerBuildingProductionModifier"/>
+		<element type="iHealth" minOccurs="0"/>
+		<element type="iHappiness" minOccurs="0"/>
+		<element type="iMaxAnarchy" minOccurs="0"/>
+		<element type="iUpkeepModifier" minOccurs="0"/>
+		<element type="iLevelExperienceModifier" minOccurs="0"/>
+		<element type="iGreatPeopleRateModifier" minOccurs="0"/>
+		<element type="iGreatGeneralRateModifier" minOccurs="0"/>
+		<element type="iDomesticGreatGeneralRateModifier" minOccurs="0"/>
+		<element type="iMaxGlobalBuildingProductionModifier" minOccurs="0"/>
+		<element type="iMaxTeamBuildingProductionModifier" minOccurs="0"/>
+		<element type="iMaxPlayerBuildingProductionModifier" minOccurs="0"/>
 		<element type="iWorkerSpeedModifier" minOccurs="0"/>
 		<element type="iFreeExperience" minOccurs="0"/>
 		<element type="iMilitaryProductionModifier" minOccurs="0"/>
@@ -1203,10 +1203,10 @@
 		<element type="PyOnGained" minOccurs="0"/>
 		<element type="PyOnLost" minOccurs="0"/>
 		<element type="ConditionalFreeTraits" minOccurs="0"/>
-		<element type="ExtraYieldThresholds"/>
-		<element type="TradeYieldModifiers"/>
-		<element type="CommerceChanges"/>
-		<element type="CommerceModifiers"/>
+		<element type="ExtraYieldThresholds" minOccurs="0"/>
+		<element type="TradeYieldModifiers" minOccurs="0"/>
+		<element type="CommerceChanges" minOccurs="0"/>
+		<element type="CommerceModifiers" minOccurs="0"/>
 		<element type="YieldModifiers" minOccurs="0"/>
 		<element type="CapitalYieldModifiers" minOccurs="0"/>
 		<element type="CapitalCommerceModifiers" minOccurs="0"/>
@@ -1238,8 +1238,8 @@
 		<element type="HappyCommercePercents" minOccurs="0"/>
 		<element type="HealthyYieldPercents" minOccurs="0"/>
 		<element type="HealthyCommercePercents" minOccurs="0"/>
-		<element type="FreePromotions"/>
-		<element type="FreePromotionUnitCombats"/>
+		<element type="FreePromotions" minOccurs="0"/>
+		<element type="FreePromotionUnitCombats" minOccurs="0"/>
 		<element type="FreePromotionSets" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="TraitInfos" content="eltOnly">
