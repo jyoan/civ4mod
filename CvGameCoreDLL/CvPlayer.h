@@ -551,8 +551,8 @@ public:
 	DllExport void changeEspionageSpendingWeightAgainstTeam(TeamTypes eIndex, int iChange);																// Exposed to Python
 
 	bool canStealTech(PlayerTypes eTarget, TechTypes eTech) const;
-	bool canForceCivics(PlayerTypes eTarget, CivicTypes eCivic) const;
-	bool canForceReligion(PlayerTypes eTarget, ReligionTypes eReligion) const;
+	bool canForceCivics(PlayerTypes eTarget, CivicTypes eCivic, bool bAnyCivic = false) const;	// bAnyCivic added by this mod
+	bool canForceReligion(PlayerTypes eTarget, ReligionTypes eReligion, bool bAnyReligion = false) const;	// bAnyReligion added by this mod
 	bool canSpyDestroyUnit(PlayerTypes eTarget, CvUnit& kUnit) const;
 	bool canSpyBribeUnit(PlayerTypes eTarget, CvUnit& kUnit) const;
 	bool canSpyDestroyBuilding(PlayerTypes eTarget, BuildingTypes eBuilding) const;

@@ -2010,6 +2010,16 @@ bool CvDLLButtonPopup::launchDoEspionageTargetPopup(CvPopup* pPopup, CvPopupInfo
 				gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, szBuffer, kReligion.getButton(), iReligion, WIDGET_HELP_ESPIONAGE_COST, eMission, iReligion);
 			}
 		}
+
+		// bSwitchNoReligion (added by this mod): abolishing the state religion, with the button of the religion screen
+		int iNoReligion = GC.getNumReligionInfos();
+		if (kMission.isSwitchNoReligion() && kPlayer.canDoEspionageMission(eMission, eTargetPlayer, pPlot, iNoReligion, pUnit))
+		{
+			int iCost = kPlayer.getEspionageMissionCost(eMission, eTargetPlayer, pPlot, iNoReligion, pUnit);
+			CvWString szNoState = gDLL->getText("TXT_KEY_RELIGION_SCREEN_NO_STATE");
+			CvWString szBuffer = gDLL->getText("TXT_KET_ESPIONAGE_MISSION_COST", szNoState.GetCString(), iCost);
+			gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, szBuffer, ARTFILEMGR.getInterfaceArtInfo("INTERFACE_BUTTONS_CANCEL")->getPath(), iNoReligion, WIDGET_HELP_ESPIONAGE_COST, eMission, iNoReligion);
+		}
 	}
 
 	gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_NEVER_MIND"), ARTFILEMGR.getInterfaceArtInfo("INTERFACE_BUTTONS_CANCEL")->getPath(), NO_ESPIONAGEMISSION, WIDGET_GENERAL);

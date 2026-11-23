@@ -1701,6 +1701,33 @@
 		<Japanese>&#35201;&#20154;&#12398;&#35480;&#25296;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_SUBVERT_CIVIC</Tag>
+		<English>Subvert Civics</English>
+		<French>Subvert Civics</French>
+		<German>Subvert Civics</German>
+		<Italian>Subvert Civics</Italian>
+		<Spanish>Subvert Civics</Spanish>
+		<Japanese>&#20307;&#21046;&#36578;&#35206;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_SUBVERT_RELIGION</Tag>
+		<English>Subvert Religion</English>
+		<French>Subvert Religion</French>
+		<German>Subvert Religion</German>
+		<Italian>Subvert Religion</Italian>
+		<Spanish>Subvert Religion</Spanish>
+		<Japanese>&#22269;&#25945;&#36578;&#35206;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_TARGET_SWITCH_NO_RELIGION</Tag>
+		<English>Enemy infiltrators have taken control of the clergy and abolished our state religion!</English>
+		<French>Enemy infiltrators have taken control of the clergy and abolished our state religion!</French>
+		<German>Enemy infiltrators have taken control of the clergy and abolished our state religion!</German>
+		<Italian>Enemy infiltrators have taken control of the clergy and abolished our state religion!</Italian>
+		<Spanish>Enemy infiltrators have taken control of the clergy and abolished our state religion!</Spanish>
+		<Japanese>&#25973;&#12473;&#12497;&#12452;&#12364;&#23447;&#25945;&#30028;&#12434;&#20055;&#12387;&#21462;&#12426;&#12289;&#25105;&#12364;&#22269;&#12398;&#22269;&#25945;&#12434;&#24259;&#27490;&#12373;&#12379;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_ESPIONAGE_GREAT_PERSON_TARGET_COST</Tag>
 		<English>%s1_GreatPerson x%d2 (%d3[ICON_ESPIONAGE])</English>
 		<French>%s1_GreatPerson x%d2 (%d3[ICON_ESPIONAGE])</French>

@@ -178,3 +178,5 @@
 - 2026-11-23: マヤの文明志向 `TRAIT_LONG_COUNT`（長期暦の日付と西暦のマウスオーバー、神学の後の周期で偉人を選ぶ）をゲーム内で確認
 - 2026-11-23: 志向のタグ `bImprovementUpgradeUnworked`（文化圏の市民を配置していない施設が成長する）をゲーム内で確認
 - 2026-11-23: アメリカの `TRAIT_HOMESTEAD` に足した `bImprovementUpgradeUnworked` をゲーム内で確認
+- 2026-11-23: 諜報任務のタグ `bSwitchAnyCivic` と任務「体制転覆」（`ESPIONAGEMISSION_SUBVERT_CIVIC`。自分が採用していない社会制度もアイコンで選んで相手に押し付けられる）をゲーム内で確認
+- 2026-11-23: 諜報任務のタグ `bSwitchAnyReligion`・`bSwitchNoReligion` と任務「国教転覆」（`ESPIONAGEMISSION_SUBVERT_RELIGION`。自分の国教でない宗教と「国教なし」をアイコンで選んで相手に押し付けられる）をゲーム内で確認
