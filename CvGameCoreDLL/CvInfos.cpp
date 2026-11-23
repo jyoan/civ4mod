@@ -20417,6 +20417,7 @@ m_bRevealWarPlans(false),
 m_bRevealHiddenAttitude(false),
 m_bLongCountCalendar(false),
 m_bImprovementUpgradeUnworked(false),
+m_bUnsettleGreatPeople(false),
 m_bNoCultureFlip(false),
 m_bNoRevoltAndNoCultureFlip(false),
 m_bInstantCultureFlip(false),
@@ -21208,6 +21209,13 @@ bool CvTraitInfo::isLongCountCalendar() const
 bool CvTraitInfo::isImprovementUpgradeUnworked() const
 {
 	return m_bImprovementUpgradeUnworked;
+}
+
+// bUnsettleGreatPeople (added by this mod): a great person settled in a city of the player can become a unit again by
+// clicking its icon on the city screen (CvCity::unsettleGreatPerson)
+bool CvTraitInfo::isUnsettleGreatPeople() const
+{
+	return m_bUnsettleGreatPeople;
 }
 
 // CultureFlip/bNoFlip (added by this mod): the cities of the player do not flip to another player by culture. The revolts still
@@ -23222,6 +23230,7 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bRevealHiddenAttitude, "bRevealHiddenAttitude");
 	pXML->GetChildXmlValByName(&m_bLongCountCalendar, "bLongCountCalendar");
 	pXML->GetChildXmlValByName(&m_bImprovementUpgradeUnworked, "bImprovementUpgradeUnworked");
+	pXML->GetChildXmlValByName(&m_bUnsettleGreatPeople, "bUnsettleGreatPeople");
 	// CultureFlip: bNoFlip, bNoRevoltAndNoFlip, bInstantFlip, iRevoltChance
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CultureFlip"))
 	{

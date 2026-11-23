@@ -2481,6 +2481,11 @@ bool CyPlayer::isImprovementUpgradeUnworked()
 	return m_pPlayer ? m_pPlayer->isImprovementUpgradeUnworked() : false;
 }
 
+bool CyPlayer::isUnsettleGreatPeople()
+{
+	return m_pPlayer ? m_pPlayer->isUnsettleGreatPeople() : false;
+}
+
 bool CyPlayer::isNoCultureFlip()
 {
 	return m_pPlayer ? m_pPlayer->isNoCultureFlip() : false;

@@ -34,6 +34,8 @@
 
 // The ModNetMessage of bChooseGoody: the DLL handles it, Python does not see it (added by this mod)
 #define MOD_NET_MESSAGE_CHOOSE_GOODY								(-20261110)
+// The ModNetMessage of bUnsettleGreatPeople of the traits: the DLL handles it, Python does not see it (added by this mod)
+#define MOD_NET_MESSAGE_UNSETTLE_GREAT_PERSON						(-20261125)
 // iData1 of WIDGET_GENERAL for the date at the top right of the main interface (CvMainInterface.py writes the same
 // number): the help of CvDLLWidgetData::parseHelp (added by this mod)
 #define WIDGET_DATA_INTERFACE_TIME								(-20261124)

@@ -428,6 +428,8 @@ public:
 	void setFreeSpecialistCount(int /*SpecialistTypes*/ eIndex, int iNewValue);
 	void changeFreeSpecialistCount(int /*SpecialistTypes*/ eIndex, int iChange);
 	int getAddedFreeSpecialistCount(int /*SpecialistTypes*/ eIndex);
+	bool canUnsettleGreatPerson(int /*SpecialistTypes*/ eSpecialist);	// added by this mod
+	bool unsettleGreatPerson(int /*SpecialistTypes*/ eSpecialist);	// added by this mod
 	int getImprovementFreeSpecialists(int /*ImprovementTypes*/ iIndex);
 	void changeImprovementFreeSpecialists(int /*ImprovementTypes*/ iIndex, int iChange);
 	int getReligionInfluence(int /*ReligionTypes*/ iIndex);

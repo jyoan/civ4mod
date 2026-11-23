@@ -5277,6 +5277,11 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_IMPROVEMENT_UPGRADE_UNWORKED"));
 	}
 
+	if (kTrait.isUnsettleGreatPeople())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_UNSETTLE_GREAT_PEOPLE"));
+	}
+
 	// "Can build without the technology: Research". The processes are loaded when a game is launched: none on the screens
 	// before (GC.getNumProcessInfos() is 0)
 	bFirst = true;

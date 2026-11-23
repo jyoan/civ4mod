@@ -11334,6 +11334,45 @@ bool CvCity::hasPrereqOrSettledSpecialists(BuildingTypes eBuilding) const
 	return false;
 }
 
+// bUnsettleGreatPeople of the traits (added by this mod): a great person settled in this city as eSpecialist
+// (getAddedFreeSpecialistCount: not the free specialists of buildings) can become the great person unit of the owner
+bool CvCity::canUnsettleGreatPerson(SpecialistTypes eSpecialist) const
+{
+	if (eSpecialist < 0 || eSpecialist >= GC.getNumSpecialistInfos())
+	{
+		return false;
+	}
+
+	if (!GET_PLAYER(getOwnerINLINE()).isUnsettleGreatPeople())
+	{
+		return false;
+	}
+
+	if (getAddedFreeSpecialistCount(eSpecialist) <= 0)
+	{
+		return false;
+	}
+
+	return (GET_PLAYER(getOwnerINLINE()).getGreatPersonUnit(eSpecialist) != NO_UNIT);
+}
+
+// The settled great person becomes a unit in this city (added by this mod). Called on every computer
+// (MOD_NET_MESSAGE_UNSETTLE_GREAT_PERSON)
+bool CvCity::unsettleGreatPerson(SpecialistTypes eSpecialist)
+{
+	if (!canUnsettleGreatPerson(eSpecialist))
+	{
+		return false;
+	}
+
+	UnitTypes eUnit = GET_PLAYER(getOwnerINLINE()).getGreatPersonUnit(eSpecialist);
+
+	changeFreeSpecialistCount(eSpecialist, -1);
+	GET_PLAYER(getOwnerINLINE()).initUnit(eUnit, getX_INLINE(), getY_INLINE(), NO_UNITAI);
+
+	return true;
+}
+
 int CvCity::getAddedFreeSpecialistCount(SpecialistTypes eIndex) const
 {
 	int iNumAddedSpecialists = getFreeSpecialistCount(eIndex);

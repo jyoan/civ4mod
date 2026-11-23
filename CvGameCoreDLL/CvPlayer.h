@@ -413,6 +413,7 @@ public:
 	bool isRevealHiddenAttitude() const;			// Exposed to Python
 	bool isLongCountCalendar() const;				// Exposed to Python
 	bool isImprovementUpgradeUnworked() const;		// Exposed to Python
+	bool isUnsettleGreatPeople() const;				// Exposed to Python
 	bool isNoCultureFlip() const;					// Exposed to Python: bNoCultureFlip or bNoRevoltAndNoCultureFlip of the traits
 	bool isNoRevoltAndNoCultureFlip() const;		// Exposed to Python
 	bool isInstantCultureFlip() const;				// Exposed to Python

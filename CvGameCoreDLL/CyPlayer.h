@@ -549,6 +549,7 @@ public:
 	bool isRevealHiddenAttitude();	// added by this mod
 	bool isLongCountCalendar();	// added by this mod
 	bool isImprovementUpgradeUnworked();	// added by this mod
+	bool isUnsettleGreatPeople();	// added by this mod
 	bool isNoCultureFlip();	// added by this mod
 	bool isNoRevoltAndNoCultureFlip();	// added by this mod
 	bool isInstantCultureFlip();	// added by this mod

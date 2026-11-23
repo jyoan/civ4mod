@@ -1803,6 +1803,33 @@
 		<Japanese>[ICON_BULLET]&#25991;&#21270;&#22287;&#20869;&#12398;&#26045;&#35373;&#12399;&#12289;&#24066;&#27665;&#12434;&#37197;&#32622;&#12375;&#12394;&#12367;&#12390;&#12418;&#25104;&#38263;&#12377;&#12427;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNSETTLE_GREAT_PEOPLE</Tag>
+		<English>[ICON_BULLET]Settled great people can become units again (click them on the city screen)</English>
+		<French>[ICON_BULLET]Settled great people can become units again (click them on the city screen)</French>
+		<German>[ICON_BULLET]Settled great people can become units again (click them on the city screen)</German>
+		<Italian>[ICON_BULLET]Settled great people can become units again (click them on the city screen)</Italian>
+		<Spanish>[ICON_BULLET]Settled great people can become units again (click them on the city screen)</Spanish>
+		<Japanese>[ICON_BULLET]&#23450;&#20303;&#12375;&#12383;&#20553;&#20154;&#12434;&#12518;&#12491;&#12483;&#12488;&#12395;&#25147;&#12379;&#12427;&#65288;&#37117;&#24066;&#30011;&#38754;&#12391;&#12463;&#12522;&#12483;&#12463;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNSETTLE_GREAT_PERSON_CLICK</Tag>
+		<English>[COLOR_HIGHLIGHT_TEXT]Click to turn into a %s1 unit[COLOR_REVERT]</English>
+		<French>[COLOR_HIGHLIGHT_TEXT]Click to turn into a %s1 unit[COLOR_REVERT]</French>
+		<German>[COLOR_HIGHLIGHT_TEXT]Click to turn into a %s1 unit[COLOR_REVERT]</German>
+		<Italian>[COLOR_HIGHLIGHT_TEXT]Click to turn into a %s1 unit[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_HIGHLIGHT_TEXT]Click to turn into a %s1 unit[COLOR_REVERT]</Spanish>
+		<Japanese>[COLOR_HIGHLIGHT_TEXT]&#12463;&#12522;&#12483;&#12463;&#12391;%s1&#12398;&#12518;&#12491;&#12483;&#12488;&#12395;&#25147;&#12377;[COLOR_REVERT]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_POPUP_UNSETTLE_GREAT_PERSON</Tag>
+		<English>Turn the %s1 settled in %s2 into a unit?</English>
+		<French>Turn the %s1 settled in %s2 into a unit?</French>
+		<German>Turn the %s1 settled in %s2 into a unit?</German>
+		<Italian>Turn the %s1 settled in %s2 into a unit?</Italian>
+		<Spanish>Turn the %s1 settled in %s2 into a unit?</Spanish>
+		<Japanese>%s2&#12395;&#23450;&#20303;&#12375;&#12390;&#12356;&#12427;%s1&#12434;&#12518;&#12491;&#12483;&#12488;&#12395;&#25147;&#12375;&#12414;&#12377;&#12363;&#65311;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_NO_CULTURE_FLIP</Tag>
 		<English>[ICON_BULLET]Cities do not flip to other civilizations by culture (revolts still occur)</English>
 		<French>[ICON_BULLET]Cities do not flip to other civilizations by culture (revolts still occur)</French>

@@ -818,6 +818,8 @@ public:
 	void changeFreeSpecialistCount(SpecialistTypes eIndex, int iChange);		// Exposed to Python
 	bool hasPrereqAndSettledSpecialists(BuildingTypes eBuilding) const;	// added by this mod
 	bool hasPrereqOrSettledSpecialists(BuildingTypes eBuilding) const;	// added by this mod
+	bool canUnsettleGreatPerson(SpecialistTypes eSpecialist) const;	// Exposed to Python, added by this mod
+	bool unsettleGreatPerson(SpecialistTypes eSpecialist);	// Exposed to Python, added by this mod
 	bool hasPrereqOrBuildingClasses(BuildingTypes eBuilding) const;	// added by this mod
 	bool hasPrereqNotInCityBuildingClasses(BuildingTypes eBuilding) const;	// added by this mod
 	bool hasPrereqOrTerrains(const std::vector<int>& aiTerrains) const;	// added by this mod

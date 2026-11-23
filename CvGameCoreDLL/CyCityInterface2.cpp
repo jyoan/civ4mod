@@ -14,5 +14,7 @@ void CyCityPythonInterface2(python::class_<CyCity>& x)
 		.def("getCultureRange", &CyCity::getCultureRange, "int () - how far the borders reach, with iCultureRangeChange of the traits (added by this mod)")
 		.def("getMiseryYieldByBuilding", &CyCity::getMiseryYieldByBuilding, "int (int /*YieldTypes*/ eIndex, int /*BuildingTypes*/ iBuilding) - the changes per angry citizen and per unhealthiness of the building (added by this mod)")
 		.def("getMiseryCommerceByBuilding", &CyCity::getMiseryCommerceByBuilding, "int (int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding) - the changes per angry citizen and per unhealthiness of the building (added by this mod)")
+		.def("canUnsettleGreatPerson", &CyCity::canUnsettleGreatPerson, "bool (int /*SpecialistTypes*/ eSpecialist) - a settled great person can become a unit (bUnsettleGreatPeople of the traits, added by this mod)")
+		.def("unsettleGreatPerson", &CyCity::unsettleGreatPerson, "bool (int /*SpecialistTypes*/ eSpecialist) - the settled great person becomes a unit in the city; call it on every computer (added by this mod)")
 		;
 }

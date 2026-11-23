@@ -9547,6 +9547,12 @@ bool CvPlayer::isImprovementUpgradeUnworked() const
 	return hasTraitFlag(&CvTraitInfo::isImprovementUpgradeUnworked);
 }
 
+// bUnsettleGreatPeople of the traits (added by this mod): see CvCity::unsettleGreatPerson
+bool CvPlayer::isUnsettleGreatPeople() const
+{
+	return hasTraitFlag(&CvTraitInfo::isUnsettleGreatPeople);
+}
+
 // bNoCultureFlip of the traits (added by this mod): the cities of the player do not flip by culture. Also true with
 // bNoRevoltAndNoCultureFlip. See CvPlot::doCulture
 bool CvPlayer::isNoCultureFlip() const

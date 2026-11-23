@@ -682,6 +682,7 @@ bool CvDLLWidgetData::executeAction( CvWidgetDataStruct &widgetDataStruct )
 		break;
 
 	case WIDGET_FREE_CITIZEN:
+		doUnsettleGreatPerson(widgetDataStruct);
 		break;
 
 	case WIDGET_DISABLED_CITIZEN:
@@ -3135,7 +3136,42 @@ void CvDLLWidgetData::parseFreeCitizenHelp(CvWidgetDataStruct &widgetDataStruct,
 			szBuffer.append(SEPARATOR);
 			GAMETEXT.parseFreeSpecialistHelp(szBuffer, *pHeadSelectedCity);
 		}
+
+		// bUnsettleGreatPeople of the traits (added by this mod)
+		if (NO_SPECIALIST != eSpecialist && pHeadSelectedCity->getOwnerINLINE() == GC.getGameINLINE().getActivePlayer()
+			&& pHeadSelectedCity->canUnsettleGreatPerson(eSpecialist))
+		{
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText("TXT_KEY_UNSETTLE_GREAT_PERSON_CLICK", GC.getUnitInfo(GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getGreatPersonUnit(eSpecialist)).getTextKeyWide()));
+		}
 	}
+}
+
+// Clicking the icon of a settled great person on the city screen (bUnsettleGreatPeople of the traits, added by this
+// mod): asks for confirmation, then CvDLLButtonPopup sends MOD_NET_MESSAGE_UNSETTLE_GREAT_PERSON
+void CvDLLWidgetData::doUnsettleGreatPerson(CvWidgetDataStruct &widgetDataStruct)
+{
+	CvCity* pHeadSelectedCity = gDLL->getInterfaceIFace()->getHeadSelectedCity();
+	SpecialistTypes eSpecialist = (SpecialistTypes)widgetDataStruct.m_iData1;
+
+	if (pHeadSelectedCity == NULL || NO_SPECIALIST == eSpecialist)
+	{
+		return;
+	}
+
+	if (pHeadSelectedCity->getOwnerINLINE() != GC.getGameINLINE().getActivePlayer() || !pHeadSelectedCity->canUnsettleGreatPerson(eSpecialist))
+	{
+		return;
+	}
+
+	UnitTypes eUnit = GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getGreatPersonUnit(eSpecialist);
+
+	CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_PYTHON, pHeadSelectedCity->getID(), eSpecialist);
+	pInfo->setText(gDLL->getText("TXT_KEY_POPUP_UNSETTLE_GREAT_PERSON", GC.getUnitInfo(eUnit).getTextKeyWide(), pHeadSelectedCity->getNameKey()));
+	pInfo->setOnClickedPythonCallback("claudeUnsettleGreatPerson");
+	pInfo->addPythonButton(gDLL->getText("TXT_KEY_POPUP_YES"), "");
+	pInfo->addPythonButton(gDLL->getText("TXT_KEY_POPUP_NO"), "");
+	gDLL->getInterfaceIFace()->addPopup(pInfo, GC.getGameINLINE().getActivePlayer(), true);
 }
 
 
