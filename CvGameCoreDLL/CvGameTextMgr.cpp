@@ -5222,6 +5222,11 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_LONG_COUNT_CALENDAR"));
 	}
 
+	if (kTrait.isImprovementUpgradeUnworked())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_IMPROVEMENT_UPGRADE_UNWORKED"));
+	}
+
 	// "Can build without the technology: Research". The processes are loaded when a game is launched: none on the screens
 	// before (GC.getNumProcessInfos() is 0)
 	bFirst = true;

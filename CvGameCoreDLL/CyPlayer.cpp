@@ -2476,6 +2476,11 @@ bool CyPlayer::isLongCountCalendar()
 	return m_pPlayer ? m_pPlayer->isLongCountCalendar() : false;
 }
 
+bool CyPlayer::isImprovementUpgradeUnworked()
+{
+	return m_pPlayer ? m_pPlayer->isImprovementUpgradeUnworked() : false;
+}
+
 int CyPlayer::getMaxExperienceAfterUpgrade()
 {
 	return m_pPlayer ? m_pPlayer->getMaxExperienceAfterUpgrade() : 0;

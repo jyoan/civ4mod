@@ -4955,6 +4955,7 @@ public:
 	bool isRevealWarPlans() const;					// Exposed to Python
 	bool isRevealHiddenAttitude() const;			// Exposed to Python
 	bool isLongCountCalendar() const;				// Exposed to Python
+	bool isImprovementUpgradeUnworked() const;		// Exposed to Python
 	// Regions (added by this mod): see CvMap::calculateRegions
 	int getNewWorldCityPopulation() const;			// Exposed to Python
 	int getOverseasCityPopulation() const;			// Exposed to Python
@@ -5306,6 +5307,7 @@ protected:
 	bool m_bRevealWarPlans;	// added by this mod
 	bool m_bRevealHiddenAttitude;	// added by this mod
 	bool m_bLongCountCalendar;	// added by this mod
+	bool m_bImprovementUpgradeUnworked;	// added by this mod
 	std::vector<int> m_aiGreatPeopleClassRateModifier;		// per unit class, empty when not set (added by this mod)
 	std::vector<int> m_aiSpecialBuildingProductionModifier;	// per special building, empty when not set (added by this mod)
 	std::vector<CvString> m_aszSpecialBuildingProductionTypes;	// read before the special buildings are loaded, resolved in readPass3

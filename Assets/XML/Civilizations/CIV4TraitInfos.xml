@@ -295,6 +295,7 @@
 			<bRevealWonderProduction>1</bRevealWonderProduction>
 			<bRevealWarPlans>1</bRevealWarPlans>
 			<bRevealHiddenAttitude>1</bRevealHiddenAttitude>
+			<bImprovementUpgradeUnworked>1</bImprovementUpgradeUnworked>
 			<bGainTraitOnCapitalCapture>1</bGainTraitOnCapitalCapture>
 			<bGainTraitsOnElimination>1</bGainTraitsOnElimination>
 			<GainTraitsOnFriendly>

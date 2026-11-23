@@ -9541,6 +9541,12 @@ bool CvPlayer::isLongCountCalendar() const
 	return hasTraitFlag(&CvTraitInfo::isLongCountCalendar);
 }
 
+// bImprovementUpgradeUnworked of the traits (added by this mod): see CvPlot::doTurn
+bool CvPlayer::isImprovementUpgradeUnworked() const
+{
+	return hasTraitFlag(&CvTraitInfo::isImprovementUpgradeUnworked);
+}
+
 // iCultureRangeChange of the traits (added by this mod)
 int CvPlayer::getCultureRangeChange() const
 {
