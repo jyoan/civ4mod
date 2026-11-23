@@ -48,6 +48,7 @@ public:
 	DllExport void setYearStr(CvWString& szString, int iGameTurn, bool bSave, CalendarTypes eCalendar, int iStartYear, GameSpeedTypes eSpeed);
 	DllExport void setDateStr(CvWString& szString, int iGameTurn, bool bSave, CalendarTypes eCalendar, int iStartYear, GameSpeedTypes eSpeed);
 	DllExport void setInterfaceTime(CvWString& szString, PlayerTypes ePlayer);
+	void setLongCountStr(CvWString& szString, int iGameTurn);	// added by this mod
 	DllExport void setGoldStr(CvWString& szString, PlayerTypes ePlayer);
 	DllExport void setResearchStr(CvWString& szString, PlayerTypes ePlayer);
 	DllExport void setOOSSeeds(CvWString& szString, PlayerTypes ePlayer);

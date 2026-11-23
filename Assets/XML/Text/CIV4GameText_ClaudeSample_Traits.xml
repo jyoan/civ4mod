@@ -1739,4 +1739,13 @@
 		<Spanish>overseas land plots in the New World</Spanish>
 		<Japanese>&#28023;&#22806;&#12398;&#26032;&#19990;&#30028;&#12398;&#38520;&#22320;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LONG_COUNT_CALENDAR</Tag>
+		<English>[ICON_BULLET]The date is shown in the Maya Long Count</English>
+		<French>[ICON_BULLET]The date is shown in the Maya Long Count</French>
+		<German>[ICON_BULLET]The date is shown in the Maya Long Count</German>
+		<Italian>[ICON_BULLET]The date is shown in the Maya Long Count</Italian>
+		<Spanish>[ICON_BULLET]The date is shown in the Maya Long Count</Spanish>
+		<Japanese>[ICON_BULLET]&#26085;&#20184;&#12434;&#12510;&#12516;&#12398;&#38263;&#26399;&#26278;&#12391;&#34920;&#31034;&#12377;&#12427;</Japanese>
+	</TEXT>
 </Civ4GameText>

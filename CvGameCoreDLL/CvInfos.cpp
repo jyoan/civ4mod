@@ -20415,6 +20415,7 @@ m_bStackCityDefense(false),
 m_bRevealWonderProduction(false),
 m_bRevealWarPlans(false),
 m_bRevealHiddenAttitude(false),
+m_bLongCountCalendar(false),
 m_iNewWorldCityPopulation(0),
 m_iOverseasCityPopulation(0),
 m_iOverseasMaintenanceModifier(0),
@@ -21182,6 +21183,13 @@ bool CvTraitInfo::isRevealWarPlans() const
 bool CvTraitInfo::isRevealHiddenAttitude() const
 {
 	return m_bRevealHiddenAttitude;
+}
+
+// bLongCountCalendar (added by this mod): the date at the top right of the screen of the player is in the Maya Long Count
+// (CvGameTextMgr::setInterfaceTime)
+bool CvTraitInfo::isLongCountCalendar() const
+{
+	return m_bLongCountCalendar;
 }
 
 // iNewWorldCityPopulation (added by this mod): population of the cities the player founds in the New World
@@ -23117,6 +23125,7 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bRevealWonderProduction, "bRevealWonderProduction");
 	pXML->GetChildXmlValByName(&m_bRevealWarPlans, "bRevealWarPlans");
 	pXML->GetChildXmlValByName(&m_bRevealHiddenAttitude, "bRevealHiddenAttitude");
+	pXML->GetChildXmlValByName(&m_bLongCountCalendar, "bLongCountCalendar");
 	// GreatPeopleClassRateModifiers: the unit classes are loaded before the traits
 	readTypeValueList(pXML, "GreatPeopleClassRateModifiers", "GreatPeopleClassRateModifier", "UnitClassType", "iGreatPeopleRateModifier", GC.getNumUnitClassInfos(), m_aiGreatPeopleClassRateModifier);
 	readSpecialBuildingProductionModifiers(pXML);

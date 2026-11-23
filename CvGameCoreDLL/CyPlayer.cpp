@@ -2471,6 +2471,11 @@ bool CyPlayer::isRevealHiddenAttitude()
 	return m_pPlayer ? m_pPlayer->isRevealHiddenAttitude() : false;
 }
 
+bool CyPlayer::isLongCountCalendar()
+{
+	return m_pPlayer ? m_pPlayer->isLongCountCalendar() : false;
+}
+
 int CyPlayer::getMaxExperienceAfterUpgrade()
 {
 	return m_pPlayer ? m_pPlayer->getMaxExperienceAfterUpgrade() : 0;

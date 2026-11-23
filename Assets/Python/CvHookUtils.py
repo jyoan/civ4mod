@@ -247,3 +247,159 @@ def createPartisans(pPlayer, pCity, iNum, iCultureLevel):
 			pUnit.setHasPromotion(ePromotion, True)
 	szText = CyTranslator().getText("TXT_KEY_MISC_PARTISANS_CREATED", (pCity.getNameKey(), iNum))
 	CyInterface().addMessage(pPlayer.getID(), True, gc.getEVENT_MESSAGE_TIME(), szText, "AS2D_UNIT_BUILD_UNIT", InterfaceMessageTypes.MESSAGE_TYPE_MAJOR_EVENT, gc.getUnitInfo(eUnit).getButton(), gc.getInfoTypeForString("COLOR_GREEN"), pCity.getX(), pCity.getY(), True, True)
+
+## Great people chosen at the end of calendar cycles (chooseGreatPeopleByCalendar, the Maya calendar of Civ5)
+
+# iData1 of CyMessageControl().sendModNetMessage for the choice (MOD_NET_MESSAGE_CHOOSE_GOODY of the DLL is -20261110)
+MOD_NET_MESSAGE_CHOOSE_GREAT_PERSON = -20261123
+# The trait counter of chooseGreatPeopleByCalendar: bits 0-23 are the great people already chosen (the bits of
+# greatPeopleUnitClasses), the higher bits the number of choices still to make
+GREAT_PERSON_CHOICE_BITS = 24
+GREAT_PERSON_CHOICE_MAX_PENDING = 127
+
+def calendarCyclesEnded(iCycleYears, iCycleEndYear):
+	"""The number of calendar cycles that end between this game turn and the next one (0 on most turns). A cycle of
+	iCycleYears years ends in the year iCycleEndYear and every iCycleYears years before and after it. The trait hooks
+	of the turn (PyOnBeginTurn) run before the game turn advances, so the cycle ends with the year of the next turn"""
+	if iCycleYears <= 0:
+		return 0
+	iTurn = CyGame().getGameTurn()
+	iYear = CyGame().getTurnYear(iTurn + 1) - iCycleEndYear
+	iOldYear = CyGame().getTurnYear(iTurn) - iCycleEndYear
+	# The division of Python 2 rounds down negative numbers too
+	return max(0, iYear / iCycleYears - iOldYear / iCycleYears)
+
+def greatPeopleUnitClasses():
+	"The unit classes whose default unit can join a city as a great person (GreatPeoples of CIV4UnitInfos.xml), in the order of CIV4UnitClassInfos.xml (at most GREAT_PERSON_CHOICE_BITS)"
+	lUnitClasses = []
+	for iUnitClass in range(gc.getNumUnitClassInfos()):
+		eUnit = gc.getUnitClassInfo(iUnitClass).getDefaultUnitIndex()
+		if eUnit == -1:
+			continue
+		kUnit = gc.getUnitInfo(eUnit)
+		for iSpecialist in range(gc.getNumSpecialistInfos()):
+			if kUnit.getGreatPeoples(iSpecialist):
+				lUnitClasses.append(iUnitClass)
+				break
+		if len(lUnitClasses) >= GREAT_PERSON_CHOICE_BITS:
+			break
+	return lUnitClasses
+
+def greatPersonChoiceState(pPlayer, eTrait):
+	"(the bits of the great people already chosen, the number of choices still to make) from the trait counter"
+	iCounter = pPlayer.getTraitCounter(eTrait)
+	return (iCounter & ((1 << GREAT_PERSON_CHOICE_BITS) - 1), iCounter >> GREAT_PERSON_CHOICE_BITS)
+
+def setGreatPersonChoiceState(pPlayer, eTrait, iChosen, iPending):
+	pPlayer.setTraitCounter(eTrait, iChosen | (min(iPending, GREAT_PERSON_CHOICE_MAX_PENDING) << GREAT_PERSON_CHOICE_BITS))
+
+def greatPeopleOfCivilization(pPlayer):
+	"The bits of greatPeopleUnitClasses whose class has a unit in the civilization of the player"
+	lUnitClasses = greatPeopleUnitClasses()
+	iAll = 0
+	for iBit in range(len(lUnitClasses)):
+		if pPlayer.getCivilizationUnit(lUnitClasses[iBit]) != -1:
+			iAll |= (1 << iBit)
+	return iAll
+
+def greatPersonChoices(pPlayer, eTrait):
+	"The bits of the great people the player can choose now (greatPeopleOfCivilization not chosen yet). When all of them are chosen, all of them again"
+	iAll = greatPeopleOfCivilization(pPlayer)
+	iChosen = greatPersonChoiceState(pPlayer, eTrait)[0]
+	if iAll & ~iChosen == 0:
+		return iAll
+	return iAll & ~iChosen
+
+def chooseGreatPeopleByCalendar(pPlayer, eTrait, szTech, iCycleYears, iCycleEndYear):
+	"""For PyOnBeginTurn. Once the team has the tech szTech (None: from the start), each time a calendar cycle ends
+	(calendarCyclesEnded: iCycleYears years, one of them ending in iCycleEndYear), the player chooses a great person who
+	appears in the capital: a human player in a popup, the AI at random. A great person chosen once cannot be chosen
+	again until all of them have been chosen (greatPersonChoices). Uses the counter of the trait. A choice not made yet
+	(no capital, or the game was loaded before the popup was answered) is offered again at the start of the next turn.
+	Returns the number of cycles that ended"""
+	iCycles = 0
+	if szTech is None or szTech == '' or gc.getTeam(pPlayer.getTeam()).isHasTech(gc.getInfoTypeForString(szTech)):
+		iCycles = calendarCyclesEnded(iCycleYears, iCycleEndYear)
+	(iChosen, iPending) = greatPersonChoiceState(pPlayer, eTrait)
+	if iCycles > 0:
+		iPending += iCycles
+		setGreatPersonChoiceState(pPlayer, eTrait, iChosen, iPending)
+	if iPending > 0:
+		offerGreatPersonChoice(pPlayer, eTrait)
+	return iCycles
+
+def offerGreatPersonChoice(pPlayer, eTrait):
+	"A human player gets the popup of chooseGreatPeopleByCalendar (one at a time), the AI chooses all pending great people at random. Nothing without a capital"
+	if capitalPlot(pPlayer) is None:
+		return
+	if pPlayer.isHuman():
+		iChoices = greatPersonChoices(pPlayer, eTrait)
+		lUnitClasses = greatPeopleUnitClasses()
+		popupInfo = CyPopupInfo()
+		popupInfo.setButtonPopupType(ButtonPopupTypes.BUTTONPOPUP_PYTHON)
+		popupInfo.setText(CyTranslator().getText("TXT_KEY_POPUP_CHOOSE_GREAT_PERSON", ()))
+		popupInfo.setData1(eTrait)
+		popupInfo.setFlags(iChoices)
+		# The exe finds the callback only in a module of EntryPoints: CvTraitInterface imports everything here
+		popupInfo.setPythonModule("CvTraitInterface")
+		popupInfo.setOnClickedPythonCallback("chooseGreatPersonCallback")
+		for iBit in range(len(lUnitClasses)):
+			if iChoices & (1 << iBit):
+				kUnit = gc.getUnitInfo(pPlayer.getCivilizationUnit(lUnitClasses[iBit]))
+				popupInfo.addPythonButton(kUnit.getDescription(), kUnit.getButton())
+		popupInfo.addPopup(pPlayer.getID())
+		return
+	(iChosen, iPending) = greatPersonChoiceState(pPlayer, eTrait)
+	for i in range(iPending):
+		iChoices = greatPersonChoices(pPlayer, eTrait)
+		lBits = []
+		for iBit in range(GREAT_PERSON_CHOICE_BITS):
+			if iChoices & (1 << iBit):
+				lBits.append(iBit)
+		if len(lBits) == 0:
+			return
+		applyGreatPersonChoice(pPlayer, eTrait, lBits[CyGame().getSorenRandNum(len(lBits), "Great person of the calendar")])
+
+def chooseGreatPersonCallback(argsList):
+	"The button of the popup of offerGreatPersonChoice (only on the computer of the player): the choice goes to every computer (receiveModNetMessage)"
+	iButton = argsList[0]
+	eTrait = argsList[1]
+	iChoices = argsList[4]
+	for iBit in range(GREAT_PERSON_CHOICE_BITS):
+		if iChoices & (1 << iBit):
+			if iButton == 0:
+				CyMessageControl().sendModNetMessage(MOD_NET_MESSAGE_CHOOSE_GREAT_PERSON, CyGame().getActivePlayer(), eTrait, iBit, 0)
+				return
+			iButton -= 1
+
+def applyGreatPersonChoice(pPlayer, eTrait, iBit):
+	"The great person of the bit appears in the capital, if the player still has a choice to make and can choose it. Returns True if it appeared"
+	if not pPlayer.isAlive() or not pPlayer.hasTrait(eTrait):
+		return False
+	(iChosen, iPending) = greatPersonChoiceState(pPlayer, eTrait)
+	pPlot = capitalPlot(pPlayer)
+	if iPending <= 0 or pPlot is None or iBit < 0 or not (greatPersonChoices(pPlayer, eTrait) & (1 << iBit)):
+		return False
+	eUnit = pPlayer.getCivilizationUnit(greatPeopleUnitClasses()[iBit])
+	pPlayer.initUnit(eUnit, pPlot.getX(), pPlot.getY(), UnitAITypes.NO_UNITAI, DirectionTypes.DIRECTION_SOUTH)
+	iChosen |= (1 << iBit)
+	if greatPeopleOfCivilization(pPlayer) & ~iChosen == 0:
+		# All great people have been chosen: all of them can be chosen again
+		iChosen = 0
+	setGreatPersonChoiceState(pPlayer, eTrait, iChosen, iPending - 1)
+	kUnit = gc.getUnitInfo(eUnit)
+	szText = CyTranslator().getText("TXT_KEY_MISC_CALENDAR_GREAT_PERSON", (kUnit.getDescription(), pPlayer.getCapitalCity().getNameKey()))
+	CyInterface().addMessage(pPlayer.getID(), True, gc.getEVENT_MESSAGE_TIME(), szText, "AS2D_UNIT_GREATPEOPLE", InterfaceMessageTypes.MESSAGE_TYPE_MAJOR_EVENT, kUnit.getButton(), gc.getInfoTypeForString("COLOR_UNIT_TEXT"), pPlot.getX(), pPlot.getY(), True, True)
+	return True
+
+def receiveModNetMessage(iData1, iData2, iData3, iData4, iData5):
+	"The messages of this file from CvEventManager.onModNetMessage (on every computer). Returns True if the message was one of them"
+	if iData1 == MOD_NET_MESSAGE_CHOOSE_GREAT_PERSON:
+		# iData2: player, iData3: trait, iData4: bit of greatPeopleUnitClasses
+		if iData2 >= 0 and iData2 < gc.getMAX_PLAYERS() and iData3 >= 0 and iData3 < gc.getNumTraitInfos():
+			pPlayer = gc.getPlayer(iData2)
+			if applyGreatPersonChoice(pPlayer, iData3, iData4):
+				if greatPersonChoiceState(pPlayer, iData3)[1] > 0:
+					offerGreatPersonChoice(pPlayer, iData3)
+		return True
+	return False

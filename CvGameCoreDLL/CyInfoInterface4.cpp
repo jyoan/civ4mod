@@ -30,6 +30,7 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("isRevealWonderProduction", &CvTraitInfo::isRevealWonderProduction, "bool ()")
 		.def("isRevealWarPlans", &CvTraitInfo::isRevealWarPlans, "bool ()")
 		.def("isRevealHiddenAttitude", &CvTraitInfo::isRevealHiddenAttitude, "bool ()")
+		.def("isLongCountCalendar", &CvTraitInfo::isLongCountCalendar, "bool ()")
 		.def("isBasicTrait", &CvTraitInfo::isBasicTrait, "bool ()")
 		.def("isGainTraitOnCapitalCapture", &CvTraitInfo::isGainTraitOnCapitalCapture, "bool ()")
 		.def("isGainTraitsOnElimination", &CvTraitInfo::isGainTraitsOnElimination, "bool ()")

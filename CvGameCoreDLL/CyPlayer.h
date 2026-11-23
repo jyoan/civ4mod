@@ -547,6 +547,7 @@ public:
 	bool isRevealWonderProduction();	// added by this mod
 	bool isRevealWarPlans();	// added by this mod
 	bool isRevealHiddenAttitude();	// added by this mod
+	bool isLongCountCalendar();	// added by this mod
 	int getMaxExperienceAfterUpgrade();	// added by this mod
 	int getExpOutsideBordersChange();	// added by this mod
 	int getWeLoveTheKingChance();	// added by this mod

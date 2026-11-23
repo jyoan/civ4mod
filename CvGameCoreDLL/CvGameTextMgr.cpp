@@ -298,8 +298,44 @@ void CvGameTextMgr::setInterfaceTime(CvWString& szString, PlayerTypes ePlayer)
 		szString.clear();
 	}
 
-	setTimeStr(szTempBuffer, GC.getGameINLINE().getGameTurn(), false);
+	// bLongCountCalendar of the traits (added by this mod): the Maya Long Count instead of the year
+	if (GET_PLAYER(ePlayer).isLongCountCalendar() && GC.getGameINLINE().getCalendar() != CALENDAR_TURNS)
+	{
+		setLongCountStr(szTempBuffer, GC.getGameINLINE().getGameTurn());
+	}
+	else
+	{
+		setTimeStr(szTempBuffer, GC.getGameINLINE().getGameTurn(), false);
+	}
 	szString += CvWString(szTempBuffer);
+}
+
+// The date of the game turn in the Maya Long Count, b'ak'tun.k'atun.tun.winal.k'in (bLongCountCalendar of the traits,
+// added by this mod). Counted back from 13.0.0.0.0 on 21 December 2012 (the GMT correlation). The days before the
+// creation date (11 August 3114 BC) are in the cycle before it, which also ends with 13.0.0.0.0. The game has months
+// at most (a month is 365.2425 / 12 days here), so the last two numbers are approximate.
+void CvGameTextMgr::setLongCountStr(CvWString& szString, int iGameTurn)
+{
+	const int iDaysPerBaktun = 144000;
+	const int iDaysPerKatun = 7200;
+	const int iDaysPerTun = 360;
+	const int iDaysPerWinal = 20;
+	const int iDaysPerCycle = 13 * iDaysPerBaktun;
+	CvGame& kGame = GC.getGameINLINE();
+	int iNumMonths = std::max(1, GC.getNumMonthInfos());
+	int iTurnMonth = getTurnMonthForGame(iGameTurn, kGame.getStartYear(), kGame.getCalendar(), kGame.getGameSpeedType());
+	// Months from December 2012, whose day 21 is 13.0.0.0.0
+	int iMonthsFrom2012 = iTurnMonth - (2012 * iNumMonths + iNumMonths - 1);
+	int iDays = iDaysPerCycle - 20 + (int)floor(iMonthsFrom2012 * 365.2425 / iNumMonths);
+	while (iDays < 0)
+	{
+		iDays += iDaysPerCycle;
+	}
+
+	CvWString szDate;
+	szDate.Format(L"%d.%d.%d.%d.%d", iDays / iDaysPerBaktun, (iDays % iDaysPerBaktun) / iDaysPerKatun, (iDays % iDaysPerKatun) / iDaysPerTun,
+		(iDays % iDaysPerTun) / iDaysPerWinal, iDays % iDaysPerWinal);
+	szString = gDLL->getText("TXT_KEY_TIME_LONG_COUNT", szDate.GetCString());
 }
 
 
@@ -5179,6 +5215,11 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 	if (kTrait.isRevealHiddenAttitude())
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_REVEAL_HIDDEN_ATTITUDE"));
+	}
+
+	if (kTrait.isLongCountCalendar())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_LONG_COUNT_CALENDAR"));
 	}
 
 	// "Can build without the technology: Research". The processes are loaded when a game is launched: none on the screens
