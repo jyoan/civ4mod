@@ -21550,7 +21550,7 @@ bool CvTraitInfo::isNoTechProcess(int iProcess) const
 	return (m_pabNoTechProcess != NULL && iProcess < GC.getNumProcessInfos()) ? m_pabNoTechProcess[iProcess] : false;
 }
 
-// bNoConscriptExperiencePenalty (added by this mod): drafted units get all the experience of the city, not half
+// Conscription/bNoExperiencePenalty (added by this mod): drafted units get all the experience of the city, not half
 bool CvTraitInfo::isNoConscriptExperiencePenalty() const
 {
 	return m_bNoConscriptExperiencePenalty;
@@ -23687,7 +23687,6 @@ void CvTraitInfo::readRevealAndStartValues(CvXMLLoadUtility* pXML)
 	// Bonuses: readPass3(). Processes are loaded with LoadPostMenuGlobals: readPass4()
 	readTypeList(pXML, "RevealBonuses", m_aszRevealBonusTypes);
 	readTypeList(pXML, "NoTechProcesses", m_aszNoTechProcessTypes);
-	pXML->GetChildXmlValByName(&m_bNoConscriptExperiencePenalty, "bNoConscriptExperiencePenalty");
 	// Same format as FreeTechs of the civilizations. The techs are loaded before the traits
 	pXML->SetVariableListTagPair(&m_pabFreeTech, "FreeTechs", sizeof(GC.getTechInfo((TechTypes)0)), GC.getNumTechInfos());
 }
@@ -23815,7 +23814,8 @@ void CvTraitInfo::readCounterpartValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCorporationMaintenanceModifier, "iCorporationMaintenanceModifier");
 	pXML->GetChildXmlValByName(&m_iMaintenanceModifier, "iMaintenanceModifier");
 	// Military, as the civics and buildings. The domains are loaded before the traits
-	// Conscription: iMaxConscript, iPopulationModifier, iMinCityPopulationChange, iMinCulturePercentChange, iPopAngerChange, iAngerLengthPercent
+	// Conscription: iMaxConscript, iPopulationModifier, iMinCityPopulationChange, iMinCulturePercentChange, iPopAngerChange, iAngerLengthPercent,
+	// bNoExperiencePenalty
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Conscription"))
 	{
 		pXML->GetChildXmlValByName(&m_iMaxConscript, "iMaxConscript");
@@ -23824,6 +23824,7 @@ void CvTraitInfo::readCounterpartValues(CvXMLLoadUtility* pXML)
 		pXML->GetChildXmlValByName(&m_iConscriptMinCulturePercentChange, "iMinCulturePercentChange");
 		pXML->GetChildXmlValByName(&m_iConscriptPopAngerChange, "iPopAngerChange");
 		pXML->GetChildXmlValByName(&m_iConscriptAngerLengthPercent, "iAngerLengthPercent");
+		pXML->GetChildXmlValByName(&m_bNoConscriptExperiencePenalty, "bNoExperiencePenalty");
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 	pXML->GetChildXmlValByName(&m_bMilitaryFoodProduction, "bMilitaryFoodProduction");

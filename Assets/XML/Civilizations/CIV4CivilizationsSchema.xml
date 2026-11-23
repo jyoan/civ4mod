@@ -916,7 +916,6 @@
 	<ElementType name="NoTechProcesses" content="eltOnly">
 		<element type="ProcessType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
-	<ElementType name="bNoConscriptExperiencePenalty" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iHealthPerReligion" content="textOnly" dt:type="int"/>
 	<ElementType name="YieldPerReligion" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
@@ -982,6 +981,7 @@
 	<ElementType name="iMinCulturePercentChange" content="textOnly" dt:type="int"/>
 	<ElementType name="iPopAngerChange" content="textOnly" dt:type="int"/>
 	<ElementType name="iAngerLengthPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="bNoExperiencePenalty" content="textOnly" dt:type="boolean"/>
 	<ElementType name="Conscription" content="eltOnly">
 		<element type="iMaxConscript" minOccurs="0"/>
 		<element type="iPopulationModifier" minOccurs="0"/>
@@ -989,6 +989,7 @@
 		<element type="iMinCulturePercentChange" minOccurs="0"/>
 		<element type="iPopAngerChange" minOccurs="0"/>
 		<element type="iAngerLengthPercent" minOccurs="0"/>
+		<element type="bNoExperiencePenalty" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="bMilitaryFoodProduction" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iHealRateChange" content="textOnly" dt:type="int"/>
@@ -1172,7 +1173,6 @@
 		<element type="SpecialistSlotChanges" minOccurs="0"/>
 		<element type="RevealBonuses" minOccurs="0"/>
 		<element type="NoTechProcesses" minOccurs="0"/>
-		<element type="bNoConscriptExperiencePenalty" minOccurs="0"/>
 		<element type="FreeTechs" minOccurs="0"/>
 		<element type="YieldChanges" minOccurs="0"/>
 		<element type="iHealthPerReligion" minOccurs="0"/>

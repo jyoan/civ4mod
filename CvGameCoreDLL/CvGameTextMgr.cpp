@@ -5201,6 +5201,11 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_ANGER_LENGTH", kTrait.getConscriptAngerLengthPercent()));
 	}
 
+	if (kTrait.isNoConscriptExperiencePenalty())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_CONSCRIPT_EXPERIENCE_PENALTY"));
+	}
+
 	if (kTrait.isMilitaryFoodProduction())
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_MILITARY_FOOD"));
@@ -5225,8 +5230,7 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 	}
 }
 
-// The part of the trait help for the tags of 2026-11-19: RevealBonuses, NoTechProcesses, bNoConscriptExperiencePenalty,
-// FreeTechs (added by this mod)
+// The part of the trait help for the tags of 2026-11-19: RevealBonuses, NoTechProcesses, FreeTechs (added by this mod)
 void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
 {
 	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
@@ -5284,11 +5288,6 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 			setListHelp(szHelpString, szTempBuffer.GetCString(), GC.getProcessInfo((ProcessTypes)iI).getDescription(), L", ", bFirst);
 			bFirst = false;
 		}
-	}
-
-	if (kTrait.isNoConscriptExperiencePenalty())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_CONSCRIPT_EXPERIENCE_PENALTY"));
 	}
 
 	// "Starts with: The Wheel, Bronze Working"

@@ -220,6 +220,7 @@
 				<iMinCulturePercentChange>-10</iMinCulturePercentChange>
 				<iPopAngerChange>-2</iPopAngerChange>
 				<iAngerLengthPercent>-50</iAngerLengthPercent>
+				<bNoExperiencePenalty>1</bNoExperiencePenalty>
 			</Conscription>
 			<iHealRateChange>10</iHealRateChange>
 			<DomainFreeExperiences>
@@ -419,7 +420,6 @@
 				<ProcessType>PROCESS_WEALTH</ProcessType>
 				<ProcessType>PROCESS_RESEARCH</ProcessType>
 			</NoTechProcesses>
-			<bNoConscriptExperiencePenalty>1</bNoConscriptExperiencePenalty>
 			<FreeTechs>
 				<FreeTech>
 					<TechType>TECH_THE_WHEEL</TechType>
