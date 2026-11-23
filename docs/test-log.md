@@ -180,3 +180,4 @@
 - 2026-11-23: アメリカの `TRAIT_HOMESTEAD` に足した `bImprovementUpgradeUnworked` をゲーム内で確認
 - 2026-11-23: 諜報任務のタグ `bSwitchAnyCivic` と任務「体制転覆」（`ESPIONAGEMISSION_SUBVERT_CIVIC`。自分が採用していない社会制度もアイコンで選んで相手に押し付けられる）をゲーム内で確認
 - 2026-11-23: 諜報任務のタグ `bSwitchAnyReligion`・`bSwitchNoReligion` と任務「国教転覆」（`ESPIONAGEMISSION_SUBVERT_RELIGION`。自分の国教でない宗教と「国教なし」をアイコンで選んで相手に押し付けられる）をゲーム内で確認
+- 2026-11-23: civ-design のチェカ志向（スターリン）だけが諜報任務「体制転覆」「国教転覆」を使える（`PrereqOrTraits`）ことをゲーム内で確認

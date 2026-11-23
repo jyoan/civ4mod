@@ -832,6 +832,9 @@
 			<iPlayerAnarchyCounter>0</iPlayerAnarchyCounter>
 			<iCounterespionageNumTurns>0</iCounterespionageNumTurns>
 			<iCounterespionageMod>0</iCounterespionageMod>
+			<PrereqOrTraits>
+				<TraitType>TRAIT_CHEKA</TraitType>
+			</PrereqOrTraits>
 			<bSwitchAnyCivic>1</bSwitchAnyCivic>
 		</EspionageMissionInfo>
 		<EspionageMissionInfo>
@@ -868,6 +871,9 @@
 			<iPlayerAnarchyCounter>0</iPlayerAnarchyCounter>
 			<iCounterespionageNumTurns>0</iCounterespionageNumTurns>
 			<iCounterespionageMod>0</iCounterespionageMod>
+			<PrereqOrTraits>
+				<TraitType>TRAIT_CHEKA</TraitType>
+			</PrereqOrTraits>
 			<bSwitchAnyReligion>1</bSwitchAnyReligion>
 			<bSwitchNoReligion>1</bSwitchNoReligion>
 		</EspionageMissionInfo>
