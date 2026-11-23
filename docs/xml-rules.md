@@ -14,6 +14,7 @@ CLAUDE.md の「XML」の補足。Info の読み込み順に関わるタグを�
 
 - `<CIV4>\Assets\XML\Civilizations\CIV4TraitInfos.xml` は 8 志向しかない古い版なので使わない。BtS(J) は自分に無いファイルを Warlords(J) から読む（例: `XML\Civilizations\CIV4TraitInfos.xml`、`TXT_KEY_UNIQUE_BUILDINGS` を含む `CIV4GameText_Warlords.xml`）。テキスト XML の多くは `<CIV4>\Assets\` にある
 - 「なし」の値の失敗例: 維持費なしの社会制度に `UPKEEP_NONE` と書いて、起動時に「Tag: UPKEEP_NONE in Info class was incorrect」になった（正しくは `<Upkeep>NONE</Upkeep>`）
+- 志向（`TraitInfo`）で省略できないのは `Type`・`Description`・`ShortDescription` だけ。BtS では必須だった `iHealth`〜`iMaxPlayerBuildingProductionModifier` の 11 個と `ExtraYieldThresholds`・`TradeYieldModifiers`・`CommerceChanges`・`CommerceModifiers`・`FreePromotions`・`FreePromotionUnitCombats` も、2026-11-23 に Schema で `minOccurs="0"` にした。省略すると 0 か空になる。ただし `iMaxAnarchy` は省略すると -1（上限なし）で、0 は「無政府期間なし」（精神志向）。志向の XML には、0・空・`iMaxAnarchy` の -1 を書かない
 
 ## テキスト
 

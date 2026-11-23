@@ -11,50 +11,19 @@
 			<Description>TXT_KEY_TRAIT_PHILOSOPHICAL</Description>
 			<ShortDescription>TXT_KEY_TRAIT_PHILOSOPHICAL_SHORT</ShortDescription>
 			<bBasicTrait>1</bBasicTrait>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
 			<iGreatPeopleRateModifier>100</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<SpecialistExtraCommerces>
 				<iCommerce>0</iCommerce>
 				<iCommerce>1</iCommerce>
 			</SpecialistExtraCommerces>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_AGGRESSIVE</Type>
 			<Description>TXT_KEY_TRAIT_AGGRESSIVE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_AGGRESSIVE_SHORT</ShortDescription>
 			<bBasicTrait>1</bBasicTrait>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iPillageGoldModifier>100</iPillageGoldModifier>
 			<iCityCaptureGoldModifier>100</iCityCaptureGoldModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<FreePromotions>
 				<FreePromotion>
 					<PromotionType>PROMOTION_COMBAT1</PromotionType>
@@ -77,24 +46,8 @@
 			<Description>TXT_KEY_TRAIT_SPIRITUAL</Description>
 			<ShortDescription>TXT_KEY_TRAIT_SPIRITUAL_SHORT</ShortDescription>
 			<bBasicTrait>1</bBasicTrait>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
 			<iMaxAnarchy>0</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iReligionSpreadChange>25</iReligionSpreadChange>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_EXPANSIVE</Type>
@@ -102,99 +55,42 @@
 			<ShortDescription>TXT_KEY_TRAIT_EXPANSIVE_SHORT</ShortDescription>
 			<bBasicTrait>1</bBasicTrait>
 			<iHealth>2</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iWorkerSpeedModifier>25</iWorkerSpeedModifier>
 			<iNewCityPopulation>1</iNewCityPopulation>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_INDUSTRIOUS</Type>
 			<Description>TXT_KEY_TRAIT_INDUSTRIOUS</Description>
 			<ShortDescription>TXT_KEY_TRAIT_INDUSTRIOUS_SHORT</ShortDescription>
 			<bBasicTrait>1</bBasicTrait>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
 			<iMaxGlobalBuildingProductionModifier>50</iMaxGlobalBuildingProductionModifier>
 			<iMaxTeamBuildingProductionModifier>50</iMaxTeamBuildingProductionModifier>
 			<iMaxPlayerBuildingProductionModifier>50</iMaxPlayerBuildingProductionModifier>
 			<iMaxNationalWondersPerCity>3</iMaxNationalWondersPerCity>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<FeatureProductionChanges>
 				<FeatureProductionChange>
 					<FeatureType>FEATURE_FOREST</FeatureType>
 					<iProductionChange>10</iProductionChange>
 				</FeatureProductionChange>
 			</FeatureProductionChanges>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_CREATIVE</Type>
 			<Description>TXT_KEY_TRAIT_CREATIVE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_CREATIVE_SHORT</ShortDescription>
 			<bBasicTrait>1</bBasicTrait>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<NewCityCultureLevel>CULTURELEVEL_FLEDGLING</NewCityCultureLevel>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
 				<iCommerce>0</iCommerce>
 				<iCommerce>2</iCommerce>
 			</CommerceChanges>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_FINANCIAL</Type>
 			<Description>TXT_KEY_TRAIT_FINANCIAL</Description>
 			<ShortDescription>TXT_KEY_TRAIT_FINANCIAL_SHORT</ShortDescription>
 			<bBasicTrait>1</bBasicTrait>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<GoldInterest>
 				<iPercent>1</iPercent>
 			</GoldInterest>
@@ -208,82 +104,32 @@
 				<iYield>0</iYield>
 				<iYield>25</iYield>
 			</TradeYieldModifiers>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_ORGANIZED</Type>
 			<Description>TXT_KEY_TRAIT_ORGANIZED</Description>
 			<ShortDescription>TXT_KEY_TRAIT_ORGANIZED_SHORT</ShortDescription>
 			<bBasicTrait>1</bBasicTrait>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
 			<iUpkeepModifier>-50</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iDistanceMaintenanceModifier>-25</iDistanceMaintenanceModifier>
 			<iNumCitiesMaintenanceModifier>-25</iNumCitiesMaintenanceModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_CHARISMATIC</Type>
 			<Description>TXT_KEY_TRAIT_CHARISMATIC</Description>
 			<ShortDescription>TXT_KEY_TRAIT_CHARISMATIC_SHORT</ShortDescription>
 			<bBasicTrait>1</bBasicTrait>
-			<iHealth>0</iHealth>
 			<iHappiness>1</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
 			<iLevelExperienceModifier>-25</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iWarWearinessModifier>-25</iWarWearinessModifier>
 			<iAttitudeChange>2</iAttitudeChange>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_PROTECTIVE</Type>
 			<Description>TXT_KEY_TRAIT_PROTECTIVE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_PROTECTIVE_SHORT</ShortDescription>
 			<bBasicTrait>1</bBasicTrait>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<bNoPillageInBorders>1</bNoPillageInBorders>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<UnitCombatUpgradeDiscounts>
 				<UnitCombatUpgradeDiscount>
 					<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
@@ -316,47 +162,14 @@
 			<Description>TXT_KEY_TRAIT_IMPERIALIST</Description>
 			<ShortDescription>TXT_KEY_TRAIT_IMPERIALIST_SHORT</ShortDescription>
 			<bBasicTrait>1</bBasicTrait>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
 			<iGreatGeneralRateModifier>100</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iOccupationTimeModifier>-50</iOccupationTimeModifier>
 			<iOverseasMaintenanceModifier>-50</iOverseasMaintenanceModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_MARITIME</Type>
 			<Description>TXT_KEY_TRAIT_MARITIME</Description>
 			<ShortDescription>TXT_KEY_TRAIT_MARITIME_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -393,17 +206,6 @@
 			<Description>TXT_KEY_TRAIT_TEST</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_TEST_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iWorkerSpeedModifier>50</iWorkerSpeedModifier>
 			<iFreeExperience>2</iFreeExperience>
 			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
@@ -933,10 +735,6 @@
 					<PyConditionText>TXT_KEY_CONDITION_TEST_GOLD</PyConditionText>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<YieldModifiers>
 				<iYield>0</iYield>
 				<iYield>10</iYield>
@@ -1202,8 +1000,6 @@
 			<HealthyYieldPercents>
 				<iYield>50</iYield>
 			</HealthyYieldPercents>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -1359,17 +1155,6 @@
 			<Type>TRAIT_TEST_BARBARIAN</Type>
 			<Description>TXT_KEY_TRAIT_TEST_BARBARIAN</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_BARBARIAN_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<bNoUnhealthyPopulation>1</bNoUnhealthyPopulation>
 			<bBuildingOnlyHealthy>1</bBuildingOnlyHealthy>
 			<bMilitaryFoodProduction>1</bMilitaryFoodProduction>
@@ -1381,388 +1166,111 @@
 			</CivicOptionExtraSlots>
 			<bBarbarianAlly>1</bBarbarianAlly>
 			<bBarbarianVision>1</bBarbarianVision>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_COND_GOLDEN_AGE</Type>
 			<Description>TXT_KEY_TRAIT_TEST_COND_GOLDEN_AGE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_COND_ANARCHY</Type>
 			<Description>TXT_KEY_TRAIT_TEST_COND_ANARCHY</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iCombatPercent>25</iCombatPercent>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_COND_NORMAL</Type>
 			<Description>TXT_KEY_TRAIT_TEST_COND_NORMAL</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_COND_CITIES</Type>
 			<Description>TXT_KEY_TRAIT_TEST_COND_CITIES</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_COND_BONUS</Type>
 			<Description>TXT_KEY_TRAIT_TEST_COND_BONUS</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_COND_BUILDING</Type>
 			<Description>TXT_KEY_TRAIT_TEST_COND_BUILDING</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_COND_VASSAL</Type>
 			<Description>TXT_KEY_TRAIT_TEST_COND_VASSAL</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_COND_MASTER</Type>
 			<Description>TXT_KEY_TRAIT_TEST_COND_MASTER</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_COND_RANK</Type>
 			<Description>TXT_KEY_TRAIT_TEST_COND_RANK</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_COND_PYTHON</Type>
 			<Description>TXT_KEY_TRAIT_TEST_COND_PYTHON</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_TEMPORARY</Type>
 			<Description>TXT_KEY_TRAIT_TEST_TEMPORARY</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_TEMPORARY_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_TEST_TEMPORARY_HELP</Help>
-			<iHealth>0</iHealth>
 			<iHappiness>1</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<PyOnGained>gainGold(pPlayer, 10)</PyOnGained>
 			<PyOnLost>gainGold(pPlayer, 20)</PyOnLost>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_AI</Type>
 			<Description>TXT_KEY_TRAIT_TEST_AI</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_AI_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<FreeTechs>
 				<FreeTech>
 					<TechType>TECH_TEST_DIPLOMACY</TechType>
 					<bFreeTech>1</bFreeTech>
 				</FreeTech>
 			</FreeTechs>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_INSANE</Type>
 			<Description>TXT_KEY_TRAIT_TEST_INSANE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_INSANE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<RandomBasicTraits>
 				<iTurns>3</iTurns>
 				<iCount>3</iCount>
 			</RandomBasicTraits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_SEA</Type>
 			<Description>TXT_KEY_TRAIT_TEST_SEA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_SEA_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<SeaStart>
 				<ShipUnitClass>UNITCLASS_GALLEON</ShipUnitClass>
 			</SeaStart>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_FOUNDING_VASSAL</Type>
 			<Description>TXT_KEY_TRAIT_TEST_FOUNDING_VASSAL</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_FOUNDING_VASSAL_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<FoundingVassal>
 				<CivilizationType>CIVILIZATION_CELT</CivilizationType>
 				<LeaderType>LEADER_GANDHI</LeaderType>
 				<HandicapType>HANDICAP_NOBLE</HandicapType>
 				<iRange>5</iRange>
 			</FoundingVassal>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 		<TraitInfo>
 			<Type>TRAIT_BUSHIDO</Type>
 			<Description>TXT_KEY_TRAIT_BUSHIDO</Description>
 			<ShortDescription>TXT_KEY_TRAIT_BUSHIDO_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -1816,44 +1324,12 @@
 			<Type>TRAIT_OVERLAND_FLEET</Type>
 			<Description>TXT_KEY_TRAIT_OVERLAND_FLEET</Description>
 			<ShortDescription>TXT_KEY_TRAIT_OVERLAND_FLEET_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<bInlandCanals>1</bInlandCanals>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_CHINAMPA</Type>
 			<Description>TXT_KEY_TRAIT_CHINAMPA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_CHINAMPA_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<LakePlotYieldChanges>
 				<iYield>1</iYield>
 				<iYield>1</iYield>
@@ -1864,30 +1340,11 @@
 				<iYield>0</iYield>
 				<iYield>1</iYield>
 			</LakePlotYieldChangesPerEra>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_FLOWER_WAR</Type>
 			<Description>TXT_KEY_TRAIT_FLOWER_WAR</Description>
 			<ShortDescription>TXT_KEY_TRAIT_FLOWER_WAR_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -1933,17 +1390,6 @@
 			<Type>TRAIT_REVOLUTION</Type>
 			<Description>TXT_KEY_TRAIT_REVOLUTION</Description>
 			<ShortDescription>TXT_KEY_TRAIT_REVOLUTION_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iAnarchyGoldenAgePercent>200</iAnarchyGoldenAgePercent>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
@@ -1951,57 +1397,17 @@
 					<bAnarchy>1</bAnarchy>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_REVOLUTIONARY_FERVOR</Type>
 			<Description>TXT_KEY_TRAIT_REVOLUTIONARY_FERVOR</Description>
 			<ShortDescription>TXT_KEY_TRAIT_REVOLUTIONARY_FERVOR_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iCombatPercent>25</iCombatPercent>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_LONGSHIP</Type>
 			<Description>TXT_KEY_TRAIT_LONGSHIP</Description>
 			<ShortDescription>TXT_KEY_TRAIT_LONGSHIP_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -2064,23 +1470,6 @@
 			<Type>TRAIT_RAIDING</Type>
 			<Description>TXT_KEY_TRAIT_RAIDING</Description>
 			<ShortDescription>TXT_KEY_TRAIT_RAIDING_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -2126,17 +1515,6 @@
 			<Type>TRAIT_CORVEE</Type>
 			<Description>TXT_KEY_TRAIT_CORVEE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_CORVEE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<Hurrys>
 				<Hurry>
 					<HurryType>HURRY_POPULATION</HurryType>
@@ -2144,28 +1522,11 @@
 					<bIgnoreCostModifier>1</bIgnoreCostModifier>
 				</Hurry>
 			</Hurrys>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_FOREST_PEOPLE</Type>
 			<Description>TXT_KEY_TRAIT_FOREST_PEOPLE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_FOREST_PEOPLE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<StartBiasFeatures>
 				<StartBiasFeature>
 					<FeatureType>FEATURE_FOREST</FeatureType>
@@ -2184,28 +1545,11 @@
 					<RouteType>ROUTE_ROAD</RouteType>
 				</FeatureRoute>
 			</FeatureRoutes>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_JUNGLE_PEOPLE</Type>
 			<Description>TXT_KEY_TRAIT_JUNGLE_PEOPLE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_JUNGLE_PEOPLE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<StartBiasFeatures>
 				<StartBiasFeature>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -2224,10 +1568,6 @@
 					<RouteType>ROUTE_ROAD</RouteType>
 				</FeatureRoute>
 			</FeatureRoutes>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<FeatureYieldChanges>
 				<FeatureYieldChange>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -2244,24 +1584,11 @@
 					<iHealthPercent>25</iHealthPercent>
 				</FeatureHealthChange>
 			</FeatureHealthChanges>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_BEDOUIN</Type>
 			<Description>TXT_KEY_TRAIT_BEDOUIN</Description>
 			<ShortDescription>TXT_KEY_TRAIT_BEDOUIN_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<RevealBonuses>
 				<BonusType>BONUS_OIL</BonusType>
 			</RevealBonuses>
@@ -2277,10 +1604,6 @@
 					<iStartBias>50</iStartBias>
 				</StartBiasBonus>
 			</StartBiasBonuses>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<FeatureYieldChanges>
 				<FeatureYieldChange>
 					<FeatureType>FEATURE_OASIS</FeatureType>
@@ -2301,8 +1624,6 @@
 					</Yields>
 				</BonusYieldChange>
 			</BonusYieldChanges>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -2324,17 +1645,6 @@
 			<Type>TRAIT_ANDES</Type>
 			<Description>TXT_KEY_TRAIT_ANDES</Description>
 			<ShortDescription>TXT_KEY_TRAIT_ANDES_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<StartBiasTerrains>
 				<StartBiasTerrain>
 					<TerrainType>TERRAIN_HILL</TerrainType>
@@ -2345,10 +1655,6 @@
 					<iStartBias>10</iStartBias>
 				</StartBiasTerrain>
 			</StartBiasTerrains>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<TerrainYieldChanges>
 				<TerrainYieldChange>
 					<TerrainType>TERRAIN_HILL</TerrainType>
@@ -2377,89 +1683,38 @@
 					</Yields>
 				</TerrainYieldChangePerEra>
 			</TerrainYieldChangesPerEra>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_INDUSTRIALIZATION</Type>
 			<Description>TXT_KEY_TRAIT_INDUSTRIALIZATION</Description>
 			<ShortDescription>TXT_KEY_TRAIT_INDUSTRIALIZATION_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_INDUSTRIAL_POWER</TraitType>
 					<PrereqTech>TECH_INDUSTRIALISM</PrereqTech>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_INDUSTRIAL_POWER</Type>
 			<Description>TXT_KEY_TRAIT_INDUSTRIAL_POWER</Description>
 			<ShortDescription>TXT_KEY_TRAIT_INDUSTRIAL_POWER_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<YieldModifiers>
 				<iYield>0</iYield>
 				<iYield>10</iYield>
 				<iYield>0</iYield>
 			</YieldModifiers>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_NILE</Type>
 			<Description>TXT_KEY_TRAIT_NILE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_NILE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<StartBiasFeatures>
 				<StartBiasFeature>
 					<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
 					<iStartBias>10</iStartBias>
 				</StartBiasFeature>
 			</StartBiasFeatures>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<FeatureYieldChanges>
 				<FeatureYieldChange>
 					<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
@@ -2476,57 +1731,23 @@
 					<iHealthPercent>40</iHealthPercent>
 				</FeatureHealthChange>
 			</FeatureHealthChanges>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_VAST_LAND</Type>
 			<Description>TXT_KEY_TRAIT_VAST_LAND</Description>
 			<ShortDescription>TXT_KEY_TRAIT_VAST_LAND_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iCultureRangeChange>1</iCultureRangeChange>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_HORSE_PEOPLE</Type>
 			<Description>TXT_KEY_TRAIT_HORSE_PEOPLE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_HORSE_PEOPLE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<StartBiasBonuses>
 				<StartBiasBonus>
 					<BonusType>BONUS_HORSE</BonusType>
 					<iStartBias>50</iStartBias>
 				</StartBiasBonus>
 			</StartBiasBonuses>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<UnitCombatFreeExperiences>
 				<UnitCombatFreeExperience>
 					<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
@@ -2543,56 +1764,20 @@
 					</ImprovementYields>
 				</ImprovementYieldChange>
 			</ImprovementYieldChanges>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_PAX_ROMANA</Type>
 			<Description>TXT_KEY_TRAIT_PAX_ROMANA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_PAX_ROMANA_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iCapitalBuildingProductionModifier>50</iCapitalBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_VOC</Type>
 			<Description>TXT_KEY_TRAIT_VOC</Description>
 			<ShortDescription>TXT_KEY_TRAIT_VOC_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_VOC_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iCorporationSpreadChange>50</iCorporationSpreadChange>
 			<PyOnCorporationFounded>createExecutives(pPlayer, eCorporation, 3, pCity)</PyOnCorporationFounded>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -2617,78 +1802,27 @@
 			<Type>TRAIT_COEXISTENCE</Type>
 			<Description>TXT_KEY_TRAIT_COEXISTENCE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_COEXISTENCE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iConquestBuildingSurviveModifier>50</iConquestBuildingSurviveModifier>
 			<bConquestStateReligion>1</bConquestStateReligion>
 			<ConquestReligionBuildings>
 				<SpecialBuildingType>SPECIALBUILDING_TEMPLE</SpecialBuildingType>
 			</ConquestReligionBuildings>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_FOREST_KEEPER</Type>
 			<Description>TXT_KEY_TRAIT_FOREST_KEEPER</Description>
 			<ShortDescription>TXT_KEY_TRAIT_FOREST_KEEPER_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<FeatureGrowthChanges>
 				<FeatureGrowthChange>
 					<FeatureType>FEATURE_FOREST</FeatureType>
 					<iGrowthChange>40</iGrowthChange>
 				</FeatureGrowthChange>
 			</FeatureGrowthChanges>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_LETTERS_OF_MARQUE</Type>
 			<Description>TXT_KEY_TRAIT_LETTERS_OF_MARQUE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_LETTERS_OF_MARQUE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -2707,78 +1841,27 @@
 			<Type>TRAIT_FINEST_HOUR</Type>
 			<Description>TXT_KEY_TRAIT_FINEST_HOUR</Description>
 			<ShortDescription>TXT_KEY_TRAIT_FINEST_HOUR_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_FINEST_HOUR_WAR</TraitType>
 					<bAtWar>1</bAtWar>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_FINEST_HOUR_WAR</Type>
 			<Description>TXT_KEY_TRAIT_FINEST_HOUR_WAR</Description>
 			<ShortDescription>TXT_KEY_TRAIT_FINEST_HOUR_WAR_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<YieldModifiers>
 				<iYield>0</iYield>
 				<iYield>15</iYield>
 				<iYield>0</iYield>
 			</YieldModifiers>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_ALPS</Type>
 			<Description>TXT_KEY_TRAIT_ALPS</Description>
 			<ShortDescription>TXT_KEY_TRAIT_ALPS_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -2828,44 +1911,12 @@
 			<Type>TRAIT_TOLERANCE</Type>
 			<Description>TXT_KEY_TRAIT_TOLERANCE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TOLERANCE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<bNoConquestPopulationLoss>1</bNoConquestPopulationLoss>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_BLOOD_AND_IRON</Type>
 			<Description>TXT_KEY_TRAIT_BLOOD_AND_IRON</Description>
 			<ShortDescription>TXT_KEY_TRAIT_BLOOD_AND_IRON_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<UnitCombatProductionModifiers>
 				<UnitCombatProductionModifier>
 					<UnitCombatType>UNITCOMBAT_GUN</UnitCombatType>
@@ -2876,28 +1927,11 @@
 					<iProductionModifier>25</iProductionModifier>
 				</UnitCombatProductionModifier>
 			</UnitCombatProductionModifiers>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_ARMY_STATE</Type>
 			<Description>TXT_KEY_TRAIT_ARMY_STATE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_ARMY_STATE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<UpgradeAnywhereUnitCombats>
 				<UpgradeAnywhereUnitCombat>
 					<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
@@ -2908,30 +1942,11 @@
 					<bUpgradeAnywhere>1</bUpgradeAnywhere>
 				</UpgradeAnywhereUnitCombat>
 			</UpgradeAnywhereUnitCombats>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_RECONQUISTA</Type>
 			<Description>TXT_KEY_TRAIT_RECONQUISTA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_RECONQUISTA_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -2985,66 +2000,21 @@
 			<Type>TRAIT_WALLS_OF_URUK</Type>
 			<Description>TXT_KEY_TRAIT_WALLS_OF_URUK</Description>
 			<ShortDescription>TXT_KEY_TRAIT_WALLS_OF_URUK_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<NoObsoleteBuildingClasses>
 				<BuildingClassType>BUILDINGCLASS_WALLS</BuildingClassType>
 				<BuildingClassType>BUILDINGCLASS_CASTLE</BuildingClassType>
 			</NoObsoleteBuildingClasses>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_KING_OF_FAITH</Type>
 			<Description>TXT_KEY_TRAIT_KING_OF_FAITH</Description>
 			<ShortDescription>TXT_KEY_TRAIT_KING_OF_FAITH_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<bNewCityStateReligion>1</bNewCityStateReligion>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_STEPPE_UNITY</Type>
 			<Description>TXT_KEY_TRAIT_STEPPE_UNITY</Description>
 			<ShortDescription>TXT_KEY_TRAIT_STEPPE_UNITY_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<bBarbarianAlly>1</bBarbarianAlly>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
@@ -3052,28 +2022,11 @@
 					<PrereqTech>TECH_HORSEBACK_RIDING</PrereqTech>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_MULTI_RELIGION</Type>
 			<Description>TXT_KEY_TRAIT_MULTI_RELIGION</Description>
 			<ShortDescription>TXT_KEY_TRAIT_MULTI_RELIGION_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iHappinessPerReligion>1</iHappinessPerReligion>
 			<CommercePerReligion>
 				<iCommerce>0</iCommerce>
@@ -3081,52 +2034,18 @@
 				<iCommerce>1</iCommerce>
 				<iCommerce>0</iCommerce>
 			</CommercePerReligion>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_SATYAGRAHA</Type>
 			<Description>TXT_KEY_TRAIT_SATYAGRAHA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_SATYAGRAHA_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iDefenseCombatPercent>10</iDefenseCombatPercent>
 			<iEnemyWarWearinessModifier>50</iEnemyWarWearinessModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_AGE_OF_DISCOVERY</Type>
 			<Description>TXT_KEY_TRAIT_AGE_OF_DISCOVERY</Description>
 			<ShortDescription>TXT_KEY_TRAIT_AGE_OF_DISCOVERY_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<ExplorationRewards>
 				<ExplorationReward>
 					<ExplorePlotType>EXPLORE_PLOT_OVERSEAS_OLD_WORLD</ExplorePlotType>
@@ -3149,12 +2068,6 @@
 					<iPercent>200</iPercent>
 				</ExplorationReward>
 			</ExplorationRewards>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -3180,17 +2093,6 @@
 			<Type>TRAIT_ETERNAL_MONUMENTS</Type>
 			<Description>TXT_KEY_TRAIT_ETERNAL_MONUMENTS</Description>
 			<ShortDescription>TXT_KEY_TRAIT_ETERNAL_MONUMENTS_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<NoObsoleteBuildingClasses>
 				<BuildingClassType>BUILDINGCLASS_STONEHENGE</BuildingClassType>
 				<BuildingClassType>BUILDINGCLASS_GREAT_LIBRARY</BuildingClassType>
@@ -3206,149 +2108,47 @@
 				<BuildingClassType>BUILDINGCLASS_SANKORE</BuildingClassType>
 				<BuildingClassType>BUILDINGCLASS_APOSTOLIC_PALACE</BuildingClassType>
 			</NoObsoleteBuildingClasses>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_EMANCIPATION</Type>
 			<Description>TXT_KEY_TRAIT_EMANCIPATION</Description>
 			<ShortDescription>TXT_KEY_TRAIT_EMANCIPATION_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_EMANCIPATION_ACT</TraitType>
 					<PrereqTech>TECH_LIBERALISM</PrereqTech>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_EMANCIPATION_ACT</Type>
 			<Description>TXT_KEY_TRAIT_EMANCIPATION_ACT</Description>
 			<ShortDescription>TXT_KEY_TRAIT_EMANCIPATION_ACT_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iFreeSpecialist>1</iFreeSpecialist>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_HOMESTEAD</Type>
 			<Description>TXT_KEY_TRAIT_HOMESTEAD</Description>
 			<ShortDescription>TXT_KEY_TRAIT_HOMESTEAD_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iImprovementUpgradeRateModifier>50</iImprovementUpgradeRateModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_PUNT</Type>
 			<Description>TXT_KEY_TRAIT_PUNT</Description>
 			<ShortDescription>TXT_KEY_TRAIT_PUNT_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iDistantTradeRouteModifier>50</iDistantTradeRouteModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_ANGKOR</Type>
 			<Description>TXT_KEY_TRAIT_ANGKOR</Description>
 			<ShortDescription>TXT_KEY_TRAIT_ANGKOR_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iCityRadiusChange>1</iCityRadiusChange>
 			<CityRadiusCultureLevel>CULTURELEVEL_REFINED</CityRadiusCultureLevel>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_GOLDEN_EMPIRE</Type>
 			<Description>TXT_KEY_TRAIT_GOLDEN_EMPIRE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_GOLDEN_EMPIRE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iGoldenAgeLandMovesChange>1</iGoldenAgeLandMovesChange>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
@@ -3356,87 +2156,30 @@
 					<bGoldenAge>1</bGoldenAge>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_GOLDEN_EMPIRE_AGE</Type>
 			<Description>TXT_KEY_TRAIT_GOLDEN_EMPIRE_AGE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_GOLDEN_EMPIRE_AGE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iCombatPercent>15</iCombatPercent>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_SUN_KING</Type>
 			<Description>TXT_KEY_TRAIT_SUN_KING</Description>
 			<ShortDescription>TXT_KEY_TRAIT_SUN_KING_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<WorldWonderCommerceChanges>
 				<iCommerce>0</iCommerce>
 				<iCommerce>0</iCommerce>
 				<iCommerce>3</iCommerce>
 				<iCommerce>0</iCommerce>
 			</WorldWonderCommerceChanges>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_EXPLORER_KING</Type>
 			<Description>TXT_KEY_TRAIT_EXPLORER_KING</Description>
 			<ShortDescription>TXT_KEY_TRAIT_EXPLORER_KING_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_EXPLORER_KING_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<PyOnCityFounded>pCity.isCapital() and createUnits(pPlayer, 'UNITCLASS_SCOUT', 1, pCity.plot())</PyOnCityFounded>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -3472,17 +2215,6 @@
 			<Type>TRAIT_GOLDEN_PILGRIMAGE</Type>
 			<Description>TXT_KEY_TRAIT_GOLDEN_PILGRIMAGE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_GOLDEN_PILGRIMAGE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<Hurrys>
 				<Hurry>
 					<HurryType>HURRY_GOLD</HurryType>
@@ -3494,56 +2226,18 @@
 					<UnitType>UNIT_WANGARA_TRADER</UnitType>
 				</UniqueUnit>
 			</UniqueUnits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_DEVSHIRME</Type>
 			<Description>TXT_KEY_TRAIT_DEVSHIRME</Description>
 			<ShortDescription>TXT_KEY_TRAIT_DEVSHIRME_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_DEVSHIRME_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<PyOnCityAcquired>bConquest and pCity.getConscriptUnit() != -1 and pPlayer.initUnit(pCity.getConscriptUnit(), pCity.getX(), pCity.getY(), UnitAITypes.NO_UNITAI, DirectionTypes.DIRECTION_SOUTH)</PyOnCityAcquired>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_AGORA</Type>
 			<Description>TXT_KEY_TRAIT_AGORA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_AGORA_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<SpecialistYieldChanges>
 				<SpecialistYieldChange>
 					<SpecialistType>SPECIALIST_ENGINEER</SpecialistType>
@@ -3652,104 +2346,34 @@
 					</CommerceChanges>
 				</SpecialistCommerceChange>
 			</SpecialistCommerceChanges>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_MESOPOTAMIA</Type>
 			<Description>TXT_KEY_TRAIT_MESOPOTAMIA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_MESOPOTAMIA_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<RiverEdgeYieldPercents>
 				<iYield>34</iYield>
 				<iYield>0</iYield>
 				<iYield>100</iYield>
 			</RiverEdgeYieldPercents>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_ORIENTALISM</Type>
 			<Description>TXT_KEY_TRAIT_ORIENTALISM</Description>
 			<ShortDescription>TXT_KEY_TRAIT_ORIENTALISM_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<bConquestLearnUniqueUnits>1</bConquestLearnUniqueUnits>
 			<bConquestLearnUniqueBuildings>1</bConquestLearnUniqueBuildings>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_APPIAN_WAY</Type>
 			<Description>TXT_KEY_TRAIT_APPIAN_WAY</Description>
 			<ShortDescription>TXT_KEY_TRAIT_APPIAN_WAY_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iRouteMovementModifierInBorders>-50</iRouteMovementModifierInBorders>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_SUN_NEVER_SETS</Type>
 			<Description>TXT_KEY_TRAIT_SUN_NEVER_SETS</Description>
 			<ShortDescription>TXT_KEY_TRAIT_SUN_NEVER_SETS_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -3818,121 +2442,36 @@
 			<Description>TXT_KEY_TRAIT_HIGHLAND_KINGDOM</Description>
 			<ShortDescription>TXT_KEY_TRAIT_HIGHLAND_KINGDOM_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_HIGHLAND_KINGDOM_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<PyOnCityFounded>makeCityPlotHills(pCity, 'TERRAIN_PLAINS')</PyOnCityFounded>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_AMABUTHO</Type>
 			<Description>TXT_KEY_TRAIT_AMABUTHO</Description>
 			<ShortDescription>TXT_KEY_TRAIT_AMABUTHO_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iFreeExperience>2</iFreeExperience>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_GREAT_EXHIBITION</Type>
 			<Description>TXT_KEY_TRAIT_GREAT_EXHIBITION</Description>
 			<ShortDescription>TXT_KEY_TRAIT_GREAT_EXHIBITION_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<GlobalWorldWonderCommerceChanges>
 				<iCommerce>0</iCommerce>
 				<iCommerce>1</iCommerce>
 				<iCommerce>0</iCommerce>
 				<iCommerce>0</iCommerce>
 			</GlobalWorldWonderCommerceChanges>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_AGE_OF_PERICLES</Type>
 			<Description>TXT_KEY_TRAIT_AGE_OF_PERICLES</Description>
 			<ShortDescription>TXT_KEY_TRAIT_AGE_OF_PERICLES_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iGoldenAgeModifier>50</iGoldenAgeModifier>
 			<iGoldenAgeGreatPeopleRateModifier>100</iGoldenAgeGreatPeopleRateModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_VAE_VICTIS</Type>
 			<Description>TXT_KEY_TRAIT_VAE_VICTIS</Description>
 			<ShortDescription>TXT_KEY_TRAIT_VAE_VICTIS_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -3987,194 +2526,64 @@
 			<Description>TXT_KEY_TRAIT_HAGIA_SOPHIA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_HAGIA_SOPHIA_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_HAGIA_SOPHIA_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<NoObsoleteSpecialBuildings>
 				<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
 			</NoObsoleteSpecialBuildings>
 			<PyOnReligionFounded>createMissionaries(pPlayer, eReligion, 2, pCity)</PyOnReligionFounded>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_DHAMMA</Type>
 			<Description>TXT_KEY_TRAIT_DHAMMA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_DHAMMA_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iStateReligionHappiness>1</iStateReligionHappiness>
 			<iStateReligionHealth>1</iStateReligionHealth>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_SINAN</Type>
 			<Description>TXT_KEY_TRAIT_SINAN</Description>
 			<ShortDescription>TXT_KEY_TRAIT_SINAN_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<GreatPeopleClassRateModifiers>
 				<GreatPeopleClassRateModifier>
 					<UnitClassType>UNITCLASS_ENGINEER</UnitClassType>
 					<iGreatPeopleRateModifier>100</iGreatPeopleRateModifier>
 				</GreatPeopleClassRateModifier>
 			</GreatPeopleClassRateModifiers>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_RELIEF_OF_LEIDEN</Type>
 			<Description>TXT_KEY_TRAIT_RELIEF_OF_LEIDEN</Description>
 			<ShortDescription>TXT_KEY_TRAIT_RELIEF_OF_LEIDEN_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iEnemyMoveCostInBorders>1</iEnemyMoveCostInBorders>
 			<EnemyAttrition>
 				<iPercent>10</iPercent>
 				<iLimit>50</iLimit>
 			</EnemyAttrition>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_REVENGE_QUEEN</Type>
 			<Description>TXT_KEY_TRAIT_REVENGE_QUEEN</Description>
 			<ShortDescription>TXT_KEY_TRAIT_REVENGE_QUEEN_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iRevengeCombatPercent>25</iRevengeCombatPercent>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_GRAND_EMBASSY</Type>
 			<Description>TXT_KEY_TRAIT_GRAND_EMBASSY</Description>
 			<ShortDescription>TXT_KEY_TRAIT_GRAND_EMBASSY_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<KnownTechCost>
 				<iModifier>-10</iModifier>
 				<iLimit>-75</iLimit>
 			</KnownTechCost>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_VENI_VIDI_VICI</Type>
 			<Description>TXT_KEY_TRAIT_VENI_VIDI_VICI</Description>
 			<ShortDescription>TXT_KEY_TRAIT_VENI_VIDI_VICI_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<bConquestHeal>1</bConquestHeal>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TRANS_SAHARAN</Type>
 			<Description>TXT_KEY_TRAIT_TRANS_SAHARAN</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TRANS_SAHARAN_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<TerrainTrades>
 				<TerrainTrade>
 					<TerrainType>TERRAIN_DESERT</TerrainType>
@@ -4197,207 +2606,73 @@
 					<iStartBias>10</iStartBias>
 				</StartBiasTerrain>
 			</StartBiasTerrains>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_RESISTANCE</Type>
 			<Description>TXT_KEY_TRAIT_RESISTANCE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_RESISTANCE_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_RESISTANCE_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<PyOnCityLost>bConquest and createPartisans(pPlayer, pCity, 2 + iPopulation, iCultureLevel)</PyOnCityLost>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_MINUTEMEN</Type>
 			<Description>TXT_KEY_TRAIT_MINUTEMEN</Description>
 			<ShortDescription>TXT_KEY_TRAIT_MINUTEMEN_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_MINUTEMEN_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_MINUTEMEN_WAR</TraitType>
 					<bAtWar>1</bAtWar>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_MINUTEMEN_WAR</Type>
 			<Description>TXT_KEY_TRAIT_MINUTEMEN_WAR</Description>
 			<ShortDescription>TXT_KEY_TRAIT_MINUTEMEN_WAR_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_MINUTEMEN_WAR_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<PyOnGained>createCityConscripts(pPlayer, 5)</PyOnGained>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_PAX_TOKUGAWA</Type>
 			<Description>TXT_KEY_TRAIT_PAX_TOKUGAWA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_PAX_TOKUGAWA_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_PAX_TOKUGAWA_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_PAX_TOKUGAWA_WAR</TraitType>
 					<bAtWar>1</bAtWar>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_PAX_TOKUGAWA_WAR</Type>
 			<Description>TXT_KEY_TRAIT_PAX_TOKUGAWA_WAR</Description>
 			<ShortDescription>TXT_KEY_TRAIT_PAX_TOKUGAWA_WAR_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_PAX_TOKUGAWA_WAR_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<PyOnLost>gainTraitForTurns(pPlayer, 'TRAIT_PAX_TOKUGAWA_PEACE', scaleBySpeed(20, 'GoldenAge'))</PyOnLost>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_PAX_TOKUGAWA_PEACE</Type>
 			<Description>TXT_KEY_TRAIT_PAX_TOKUGAWA_PEACE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_PAX_TOKUGAWA_PEACE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
 			<iHappiness>1</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
 			<CommerceModifiers>
 				<iCommerce>0</iCommerce>
 				<iCommerce>0</iCommerce>
 				<iCommerce>50</iCommerce>
 			</CommerceModifiers>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_STEPPE_UNITY_VISION</Type>
 			<Description>TXT_KEY_TRAIT_STEPPE_UNITY_VISION</Description>
 			<ShortDescription>TXT_KEY_TRAIT_STEPPE_UNITY_VISION_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<bBarbarianVision>1</bBarbarianVision>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_MERCENARIES</Type>
 			<Description>TXT_KEY_TRAIT_MERCENARIES</Description>
 			<ShortDescription>TXT_KEY_TRAIT_MERCENARIES_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<Hurrys>
 				<Hurry>
 					<HurryType>HURRY_GOLD</HurryType>
@@ -4405,28 +2680,11 @@
 					<iExperience>2</iExperience>
 				</Hurry>
 			</Hurrys>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_DRUID_FOREST</Type>
 			<Description>TXT_KEY_TRAIT_DRUID_FOREST</Description>
 			<ShortDescription>TXT_KEY_TRAIT_DRUID_FOREST_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<FeatureHappinessChanges>
 				<FeatureHappinessChange>
 					<FeatureType>FEATURE_FOREST</FeatureType>
@@ -4445,12 +2703,6 @@
 					<iStartBias>10</iStartBias>
 				</StartBiasFeature>
 			</StartBiasFeatures>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -4500,17 +2752,6 @@
 			<Type>TRAIT_QHAPAQ_NAN</Type>
 			<Description>TXT_KEY_TRAIT_QHAPAQ_NAN</Description>
 			<ShortDescription>TXT_KEY_TRAIT_QHAPAQ_NAN_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<TerrainTrades>
 				<TerrainTrade>
 					<TerrainType>TERRAIN_HILL</TerrainType>
@@ -4524,28 +2765,11 @@
 			<PassableTerrainsInBorders>
 				<TerrainType>TERRAIN_PEAK</TerrainType>
 			</PassableTerrainsInBorders>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_YANGBAN</Type>
 			<Description>TXT_KEY_TRAIT_YANGBAN</Description>
 			<ShortDescription>TXT_KEY_TRAIT_YANGBAN_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<SpecialistSlotChanges>
 				<SpecialistSlotChange>
 					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
@@ -4578,28 +2802,11 @@
 					<PrereqTech>TECH_EDUCATION</PrereqTech>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_MUNBAN</Type>
 			<Description>TXT_KEY_TRAIT_MUNBAN</Description>
 			<ShortDescription>TXT_KEY_TRAIT_MUNBAN_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<SpecialistSlotChanges>
 				<SpecialistSlotChange>
 					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
@@ -4626,173 +2833,66 @@
 					<iSlots>-1</iSlots>
 				</SpecialistSlotChange>
 			</SpecialistSlotChanges>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_LATER_THREE_KINGDOMS</Type>
 			<Description>TXT_KEY_TRAIT_LATER_THREE_KINGDOMS</Description>
 			<ShortDescription>TXT_KEY_TRAIT_LATER_THREE_KINGDOMS_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iConquestCulturePercent>50</iConquestCulturePercent>
 			<bStackCityDefense>1</bStackCityDefense>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_CHEKA</Type>
 			<Description>TXT_KEY_TRAIT_CHEKA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_CHEKA_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<UniqueUnits>
 				<UniqueUnit>
 					<UnitClassType>UNITCLASS_SPY</UnitClassType>
 					<UnitType>UNIT_CHEKIST</UnitType>
 				</UniqueUnit>
 			</UniqueUnits>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
 			<CommerceModifiers>
 				<iCommerce>0</iCommerce>
 				<iCommerce>0</iCommerce>
 				<iCommerce>0</iCommerce>
 				<iCommerce>25</iCommerce>
 			</CommerceModifiers>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_HANGING_GARDENS</Type>
 			<Description>TXT_KEY_TRAIT_HANGING_GARDENS</Description>
 			<ShortDescription>TXT_KEY_TRAIT_HANGING_GARDENS_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_HANGING_GARDENS_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<PyOnBuildingBuilt>isBuildingClassIn(eBuilding, ['BUILDINGCLASS_GRANARY', 'BUILDINGCLASS_AQUEDUCT', 'BUILDINGCLASS_GROCER', 'BUILDINGCLASS_HOSPITAL', 'BUILDINGCLASS_RECYCLING_CENTER']) and pCity.changePopulation(1)</PyOnBuildingBuilt>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
 			<HealthyCommercePercents>
 				<iCommerce>0</iCommerce>
 				<iCommerce>50</iCommerce>
 			</HealthyCommercePercents>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_LAW_CODE</Type>
 			<Description>TXT_KEY_TRAIT_LAW_CODE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_LAW_CODE_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<CivicOptionExtraSlots>
 				<CivicOptionExtraSlot>
 					<CivicOptionType>CIVICOPTION_LEGAL</CivicOptionType>
 					<iExtraSlots>1</iExtraSlots>
 				</CivicOptionExtraSlot>
 			</CivicOptionExtraSlots>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_NEW_WORLD_EXPLORATION</Type>
 			<Description>TXT_KEY_TRAIT_NEW_WORLD_EXPLORATION</Description>
 			<ShortDescription>TXT_KEY_TRAIT_NEW_WORLD_EXPLORATION_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_NEW_WORLD_EXPLORATION_HELP</Help>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<iNewWorldCityPopulation>1</iNewWorldCityPopulation>
 			<iOverseasCityPopulation>1</iOverseasCityPopulation>
 			<PyOnCityFounded>[isCoastalCity(pCity) and (isOverseasCity(pCity) or isNewWorldCity(pCity)) and addBuilding(pCity, 'BUILDINGCLASS_LIGHTHOUSE'), isCoastalCity(pCity) and isNewWorldCity(pCity) and addBuilding(pCity, 'BUILDINGCLASS_HARBOR')]</PyOnCityFounded>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_RANKS</Type>
 			<Description>TXT_KEY_TRAIT_RANKS</Description>
 			<ShortDescription>TXT_KEY_TRAIT_RANKS_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -4846,29 +2946,12 @@
 			<Type>TRAIT_IMPERIAL_ESTATES</Type>
 			<Description>TXT_KEY_TRAIT_IMPERIAL_ESTATES</Description>
 			<ShortDescription>TXT_KEY_TRAIT_IMPERIAL_ESTATES_SHORT</ShortDescription>
-			<iHealth>0</iHealth>
-			<iHappiness>0</iHappiness>
-			<iMaxAnarchy>-1</iMaxAnarchy>
-			<iUpkeepModifier>0</iUpkeepModifier>
-			<iLevelExperienceModifier>0</iLevelExperienceModifier>
-			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
-			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
-			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
-			<iMaxGlobalBuildingProductionModifier>0</iMaxGlobalBuildingProductionModifier>
-			<iMaxTeamBuildingProductionModifier>0</iMaxTeamBuildingProductionModifier>
-			<iMaxPlayerBuildingProductionModifier>0</iMaxPlayerBuildingProductionModifier>
 			<FoundingVassal>
 				<CivilizationType>CIVILIZATION_GERMANY</CivilizationType>
 				<LeaderType>LEADER_FREDERICK</LeaderType>
 				<HandicapType>HANDICAP_SETTLER</HandicapType>
 				<iRange>5</iRange>
 			</FoundingVassal>
-			<ExtraYieldThresholds/>
-			<TradeYieldModifiers/>
-			<CommerceChanges/>
-			<CommerceModifiers/>
-			<FreePromotions/>
-			<FreePromotionUnitCombats/>
 		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>
