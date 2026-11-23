@@ -1003,6 +1003,33 @@
 		<Japanese>&#26908;&#35388;&#29992;&#25351;&#23566;&#32773;&#65288;&#28023;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_FOUNDING_VASSAL</Tag>
+		<English>Test Trait (Vassal)</English>
+		<French>Test Trait (Vassal)</French>
+		<German>Test Trait (Vassal)</German>
+		<Italian>Test Trait (Vassal)</Italian>
+		<Spanish>Test Trait (Vassal)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;&#23646;&#22269;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_FOUNDING_VASSAL_SHORT</Tag>
+		<English>TVsl</English>
+		<French>TVsl</French>
+		<German>TVsl</German>
+		<Italian>TVsl</Italian>
+		<Spanish>TVsl</Spanish>
+		<Japanese>&#26908; &#23646;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TEST_VASSAL</Tag>
+		<English>Test Leader (Vassal)</English>
+		<French>Test Leader (Vassal)</French>
+		<German>Test Leader (Vassal)</German>
+		<Italian>Test Leader (Vassal)</Italian>
+		<Spanish>Test Leader (Vassal)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#25351;&#23566;&#32773;&#65288;&#23646;&#22269;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_ESPIONAGE_TEST_CITY_POISON_WATER</Tag>
 		<English>Poison Water (Test)</English>
 		<French>Poison Water (Test)</French>

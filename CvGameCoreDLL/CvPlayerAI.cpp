@@ -14555,7 +14555,7 @@ int CvPlayerAI::AI_getStrategyHash() const
         
         if (!GC.getGameINLINE().isOption(GAMEOPTION_AGGRESSIVE_AI))
         {
-			iDagger += range(100 - GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAITrainPercent(), 0, 15);
+			iDagger += range(100 - GC.getHandicapInfo(getAIHandicapType()).getAITrainPercent(), 0, 15);
         }
         
         if ((getCapitalCity()->area()->getAreaAIType(getTeam()) == AREAAI_OFFENSIVE) || (getCapitalCity()->area()->getAreaAIType(getTeam()) == AREAAI_DEFENSIVE))
@@ -15559,7 +15559,7 @@ int CvPlayerAI::AI_getTotalFloatingDefendersNeeded(CvArea* pArea) const
 	}
 	
 	iDefenders *= 60;
-	iDefenders /= std::max(30, (GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAITrainPercent() - 20));
+	iDefenders /= std::max(30, (GC.getHandicapInfo(getAIHandicapType()).getAITrainPercent() - 20));
 	
 	if ((iCurrentEra < 3) && (GC.getGameINLINE().isOption(GAMEOPTION_RAGING_BARBARIANS)))
 	{

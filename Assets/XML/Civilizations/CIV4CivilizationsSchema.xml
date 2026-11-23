@@ -844,6 +844,16 @@
 	<ElementType name="SeaStart" content="eltOnly">
 		<element type="ShipUnitClass"/>
 	</ElementType>
+	<ElementType name="CivilizationType" content="textOnly"/>
+	<ElementType name="LeaderType" content="textOnly"/>
+	<ElementType name="HandicapType" content="textOnly"/>
+	<ElementType name="iRange" content="textOnly" dt:type="int"/>
+	<ElementType name="FoundingVassal" content="eltOnly">
+		<element type="CivilizationType" minOccurs="0"/>
+		<element type="LeaderType" minOccurs="0"/>
+		<element type="HandicapType" minOccurs="0"/>
+		<element type="iRange" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="BonusYieldChange" content="eltOnly">
 		<element type="BonusType"/>
 		<element type="Yields"/>
@@ -1167,6 +1177,7 @@
 		<element type="StartBiasBonuses" minOccurs="0"/>
 		<element type="SeaStart" minOccurs="0"/>
 		<element type="CityFoundedUnits" minOccurs="0"/>
+		<element type="FoundingVassal" minOccurs="0"/>
 		<element type="GoldInterest" minOccurs="0"/>
 		<element type="PeaceAnger" minOccurs="0"/>
 		<element type="iCultureRangeChange" minOccurs="0"/>

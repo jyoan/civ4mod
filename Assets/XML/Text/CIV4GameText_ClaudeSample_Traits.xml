@@ -1614,6 +1614,51 @@
 		<Japanese>[ICON_BULLET]&#22806;&#27915;&#65288;&#12394;&#12369;&#12428;&#12400;&#36817;&#28023;&#65289;&#12391;&#12289;&#21021;&#26399;&#12518;&#12491;&#12483;&#12488;&#12364;&#33337;&#12394;&#12375;&#12391;&#28023;&#19978;&#12395;&#12356;&#12427;&#29366;&#24907;&#12391;&#38283;&#22987;&#12377;&#12427;&#65288;&#38283;&#22987;&#20301;&#32622;&#12398;&#22909;&#12415;&#12399;&#28961;&#21177;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOUNDING_VASSAL</Tag>
+		<English>[ICON_BULLET]When founding the first city, %s1 joins the game within %d2 tiles of it with the starting units of an AI (settlers, defenders and others), and joins the team in a permanent alliance (if a player slot is free)</English>
+		<French>[ICON_BULLET]When founding the first city, %s1 joins the game within %d2 tiles of it with the starting units of an AI (settlers, defenders and others), and joins the team in a permanent alliance (if a player slot is free)</French>
+		<German>[ICON_BULLET]When founding the first city, %s1 joins the game within %d2 tiles of it with the starting units of an AI (settlers, defenders and others), and joins the team in a permanent alliance (if a player slot is free)</German>
+		<Italian>[ICON_BULLET]When founding the first city, %s1 joins the game within %d2 tiles of it with the starting units of an AI (settlers, defenders and others), and joins the team in a permanent alliance (if a player slot is free)</Italian>
+		<Spanish>[ICON_BULLET]When founding the first city, %s1 joins the game within %d2 tiles of it with the starting units of an AI (settlers, defenders and others), and joins the team in a permanent alliance (if a player slot is free)</Spanish>
+		<Japanese>[ICON_BULLET]&#26368;&#21021;&#12398;&#37117;&#24066;&#12434;&#24314;&#12390;&#12427;&#12392;&#12289;%s1&#12364;&#12381;&#12398;%d2&#12479;&#12452;&#12523;&#20197;&#20869;&#12395;AI&#12398;&#21021;&#26399;&#12518;&#12491;&#12483;&#12488;&#65288;&#38283;&#25299;&#32773;&#12539;&#38450;&#34907;&#12518;&#12491;&#12483;&#12488;&#12394;&#12393;&#65289;&#12434;&#36899;&#12428;&#12390;&#12466;&#12540;&#12512;&#12395;&#21442;&#21152;&#12375;&#12289;&#27704;&#20037;&#21516;&#30431;&#12434;&#32080;&#12435;&#12391;&#21516;&#12376;&#12481;&#12540;&#12512;&#12395;&#12394;&#12427;&#65288;&#12503;&#12524;&#12452;&#12516;&#12540;&#12395;&#31354;&#12365;&#12364;&#12354;&#12427;&#22580;&#21512;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOUNDING_VASSAL_ANY_CIV</Tag>
+		<English>another civilization</English>
+		<French>another civilization</French>
+		<German>another civilization</German>
+		<Italian>another civilization</Italian>
+		<Spanish>another civilization</Spanish>
+		<Japanese>&#20182;&#12398;&#25991;&#26126;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOUNDING_VASSAL_LED_BY</Tag>
+		<English>%s1 led by %s2</English>
+		<French>%s1 led by %s2</French>
+		<German>%s1 led by %s2</German>
+		<Italian>%s1 led by %s2</Italian>
+		<Spanish>%s1 led by %s2</Spanish>
+		<Japanese>%s2&#12364;&#29575;&#12356;&#12427;%s1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOUNDING_VASSAL_HANDICAP</Tag>
+		<English>Its AI modifiers are those of %s1_Difficulty at every difficulty</English>
+		<French>Its AI modifiers are those of %s1_Difficulty at every difficulty</French>
+		<German>Its AI modifiers are those of %s1_Difficulty at every difficulty</German>
+		<Italian>Its AI modifiers are those of %s1_Difficulty at every difficulty</Italian>
+		<Spanish>Its AI modifiers are those of %s1_Difficulty at every difficulty</Spanish>
+		<Japanese>&#12381;&#12398;&#25991;&#26126;&#12398;AI&#35036;&#27491;&#12399;&#12289;&#12393;&#12398;&#38627;&#26131;&#24230;&#12391;&#12418;&#12300;%s1_Difficulty&#12301;&#12398;&#12418;&#12398;&#12395;&#12394;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_FOUNDING_VASSAL_JOINED</Tag>
+		<English>[COLOR_HIGHLIGHT_TEXT]%s1_leader of %s2_civ has joined the game in a permanent alliance with %s3_leader[COLOR_REVERT]</English>
+		<French>[COLOR_HIGHLIGHT_TEXT]%s1_leader of %s2_civ has joined the game in a permanent alliance with %s3_leader[COLOR_REVERT]</French>
+		<German>[COLOR_HIGHLIGHT_TEXT]%s1_leader of %s2_civ has joined the game in a permanent alliance with %s3_leader[COLOR_REVERT]</German>
+		<Italian>[COLOR_HIGHLIGHT_TEXT]%s1_leader of %s2_civ has joined the game in a permanent alliance with %s3_leader[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_HIGHLIGHT_TEXT]%s1_leader of %s2_civ has joined the game in a permanent alliance with %s3_leader[COLOR_REVERT]</Spanish>
+		<Japanese>[COLOR_HIGHLIGHT_TEXT]%s2_civ&#12398;%s1_leader&#12364;%s3_leader&#12392;&#27704;&#20037;&#21516;&#30431;&#12434;&#32080;&#12403;&#12289;&#12466;&#12540;&#12512;&#12395;&#21442;&#21152;[COLOR_REVERT]</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_ENABLED_ESPIONAGE_MISSIONS</Tag>
 		<English>[ICON_BULLET]Espionage missions: </English>
 		<French>[ICON_BULLET]Espionage missions: </French>

@@ -2862,6 +2862,17 @@ int CyPlayer::getNumCivicSlots(int /*CivicOptionTypes*/ eCivicOption)
 	return m_pPlayer ? m_pPlayer->getNumCivicSlots((CivicOptionTypes)eCivicOption) : 1;
 }
 
+// FoundingVassal of the traits (added by this mod)
+int CyPlayer::getAIHandicapType()
+{
+	return m_pPlayer ? (int)m_pPlayer->getAIHandicapType() : (int)NO_HANDICAP;
+}
+
+bool CyPlayer::isFoundingVassal()
+{
+	return m_pPlayer ? m_pPlayer->isFoundingVassal() : false;
+}
+
 // ExplorationRewards of the traits (added by this mod)
 int CyPlayer::getExploredPlotCount(int /*ExplorePlotTypes*/ eExplorePlot)
 {
