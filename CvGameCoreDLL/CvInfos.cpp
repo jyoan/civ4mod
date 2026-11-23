@@ -20417,6 +20417,10 @@ m_bRevealWarPlans(false),
 m_bRevealHiddenAttitude(false),
 m_bLongCountCalendar(false),
 m_bImprovementUpgradeUnworked(false),
+m_bNoCultureFlip(false),
+m_bNoRevoltAndNoCultureFlip(false),
+m_bInstantCultureFlip(false),
+m_iCultureRevoltChance(0),
 m_iNewWorldCityPopulation(0),
 m_iOverseasCityPopulation(0),
 m_iOverseasMaintenanceModifier(0),
@@ -21198,6 +21202,34 @@ bool CvTraitInfo::isLongCountCalendar() const
 bool CvTraitInfo::isImprovementUpgradeUnworked() const
 {
 	return m_bImprovementUpgradeUnworked;
+}
+
+// bNoCultureFlip (added by this mod): the cities of the player do not flip to another player by culture. The revolts still
+// occur (occupation, damage to the defenders) (CvPlot::doCulture)
+bool CvTraitInfo::isNoCultureFlip() const
+{
+	return m_bNoCultureFlip;
+}
+
+// bNoRevoltAndNoCultureFlip (added by this mod): no revolt by foreign culture occurs in the cities of the player, so they
+// do not flip either (CvCity::getRevoltTestProbability)
+bool CvTraitInfo::isNoRevoltAndNoCultureFlip() const
+{
+	return m_bNoRevoltAndNoCultureFlip;
+}
+
+// bInstantCultureFlip (added by this mod): foreign cities flip to the player at the first revolt by the culture of the
+// player, without the warning revolts (NUM_WARNING_REVOLTS) (CvPlot::doCulture)
+bool CvTraitInfo::isInstantCultureFlip() const
+{
+	return m_bInstantCultureFlip;
+}
+
+// iCultureRevoltChance (added by this mod): percent change of the chance of revolt in foreign cities by the culture of the
+// player (CvCity::getRevoltTestProbability)
+int CvTraitInfo::getCultureRevoltChance() const
+{
+	return m_iCultureRevoltChance;
 }
 
 // iNewWorldCityPopulation (added by this mod): population of the cities the player founds in the New World
@@ -23135,6 +23167,10 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bRevealHiddenAttitude, "bRevealHiddenAttitude");
 	pXML->GetChildXmlValByName(&m_bLongCountCalendar, "bLongCountCalendar");
 	pXML->GetChildXmlValByName(&m_bImprovementUpgradeUnworked, "bImprovementUpgradeUnworked");
+	pXML->GetChildXmlValByName(&m_bNoCultureFlip, "bNoCultureFlip");
+	pXML->GetChildXmlValByName(&m_bNoRevoltAndNoCultureFlip, "bNoRevoltAndNoCultureFlip");
+	pXML->GetChildXmlValByName(&m_bInstantCultureFlip, "bInstantCultureFlip");
+	pXML->GetChildXmlValByName(&m_iCultureRevoltChance, "iCultureRevoltChance");
 	// GreatPeopleClassRateModifiers: the unit classes are loaded before the traits
 	readTypeValueList(pXML, "GreatPeopleClassRateModifiers", "GreatPeopleClassRateModifier", "UnitClassType", "iGreatPeopleRateModifier", GC.getNumUnitClassInfos(), m_aiGreatPeopleClassRateModifier);
 	readSpecialBuildingProductionModifiers(pXML);

@@ -4237,6 +4237,26 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CULTURE_RANGE_CHANGE", kTrait.getCultureRangeChange()));
 	}
 
+	// Revolts and flips by culture (added by this mod)
+	if (kTrait.isNoRevoltAndNoCultureFlip())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_REVOLT_AND_NO_CULTURE_FLIP"));
+	}
+	else if (kTrait.isNoCultureFlip())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_CULTURE_FLIP"));
+	}
+
+	if (kTrait.isInstantCultureFlip())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_INSTANT_CULTURE_FLIP"));
+	}
+
+	if (kTrait.getCultureRevoltChance() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CULTURE_REVOLT_CHANCE", kTrait.getCultureRevoltChance()));
+	}
+
 	// PeaceAnger/iPerTurn: "Cities grow angry in peace" (added by this mod)
 	if (kTrait.getPeaceAngerPerTurn() > 0 && kTrait.getPeaceAngerMax() > 0)
 	{

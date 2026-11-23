@@ -1757,4 +1757,40 @@
 		<Spanish>[ICON_BULLET]Improvements in the borders upgrade without being worked</Spanish>
 		<Japanese>[ICON_BULLET]&#25991;&#21270;&#22287;&#20869;&#12398;&#26045;&#35373;&#12399;&#12289;&#24066;&#27665;&#12434;&#37197;&#32622;&#12375;&#12394;&#12367;&#12390;&#12418;&#25104;&#38263;&#12377;&#12427;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_CULTURE_FLIP</Tag>
+		<English>[ICON_BULLET]Cities do not flip to other civilizations by culture (revolts still occur)</English>
+		<French>[ICON_BULLET]Cities do not flip to other civilizations by culture (revolts still occur)</French>
+		<German>[ICON_BULLET]Cities do not flip to other civilizations by culture (revolts still occur)</German>
+		<Italian>[ICON_BULLET]Cities do not flip to other civilizations by culture (revolts still occur)</Italian>
+		<Spanish>[ICON_BULLET]Cities do not flip to other civilizations by culture (revolts still occur)</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#37117;&#24066;&#12399;&#25991;&#21270;&#12391;&#23517;&#36820;&#12425;&#12394;&#12356;&#65288;&#21453;&#20081;&#12399;&#36215;&#12365;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_REVOLT_AND_NO_CULTURE_FLIP</Tag>
+		<English>[ICON_BULLET]Cities neither revolt nor flip by foreign culture</English>
+		<French>[ICON_BULLET]Cities neither revolt nor flip by foreign culture</French>
+		<German>[ICON_BULLET]Cities neither revolt nor flip by foreign culture</German>
+		<Italian>[ICON_BULLET]Cities neither revolt nor flip by foreign culture</Italian>
+		<Spanish>[ICON_BULLET]Cities neither revolt nor flip by foreign culture</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#37117;&#24066;&#12391;&#12399;&#12289;&#22806;&#22269;&#12398;&#25991;&#21270;&#12395;&#12424;&#12427;&#21453;&#20081;&#12418;&#23517;&#36820;&#12426;&#12418;&#36215;&#12365;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INSTANT_CULTURE_FLIP</Tag>
+		<English>[ICON_BULLET]Foreign cities flip to you by culture at the first revolt</English>
+		<French>[ICON_BULLET]Foreign cities flip to you by culture at the first revolt</French>
+		<German>[ICON_BULLET]Foreign cities flip to you by culture at the first revolt</German>
+		<Italian>[ICON_BULLET]Foreign cities flip to you by culture at the first revolt</Italian>
+		<Spanish>[ICON_BULLET]Foreign cities flip to you by culture at the first revolt</Spanish>
+		<Japanese>[ICON_BULLET]&#22806;&#22269;&#12398;&#37117;&#24066;&#12399;&#12289;&#33258;&#22269;&#12398;&#25991;&#21270;&#12395;&#12424;&#12427;1&#22238;&#30446;&#12398;&#21453;&#20081;&#12391;&#23517;&#36820;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CULTURE_REVOLT_CHANCE</Tag>
+		<English>[ICON_BULLET]%D1%% chance of revolt in foreign cities by your culture</English>
+		<French>[ICON_BULLET]%D1%% chance of revolt in foreign cities by your culture</French>
+		<German>[ICON_BULLET]%D1%% chance of revolt in foreign cities by your culture</German>
+		<Italian>[ICON_BULLET]%D1%% chance of revolt in foreign cities by your culture</Italian>
+		<Spanish>[ICON_BULLET]%D1%% chance of revolt in foreign cities by your culture</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#25991;&#21270;&#12395;&#12424;&#12427;&#22806;&#22269;&#12398;&#37117;&#24066;&#12398;&#21453;&#20081;&#12398;&#30906;&#29575;%D1%%</Japanese>
+	</TEXT>
 </Civ4GameText>

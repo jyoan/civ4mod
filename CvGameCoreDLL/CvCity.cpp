@@ -10095,9 +10095,18 @@ void CvCity::changeNumRevolts(PlayerTypes eIndex, int iChange)
 	FAssert(getNumRevolts(eIndex) >= 0);
 }
 
-int CvCity::getRevoltTestProbability() const
+// eCulturalOwner (added by this mod): the player whose culture makes the city revolt, for the traits (NO_PLAYER: without
+// them). bNoRevoltAndNoCultureFlip of the owner: 0. iCultureRevoltChance of eCulturalOwner: percent change of the base
+// chance (REVOLT_TEST_PROB), before the revolt protection of the units
+int CvCity::getRevoltTestProbability(PlayerTypes eCulturalOwner) const
 {
 	int iBestModifier = 0;
+	int iBaseProbability;
+
+	if (GET_PLAYER(getOwnerINLINE()).isNoRevoltAndNoCultureFlip())
+	{
+		return 0;
+	}
 
 	CLLNode<IDInfo>* pUnitNode = plot()->headUnitNode();
 	while (pUnitNode)
@@ -10112,7 +10121,13 @@ int CvCity::getRevoltTestProbability() const
 	}
 	iBestModifier = range(iBestModifier, 0, 100);
 
-	return ((GC.getDefineINT("REVOLT_TEST_PROB") * (100 - iBestModifier)) / 100);
+	iBaseProbability = GC.getDefineINT("REVOLT_TEST_PROB");
+	if (eCulturalOwner != NO_PLAYER)
+	{
+		iBaseProbability = std::max(0, (iBaseProbability * (100 + GET_PLAYER(eCulturalOwner).getCultureRevoltChance())) / 100);
+	}
+
+	return ((iBaseProbability * (100 - iBestModifier)) / 100);
 }
 
 bool CvCity::isEverOwned(PlayerTypes eIndex) const

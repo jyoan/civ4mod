@@ -413,6 +413,10 @@ public:
 	bool isRevealHiddenAttitude() const;			// Exposed to Python
 	bool isLongCountCalendar() const;				// Exposed to Python
 	bool isImprovementUpgradeUnworked() const;		// Exposed to Python
+	bool isNoCultureFlip() const;					// Exposed to Python: bNoCultureFlip or bNoRevoltAndNoCultureFlip of the traits
+	bool isNoRevoltAndNoCultureFlip() const;		// Exposed to Python
+	bool isInstantCultureFlip() const;				// Exposed to Python
+	int getCultureRevoltChance() const;				// Exposed to Python: iCultureRevoltChance of the traits
 	bool isCivicReplaced(CivicTypes eCivic) const;				// Exposed to Python: ReplacedCivic
 	bool canDoCivicByTraits(CivicTypes eCivic) const;			// Exposed to Python: PrereqOrTraits and ReplacedCivic, without the techs
 	bool isCivicOrReplacing(CivicTypes eCivic) const;			// added by this mod

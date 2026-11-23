@@ -466,6 +466,10 @@
 	<ElementType name="bRevealHiddenAttitude" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bLongCountCalendar" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bImprovementUpgradeUnworked" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bNoCultureFlip" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bNoRevoltAndNoCultureFlip" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bInstantCultureFlip" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iCultureRevoltChance" content="textOnly" dt:type="int"/>
 	<ElementType name="bBasicTrait" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bGainTraitOnCapitalCapture" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bGainTraitsOnElimination" content="textOnly" dt:type="boolean"/>
@@ -1116,6 +1120,10 @@
 		<element type="bRevealHiddenAttitude" minOccurs="0"/>
 		<element type="bLongCountCalendar" minOccurs="0"/>
 		<element type="bImprovementUpgradeUnworked" minOccurs="0"/>
+		<element type="bNoCultureFlip" minOccurs="0"/>
+		<element type="bNoRevoltAndNoCultureFlip" minOccurs="0"/>
+		<element type="bInstantCultureFlip" minOccurs="0"/>
+		<element type="iCultureRevoltChance" minOccurs="0"/>
 		<element type="bGainTraitOnCapitalCapture" minOccurs="0"/>
 		<element type="bGainTraitsOnElimination" minOccurs="0"/>
 		<element type="RandomBasicTraits" minOccurs="0"/>

@@ -296,6 +296,8 @@
 			<bRevealWarPlans>1</bRevealWarPlans>
 			<bRevealHiddenAttitude>1</bRevealHiddenAttitude>
 			<bImprovementUpgradeUnworked>1</bImprovementUpgradeUnworked>
+			<bInstantCultureFlip>1</bInstantCultureFlip>
+			<iCultureRevoltChance>100</iCultureRevoltChance>
 			<bGainTraitOnCapitalCapture>1</bGainTraitOnCapitalCapture>
 			<bGainTraitsOnElimination>1</bGainTraitsOnElimination>
 			<GainTraitsOnFriendly>
@@ -1206,6 +1208,7 @@
 			<Type>TRAIT_TEST_AI</Type>
 			<Description>TXT_KEY_TRAIT_TEST_AI</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_AI_SHORT</ShortDescription>
+			<bNoCultureFlip>1</bNoCultureFlip>
 			<FreeTechs>
 				<FreeTech>
 					<TechType>TECH_TEST_DIPLOMACY</TechType>

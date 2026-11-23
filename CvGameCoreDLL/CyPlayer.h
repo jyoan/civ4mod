@@ -549,6 +549,10 @@ public:
 	bool isRevealHiddenAttitude();	// added by this mod
 	bool isLongCountCalendar();	// added by this mod
 	bool isImprovementUpgradeUnworked();	// added by this mod
+	bool isNoCultureFlip();	// added by this mod
+	bool isNoRevoltAndNoCultureFlip();	// added by this mod
+	bool isInstantCultureFlip();	// added by this mod
+	int getCultureRevoltChance();	// added by this mod
 	int getMaxExperienceAfterUpgrade();	// added by this mod
 	int getExpOutsideBordersChange();	// added by this mod
 	int getWeLoveTheKingChance();	// added by this mod

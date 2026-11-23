@@ -9547,6 +9547,31 @@ bool CvPlayer::isImprovementUpgradeUnworked() const
 	return hasTraitFlag(&CvTraitInfo::isImprovementUpgradeUnworked);
 }
 
+// bNoCultureFlip of the traits (added by this mod): the cities of the player do not flip by culture. Also true with
+// bNoRevoltAndNoCultureFlip. See CvPlot::doCulture
+bool CvPlayer::isNoCultureFlip() const
+{
+	return hasTraitFlag(&CvTraitInfo::isNoCultureFlip) || isNoRevoltAndNoCultureFlip();
+}
+
+// bNoRevoltAndNoCultureFlip of the traits (added by this mod): see CvCity::getRevoltTestProbability
+bool CvPlayer::isNoRevoltAndNoCultureFlip() const
+{
+	return hasTraitFlag(&CvTraitInfo::isNoRevoltAndNoCultureFlip);
+}
+
+// bInstantCultureFlip of the traits (added by this mod): see CvPlot::doCulture
+bool CvPlayer::isInstantCultureFlip() const
+{
+	return hasTraitFlag(&CvTraitInfo::isInstantCultureFlip);
+}
+
+// iCultureRevoltChance of the traits (added by this mod): see CvCity::getRevoltTestProbability
+int CvPlayer::getCultureRevoltChance() const
+{
+	return sumTraitValues(&CvTraitInfo::getCultureRevoltChance);
+}
+
 // iCultureRangeChange of the traits (added by this mod)
 int CvPlayer::getCultureRangeChange() const
 {
