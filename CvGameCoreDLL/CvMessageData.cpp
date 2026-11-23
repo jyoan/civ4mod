@@ -535,6 +535,20 @@ void CvNetModNetMessage::Execute()
 		return;
 	}
 
+	// bUnsettleGreatPeople of the traits (added by this mod): player, city ID, specialist
+	if (m_iData1 == MOD_NET_MESSAGE_UNSETTLE_GREAT_PERSON)
+	{
+		if (m_iData2 >= 0 && m_iData2 < MAX_PLAYERS)
+		{
+			CvCity* pCity = GET_PLAYER((PlayerTypes)m_iData2).getCity(m_iData3);
+			if (pCity != NULL)
+			{
+				pCity->unsettleGreatPerson((SpecialistTypes)m_iData4);
+			}
+		}
+		return;
+	}
+
 	CvEventReporter::getInstance().reportModNetMessage(m_iData1, m_iData2, m_iData3, m_iData4, m_iData5);
 }
 

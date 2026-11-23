@@ -402,6 +402,16 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 		break;
 
 	case BUTTONPOPUP_PYTHON:
+		// The confirmation of bUnsettleGreatPeople of the traits (added by this mod): data1 city ID, data2 specialist
+		if (info.getOnClickedPythonCallback() == "claudeUnsettleGreatPerson")
+		{
+			if (pPopupReturn->getButtonClicked() == 0)
+			{
+				CvMessageControl::getInstance().sendModNetMessage(MOD_NET_MESSAGE_UNSETTLE_GREAT_PERSON, GC.getGameINLINE().getActivePlayer(), info.getData1(), info.getData2(), 0);
+			}
+			break;
+		}
+
 		// The popup of bChooseGoody (added by this mod): the choice goes to every computer, Python is not called
 		if (info.getOnClickedPythonCallback() == "claudeChooseGoody")
 		{

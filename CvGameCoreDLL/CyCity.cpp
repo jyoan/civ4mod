@@ -1993,6 +1993,16 @@ int CyCity::getAddedFreeSpecialistCount(int /*SpecialistTypes*/ eIndex)
 	return m_pCity ? m_pCity->getAddedFreeSpecialistCount((SpecialistTypes)eIndex) : -1;
 }
 
+bool CyCity::canUnsettleGreatPerson(int /*SpecialistTypes*/ eSpecialist)
+{
+	return m_pCity ? m_pCity->canUnsettleGreatPerson((SpecialistTypes)eSpecialist) : false;
+}
+
+bool CyCity::unsettleGreatPerson(int /*SpecialistTypes*/ eSpecialist)
+{
+	return m_pCity ? m_pCity->unsettleGreatPerson((SpecialistTypes)eSpecialist) : false;
+}
+
 void CyCity::changeImprovementFreeSpecialists(int /*ImprovementTypes*/ iIndex, int iChange)
 {
 	if (m_pCity)

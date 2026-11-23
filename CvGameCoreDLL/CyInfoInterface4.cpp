@@ -33,6 +33,7 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("isRevealHiddenAttitude", &CvTraitInfo::isRevealHiddenAttitude, "bool ()")
 		.def("isLongCountCalendar", &CvTraitInfo::isLongCountCalendar, "bool ()")
 		.def("isImprovementUpgradeUnworked", &CvTraitInfo::isImprovementUpgradeUnworked, "bool ()")
+		.def("isUnsettleGreatPeople", &CvTraitInfo::isUnsettleGreatPeople, "bool ()")
 		.def("isNoCultureFlip", &CvTraitInfo::isNoCultureFlip, "bool ()")
 		.def("isNoRevoltAndNoCultureFlip", &CvTraitInfo::isNoRevoltAndNoCultureFlip, "bool ()")
 		.def("isInstantCultureFlip", &CvTraitInfo::isInstantCultureFlip, "bool ()")

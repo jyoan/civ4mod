@@ -483,6 +483,7 @@
 	<ElementType name="bRevealHiddenAttitude" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bLongCountCalendar" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bImprovementUpgradeUnworked" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bUnsettleGreatPeople" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoFlip" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoRevoltAndNoFlip" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bInstantFlip" content="textOnly" dt:type="boolean"/>
@@ -1173,6 +1174,7 @@
 		<element type="bRevealHiddenAttitude" minOccurs="0"/>
 		<element type="bLongCountCalendar" minOccurs="0"/>
 		<element type="bImprovementUpgradeUnworked" minOccurs="0"/>
+		<element type="bUnsettleGreatPeople" minOccurs="0"/>
 		<element type="CultureFlip" minOccurs="0"/>
 		<element type="bGainTraitOnCapitalCapture" minOccurs="0"/>
 		<element type="bGainTraitsOnElimination" minOccurs="0"/>
