@@ -1778,6 +1778,12 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
+			<Traits>
+				<Trait>
+					<TraitType>TRAIT_IMPERIAL_ESTATES</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+			</Traits>
 			<DerivativeCiv>CIVILIZATION_GERMANY</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_HOLY_ROMAN_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_HOLY_ROMAN_ORDER</CivilizationActionSound>

@@ -1802,4 +1802,22 @@
 		<Spanish>Court Ranks</Spanish>
 		<Japanese>&#20301;&#38542;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_IMPERIAL_ESTATES</Tag>
+		<English>Imperial Estates</English>
+		<French>Imperial Estates</French>
+		<German>Imperial Estates</German>
+		<Italian>Imperial Estates</Italian>
+		<Spanish>Imperial Estates</Spanish>
+		<Japanese>&#24093;&#22269;&#35576;&#20399;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_IMPERIAL_ESTATES_SHORT</Tag>
+		<English>Est</English>
+		<French>Est</French>
+		<German>Est</German>
+		<Italian>Est</Italian>
+		<Spanish>Est</Spanish>
+		<Japanese>&#35576;</Japanese>
+	</TEXT>
 </Civ4GameText>
