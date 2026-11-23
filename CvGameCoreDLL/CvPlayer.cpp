@@ -9553,6 +9553,39 @@ bool CvPlayer::isUnsettleGreatPeople() const
 	return hasTraitFlag(&CvTraitInfo::isUnsettleGreatPeople);
 }
 
+// bIgnoreEvents of the traits (added by this mod): see CvDLLButtonPopup::launchEventPopup and ignoreEvent
+bool CvPlayer::isIgnoreEvents() const
+{
+	return hasTraitFlag(&CvTraitInfo::isIgnoreEvents);
+}
+
+// iEventChanceChange of the traits (added by this mod): see doEvents
+int CvPlayer::getEventChanceChange() const
+{
+	return sumTraitValues(&CvTraitInfo::getEventChanceChange);
+}
+
+// bNoFirstEventDelay of the traits (added by this mod): see doEvents
+bool CvPlayer::isNoFirstEventDelay() const
+{
+	return hasTraitFlag(&CvTraitInfo::isNoFirstEventDelay);
+}
+
+// bIgnoreEvents of the traits (added by this mod): the player chose to ignore the triggered event. No choice is applied.
+// The trigger counts as fired, as when a choice is applied (a trigger that is not recurring does not come again, a global
+// or team trigger is fired for the others too), without the world news. Called on every computer (ModNetMessage)
+void CvPlayer::ignoreEvent(int iEventTriggeredId)
+{
+	EventTriggeredData* pTriggeredData = getEventTriggered(iEventTriggeredId);
+	if (NULL == pTriggeredData || pTriggeredData->m_eTrigger == NO_EVENTTRIGGER || !isIgnoreEvents())
+	{
+		return;
+	}
+
+	setTriggerFired(*pTriggeredData, true, false);
+	deleteEventTriggered(iEventTriggeredId);
+}
+
 // bNoCultureFlip of the traits (added by this mod): the cities of the player do not flip by culture. Also true with
 // bNoRevoltAndNoCultureFlip. See CvPlot::doCulture
 bool CvPlayer::isNoCultureFlip() const
@@ -24394,14 +24427,16 @@ void CvPlayer::doEvents()
 	}
 
 	bool bNewEventEligible = true;
-	if (GC.getGameINLINE().getElapsedGameTurns() < GC.getDefineINT("FIRST_EVENT_DELAY_TURNS"))
+	// bNoFirstEventDelay of the traits: no delay (changed by this mod)
+	if (GC.getGameINLINE().getElapsedGameTurns() < GC.getDefineINT("FIRST_EVENT_DELAY_TURNS") && !isNoFirstEventDelay())
 	{
 		bNewEventEligible = false;
 	}
 
 	if (bNewEventEligible)
 	{
-		if (GC.getGameINLINE().getSorenRandNum(GC.getDefineINT("EVENT_PROBABILITY_ROLL_SIDES"), "Global event check") >= GC.getEraInfo(getCurrentEra()).getEventChancePerTurn())
+		// iEventChanceChange of the traits is added to the chance of the era (changed by this mod)
+		if (GC.getGameINLINE().getSorenRandNum(GC.getDefineINT("EVENT_PROBABILITY_ROLL_SIDES"), "Global event check") >= GC.getEraInfo(getCurrentEra()).getEventChancePerTurn() + getEventChanceChange())
 		{
 			bNewEventEligible = false;
 		}

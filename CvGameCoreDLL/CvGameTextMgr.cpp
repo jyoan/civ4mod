@@ -5282,6 +5282,21 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_UNSETTLE_GREAT_PEOPLE"));
 	}
 
+	if (kTrait.isIgnoreEvents())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_IGNORE_EVENTS"));
+	}
+
+	if (kTrait.getEventChanceChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_EVENT_CHANCE_CHANGE", kTrait.getEventChanceChange()));
+	}
+
+	if (kTrait.isNoFirstEventDelay())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_FIRST_EVENT_DELAY", GC.getDefineINT("FIRST_EVENT_DELAY_TURNS")));
+	}
+
 	// "Can build without the technology: Research". The processes are loaded when a game is launched: none on the screens
 	// before (GC.getNumProcessInfos() is 0)
 	bFirst = true;

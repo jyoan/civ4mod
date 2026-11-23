@@ -484,6 +484,9 @@
 	<ElementType name="bLongCountCalendar" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bImprovementUpgradeUnworked" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bUnsettleGreatPeople" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bIgnoreEvents" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iEventChanceChange" content="textOnly" dt:type="int"/>
+	<ElementType name="bNoFirstEventDelay" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoFlip" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoRevoltAndNoFlip" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bInstantFlip" content="textOnly" dt:type="boolean"/>
@@ -1175,6 +1178,9 @@
 		<element type="bLongCountCalendar" minOccurs="0"/>
 		<element type="bImprovementUpgradeUnworked" minOccurs="0"/>
 		<element type="bUnsettleGreatPeople" minOccurs="0"/>
+		<element type="bIgnoreEvents" minOccurs="0"/>
+		<element type="iEventChanceChange" minOccurs="0"/>
+		<element type="bNoFirstEventDelay" minOccurs="0"/>
 		<element type="CultureFlip" minOccurs="0"/>
 		<element type="bGainTraitOnCapitalCapture" minOccurs="0"/>
 		<element type="bGainTraitsOnElimination" minOccurs="0"/>

@@ -1830,6 +1830,42 @@
 		<Japanese>%s2&#12395;&#23450;&#20303;&#12375;&#12390;&#12356;&#12427;%s1&#12434;&#12518;&#12491;&#12483;&#12488;&#12395;&#25147;&#12375;&#12414;&#12377;&#12363;&#65311;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_IGNORE_EVENTS</Tag>
+		<English>[ICON_BULLET]Random events can be ignored (one more choice in their popup)</English>
+		<French>[ICON_BULLET]Random events can be ignored (one more choice in their popup)</French>
+		<German>[ICON_BULLET]Random events can be ignored (one more choice in their popup)</German>
+		<Italian>[ICON_BULLET]Random events can be ignored (one more choice in their popup)</Italian>
+		<Spanish>[ICON_BULLET]Random events can be ignored (one more choice in their popup)</Spanish>
+		<Japanese>[ICON_BULLET]&#12521;&#12531;&#12480;&#12512;&#12452;&#12505;&#12531;&#12488;&#12434;&#28961;&#35222;&#12391;&#12365;&#12427;&#65288;&#12452;&#12505;&#12531;&#12488;&#12398;&#30011;&#38754;&#12395;&#36984;&#25246;&#32930;&#12364;&#22679;&#12360;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_EVENT_CHANCE_CHANGE</Tag>
+		<English>[ICON_BULLET]%d1%% added to the chance of a random event each turn (1 to 10%% by era)</English>
+		<French>[ICON_BULLET]%d1%% added to the chance of a random event each turn (1 to 10%% by era)</French>
+		<German>[ICON_BULLET]%d1%% added to the chance of a random event each turn (1 to 10%% by era)</German>
+		<Italian>[ICON_BULLET]%d1%% added to the chance of a random event each turn (1 to 10%% by era)</Italian>
+		<Spanish>[ICON_BULLET]%d1%% added to the chance of a random event each turn (1 to 10%% by era)</Spanish>
+		<Japanese>[ICON_BULLET]&#27598;&#12479;&#12540;&#12531;&#12398;&#12521;&#12531;&#12480;&#12512;&#12452;&#12505;&#12531;&#12488;&#12398;&#30330;&#29983;&#29575;&#12395; %d1%% &#12434;&#36275;&#12377;&#65288;&#26178;&#20195;&#12395;&#12424;&#12427;&#20516;&#12399; 1&#12316;10%%&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_FIRST_EVENT_DELAY</Tag>
+		<English>[ICON_BULLET]Random events can occur from the start of the game (normally none in the first %d1 turns)</English>
+		<French>[ICON_BULLET]Random events can occur from the start of the game (normally none in the first %d1 turns)</French>
+		<German>[ICON_BULLET]Random events can occur from the start of the game (normally none in the first %d1 turns)</German>
+		<Italian>[ICON_BULLET]Random events can occur from the start of the game (normally none in the first %d1 turns)</Italian>
+		<Spanish>[ICON_BULLET]Random events can occur from the start of the game (normally none in the first %d1 turns)</Spanish>
+		<Japanese>[ICON_BULLET]&#12466;&#12540;&#12512;&#12398;&#38283;&#22987;&#30452;&#24460;&#12363;&#12425;&#12521;&#12531;&#12480;&#12512;&#12452;&#12505;&#12531;&#12488;&#12364;&#36215;&#12365;&#12427;&#65288;&#36890;&#24120;&#12399;&#26368;&#21021;&#12398; %d1 &#12479;&#12540;&#12531;&#12399;&#36215;&#12365;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_POPUP_IGNORE_EVENT</Tag>
+		<English>[COLOR_YELLOW]Ignore this event (nothing happens)[COLOR_REVERT]</English>
+		<French>[COLOR_YELLOW]Ignore this event (nothing happens)[COLOR_REVERT]</French>
+		<German>[COLOR_YELLOW]Ignore this event (nothing happens)[COLOR_REVERT]</German>
+		<Italian>[COLOR_YELLOW]Ignore this event (nothing happens)[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_YELLOW]Ignore this event (nothing happens)[COLOR_REVERT]</Spanish>
+		<Japanese>[COLOR_YELLOW]&#12371;&#12398;&#12452;&#12505;&#12531;&#12488;&#12434;&#28961;&#35222;&#12377;&#12427;&#65288;&#20309;&#12418;&#36215;&#12365;&#12394;&#12356;&#65289;[COLOR_REVERT]</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_NO_CULTURE_FLIP</Tag>
 		<English>[ICON_BULLET]Cities do not flip to other civilizations by culture (revolts still occur)</English>
 		<French>[ICON_BULLET]Cities do not flip to other civilizations by culture (revolts still occur)</French>

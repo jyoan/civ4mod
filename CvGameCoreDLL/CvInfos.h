@@ -4957,6 +4957,9 @@ public:
 	bool isLongCountCalendar() const;				// Exposed to Python
 	bool isImprovementUpgradeUnworked() const;		// Exposed to Python
 	bool isUnsettleGreatPeople() const;				// Exposed to Python
+	bool isIgnoreEvents() const;					// Exposed to Python
+	int getEventChanceChange() const;				// Exposed to Python
+	bool isNoFirstEventDelay() const;				// Exposed to Python
 	bool isNoCultureFlip() const;					// Exposed to Python
 	bool isNoRevoltAndNoCultureFlip() const;		// Exposed to Python
 	bool isInstantCultureFlip() const;				// Exposed to Python
@@ -5320,6 +5323,9 @@ protected:
 	bool m_bLongCountCalendar;	// added by this mod
 	bool m_bImprovementUpgradeUnworked;	// added by this mod
 	bool m_bUnsettleGreatPeople;	// added by this mod
+	bool m_bIgnoreEvents;	// added by this mod
+	int m_iEventChanceChange;	// added by this mod
+	bool m_bNoFirstEventDelay;	// added by this mod
 	bool m_bNoCultureFlip;	// added by this mod
 	bool m_bNoRevoltAndNoCultureFlip;	// added by this mod
 	bool m_bInstantCultureFlip;	// added by this mod

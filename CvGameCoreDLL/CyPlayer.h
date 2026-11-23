@@ -550,6 +550,10 @@ public:
 	bool isLongCountCalendar();	// added by this mod
 	bool isImprovementUpgradeUnworked();	// added by this mod
 	bool isUnsettleGreatPeople();	// added by this mod
+	bool isIgnoreEvents();	// added by this mod
+	int getEventChanceChange();	// added by this mod
+	bool isNoFirstEventDelay();	// added by this mod
+	void ignoreEvent(int iEventTriggeredId);	// added by this mod
 	bool isNoCultureFlip();	// added by this mod
 	bool isNoRevoltAndNoCultureFlip();	// added by this mod
 	bool isInstantCultureFlip();	// added by this mod

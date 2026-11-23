@@ -719,6 +719,11 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 			CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_EVENT, info.getData1());
 			gDLL->getInterfaceIFace()->addPopup(pInfo, GC.getGameINLINE().getActivePlayer(), false, true);
 		}
+		// bIgnoreEvents of the traits (added by this mod): the choice goes to every computer (CvPlayer::ignoreEvent)
+		else if (pPopupReturn->getButtonClicked() == GC.getNumEventInfos() + 1)
+		{
+			CvMessageControl::getInstance().sendModNetMessage(MOD_NET_MESSAGE_IGNORE_EVENT, GC.getGameINLINE().getActivePlayer(), info.getData1(), 0, 0);
+		}
 		else if (-1 != pPopupReturn->getButtonClicked())
 		{
 			CvMessageControl::getInstance().sendEventTriggered(GC.getGameINLINE().getActivePlayer(), (EventTypes)pPopupReturn->getButtonClicked(), info.getData1());
@@ -2464,6 +2469,12 @@ bool CvDLLButtonPopup::launchEventPopup(CvPopup* pPopup, CvPopupInfo &info)
 	if (!bEventAvailable)
 	{
 		return false;
+	}
+
+	// bIgnoreEvents of the traits (added by this mod): one more choice that ignores the event (OnOkClicked)
+	if (kActivePlayer.isIgnoreEvents())
+	{
+		gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_POPUP_IGNORE_EVENT").c_str(), ARTFILEMGR.getInterfaceArtInfo("INTERFACE_EVENT_BULLET")->getPath(), GC.getNumEventInfos() + 1, WIDGET_GENERAL, -1, -1);
 	}
 
 	if (kTrigger.isPickCity())

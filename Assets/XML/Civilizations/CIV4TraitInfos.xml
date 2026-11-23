@@ -312,6 +312,9 @@
 			<bRevealWarPlans>1</bRevealWarPlans>
 			<bRevealHiddenAttitude>1</bRevealHiddenAttitude>
 			<bImprovementUpgradeUnworked>1</bImprovementUpgradeUnworked>
+			<bIgnoreEvents>1</bIgnoreEvents>
+			<iEventChanceChange>100</iEventChanceChange>
+			<bNoFirstEventDelay>1</bNoFirstEventDelay>
 			<CultureFlip>
 				<bInstantFlip>1</bInstantFlip>
 				<iRevoltChance>100</iRevoltChance>
