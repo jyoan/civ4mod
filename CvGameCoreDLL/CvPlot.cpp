@@ -382,6 +382,16 @@ void CvPlot::doTurn()
 	// iCulture and iCultureRange of the improvement (added by this mod)
 	doImprovementCulture();
 
+	// bImprovementUpgradeUnworked of the traits (added by this mod): the improvements in the borders of the player also upgrade
+	// when no citizen works the plot. The worked plots upgrade in CvCity::doTurn (not in disorder) as in BtS
+	if (isOwned() && !isBeingWorked() && getImprovementType() != NO_IMPROVEMENT)
+	{
+		if (GET_PLAYER(getOwnerINLINE()).isImprovementUpgradeUnworked())
+		{
+			doImprovementUpgrade();
+		}
+	}
+
 	verifyUnitValidPlot();
 
 	/*
@@ -490,7 +500,9 @@ void CvPlot::doImprovementUpgrade()
 		ImprovementTypes eImprovementUpdrade = (ImprovementTypes)GC.getImprovementInfo(getImprovementType()).getImprovementUpgrade();
 		if (eImprovementUpdrade != NO_IMPROVEMENT)
 		{
-			if (isBeingWorked() || GC.getImprovementInfo(eImprovementUpdrade).isOutsideBorders())
+			// bImprovementUpgradeUnworked of the traits (added by this mod): also the unworked plots in the borders (CvPlot::doTurn)
+			if (isBeingWorked() || GC.getImprovementInfo(eImprovementUpdrade).isOutsideBorders()
+				|| (isOwned() && GET_PLAYER(getOwnerINLINE()).isImprovementUpgradeUnworked()))
 			{
 				changeUpgradeProgress(GET_PLAYER(getOwnerINLINE()).getImprovementUpgradeRate());
 

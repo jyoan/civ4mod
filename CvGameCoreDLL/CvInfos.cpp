@@ -20416,6 +20416,7 @@ m_bRevealWonderProduction(false),
 m_bRevealWarPlans(false),
 m_bRevealHiddenAttitude(false),
 m_bLongCountCalendar(false),
+m_bImprovementUpgradeUnworked(false),
 m_iNewWorldCityPopulation(0),
 m_iOverseasCityPopulation(0),
 m_iOverseasMaintenanceModifier(0),
@@ -21190,6 +21191,13 @@ bool CvTraitInfo::isRevealHiddenAttitude() const
 bool CvTraitInfo::isLongCountCalendar() const
 {
 	return m_bLongCountCalendar;
+}
+
+// bImprovementUpgradeUnworked (added by this mod): the improvements in the borders of the player upgrade (cottage to hamlet
+// and so on) also when no citizen works the plot (CvPlot::doTurn)
+bool CvTraitInfo::isImprovementUpgradeUnworked() const
+{
+	return m_bImprovementUpgradeUnworked;
 }
 
 // iNewWorldCityPopulation (added by this mod): population of the cities the player founds in the New World
@@ -23126,6 +23134,7 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bRevealWarPlans, "bRevealWarPlans");
 	pXML->GetChildXmlValByName(&m_bRevealHiddenAttitude, "bRevealHiddenAttitude");
 	pXML->GetChildXmlValByName(&m_bLongCountCalendar, "bLongCountCalendar");
+	pXML->GetChildXmlValByName(&m_bImprovementUpgradeUnworked, "bImprovementUpgradeUnworked");
 	// GreatPeopleClassRateModifiers: the unit classes are loaded before the traits
 	readTypeValueList(pXML, "GreatPeopleClassRateModifiers", "GreatPeopleClassRateModifier", "UnitClassType", "iGreatPeopleRateModifier", GC.getNumUnitClassInfos(), m_aiGreatPeopleClassRateModifier);
 	readSpecialBuildingProductionModifiers(pXML);

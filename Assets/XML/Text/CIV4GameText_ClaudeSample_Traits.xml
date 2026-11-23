@@ -1748,4 +1748,13 @@
 		<Spanish>[ICON_BULLET]The date is shown in the Maya Long Count</Spanish>
 		<Japanese>[ICON_BULLET]&#26085;&#20184;&#12434;&#12510;&#12516;&#12398;&#38263;&#26399;&#26278;&#12391;&#34920;&#31034;&#12377;&#12427;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_IMPROVEMENT_UPGRADE_UNWORKED</Tag>
+		<English>[ICON_BULLET]Improvements in the borders upgrade without being worked</English>
+		<French>[ICON_BULLET]Improvements in the borders upgrade without being worked</French>
+		<German>[ICON_BULLET]Improvements in the borders upgrade without being worked</German>
+		<Italian>[ICON_BULLET]Improvements in the borders upgrade without being worked</Italian>
+		<Spanish>[ICON_BULLET]Improvements in the borders upgrade without being worked</Spanish>
+		<Japanese>[ICON_BULLET]&#25991;&#21270;&#22287;&#20869;&#12398;&#26045;&#35373;&#12399;&#12289;&#24066;&#27665;&#12434;&#37197;&#32622;&#12375;&#12394;&#12367;&#12390;&#12418;&#25104;&#38263;&#12377;&#12427;</Japanese>
+	</TEXT>
 </Civ4GameText>
