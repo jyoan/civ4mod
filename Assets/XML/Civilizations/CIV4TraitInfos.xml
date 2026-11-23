@@ -1240,6 +1240,14 @@
 				<iRange>5</iRange>
 			</FoundingVassal>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_TEST_CALENDAR</Type>
+			<Description>TXT_KEY_TRAIT_TEST_CALENDAR</Description>
+			<ShortDescription>TXT_KEY_TRAIT_TEST_CALENDAR_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_TEST_CALENDAR_HELP</Help>
+			<bLongCountCalendar>1</bLongCountCalendar>
+			<PyOnBeginTurn>chooseGreatPeopleByCalendar(pPlayer, eTrait, None, 200, 2012) and showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnBeginTurn', 'year ' + str(CyGame().getTurnYear(CyGame().getGameTurn() + 1)) + ', (chosen, pending) ' + str(greatPersonChoiceState(pPlayer, eTrait))))</PyOnBeginTurn>
+		</TraitInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</TraitInfos>
 </Civ4TraitInfos>

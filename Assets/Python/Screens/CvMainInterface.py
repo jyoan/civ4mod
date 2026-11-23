@@ -686,7 +686,8 @@ class CvMainInterface:
 		
 		if (CyInterface().getShowInterface() != InterfaceVisibility.INTERFACE_HIDE_ALL and CyInterface().getShowInterface() != InterfaceVisibility.INTERFACE_ADVANCED_START):
 			self.updateTimeText()
-			screen.setLabel( "TimeText", "Background", g_szTimeText, CvUtil.FONT_RIGHT_JUSTIFY, xResolution - 56, 6, -0.3, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
+			# iData1 -20261124 = WIDGET_DATA_INTERFACE_TIME of the DLL: the help gives the year when the date is in the Maya Long Count (added by this mod)
+			screen.setLabel( "TimeText", "Background", g_szTimeText, CvUtil.FONT_RIGHT_JUSTIFY, xResolution - 56, 6, -0.3, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -20261124, -1 )
 			screen.show( "TimeText" )
 		else:
 			screen.hide( "TimeText" )		
@@ -1742,7 +1743,8 @@ class CvMainInterface:
 						iCount = iCount + 1;
                                                 
 			self.updateTimeText()
-			screen.setLabel( "TimeText", "Background", g_szTimeText, CvUtil.FONT_RIGHT_JUSTIFY, xResolution - 56, 6, -0.3, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
+			# iData1 -20261124 = WIDGET_DATA_INTERFACE_TIME of the DLL: the help gives the year when the date is in the Maya Long Count (added by this mod)
+			screen.setLabel( "TimeText", "Background", g_szTimeText, CvUtil.FONT_RIGHT_JUSTIFY, xResolution - 56, 6, -0.3, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -20261124, -1 )
 			screen.show( "TimeText" )
 			
 			if (gc.getPlayer(ePlayer).isAlive()):

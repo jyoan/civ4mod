@@ -41,6 +41,21 @@ void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &w
 {
 	switch (widgetDataStruct.m_eWidgetType)
 	{
+	// The date at the top right (added by this mod): when it is in the Maya Long Count (bLongCountCalendar of the traits,
+	// CvGameTextMgr::setInterfaceTime), the help gives the date of the game calendar. Other WIDGET_GENERAL have no help
+	case WIDGET_GENERAL:
+		if (widgetDataStruct.m_iData1 == WIDGET_DATA_INTERFACE_TIME)
+		{
+			PlayerTypes eActivePlayer = GC.getGameINLINE().getActivePlayer();
+			if (eActivePlayer != NO_PLAYER && GET_PLAYER(eActivePlayer).isLongCountCalendar())
+			{
+				CvWString szDate;
+				GAMETEXT.setTimeStr(szDate, GC.getGameINLINE().getGameTurn(), false);
+				szBuffer.assign(szDate);
+			}
+		}
+		break;
+
 	case WIDGET_PLOT_LIST:
 		parsePlotListHelp(widgetDataStruct, szBuffer);
 		break;

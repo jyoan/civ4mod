@@ -1781,4 +1781,31 @@
 		<Spanish>[H1]Regions[\H1][PARAGRAPH:2]A region is land joined with the water plots that are not ocean (coast, lakes). Ocean and impassable water bound the regions, so another region can be reached only with ships that can enter the ocean. Islands joined by shallow water are one region. Small regions are merged into the nearest large region. The regions are decided at the start of the game.[PARAGRAPH:2]Home and overseas[PARAGRAPH:1]The region of the capital is home, the other regions are overseas.[PARAGRAPH:2]New World and Old World[PARAGRAPH:1]The regions where no civilization started are the New World, the others the Old World.[PARAGRAPH:2]Ocean and impassable water belong to no region. The Regions layer of the globe view shows them.</Spanish>
 		<Japanese>[H1]&#22320;&#22495;&#21306;&#20998;[\H1][PARAGRAPH:2]&#38520;&#22320;&#12392;&#12289;&#22806;&#27915;&#12391;&#12394;&#12356;&#27700;&#12479;&#12452;&#12523;&#65288;&#27839;&#23736;&#12539;&#28246;&#65289;&#12434;&#12388;&#12394;&#12356;&#12384;&#12414;&#12392;&#12414;&#12426;&#12434;&#12300;&#22320;&#22495;&#12301;&#12392;&#21628;&#12406;&#12290;&#22320;&#22495;&#12398;&#22659;&#30028;&#12399;&#22806;&#27915;&#12392;&#36890;&#12428;&#12394;&#12356;&#27700;&#12479;&#12452;&#12523;&#65288;&#26997;&#22320;&#12398;&#27703;&#65289;&#12394;&#12398;&#12391;&#12289;&#21029;&#12398;&#22320;&#22495;&#12408;&#12399;&#22806;&#27915;&#12434;&#28193;&#12428;&#12427;&#33337;&#12364;&#12394;&#12356;&#12392;&#34892;&#12369;&#12394;&#12356;&#12290;&#27973;&#12356;&#28023;&#12391;&#12388;&#12394;&#12364;&#12387;&#12383;&#23798;&#12293;&#12399;1&#12388;&#12398;&#22320;&#22495;&#12395;&#12394;&#12427;&#12290;&#38520;&#22320;&#12398;&#23569;&#12394;&#12356;&#23567;&#12373;&#12394;&#22320;&#22495;&#12399;&#12289;&#12356;&#12385;&#12400;&#12435;&#36817;&#12356;&#22823;&#12365;&#12394;&#22320;&#22495;&#12395;&#12414;&#12392;&#12417;&#12427;&#12290;&#22320;&#22495;&#12399;&#12466;&#12540;&#12512;&#38283;&#22987;&#26178;&#12395;&#27770;&#12414;&#12426;&#12289;&#12381;&#12398;&#24460;&#12395;&#22320;&#24418;&#12364;&#22793;&#12431;&#12387;&#12390;&#12418;&#21205;&#12363;&#12394;&#12356;&#12290;[PARAGRAPH:2]&#12304;&#26412;&#22269;&#12392;&#28023;&#22806;&#12305;[PARAGRAPH:1]&#39318;&#37117;&#12398;&#12354;&#12427;&#22320;&#22495;&#12364;&#26412;&#22269;&#12289;&#12381;&#12428;&#20197;&#22806;&#12398;&#22320;&#22495;&#12364;&#28023;&#22806;&#12290;&#26368;&#21021;&#12398;&#37117;&#24066;&#12434;&#24314;&#12390;&#12427;&#21069;&#12399;&#38283;&#22987;&#22320;&#28857;&#12398;&#22320;&#22495;&#12364;&#26412;&#22269;&#12290;&#36983;&#37117;&#12377;&#12427;&#12392;&#26412;&#22269;&#12418;&#31227;&#12427;&#12290;[PARAGRAPH:2]&#12304;&#26032;&#19990;&#30028;&#12392;&#26087;&#19990;&#30028;&#12305;[PARAGRAPH:1]&#12466;&#12540;&#12512;&#38283;&#22987;&#26178;&#12395;&#12289;&#12393;&#12398;&#25991;&#26126;&#65288;&#34542;&#26063;&#12434;&#38500;&#12367;&#65289;&#12398;&#38283;&#22987;&#22320;&#28857;&#12418;&#12394;&#12363;&#12387;&#12383;&#22320;&#22495;&#12364;&#26032;&#19990;&#30028;&#12289;&#12381;&#12428;&#20197;&#22806;&#12364;&#26087;&#19990;&#30028;&#12290;[PARAGRAPH:2]&#22806;&#27915;&#12392;&#36890;&#12428;&#12394;&#12356;&#27700;&#12479;&#12452;&#12523;&#12399;&#12393;&#12398;&#22320;&#22495;&#12395;&#12418;&#23646;&#12373;&#12378;&#12289;&#28023;&#22806;&#12395;&#12418;&#26032;&#19990;&#30028;&#12395;&#12418;&#12394;&#12425;&#12394;&#12356;&#12290;&#22320;&#29699;&#20736;&#12499;&#12517;&#12540;&#12398;&#12300;&#22320;&#22495;&#12301;&#12524;&#12452;&#12516;&#12540;&#12391;&#12289;&#22320;&#22495;&#12392;&#26412;&#22269;&#12539;&#28023;&#22806;&#12539;&#26032;&#19990;&#30028;&#12434;&#33394;&#20998;&#12369;&#12375;&#12390;&#35211;&#12425;&#12428;&#12427;&#12290;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_POPUP_CHOOSE_GREAT_PERSON</Tag>
+		<English>A cycle of the calendar has ended. Choose a great person to appear in your capital.[NEWLINE](A great person chosen once cannot be chosen again until all of them have been chosen.)</English>
+		<French>A cycle of the calendar has ended. Choose a great person to appear in your capital.[NEWLINE](A great person chosen once cannot be chosen again until all of them have been chosen.)</French>
+		<German>A cycle of the calendar has ended. Choose a great person to appear in your capital.[NEWLINE](A great person chosen once cannot be chosen again until all of them have been chosen.)</German>
+		<Italian>A cycle of the calendar has ended. Choose a great person to appear in your capital.[NEWLINE](A great person chosen once cannot be chosen again until all of them have been chosen.)</Italian>
+		<Spanish>A cycle of the calendar has ended. Choose a great person to appear in your capital.[NEWLINE](A great person chosen once cannot be chosen again until all of them have been chosen.)</Spanish>
+		<Japanese>&#26278;&#12398;&#21608;&#26399;&#12364;&#32066;&#12431;&#12426;&#12414;&#12375;&#12383;&#12290;&#39318;&#37117;&#12395;&#29694;&#12428;&#12427;&#20553;&#20154;&#12434;&#36984;&#12435;&#12391;&#12367;&#12384;&#12373;&#12356;&#12290;[NEWLINE]&#65288;&#19968;&#24230;&#36984;&#12435;&#12384;&#20553;&#20154;&#12399;&#12289;&#20840;&#21729;&#12434;&#36984;&#12406;&#12414;&#12391;&#36984;&#12409;&#12414;&#12379;&#12435;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_CALENDAR_GREAT_PERSON</Tag>
+		<English>A cycle of the calendar has ended: %s1 has appeared in %s2!</English>
+		<French>A cycle of the calendar has ended: %s1 has appeared in %s2!</French>
+		<German>A cycle of the calendar has ended: %s1 has appeared in %s2!</German>
+		<Italian>A cycle of the calendar has ended: %s1 has appeared in %s2!</Italian>
+		<Spanish>A cycle of the calendar has ended: %s1 has appeared in %s2!</Spanish>
+		<Japanese>&#26278;&#12398;&#21608;&#26399;&#12364;&#32066;&#12431;&#12426;&#12289;%s2&#12395;%s1&#12364;&#29694;&#12428;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TIME_LONG_COUNT</Tag>
+		<English>Long Count %s1</English>
+		<French>Long Count %s1</French>
+		<German>Long Count %s1</German>
+		<Italian>Long Count %s1</Italian>
+		<Spanish>Long Count %s1</Spanish>
+		<Japanese>&#38263;&#26399;&#26278; %s1</Japanese>
+	</TEXT>
 </Civ4GameText>

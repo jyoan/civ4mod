@@ -34,6 +34,9 @@
 
 // The ModNetMessage of bChooseGoody: the DLL handles it, Python does not see it (added by this mod)
 #define MOD_NET_MESSAGE_CHOOSE_GOODY								(-20261110)
+// iData1 of WIDGET_GENERAL for the date at the top right of the main interface (CvMainInterface.py writes the same
+// number): the help of CvDLLWidgetData::parseHelp (added by this mod)
+#define WIDGET_DATA_INTERFACE_TIME								(-20261124)
 #define MAX_TEAMS															(MAX_PLAYERS)
 
 // The most civics of one civic option a player can adopt at the same time: 1 + CivicOptionExtraSlots of the traits, up to

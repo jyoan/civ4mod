@@ -20,6 +20,7 @@ import sys
 import CvWorldBuilderScreen
 import CvAdvisorUtils
 import CvTechChooser
+import CvHookUtils
 
 gc = CyGlobalContext()
 localText = CyTranslator()
@@ -323,6 +324,10 @@ class CvEventManager:
 		'Called whenever CyMessageControl().sendModNetMessage() is called - this is all for you modders!'
 		
 		iData1, iData2, iData3, iData4, iData5 = argsList
+		
+		# The choices of the common functions of the XML hooks (added by this mod)
+		if CvHookUtils.receiveModNetMessage(iData1, iData2, iData3, iData4, iData5):
+			return
 		
 		print("Modder's net message!")
 		

@@ -9535,6 +9535,12 @@ bool CvPlayer::isRevealHiddenAttitude() const
 	return hasTraitFlag(&CvTraitInfo::isRevealHiddenAttitude);
 }
 
+// bLongCountCalendar of the traits (added by this mod): see CvGameTextMgr::setInterfaceTime
+bool CvPlayer::isLongCountCalendar() const
+{
+	return hasTraitFlag(&CvTraitInfo::isLongCountCalendar);
+}
+
 // iCultureRangeChange of the traits (added by this mod)
 int CvPlayer::getCultureRangeChange() const
 {

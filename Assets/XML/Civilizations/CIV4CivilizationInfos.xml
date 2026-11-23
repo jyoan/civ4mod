@@ -4782,6 +4782,10 @@
 					<TraitType>TRAIT_TEST</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_TEST_CALENDAR</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<UniqueBuilds>
 				<UniqueBuild>
@@ -4893,6 +4897,10 @@
 			<Traits>
 				<Trait>
 					<TraitType>TRAIT_TEST_AI</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_TEST_CALENDAR</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
