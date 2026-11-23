@@ -2967,6 +2967,7 @@
 			<iNewWorldCityPopulation>1</iNewWorldCityPopulation>
 			<iOverseasCityPopulation>1</iOverseasCityPopulation>
 			<PyOnCityFounded>[isCoastalCity(pCity) and (isOverseasCity(pCity) or isNewWorldCity(pCity)) and addBuilding(pCity, 'BUILDINGCLASS_LIGHTHOUSE'), isCoastalCity(pCity) and isNewWorldCity(pCity) and addBuilding(pCity, 'BUILDINGCLASS_HARBOR')]</PyOnCityFounded>
+			<PyOnCircumnavigated>iOrder == 1 and startGoldenAge(pPlayer)</PyOnCircumnavigated>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_RANKS</Type>

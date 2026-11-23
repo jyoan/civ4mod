@@ -1768,12 +1768,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_NEW_WORLD_EXPLORATION_HELP</Tag>
-		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</English>
-		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</French>
-		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</German>
-		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</Italian>
-		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor</Spanish>
-		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#28023;&#22806;&#12363;&#26032;&#19990;&#30028;&#12395;&#24314;&#12390;&#12383;&#27839;&#23736;&#12398;&#37117;&#24066;&#12395;&#28783;&#21488;&#12289;&#26032;&#19990;&#30028;&#12394;&#12425;&#28207;&#12418;&#24314;&#12388;</Japanese>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor[NEWLINE][SPACE][SPACE][ICON_BULLET]Starts a Golden Age when it is the first to circumnavigate the Globe</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor[NEWLINE][SPACE][SPACE][ICON_BULLET]Starts a Golden Age when it is the first to circumnavigate the Globe</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor[NEWLINE][SPACE][SPACE][ICON_BULLET]Starts a Golden Age when it is the first to circumnavigate the Globe</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor[NEWLINE][SPACE][SPACE][ICON_BULLET]Starts a Golden Age when it is the first to circumnavigate the Globe</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A new coastal city overseas or in the New World gets a Lighthouse, in the New World also a Harbor[NEWLINE][SPACE][SPACE][ICON_BULLET]Starts a Golden Age when it is the first to circumnavigate the Globe</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#28023;&#22806;&#12363;&#26032;&#19990;&#30028;&#12395;&#24314;&#12390;&#12383;&#27839;&#23736;&#12398;&#37117;&#24066;&#12395;&#28783;&#21488;&#12289;&#26032;&#19990;&#30028;&#12394;&#12425;&#28207;&#12418;&#24314;&#12388;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#26368;&#21021;&#12395;&#19990;&#30028;&#19968;&#21608;&#12434;&#25104;&#12375;&#36930;&#12370;&#12427;&#12392;&#40644;&#37329;&#26178;&#20195;&#12364;&#22987;&#12414;&#12427;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_RANKS</Tag>
