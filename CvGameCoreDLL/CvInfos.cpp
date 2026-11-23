@@ -20482,6 +20482,11 @@ m_iGoldPerMilitaryUnit(0),
 m_iCorporationMaintenanceModifier(0),
 m_iMaintenanceModifier(0),
 m_iMaxConscript(0),
+m_iConscriptPopulationModifier(0),
+m_iConscriptMinCityPopulationChange(0),
+m_iConscriptMinCulturePercentChange(0),
+m_iConscriptPopAngerChange(0),
+m_iConscriptAngerLengthPercent(0),
 m_bMilitaryFoodProduction(false),
 m_iHealRateChange(0),
 m_iLargestCityHappiness(0),
@@ -21828,6 +21833,36 @@ int CvTraitInfo::getMaintenanceModifier() const
 int CvTraitInfo::getMaxConscript() const
 {
 	return m_iMaxConscript;
+}
+
+// Conscription/iPopulationModifier (added by this mod): % to the unit cost when the population lost by a draft is counted. See CvCity::getConscriptPopulation
+int CvTraitInfo::getConscriptPopulationModifier() const
+{
+	return m_iConscriptPopulationModifier;
+}
+
+// Conscription/iMinCityPopulationChange (added by this mod): added to CONSCRIPT_MIN_CITY_POPULATION. See CvCity::conscriptMinCityPopulation
+int CvTraitInfo::getConscriptMinCityPopulationChange() const
+{
+	return m_iConscriptMinCityPopulationChange;
+}
+
+// Conscription/iMinCulturePercentChange (added by this mod): added to CONSCRIPT_MIN_CULTURE_PERCENT. See CvCity::conscriptMinCulturePercent
+int CvTraitInfo::getConscriptMinCulturePercentChange() const
+{
+	return m_iConscriptMinCulturePercentChange;
+}
+
+// Conscription/iPopAngerChange (added by this mod): added to CONSCRIPT_POP_ANGER. See CvCity::conscriptPopAnger
+int CvTraitInfo::getConscriptPopAngerChange() const
+{
+	return m_iConscriptPopAngerChange;
+}
+
+// Conscription/iAngerLengthPercent (added by this mod): % to the turns of the anger of a draft. See CvCity::flatConscriptAngerLength
+int CvTraitInfo::getConscriptAngerLengthPercent() const
+{
+	return m_iConscriptAngerLengthPercent;
 }
 
 // bMilitaryFoodProduction (added by this mod): as the civics, the food surplus goes into military units
@@ -23780,7 +23815,17 @@ void CvTraitInfo::readCounterpartValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCorporationMaintenanceModifier, "iCorporationMaintenanceModifier");
 	pXML->GetChildXmlValByName(&m_iMaintenanceModifier, "iMaintenanceModifier");
 	// Military, as the civics and buildings. The domains are loaded before the traits
-	pXML->GetChildXmlValByName(&m_iMaxConscript, "iMaxConscript");
+	// Conscription: iMaxConscript, iPopulationModifier, iMinCityPopulationChange, iMinCulturePercentChange, iPopAngerChange, iAngerLengthPercent
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Conscription"))
+	{
+		pXML->GetChildXmlValByName(&m_iMaxConscript, "iMaxConscript");
+		pXML->GetChildXmlValByName(&m_iConscriptPopulationModifier, "iPopulationModifier");
+		pXML->GetChildXmlValByName(&m_iConscriptMinCityPopulationChange, "iMinCityPopulationChange");
+		pXML->GetChildXmlValByName(&m_iConscriptMinCulturePercentChange, "iMinCulturePercentChange");
+		pXML->GetChildXmlValByName(&m_iConscriptPopAngerChange, "iPopAngerChange");
+		pXML->GetChildXmlValByName(&m_iConscriptAngerLengthPercent, "iAngerLengthPercent");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 	pXML->GetChildXmlValByName(&m_bMilitaryFoodProduction, "bMilitaryFoodProduction");
 	pXML->GetChildXmlValByName(&m_iHealRateChange, "iHealRateChange");
 	readTypeValueList(pXML, "DomainFreeExperiences", "DomainFreeExperience", "DomainType", "iExperience", NUM_DOMAIN_TYPES, m_aiDomainFreeExperience);

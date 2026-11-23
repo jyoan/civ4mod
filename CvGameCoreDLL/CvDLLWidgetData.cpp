@@ -1919,10 +1919,10 @@ void CvDLLWidgetData::parseConscriptHelp(CvWidgetDataStruct &widgetDataStruct, C
 
 			iConscriptAngerLength = pHeadSelectedCity->flatConscriptAngerLength();
 
-			if (iConscriptAngerLength > 0)
+			if (iConscriptAngerLength > 0 && pHeadSelectedCity->conscriptPopAnger() > 0)	// the traits (added by this mod)
 			{
 				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_MISC_ANGER_TURNS", GC.getDefineINT("CONSCRIPT_POP_ANGER"), (iConscriptAngerLength + pHeadSelectedCity->getConscriptAngerTimer())));
+				szBuffer.append(gDLL->getText("TXT_KEY_MISC_ANGER_TURNS", pHeadSelectedCity->conscriptPopAnger(), (iConscriptAngerLength + pHeadSelectedCity->getConscriptAngerTimer())));
 			}
 
 			iMinCityPopulation = pHeadSelectedCity->conscriptMinCityPopulation();
@@ -1933,7 +1933,7 @@ void CvDLLWidgetData::parseConscriptHelp(CvWidgetDataStruct &widgetDataStruct, C
 				szBuffer.append(gDLL->getText("TXT_KEY_MISC_MIN_CITY_POP", iMinCityPopulation));
 			}
 
-			iMinCulturePercent = GC.getDefineINT("CONSCRIPT_MIN_CULTURE_PERCENT");
+			iMinCulturePercent = pHeadSelectedCity->conscriptMinCulturePercent();	// the traits (added by this mod)
 
 			if (pHeadSelectedCity->plot()->calculateTeamCulturePercent(pHeadSelectedCity->getTeam()) < iMinCulturePercent)
 			{

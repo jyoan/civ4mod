@@ -5175,6 +5175,32 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_CONSCRIPTION", (kTrait.getMaxConscript() * std::max(0, (((eWorldSize != NO_WORLDSIZE) ? GC.getWorldInfo(eWorldSize).getMaxConscriptModifier() : 0) + 100))) / 100));
 	}
 
+	// The other children of Conscription (added by this mod)
+	if (kTrait.getConscriptPopulationModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_POPULATION", kTrait.getConscriptPopulationModifier()));
+	}
+
+	if (kTrait.getConscriptMinCityPopulationChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_MIN_POPULATION", kTrait.getConscriptMinCityPopulationChange()));
+	}
+
+	if (kTrait.getConscriptMinCulturePercentChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_MIN_CULTURE", kTrait.getConscriptMinCulturePercentChange()));
+	}
+
+	if (kTrait.getConscriptPopAngerChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_ANGER", kTrait.getConscriptPopAngerChange()));
+	}
+
+	if (kTrait.getConscriptAngerLengthPercent() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_ANGER_LENGTH", kTrait.getConscriptAngerLengthPercent()));
+	}
+
 	if (kTrait.isMilitaryFoodProduction())
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_MILITARY_FOOD"));

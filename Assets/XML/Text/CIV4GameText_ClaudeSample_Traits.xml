@@ -1326,6 +1326,51 @@
 		<Japanese>[ICON_BULLET]&#24500;&#20853;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12398;&#32076;&#39443;&#20516;&#12364;&#21322;&#20998;&#12395;&#12394;&#12425;&#12394;&#12356;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONSCRIPT_POPULATION</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% population lost by a draft (at least 1)</English>
+		<French>[ICON_BULLET]%D1_Percent%% population lost by a draft (at least 1)</French>
+		<German>[ICON_BULLET]%D1_Percent%% population lost by a draft (at least 1)</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% population lost by a draft (at least 1)</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% population lost by a draft (at least 1)</Spanish>
+		<Japanese>[ICON_BULLET]&#24500;&#20853;&#12391;&#22833;&#12358;&#20154;&#21475;%D1_Percent%%&#65288;&#26368;&#20302; 1&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONSCRIPT_MIN_POPULATION</Tag>
+		<English>[ICON_BULLET]%D1 city population needed for a draft</English>
+		<French>[ICON_BULLET]%D1 city population needed for a draft</French>
+		<German>[ICON_BULLET]%D1 city population needed for a draft</German>
+		<Italian>[ICON_BULLET]%D1 city population needed for a draft</Italian>
+		<Spanish>[ICON_BULLET]%D1 city population needed for a draft</Spanish>
+		<Japanese>[ICON_BULLET]&#24500;&#20853;&#12395;&#24517;&#35201;&#12394;&#37117;&#24066;&#12398;&#20154;&#21475;%D1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONSCRIPT_MIN_CULTURE</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% culture needed for a draft</English>
+		<French>[ICON_BULLET]%D1_Percent%% culture needed for a draft</French>
+		<German>[ICON_BULLET]%D1_Percent%% culture needed for a draft</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% culture needed for a draft</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% culture needed for a draft</Spanish>
+		<Japanese>[ICON_BULLET]&#24500;&#20853;&#12395;&#24517;&#35201;&#12394;&#33258;&#22269;&#12398;&#25991;&#21270;&#12398;&#21106;&#21512;%D1_Percent%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONSCRIPT_ANGER</Tag>
+		<English>[ICON_BULLET]%D1 unhappy citizens from a draft</English>
+		<French>[ICON_BULLET]%D1 unhappy citizens from a draft</French>
+		<German>[ICON_BULLET]%D1 unhappy citizens from a draft</German>
+		<Italian>[ICON_BULLET]%D1 unhappy citizens from a draft</Italian>
+		<Spanish>[ICON_BULLET]%D1 unhappy citizens from a draft</Spanish>
+		<Japanese>[ICON_BULLET]&#24500;&#20853; 1 &#22238;&#12398;&#19981;&#28288;%D1 &#20154;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CONSCRIPT_ANGER_LENGTH</Tag>
+		<English>[ICON_BULLET]%D1_Percent%% time of the anger from a draft</English>
+		<French>[ICON_BULLET]%D1_Percent%% time of the anger from a draft</French>
+		<German>[ICON_BULLET]%D1_Percent%% time of the anger from a draft</German>
+		<Italian>[ICON_BULLET]%D1_Percent%% time of the anger from a draft</Italian>
+		<Spanish>[ICON_BULLET]%D1_Percent%% time of the anger from a draft</Spanish>
+		<Japanese>[ICON_BULLET]&#24500;&#20853;&#12395;&#12424;&#12427;&#19981;&#28288;&#12398;&#26399;&#38291;%D1_Percent%%</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_FREE_TECHS</Tag>
 		<English>[ICON_BULLET]Starts the game with: </English>
 		<French>[ICON_BULLET]Starts the game with: </French>

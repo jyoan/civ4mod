@@ -3782,7 +3782,12 @@ int CvCity::getConscriptPopulation() const
 		return 0;
 	}
 
-	return std::max(1, ((GC.getUnitInfo(eConscriptUnit).getProductionCost()) / GC.getDefineINT("CONSCRIPT_POPULATION_PER_COST")));
+	// Conscription/iPopulationModifier of the traits (added by this mod): % to the unit cost, still at least 1 population
+	int iCost = GC.getUnitInfo(eConscriptUnit).getProductionCost();
+	iCost *= std::max(0, 100 + GET_PLAYER(getOwnerINLINE()).sumTraitValues(&CvTraitInfo::getConscriptPopulationModifier));
+	iCost /= 100;
+
+	return std::max(1, (iCost / GC.getDefineINT("CONSCRIPT_POPULATION_PER_COST")));
 }
 
 
@@ -3791,6 +3796,9 @@ int CvCity::conscriptMinCityPopulation() const
 	int iPopulation;
 
 	iPopulation = GC.getDefineINT("CONSCRIPT_MIN_CITY_POPULATION");
+
+	// Conscription/iMinCityPopulationChange of the traits (added by this mod)
+	iPopulation = std::max(0, iPopulation + GET_PLAYER(getOwnerINLINE()).sumTraitValues(&CvTraitInfo::getConscriptMinCityPopulationChange));
 
 	iPopulation += getConscriptPopulation();
 
@@ -3807,7 +3815,25 @@ int CvCity::flatConscriptAngerLength() const
 	iAnger *= GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getHurryConscriptAngerPercent();
 	iAnger /= 100;
 
+	// Conscription/iAngerLengthPercent of the traits (added by this mod)
+	iAnger *= std::max(0, 100 + GET_PLAYER(getOwnerINLINE()).sumTraitValues(&CvTraitInfo::getConscriptAngerLengthPercent));
+	iAnger /= 100;
+
 	return std::max(1, iAnger);
+}
+
+
+// CONSCRIPT_MIN_CULTURE_PERCENT with Conscription/iMinCulturePercentChange of the traits, from 0 to 100 (added by this mod)
+int CvCity::conscriptMinCulturePercent() const
+{
+	return range(GC.getDefineINT("CONSCRIPT_MIN_CULTURE_PERCENT") + GET_PLAYER(getOwnerINLINE()).sumTraitValues(&CvTraitInfo::getConscriptMinCulturePercentChange), 0, 100);
+}
+
+
+// CONSCRIPT_POP_ANGER with Conscription/iPopAngerChange of the traits, at least 0 (added by this mod)
+int CvCity::conscriptPopAnger() const
+{
+	return std::max(0, GC.getDefineINT("CONSCRIPT_POP_ANGER") + GET_PLAYER(getOwnerINLINE()).sumTraitValues(&CvTraitInfo::getConscriptPopAngerChange));
 }
 
 
@@ -3838,7 +3864,7 @@ bool CvCity::canConscript() const
 		return false;
 	}
 
-	if (plot()->calculateTeamCulturePercent(getTeam()) < GC.getDefineINT("CONSCRIPT_MIN_CULTURE_PERCENT"))
+	if (plot()->calculateTeamCulturePercent(getTeam()) < conscriptMinCulturePercent())	// the traits (added by this mod)
 	{
 		return false;
 	}
@@ -4651,12 +4677,15 @@ int CvCity::getHurryPercentAnger(int iExtra) const
 
 int CvCity::getConscriptPercentAnger(int iExtra) const
 {
-	if (getConscriptAngerTimer() == 0)
+	// Conscription/iPopAngerChange of the traits (added by this mod): no anger at all, without the rounding up, when it is 0
+	int iPopAnger = conscriptPopAnger();
+
+	if (getConscriptAngerTimer() == 0 || iPopAnger == 0)
 	{
 		return 0;
 	}
 
-	return ((((((getConscriptAngerTimer() - 1) / flatConscriptAngerLength()) + 1) * GC.getDefineINT("CONSCRIPT_POP_ANGER") * GC.getPERCENT_ANGER_DIVISOR()) / std::max(1, getPopulation() + iExtra)) + 1);
+	return ((((((getConscriptAngerTimer() - 1) / flatConscriptAngerLength()) + 1) * iPopAnger * GC.getPERCENT_ANGER_DIVISOR()) / std::max(1, getPopulation() + iExtra)) + 1);
 }
 
 int CvCity::getDefyResolutionPercentAnger(int iExtra) const

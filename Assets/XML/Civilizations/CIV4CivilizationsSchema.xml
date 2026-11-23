@@ -977,6 +977,19 @@
 	<ElementType name="iCorporationMaintenanceModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iMaintenanceModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iMaxConscript" content="textOnly" dt:type="int"/>
+	<ElementType name="iPopulationModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iMinCityPopulationChange" content="textOnly" dt:type="int"/>
+	<ElementType name="iMinCulturePercentChange" content="textOnly" dt:type="int"/>
+	<ElementType name="iPopAngerChange" content="textOnly" dt:type="int"/>
+	<ElementType name="iAngerLengthPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="Conscription" content="eltOnly">
+		<element type="iMaxConscript" minOccurs="0"/>
+		<element type="iPopulationModifier" minOccurs="0"/>
+		<element type="iMinCityPopulationChange" minOccurs="0"/>
+		<element type="iMinCulturePercentChange" minOccurs="0"/>
+		<element type="iPopAngerChange" minOccurs="0"/>
+		<element type="iAngerLengthPercent" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="bMilitaryFoodProduction" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iHealRateChange" content="textOnly" dt:type="int"/>
 	<ElementType name="DomainFreeExperience" content="eltOnly">
@@ -1097,7 +1110,7 @@
 		<element type="iGoldPerMilitaryUnit" minOccurs="0"/>
 		<element type="iCorporationMaintenanceModifier" minOccurs="0"/>
 		<element type="iMaintenanceModifier" minOccurs="0"/>
-		<element type="iMaxConscript" minOccurs="0"/>
+		<element type="Conscription" minOccurs="0"/>
 		<element type="bMilitaryFoodProduction" minOccurs="0"/>
 		<element type="iHealRateChange" minOccurs="0"/>
 		<element type="DomainFreeExperiences" minOccurs="0"/>

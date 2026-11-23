@@ -140,6 +140,8 @@ public:
 	int getConscriptPopulation() const;																// Exposed to Python
 	int conscriptMinCityPopulation() const;																			// Exposed to Python
 	int flatConscriptAngerLength() const;																				// Exposed to Python
+	int conscriptMinCulturePercent() const;	// added by this mod
+	int conscriptPopAnger() const;	// added by this mod
 	bool canConscript() const;																				// Exposed to Python
 	void conscript();																											// Exposed to Python
 

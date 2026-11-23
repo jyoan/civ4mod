@@ -5059,6 +5059,11 @@ public:
 	int getCorporationMaintenanceModifier() const;	// Exposed to Python (added by this mod)
 	int getMaintenanceModifier() const;	// Exposed to Python (added by this mod)
 	int getMaxConscript() const;	// Exposed to Python (added by this mod)
+	int getConscriptPopulationModifier() const;	// Exposed to Python (added by this mod)
+	int getConscriptMinCityPopulationChange() const;	// Exposed to Python (added by this mod)
+	int getConscriptMinCulturePercentChange() const;	// Exposed to Python (added by this mod)
+	int getConscriptPopAngerChange() const;	// Exposed to Python (added by this mod)
+	int getConscriptAngerLengthPercent() const;	// Exposed to Python (added by this mod)
 	bool isMilitaryFoodProduction() const;	// Exposed to Python (added by this mod)
 	int getHealRateChange() const;	// Exposed to Python (added by this mod)
 	int getDomainFreeExperience(int iDomain) const;	// Exposed to Python (added by this mod)
@@ -5407,6 +5412,11 @@ protected:
 	int m_iCorporationMaintenanceModifier;	// added by this mod
 	int m_iMaintenanceModifier;	// added by this mod
 	int m_iMaxConscript;	// added by this mod
+	int m_iConscriptPopulationModifier;	// added by this mod
+	int m_iConscriptMinCityPopulationChange;	// added by this mod
+	int m_iConscriptMinCulturePercentChange;	// added by this mod
+	int m_iConscriptPopAngerChange;	// added by this mod
+	int m_iConscriptAngerLengthPercent;	// added by this mod
 	bool m_bMilitaryFoodProduction;	// added by this mod
 	int m_iHealRateChange;	// added by this mod
 	std::vector<int> m_aiDomainFreeExperience;	// added by this mod: [domain], empty when not set
