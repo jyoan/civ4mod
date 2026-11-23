@@ -672,6 +672,7 @@
 			<PyOnVassalGained>(gainGold(pPlayer, 100 + 100 * bCapitulated), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnVassalGained', gc.getTeam(iVassalTeam).getName() + ', bCapitulated ' + str(bCapitulated))))</PyOnVassalGained>
 			<PyOnReligionSpread>(gainGold(pPlayer, 10), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnReligionSpread', cityName(pCity) + ', ' + infoDescription('Religion', eReligion))))</PyOnReligionSpread>
 			<PyOnCivicChanged>(gainTraitForTurns(pPlayer, 'TRAIT_TEST_TEMPORARY', 2), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnCivicChanged', infoDescription('Civic', iOldCivic) + ' -&gt; ' + infoDescription('Civic', eCivic))))</PyOnCivicChanged>
+			<PyOnCircumnavigated>(iOrder == 1 and startGoldenAge(pPlayer), iOrder &gt; 1 and gainCircumnavigationMoves(pPlayer),showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnCircumnavigated', 'iOrder ' + str(iOrder))))</PyOnCircumnavigated>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>

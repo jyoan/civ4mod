@@ -134,6 +134,7 @@ public:
 	int getEnemyWarWearinessModifier() const;																																			// Exposed to Python
 	void changeEnemyWarWearinessModifier(int iChange);
 
+	int getCircumnavigatedOrder();		// added by this mod
 	bool isMapCentering();
 	void setMapCentering(bool bNewValue);
 

@@ -4146,6 +4146,7 @@ void CvGame::makeCircumnavigated()
 	m_bCircumnavigated = true;
 }
 
+// Whether the first circumnavigation is still to come (the AI looks for it)
 bool CvGame::circumnavigationAvailable() const
 {
 	if (isCircumnavigated())
@@ -4153,6 +4154,13 @@ bool CvGame::circumnavigationAvailable() const
 		return false;
 	}
 
+	return isCircumnavigationMap();
+}
+
+// Whether the globe can be circumnavigated at all (added by this mod, split from circumnavigationAvailable): the later
+// teams circumnavigate it too, for PyOnCircumnavigated (CvTeam::testCircumnavigated)
+bool CvGame::isCircumnavigationMap() const
+{
 	if (GC.getDefineINT("CIRCUMNAVIGATE_FREE_MOVES") == 0)
 	{
 		return false;

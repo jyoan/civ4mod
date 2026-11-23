@@ -193,6 +193,8 @@ public:
 	void changeEnemyWarWearinessModifier(int iChange);						// Exposed to Python
 	void changeWarWeariness(TeamTypes eOtherTeam, const CvPlot& kPlot, int iFactor);
 
+	int getCircumnavigatedOrder() const;		// Exposed to Python (added by this mod): 0 before the team circumnavigates the globe
+
 	bool isMapCentering() const;																							// Exposed to Python	
 	void setMapCentering(bool bNewValue);																					// Exposed to Python	
 																																								
@@ -402,6 +404,7 @@ protected:
 	int m_iEnemyWarWearinessModifier;
 	int m_iRiverTradeCount;
 	int m_iEspionagePointsEver;
+	int m_iCircumnavigatedOrder;	// added by this mod: 1 for the first team to circumnavigate the globe, 2 for the second...
 
 	bool m_bMapCentering;
 	bool m_bCapitulated;

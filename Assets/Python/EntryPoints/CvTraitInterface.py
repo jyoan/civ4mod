@@ -48,6 +48,10 @@
 ##                     spread, missionaries, the holy city, events). Not for the religions a city keeps when it changes hands
 ##   PyOnCivicChanged  pPlayer, eTrait, eCivic, iOldCivic: after the player changes the civic of a slot, once per slot
 ##                     (eCivic or iOldCivic is -1 for an empty extra slot of CivicOptionExtraSlots)
+##   PyOnCircumnavigated  pPlayer, eTrait, iOrder (1 if the team of the player is the first to circumnavigate the globe,
+##                     2 if the second...): after the team circumnavigates the globe (the first team has its bonus moves
+##                     of the ships by then; a later team gets nothing else), e.g. iOrder == 1 and startGoldenAge(pPlayer),
+##                     iOrder > 1 and gainCircumnavigationMoves(pPlayer)
 ## Counters: each player has a number per trait for the hooks (CyPlayer.getTraitCounter, saved with the game), e.g.
 ##   countEvery(pPlayer, eTrait, 3) and gainGold(pPlayer, 100)   (every third time)
 ## Temporary traits: gainTraitForTurns(pPlayer, 'TRAIT_X', iTurns) gives a trait for some turns, e.g. from a hook.
@@ -150,3 +154,7 @@ def onReligionSpread(argsList):
 def onCivicChanged(argsList):
 	pPlayer, eTrait, eCivic, iOldCivic = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnCivicChanged())
+
+def onCircumnavigated(argsList):
+	pPlayer, eTrait, iOrder = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnCircumnavigated())

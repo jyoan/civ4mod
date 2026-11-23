@@ -104,6 +104,16 @@ def gainGold(pPlayer, iGold):
 	"The player gains gold (loses it when iGold is negative)"
 	pPlayer.changeGold(iGold)
 
+def startGoldenAge(pPlayer):
+	"The player starts a golden age of the usual length (like a free golden age: longer if one is going on), without great people"
+	pPlayer.changeGoldenAgeTurns(pPlayer.getGoldenAgeLength())
+
+def gainCircumnavigationMoves(pPlayer):
+	"The team of the player gets the bonus moves of the ships of the first circumnavigation (CIRCUMNAVIGATE_FREE_MOVES), with its message. For PyOnCircumnavigated when iOrder > 1 (the first team gets them anyway). Once per player: a team of two players with the trait gets them twice"
+	iMoves = gc.getDefineINT("CIRCUMNAVIGATE_FREE_MOVES")
+	gc.getTeam(pPlayer.getTeam()).changeExtraMoves(DomainTypes.DOMAIN_SEA, iMoves)
+	showMessage(pPlayer, 'TXT_KEY_MISC_YOU_CIRC_GLOBE', (iMoves,))
+
 def createUnits(pPlayer, szUnitClass, iNum, pPlot):
 	"Creates iNum units of the unit class (the unit of the player's civilization) on the plot. Nothing without a plot."
 	eUnit = pPlayer.getCivilizationUnit(gc.getInfoTypeForString(szUnitClass))

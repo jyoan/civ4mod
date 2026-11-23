@@ -125,6 +125,7 @@ void CyTeamPythonInterface()
 		.def("getMasterPower", &CyTeam::getMasterPower, "int ()")
 		.def("setMasterPower", &CyTeam::setMasterPower, "void (int)")
 
+		.def("getCircumnavigatedOrder", &CyTeam::getCircumnavigatedOrder, "int () - 1 for the first team to circumnavigate the globe, 2 for the second..., 0 before it does")
 		.def("isMapCentering", &CyTeam::isMapCentering, "bool () - map is centered")
 		.def("setMapCentering", &CyTeam::setMapCentering, "void (bNewValue)")
 

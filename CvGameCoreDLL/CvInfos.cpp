@@ -22303,6 +22303,11 @@ const TCHAR* CvTraitInfo::getPyOnCivicChanged() const
 	return m_aszPythonHook[TRAIT_PYHOOK_CIVIC_CHANGED];
 }
 
+const TCHAR* CvTraitInfo::getPyOnCircumnavigated() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_CIRCUMNAVIGATED];
+}
+
 // ConditionalFreeTraits (added by this mod): the traits the player has while the conditions hold
 int CvTraitInfo::getNumConditionalFreeTraits() const
 {
@@ -23473,6 +23478,7 @@ void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_VASSAL_GAINED], "PyOnVassalGained");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_RELIGION_SPREAD], "PyOnReligionSpread");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CIVIC_CHANGED], "PyOnCivicChanged");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CIRCUMNAVIGATED], "PyOnCircumnavigated");
 }
 
 // The part of read() for ConditionalFreeTraits (added by this mod)

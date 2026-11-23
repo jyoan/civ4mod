@@ -548,6 +548,11 @@ void CyTeam::changeEnemyWarWearinessModifier(int iChange)
 	}
 }
 
+int CyTeam::getCircumnavigatedOrder()
+{
+	return m_pTeam ? m_pTeam->getCircumnavigatedOrder() : 0;
+}
+
 bool CyTeam::isMapCentering()
 {
 	return m_pTeam ? m_pTeam->isMapCentering() : false;
