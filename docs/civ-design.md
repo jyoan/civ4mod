@@ -132,6 +132,7 @@ BtS の効果はそのままにして足す。
 | `bAtWar` + `PyOnLost` で期間つきの志向（`CommerceModifiers` の文化、`iHappiness`） | 徳川家康 |
 | `HealthyCommercePercents`（研究）、`PyOnBuildingBuilt`（`isBuildingClassIn`） | バビロニア |
 | `CivicOptionExtraSlots`（法律） | ハンムラビ |
+| `chooseGreatPeopleByCalendar`（`PyOnBeginTurn`。暦の周期ごとに選んだ偉人）、`bLongCountCalendar` | マヤ |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -212,6 +213,7 @@ BtS の効果はそのままにして足す。
 | バビロニア（文明） | 空中庭園: 余剰の衛生 2 につき、その都市の研究 +1。穀物庫・水道橋・雑貨商・病院・リサイクル施設を生産で建てるたびに、その都市の人口 +1（2026-11-22） | `HealthyCommercePercents`（研究 50）、`PyOnBuildingBuilt` で `isBuildingClassIn` と `pCity.changePopulation(1)` | 実装済み、ゲームで確認済み `TRAIT_HANGING_GARDENS` |
 | ハンムラビ | 法典: 法律の社会制度を同時にさらに 1 つ採用できる | `CivicOptionExtraSlots`（`CIVICOPTION_LEGAL` 1） | 実装済み、ゲームで確認済み `TRAIT_LAW_CODE` |
 | 神聖ローマ（文明） | 帝国諸侯: 最初の都市を建てると、5 タイル以内にドイツ（指導者はフリードリッヒ）が AI の初期ユニットを連れて参加し、永久同盟で同じチームになる。参加した AI の AI 補正は、どの難易度でも開拓者（最弱。生産・成長のコスト 160% など）（2026-11-23。強いので補正を最弱にした） | `FoundingVassal`（`CIVILIZATION_GERMANY`・`LEADER_FREDERICK`・`HANDICAP_SETTLER`・`iRange` 5） | 実装済み `TRAIT_IMPERIAL_ESTATES` |
+| マヤ（文明） | 長期暦: 神学を得た後、マヤ長期暦の周期（394 年。西暦 830・1224・1618・2012 年）が終わるたびに、偉人を 1 人選んで首都に出す（選んだ偉人は、全員を選ぶまで選べない。全員を選ぶとまた全員を選べる）。右上の日付が長期暦になり、マウスを重ねると西暦が出る（Civ5 のマヤ。2026-11-23） | `PyOnBeginTurn` の `chooseGreatPeopleByCalendar(pPlayer, eTrait, 'TECH_THEOLOGY', 394, 2012)`、`bLongCountCalendar` | 実装済み `TRAIT_LONG_COUNT` |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
 - 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%

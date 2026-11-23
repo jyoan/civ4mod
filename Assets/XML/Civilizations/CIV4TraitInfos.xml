@@ -2973,5 +2973,13 @@
 				<iRange>5</iRange>
 			</FoundingVassal>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_LONG_COUNT</Type>
+			<Description>TXT_KEY_TRAIT_LONG_COUNT</Description>
+			<ShortDescription>TXT_KEY_TRAIT_LONG_COUNT_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_LONG_COUNT_HELP</Help>
+			<bLongCountCalendar>1</bLongCountCalendar>
+			<PyOnBeginTurn>chooseGreatPeopleByCalendar(pPlayer, eTrait, 'TECH_THEOLOGY', 394, 2012)</PyOnBeginTurn>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>

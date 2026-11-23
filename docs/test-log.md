@@ -175,3 +175,4 @@
 - 2026-11-23: 志向のフック `PyOnTechAcquired`（最初に得た技術で資金 +25、3 つごとの斥候で `countEvery` も）・`PyOnGreatPersonBorn`・`PyOnGoldenAgeStart` / `End`・`PyOnWarDeclared`（宣戦した側の資金 +50）・`PyOnPeaceMade`・`PyOnEraChanged` を検証用志向でゲーム内で確認。宣戦された側（徴兵ユニット）は未確認
 - 2026-11-23: 志向のフック `PyOnFirstContact`・`PyOnProjectBuilt`・`PyOnVassalGained`・`PyOnReligionSpread`・`PyOnCivicChanged` と、共通関数 `showMessage`（検証用志向の 12 個のフックがイベントログに「[検証] フック名: 引数」を出す）をゲーム内で確認
 - 2026-11-23: 共通関数 `chooseGreatPeopleByCalendar`（検証用志向（暦）の 200 年周期で選択画面が出て、選んだ偉人が首都に出る。選んだ偉人は次の画面から消え、全員を選ぶとまた全員が並ぶ）と、志向のタグ `bLongCountCalendar`（右上の日付が長期暦になり、マウスを重ねると西暦が出る）をゲーム内で確認。AI の選択は未確認
+- 2026-11-23: マヤの文明志向 `TRAIT_LONG_COUNT`（長期暦の日付と西暦のマウスオーバー、神学の後の周期で偉人を選ぶ）をゲーム内で確認

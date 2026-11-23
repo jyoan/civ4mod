@@ -1820,4 +1820,31 @@
 		<Spanish>Est</Spanish>
 		<Japanese>&#35576;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LONG_COUNT</Tag>
+		<English>Long Count</English>
+		<French>Long Count</French>
+		<German>Long Count</German>
+		<Italian>Long Count</Italian>
+		<Spanish>Long Count</Spanish>
+		<Japanese>&#38263;&#26399;&#26278;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LONG_COUNT_SHORT</Tag>
+		<English>LC</English>
+		<French>LC</French>
+		<German>LC</German>
+		<Italian>LC</Italian>
+		<Spanish>LC</Spanish>
+		<Japanese>&#26278;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LONG_COUNT_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#31070;&#23398;&#12434;&#24471;&#12383;&#24460;&#12289;&#12510;&#12516;&#38263;&#26399;&#26278;&#12398;&#21608;&#26399;&#65288;394 &#24180;&#12290;&#35199;&#26278; 830&#12539;1224&#12539;1618&#12539;2012 &#24180;&#65289;&#12364;&#32066;&#12431;&#12427;&#12383;&#12403;&#12395;&#12289;&#20553;&#20154;&#12434; 1 &#20154;&#36984;&#12435;&#12391;&#39318;&#37117;&#12395;&#20986;&#12377;&#65288;&#36984;&#12435;&#12384;&#20553;&#20154;&#12399;&#12289;&#20840;&#21729;&#12434;&#36984;&#12406;&#12414;&#12391;&#36984;&#12409;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>
