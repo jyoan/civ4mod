@@ -3901,7 +3901,7 @@ void CvPlayer::callTraitPythonHook(TraitPythonHookTypes eHook, CvUnit* pUnit, Cv
 		return;
 	}
 
-	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onBuildingBuilt", "onReligionFounded", "onGained", "onLost", "onTechAcquired", "onGreatPersonBorn", "onGoldenAgeStart", "onGoldenAgeEnd", "onWarDeclared", "onPeaceMade", "onEraChanged" };	// onGained and onLost: doTraitGainedPythonHook
+	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onBuildingBuilt", "onReligionFounded", "onGained", "onLost", "onTechAcquired", "onGreatPersonBorn", "onGoldenAgeStart", "onGoldenAgeEnd", "onWarDeclared", "onPeaceMade", "onEraChanged", "onFirstContact", "onProjectBuilt", "onVassalGained", "onReligionSpread", "onCivicChanged" };	// onGained and onLost: doTraitGainedPythonHook
 	bool bHasUnit = (eHook == TRAIT_PYHOOK_GREAT_PERSON_BORN);
 	bool bHasCity = (pCity != NULL || eHook == TRAIT_PYHOOK_GREAT_PERSON_BORN);
 	CyPlayer* pyPlayer;
@@ -17016,6 +17016,12 @@ void CvPlayer::setCivicSlot(CivicOptionTypes eIndex, int iSlot, CivicTypes eNewV
 			if (getCivicSlot(eIndex, iSlot) != NO_CIVIC && GC.getCivicInfo(getCivicSlot(eIndex, iSlot)).getPyOnAdopt()[0] != '\0')
 			{
 				doCivicPythonHook(getCivicSlot(eIndex, iSlot), true);
+			}
+
+			// PyOnCivicChanged of the traits (added by this mod): once per slot that changes
+			if (!(gDLL->GetWorldBuilderMode()))
+			{
+				doTraitPythonHookInts(TRAIT_PYHOOK_CIVIC_CHANGED, 2, getCivicSlot(eIndex, iSlot), eOldCivic);
 			}
 		}
 

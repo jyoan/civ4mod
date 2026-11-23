@@ -39,6 +39,15 @@
 ##   PyOnPeaceMade     pPlayer, eTrait, iOtherTeam: after the teams make peace
 ##   PyOnEraChanged    pPlayer, eTrait, eEra, iOldEra: after the player enters a new era (it can skip eras when it gets
 ##                     a tech of a later era). Not for the era of the start of the game
+##   PyOnFirstContact  pPlayer, eTrait, iOtherTeam: after the team of the player meets another team (by units or a
+##                     contact trade; not the barbarians)
+##   PyOnProjectBuilt  pPlayer, eTrait, pCity, eProject: after a city of the player completes the project
+##   PyOnVassalGained  pPlayer, eTrait, iVassalTeam, bCapitulated (1 if the vassal surrendered): after a team becomes a
+##                     vassal of the team of the player
+##   PyOnReligionSpread  pPlayer, eTrait, pCity, eReligion: after a religion spreads to a city of the player (natural
+##                     spread, missionaries, the holy city, events). Not for the religions a city keeps when it changes hands
+##   PyOnCivicChanged  pPlayer, eTrait, eCivic, iOldCivic: after the player changes the civic of a slot, once per slot
+##                     (eCivic or iOldCivic is -1 for an empty extra slot of CivicOptionExtraSlots)
 ## Counters: each player has a number per trait for the hooks (CyPlayer.getTraitCounter, saved with the game), e.g.
 ##   countEvery(pPlayer, eTrait, 3) and gainGold(pPlayer, 100)   (every third time)
 ## Temporary traits: gainTraitForTurns(pPlayer, 'TRAIT_X', iTurns) gives a trait for some turns, e.g. from a hook.
@@ -121,3 +130,23 @@ def onPeaceMade(argsList):
 def onEraChanged(argsList):
 	pPlayer, eTrait, eEra, iOldEra = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnEraChanged())
+
+def onFirstContact(argsList):
+	pPlayer, eTrait, iOtherTeam = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnFirstContact())
+
+def onProjectBuilt(argsList):
+	pPlayer, eTrait, pCity, eProject = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnProjectBuilt())
+
+def onVassalGained(argsList):
+	pPlayer, eTrait, iVassalTeam, bCapitulated = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnVassalGained())
+
+def onReligionSpread(argsList):
+	pPlayer, eTrait, pCity, eReligion = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnReligionSpread())
+
+def onCivicChanged(argsList):
+	pPlayer, eTrait, eCivic, iOldCivic = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnCivicChanged())

@@ -70,11 +70,35 @@ def isTechIn(eTech, lszTechs):
 			return True
 	return False
 
+def isCivicIn(eCivic, lszCivics):
+	"True if the civic is one of the civics (['CIVIC_REPRESENTATION', 'CIVIC_UNIVERSAL_SUFFRAGE'])"
+	for szCivic in lszCivics:
+		if eCivic == gc.getInfoTypeForString(szCivic):
+			return True
+	return False
+
 def isOnFeature(pUnit, szFeature):
 	"True if the unit is on a plot with the feature ('FEATURE_FOREST')"
 	return pUnit.plot().getFeatureType() == gc.getInfoTypeForString(szFeature)
 
+def infoDescription(szInfo, eType):
+	"The name of an info for messages: szInfo is the class without Cv and Info ('Tech', 'Civic', 'Era', 'Religion', 'Project'), '-' for -1"
+	if eType < 0:
+		return '-'
+	return getattr(gc, 'get' + szInfo + 'Info')(eType).getDescription()
+
+def cityName(pCity):
+	"The name of the city for messages, '-' without a city"
+	if pCity.isNone():
+		return '-'
+	return pCity.getName()
+
 ## Effects
+
+def showMessage(pPlayer, szKey, tArgs = ()):
+	"Shows the text (a key of the text XML with the arguments %s1, %s2... in the tuple tArgs) in the event log of the player"
+	szText = CyTranslator().getText(szKey, tArgs)
+	CyInterface().addMessage(pPlayer.getID(), True, gc.getEVENT_MESSAGE_TIME(), szText, "", InterfaceMessageTypes.MESSAGE_TYPE_INFO, None, gc.getInfoTypeForString("COLOR_WHITE"), -1, -1, False, False)
 
 def gainGold(pPlayer, iGold):
 	"The player gains gold (loses it when iGold is negative)"

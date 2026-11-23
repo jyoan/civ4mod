@@ -5155,6 +5155,11 @@ public:
 	const TCHAR* getPyOnWarDeclared() const;		// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnPeaceMade() const;			// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnEraChanged() const;		// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnFirstContact() const;		// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnProjectBuilt() const;		// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnVassalGained() const;		// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnReligionSpread() const;	// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnCivicChanged() const;		// Exposed to Python (added by this mod)
 	int getNumConditionalFreeTraits() const;		// Exposed to Python
 	int getConditionalFreeTraitType(int i) const;	// Exposed to Python
 	const ConditionalFreeTrait& getConditionalFreeTrait(int i) const;

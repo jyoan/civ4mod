@@ -157,3 +157,4 @@
 - 2026-11-23: 志向の `FoundingVassal`（検証用志向（属国）で、最初の都市を建てるとケルト（ガンジー）が 5 タイル以内に AI の初期ユニットを連れて参加し永久同盟でチームに入る、研究コストが +50% にならない、説明文、セーブとロード）
 - 2026-11-23: 志向の Schema で `Type`・`Description`・`ShortDescription` 以外の BtS の必須タグ 17 個を省略可能にし、`iMaxAnarchy` の省略時を -1 にした（XML から 0・空・-1 の行を削除。起動時のエラーなし、志向の説明文が前と同じ、精神志向だけ無政府状態なし）
 - 2026-11-23: 志向のフック `PyOnTechAcquired`（最初に得た技術で資金 +25、3 つごとの斥候で `countEvery` も）・`PyOnGreatPersonBorn`・`PyOnGoldenAgeStart` / `End`・`PyOnWarDeclared`（宣戦した側の資金 +50）・`PyOnPeaceMade`・`PyOnEraChanged` を検証用志向でゲーム内で確認。宣戦された側（徴兵ユニット）は未確認
+- 2026-11-23: 志向のフック `PyOnFirstContact`・`PyOnProjectBuilt`・`PyOnVassalGained`・`PyOnReligionSpread`・`PyOnCivicChanged` と、共通関数 `showMessage`（検証用志向の 12 個のフックがイベントログに「[検証] フック名: 引数」を出す）をゲーム内で確認

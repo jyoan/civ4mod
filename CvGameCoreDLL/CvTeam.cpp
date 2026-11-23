@@ -3699,6 +3699,19 @@ void CvTeam::makeHasMet(TeamTypes eIndex, bool bNewDiplo)
 
 		// report event to Python, along with some other key state
 		CvEventReporter::getInstance().firstContact(getID(), eIndex);
+
+		// PyOnFirstContact of the traits of the players of this team (added by this mod), however the teams met (units,
+		// contact trade). Not for the barbarians, not before the game starts, nor in the world builder
+		if (eIndex != getID() && !(GET_TEAM(eIndex).isBarbarian()) && GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()))
+		{
+			for (iI = 0; iI < MAX_PLAYERS; iI++)
+			{
+				if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
+				{
+					GET_PLAYER((PlayerTypes)iI).doTraitPythonHookInts(TRAIT_PYHOOK_FIRST_CONTACT, 1, eIndex);
+				}
+			}
+		}
 	}
 }
 
@@ -4185,6 +4198,20 @@ void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 		if (GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()))
 		{
 			CvEventReporter::getInstance().vassalState(eIndex, getID(), bNewValue);
+
+			// PyOnVassalGained of the traits of the players of the master team eIndex (added by this mod): with this team
+			// (the vassal) and bCapitulated
+			if (bNewValue)
+			{
+				for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
+				{
+					CvPlayer& kMasterPlayer = GET_PLAYER((PlayerTypes)iPlayer);
+					if (kMasterPlayer.isAlive() && kMasterPlayer.getTeam() == eIndex)
+					{
+						kMasterPlayer.doTraitPythonHookInts(TRAIT_PYHOOK_VASSAL_GAINED, 2, getID(), (bCapitulated ? 1 : 0));
+					}
+				}
+			}
 		}
 	}
 }

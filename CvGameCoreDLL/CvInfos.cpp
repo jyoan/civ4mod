@@ -22194,6 +22194,31 @@ const TCHAR* CvTraitInfo::getPyOnEraChanged() const
 	return m_aszPythonHook[TRAIT_PYHOOK_ERA_CHANGED];
 }
 
+const TCHAR* CvTraitInfo::getPyOnFirstContact() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_FIRST_CONTACT];
+}
+
+const TCHAR* CvTraitInfo::getPyOnProjectBuilt() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_PROJECT_BUILT];
+}
+
+const TCHAR* CvTraitInfo::getPyOnVassalGained() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_VASSAL_GAINED];
+}
+
+const TCHAR* CvTraitInfo::getPyOnReligionSpread() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_RELIGION_SPREAD];
+}
+
+const TCHAR* CvTraitInfo::getPyOnCivicChanged() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_CIVIC_CHANGED];
+}
+
 // ConditionalFreeTraits (added by this mod): the traits the player has while the conditions hold
 int CvTraitInfo::getNumConditionalFreeTraits() const
 {
@@ -23331,6 +23356,11 @@ void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_WAR_DECLARED], "PyOnWarDeclared");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_PEACE_MADE], "PyOnPeaceMade");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_ERA_CHANGED], "PyOnEraChanged");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_FIRST_CONTACT], "PyOnFirstContact");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_PROJECT_BUILT], "PyOnProjectBuilt");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_VASSAL_GAINED], "PyOnVassalGained");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_RELIGION_SPREAD], "PyOnReligionSpread");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CIVIC_CHANGED], "PyOnCivicChanged");
 }
 
 // The part of read() for ConditionalFreeTraits (added by this mod)

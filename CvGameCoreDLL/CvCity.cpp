@@ -11956,6 +11956,15 @@ void CvCity::setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce
 		{
 			// Python Event
 			CvEventReporter::getInstance().religionSpread(eIndex, getOwnerINLINE(), this);
+
+			// PyOnReligionSpread of the traits of the owner (added by this mod): only when announced, so not for the religions
+			// a city keeps when it changes hands. Not before the game starts, nor in the world builder
+			if (bAnnounce && GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()))
+			{
+				std::vector<int> aiArgs;
+				aiArgs.push_back(eIndex);
+				GET_PLAYER(getOwnerINLINE()).callTraitPythonHook(TRAIT_PYHOOK_RELIGION_SPREAD, NULL, this, aiArgs);
+			}
 		}
 		else
 		{
@@ -12649,6 +12658,13 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			CvEventReporter::getInstance().projectBuilt(this, eCreateProject);
 
 			GET_TEAM(getTeam()).changeProjectCount(eCreateProject, 1);
+
+			// PyOnProjectBuilt of the traits of the owner (added by this mod): after the effects of the project
+			{
+				std::vector<int> aiArgs;
+				aiArgs.push_back(eCreateProject);
+				GET_PLAYER(getOwnerINLINE()).callTraitPythonHook(TRAIT_PYHOOK_PROJECT_BUILT, NULL, this, aiArgs);
+			}
 
 			if (GC.getProjectInfo(eCreateProject).isSpaceship())
 			{
