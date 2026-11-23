@@ -2437,7 +2437,9 @@
 			<Type>TRAIT_APPIAN_WAY</Type>
 			<Description>TXT_KEY_TRAIT_APPIAN_WAY</Description>
 			<ShortDescription>TXT_KEY_TRAIT_APPIAN_WAY_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_APPIAN_WAY_HELP</Help>
 			<iRouteMovementModifierInBorders>-50</iRouteMovementModifierInBorders>
+			<PyOnCityFounded>buildRouteToCapital(pCity, 'ROUTE_ROAD', 6)</PyOnCityFounded>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_SUN_NEVER_SETS</Type>

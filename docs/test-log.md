@@ -188,3 +188,4 @@
 - 2026-11-23: 志向のフック `PyOnCircumnavigated`（`iOrder`）と共通関数 `startGoldenAge`・`gainCircumnavigationMoves`、世界一周の判定をチームごとにしたこと（移動力のボーナスと通知は 1 番目だけ）をゲーム内で確認
 - 2026-11-23: スペインの新世界探検志向（`TRAIT_NEW_WORLD_EXPLORATION`）の、最初に世界一周したときの黄金時代（`PyOnCircumnavigated`）と説明文をゲーム内で確認
 - 2026-11-23: 共通関数 `buildRouteToCapital`（建設した都市から首都まで、陸路の距離以内なら技術なしで道を敷く。川をまたぐ経路を避ける）をゲーム内で確認
+- 2026-11-23: ローマのアッピア街道の、建設した都市から首都への道路（陸路 6 タイル以内。`buildRouteToCapital`）と説明文をゲーム内で確認

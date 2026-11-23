@@ -1074,6 +1074,15 @@
 		<Japanese>&#36947;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_APPIAN_WAY_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]A city it founds starts with a road to the capital if a land path of 6 tiles or less joins them (no tech needed)</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]A city it founds starts with a road to the capital if a land path of 6 tiles or less joins them (no tech needed)</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]A city it founds starts with a road to the capital if a land path of 6 tiles or less joins them (no tech needed)</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]A city it founds starts with a road to the capital if a land path of 6 tiles or less joins them (no tech needed)</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A city it founds starts with a road to the capital if a land path of 6 tiles or less joins them (no tech needed)</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#37117;&#24066;&#12434;&#24314;&#35373;&#12377;&#12427;&#12392;&#12289;&#38520;&#36335; 6 &#12479;&#12452;&#12523;&#20197;&#20869;&#12391;&#39318;&#37117;&#12392;&#12388;&#12394;&#12364;&#12427;&#12394;&#12425;&#12289;&#39318;&#37117;&#12414;&#12391;&#12398;&#36947;&#36335;&#12364;&#26368;&#21021;&#12363;&#12425;&#25975;&#12363;&#12428;&#12427;&#65288;&#25216;&#34899;&#12399;&#19981;&#35201;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_SUN_NEVER_SETS</Tag>
 		<English>The Empire on which the Sun Never Sets</English>
 		<French>The Empire on which the Sun Never Sets</French>
