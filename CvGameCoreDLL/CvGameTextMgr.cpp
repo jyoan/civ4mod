@@ -18750,8 +18750,17 @@ void CvGameTextMgr::setEspionageCostHelp(CvWStringBuffer &szBuffer, EspionageMis
 	{
 		if (NO_PLAYER != eTargetPlayer)
 		{
-			szBuffer.append(gDLL->getText("TXT_KEY_ESPIONAGE_HELP_SWITCH_CIVIC", GET_PLAYER(eTargetPlayer).getNameKey(), GC.getReligionInfo((ReligionTypes)iExtraData).getTextKeyWide()));
-			szBuffer.append(NEWLINE);
+			if (iExtraData == GC.getNumReligionInfos())
+			{
+				// bSwitchNoReligion (added by this mod)
+				szBuffer.append(gDLL->getText("TXT_KEY_ESPIONAGE_HELP_SWITCH_CIVIC", GET_PLAYER(eTargetPlayer).getNameKey(), L"TXT_KEY_RELIGION_SCREEN_NO_STATE"));
+				szBuffer.append(NEWLINE);
+			}
+			else if (iExtraData >= 0 && iExtraData < GC.getNumReligionInfos())
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_ESPIONAGE_HELP_SWITCH_CIVIC", GET_PLAYER(eTargetPlayer).getNameKey(), GC.getReligionInfo((ReligionTypes)iExtraData).getTextKeyWide()));
+				szBuffer.append(NEWLINE);
+			}
 		}
 	}
 

@@ -1243,6 +1243,9 @@
 	</ElementType>
 	<ElementType name="bKillGreatPerson" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bKidnapGreatPerson" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bSwitchAnyCivic" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bSwitchAnyReligion" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bSwitchNoReligion" content="textOnly" dt:type="boolean"/>
 	<ElementType name="EspionageMissionInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -1281,6 +1284,9 @@
 		<element type="DisableTraits" minOccurs="0"/>
 		<element type="bKillGreatPerson" minOccurs="0"/>
 		<element type="bKidnapGreatPerson" minOccurs="0"/>
+		<element type="bSwitchAnyCivic" minOccurs="0"/>
+		<element type="bSwitchAnyReligion" minOccurs="0"/>
+		<element type="bSwitchNoReligion" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="EspionageMissionInfos" content="eltOnly">
 		<element type="EspionageMissionInfo" maxOccurs="*"/>

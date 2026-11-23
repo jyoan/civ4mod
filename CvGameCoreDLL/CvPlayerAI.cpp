@@ -10395,7 +10395,8 @@ int CvPlayerAI::AI_espionageVal(PlayerTypes eTargetPlayer, EspionageMissionTypes
 		iValue += AI_civicTradeVal((CivicTypes)iData, eTargetPlayer);
 	}
 
-	if (GC.getEspionageMissionInfo(eMission).getSwitchReligionCostFactor() > 0)
+	// The extra data of bSwitchNoReligion is GC.getNumReligionInfos() (checked by this mod; the AI does not use it)
+	if (GC.getEspionageMissionInfo(eMission).getSwitchReligionCostFactor() > 0 && iData >= 0 && iData < GC.getNumReligionInfos())
 	{
 		iValue += AI_religionTradeVal((ReligionTypes)iData, eTargetPlayer);
 	}

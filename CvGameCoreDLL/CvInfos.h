@@ -7531,6 +7531,9 @@ public:
 	const std::vector<int>& getDisableTraitsVector() const;	// added by this mod
 	bool isKillGreatPerson() const;	// added by this mod
 	bool isKidnapGreatPerson() const;	// added by this mod
+	bool isSwitchAnyCivic() const;	// added by this mod
+	bool isSwitchAnyReligion() const;	// added by this mod
+	bool isSwitchNoReligion() const;	// added by this mod
 
 	bool read(CvXMLLoadUtility* pXML);
 
@@ -7574,6 +7577,9 @@ protected:
 	std::vector<int> m_aiDisableTraits;	// added by this mod
 	bool m_bKillGreatPerson;	// added by this mod
 	bool m_bKidnapGreatPerson;	// added by this mod
+	bool m_bSwitchAnyCivic;	// added by this mod
+	bool m_bSwitchAnyReligion;	// added by this mod
+	bool m_bSwitchNoReligion;	// added by this mod
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

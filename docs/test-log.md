@@ -160,3 +160,5 @@
 - 2026-11-23: 志向のフック `PyOnFirstContact`・`PyOnProjectBuilt`・`PyOnVassalGained`・`PyOnReligionSpread`・`PyOnCivicChanged` と、共通関数 `showMessage`（検証用志向の 12 個のフックがイベントログに「[検証] フック名: 引数」を出す）をゲーム内で確認
 - 2026-11-23: 共通関数 `chooseGreatPeopleByCalendar`（検証用志向（暦）の 200 年周期で選択画面が出て、選んだ偉人が首都に出る。選んだ偉人は次の画面から消え、全員を選ぶとまた全員が並ぶ）と、志向のタグ `bLongCountCalendar`（右上の日付が長期暦になり、マウスを重ねると西暦が出る）をゲーム内で確認。AI の選択は未確認
 - 2026-11-23: 志向のタグ `bImprovementUpgradeUnworked`（文化圏の市民を配置していない施設が成長する）をゲーム内で確認
+- 2026-11-23: 諜報任務のタグ `bSwitchAnyCivic` と任務「体制転覆」（`ESPIONAGEMISSION_SUBVERT_CIVIC`。自分が採用していない社会制度もアイコンで選んで相手に押し付けられる）をゲーム内で確認
+- 2026-11-23: 諜報任務のタグ `bSwitchAnyReligion`・`bSwitchNoReligion` と任務「国教転覆」（`ESPIONAGEMISSION_SUBVERT_RELIGION`。自分の国教でない宗教と「国教なし」をアイコンで選んで相手に押し付けられる）をゲーム内で確認

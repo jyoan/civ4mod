@@ -18502,7 +18502,7 @@ int CvPlayer::getEspionageMissionBaseCost(EspionageMissionTypes eMission, Player
 		{
 			for (int iCivic = 0; iCivic < GC.getNumCivicInfos(); ++iCivic)
 			{
-				if (canForceCivics(eTargetPlayer, (CivicTypes)iCivic))
+				if (canForceCivics(eTargetPlayer, (CivicTypes)iCivic, kMission.isSwitchAnyCivic()))
 				{
 					eCivic = (CivicTypes)iCivic;
 					break;
@@ -18512,7 +18512,7 @@ int CvPlayer::getEspionageMissionBaseCost(EspionageMissionTypes eMission, Player
 
 		if (NO_CIVIC != eCivic)
 		{
-			if (canForceCivics(eTargetPlayer, eCivic))
+			if (canForceCivics(eTargetPlayer, eCivic, kMission.isSwitchAnyCivic()))
 			{
 				iMissionCost = iBaseMissionCost + (kMission.getSwitchCivicCostFactor() * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getAnarchyPercent()) / 10000;
 			}
@@ -18522,22 +18522,36 @@ int CvPlayer::getEspionageMissionBaseCost(EspionageMissionTypes eMission, Player
 	{
 		// Switch Religions
 		ReligionTypes eReligion = (ReligionTypes)iExtraData;
+		// bSwitchNoReligion (added by this mod): the extra data GC.getNumReligionInfos() abolishes the state religion
+		bool bNoReligion = (iExtraData == GC.getNumReligionInfos());
 
 		if (NO_RELIGION == eReligion)
 		{
 			for (int iReligion = 0; iReligion < GC.getNumReligionInfos(); ++iReligion)
 			{
-				if (canForceReligion(eTargetPlayer, (ReligionTypes)iReligion))
+				if (canForceReligion(eTargetPlayer, (ReligionTypes)iReligion, kMission.isSwitchAnyReligion()))
 				{
 					eReligion = (ReligionTypes)iReligion;
 					break;
 				}
 			}
+
+			if (NO_RELIGION == eReligion && kMission.isSwitchNoReligion())
+			{
+				bNoReligion = true;
+			}
 		}
 
-		if (NO_RELIGION != eReligion)
+		if (bNoReligion)
 		{
-			if (canForceReligion(eTargetPlayer, eReligion))
+			if (kMission.isSwitchNoReligion() && GET_PLAYER(eTargetPlayer).getStateReligion() != NO_RELIGION)
+			{
+				iMissionCost = iBaseMissionCost + (kMission.getSwitchReligionCostFactor() * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getAnarchyPercent()) / 10000;
+			}
+		}
+		else if (eReligion >= 0 && eReligion < GC.getNumReligionInfos())	// was NO_RELIGION != eReligion (changed by this mod)
+		{
+			if (canForceReligion(eTargetPlayer, eReligion, kMission.isSwitchAnyReligion()))
 			{
 				iMissionCost = iBaseMissionCost + (kMission.getSwitchReligionCostFactor() * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getAnarchyPercent()) / 10000;
 			}
@@ -19316,8 +19330,17 @@ bool CvPlayer::doEspionageMission(EspionageMissionTypes eMission, PlayerTypes eT
 		{
 			int iReligion = iExtraData;
 
-			szBuffer = gDLL->getText("TXT_KEY_ESPIONAGE_TARGET_SWITCH_RELIGION", GC.getReligionInfo((ReligionTypes) iReligion).getDescription()).GetCString();
-			GET_PLAYER(eTargetPlayer).setLastStateReligion((ReligionTypes) iReligion);
+			if (iReligion == GC.getNumReligionInfos())
+			{
+				// bSwitchNoReligion (added by this mod): abolishes the state religion
+				szBuffer = gDLL->getText("TXT_KEY_ESPIONAGE_TARGET_SWITCH_NO_RELIGION").GetCString();
+				GET_PLAYER(eTargetPlayer).setLastStateReligion(NO_RELIGION);
+			}
+			else
+			{
+				szBuffer = gDLL->getText("TXT_KEY_ESPIONAGE_TARGET_SWITCH_RELIGION", GC.getReligionInfo((ReligionTypes) iReligion).getDescription()).GetCString();
+				GET_PLAYER(eTargetPlayer).setLastStateReligion((ReligionTypes) iReligion);
+			}
 			GET_PLAYER(eTargetPlayer).setConversionTimer(std::max(1, ((100 + GET_PLAYER(eTargetPlayer).getAnarchyModifier()) * GC.getDefineINT("MIN_CONVERSION_TURNS")) / 100));
 			bSomethingHappened = true;
 		}
@@ -26094,14 +26117,17 @@ bool CvPlayer::canStealTech(PlayerTypes eTarget, TechTypes eTech) const
 	return false;
 }
 
-bool CvPlayer::canForceCivics(PlayerTypes eTarget, CivicTypes eCivic) const
+// bAnyCivic (added by this mod: bSwitchAnyCivic of the espionage missions): this player need not run eCivic
+bool CvPlayer::canForceCivics(PlayerTypes eTarget, CivicTypes eCivic, bool bAnyCivic) const
 {
-	return (GET_PLAYER(eTarget).canDoCivics(eCivic) && !GET_PLAYER(eTarget).isCivic(eCivic) && isCivic(eCivic));
+	return (GET_PLAYER(eTarget).canDoCivics(eCivic) && !GET_PLAYER(eTarget).isCivic(eCivic) && (bAnyCivic || isCivic(eCivic)));
 }
 
-bool CvPlayer::canForceReligion(PlayerTypes eTarget, ReligionTypes eReligion) const
+// bAnyReligion (added by this mod: bSwitchAnyReligion of the espionage missions): eReligion need not be the state religion
+// of this player
+bool CvPlayer::canForceReligion(PlayerTypes eTarget, ReligionTypes eReligion, bool bAnyReligion) const
 {
-	return (GET_PLAYER(eTarget).canDoReligion(eReligion) && GET_PLAYER(eTarget).getStateReligion() != eReligion && getStateReligion() == eReligion);
+	return (GET_PLAYER(eTarget).canDoReligion(eReligion) && GET_PLAYER(eTarget).getStateReligion() != eReligion && (bAnyReligion || getStateReligion() == eReligion));
 }
 
 bool CvPlayer::canSpyDestroyUnit(PlayerTypes eTarget, CvUnit& kUnit) const

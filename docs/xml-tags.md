@@ -8,7 +8,7 @@
 | `docs/tags/trait-military.md` | 志向: ユニット・戦闘・征服・昇進・経験値・維持費 |
 | `docs/tags/trait-territory.md` | 志向: 地形・地形の特徴・都市・都市圏・国境・移動・蛮族・資源の発見 |
 | `docs/tags/trait-rules.md` | 志向: 社会制度・技術・陳腐化・外交・固有ユニット・緊急生産・`ConditionalFreeTraits`・Python フック（`Py...`） |
-| `docs/tags/espionage.md` | 諜報任務: 志向による使用の制限（`PrereqOrTraits`・`DisableTraits`）、この Mod で足した任務（要人の殺害・誘拐） |
+| `docs/tags/espionage.md` | 諜報任務: 志向による使用の制限（`PrereqOrTraits`・`DisableTraits`）、この Mod で足した任務（要人の殺害・誘拐、任意の社会制度を押し付ける体制転覆 `bSwitchAnyCivic`、任意の宗教か国教なしを押し付ける国教転覆 `bSwitchAnyReligion`・`bSwitchNoReligion`） |
 | `docs/tags/promotion.md` | 昇進・呪文 |
 | `docs/tags/building-civ.md` | 建物・文明 |
 | `docs/tags/improvement-civic.md` | 施設・作業、社会制度・資源・ユニット・イベント・生産の種類 |

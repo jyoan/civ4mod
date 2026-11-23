@@ -30275,7 +30275,10 @@ bool CvEventInfo::readPass2(CvXMLLoadUtility* pXML)
 //------------------------------------------------------------------------------------------------------
 CvEspionageMissionInfo::CvEspionageMissionInfo() :
 m_bKillGreatPerson(false),
-m_bKidnapGreatPerson(false)
+m_bKidnapGreatPerson(false),
+m_bSwitchAnyCivic(false),
+m_bSwitchAnyReligion(false),
+m_bSwitchNoReligion(false)
 {
 }
 
@@ -30473,6 +30476,27 @@ bool CvEspionageMissionInfo::isKidnapGreatPerson() const
 	return m_bKidnapGreatPerson;
 }
 
+// bSwitchAnyCivic (added by this mod): with iSwitchCivicCostFactor, the player can force any civic the target can adopt
+// and does not run, not only the civics the player runs
+bool CvEspionageMissionInfo::isSwitchAnyCivic() const
+{
+	return m_bSwitchAnyCivic;
+}
+
+// bSwitchAnyReligion (added by this mod): with iSwitchReligionCostFactor, the player can force any religion the target can
+// adopt as state religion and does not have as state religion, not only the state religion of the player
+bool CvEspionageMissionInfo::isSwitchAnyReligion() const
+{
+	return m_bSwitchAnyReligion;
+}
+
+// bSwitchNoReligion (added by this mod): with iSwitchReligionCostFactor, the player can also abolish the state religion of
+// the target. The extra data of the mission is then GC.getNumReligionInfos()
+bool CvEspionageMissionInfo::isSwitchNoReligion() const
+{
+	return m_bSwitchNoReligion;
+}
+
 bool CvEspionageMissionInfo::read(CvXMLLoadUtility* pXML)
 {
 	CvString szTextVal;
@@ -30521,6 +30545,9 @@ bool CvEspionageMissionInfo::read(CvXMLLoadUtility* pXML)
 	readTypeList(pXML, "DisableTraits", m_aiDisableTraits);
 	pXML->GetChildXmlValByName(&m_bKillGreatPerson, "bKillGreatPerson");
 	pXML->GetChildXmlValByName(&m_bKidnapGreatPerson, "bKidnapGreatPerson");
+	pXML->GetChildXmlValByName(&m_bSwitchAnyCivic, "bSwitchAnyCivic");
+	pXML->GetChildXmlValByName(&m_bSwitchAnyReligion, "bSwitchAnyReligion");
+	pXML->GetChildXmlValByName(&m_bSwitchNoReligion, "bSwitchNoReligion");
 
 	return true;
 }
