@@ -10,6 +10,7 @@
 ## for random numbers.
 
 from CvPythonExtensions import *
+import heapq
 
 gc = CyGlobalContext()
 
@@ -181,6 +182,110 @@ def makeCityPlotHills(pCity, szTerrain):
 	eFeature = pPlot.getFeatureType()
 	if eFeature != -1 and not pPlot.canHaveFeature(eFeature):
 		pPlot.setFeatureType(FeatureTypes.NO_FEATURE, -1)
+
+ROUTE_COST_EXISTING = 1		# a plot with a route at least as good
+ROUTE_COST_PER_MOVE = 10	# a plot without it, per movement point of its terrain, feature and hills
+ROUTE_COST_RIVER = 30		# crossing a river (a unit without a bridge uses all its moves there)
+ROUTE_COST_RIVER_DIAGONAL = 30	# more for crossing a river diagonally, at a corner of the river
+
+def hasRouteAtLeast(pPlot, iRouteValue):
+	"The plot has a route at least as good as the value (CvRouteInfo value: road 1, railroad 2)"
+	eOldRoute = pPlot.getRouteType()
+	return eOldRoute != -1 and gc.getRouteInfo(eOldRoute).getValue() >= iRouteValue
+
+def routeStepCost(pFromPlot, pPlot, iDX, iDY, iRouteValue):
+	"The cost of the step to the plot for buildRouteToCapital (see the ROUTE_COST_ constants)"
+	if hasRouteAtLeast(pPlot, iRouteValue):
+		iCost = ROUTE_COST_EXISTING
+	else:
+		eFeature = pPlot.getFeatureType()
+		if eFeature != -1:
+			iMoves = gc.getFeatureInfo(eFeature).getMovementCost()
+		else:
+			iMoves = gc.getTerrainInfo(pPlot.getTerrainType()).getMovementCost()
+		if pPlot.isHills():
+			iMoves += gc.getDefineINT("HILLS_EXTRA_MOVEMENT")
+		iCost = ROUTE_COST_PER_MOVE * iMoves
+	if pFromPlot.isRiverCrossing(directionXY(iDX, iDY)):
+		iCost += ROUTE_COST_RIVER
+		if iDX != 0 and iDY != 0:
+			iCost += ROUTE_COST_RIVER_DIAGONAL
+	return iCost
+
+def buildRouteToCapital(pCity, szRoute, iMaxDistance):
+	"""Builds the route ('ROUTE_ROAD') from the city to the capital of its owner, e.g. from PyOnCityFounded, when a land
+	path of at most iMaxDistance plots joins them. The techs do not matter. The path goes over land of the same area,
+	not over impassable plots, and only over plots without owner or of the team of the owner. Of those paths it takes
+	the cheapest one, like the path of a worker: rough terrain and river crossings (diagonal ones most) cost more,
+	existing routes almost nothing (the ROUTE_COST_ constants). A plot keeps a route at least as good (CvRouteInfo
+	value: a railroad stays a railroad). Returns the number of plots that got the route, -1 without a path"""
+	pPlayer = gc.getPlayer(pCity.getOwner())
+	pCapital = pPlayer.getCapitalCity()
+	eRoute = gc.getInfoTypeForString(szRoute)
+	if pCapital.isNone() or eRoute == -1:
+		return -1
+	iRouteValue = gc.getRouteInfo(eRoute).getValue()
+	iTeam = pPlayer.getTeam()
+	pStart = pCity.plot()
+	iStartX = pStart.getX()
+	iStartY = pStart.getY()
+	iGoalX = pCapital.getX()
+	iGoalY = pCapital.getY()
+	iArea = pStart.getArea()
+	if iStartX == iGoalX and iStartY == iGoalY:
+		return 0
+	if stepDistance(iStartX, iStartY, iGoalX, iGoalY) > iMaxDistance or pCapital.plot().getArea() != iArea:
+		return -1
+	# Dijkstra by cost over the states (x, y, number of plots), so that the cheapest path within iMaxDistance plots wins.
+	# dCosts[(x, y)] is the list of (number of plots, cost) reached so far; a state is dropped if one with fewer or
+	# as many plots costs as little
+	dCosts = {(iStartX, iStartY): [(0, 0)]}
+	dParent = {}
+	lHeap = [(0, 0, iStartX, iStartY)]
+	tGoal = None
+	while lHeap:
+		iCost, iSteps, iX, iY = heapq.heappop(lHeap)
+		if iX == iGoalX and iY == iGoalY:
+			tGoal = (iX, iY, iSteps)
+			break
+		pFromPlot = CyMap().plot(iX, iY)
+		for iDX in (-1, 0, 1):
+			for iDY in (-1, 0, 1):
+				if iDX == 0 and iDY == 0:
+					continue
+				pPlot = plotXY(iX, iY, iDX, iDY)
+				if pPlot.isNone() or pPlot.isWater() or pPlot.isImpassable() or pPlot.getArea() != iArea:
+					continue
+				if pPlot.getOwner() != -1 and pPlot.getTeam() != iTeam:
+					continue
+				iNewX = pPlot.getX()
+				iNewY = pPlot.getY()
+				iNewSteps = iSteps + 1
+				if iNewSteps + stepDistance(iNewX, iNewY, iGoalX, iGoalY) > iMaxDistance:
+					continue
+				iNewCost = iCost + routeStepCost(pFromPlot, pPlot, iDX, iDY, iRouteValue)
+				lReached = dCosts.setdefault((iNewX, iNewY), [])
+				bDominated = False
+				for (iOldSteps, iOldCost) in lReached:
+					if iOldSteps <= iNewSteps and iOldCost <= iNewCost:
+						bDominated = True
+						break
+				if bDominated:
+					continue
+				lReached.append((iNewSteps, iNewCost))
+				dParent[(iNewX, iNewY, iNewSteps)] = (iX, iY, iSteps)
+				heapq.heappush(lHeap, (iNewCost, iNewSteps, iNewX, iNewY))
+	if tGoal is None:
+		return -1
+	iNum = 0
+	tNode = tGoal
+	while tNode[2] > 0:
+		pPlot = CyMap().plot(tNode[0], tNode[1])
+		if not pPlot.isCity() and not hasRouteAtLeast(pPlot, iRouteValue):
+			pPlot.setRouteType(eRoute)
+			iNum += 1
+		tNode = dParent[tNode]
+	return iNum
 
 def gainTraitForTurns(pPlayer, szTrait, iTurns):
 	"The player has the trait for iTurns turns (CyPlayer.setTraitTurns). If it is already temporary, the longer of the two counts (no stacking). Scale by game speed with scaleBySpeed(iTurns, 'GoldenAge') if wanted"

@@ -167,3 +167,4 @@
 - 2026-11-23: `bNoConscriptExperiencePenalty` を `Conscription/bNoExperiencePenalty` に移した後も、説明文と徴兵したユニットの経験値（半分にならない）をゲーム内で確認
 - 2026-11-23: 志向のタグを親ノード `Conquest`・`CultureFlip`・`StartBias`・`NoObsolescence` にまとめた後も、検証用志向の説明文・開始位置のバイアス・海での開始をゲーム内で確認
 - 2026-11-23: 志向のフック `PyOnCircumnavigated`（`iOrder`）と共通関数 `startGoldenAge`・`gainCircumnavigationMoves`、世界一周の判定をチームごとにしたこと（移動力のボーナスと通知は 1 番目だけ）をゲーム内で確認
+- 2026-11-23: 共通関数 `buildRouteToCapital`（建設した都市から首都まで、陸路の距離以内なら技術なしで道を敷く。川をまたぐ経路を避ける）をゲーム内で確認
