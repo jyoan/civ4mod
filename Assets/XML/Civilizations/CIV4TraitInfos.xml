@@ -22,8 +22,10 @@
 			<Description>TXT_KEY_TRAIT_AGGRESSIVE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_AGGRESSIVE_SHORT</ShortDescription>
 			<bBasicTrait>1</bBasicTrait>
+			<Conquest>
+				<iGoldModifier>100</iGoldModifier>
+			</Conquest>
 			<iPillageGoldModifier>100</iPillageGoldModifier>
-			<iCityCaptureGoldModifier>100</iCityCaptureGoldModifier>
 			<FreePromotions>
 				<FreePromotion>
 					<PromotionType>PROMOTION_COMBAT1</PromotionType>
@@ -1570,12 +1572,14 @@
 			<Type>TRAIT_FOREST_PEOPLE</Type>
 			<Description>TXT_KEY_TRAIT_FOREST_PEOPLE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_FOREST_PEOPLE_SHORT</ShortDescription>
-			<StartBiasFeatures>
-				<StartBiasFeature>
-					<FeatureType>FEATURE_FOREST</FeatureType>
-					<iStartBias>10</iStartBias>
-				</StartBiasFeature>
-			</StartBiasFeatures>
+			<StartBias>
+				<Features>
+					<StartBiasFeature>
+						<FeatureType>FEATURE_FOREST</FeatureType>
+						<iStartBias>10</iStartBias>
+					</StartBiasFeature>
+				</Features>
+			</StartBias>
 			<MaintainFeatures>
 				<MaintainFeature>
 					<FeatureType>FEATURE_FOREST</FeatureType>
@@ -1593,12 +1597,14 @@
 			<Type>TRAIT_JUNGLE_PEOPLE</Type>
 			<Description>TXT_KEY_TRAIT_JUNGLE_PEOPLE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_JUNGLE_PEOPLE_SHORT</ShortDescription>
-			<StartBiasFeatures>
-				<StartBiasFeature>
-					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<iStartBias>10</iStartBias>
-				</StartBiasFeature>
-			</StartBiasFeatures>
+			<StartBias>
+				<Features>
+					<StartBiasFeature>
+						<FeatureType>FEATURE_JUNGLE</FeatureType>
+						<iStartBias>10</iStartBias>
+					</StartBiasFeature>
+				</Features>
+			</StartBias>
 			<MaintainFeatures>
 				<MaintainFeature>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -1635,18 +1641,20 @@
 			<RevealBonuses>
 				<BonusType>BONUS_OIL</BonusType>
 			</RevealBonuses>
-			<StartBiasTerrains>
-				<StartBiasTerrain>
-					<TerrainType>TERRAIN_DESERT</TerrainType>
-					<iStartBias>10</iStartBias>
-				</StartBiasTerrain>
-			</StartBiasTerrains>
-			<StartBiasBonuses>
-				<StartBiasBonus>
-					<BonusType>BONUS_OIL</BonusType>
-					<iStartBias>50</iStartBias>
-				</StartBiasBonus>
-			</StartBiasBonuses>
+			<StartBias>
+				<Terrains>
+					<StartBiasTerrain>
+						<TerrainType>TERRAIN_DESERT</TerrainType>
+						<iStartBias>10</iStartBias>
+					</StartBiasTerrain>
+				</Terrains>
+				<BonusBiases>
+					<StartBiasBonus>
+						<BonusType>BONUS_OIL</BonusType>
+						<iStartBias>50</iStartBias>
+					</StartBiasBonus>
+				</BonusBiases>
+			</StartBias>
 			<FeatureYieldChanges>
 				<FeatureYieldChange>
 					<FeatureType>FEATURE_OASIS</FeatureType>
@@ -1688,16 +1696,18 @@
 			<Type>TRAIT_ANDES</Type>
 			<Description>TXT_KEY_TRAIT_ANDES</Description>
 			<ShortDescription>TXT_KEY_TRAIT_ANDES_SHORT</ShortDescription>
-			<StartBiasTerrains>
-				<StartBiasTerrain>
-					<TerrainType>TERRAIN_HILL</TerrainType>
-					<iStartBias>10</iStartBias>
-				</StartBiasTerrain>
-				<StartBiasTerrain>
-					<TerrainType>TERRAIN_PEAK</TerrainType>
-					<iStartBias>10</iStartBias>
-				</StartBiasTerrain>
-			</StartBiasTerrains>
+			<StartBias>
+				<Terrains>
+					<StartBiasTerrain>
+						<TerrainType>TERRAIN_HILL</TerrainType>
+						<iStartBias>10</iStartBias>
+					</StartBiasTerrain>
+					<StartBiasTerrain>
+						<TerrainType>TERRAIN_PEAK</TerrainType>
+						<iStartBias>10</iStartBias>
+					</StartBiasTerrain>
+				</Terrains>
+			</StartBias>
 			<TerrainYieldChanges>
 				<TerrainYieldChange>
 					<TerrainType>TERRAIN_HILL</TerrainType>
@@ -1752,12 +1762,14 @@
 			<Type>TRAIT_NILE</Type>
 			<Description>TXT_KEY_TRAIT_NILE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_NILE_SHORT</ShortDescription>
-			<StartBiasFeatures>
-				<StartBiasFeature>
-					<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
-					<iStartBias>10</iStartBias>
-				</StartBiasFeature>
-			</StartBiasFeatures>
+			<StartBias>
+				<Features>
+					<StartBiasFeature>
+						<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
+						<iStartBias>10</iStartBias>
+					</StartBiasFeature>
+				</Features>
+			</StartBias>
 			<FeatureYieldChanges>
 				<FeatureYieldChange>
 					<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
@@ -1785,12 +1797,14 @@
 			<Type>TRAIT_HORSE_PEOPLE</Type>
 			<Description>TXT_KEY_TRAIT_HORSE_PEOPLE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_HORSE_PEOPLE_SHORT</ShortDescription>
-			<StartBiasBonuses>
-				<StartBiasBonus>
-					<BonusType>BONUS_HORSE</BonusType>
-					<iStartBias>50</iStartBias>
-				</StartBiasBonus>
-			</StartBiasBonuses>
+			<StartBias>
+				<BonusBiases>
+					<StartBiasBonus>
+						<BonusType>BONUS_HORSE</BonusType>
+						<iStartBias>50</iStartBias>
+					</StartBiasBonus>
+				</BonusBiases>
+			</StartBias>
 			<UnitCombatFreeExperiences>
 				<UnitCombatFreeExperience>
 					<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
@@ -1845,11 +1859,13 @@
 			<Type>TRAIT_COEXISTENCE</Type>
 			<Description>TXT_KEY_TRAIT_COEXISTENCE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_COEXISTENCE_SHORT</ShortDescription>
-			<iConquestBuildingSurviveModifier>50</iConquestBuildingSurviveModifier>
-			<bConquestStateReligion>1</bConquestStateReligion>
-			<ConquestReligionBuildings>
-				<SpecialBuildingType>SPECIALBUILDING_TEMPLE</SpecialBuildingType>
-			</ConquestReligionBuildings>
+			<Conquest>
+				<iBuildingSurviveModifier>50</iBuildingSurviveModifier>
+				<bStateReligion>1</bStateReligion>
+				<ReligionBuildings>
+					<SpecialBuildingType>SPECIALBUILDING_TEMPLE</SpecialBuildingType>
+				</ReligionBuildings>
+			</Conquest>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_FOREST_KEEPER</Type>
@@ -1954,7 +1970,9 @@
 			<Type>TRAIT_TOLERANCE</Type>
 			<Description>TXT_KEY_TRAIT_TOLERANCE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TOLERANCE_SHORT</ShortDescription>
-			<bNoConquestPopulationLoss>1</bNoConquestPopulationLoss>
+			<Conquest>
+				<bNoPopulationLoss>1</bNoPopulationLoss>
+			</Conquest>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_BLOOD_AND_IRON</Type>
@@ -2043,10 +2061,12 @@
 			<Type>TRAIT_WALLS_OF_URUK</Type>
 			<Description>TXT_KEY_TRAIT_WALLS_OF_URUK</Description>
 			<ShortDescription>TXT_KEY_TRAIT_WALLS_OF_URUK_SHORT</ShortDescription>
-			<NoObsoleteBuildingClasses>
-				<BuildingClassType>BUILDINGCLASS_WALLS</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_CASTLE</BuildingClassType>
-			</NoObsoleteBuildingClasses>
+			<NoObsolescence>
+				<BuildingClasses>
+					<BuildingClassType>BUILDINGCLASS_WALLS</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_CASTLE</BuildingClassType>
+				</BuildingClasses>
+			</NoObsolescence>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_KING_OF_FAITH</Type>
@@ -2136,21 +2156,23 @@
 			<Type>TRAIT_ETERNAL_MONUMENTS</Type>
 			<Description>TXT_KEY_TRAIT_ETERNAL_MONUMENTS</Description>
 			<ShortDescription>TXT_KEY_TRAIT_ETERNAL_MONUMENTS_SHORT</ShortDescription>
-			<NoObsoleteBuildingClasses>
-				<BuildingClassType>BUILDINGCLASS_STONEHENGE</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_GREAT_LIBRARY</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_GREAT_LIGHTHOUSE</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_COLOSSUS</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_PARTHENON</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_ANGKOR_WAT</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_HAGIA_SOPHIA</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_CHICHEN_ITZA</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_SPIRAL_MINARET</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_KREMLIN</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_ARTEMIS</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_SANKORE</BuildingClassType>
-				<BuildingClassType>BUILDINGCLASS_APOSTOLIC_PALACE</BuildingClassType>
-			</NoObsoleteBuildingClasses>
+			<NoObsolescence>
+				<BuildingClasses>
+					<BuildingClassType>BUILDINGCLASS_STONEHENGE</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_GREAT_LIBRARY</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_GREAT_LIGHTHOUSE</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_COLOSSUS</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PARTHENON</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_ANGKOR_WAT</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_HAGIA_SOPHIA</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_CHICHEN_ITZA</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_SPIRAL_MINARET</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_KREMLIN</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_ARTEMIS</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_SANKORE</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_APOSTOLIC_PALACE</BuildingClassType>
+				</BuildingClasses>
+			</NoObsolescence>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_EMANCIPATION</Type>
@@ -2405,8 +2427,10 @@
 			<Type>TRAIT_ORIENTALISM</Type>
 			<Description>TXT_KEY_TRAIT_ORIENTALISM</Description>
 			<ShortDescription>TXT_KEY_TRAIT_ORIENTALISM_SHORT</ShortDescription>
-			<bConquestLearnUniqueUnits>1</bConquestLearnUniqueUnits>
-			<bConquestLearnUniqueBuildings>1</bConquestLearnUniqueBuildings>
+			<Conquest>
+				<bLearnUniqueUnits>1</bLearnUniqueUnits>
+				<bLearnUniqueBuildings>1</bLearnUniqueBuildings>
+			</Conquest>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_APPIAN_WAY</Type>
@@ -2570,9 +2594,11 @@
 			<Description>TXT_KEY_TRAIT_HAGIA_SOPHIA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_HAGIA_SOPHIA_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_HAGIA_SOPHIA_HELP</Help>
-			<NoObsoleteSpecialBuildings>
-				<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
-			</NoObsoleteSpecialBuildings>
+			<NoObsolescence>
+				<SpecialBuildings>
+					<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
+				</SpecialBuildings>
+			</NoObsolescence>
 			<PyOnReligionFounded>createMissionaries(pPlayer, eReligion, 2, pCity)</PyOnReligionFounded>
 		</TraitInfo>
 		<TraitInfo>
@@ -2622,7 +2648,9 @@
 			<Type>TRAIT_VENI_VIDI_VICI</Type>
 			<Description>TXT_KEY_TRAIT_VENI_VIDI_VICI</Description>
 			<ShortDescription>TXT_KEY_TRAIT_VENI_VIDI_VICI_SHORT</ShortDescription>
-			<bConquestHeal>1</bConquestHeal>
+			<Conquest>
+				<bHeal>1</bHeal>
+			</Conquest>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TRANS_SAHARAN</Type>
@@ -2644,12 +2672,14 @@
 					</Yields>
 				</CapitalTerrainYieldPercent>
 			</CapitalTerrainYieldPercents>
-			<StartBiasTerrains>
-				<StartBiasTerrain>
-					<TerrainType>TERRAIN_DESERT</TerrainType>
-					<iStartBias>10</iStartBias>
-				</StartBiasTerrain>
-			</StartBiasTerrains>
+			<StartBias>
+				<Terrains>
+					<StartBiasTerrain>
+						<TerrainType>TERRAIN_DESERT</TerrainType>
+						<iStartBias>10</iStartBias>
+					</StartBiasTerrain>
+				</Terrains>
+			</StartBias>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_RESISTANCE</Type>
@@ -2741,12 +2771,14 @@
 					<iHealChange>20</iHealChange>
 				</FeatureHealChange>
 			</FeatureHealChanges>
-			<StartBiasFeatures>
-				<StartBiasFeature>
-					<FeatureType>FEATURE_FOREST</FeatureType>
-					<iStartBias>10</iStartBias>
-				</StartBiasFeature>
-			</StartBiasFeatures>
+			<StartBias>
+				<Features>
+					<StartBiasFeature>
+						<FeatureType>FEATURE_FOREST</FeatureType>
+						<iStartBias>10</iStartBias>
+					</StartBiasFeature>
+				</Features>
+			</StartBias>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -2882,7 +2914,9 @@
 			<Type>TRAIT_LATER_THREE_KINGDOMS</Type>
 			<Description>TXT_KEY_TRAIT_LATER_THREE_KINGDOMS</Description>
 			<ShortDescription>TXT_KEY_TRAIT_LATER_THREE_KINGDOMS_SHORT</ShortDescription>
-			<iConquestCulturePercent>50</iConquestCulturePercent>
+			<Conquest>
+				<iCulturePercent>50</iCulturePercent>
+			</Conquest>
 			<bStackCityDefense>1</bStackCityDefense>
 		</TraitInfo>
 		<TraitInfo>
