@@ -2486,6 +2486,29 @@ bool CyPlayer::isUnsettleGreatPeople()
 	return m_pPlayer ? m_pPlayer->isUnsettleGreatPeople() : false;
 }
 
+bool CyPlayer::isIgnoreEvents()
+{
+	return m_pPlayer ? m_pPlayer->isIgnoreEvents() : false;
+}
+
+int CyPlayer::getEventChanceChange()
+{
+	return m_pPlayer ? m_pPlayer->getEventChanceChange() : 0;
+}
+
+bool CyPlayer::isNoFirstEventDelay()
+{
+	return m_pPlayer ? m_pPlayer->isNoFirstEventDelay() : false;
+}
+
+void CyPlayer::ignoreEvent(int iEventTriggeredId)
+{
+	if (m_pPlayer)
+	{
+		m_pPlayer->ignoreEvent(iEventTriggeredId);
+	}
+}
+
 bool CyPlayer::isNoCultureFlip()
 {
 	return m_pPlayer ? m_pPlayer->isNoCultureFlip() : false;

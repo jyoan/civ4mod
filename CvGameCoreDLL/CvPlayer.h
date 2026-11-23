@@ -414,6 +414,10 @@ public:
 	bool isLongCountCalendar() const;				// Exposed to Python
 	bool isImprovementUpgradeUnworked() const;		// Exposed to Python
 	bool isUnsettleGreatPeople() const;				// Exposed to Python
+	bool isIgnoreEvents() const;					// Exposed to Python
+	int getEventChanceChange() const;				// Exposed to Python
+	bool isNoFirstEventDelay() const;				// Exposed to Python
+	void ignoreEvent(int iEventTriggeredId);		// Exposed to Python: bIgnoreEvents of the traits (added by this mod)
 	bool isNoCultureFlip() const;					// Exposed to Python: bNoCultureFlip or bNoRevoltAndNoCultureFlip of the traits
 	bool isNoRevoltAndNoCultureFlip() const;		// Exposed to Python
 	bool isInstantCultureFlip() const;				// Exposed to Python

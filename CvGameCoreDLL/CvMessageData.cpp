@@ -549,6 +549,16 @@ void CvNetModNetMessage::Execute()
 		return;
 	}
 
+	// bIgnoreEvents of the traits (added by this mod): player, ID of the triggered data
+	if (m_iData1 == MOD_NET_MESSAGE_IGNORE_EVENT)
+	{
+		if (m_iData2 >= 0 && m_iData2 < MAX_PLAYERS)
+		{
+			GET_PLAYER((PlayerTypes)m_iData2).ignoreEvent(m_iData3);
+		}
+		return;
+	}
+
 	CvEventReporter::getInstance().reportModNetMessage(m_iData1, m_iData2, m_iData3, m_iData4, m_iData5);
 }
 

@@ -20418,6 +20418,9 @@ m_bRevealHiddenAttitude(false),
 m_bLongCountCalendar(false),
 m_bImprovementUpgradeUnworked(false),
 m_bUnsettleGreatPeople(false),
+m_bIgnoreEvents(false),
+m_iEventChanceChange(0),
+m_bNoFirstEventDelay(false),
 m_bNoCultureFlip(false),
 m_bNoRevoltAndNoCultureFlip(false),
 m_bInstantCultureFlip(false),
@@ -21216,6 +21219,27 @@ bool CvTraitInfo::isImprovementUpgradeUnworked() const
 bool CvTraitInfo::isUnsettleGreatPeople() const
 {
 	return m_bUnsettleGreatPeople;
+}
+
+// bIgnoreEvents (added by this mod): the popup of a random event of the player has one more choice that ignores the event
+// (CvDLLButtonPopup::launchEventPopup, CvPlayer::ignoreEvent). The AI does not use it
+bool CvTraitInfo::isIgnoreEvents() const
+{
+	return m_bIgnoreEvents;
+}
+
+// iEventChanceChange (added by this mod): added to iEventChancePerTurn of the era (out of EVENT_PROBABILITY_ROLL_SIDES,
+// 100) in the check for a new random event each turn (CvPlayer::doEvents)
+int CvTraitInfo::getEventChanceChange() const
+{
+	return m_iEventChanceChange;
+}
+
+// bNoFirstEventDelay (added by this mod): new random events can come from the first turn, without waiting for
+// FIRST_EVENT_DELAY_TURNS (20) turns (CvPlayer::doEvents)
+bool CvTraitInfo::isNoFirstEventDelay() const
+{
+	return m_bNoFirstEventDelay;
 }
 
 // CultureFlip/bNoFlip (added by this mod): the cities of the player do not flip to another player by culture. The revolts still
@@ -23231,6 +23255,9 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bLongCountCalendar, "bLongCountCalendar");
 	pXML->GetChildXmlValByName(&m_bImprovementUpgradeUnworked, "bImprovementUpgradeUnworked");
 	pXML->GetChildXmlValByName(&m_bUnsettleGreatPeople, "bUnsettleGreatPeople");
+	pXML->GetChildXmlValByName(&m_bIgnoreEvents, "bIgnoreEvents");
+	pXML->GetChildXmlValByName(&m_iEventChanceChange, "iEventChanceChange");
+	pXML->GetChildXmlValByName(&m_bNoFirstEventDelay, "bNoFirstEventDelay");
 	// CultureFlip: bNoFlip, bNoRevoltAndNoFlip, bInstantFlip, iRevoltChance
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CultureFlip"))
 	{
