@@ -184,3 +184,4 @@
 - 2026-11-23: 志向のタグ `bInstantCultureFlip`・`iCultureRevoltChance`（外国の都市が 1 回目の反乱で寝返る、反乱の確率 2 倍）と `bNoCultureFlip`・`bNoRevoltAndNoCultureFlip`（自国の都市が寝返らない、反乱も起きない）をゲーム内で確認
 - 2026-11-23: 志向のタグ `Conscription`（`iMaxConscript` を子に移動、`iPopulationModifier`・`iMinCityPopulationChange`・`iMinCulturePercentChange`・`iPopAngerChange`・`iAngerLengthPercent`。徴兵の失う人口・必要な人口・必要な文化・不満の人数と期間）をゲーム内で確認
 - 2026-11-23: `bNoConscriptExperiencePenalty` を `Conscription/bNoExperiencePenalty` に移した後も、説明文と徴兵したユニットの経験値（半分にならない）をゲーム内で確認
+- 2026-11-23: 志向のタグを親ノード `Conquest`・`CultureFlip`・`StartBias`・`NoObsolescence` にまとめた後も、検証用志向の説明文・開始位置のバイアス・海での開始をゲーム内で確認

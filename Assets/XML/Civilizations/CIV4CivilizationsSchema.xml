@@ -416,12 +416,30 @@
 	<ElementType name="iNewCityPopulation" content="textOnly" dt:type="int"/>
 	<ElementType name="bNewCityStateReligion" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iOccupationTimeModifier" content="textOnly" dt:type="int"/>
-	<ElementType name="iConquestCulturePercent" content="textOnly" dt:type="int"/>
-	<ElementType name="iConquestBuildingSurviveModifier" content="textOnly" dt:type="int"/>
-	<ElementType name="bNoConquestPopulationLoss" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iCulturePercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iBuildingSurviveModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="bNoPopulationLoss" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoAutoRaze" content="textOnly" dt:type="boolean"/>
-	<ElementType name="bConquestLearnUniqueUnits" content="textOnly" dt:type="boolean"/>
-	<ElementType name="bConquestLearnUniqueBuildings" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bLearnUniqueUnits" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bLearnUniqueBuildings" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bHeal" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bStateReligion" content="textOnly" dt:type="boolean"/>
+	<ElementType name="ReligionBuildings" content="eltOnly">
+		<element type="SpecialBuildingType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iGoldModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="Conquest" content="eltOnly">
+		<element type="iCulturePercent" minOccurs="0"/>
+		<element type="iBuildingSurviveModifier" minOccurs="0"/>
+		<element type="bNoPopulationLoss" minOccurs="0"/>
+		<element type="bNoAutoRaze" minOccurs="0"/>
+		<element type="bLearnUniqueUnits" minOccurs="0"/>
+		<element type="bLearnUniqueBuildings" minOccurs="0"/>
+		<element type="bHeal" minOccurs="0"/>
+		<element type="bStateReligion" minOccurs="0"/>
+		<element type="ReligionBuildings" minOccurs="0"/>
+		<element type="iGoldModifier" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="iStateReligionHappiness" content="textOnly" dt:type="int"/>
 	<ElementType name="iStateReligionHealth" content="textOnly" dt:type="int"/>
 	<ElementType name="iStateReligionGreatPeopleRateModifier" content="textOnly" dt:type="int"/>
@@ -459,17 +477,22 @@
 		<element type="iModifier"/>
 		<element type="iLimit" minOccurs="0"/>
 	</ElementType>
-	<ElementType name="bConquestHeal" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bStackCityDefense" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bRevealWonderProduction" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bRevealWarPlans" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bRevealHiddenAttitude" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bLongCountCalendar" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bImprovementUpgradeUnworked" content="textOnly" dt:type="boolean"/>
-	<ElementType name="bNoCultureFlip" content="textOnly" dt:type="boolean"/>
-	<ElementType name="bNoRevoltAndNoCultureFlip" content="textOnly" dt:type="boolean"/>
-	<ElementType name="bInstantCultureFlip" content="textOnly" dt:type="boolean"/>
-	<ElementType name="iCultureRevoltChance" content="textOnly" dt:type="int"/>
+	<ElementType name="bNoFlip" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bNoRevoltAndNoFlip" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bInstantFlip" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iRevoltChance" content="textOnly" dt:type="int"/>
+	<ElementType name="CultureFlip" content="eltOnly">
+		<element type="bNoFlip" minOccurs="0"/>
+		<element type="bNoRevoltAndNoFlip" minOccurs="0"/>
+		<element type="bInstantFlip" minOccurs="0"/>
+		<element type="iRevoltChance" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="bBasicTrait" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bGainTraitOnCapitalCapture" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bGainTraitsOnElimination" content="textOnly" dt:type="boolean"/>
@@ -517,10 +540,6 @@
 	<ElementType name="Hurrys" content="eltOnly">
 		<element type="Hurry" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
-	<ElementType name="bConquestStateReligion" content="textOnly" dt:type="boolean"/>
-	<ElementType name="ConquestReligionBuildings" content="eltOnly">
-		<element type="SpecialBuildingType" minOccurs="0" maxOccurs="*"/>
-	</ElementType>
 	<ElementType name="NoTechCivics" content="eltOnly">
 		<element type="CivicType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -550,7 +569,6 @@
 	<ElementType name="iGoldenAgeGreatPeopleRateModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iCapitalBuildingProductionModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iPillageGoldModifier" content="textOnly" dt:type="int"/>
-	<ElementType name="iCityCaptureGoldModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="NewCityCultureLevel" content="textOnly"/>
 	<ElementType name="YieldModifiers" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
@@ -652,17 +670,24 @@
 	<ElementType name="FeatureRoutes" content="eltOnly">
 		<element type="FeatureRoute" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
-	<ElementType name="bIgnoreBuildingObsolescence" content="textOnly" dt:type="boolean"/>
-	<ElementType name="NoObsoleteBuildingClasses" content="eltOnly">
+	<ElementType name="bAllBuildings" content="textOnly" dt:type="boolean"/>
+	<ElementType name="BuildingClasses" content="eltOnly">
 		<element type="BuildingClassType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="SpecialBuildingType" content="textOnly"/>
-	<ElementType name="NoObsoleteSpecialBuildings" content="eltOnly">
+	<ElementType name="SpecialBuildings" content="eltOnly">
 		<element type="SpecialBuildingType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
-	<ElementType name="bIgnoreBonusObsolescence" content="textOnly" dt:type="boolean"/>
-	<ElementType name="NoObsoleteBonuses" content="eltOnly">
+	<ElementType name="bAllBonuses" content="textOnly" dt:type="boolean"/>
+	<ElementType name="Bonuses" content="eltOnly">
 		<element type="BonusType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="NoObsolescence" content="eltOnly">
+		<element type="bAllBuildings" minOccurs="0"/>
+		<element type="BuildingClasses" minOccurs="0"/>
+		<element type="SpecialBuildings" minOccurs="0"/>
+		<element type="bAllBonuses" minOccurs="0"/>
+		<element type="Bonuses" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="PyOnGameStart" content="textOnly"/>
 	<ElementType name="PyOnBeginTurn" content="textOnly"/>
@@ -861,6 +886,25 @@
 	<ElementType name="ShipUnitClass" content="textOnly"/>
 	<ElementType name="SeaStart" content="eltOnly">
 		<element type="ShipUnitClass"/>
+	</ElementType>
+	<ElementType name="iCoastal" content="textOnly" dt:type="int"/>
+	<ElementType name="iRiver" content="textOnly" dt:type="int"/>
+	<ElementType name="Terrains" content="eltOnly">
+		<element type="StartBiasTerrain" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="Features" content="eltOnly">
+		<element type="StartBiasFeature" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="BonusBiases" content="eltOnly">
+		<element type="StartBiasBonus" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="StartBias" content="eltOnly">
+		<element type="iCoastal" minOccurs="0"/>
+		<element type="iRiver" minOccurs="0"/>
+		<element type="Terrains" minOccurs="0"/>
+		<element type="Features" minOccurs="0"/>
+		<element type="BonusBiases" minOccurs="0"/>
+		<element type="SeaStart" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="CivilizationType" content="textOnly"/>
 	<ElementType name="LeaderType" content="textOnly"/>
@@ -1080,12 +1124,7 @@
 		<element type="iNewCityPopulation" minOccurs="0"/>
 		<element type="bNewCityStateReligion" minOccurs="0"/>
 		<element type="iOccupationTimeModifier" minOccurs="0"/>
-		<element type="iConquestCulturePercent" minOccurs="0"/>
-		<element type="iConquestBuildingSurviveModifier" minOccurs="0"/>
-		<element type="bNoConquestPopulationLoss" minOccurs="0"/>
-		<element type="bNoAutoRaze" minOccurs="0"/>
-		<element type="bConquestLearnUniqueUnits" minOccurs="0"/>
-		<element type="bConquestLearnUniqueBuildings" minOccurs="0"/>
+		<element type="Conquest" minOccurs="0"/>
 		<element type="iStateReligionHappiness" minOccurs="0"/>
 		<element type="iStateReligionHealth" minOccurs="0"/>
 		<element type="iStateReligionGreatPeopleRateModifier" minOccurs="0"/>
@@ -1127,17 +1166,13 @@
 		<element type="iRevengeCombatPercent" minOccurs="0"/>
 		<element type="SpecialBuildingProductionModifiers" minOccurs="0"/>
 		<element type="KnownTechCost" minOccurs="0"/>
-		<element type="bConquestHeal" minOccurs="0"/>
 		<element type="bStackCityDefense" minOccurs="0"/>
 		<element type="bRevealWonderProduction" minOccurs="0"/>
 		<element type="bRevealWarPlans" minOccurs="0"/>
 		<element type="bRevealHiddenAttitude" minOccurs="0"/>
 		<element type="bLongCountCalendar" minOccurs="0"/>
 		<element type="bImprovementUpgradeUnworked" minOccurs="0"/>
-		<element type="bNoCultureFlip" minOccurs="0"/>
-		<element type="bNoRevoltAndNoCultureFlip" minOccurs="0"/>
-		<element type="bInstantCultureFlip" minOccurs="0"/>
-		<element type="iCultureRevoltChance" minOccurs="0"/>
+		<element type="CultureFlip" minOccurs="0"/>
 		<element type="bGainTraitOnCapitalCapture" minOccurs="0"/>
 		<element type="bGainTraitsOnElimination" minOccurs="0"/>
 		<element type="RandomBasicTraits" minOccurs="0"/>
@@ -1159,8 +1194,6 @@
 		<element type="WorldWonderCommerceChanges" minOccurs="0"/>
 		<element type="GlobalWorldWonderCommerceChanges" minOccurs="0"/>
 		<element type="iEnemyWarWearinessModifier" minOccurs="0"/>
-		<element type="bConquestStateReligion" minOccurs="0"/>
-		<element type="ConquestReligionBuildings" minOccurs="0"/>
 		<element type="NoTechCivics" minOccurs="0"/>
 		<element type="CivicOptionExtraSlots" minOccurs="0"/>
 		<element type="ExplorationRewards" minOccurs="0"/>
@@ -1190,7 +1223,6 @@
 		<element type="iGoldenAgeGreatPeopleRateModifier" minOccurs="0"/>
 		<element type="iCapitalBuildingProductionModifier" minOccurs="0"/>
 		<element type="iPillageGoldModifier" minOccurs="0"/>
-		<element type="iCityCaptureGoldModifier" minOccurs="0"/>
 		<element type="iUnitCostModifier" minOccurs="0"/>
 		<element type="iBuildingCostModifier" minOccurs="0"/>
 		<element type="bNoPillageInBorders" minOccurs="0"/>
@@ -1207,12 +1239,7 @@
 		<element type="PassableTerrainsInBorders" minOccurs="0"/>
 		<element type="PassableFeaturesInBorders" minOccurs="0"/>
 		<element type="FeatureHealChanges" minOccurs="0"/>
-		<element type="iStartBiasCoastal" minOccurs="0"/>
-		<element type="iStartBiasRiver" minOccurs="0"/>
-		<element type="StartBiasTerrains" minOccurs="0"/>
-		<element type="StartBiasFeatures" minOccurs="0"/>
-		<element type="StartBiasBonuses" minOccurs="0"/>
-		<element type="SeaStart" minOccurs="0"/>
+		<element type="StartBias" minOccurs="0"/>
 		<element type="CityFoundedUnits" minOccurs="0"/>
 		<element type="FoundingVassal" minOccurs="0"/>
 		<element type="GoldInterest" minOccurs="0"/>
@@ -1224,11 +1251,7 @@
 		<element type="FeatureRoutes" minOccurs="0"/>
 		<element type="UniqueUnits" minOccurs="0"/>
 		<element type="UniqueBuildings" minOccurs="0"/>
-		<element type="bIgnoreBuildingObsolescence" minOccurs="0"/>
-		<element type="NoObsoleteBuildingClasses" minOccurs="0"/>
-		<element type="NoObsoleteSpecialBuildings" minOccurs="0"/>
-		<element type="bIgnoreBonusObsolescence" minOccurs="0"/>
-		<element type="NoObsoleteBonuses" minOccurs="0"/>
+		<element type="NoObsolescence" minOccurs="0"/>
 		<element type="PyOnGameStart" minOccurs="0"/>
 		<element type="PyOnBeginTurn" minOccurs="0"/>
 		<element type="PyOnCityFounded" minOccurs="0"/>
