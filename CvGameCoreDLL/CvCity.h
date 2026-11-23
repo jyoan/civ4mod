@@ -140,6 +140,8 @@ public:
 	int getConscriptPopulation() const;																// Exposed to Python
 	int conscriptMinCityPopulation() const;																			// Exposed to Python
 	int flatConscriptAngerLength() const;																				// Exposed to Python
+	int conscriptMinCulturePercent() const;	// added by this mod
+	int conscriptPopAnger() const;	// added by this mod
 	bool canConscript() const;																				// Exposed to Python
 	void conscript();																											// Exposed to Python
 
@@ -727,7 +729,7 @@ public:
 
 	int getNumRevolts(PlayerTypes eIndex) const;
 	void changeNumRevolts(PlayerTypes eIndex, int iChange);
-	int getRevoltTestProbability() const;
+	int getRevoltTestProbability(PlayerTypes eCulturalOwner = NO_PLAYER) const;	// eCulturalOwner added by this mod
 
 	bool isTradeRoute(PlayerTypes eIndex) const;																	// Exposed to Python
 	void setTradeRoute(PlayerTypes eIndex, bool bNewValue);

@@ -20417,6 +20417,10 @@ m_bRevealWarPlans(false),
 m_bRevealHiddenAttitude(false),
 m_bLongCountCalendar(false),
 m_bImprovementUpgradeUnworked(false),
+m_bNoCultureFlip(false),
+m_bNoRevoltAndNoCultureFlip(false),
+m_bInstantCultureFlip(false),
+m_iCultureRevoltChance(0),
 m_iNewWorldCityPopulation(0),
 m_iOverseasCityPopulation(0),
 m_iOverseasMaintenanceModifier(0),
@@ -20478,6 +20482,11 @@ m_iGoldPerMilitaryUnit(0),
 m_iCorporationMaintenanceModifier(0),
 m_iMaintenanceModifier(0),
 m_iMaxConscript(0),
+m_iConscriptPopulationModifier(0),
+m_iConscriptMinCityPopulationChange(0),
+m_iConscriptMinCulturePercentChange(0),
+m_iConscriptPopAngerChange(0),
+m_iConscriptAngerLengthPercent(0),
 m_bMilitaryFoodProduction(false),
 m_iHealRateChange(0),
 m_iLargestCityHappiness(0),
@@ -21200,6 +21209,34 @@ bool CvTraitInfo::isImprovementUpgradeUnworked() const
 	return m_bImprovementUpgradeUnworked;
 }
 
+// bNoCultureFlip (added by this mod): the cities of the player do not flip to another player by culture. The revolts still
+// occur (occupation, damage to the defenders) (CvPlot::doCulture)
+bool CvTraitInfo::isNoCultureFlip() const
+{
+	return m_bNoCultureFlip;
+}
+
+// bNoRevoltAndNoCultureFlip (added by this mod): no revolt by foreign culture occurs in the cities of the player, so they
+// do not flip either (CvCity::getRevoltTestProbability)
+bool CvTraitInfo::isNoRevoltAndNoCultureFlip() const
+{
+	return m_bNoRevoltAndNoCultureFlip;
+}
+
+// bInstantCultureFlip (added by this mod): foreign cities flip to the player at the first revolt by the culture of the
+// player, without the warning revolts (NUM_WARNING_REVOLTS) (CvPlot::doCulture)
+bool CvTraitInfo::isInstantCultureFlip() const
+{
+	return m_bInstantCultureFlip;
+}
+
+// iCultureRevoltChance (added by this mod): percent change of the chance of revolt in foreign cities by the culture of the
+// player (CvCity::getRevoltTestProbability)
+int CvTraitInfo::getCultureRevoltChance() const
+{
+	return m_iCultureRevoltChance;
+}
+
 // iNewWorldCityPopulation (added by this mod): population of the cities the player founds in the New World
 int CvTraitInfo::getNewWorldCityPopulation() const
 {
@@ -21513,7 +21550,7 @@ bool CvTraitInfo::isNoTechProcess(int iProcess) const
 	return (m_pabNoTechProcess != NULL && iProcess < GC.getNumProcessInfos()) ? m_pabNoTechProcess[iProcess] : false;
 }
 
-// bNoConscriptExperiencePenalty (added by this mod): drafted units get all the experience of the city, not half
+// Conscription/bNoExperiencePenalty (added by this mod): drafted units get all the experience of the city, not half
 bool CvTraitInfo::isNoConscriptExperiencePenalty() const
 {
 	return m_bNoConscriptExperiencePenalty;
@@ -21796,6 +21833,36 @@ int CvTraitInfo::getMaintenanceModifier() const
 int CvTraitInfo::getMaxConscript() const
 {
 	return m_iMaxConscript;
+}
+
+// Conscription/iPopulationModifier (added by this mod): % to the unit cost when the population lost by a draft is counted. See CvCity::getConscriptPopulation
+int CvTraitInfo::getConscriptPopulationModifier() const
+{
+	return m_iConscriptPopulationModifier;
+}
+
+// Conscription/iMinCityPopulationChange (added by this mod): added to CONSCRIPT_MIN_CITY_POPULATION. See CvCity::conscriptMinCityPopulation
+int CvTraitInfo::getConscriptMinCityPopulationChange() const
+{
+	return m_iConscriptMinCityPopulationChange;
+}
+
+// Conscription/iMinCulturePercentChange (added by this mod): added to CONSCRIPT_MIN_CULTURE_PERCENT. See CvCity::conscriptMinCulturePercent
+int CvTraitInfo::getConscriptMinCulturePercentChange() const
+{
+	return m_iConscriptMinCulturePercentChange;
+}
+
+// Conscription/iPopAngerChange (added by this mod): added to CONSCRIPT_POP_ANGER. See CvCity::conscriptPopAnger
+int CvTraitInfo::getConscriptPopAngerChange() const
+{
+	return m_iConscriptPopAngerChange;
+}
+
+// Conscription/iAngerLengthPercent (added by this mod): % to the turns of the anger of a draft. See CvCity::flatConscriptAngerLength
+int CvTraitInfo::getConscriptAngerLengthPercent() const
+{
+	return m_iConscriptAngerLengthPercent;
 }
 
 // bMilitaryFoodProduction (added by this mod): as the civics, the food surplus goes into military units
@@ -23135,6 +23202,10 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bRevealHiddenAttitude, "bRevealHiddenAttitude");
 	pXML->GetChildXmlValByName(&m_bLongCountCalendar, "bLongCountCalendar");
 	pXML->GetChildXmlValByName(&m_bImprovementUpgradeUnworked, "bImprovementUpgradeUnworked");
+	pXML->GetChildXmlValByName(&m_bNoCultureFlip, "bNoCultureFlip");
+	pXML->GetChildXmlValByName(&m_bNoRevoltAndNoCultureFlip, "bNoRevoltAndNoCultureFlip");
+	pXML->GetChildXmlValByName(&m_bInstantCultureFlip, "bInstantCultureFlip");
+	pXML->GetChildXmlValByName(&m_iCultureRevoltChance, "iCultureRevoltChance");
 	// GreatPeopleClassRateModifiers: the unit classes are loaded before the traits
 	readTypeValueList(pXML, "GreatPeopleClassRateModifiers", "GreatPeopleClassRateModifier", "UnitClassType", "iGreatPeopleRateModifier", GC.getNumUnitClassInfos(), m_aiGreatPeopleClassRateModifier);
 	readSpecialBuildingProductionModifiers(pXML);
@@ -23616,7 +23687,6 @@ void CvTraitInfo::readRevealAndStartValues(CvXMLLoadUtility* pXML)
 	// Bonuses: readPass3(). Processes are loaded with LoadPostMenuGlobals: readPass4()
 	readTypeList(pXML, "RevealBonuses", m_aszRevealBonusTypes);
 	readTypeList(pXML, "NoTechProcesses", m_aszNoTechProcessTypes);
-	pXML->GetChildXmlValByName(&m_bNoConscriptExperiencePenalty, "bNoConscriptExperiencePenalty");
 	// Same format as FreeTechs of the civilizations. The techs are loaded before the traits
 	pXML->SetVariableListTagPair(&m_pabFreeTech, "FreeTechs", sizeof(GC.getTechInfo((TechTypes)0)), GC.getNumTechInfos());
 }
@@ -23744,7 +23814,19 @@ void CvTraitInfo::readCounterpartValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCorporationMaintenanceModifier, "iCorporationMaintenanceModifier");
 	pXML->GetChildXmlValByName(&m_iMaintenanceModifier, "iMaintenanceModifier");
 	// Military, as the civics and buildings. The domains are loaded before the traits
-	pXML->GetChildXmlValByName(&m_iMaxConscript, "iMaxConscript");
+	// Conscription: iMaxConscript, iPopulationModifier, iMinCityPopulationChange, iMinCulturePercentChange, iPopAngerChange, iAngerLengthPercent,
+	// bNoExperiencePenalty
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Conscription"))
+	{
+		pXML->GetChildXmlValByName(&m_iMaxConscript, "iMaxConscript");
+		pXML->GetChildXmlValByName(&m_iConscriptPopulationModifier, "iPopulationModifier");
+		pXML->GetChildXmlValByName(&m_iConscriptMinCityPopulationChange, "iMinCityPopulationChange");
+		pXML->GetChildXmlValByName(&m_iConscriptMinCulturePercentChange, "iMinCulturePercentChange");
+		pXML->GetChildXmlValByName(&m_iConscriptPopAngerChange, "iPopAngerChange");
+		pXML->GetChildXmlValByName(&m_iConscriptAngerLengthPercent, "iAngerLengthPercent");
+		pXML->GetChildXmlValByName(&m_bNoConscriptExperiencePenalty, "bNoExperiencePenalty");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 	pXML->GetChildXmlValByName(&m_bMilitaryFoodProduction, "bMilitaryFoodProduction");
 	pXML->GetChildXmlValByName(&m_iHealRateChange, "iHealRateChange");
 	readTypeValueList(pXML, "DomainFreeExperiences", "DomainFreeExperience", "DomainType", "iExperience", NUM_DOMAIN_TYPES, m_aiDomainFreeExperience);

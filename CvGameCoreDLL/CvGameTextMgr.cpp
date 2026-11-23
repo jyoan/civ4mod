@@ -4237,6 +4237,26 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CULTURE_RANGE_CHANGE", kTrait.getCultureRangeChange()));
 	}
 
+	// Revolts and flips by culture (added by this mod)
+	if (kTrait.isNoRevoltAndNoCultureFlip())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_REVOLT_AND_NO_CULTURE_FLIP"));
+	}
+	else if (kTrait.isNoCultureFlip())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_CULTURE_FLIP"));
+	}
+
+	if (kTrait.isInstantCultureFlip())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_INSTANT_CULTURE_FLIP"));
+	}
+
+	if (kTrait.getCultureRevoltChance() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CULTURE_REVOLT_CHANCE", kTrait.getCultureRevoltChance()));
+	}
+
 	// PeaceAnger/iPerTurn: "Cities grow angry in peace" (added by this mod)
 	if (kTrait.getPeaceAngerPerTurn() > 0 && kTrait.getPeaceAngerMax() > 0)
 	{
@@ -5155,6 +5175,37 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_CONSCRIPTION", (kTrait.getMaxConscript() * std::max(0, (((eWorldSize != NO_WORLDSIZE) ? GC.getWorldInfo(eWorldSize).getMaxConscriptModifier() : 0) + 100))) / 100));
 	}
 
+	// The other children of Conscription (added by this mod)
+	if (kTrait.getConscriptPopulationModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_POPULATION", kTrait.getConscriptPopulationModifier()));
+	}
+
+	if (kTrait.getConscriptMinCityPopulationChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_MIN_POPULATION", kTrait.getConscriptMinCityPopulationChange()));
+	}
+
+	if (kTrait.getConscriptMinCulturePercentChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_MIN_CULTURE", kTrait.getConscriptMinCulturePercentChange()));
+	}
+
+	if (kTrait.getConscriptPopAngerChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_ANGER", kTrait.getConscriptPopAngerChange()));
+	}
+
+	if (kTrait.getConscriptAngerLengthPercent() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_ANGER_LENGTH", kTrait.getConscriptAngerLengthPercent()));
+	}
+
+	if (kTrait.isNoConscriptExperiencePenalty())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_CONSCRIPT_EXPERIENCE_PENALTY"));
+	}
+
 	if (kTrait.isMilitaryFoodProduction())
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_MILITARY_FOOD"));
@@ -5179,8 +5230,7 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 	}
 }
 
-// The part of the trait help for the tags of 2026-11-19: RevealBonuses, NoTechProcesses, bNoConscriptExperiencePenalty,
-// FreeTechs (added by this mod)
+// The part of the trait help for the tags of 2026-11-19: RevealBonuses, NoTechProcesses, FreeTechs (added by this mod)
 void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
 {
 	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
@@ -5238,11 +5288,6 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 			setListHelp(szHelpString, szTempBuffer.GetCString(), GC.getProcessInfo((ProcessTypes)iI).getDescription(), L", ", bFirst);
 			bFirst = false;
 		}
-	}
-
-	if (kTrait.isNoConscriptExperiencePenalty())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_CONSCRIPT_EXPERIENCE_PENALTY"));
 	}
 
 	// "Starts with: The Wheel, Bronze Working"

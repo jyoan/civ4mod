@@ -2481,6 +2481,26 @@ bool CyPlayer::isImprovementUpgradeUnworked()
 	return m_pPlayer ? m_pPlayer->isImprovementUpgradeUnworked() : false;
 }
 
+bool CyPlayer::isNoCultureFlip()
+{
+	return m_pPlayer ? m_pPlayer->isNoCultureFlip() : false;
+}
+
+bool CyPlayer::isNoRevoltAndNoCultureFlip()
+{
+	return m_pPlayer ? m_pPlayer->isNoRevoltAndNoCultureFlip() : false;
+}
+
+bool CyPlayer::isInstantCultureFlip()
+{
+	return m_pPlayer ? m_pPlayer->isInstantCultureFlip() : false;
+}
+
+int CyPlayer::getCultureRevoltChance()
+{
+	return m_pPlayer ? m_pPlayer->getCultureRevoltChance() : 0;
+}
+
 int CyPlayer::getMaxExperienceAfterUpgrade()
 {
 	return m_pPlayer ? m_pPlayer->getMaxExperienceAfterUpgrade() : 0;

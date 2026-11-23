@@ -466,6 +466,10 @@
 	<ElementType name="bRevealHiddenAttitude" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bLongCountCalendar" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bImprovementUpgradeUnworked" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bNoCultureFlip" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bNoRevoltAndNoCultureFlip" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bInstantCultureFlip" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iCultureRevoltChance" content="textOnly" dt:type="int"/>
 	<ElementType name="bBasicTrait" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bGainTraitOnCapitalCapture" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bGainTraitsOnElimination" content="textOnly" dt:type="boolean"/>
@@ -912,7 +916,6 @@
 	<ElementType name="NoTechProcesses" content="eltOnly">
 		<element type="ProcessType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
-	<ElementType name="bNoConscriptExperiencePenalty" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iHealthPerReligion" content="textOnly" dt:type="int"/>
 	<ElementType name="YieldPerReligion" content="eltOnly">
 		<element type="iYield" minOccurs="0" maxOccurs="*"/>
@@ -973,6 +976,21 @@
 	<ElementType name="iCorporationMaintenanceModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iMaintenanceModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iMaxConscript" content="textOnly" dt:type="int"/>
+	<ElementType name="iPopulationModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iMinCityPopulationChange" content="textOnly" dt:type="int"/>
+	<ElementType name="iMinCulturePercentChange" content="textOnly" dt:type="int"/>
+	<ElementType name="iPopAngerChange" content="textOnly" dt:type="int"/>
+	<ElementType name="iAngerLengthPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="bNoExperiencePenalty" content="textOnly" dt:type="boolean"/>
+	<ElementType name="Conscription" content="eltOnly">
+		<element type="iMaxConscript" minOccurs="0"/>
+		<element type="iPopulationModifier" minOccurs="0"/>
+		<element type="iMinCityPopulationChange" minOccurs="0"/>
+		<element type="iMinCulturePercentChange" minOccurs="0"/>
+		<element type="iPopAngerChange" minOccurs="0"/>
+		<element type="iAngerLengthPercent" minOccurs="0"/>
+		<element type="bNoExperiencePenalty" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="bMilitaryFoodProduction" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iHealRateChange" content="textOnly" dt:type="int"/>
 	<ElementType name="DomainFreeExperience" content="eltOnly">
@@ -1093,7 +1111,7 @@
 		<element type="iGoldPerMilitaryUnit" minOccurs="0"/>
 		<element type="iCorporationMaintenanceModifier" minOccurs="0"/>
 		<element type="iMaintenanceModifier" minOccurs="0"/>
-		<element type="iMaxConscript" minOccurs="0"/>
+		<element type="Conscription" minOccurs="0"/>
 		<element type="bMilitaryFoodProduction" minOccurs="0"/>
 		<element type="iHealRateChange" minOccurs="0"/>
 		<element type="DomainFreeExperiences" minOccurs="0"/>
@@ -1116,6 +1134,10 @@
 		<element type="bRevealHiddenAttitude" minOccurs="0"/>
 		<element type="bLongCountCalendar" minOccurs="0"/>
 		<element type="bImprovementUpgradeUnworked" minOccurs="0"/>
+		<element type="bNoCultureFlip" minOccurs="0"/>
+		<element type="bNoRevoltAndNoCultureFlip" minOccurs="0"/>
+		<element type="bInstantCultureFlip" minOccurs="0"/>
+		<element type="iCultureRevoltChance" minOccurs="0"/>
 		<element type="bGainTraitOnCapitalCapture" minOccurs="0"/>
 		<element type="bGainTraitsOnElimination" minOccurs="0"/>
 		<element type="RandomBasicTraits" minOccurs="0"/>
@@ -1151,7 +1173,6 @@
 		<element type="SpecialistSlotChanges" minOccurs="0"/>
 		<element type="RevealBonuses" minOccurs="0"/>
 		<element type="NoTechProcesses" minOccurs="0"/>
-		<element type="bNoConscriptExperiencePenalty" minOccurs="0"/>
 		<element type="FreeTechs" minOccurs="0"/>
 		<element type="YieldChanges" minOccurs="0"/>
 		<element type="iHealthPerReligion" minOccurs="0"/>

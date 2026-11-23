@@ -181,3 +181,6 @@
 - 2026-11-23: 諜報任務のタグ `bSwitchAnyCivic` と任務「体制転覆」（`ESPIONAGEMISSION_SUBVERT_CIVIC`。自分が採用していない社会制度もアイコンで選んで相手に押し付けられる）をゲーム内で確認
 - 2026-11-23: 諜報任務のタグ `bSwitchAnyReligion`・`bSwitchNoReligion` と任務「国教転覆」（`ESPIONAGEMISSION_SUBVERT_RELIGION`。自分の国教でない宗教と「国教なし」をアイコンで選んで相手に押し付けられる）をゲーム内で確認
 - 2026-11-23: civ-design のチェカ志向（スターリン）だけが諜報任務「体制転覆」「国教転覆」を使える（`PrereqOrTraits`）ことをゲーム内で確認
+- 2026-11-23: 志向のタグ `bInstantCultureFlip`・`iCultureRevoltChance`（外国の都市が 1 回目の反乱で寝返る、反乱の確率 2 倍）と `bNoCultureFlip`・`bNoRevoltAndNoCultureFlip`（自国の都市が寝返らない、反乱も起きない）をゲーム内で確認
+- 2026-11-23: 志向のタグ `Conscription`（`iMaxConscript` を子に移動、`iPopulationModifier`・`iMinCityPopulationChange`・`iMinCulturePercentChange`・`iPopAngerChange`・`iAngerLengthPercent`。徴兵の失う人口・必要な人口・必要な文化・不満の人数と期間）をゲーム内で確認
+- 2026-11-23: `bNoConscriptExperiencePenalty` を `Conscription/bNoExperiencePenalty` に移した後も、説明文と徴兵したユニットの経験値（半分にならない）をゲーム内で確認

@@ -5477,7 +5477,7 @@ void CvCityAI::AI_doDraft(bool bForce)
             bool bLandWar = ((area()->getAreaAIType(getTeam()) == AREAAI_OFFENSIVE) || (area()->getAreaAIType(getTeam()) == AREAAI_DEFENSIVE) || (area()->getAreaAIType(getTeam()) == AREAAI_MASSING));
             bool bDanger = (!AI_isDefended() && AI_isDanger());
             int iConscriptPop = getConscriptPopulation();
-            int iHappyDiff = GC.getDefineINT("CONSCRIPT_POP_ANGER") - iConscriptPop;
+            int iHappyDiff = conscriptPopAnger() - iConscriptPop;	// the traits (added by this mod)
 
             if (bLandWar && 0 == angryPopulation(iHappyDiff))
             {

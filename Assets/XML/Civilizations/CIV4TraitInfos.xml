@@ -251,7 +251,15 @@
 			<iGoldPerMilitaryUnit>1</iGoldPerMilitaryUnit>
 			<iCorporationMaintenanceModifier>-50</iCorporationMaintenanceModifier>
 			<iMaintenanceModifier>-20</iMaintenanceModifier>
-			<iMaxConscript>1</iMaxConscript>
+			<Conscription>
+				<iMaxConscript>1</iMaxConscript>
+				<iPopulationModifier>-50</iPopulationModifier>
+				<iMinCityPopulationChange>-3</iMinCityPopulationChange>
+				<iMinCulturePercentChange>-10</iMinCulturePercentChange>
+				<iPopAngerChange>-2</iPopAngerChange>
+				<iAngerLengthPercent>-50</iAngerLengthPercent>
+				<bNoExperiencePenalty>1</bNoExperiencePenalty>
+			</Conscription>
 			<iHealRateChange>10</iHealRateChange>
 			<DomainFreeExperiences>
 				<DomainFreeExperience>
@@ -334,6 +342,8 @@
 			<bRevealWarPlans>1</bRevealWarPlans>
 			<bRevealHiddenAttitude>1</bRevealHiddenAttitude>
 			<bImprovementUpgradeUnworked>1</bImprovementUpgradeUnworked>
+			<bInstantCultureFlip>1</bInstantCultureFlip>
+			<iCultureRevoltChance>100</iCultureRevoltChance>
 			<bGainTraitOnCapitalCapture>1</bGainTraitOnCapitalCapture>
 			<bGainTraitsOnElimination>1</bGainTraitsOnElimination>
 			<GainTraitsOnFriendly>
@@ -448,7 +458,6 @@
 				<ProcessType>PROCESS_WEALTH</ProcessType>
 				<ProcessType>PROCESS_RESEARCH</ProcessType>
 			</NoTechProcesses>
-			<bNoConscriptExperiencePenalty>1</bNoConscriptExperiencePenalty>
 			<FreeTechs>
 				<FreeTech>
 					<TechType>TECH_THE_WHEEL</TechType>
@@ -1244,6 +1253,7 @@
 			<Type>TRAIT_TEST_AI</Type>
 			<Description>TXT_KEY_TRAIT_TEST_AI</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_AI_SHORT</ShortDescription>
+			<bNoCultureFlip>1</bNoCultureFlip>
 			<FreeTechs>
 				<FreeTech>
 					<TechType>TECH_TEST_DIPLOMACY</TechType>
