@@ -4081,6 +4081,33 @@ void CvGameTextMgr::parseTraitTerritoryEffects(CvWStringBuffer& szHelpString, Tr
 		}
 	}
 
+	// FoundingVassal (added by this mod): "When founding the first city, Rome led by Caesar joins the game within 5 tiles of
+	// it ...", then the difficulty of its AI modifiers
+	if (kTrait.isFoundingVassal())
+	{
+		CvWString szCiv;
+		if (kTrait.getFoundingVassalCivilization() != NO_CIVILIZATION)
+		{
+			szCiv = getLinkText(GC.getCivilizationInfo((CivilizationTypes)kTrait.getFoundingVassalCivilization()).getShortDescription());
+		}
+		else
+		{
+			szCiv = gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_ANY_CIV");
+		}
+		if (kTrait.getFoundingVassalLeader() != NO_LEADER)
+		{
+			CvWString szLeader = getLinkText(GC.getLeaderHeadInfo((LeaderHeadTypes)kTrait.getFoundingVassalLeader()).getDescription());
+			szCiv = gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_LED_BY", szCiv.GetCString(), szLeader.GetCString());
+		}
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL", szCiv.GetCString(), std::max(1, kTrait.getFoundingVassalRange())));
+		if (kTrait.getFoundingVassalHandicap() != NO_HANDICAP)
+		{
+			CvWString szHandicapLine = L"  ";
+			szHandicapLine += gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_HANDICAP", GC.getHandicapInfo((HandicapTypes)kTrait.getFoundingVassalHandicap()).getTextKeyWide());
+			appendTraitLine(szHelpString, szHandicapLine);
+		}
+	}
+
 	// bBarbarianAlly (added by this mod)
 	if (kTrait.isBarbarianAlly())
 	{

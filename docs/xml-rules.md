@@ -7,6 +7,7 @@ CLAUDE.md の「XML」の補足。Info の読み込み順に関わるタグを�
 - XML は `CvXMLLoadUtility::LoadPreMenuGlobals`（`CvXMLLoadUtilitySet.cpp`）に書かれた順に読み込まれ、`FindInInfoClass` で引けるのは**先に読み込まれた Info だけ**
 - 例えば志向より後に読み込まれるのは施設・建物・社会制度・指導者・ユニット・文明など、先に読み込まれるのは地形・地形の特徴・昇進・兵科など
 - 後に読み込まれる Info を参照するタグは、種類を文字列のまま持っておき、`readPass3()` で番号に変える（`CvTraitInfo::readPass3` が例）
+- 志向の `readPass3()` は指導者・文明より**前**に呼ばれる（`CvXMLLoadUtility::LoadPreMenuGlobals`）。指導者・文明を参照する志向のタグは、文明の読み込みの直後に呼ぶ `CvTraitInfo::readFoundingVassalTypes()` で番号に変える（2026-11-23。`readPass3()` で引くと「Tag: ... was incorrect」のエラーが出た）
 - 生産の種類（`ProcessInfo`）など `LoadPostMenuGlobals`（ゲームを始めるとき）で読み込まれる Info は `readPass3()` の時点でもまだ無いので、`CvTraitInfo::readPass4()` で番号に変える（ゲームの前の画面ではその数が 0）
 
 ## 元ファイル

@@ -105,5 +105,10 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getDomainProductionModifier", &CvTraitInfo::getDomainProductionModifier, "int (int iDomain)")
 		.def("isSeaStart", &CvTraitInfo::isSeaStart, "bool ()")
 		.def("getSeaStartUnitClass", &CvTraitInfo::getSeaStartUnitClass, "int ()")
+		.def("isFoundingVassal", &CvTraitInfo::isFoundingVassal, "bool ()")
+		.def("getFoundingVassalCivilization", &CvTraitInfo::getFoundingVassalCivilization, "int ()")
+		.def("getFoundingVassalLeader", &CvTraitInfo::getFoundingVassalLeader, "int ()")
+		.def("getFoundingVassalHandicap", &CvTraitInfo::getFoundingVassalHandicap, "int ()")
+		.def("getFoundingVassalRange", &CvTraitInfo::getFoundingVassalRange, "int ()")
 		;
 }

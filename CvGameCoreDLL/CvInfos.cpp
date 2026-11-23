@@ -20380,6 +20380,11 @@ m_piStartBiasFeatures(NULL),
 m_piStartBiasBonuses(NULL),
 m_bSeaStart(false),
 m_iSeaStartUnitClass(NO_UNITCLASS),
+m_bFoundingVassal(false),
+m_iFoundingVassalCivilization(NO_CIVILIZATION),
+m_iFoundingVassalLeader(NO_LEADER),
+m_iFoundingVassalHandicap(NO_HANDICAP),
+m_iFoundingVassalRange(0),
 m_iGoldInterestPercent(0),
 m_iGoldInterestMax(0),
 m_iPeaceAngerPerTurn(0),
@@ -20896,6 +20901,34 @@ int CvTraitInfo::getCityFoundedUnitNum(int i) const
 bool CvTraitInfo::isCityFoundedUnitCoastalOnly(int i) const
 {
 	return (i > -1 && i < getNumCityFoundedUnits()) ? m_abCityFoundedUnitCoastalOnly[i] : false;
+}
+
+// FoundingVassal (added by this mod): when the player founds its first city, an AI civilization joins the game near it,
+// with settlers and defenders, and joins the team of the player (CvPlayer::doFoundingVassal)
+bool CvTraitInfo::isFoundingVassal() const
+{
+	return m_bFoundingVassal;
+}
+
+int CvTraitInfo::getFoundingVassalCivilization() const
+{
+	return m_iFoundingVassalCivilization;
+}
+
+int CvTraitInfo::getFoundingVassalLeader() const
+{
+	return m_iFoundingVassalLeader;
+}
+
+int CvTraitInfo::getFoundingVassalHandicap() const
+{
+	return m_iFoundingVassalHandicap;
+}
+
+// FoundingVassal/iRange: the AI starts within this distance of the first city
+int CvTraitInfo::getFoundingVassalRange() const
+{
+	return m_iFoundingVassalRange;
 }
 
 // The team of the player is at peace with the barbarians (added by this mod, as FFH2)
@@ -22953,6 +22986,22 @@ void CvTraitInfo::readStartBias(CvXMLLoadUtility* pXML)
 		m_iSeaStartUnitClass = pXML->FindInInfoClass(szShipClass);
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+
+	// FoundingVassal: the types stay strings until readPass3(). iRange: 5 when not set
+	m_bFoundingVassal = false;
+	m_iFoundingVassalRange = 0;
+	m_szFoundingVassalCivilization.clear();
+	m_szFoundingVassalLeader.clear();
+	m_szFoundingVassalHandicap.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FoundingVassal"))
+	{
+		m_bFoundingVassal = true;
+		pXML->GetChildXmlValByName(m_szFoundingVassalCivilization, "CivilizationType");
+		pXML->GetChildXmlValByName(m_szFoundingVassalLeader, "LeaderType");
+		pXML->GetChildXmlValByName(m_szFoundingVassalHandicap, "HandicapType");
+		pXML->GetChildXmlValByName(&m_iFoundingVassalRange, "iRange", 5);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 }
 
 // The part of read() for gold interest, peace anger, culture range, ForbiddenCivics and the new cities (added by this mod)
@@ -23748,6 +23797,36 @@ void CvTraitInfo::readUniqueUnits()
 			m_aiUniqueUnits.push_back(iUnit);
 		}
 	}
+}
+
+// A type of CIV4TraitInfos.xml kept as a string until readPass3() (added by this mod): -1 for an empty string or NONE, and
+// for an unknown type (with a message box naming szTag)
+static int resolveTraitTypeString(const CvString& szType, const char* szTag)
+{
+	char szMessage[1024];
+	int iType;
+
+	if (szType.empty() || szType == "NONE")
+	{
+		return -1;
+	}
+
+	iType = GC.getInfoTypeForString(szType.GetCString(), true);
+	if (iType < 0)
+	{
+		sprintf(szMessage, "Tag: %s in %s of CIV4TraitInfos.xml was incorrect", szType.GetCString(), szTag);
+		gDLL->MessageBox(szMessage, "XML Error");
+	}
+	return iType;
+}
+
+// FoundingVassal (added by this mod): the civilization, the leader and the difficulty. The leaders and the civilizations are
+// loaded after readPass3(), so CvXMLLoadUtility::LoadPreMenuGlobals calls this after the civilizations. NONE or no tag: -1
+void CvTraitInfo::readFoundingVassalTypes()
+{
+	m_iFoundingVassalCivilization = resolveTraitTypeString(m_szFoundingVassalCivilization, "FoundingVassal/CivilizationType");
+	m_iFoundingVassalLeader = resolveTraitTypeString(m_szFoundingVassalLeader, "FoundingVassal/LeaderType");
+	m_iFoundingVassalHandicap = resolveTraitTypeString(m_szFoundingVassalHandicap, "FoundingVassal/HandicapType");
 }
 
 bool CvTraitInfo::readPass3()

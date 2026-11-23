@@ -483,6 +483,8 @@ public:
 	int getExploredPlotCount(int /*ExplorePlotTypes*/ eExplorePlot);	// added by this mod (ExplorationRewards)
 	int getCivicSlot(int /*CivicOptionTypes*/ eCivicOption, int iSlot);	// added by this mod (civic slots)
 	int getMaxCivicSlots();	// added by this mod (civic slots)
+	int getAIHandicapType();	// added by this mod (FoundingVassal)
+	bool isFoundingVassal();	// added by this mod (FoundingVassal)
 	int getBuildingClassExtraCommerce(int /*BuildingClassTypes*/ eBuildingClass, int /*CommerceTypes*/ eCommerce);
 	void updateConditionalTraits();
 	int getNumUnitsKilled();

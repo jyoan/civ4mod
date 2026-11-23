@@ -50,6 +50,7 @@ public:
 	void initFreeUnits();
 	void addFreeUnitAI(UnitAITypes eUnitAI, int iCount);
 	void addFreeUnit(UnitTypes eUnit, UnitAITypes eUnitAI = NO_UNITAI);
+	void addStartingUnits();	// added by this mod: the part of initFreeUnits without Advanced Start
 
 	int startingPlotRange() const;																																									// Exposed to Python
 	bool startingPlotWithinRange(CvPlot* pPlot, PlayerTypes ePlayer, int iRange, int iPass) const;									// Exposed to Python
@@ -290,6 +291,10 @@ public:
 	CvPlot* findSeaStartingPlot() const;
 	void moveStartingPlotToSea();
 	void loadSeaStartUnits();
+	HandicapTypes getAIHandicapType() const;	// Exposed to Python (added by this mod): the difficulty of the AI modifiers
+	bool isFoundingVassal() const;				// Exposed to Python (added by this mod): joined the team by FoundingVassal
+	void doFoundingVassal(CvCity* pCity);		// FoundingVassal of the traits (added by this mod)
+	CvPlot* findFoundingVassalPlot(const CvCity* pCity, int iRange, PlayerTypes eNewPlayer) const;
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(SpecialBuildingTypes eSpecialBuilding) const;	// Exposed to Python (added by this mod)
 	bool isNoTechCivic(CivicTypes eCivic) const;	// Exposed to Python (added by this mod)
@@ -1412,6 +1417,9 @@ protected:
 	bool m_bPbemNewTurn;
 	bool m_bExtendedGame;
 	bool m_bFoundedFirstCity;
+	bool m_bFoundingVassalDone;	// FoundingVassal of the traits was tried (added by this mod)
+	bool m_bFoundingVassal;		// this player joined the team of another one by FoundingVassal (added by this mod)
+	HandicapTypes m_eAIHandicap;	// the difficulty of the AI modifiers, NO_HANDICAP = the difficulty of the game (added by this mod)
 	bool m_bStrike;
 	bool m_bUpdatingTraitDependents;		// CvPlayer::updateTraitDependents is running (not saved; added by this mod)
 	bool m_bUpdatingConditionalTraits;		// CvPlayer::updateConditionalTraits is running (not saved; added by this mod)

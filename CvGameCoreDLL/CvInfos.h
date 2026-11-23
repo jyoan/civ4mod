@@ -4912,6 +4912,11 @@ public:
 	int getCityFoundedUnitClass(int i) const;		// Exposed to Python
 	int getCityFoundedUnitNum(int i) const;			// Exposed to Python
 	bool isCityFoundedUnitCoastalOnly(int i) const;	// Exposed to Python
+	bool isFoundingVassal() const;					// Exposed to Python: FoundingVassal (added by this mod)
+	int getFoundingVassalCivilization() const;		// Exposed to Python: NO_CIVILIZATION = chosen by the game
+	int getFoundingVassalLeader() const;			// Exposed to Python: NO_LEADER = chosen by the game
+	int getFoundingVassalHandicap() const;			// Exposed to Python: NO_HANDICAP = the difficulty of the game
+	int getFoundingVassalRange() const;				// Exposed to Python
 	int getGoldInterestPercent() const;				// Exposed to Python
 	int getGoldInterestMax() const;					// Exposed to Python
 	int getPeaceAngerPerTurn() const;				// Exposed to Python
@@ -5178,6 +5183,7 @@ public:
 	void readCounterpartValues(CvXMLLoadUtility* pXML);	// added by this mod: a part of read()
 	bool readPass3();
 	void readUniqueUnits();							// added by this mod: after the units are loaded
+	void readFoundingVassalTypes();					// added by this mod: after the civilizations are loaded
 
 	//---------------------------------------PROTECTED MEMBER VARIABLES---------------------------------
 protected:
@@ -5242,6 +5248,14 @@ protected:
 	std::vector<int> m_aiCityFoundedUnitClasses;	// CityFoundedUnits (added by this mod)
 	std::vector<int> m_aiCityFoundedUnitNums;
 	std::vector<bool> m_abCityFoundedUnitCoastalOnly;
+	bool m_bFoundingVassal;					// FoundingVassal (added by this mod)
+	int m_iFoundingVassalCivilization;
+	int m_iFoundingVassalLeader;
+	int m_iFoundingVassalHandicap;
+	int m_iFoundingVassalRange;
+	CvString m_szFoundingVassalCivilization;	// read() keeps the types as strings until readPass3() (loaded after the traits)
+	CvString m_szFoundingVassalLeader;
+	CvString m_szFoundingVassalHandicap;
 	int m_iGoldInterestPercent;
 	int m_iGoldInterestMax;
 	int m_iPeaceAngerPerTurn;

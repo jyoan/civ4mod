@@ -2465,7 +2465,16 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 	iCost *= GC.getEraInfo(GC.getGameINLINE().getStartEra()).getResearchPercent();
 	iCost /= 100;
 
-	iCost *= std::max(0, ((GC.getDefineINT("TECH_COST_EXTRA_TEAM_MEMBER_MODIFIER") * (getNumMembers() - 1)) + 100));
+	// The members that joined by FoundingVassal of the traits do not count (added by this mod)
+	int iCostMembers = getNumMembers();
+	for (int iMember = 0; iMember < MAX_PLAYERS; iMember++)
+	{
+		if (GET_PLAYER((PlayerTypes)iMember).getTeam() == getID() && GET_PLAYER((PlayerTypes)iMember).isFoundingVassal())
+		{
+			iCostMembers--;
+		}
+	}
+	iCost *= std::max(0, ((GC.getDefineINT("TECH_COST_EXTRA_TEAM_MEMBER_MODIFIER") * std::max(0, iCostMembers - 1)) + 100));
 	iCost /= 100;
 
 	// iTechCostModifier of the traits (added by this mod): the average of the alive members of the team
@@ -2826,14 +2835,19 @@ HandicapTypes CvTeam::getHandicapType() const
 	iGameHandicap = 0;
 	iCount = 0;
 
-	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	// The members that joined by FoundingVassal of the traits do not count, unless they are the only ones alive (added by
+	// this mod)
+	for (int iPass = 0; iPass < 2 && iCount == 0; iPass++)
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		for (iI = 0; iI < MAX_PLAYERS; iI++)
 		{
-			if (GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
+			if (GET_PLAYER((PlayerTypes)iI).isAlive())
 			{
-				iGameHandicap += GET_PLAYER((PlayerTypes)iI).getHandicapType();
-				iCount++;
+				if (GET_PLAYER((PlayerTypes)iI).getTeam() == getID() && (iPass > 0 || !GET_PLAYER((PlayerTypes)iI).isFoundingVassal()))
+				{
+					iGameHandicap += GET_PLAYER((PlayerTypes)iI).getHandicapType();
+					iCount++;
+				}
 			}
 		}
 	}

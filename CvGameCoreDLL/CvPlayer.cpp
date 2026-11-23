@@ -481,6 +481,9 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_bPbemNewTurn = false;
 	m_bExtendedGame = false;
 	m_bFoundedFirstCity = false;
+	m_bFoundingVassalDone = false;	// FoundingVassal of the traits (added by this mod)
+	m_bFoundingVassal = false;
+	m_eAIHandicap = NO_HANDICAP;
 	m_bStrike = false;
 	m_bUpdatingTraitDependents = false;
 	m_bUpdatingConditionalTraits = false;
@@ -865,10 +868,6 @@ void CvPlayer::initFreeState()
 
 void CvPlayer::initFreeUnits()
 {
-	UnitTypes eLoopUnit;
-	int iFreeCount;
-	int iI, iJ;
-
 	if (GC.getGameINLINE().isOption(GAMEOPTION_ADVANCED_START) && !isBarbarian())
 	{
 		int iPoints = GC.getGameINLINE().getNumAdvancedStartPoints();
@@ -901,64 +900,76 @@ void CvPlayer::initFreeUnits()
 	}
 	else
 	{
-		for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
+		addStartingUnits();
+	}
+}
+
+// The starting units without Advanced Start, on the starting plot: the free units of the civilization, the defenders, the
+// workers and the explorers, with the multipliers of the start era and of the difficulty (the AI values for an AI). A part of
+// initFreeUnits, also used for an AI that joins the game by FoundingVassal of the traits (added by this mod)
+void CvPlayer::addStartingUnits()
+{
+	UnitTypes eLoopUnit;
+	int iFreeCount;
+	int iI, iJ;
+
+	for (iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
+	{
+		eLoopUnit = (UnitTypes)getCivilizationUnit(iI);
+
+		if (eLoopUnit != NO_UNIT)
 		{
-			eLoopUnit = (UnitTypes)getCivilizationUnit(iI);
+			iFreeCount = GC.getCivilizationInfo(getCivilizationType()).getCivilizationFreeUnitsClass(iI);
 
-			if (eLoopUnit != NO_UNIT)
+			iFreeCount *= (GC.getEraInfo(GC.getGameINLINE().getStartEra()).getStartingUnitMultiplier() + ((!isHuman()) ? GC.getHandicapInfo(getAIHandicapType()).getAIStartingUnitMultiplier() : 0));
+
+			for (iJ = 0; iJ < iFreeCount; iJ++)
 			{
-				iFreeCount = GC.getCivilizationInfo(getCivilizationType()).getCivilizationFreeUnitsClass(iI);
-
-				iFreeCount *= (GC.getEraInfo(GC.getGameINLINE().getStartEra()).getStartingUnitMultiplier() + ((!isHuman()) ? GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIStartingUnitMultiplier() : 0));
-
-				for (iJ = 0; iJ < iFreeCount; iJ++)
-				{
-					addFreeUnit(eLoopUnit);
-				}
+				addFreeUnit(eLoopUnit);
 			}
 		}
-
-		iFreeCount = GC.getEraInfo(GC.getGameINLINE().getStartEra()).getStartingDefenseUnits();
-		iFreeCount += GC.getHandicapInfo(getHandicapType()).getStartingDefenseUnits();
-
-		if (!isHuman())
-		{
-			iFreeCount += GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIStartingDefenseUnits();
-		}
-
-		if (iFreeCount > 0)
-		{
-			addFreeUnitAI(UNITAI_CITY_DEFENSE, iFreeCount);
-		}
-
-		iFreeCount = GC.getEraInfo(GC.getGameINLINE().getStartEra()).getStartingWorkerUnits();
-		iFreeCount += GC.getHandicapInfo(getHandicapType()).getStartingWorkerUnits();
-
-		if (!isHuman())
-		{
-			iFreeCount += GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIStartingWorkerUnits();
-		}
-
-		if (iFreeCount > 0)
-		{
-			addFreeUnitAI(UNITAI_WORKER, iFreeCount);
-		}
-
-		iFreeCount = GC.getEraInfo(GC.getGameINLINE().getStartEra()).getStartingExploreUnits();
-		iFreeCount += GC.getHandicapInfo(getHandicapType()).getStartingExploreUnits();
-
-		if (!isHuman())
-		{
-			iFreeCount += GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIStartingExploreUnits();
-		}
-
-		if (iFreeCount > 0)
-		{
-			addFreeUnitAI(UNITAI_EXPLORE, iFreeCount);
-		}
-
-		loadSeaStartUnits();	// SeaStart of the traits (added by this mod)
 	}
+
+	iFreeCount = GC.getEraInfo(GC.getGameINLINE().getStartEra()).getStartingDefenseUnits();
+	iFreeCount += GC.getHandicapInfo(getHandicapType()).getStartingDefenseUnits();
+
+	if (!isHuman())
+	{
+		iFreeCount += GC.getHandicapInfo(getAIHandicapType()).getAIStartingDefenseUnits();
+	}
+
+	if (iFreeCount > 0)
+	{
+		addFreeUnitAI(UNITAI_CITY_DEFENSE, iFreeCount);
+	}
+
+	iFreeCount = GC.getEraInfo(GC.getGameINLINE().getStartEra()).getStartingWorkerUnits();
+	iFreeCount += GC.getHandicapInfo(getHandicapType()).getStartingWorkerUnits();
+
+	if (!isHuman())
+	{
+		iFreeCount += GC.getHandicapInfo(getAIHandicapType()).getAIStartingWorkerUnits();
+	}
+
+	if (iFreeCount > 0)
+	{
+		addFreeUnitAI(UNITAI_WORKER, iFreeCount);
+	}
+
+	iFreeCount = GC.getEraInfo(GC.getGameINLINE().getStartEra()).getStartingExploreUnits();
+	iFreeCount += GC.getHandicapInfo(getHandicapType()).getStartingExploreUnits();
+
+	if (!isHuman())
+	{
+		iFreeCount += GC.getHandicapInfo(getAIHandicapType()).getAIStartingExploreUnits();
+	}
+
+	if (iFreeCount > 0)
+	{
+		addFreeUnitAI(UNITAI_EXPLORE, iFreeCount);
+	}
+
+	loadSeaStartUnits();	// SeaStart of the traits (added by this mod)
 }
 
 
@@ -7205,6 +7216,332 @@ void CvPlayer::found(int iX, int iY)
 			}
 		}
 	}
+
+	doFoundingVassal(pCity);	// FoundingVassal of the traits (added by this mod): only for the first city
+}
+
+
+// FoundingVassal of the traits (added by this mod): the difficulty of the AI modifiers (AITrainPercent and the other AI
+// values of CIV4HandicapInfo.xml) for this player. The difficulty of the game, or HandicapType of FoundingVassal for a
+// player that joined a team by it
+HandicapTypes CvPlayer::getAIHandicapType() const
+{
+	if (m_eAIHandicap != NO_HANDICAP)
+	{
+		return m_eAIHandicap;
+	}
+
+	return GC.getGameINLINE().getHandicapType();
+}
+
+// FoundingVassal of the traits (added by this mod): this player joined the team of another player by it. Its team does not
+// count it for the research cost (TECH_COST_EXTRA_TEAM_MEMBER_MODIFIER) and the difficulty (CvTeam::getHandicapType)
+bool CvPlayer::isFoundingVassal() const
+{
+	return m_bFoundingVassal;
+}
+
+// A leader or a civilization already used by a player that has ever been alive (as CvPlayer::getSplitEmpireLeaders)
+static bool isLeaderInGame(LeaderHeadTypes eLeader)
+{
+	int iI;
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iI);
+		if (kLoopPlayer.isEverAlive() && (kLoopPlayer.getLeaderType() == eLeader || kLoopPlayer.getPersonalityType() == eLeader))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+static bool isCivilizationInGame(CivilizationTypes eCiv)
+{
+	int iI;
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		if (GET_PLAYER((PlayerTypes)iI).isEverAlive() && GET_PLAYER((PlayerTypes)iI).getCivilizationType() == eCiv)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// FoundingVassal of the traits (added by this mod): the starting plot of the new AI. A plot within iRange of pCity (at
+// least 3 away when iRange allows it, out of the borders that grow soon), on land of the same area, passable, not owned,
+// without units and goody huts. With eNewPlayer, the plot with the best AI_foundValue of that player as a starting
+// location, or NULL when no plot has a value. With NO_PLAYER, the nearest such plot (any plot will do for the units)
+CvPlot* CvPlayer::findFoundingVassalPlot(const CvCity* pCity, int iRange, PlayerTypes eNewPlayer) const
+{
+	CvPlot* pLoopPlot;
+	CvPlot* pBestPlot;
+	int iBestValue;
+	int iValue;
+	int iDistance;
+	int iMinDistance;
+	int iDX, iDY;
+
+	pBestPlot = NULL;
+	iBestValue = 0;
+	iMinDistance = std::min(3, iRange);
+
+	for (iDX = -iRange; iDX <= iRange; iDX++)
+	{
+		for (iDY = -iRange; iDY <= iRange; iDY++)
+		{
+			pLoopPlot = plotXY(pCity->getX_INLINE(), pCity->getY_INLINE(), iDX, iDY);
+			if (pLoopPlot == NULL)
+			{
+				continue;
+			}
+
+			iDistance = plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE());
+			if (iDistance < iMinDistance || iDistance > iRange)
+			{
+				continue;
+			}
+
+			if (pLoopPlot->area() != pCity->area() || pLoopPlot->isWater() || pLoopPlot->isImpassable() || pLoopPlot->isOwned() || pLoopPlot->getNumUnits() > 0 || pLoopPlot->isGoody())
+			{
+				continue;
+			}
+
+			if (eNewPlayer == NO_PLAYER)
+			{
+				// the nearest plot; the first one in this order among the plots at the same distance
+				iValue = 1000 - iDistance;
+			}
+			else
+			{
+				iValue = GET_PLAYER(eNewPlayer).AI_foundValue(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), -1, true);
+			}
+
+			if (iValue > iBestValue)
+			{
+				iBestValue = iValue;
+				pBestPlot = pLoopPlot;
+			}
+		}
+	}
+
+	return pBestPlot;
+}
+
+// FoundingVassal of the traits (added by this mod): when the player founds its first city, an AI civilization joins the game
+// near it and joins its team (a permanent alliance, CvTeam::addTeam), with the settlers and the defenders of the start of
+// the game. Once per player (m_bFoundingVassalDone), with the first trait that has FoundingVassal. Nothing happens when no
+// player slot is free (MAX_CIV_PLAYERS), when no civilization or leader is left, or when no plot is near the city
+void CvPlayer::doFoundingVassal(CvCity* pCity)
+{
+	CvPlot* pFallbackPlot;
+	CvPlot* pStartPlot;
+	PlayerTypes eNewPlayer;
+	CivilizationTypes eCiv;
+	LeaderHeadTypes eLeader;
+	TraitTypes eTrait;
+	int iRange;
+	int iValue;
+	int iBestValue;
+	int iI, iJ;
+
+	if (m_bFoundingVassalDone || pCity == NULL || isBarbarian() || isMinorCiv())
+	{
+		return;
+	}
+
+	eTrait = NO_TRAIT;
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (GC.getTraitInfo((TraitTypes)iI).isFoundingVassal() && hasTrait((TraitTypes)iI))
+		{
+			eTrait = (TraitTypes)iI;
+			break;
+		}
+	}
+
+	if (eTrait == NO_TRAIT)
+	{
+		return;
+	}
+
+	m_bFoundingVassalDone = true;
+
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	iRange = std::max(1, kTrait.getFoundingVassalRange());
+
+	pFallbackPlot = findFoundingVassalPlot(pCity, iRange, NO_PLAYER);
+	if (pFallbackPlot == NULL)
+	{
+		return;
+	}
+
+	// The player slot: one never in the game, then a dead player (as CvPlayer::getSplitEmpirePlayer). Its team must be dead
+	// too, since CvGame::addPlayer initializes it
+	eNewPlayer = NO_PLAYER;
+	for (iJ = 0; iJ < 2 && eNewPlayer == NO_PLAYER; iJ++)
+	{
+		for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+		{
+			CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iI);
+			if ((iJ == 0) ? kLoopPlayer.isEverAlive() : kLoopPlayer.isAlive())
+			{
+				continue;
+			}
+
+			if (kLoopPlayer.getTeam() == NO_TEAM || kLoopPlayer.getTeam() == getTeam() || GET_TEAM(kLoopPlayer.getTeam()).isAlive())
+			{
+				continue;
+			}
+
+			eNewPlayer = (PlayerTypes)iI;
+			break;
+		}
+	}
+
+	if (eNewPlayer == NO_PLAYER)
+	{
+		return;
+	}
+
+	// The civilization and the leader: the ones of the tag when no player has used them (any pair is allowed), otherwise
+	// chosen as for a colony (CvPlayer::getSplitEmpireLeaders: an unused civilization, the DerivativeCiv first)
+	eCiv = (CivilizationTypes)kTrait.getFoundingVassalCivilization();
+	if (eCiv != NO_CIVILIZATION && (eCiv == GC.getDefineINT("BARBARIAN_CIVILIZATION") || isCivilizationInGame(eCiv)))
+	{
+		eCiv = NO_CIVILIZATION;
+	}
+
+	eLeader = (LeaderHeadTypes)kTrait.getFoundingVassalLeader();
+	if (eLeader != NO_LEADER && (eLeader == GC.getDefineINT("BARBARIAN_LEADER") || isLeaderInGame(eLeader)))
+	{
+		eLeader = NO_LEADER;
+	}
+
+	if (eCiv == NO_CIVILIZATION)
+	{
+		CivLeaderArray aLeaders;
+		CivLeaderArray::iterator it;
+		CivilizationTypes eBestCiv = NO_CIVILIZATION;
+		LeaderHeadTypes eBestLeader = NO_LEADER;
+
+		iBestValue = -1;
+		if (getSplitEmpireLeaders(aLeaders))
+		{
+			for (it = aLeaders.begin(); it != aLeaders.end(); ++it)
+			{
+				iValue = (1 + GC.getGameINLINE().getSorenRandNum(100, "FoundingVassal civilization"));
+
+				if (GC.getCivilizationInfo(getCivilizationType()).getDerivativeCiv() == it->first)
+				{
+					iValue += 1000;
+				}
+
+				if (iValue > iBestValue)
+				{
+					iBestValue = iValue;
+					eBestCiv = it->first;
+					eBestLeader = it->second;
+				}
+			}
+		}
+
+		if (eBestCiv == NO_CIVILIZATION)
+		{
+			return;
+		}
+
+		eCiv = eBestCiv;
+		if (eLeader == NO_LEADER)
+		{
+			eLeader = eBestLeader;
+		}
+	}
+
+	if (eLeader == NO_LEADER)
+	{
+		// A leader of the civilization (any leader with Lead Any Civ), then any leader, not used by a player
+		for (iJ = 0; iJ < 2 && eLeader == NO_LEADER; iJ++)
+		{
+			iBestValue = 0;
+			for (iI = 0; iI < GC.getNumLeaderHeadInfos(); iI++)
+			{
+				if (iI == GC.getDefineINT("BARBARIAN_LEADER") || isLeaderInGame((LeaderHeadTypes)iI))
+				{
+					continue;
+				}
+
+				if (iJ == 0 && !GC.getCivilizationInfo(eCiv).isLeaders(iI) && !GC.getGameINLINE().isOption(GAMEOPTION_LEAD_ANY_CIV))
+				{
+					continue;
+				}
+
+				iValue = (1 + GC.getGameINLINE().getSorenRandNum(100, "FoundingVassal leader"));
+				if (iValue > iBestValue)
+				{
+					iBestValue = iValue;
+					eLeader = (LeaderHeadTypes)iI;
+				}
+			}
+		}
+
+		if (eLeader == NO_LEADER)
+		{
+			return;
+		}
+	}
+
+	// Remove leftover culture of a recycled player (as CvPlayer::splitEmpire)
+	for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
+	{
+		GC.getMapINLINE().plotByIndexINLINE(iI)->setCulture(eNewPlayer, 0, false, false);
+	}
+
+	// The own difficulty of an AI (a recycled slot may keep the one of a human)
+	GC.getInitCore().setHandicap(eNewPlayer, (HandicapTypes)GC.getDefineINT("STANDARD_HANDICAP"));
+	GC.getGameINLINE().addPlayer(eNewPlayer, eLeader, eCiv);
+	GC.getInitCore().setLeaderName(eNewPlayer, GC.getLeaderHeadInfo(eLeader).getTextKeyWide());
+
+	CvPlayer& kNewPlayer = GET_PLAYER(eNewPlayer);
+	kNewPlayer.m_bFoundingVassalDone = true;	// its own FoundingVassal (if its leader has one) does not work
+	kNewPlayer.m_bFoundingVassal = true;
+	kNewPlayer.m_eAIHandicap = (HandicapTypes)kTrait.getFoundingVassalHandicap();
+	kNewPlayer.initFreeState();	// the starting gold
+
+	pStartPlot = findFoundingVassalPlot(pCity, iRange, eNewPlayer);
+	if (pStartPlot == NULL)
+	{
+		pStartPlot = pFallbackPlot;
+	}
+	kNewPlayer.setStartingPlot(pStartPlot, true);
+
+	// The permanent alliance: the new team joins the team of this player (techs, contacts, wars and the map are shared)
+	GET_TEAM(getTeam()).addTeam(kNewPlayer.getTeam());
+
+	// The units, with the techs of the team: all the starting units of an AI at the difficulty of its AI modifiers (the free
+	// units of the civilization, defenders, workers, explorers), as at the start of the game without Advanced Start
+	kNewPlayer.addStartingUnits();
+
+	// The message, to the players that know this team (as CvPlayer::splitEmpire)
+	CvWString szMessage = gDLL->getText("TXT_KEY_MISC_FOUNDING_VASSAL_JOINED", GC.getLeaderHeadInfo(eLeader).getTextKeyWide(), GC.getCivilizationInfo(eCiv).getShortDescriptionKey(), getNameKey());
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		{
+			if (GET_PLAYER((PlayerTypes)iI).getTeam() == getTeam() || GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam()).isHasMet(getTeam()))
+			{
+				gDLL->getInterfaceIFace()->addMessage((PlayerTypes)iI, false, GC.getEVENT_MESSAGE_TIME(), szMessage, "AS2D_REVOLTEND", MESSAGE_TYPE_MAJOR_EVENT, ARTFILEMGR.getInterfaceArtInfo("INTERFACE_CITY_BAR_CAPITAL_TEXTURE")->getPath(), (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"), pStartPlot->getX_INLINE(), pStartPlot->getY_INLINE(), true, true);
+			}
+		}
+	}
+	GC.getGameINLINE().addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, getID(), szMessage, pStartPlot->getX_INLINE(), pStartPlot->getY_INLINE(), (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
+
+	GC.getGameINLINE().updateScore(true);
 }
 
 
@@ -7740,16 +8077,16 @@ int CvPlayer::getProductionNeeded(UnitTypes eUnit) const
 	{
 		if (isWorldUnitClass(eUnitClass))
 		{
-			iProductionNeeded *= GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIWorldTrainPercent();
+			iProductionNeeded *= GC.getHandicapInfo(getAIHandicapType()).getAIWorldTrainPercent();
 			iProductionNeeded /= 100;
 		}
 		else
 		{
-			iProductionNeeded *= GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAITrainPercent();
+			iProductionNeeded *= GC.getHandicapInfo(getAIHandicapType()).getAITrainPercent();
 			iProductionNeeded /= 100;
 		}
 
-		iProductionNeeded *= std::max(0, ((GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
+		iProductionNeeded *= std::max(0, ((GC.getHandicapInfo(getAIHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
 		iProductionNeeded /= 100;
 	}
 
@@ -7798,16 +8135,16 @@ int CvPlayer::getProductionNeeded(BuildingTypes eBuilding) const
 	{
 		if (isWorldWonderClass((BuildingClassTypes)(GC.getBuildingInfo(eBuilding).getBuildingClassType())))
 		{
-			iProductionNeeded *= GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIWorldConstructPercent();
+			iProductionNeeded *= GC.getHandicapInfo(getAIHandicapType()).getAIWorldConstructPercent();
 			iProductionNeeded /= 100;
 		}
 		else
 		{
-			iProductionNeeded *= GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIConstructPercent();
+			iProductionNeeded *= GC.getHandicapInfo(getAIHandicapType()).getAIConstructPercent();
 			iProductionNeeded /= 100;
 		}
 
-		iProductionNeeded *= std::max(0, ((GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
+		iProductionNeeded *= std::max(0, ((GC.getHandicapInfo(getAIHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
 		iProductionNeeded /= 100;
 	}
 
@@ -7838,16 +8175,16 @@ int CvPlayer::getProductionNeeded(ProjectTypes eProject) const
 	{
 		if (isWorldProject(eProject))
 		{
-			iProductionNeeded *= GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIWorldCreatePercent();
+			iProductionNeeded *= GC.getHandicapInfo(getAIHandicapType()).getAIWorldCreatePercent();
 			iProductionNeeded /= 100;
 		}
 		else
 		{
-			iProductionNeeded *= GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAICreatePercent();
+			iProductionNeeded *= GC.getHandicapInfo(getAIHandicapType()).getAICreatePercent();
 			iProductionNeeded /= 100;
 		}
 
-		iProductionNeeded *= std::max(0, ((GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
+		iProductionNeeded *= std::max(0, ((GC.getHandicapInfo(getAIHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
 		iProductionNeeded /= 100;
 	}
 
@@ -10809,10 +11146,10 @@ int CvPlayer::calculateUnitCost(int& iFreeUnits, int& iFreeMilitaryUnits, int& i
 
 	if (!isHuman() && !isBarbarian())
 	{
-		iSupport *= GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIUnitCostPercent();
+		iSupport *= GC.getHandicapInfo(getAIHandicapType()).getAIUnitCostPercent();
 		iSupport /= 100;
 
-		iSupport *= std::max(0, ((GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
+		iSupport *= std::max(0, ((GC.getHandicapInfo(getAIHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
 		iSupport /= 100;
 	}
 
@@ -10866,10 +11203,10 @@ int CvPlayer::calculateUnitSupply(int& iPaidUnits, int& iBaseSupplyCost) const
 
 	if (!isHuman() && !isBarbarian())
 	{
-		iSupply *= GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIUnitSupplyPercent();
+		iSupply *= GC.getHandicapInfo(getAIHandicapType()).getAIUnitSupplyPercent();
 		iSupply /= 100;
 
-		iSupply *= std::max(0, ((GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
+		iSupply *= std::max(0, ((GC.getHandicapInfo(getAIHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
 		iSupply /= 100;
 	}
 
@@ -10913,8 +11250,8 @@ int CvPlayer::calculateInflationRate() const
 	int iModifier = m_iInflationModifier;
 	if (!isHuman() && !isBarbarian())
 	{
-		int iAIModifier = GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIInflationPercent();
-		iAIModifier *= std::max(0, ((GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
+		int iAIModifier = GC.getHandicapInfo(getAIHandicapType()).getAIInflationPercent();
+		iAIModifier *= std::max(0, ((GC.getHandicapInfo(getAIHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
 		iAIModifier /= 100;
 
 		iModifier += iAIModifier - 100;
@@ -13500,10 +13837,10 @@ int CvPlayer::getModifiedWarWearinessPercentAnger(int iWarWearinessPercentAnger)
 
 	if (!isHuman() && !isBarbarian() && !isMinorCiv())
 	{
-		iWarWearinessPercentAnger *= GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIWarWearinessPercent();
+		iWarWearinessPercentAnger *= GC.getHandicapInfo(getAIHandicapType()).getAIWarWearinessPercent();
 		iWarWearinessPercentAnger /= 100;
 
-		iWarWearinessPercentAnger *= std::max(0, ((GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
+		iWarWearinessPercentAnger *= std::max(0, ((GC.getHandicapInfo(getAIHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
 		iWarWearinessPercentAnger /= 100;
 	}
 
@@ -16259,10 +16596,10 @@ int CvPlayer::getSingleCivicUpkeep(CivicTypes eCivic, bool bIgnoreAnarchy) const
 
 	if (!isHuman() && !isBarbarian())
 	{
-		iUpkeep *= GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAICivicUpkeepPercent();
+		iUpkeep *= GC.getHandicapInfo(getAIHandicapType()).getAICivicUpkeepPercent();
 		iUpkeep /= 100;
 
-		iUpkeep *= std::max(0, ((GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
+		iUpkeep *= std::max(0, ((GC.getHandicapInfo(getAIHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
 		iUpkeep /= 100;
 	}
 
@@ -21377,6 +21714,14 @@ void CvPlayer::read(FDataStreamBase* pStream)
 		pStream->Read(NUM_EXPLORE_PLOT_TYPES, m_aiExploredPlotCount);
 		pStream->Read(NUM_EXPLORE_PLOT_TYPES * NUM_COMMERCE_TYPES, m_aiExplorationRemainder);
 	}
+
+	// FoundingVassal of the traits (uiFlag 18). Older saves: not done, not joined, the difficulty of the game (reset)
+	if (uiFlag > 17)
+	{
+		pStream->Read(&m_bFoundingVassalDone);
+		pStream->Read(&m_bFoundingVassal);
+		pStream->Read((int*)&m_eAIHandicap);
+	}
 }
 
 //
@@ -21387,7 +21732,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 17;	// 17: m_aiExploredPlotCount and m_aiExplorationRemainder. 16: the civic slots after slot 0 (m_paeCivics). 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
+	uint uiFlag = 18;	// 18: m_bFoundingVassalDone, m_bFoundingVassal and m_eAIHandicap. 17: m_aiExploredPlotCount and m_aiExplorationRemainder. 16: the civic slots after slot 0 (m_paeCivics). 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -21823,6 +22168,11 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	// ExplorationRewards of the traits (uiFlag 17, added by this mod)
 	pStream->Write(NUM_EXPLORE_PLOT_TYPES, m_aiExploredPlotCount);
 	pStream->Write(NUM_EXPLORE_PLOT_TYPES * NUM_COMMERCE_TYPES, m_aiExplorationRemainder);
+
+	// FoundingVassal of the traits (uiFlag 18, added by this mod)
+	pStream->Write(m_bFoundingVassalDone);
+	pStream->Write(m_bFoundingVassal);
+	pStream->Write(m_eAIHandicap);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)
@@ -25910,10 +26260,10 @@ int CvPlayer::getGrowthThreshold(int iPopulation) const
 
 	if (!isHuman() && !isBarbarian())
 	{
-		iThreshold *= GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIGrowthPercent();
+		iThreshold *= GC.getHandicapInfo(getAIHandicapType()).getAIGrowthPercent();
 		iThreshold /= 100;
 
-		iThreshold *= std::max(0, ((GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
+		iThreshold *= std::max(0, ((GC.getHandicapInfo(getAIHandicapType()).getAIPerEraModifier() * getCurrentEra()) + 100));
 		iThreshold /= 100;
 	}
 
