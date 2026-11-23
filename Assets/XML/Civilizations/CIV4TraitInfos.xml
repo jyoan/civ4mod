@@ -640,6 +640,18 @@
 			<PyOnCityLost>bConquest and createPartisans(pPlayer, pCity, 2 + iPopulation, iCultureLevel)</PyOnCityLost>
 			<PyOnBuildingBuilt>isBuildingClassIn(eBuilding, ['BUILDINGCLASS_GRANARY', 'BUILDINGCLASS_TEST']) and pCity.changePopulation(1)</PyOnBuildingBuilt>
 			<PyOnReligionFounded>createMissionaries(pPlayer, eReligion, 2, pCity)</PyOnReligionFounded>
+			<PyOnTechAcquired>(bFirst and gainGold(pPlayer, 25), countEvery(pPlayer, eTrait, 3) and createUnits(pPlayer, 'UNITCLASS_SCOUT', 1, capitalPlot(pPlayer)), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnTechAcquired', infoDescription('Tech', eTech) + ', bFirst ' + str(bFirst) + ', counter ' + str(pPlayer.getTraitCounter(eTrait)))))</PyOnTechAcquired>
+			<PyOnGreatPersonBorn>(gainTraitForTurns(pPlayer, 'TRAIT_TEST_TEMPORARY', 5), pCity.isNone() or addCulture(pCity, 100), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnGreatPersonBorn', pUnit.getName() + ', ' + cityName(pCity))))</PyOnGreatPersonBorn>
+			<PyOnGoldenAgeStart>(gainGold(pPlayer, 100), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnGoldenAgeStart', '-')))</PyOnGoldenAgeStart>
+			<PyOnGoldenAgeEnd>(gainTraitForTurns(pPlayer, 'TRAIT_TEST_TEMPORARY', 3), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnGoldenAgeEnd', '-')))</PyOnGoldenAgeEnd>
+			<PyOnWarDeclared>(bAggressor and gainGold(pPlayer, 50), bAggressor or createCityConscripts(pPlayer, 3), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnWarDeclared', gc.getTeam(iOtherTeam).getName() + ', bAggressor ' + str(bAggressor))))</PyOnWarDeclared>
+			<PyOnPeaceMade>(gainGold(pPlayer, 30), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnPeaceMade', gc.getTeam(iOtherTeam).getName())))</PyOnPeaceMade>
+			<PyOnEraChanged>(createUnits(pPlayer, 'UNITCLASS_ENGINEER', 1, capitalPlot(pPlayer)), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnEraChanged', infoDescription('Era', iOldEra) + ' -&gt; ' + infoDescription('Era', eEra))))</PyOnEraChanged>
+			<PyOnFirstContact>(gainGold(pPlayer, 20), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnFirstContact', gc.getTeam(iOtherTeam).getName())))</PyOnFirstContact>
+			<PyOnProjectBuilt>(gainGold(pPlayer, 100), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnProjectBuilt', cityName(pCity) + ', ' + infoDescription('Project', eProject))))</PyOnProjectBuilt>
+			<PyOnVassalGained>(gainGold(pPlayer, 100 + 100 * bCapitulated), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnVassalGained', gc.getTeam(iVassalTeam).getName() + ', bCapitulated ' + str(bCapitulated))))</PyOnVassalGained>
+			<PyOnReligionSpread>(gainGold(pPlayer, 10), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnReligionSpread', cityName(pCity) + ', ' + infoDescription('Religion', eReligion))))</PyOnReligionSpread>
+			<PyOnCivicChanged>(gainTraitForTurns(pPlayer, 'TRAIT_TEST_TEMPORARY', 2), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnCivicChanged', infoDescription('Civic', iOldCivic) + ' -&gt; ' + infoDescription('Civic', eCivic))))</PyOnCivicChanged>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>

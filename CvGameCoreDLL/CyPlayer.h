@@ -474,6 +474,9 @@ public:
 	int getConditionalTraitCount(int /*TraitTypes*/ eTrait);
 	int getTraitTurns(int /*TraitTypes*/ eTrait);
 	void setTraitTurns(int /*TraitTypes*/ eTrait, int iTurns);
+	int getTraitCounter(int /*TraitTypes*/ eTrait);	// added by this mod
+	void setTraitCounter(int /*TraitTypes*/ eTrait, int iValue);	// added by this mod
+	void changeTraitCounter(int /*TraitTypes*/ eTrait, int iChange);	// added by this mod
 	bool isRandomBasicTrait(int /*TraitTypes*/ eTrait);	// added by this mod
 	int getRandomBasicTraitTurn();	// added by this mod
 	bool isFriendlyTraitGainedFrom(int /*PlayerTypes*/ ePlayer);	// added by this mod

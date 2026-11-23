@@ -26,6 +26,30 @@
 ##                     ConditionalFreeTraits, FreeTraits of civics, buildings and techs, temporary traits, Python).
 ##                     Not for the traits the player has when the game starts
 ##   PyOnLost          pPlayer, eTrait: when the player loses this trait (the player no longer has it)
+##   PyOnTechAcquired  pPlayer, eTrait, eTech, bFirst (1 if the team of the player is the first to have it): after the team
+##                     gets the tech, however it got it (research, trade, goody hut, espionage, Python). Not for the techs
+##                     of the start of the game, e.g. bFirst and gainGold(pPlayer, 50)
+##   PyOnGreatPersonBorn  pPlayer, eTrait, pUnit (CyUnit), pCity: after a great person of the player is born. A great
+##                     general from combat has no city (pCity.isNone()), e.g.
+##                     isUnitClassIn(pUnit, ['UNITCLASS_GREAT_GENERAL']) and gainTraitForTurns(pPlayer, 'TRAIT_X', 5)
+##   PyOnGoldenAgeStart / PyOnGoldenAgeEnd  pPlayer, eTrait: when a golden age of the player starts / ends (not when a
+##                     golden age only gets longer)
+##   PyOnWarDeclared   pPlayer, eTrait, iOtherTeam, bAggressor (1 if the team of the player declared the war): after a war
+##                     between the teams starts. A defensive pact or a vassal that joins a war declares it too
+##   PyOnPeaceMade     pPlayer, eTrait, iOtherTeam: after the teams make peace
+##   PyOnEraChanged    pPlayer, eTrait, eEra, iOldEra: after the player enters a new era (it can skip eras when it gets
+##                     a tech of a later era). Not for the era of the start of the game
+##   PyOnFirstContact  pPlayer, eTrait, iOtherTeam: after the team of the player meets another team (by units or a
+##                     contact trade; not the barbarians)
+##   PyOnProjectBuilt  pPlayer, eTrait, pCity, eProject: after a city of the player completes the project
+##   PyOnVassalGained  pPlayer, eTrait, iVassalTeam, bCapitulated (1 if the vassal surrendered): after a team becomes a
+##                     vassal of the team of the player
+##   PyOnReligionSpread  pPlayer, eTrait, pCity, eReligion: after a religion spreads to a city of the player (natural
+##                     spread, missionaries, the holy city, events). Not for the religions a city keeps when it changes hands
+##   PyOnCivicChanged  pPlayer, eTrait, eCivic, iOldCivic: after the player changes the civic of a slot, once per slot
+##                     (eCivic or iOldCivic is -1 for an empty extra slot of CivicOptionExtraSlots)
+## Counters: each player has a number per trait for the hooks (CyPlayer.getTraitCounter, saved with the game), e.g.
+##   countEvery(pPlayer, eTrait, 3) and gainGold(pPlayer, 100)   (every third time)
 ## Temporary traits: gainTraitForTurns(pPlayer, 'TRAIT_X', iTurns) gives a trait for some turns, e.g. from a hook.
 ## To do two things in one hook, write a tuple: (addBuilding(pCity, 'BUILDINGCLASS_WALLS'), gainGold(pPlayer, 10))
 ## The common functions are in CvHookUtils.py (imported below), e.g.
@@ -78,3 +102,51 @@ def onGained(argsList):
 def onLost(argsList):
 	pPlayer, eTrait = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnLost())
+
+def onTechAcquired(argsList):
+	pPlayer, eTrait, eTech, bFirst = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnTechAcquired())
+
+def onGreatPersonBorn(argsList):
+	pPlayer, eTrait, pUnit, pCity = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnGreatPersonBorn())
+
+def onGoldenAgeStart(argsList):
+	pPlayer, eTrait = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnGoldenAgeStart())
+
+def onGoldenAgeEnd(argsList):
+	pPlayer, eTrait = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnGoldenAgeEnd())
+
+def onWarDeclared(argsList):
+	pPlayer, eTrait, iOtherTeam, bAggressor = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnWarDeclared())
+
+def onPeaceMade(argsList):
+	pPlayer, eTrait, iOtherTeam = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnPeaceMade())
+
+def onEraChanged(argsList):
+	pPlayer, eTrait, eEra, iOldEra = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnEraChanged())
+
+def onFirstContact(argsList):
+	pPlayer, eTrait, iOtherTeam = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnFirstContact())
+
+def onProjectBuilt(argsList):
+	pPlayer, eTrait, pCity, eProject = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnProjectBuilt())
+
+def onVassalGained(argsList):
+	pPlayer, eTrait, iVassalTeam, bCapitulated = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnVassalGained())
+
+def onReligionSpread(argsList):
+	pPlayer, eTrait, pCity, eReligion = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnReligionSpread())
+
+def onCivicChanged(argsList):
+	pPlayer, eTrait, eCivic, iOldCivic = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnCivicChanged())

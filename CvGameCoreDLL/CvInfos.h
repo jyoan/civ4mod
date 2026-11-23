@@ -5148,6 +5148,18 @@ public:
 	const TCHAR* getPyOnReligionFounded() const;	// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnGained() const;			// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnLost() const;				// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnTechAcquired() const;		// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnGreatPersonBorn() const;	// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnGoldenAgeStart() const;	// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnGoldenAgeEnd() const;		// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnWarDeclared() const;		// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnPeaceMade() const;			// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnEraChanged() const;		// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnFirstContact() const;		// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnProjectBuilt() const;		// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnVassalGained() const;		// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnReligionSpread() const;	// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnCivicChanged() const;		// Exposed to Python (added by this mod)
 	int getNumConditionalFreeTraits() const;		// Exposed to Python
 	int getConditionalFreeTraitType(int i) const;	// Exposed to Python
 	const ConditionalFreeTrait& getConditionalFreeTrait(int i) const;

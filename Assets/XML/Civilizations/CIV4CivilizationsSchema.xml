@@ -668,6 +668,18 @@
 	<ElementType name="PyOnReligionFounded" content="textOnly"/>
 	<ElementType name="PyOnGained" content="textOnly"/>
 	<ElementType name="PyOnLost" content="textOnly"/>
+	<ElementType name="PyOnTechAcquired" content="textOnly"/>
+	<ElementType name="PyOnGreatPersonBorn" content="textOnly"/>
+	<ElementType name="PyOnGoldenAgeStart" content="textOnly"/>
+	<ElementType name="PyOnGoldenAgeEnd" content="textOnly"/>
+	<ElementType name="PyOnWarDeclared" content="textOnly"/>
+	<ElementType name="PyOnPeaceMade" content="textOnly"/>
+	<ElementType name="PyOnEraChanged" content="textOnly"/>
+	<ElementType name="PyOnFirstContact" content="textOnly"/>
+	<ElementType name="PyOnProjectBuilt" content="textOnly"/>
+	<ElementType name="PyOnVassalGained" content="textOnly"/>
+	<ElementType name="PyOnReligionSpread" content="textOnly"/>
+	<ElementType name="PyOnCivicChanged" content="textOnly"/>
 	<ElementType name="iHappinessPerReligion" content="textOnly" dt:type="int"/>
 	<ElementType name="CommercePerReligion" content="eltOnly">
 		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
@@ -1202,6 +1214,18 @@
 		<element type="PyOnReligionFounded" minOccurs="0"/>
 		<element type="PyOnGained" minOccurs="0"/>
 		<element type="PyOnLost" minOccurs="0"/>
+		<element type="PyOnTechAcquired" minOccurs="0"/>
+		<element type="PyOnGreatPersonBorn" minOccurs="0"/>
+		<element type="PyOnGoldenAgeStart" minOccurs="0"/>
+		<element type="PyOnGoldenAgeEnd" minOccurs="0"/>
+		<element type="PyOnWarDeclared" minOccurs="0"/>
+		<element type="PyOnPeaceMade" minOccurs="0"/>
+		<element type="PyOnEraChanged" minOccurs="0"/>
+		<element type="PyOnFirstContact" minOccurs="0"/>
+		<element type="PyOnProjectBuilt" minOccurs="0"/>
+		<element type="PyOnVassalGained" minOccurs="0"/>
+		<element type="PyOnReligionSpread" minOccurs="0"/>
+		<element type="PyOnCivicChanged" minOccurs="0"/>
 		<element type="ConditionalFreeTraits" minOccurs="0"/>
 		<element type="ExtraYieldThresholds" minOccurs="0"/>
 		<element type="TradeYieldModifiers" minOccurs="0"/>

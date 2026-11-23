@@ -64,6 +64,7 @@ CvPlayer::CvPlayer()
 	m_paiFreeTraitCount = NULL;
 	m_paiConditionalTraitCount = NULL;
 	m_paiTraitTurns = NULL;
+	m_paiTraitCounter = NULL;
 	m_paiRandomBasicTrait = NULL;
 	m_paiLearnedUnit = NULL;
 	m_paiLearnedBuilding = NULL;
@@ -288,6 +289,7 @@ void CvPlayer::uninit()
 	SAFE_DELETE_ARRAY(m_paiFreeTraitCount);
 	SAFE_DELETE_ARRAY(m_paiConditionalTraitCount);
 	SAFE_DELETE_ARRAY(m_paiTraitTurns);
+	SAFE_DELETE_ARRAY(m_paiTraitCounter);
 	SAFE_DELETE_ARRAY(m_paiRandomBasicTrait);
 	SAFE_DELETE_ARRAY(m_paiLearnedUnit);
 	SAFE_DELETE_ARRAY(m_paiLearnedBuilding);
@@ -629,6 +631,13 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
 		{
 			m_paiTraitTurns[iI] = 0;
+		}
+
+		FAssertMsg(m_paiTraitCounter==NULL, "about to leak memory, CvPlayer::m_paiTraitCounter");
+		m_paiTraitCounter = new int [GC.getNumTraitInfos()];
+		for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+		{
+			m_paiTraitCounter[iI] = 0;
 		}
 
 		FAssertMsg(m_paiRandomBasicTrait==NULL, "about to leak memory, CvPlayer::m_paiRandomBasicTrait");
@@ -3214,6 +3223,30 @@ void CvPlayer::doTraitTurns()
 	}
 }
 
+// The counter of a trait (added by this mod): a number of the player that the Python hooks of the trait can count with
+// (e.g. great people born, wars declared on the player). Nothing in the DLL reads it. Kept when the trait is lost.
+int CvPlayer::getTraitCounter(TraitTypes eTrait) const
+{
+	FAssertMsg(eTrait >= 0, "eTrait is expected to be non-negative (invalid Index)");
+	FAssertMsg(eTrait < GC.getNumTraitInfos(), "eTrait is expected to be within maximum bounds (invalid Index)");
+	return ((m_paiTraitCounter != NULL) ? m_paiTraitCounter[eTrait] : 0);
+}
+
+void CvPlayer::setTraitCounter(TraitTypes eTrait, int iValue)
+{
+	FAssertMsg(eTrait >= 0, "eTrait is expected to be non-negative (invalid Index)");
+	FAssertMsg(eTrait < GC.getNumTraitInfos(), "eTrait is expected to be within maximum bounds (invalid Index)");
+	if (m_paiTraitCounter != NULL)
+	{
+		m_paiTraitCounter[eTrait] = iValue;
+	}
+}
+
+void CvPlayer::changeTraitCounter(TraitTypes eTrait, int iChange)
+{
+	setTraitCounter(eTrait, getTraitCounter(eTrait) + iChange);
+}
+
 // GainTraitsOnFriendly of the traits (added by this mod): whether the traits of ePlayer were checked when ePlayer became friendly
 bool CvPlayer::isFriendlyTraitGainedFrom(PlayerTypes ePlayer) const
 {
@@ -3806,10 +3839,76 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 		return;
 	}
 
-	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onBuildingBuilt", "onReligionFounded", "onGained", "onLost" };	// the last two: doTraitGainedPythonHook
+	std::vector<int> aiArgs;
+
+	if (eHook == TRAIT_PYHOOK_CITY_ACQUIRED)
+	{
+		aiArgs.push_back((int)eOldOwner);
+		aiArgs.push_back(bConquest ? 1 : 0);
+		aiArgs.push_back(bTrade ? 1 : 0);
+	}
+	else if (eHook == TRAIT_PYHOOK_CITY_LOST)
+	{
+		aiArgs.push_back((int)eOldOwner);
+		aiArgs.push_back(bConquest ? 1 : 0);
+		aiArgs.push_back(bTrade ? 1 : 0);
+		aiArgs.push_back(iPopulation);
+		aiArgs.push_back((int)eCultureLevel);
+	}
+	else if (eHook == TRAIT_PYHOOK_CORPORATION_FOUNDED)
+	{
+		aiArgs.push_back((int)eCorporation);
+	}
+	else if (eHook == TRAIT_PYHOOK_BUILDING_BUILT)
+	{
+		aiArgs.push_back((int)eBuilding);
+	}
+	else if (eHook == TRAIT_PYHOOK_RELIGION_FOUNDED)
+	{
+		aiArgs.push_back((int)eReligion);
+	}
+
+	callTraitPythonHook(eHook, NULL, pCity, aiArgs);
+}
+
+// The trait hooks whose arguments after pPlayer and eTrait are up to two ints (added by this mod): PyOnTechAcquired (eTech,
+// bFirst), PyOnGoldenAgeStart / End (none), PyOnWarDeclared (iOtherTeam, bAggressor), PyOnPeaceMade (iOtherTeam),
+// PyOnEraChanged (eEra, iOldEra)
+void CvPlayer::doTraitPythonHookInts(TraitPythonHookTypes eHook, int iNumArgs, int iArg1, int iArg2)
+{
+	std::vector<int> aiArgs;
+
+	if (iNumArgs > 0)
+	{
+		aiArgs.push_back(iArg1);
+	}
+	if (iNumArgs > 1)
+	{
+		aiArgs.push_back(iArg2);
+	}
+
+	callTraitPythonHook(eHook, NULL, NULL, aiArgs);
+}
+
+// The common part of the trait hooks (added by this mod): for each trait of the player with the expression of the hook,
+// calls the function of CvTraitInterface.py with pPlayer, eTrait, then the unit (PyOnGreatPersonBorn), the city (when
+// pCity is given; always for PyOnGreatPersonBorn, which may have none: CyCity.isNone), then the ints of aiArgs
+void CvPlayer::callTraitPythonHook(TraitPythonHookTypes eHook, CvUnit* pUnit, CvCity* pCity, const std::vector<int>& aiArgs)
+{
+	// Not for the player watching in the AI observe mode, who has nothing to act on
+	if (isObserver())
+	{
+		return;
+	}
+
+	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onBuildingBuilt", "onReligionFounded", "onGained", "onLost", "onTechAcquired", "onGreatPersonBorn", "onGoldenAgeStart", "onGoldenAgeEnd", "onWarDeclared", "onPeaceMade", "onEraChanged", "onFirstContact", "onProjectBuilt", "onVassalGained", "onReligionSpread", "onCivicChanged" };	// onGained and onLost: doTraitGainedPythonHook
+	bool bHasUnit = (eHook == TRAIT_PYHOOK_GREAT_PERSON_BORN);
+	bool bHasCity = (pCity != NULL || eHook == TRAIT_PYHOOK_GREAT_PERSON_BORN);
 	CyPlayer* pyPlayer;
+	CyUnit* pyUnit;
 	CyCity* pyCity;
 	int iI;
+	int iJ;
 
 	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
 	{
@@ -3821,44 +3920,30 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 			argsList.add(gDLL->getPythonIFace()->makePythonObject(pyPlayer));
 			argsList.add(iI);
 
+			pyUnit = NULL;
+			if (bHasUnit)
+			{
+				pyUnit = new CyUnit(pUnit);
+				argsList.add(gDLL->getPythonIFace()->makePythonObject(pyUnit));
+			}
+
 			pyCity = NULL;
-			if (pCity != NULL)
+			if (bHasCity)
 			{
 				pyCity = new CyCity(pCity);
 				argsList.add(gDLL->getPythonIFace()->makePythonObject(pyCity));
 			}
 
-			if (eHook == TRAIT_PYHOOK_CITY_ACQUIRED)
+			for (iJ = 0; iJ < (int)aiArgs.size(); iJ++)
 			{
-				argsList.add((int)eOldOwner);
-				argsList.add(bConquest ? 1 : 0);
-				argsList.add(bTrade ? 1 : 0);
-			}
-			else if (eHook == TRAIT_PYHOOK_CITY_LOST)
-			{
-				argsList.add((int)eOldOwner);
-				argsList.add(bConquest ? 1 : 0);
-				argsList.add(bTrade ? 1 : 0);
-				argsList.add(iPopulation);
-				argsList.add((int)eCultureLevel);
-			}
-			else if (eHook == TRAIT_PYHOOK_CORPORATION_FOUNDED)
-			{
-				argsList.add((int)eCorporation);
-			}
-			else if (eHook == TRAIT_PYHOOK_BUILDING_BUILT)
-			{
-				argsList.add((int)eBuilding);
-			}
-			else if (eHook == TRAIT_PYHOOK_RELIGION_FOUNDED)
-			{
-				argsList.add((int)eReligion);
+				argsList.add(aiArgs[iJ]);
 			}
 
 			gDLL->getPythonIFace()->callFunction(PYTraitModule, aszFunctions[eHook], argsList.makeFunctionArgs());
 
 			// The python functions must not hold on to these pointers
 			delete pyPlayer;
+			SAFE_DELETE(pyUnit);
 			SAFE_DELETE(pyCity);
 		}
 	}
@@ -12793,6 +12878,12 @@ void CvPlayer::changeGoldenAgeTurns(int iChange)
 				CvEventReporter::getInstance().endGoldenAge(getID());
 			}
 
+			// PyOnGoldenAgeStart / PyOnGoldenAgeEnd of the traits (added by this mod): not when a golden age only gets longer
+			if (GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()))
+			{
+				doTraitPythonHookInts(isGoldenAge() ? TRAIT_PYHOOK_GOLDEN_AGE_START : TRAIT_PYHOOK_GOLDEN_AGE_END);
+			}
+
 			for (iI = 0; iI < MAX_PLAYERS; iI++)
 			{
 				if (GET_PLAYER((PlayerTypes)iI).isAlive())
@@ -15169,6 +15260,12 @@ void CvPlayer::setCurrentEra(EraTypes eNewValue)
 				}
 			}
 		}
+
+		// PyOnEraChanged of the traits (added by this mod): not for the era of the start of the game
+		if (isAlive() && GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()))
+		{
+			doTraitPythonHookInts(TRAIT_PYHOOK_ERA_CHANGED, 2, eNewValue, eOldEra);
+		}
 	}
 }
 
@@ -16919,6 +17016,12 @@ void CvPlayer::setCivicSlot(CivicOptionTypes eIndex, int iSlot, CivicTypes eNewV
 			if (getCivicSlot(eIndex, iSlot) != NO_CIVIC && GC.getCivicInfo(getCivicSlot(eIndex, iSlot)).getPyOnAdopt()[0] != '\0')
 			{
 				doCivicPythonHook(getCivicSlot(eIndex, iSlot), true);
+			}
+
+			// PyOnCivicChanged of the traits (added by this mod): once per slot that changes
+			if (!(gDLL->GetWorldBuilderMode()))
+			{
+				doTraitPythonHookInts(TRAIT_PYHOOK_CIVIC_CHANGED, 2, getCivicSlot(eIndex, iSlot), eOldCivic);
 			}
 		}
 
@@ -21722,6 +21825,12 @@ void CvPlayer::read(FDataStreamBase* pStream)
 		pStream->Read(&m_bFoundingVassal);
 		pStream->Read((int*)&m_eAIHandicap);
 	}
+
+	// The counters of the traits (uiFlag 19)
+	if (uiFlag > 18)
+	{
+		pStream->Read(GC.getNumTraitInfos(), m_paiTraitCounter);
+	}
 }
 
 //
@@ -21732,7 +21841,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 18;	// 18: m_bFoundingVassalDone, m_bFoundingVassal and m_eAIHandicap. 17: m_aiExploredPlotCount and m_aiExplorationRemainder. 16: the civic slots after slot 0 (m_paeCivics). 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
+	uint uiFlag = 19;	// 19: m_paiTraitCounter. 18: m_bFoundingVassalDone, m_bFoundingVassal and m_eAIHandicap. 17: m_aiExploredPlotCount and m_aiExplorationRemainder. 16: the civic slots after slot 0 (m_paeCivics). 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -22173,6 +22282,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(m_bFoundingVassalDone);
 	pStream->Write(m_bFoundingVassal);
 	pStream->Write(m_eAIHandicap);
+	pStream->Write(GC.getNumTraitInfos(), m_paiTraitCounter);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)
@@ -22254,6 +22364,14 @@ void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThre
 	if (pCity)
 	{
 		CvEventReporter::getInstance().greatPersonBorn(pGreatPeopleUnit, getID(), pCity);
+	}
+
+	// PyOnGreatPersonBorn of the traits (added by this mod): also for a great person born outside a city (a great general
+	// from combat), with no city
+	if (GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()))
+	{
+		std::vector<int> aiNoArgs;
+		callTraitPythonHook(TRAIT_PYHOOK_GREAT_PERSON_BORN, pGreatPeopleUnit, pCity, aiNoArgs);
 	}
 
 }

@@ -1444,6 +1444,7 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 		}
 
 		CvEventReporter::getInstance().changeWar(true, getID(), eTeam);
+		doWarPeaceTraitPythonHooks(eTeam, true);	// PyOnWarDeclared of the traits (added by this mod)
 
 		cancelDefensivePacts();
 
@@ -1475,6 +1476,36 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 						GET_TEAM((TeamTypes)iI).declareWar(eTeam, bNewDiplo, WARPLAN_DOGPILE);
 					}
 				}
+			}
+		}
+	}
+}
+
+// PyOnWarDeclared (bWar) / PyOnPeaceMade of the traits (added by this mod): for each player of this team and of eTeam, with
+// the other team, and for a war bAggressor (1 for this team, which declared it). A defensive pact or a vassal that joins the
+// war declares it too, so its players are aggressors of that war. Not before the game starts, nor in the world builder
+void CvTeam::doWarPeaceTraitPythonHooks(TeamTypes eTeam, bool bWar)
+{
+	TraitPythonHookTypes eHook = (bWar ? TRAIT_PYHOOK_WAR_DECLARED : TRAIT_PYHOOK_PEACE_MADE);
+	int iI;
+
+	if (!(GC.getGameINLINE().isFinalInitialized()) || gDLL->GetWorldBuilderMode())
+	{
+		return;
+	}
+
+	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
+		if (kPlayer.isAlive())
+		{
+			if (kPlayer.getTeam() == getID())
+			{
+				kPlayer.doTraitPythonHookInts(eHook, (bWar ? 2 : 1), eTeam, 1);
+			}
+			else if (kPlayer.getTeam() == eTeam)
+			{
+				kPlayer.doTraitPythonHookInts(eHook, (bWar ? 2 : 1), getID(), 0);
 			}
 		}
 	}
@@ -1591,6 +1622,7 @@ void CvTeam::makePeace(TeamTypes eTeam, bool bBumpUnits)
 		GC.getGameINLINE().addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, getLeaderID(), szBuffer, -1, -1, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
 
 		CvEventReporter::getInstance().changeWar(false, getID(), eTeam);
+		doWarPeaceTraitPythonHooks(eTeam, false);	// PyOnPeaceMade of the traits (added by this mod)
 
 		for (iI = 0; iI < MAX_TEAMS; iI++)
 		{
@@ -3667,6 +3699,19 @@ void CvTeam::makeHasMet(TeamTypes eIndex, bool bNewDiplo)
 
 		// report event to Python, along with some other key state
 		CvEventReporter::getInstance().firstContact(getID(), eIndex);
+
+		// PyOnFirstContact of the traits of the players of this team (added by this mod), however the teams met (units,
+		// contact trade). Not for the barbarians, not before the game starts, nor in the world builder
+		if (eIndex != getID() && !(GET_TEAM(eIndex).isBarbarian()) && GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()))
+		{
+			for (iI = 0; iI < MAX_PLAYERS; iI++)
+			{
+				if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
+				{
+					GET_PLAYER((PlayerTypes)iI).doTraitPythonHookInts(TRAIT_PYHOOK_FIRST_CONTACT, 1, eIndex);
+				}
+			}
+		}
 	}
 }
 
@@ -4153,6 +4198,20 @@ void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 		if (GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()))
 		{
 			CvEventReporter::getInstance().vassalState(eIndex, getID(), bNewValue);
+
+			// PyOnVassalGained of the traits of the players of the master team eIndex (added by this mod): with this team
+			// (the vassal) and bCapitulated
+			if (bNewValue)
+			{
+				for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
+				{
+					CvPlayer& kMasterPlayer = GET_PLAYER((PlayerTypes)iPlayer);
+					if (kMasterPlayer.isAlive() && kMasterPlayer.getTeam() == eIndex)
+					{
+						kMasterPlayer.doTraitPythonHookInts(TRAIT_PYHOOK_VASSAL_GAINED, 2, getID(), (bCapitulated ? 1 : 0));
+					}
+				}
+			}
 		}
 	}
 }
@@ -5398,16 +5457,21 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 			}
 		}
 
-		// PyOnDiscovered of the tech (added by this mod): each player of the team, after the effects of the tech. bFirst: the
-		// team is the first to have it. Not for the techs of the start of the game, nor in the world builder
-		if (bNewValue && GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()) && GC.getTechInfo(eIndex).getPyOnDiscovered()[0] != '\0')
+		// PyOnDiscovered of the tech and PyOnTechAcquired of the traits (added by this mod): each player of the team, after the
+		// effects of the tech, however the team got it (research, trade, goody, espionage, Python). bFirst: the team is the
+		// first to have it. Not for the techs of the start of the game, nor in the world builder
+		if (bNewValue && GC.getGameINLINE().isFinalInitialized() && !(gDLL->GetWorldBuilderMode()))
 		{
 			bool bFirstToHave = (bFirst && GC.getGameINLINE().countKnownTechNumTeams(eIndex) == 1);
 			for (iI = 0; iI < MAX_PLAYERS; iI++)
 			{
 				if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
 				{
-					GET_PLAYER((PlayerTypes)iI).doTechPythonHook(eIndex, bFirstToHave);
+					if (GC.getTechInfo(eIndex).getPyOnDiscovered()[0] != '\0')
+					{
+						GET_PLAYER((PlayerTypes)iI).doTechPythonHook(eIndex, bFirstToHave);
+					}
+					GET_PLAYER((PlayerTypes)iI).doTraitPythonHookInts(TRAIT_PYHOOK_TECH_ACQUIRED, 2, eIndex, (bFirstToHave ? 1 : 0));
 				}
 			}
 		}
