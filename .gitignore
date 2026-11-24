@@ -8,3 +8,9 @@
 *.ncb
 *.suo
 *.user
+
+# Python bytecode of the syntax check (python -I)
+__pycache__/
+
+# Lock files of Excel
+~$*

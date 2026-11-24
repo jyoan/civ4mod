@@ -2,36 +2,337 @@
 
 ## 昇進
 
-| ファイル | タグ | 内容 |
-|---|---|---|
-| `CIV4PromotionInfos.xml` | `PromotionInfo/iExpireChance`、`bRemovedByCombat`、`PromotionVictory`、`iPromotionVictoryChance` | 状態の昇進と戦闘結果（第 1 段階。名前は FFH2 と同じ。`PromotionVictory` / `iPromotionVictoryChance` だけ新規）。`iExpireChance`: 自分のターンの開始時に ○% で消える（`CvUnit::doTurnPromotions`）。`bRemovedByCombat`: 戦闘で生き残ると消える。`PromotionVictory`: 戦闘に勝利すると `iPromotionVictoryChance`%（省略時 100）でその昇進を得る。戦闘の処理は `CvUnit::doCombatPromotions`（`updateCombat` の決着時、両ユニットがまだ存在するうちに呼ぶ）で、**戦闘中に持っていた昇進**で判定し、戦闘で消える昇進を外してから勝利の効果を与える（勝利で得た昇進はその戦闘では消えない）。勝利は「相手が倒れて自分が生き残った」とき（自爆ユニットは除く。撤退は勝者なし）。対象は通常の攻撃・防御だけで、空中戦・迎撃・爆撃・付随ダメージ・核は含まない。昇進がその兵科で取れるかはチェックしない。状態用の昇進は `UnitCombats` を空にしてレベルアップで選べないようにする。乱数は `getSorenRandNum`。セーブデータは変わらない。`PromotionVictory` は昇進を参照するので `readPass2` で読む |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/bRemovedWhenHealed`、`PromotionCombatApply`、`iPromotionCombatApplyChance`、`iFreeXPPerTurn`、`iFreeXPCap` | 第 2 段階（名前は FFH2 と同じ。`iPromotionCombatApplyChance` / `iFreeXPCap` だけ新規）。ターンの開始時（`doTurnPromotions`、回復の後）に、`iFreeXPPerTurn` の経験値を足し（戦闘の経験値ではないので補正・大将軍ポイントなし。**ユニットの経験値が `iFreeXPCap`（省略時 100）に達したらそれ以上増えない**）、`bRemovedWhenHealed` はダメージ 0 なら消える。`PromotionCombatApply`: 戦闘の後、生き残った相手に `iPromotionCombatApplyChance`%（省略時 100）でその昇進を与える（与える側が倒れていても与える。戦闘で消える昇進を外した後、勝利の効果の前）。`PromotionCombatApply` も `readPass2` で読む |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/iGoldFromCombat`、`iCombatCapturePercent` | 第 3 段階（名前は FFH2 と同じ）。どちらも勝者の（戦闘中に持っていた）昇進の値を**足し算**する。`iGoldFromCombat`: 勝利すると合計が正なら資金を得る（メッセージ `TXT_KEY_MISC_GOLD_FROM_COMBAT`）。`iCombatCapturePercent`: 勝利すると合計 % で、倒したユニットと同じ種類のユニットを勝者のタイルに新しく作る（倒したユニットの昇進・経験値は引き継がない。新しいユニットと同じく志向の昇進の組などは付く。そのターンは動けない。メッセージは BtS の `TXT_KEY_MISC_YOU_CAPTURED_UNIT`）。捕獲しないのは、倒したのが動物（領土に入れないため）、陸と海などドメインが違う、陸のユニットが水上から勝った（船からの上陸攻撃）、勝者が蛮族のとき |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/iCombatHealPercent`、`iEnslavementChance`、`EnslavedUnitClass`、`EnslavementUnitClasses`、`iCombatGoldStealPercent`、`iCombatGoldStealMax`、`iCombatPromotionStealChance` | 第 4 段階の戦闘結果（勝利の判定は第 1 段階と同じ。志向・建物から与えるときは、この昇進を与える）。`iCombatHealPercent`（FFH2 と同じ名前）: 勝利するとダメージを ○ 回復（合計）。奴隷化（FFH2 の `iEnslavementChance` を昇進にしたもの。CGE の奴隷制）: 勝利すると、昇進ごとに順に `iEnslavementChance`% で判定し、倒した相手を「`EnslavementUnitClasses`（`<EnslavementUnitClass>` が倒した相手の `UnitClassType` + `EnslavedUnitClass`）で相手のユニットクラスに書いたもの、なければ `EnslavedUnitClass`」のユニットクラス（勝者の文明のユニット）として勝者のタイルに作る（そのターンは動けない）。対応表で `EnslavedUnitClass` を `NONE` にすると、そのユニットクラスは捕らえない。捕獲（`iCombatCapturePercent`）が起きたときは奴隷化しない。捕獲と同じく、動物・勝者が蛮族・倒した相手が消える召喚ユニットのときは不可。作るユニットがいられないタイル（陸のユニットを海上に、など。勝者の都市・砦は可）と、ユニットクラスの数の上限も不可（`canInitUnitOnPlot`。召喚と共通）。`iCombatGoldStealPercent` / `iCombatGoldStealMax`（CGE の収奪）: 勝利すると、相手の持ち主の国庫の ○% を奪う（最大 ○。0 なら上限なし。どちらも合計）。`iCombatPromotionStealChance`（CGE の武勇）: 勝利すると ○%（合計）で、相手が戦闘中に持っていて自分が持っていない昇進を 1 つ（ランダム）得る。大将軍の昇進（`isLeader`）と状態の昇進（`UnitCombats` が空）は対象外。奴隷化・国庫・昇進は両者にメッセージ。処理の順は 勝利の昇進 → 資金 → 国庫 → 回復 → 捕獲 → 奴隷化 → 昇進の奪取（`CvUnit::doCombatPromotions`） |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/iCombatPercentInBorders` | FFH2 と同じ名前（Civ5 のショショーニ）。自国の領土（ユニットのいるタイルの持ち主が自分）にいるとき戦闘力 ○%。攻撃でも防御でも、そのユニット自身のいるタイルで判定する（`CvUnit::getExtraCombatPercent` に足すので、ユニットの説明の「戦闘力 +○%」と戦闘の勝率の内訳にも含まれる）。ユニットごとの合計 `CvUnit::m_iCombatPercentInBorders` はセーブに保存せず、読み込み時に昇進から計算する。説明文 `TXT_KEY_PROMOTION_COMBAT_PERCENT_IN_BORDERS`（「自国の領土で戦闘力+15%」） |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/iCombatPercentOverseas` | 海外（ユニットのいるタイルが、持ち主の首都と別の地域）で戦闘力 %。`iCombatPercentInBorders` と同じく、攻撃でも防御でも**ユニット自身のタイル**で判定する（`CvUnit::getExtraCombatPercent`）。外洋はどの地域にも属さないので海外にならない。セーブしない値で、`updatePromotionCounts` で数え直す。キャッシュの形式: `CvPromotionInfo` `uiFlag=13` |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/iOtherReligionCombatPercent`、`iStateReligionCityAttack` | 異教徒との戦闘のボーナス。`iOtherReligionCombatPercent`: 持ち主に国教があり、戦う相手の文明の国教がそれと違う（国教なしも違う扱いなので蛮族にも効く）ときの戦闘力 %。攻撃でも防御でも効く（兵科ボーナスと同じく、両方のユニットがわかっている戦闘で `CvUnit::maxCombatStr` に足す）。`iStateReligionCityAttack`: 持ち主の国教が広まっている都市を攻撃するときの都市攻撃 %（`iCityAttack` と同じ位置）。持ち主に国教がなければどちらも効かない。戦闘のオッズの説明に行を出す（BtS の `CombatDetails` は exe と共有の構造体なので変えていない）。キャッシュの形式: `CvPromotionInfo` `uiFlag=14` |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/bRivalTerritory` | ユニットの同名のタグの昇進版。国境を開いていない他国の領土にも入れる（`CvUnit::isRivalTerritory`）。セーブしない値で、`updatePromotionCounts` で数え直す。RFC のオランダ「艦船が他国の領土に入れる」。キャッシュの形式: `CvPromotionInfo` `uiFlag=15` |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/bRiverNavigation` | 艦船が川を進める（ヴァイキングの「川の遡上」）。川に面した陸のタイル（`CvPlot::isRiver`。都市を除く）に入れる（`CvUnit::canSailOnRiver`、`canMoveInto` の `DOMAIN_SEA`）。どのタイルから入れるかは経路探索（`pathValid`）で確かめる（`CvPlot::isRiverPassage`）: 水のタイルからはどの川のタイルにも入れる（河口）。陸のタイルどうしでは、川に沿うとき（交易網と同じ `isRiverConnection`）か、川をはさんで向かい合うとき（`isRiverCrossing`）だけ進める。都市は BtS のまま（味方の都市だけ。運河）。川のタイルの移動コストは、地形・地形の特徴によらず 1 で、道路は使わない（`CvPlot::movementCost`）。川のタイルは船が行動できる場所になる（`isValidDomainForAction`）ので、攻撃されると自分で守る（地形の防御も受ける）。船から陸のユニットへの攻撃と、陸の施設の略奪はできない（BtS と同じ。`canMoveInto`・`canPillage`）。運んでいる陸上ユニットは、タイルが陸なので普通の移動で降りられ、そこから攻撃しても上陸の不利はない。全員が川を進めるグループを川のタイルへ動かすと、積んだユニットを上陸させずに船ごと進む。敵のユニットがいるときは従来どおり上陸攻撃になる（`CvSelectionGroup::isAmphibPlot`）。他国の領土に入る条件は変えない。AI の判断は変えていない（経路探索は同じものを使うので、AI の船も川を通ることがある）。セーブしない値で、`updatePromotionCounts` で数え直す。説明文 `TXT_KEY_PROMOTION_RIVER_NAVIGATION`。キャッシュの形式: `CvPromotionInfo` `uiFlag=17`。Python は `CvPromotionInfo.isRiverNavigation()`、`CyUnit.isRiverNavigation()` |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/bFreeEmbark` | 陸上ユニットが海上の船に乗るときは移動力を使わず（最小の 1/60）、海上の船から陸へ降りるときは普通の移動と同じ（降りた先の地形のコスト）になる。BtS では、乗るのに 1（`CvPlot::movementCost`）を使ったうえ、船に積まれた時点で残りの移動力もすべて捨て（`CvUnit::setTransportUnit` の `finishMoves`。都市での積み込みも同じ）、降りるのに残りの移動力すべてを使う（`movementCost`。経路探索も同じ）。このタグを持つユニットは、積まれても移動力を捨てない。上陸攻撃の不利（水陸両用の役目）は変えない。都市や川のタイルにいる船（陸のタイル）との乗り降りは、もともと普通の移動。セーブしない値で、`updatePromotionCounts` で数え直す。説明文 `TXT_KEY_PROMOTION_FREE_EMBARK`。キャッシュの形式: `CvPromotionInfo` `uiFlag=17`。Python は `CvPromotionInfo.isFreeEmbark()`、`CyUnit.isFreeEmbark()` |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/bPillageNoMoveCost`、`iPillageHealPercent` | 略奪（`CvUnit::pillage`）の効果。`bPillageNoMoveCost`: 略奪で移動力を使わない（BtS は 1 使う）。略奪を始めるのに移動力が残っている必要があるのは BtS と同じ。同じタイルの施設と道路を続けて略奪し、そのまま進める。`iPillageHealPercent`: 略奪するたびに最大 HP の ○% を回復（昇進の値の合計）。どちらも略奪するときに昇進を調べる（セーブしない）。説明文 `TXT_KEY_PROMOTION_PILLAGE_NO_MOVE_COST`・`TXT_KEY_PROMOTION_PILLAGE_HEAL`。キャッシュの形式: `CvPromotionInfo` `uiFlag=17`。Python は `CvPromotionInfo.isPillageNoMoveCost()`・`getPillageHealPercent()` |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/iPillageExperience` | DoC のタタールの UP から。施設を略奪するたびに経験値 +N（昇進の値の合計。`CvUnit::pillage`）。道路の略奪では得ない。戦闘の経験値ではないので、大将軍のポイントにならず、指揮官（Leadership）の % もかからない。昇進を選べるようになるかはすぐ判定する。説明文 `TXT_KEY_PROMOTION_PILLAGE_EXPERIENCE`。キャッシュの形式: `CvPromotionInfo` `uiFlag=18`。Python は `CvPromotionInfo.getPillageExperience()` |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/BuildingCombatPercents`、`iBuildingCombatMaxPercent` | 自国の建物の数に応じた戦闘力 %。`<BuildingCombatPercent>` を何個でも書け、各項目は `BuildingClassType` か `SpecialBuildingType` のどちらか（両方書けば建物クラス）+ `iCombatPercent`（建物 1 つあたり）+ `bStateReligion`（省略時 0）。数えるのは持ち主の全都市の建物（`CvPlayer::getNumActiveBuildingsForCombat`）。特殊建造物は、既定の建物（`DefaultBuilding`）がその特殊建造物に属する建物クラスをすべて合計する（`SPECIALBUILDING_TEMPLE` なら 7 宗教の寺院）。**陳腐化した建物は数えない**（`CvPlayer::getBuildingClassCount` が `processBuilding` で陳腐化した建物を除くため）。陳腐化させない志向（`bIgnoreBuildingObsolescence`・`NoObsoleteBuildingClasses`・`NoObsoleteSpecialBuildings`）で残っている建物は数える。`bStateReligion`: 既定の建物の宗教（`ReligionType`、なければ `PrereqReligion`）が持ち主の国教と同じ建物クラスだけを数える。国教がなければ 0、宗教のない建物クラスに付けると常に 0。`iBuildingCombatMaxPercent`（省略時 -1 = 上限なし）: その昇進の項目の合計の上限。複数の昇進を持てば、昇進ごとに上限をかけてから足す。攻撃でも防御でも、場所を問わず効く（`CvUnit::getExtraCombatPercent` に足すので、ユニットの説明の「戦闘力 +○%」と戦闘の勝率の内訳に含まれる）。数はそのつど数える（`CvUnit::getBuildingCombatPercent`）ので、建物が増減するとすぐ変わる。持っている昇進の数（`m_iBuildingCombatCount`）はセーブせず、`updatePromotionCounts` で数え直す。建物クラス・特殊建造物は昇進より後に読み込まれるので `readPass3` で番号に変える（昇進の `readPass3` を呼ぶ位置を、資源の後から建物クラスの後に移した）。説明文 `TXT_KEY_PROMOTION_BUILDING_COMBAT`（「自国の兵舎 1つにつき戦闘力+5%」。建物クラスは既定の建物へのリンク、特殊建造物はリンクなし）・`_STATE_RELIGION`（「（国教のもの）」）・`_MAX`（「自国の建造物による戦闘力は最大+20%」）、ユニットのマウスオーバーの戦闘力の行に `TXT_KEY_UNIT_BUILDING_COMBAT_NOW`（「（うち建造物から+8%）」）。AI の評価は変えていない（戦闘力には含まれる）。キャッシュの形式: `CvPromotionInfo` `uiFlag=19`。Python は `CvPromotionInfo.getNumBuildingCombatPercents()` / `getBuildingCombatBuildingClass(i)` / `SpecialBuilding(i)` / `Percent(i)` / `isBuildingCombatStateReligion(i)` / `getBuildingCombatMaxPercent()`、`CyUnit.getBuildingCombatPercent()` |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/ImpassablePlotPassages` | 通行不可タイルに入る昇進。`<ImpassablePlotPassage>`（`TerrainType` か `FeatureType` のどちらか + `iDamagePercent`）を何個でも。書いた通行不可タイルに入れ（`CvUnit::canMoveInto`。経路探索も同じ判定）、そこで自分のターンの開始時を迎えると最大 HP の ○% のダメージを受ける（`CvUnit::doTurn`。BtS の地形の特徴のダメージの直後、回復の前。0 で無傷。**死ぬことがある**。輸送中は受けない）。`TERRAIN_PEAK` は山岳のタイルを指す。判定は `CvPlot::isImpassable` と同じ順（山岳 → 地形の特徴 → 地形）で、同じタイルに複数の昇進があれば最も少ないダメージ（`CvUnit::getImpassablePlotPassageDamage`）。ユニットの `bCanMoveImpassable` はそのままで、ダメージなし。**陸上ユニットは氷河の上も歩ける**: BtS の氷河は水上にしかないので、書いてあれば「陸上ユニットは水上に入れない」も外す（`canMoveInto`、`CvPlot::isValidDomainForAction`、`shouldLoadOnMove`）。氷河にいる陸上ユニットは海からの攻撃の扱いを受けない（上陸のペナルティなし、砲兵も攻撃可、撤退可。`CvUnit::maxCombatStr`、`canAttack`、`withdrawalProbability`、戦闘の説明文）。船が陸に入れない規則は変えないので、`TERRAIN_PEAK` を書いても船は山岳に入れない（氷河には入れる）。ユニットの `TerrainImpassables` も変えないので、ガレー船のように外洋に入れない船は、外洋の上の氷河にも入れない（自国の文化圏内なら入れるのは BtS の外洋と同じ）。**攻撃は BtS のまま**: 昇進のないユニットは、通行不可タイルのユニットを近接攻撃できない（砲撃・空爆は可）。昇進を失ったときはそのタイルに留まり、出ることはできるが（BtS の無効な場所からの移動と同じく移動力をすべて使う）、ダメージは受けなくなる。AI の判断は変えていない（AI も通行不可タイルを経路に使う）。そのつど判定するのでセーブデータは変わらない。説明文は `TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE`（「通行できる: 氷河」）/ `_DAMAGE`（「通行できる: 山岳（そこでターンを迎えると最大HPの34%のダメージ）」）。キャッシュの形式: `CvPromotionInfo` `uiFlag=6`。Python は `CvPromotionInfo.getNumImpassablePlotPassages()` / `getImpassablePlotPassageTerrain(i)` / `Feature` / `Damage` |
-| `CIV4PromotionInfos.xml` | `ImpassablePlotPassage` の `iExtraMoveCost`・`bRemoveFeature`、`PromotionInfo/iRiverCrossingDamagePercent` | 砕氷船と吸血鬼のためのもの。`iExtraMoveCost`（省略時 0）: そのタイルに入る追加の移動コスト。ユニットの移動力が上限で、同じタイルに複数の昇進があれば最も少ないもの（`CvPlot::movementCost`・`CvUnit::getImpassablePlotPassageMoveCost`）。`bRemoveFeature`（省略時 0）: そのタイルに入ると地形の特徴が消える（`CvUnit::move`。移動コストは消える前の分を払う）。水上の特徴を消すのは船だけで、氷河を歩く陸上ユニットは消さない。氷河の上に陸上ユニットがいれば、最寄りの有効なタイルへ移る（`CvPlot::verifyUnitValidPlot`）。`iRiverCrossingDamagePercent`: 川を渡るたびに最大 HP の ○% のダメージ（昇進の合計。`CvUnit::move`）。グループの移動の途中なので死なせず、HP 1 で止める。水陸両用や橋梁建設があっても受ける。AI は避けない。説明文は `TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_MOVE_COST`（「（移動コスト+1）」）・`TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_REMOVE`（「（入ると消える）」）・`TXT_KEY_PROMOTION_RIVER_CROSSING_DAMAGE`。キャッシュの形式: `CvPromotionInfo` `uiFlag=7` |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/bNoDamagePenalty` | 傷を負っても戦闘力が下がらない（Civ5 の日本の武士道）。`CvUnit::currCombatStr` が最大戦闘力をそのまま返すので、`currFirepower` も下がらず、戦闘の勝率とダメージは無傷と同じになる。**HP はそのまま**なので、耐えられる攻撃の回数は減り、0 になれば死ぬ。航空ユニットには効かない（`CvUnit::isNoDamagePenalty`。迎撃率と爆撃率も HP のまま）。ユニットの表示（ホバー、スタックの一覧、選択中のパネル）も合わせてある。軍事顧問の地図の戦力の合計（`CvPlayer` の `SHOW_*`）は HP の分を引いたまま。セーブには保存せず、ロード時に昇進から数え直す（`m_iNoDamagePenaltyCount`）。志向から配るときは `FreePromotionSets` を使う |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/bChooseGoody` | 部族集落の報酬を選べる（Civ5 のショショーニのパスファインダー）。その昇進を持つユニットが部族集落に入ると、人間のプレイヤーには報酬を選ぶ画面が出る（`CvPlayer::launchChooseGoodyPopup`）。選択肢は難易度の報酬の一覧（`HandicapInfo/Goodies`）のうち、そこで受け取れる（`canReceiveGoody`）もので、悪い報酬（`bBad`。敵対的な蛮族）は除く。ボタンの文字は報酬の内容から作る（`TXT_KEY_CHOOSE_GOODY_*`。金額はゲーム速度の補正込みの範囲）。選択肢が 1 つならそのまま受け取り、0 なら本体どおりランダム。部族集落は入った時点で消える。選んだ結果は `ModNetMessage`（`MOD_NET_MESSAGE_CHOOSE_GOODY`。`CvNetModNetMessage::Execute` が DLL で処理し、Python には渡さない）で全員のパソコンに送るので、マルチプレイでも同期する（`BUTTONPOPUP_PYTHON` の画面を使うが Python は呼ばない）。受け取る時点でユニットが死んでいるなどで受け取れなければ、本体どおりランダム。AI は本体どおりランダム。画面を開いたままセーブして読み込むと、報酬は失われる。Python の `doGoody`（`CvGameUtils`）が処理した場合は本体どおり。ランダムに選ぶ部分は `CvPlayer::doRandomGoody` に分けた。固有ユニットの初期昇進（`UnitInfo/FreePromotions`）や志向の `FreePromotionSets` で配る。キャッシュの形式: `CvPromotionInfo` `uiFlag=9` |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/FeatureSpreads` | ターン終了時に地形の特徴をまく。`<FeatureSpread>` を何個でも書ける。各項目は `FeatureType`、`iSpreadChance`（タイルごとの確率 %）、`iSpreadRange`（省略時 0 = いるタイルだけ。N = 周囲 N マスの正方形）、`bNotOwnPlot`（いるタイルを除く）、`bForce`。ユニットのターンの処理（`CvUnit::doTurn`、回復や昇進の処理の後）で、範囲の各タイルについて、置けるなら確率で置く（`CvUnit::doFeatureSpreads`）。置ける条件（`canSpreadFeatureToPlot`）: 通常は森が自然に広がるときと同じ（`canHaveFeature`。地形の特徴も施設もなく、資源があればその資源がその地形の特徴を許す）。`bForce` は核の死の灰と同じ（陸、通行可、都市以外、核に耐える地形の特徴は置き換えない）で、既存の地形の特徴を置き換え、施設を消す。ただし恒久的な施設（`bPermanent`）と名所（`iUniqueChance`）のあるタイルは飛ばす。死の灰（`FEATURE_FALLOUT`）は置ける地形がないので `bForce` が必要。持ち主に関係なく他国の領土にも置く。乱数は置けるタイルでだけ引く。説明文 `TXT_KEY_PROMOTION_FEATURE_SPREAD_PLOT` / `_AROUND` / `_AREA`、`_FORCE`。キャッシュの形式: `CvPromotionInfo` `uiFlag=10` |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/bHiddenNationality` | 国籍秘匿（FFH2 と同じ名前・動き）。BtS のユニットの `bHiddenNationality`（私掠船）の判定を、ユニット単位の `CvUnit::isHiddenNationality()`（ユニットの種類か昇進）に置き換えた。国籍を隠したユニットは、他のチームには蛮族に見え（`getVisualOwner`。自国の都市の中では見える）、ツールチップに持ち主が出ない。常に敵対（`isAlwaysHostile`。宣戦せずに攻撃でき、攻撃もされる。自国の都市の中では普通）、どの国の領土にも入れる（`canEnterTerritory`）、厭戦感情と戦果に数えない。昇進で国籍を隠したユニットは捕獲しない（`isNoCapture`。ユニットも都市も。私掠船は本体どおり）。輸送船が国籍を隠していなければ、乗っているユニットも隠れない。国籍を隠したユニットと隠していないユニットは同じスタックにできない（本体は片方向だけだった）。昇進の付け外しで状態が変わると、封鎖をやめ、スタックから外れる。数はセーブに保存せず、読み込み時に昇進から数え直す（`m_iHiddenNationalityCount`）。説明文 `TXT_KEY_PROMOTION_HIDDEN_NATIONALITY`。キャッシュの形式: `CvPromotionInfo` `uiFlag=11` |
-| `CIV4UnitInfos.xml`、`CIV4PromotionInfos.xml` | `UnitInfo/BonusAffinities`（`PromotionInfo` にも同名タグ） | FFH2 と同じ名前・書式（`<BonusAffinity>` が `BonusType` + `iAffinity`）。持ち主がその資源を持つ数 1 つにつき、戦闘力（基本の戦闘力）+○（マイナスも可）。数は首都の交易網の中の数（`CvPlayer::getNumAvailableBonuses`。輸入も含む。首都がなければ 0）。ユニットの種類と持っている昇進の値の合計（`CvUnit::getBonusAffinity`。セーブせず、`setHasPromotion` で足し引きし、読み込み時に `updatePromotionCounts` で数え直す）。戦闘力はそのつど計算する（`CvUnit::baseCombatStr`）ので、資源の数が変わるとすぐに変わる。基本の戦闘力が 0 のユニット（労働者など）には効かず、効くユニットの戦闘力は 1 未満にならない。FFH2 の属性ダメージ（`DamageType`）はないので、すべて基本の戦闘力に足す。AI の評価は変えていない。昇進は資源より先に読み込まれるので、資源の名前は `CvPromotionInfo::readPass3`（資源の読み込みの直後に呼ぶ）で番号に変える。説明文はユニット・昇進の説明に `TXT_KEY_BONUS_AFFINITY`（「持っている銀 1つにつき戦闘力+1」）、ユニットのマウスオーバーに `TXT_KEY_UNIT_BONUS_AFFINITY_NOW`（「（今+3）」）。キャッシュの形式: `CvUnitInfo` `uiFlag=3`、`CvPromotionInfo` `uiFlag=12`。Python は `CvUnitInfo` / `CvPromotionInfo` の `getBonusAffinity(iBonus)` |
-| `CIV4PromotionInfos.xml` | `PromotionInfo/PyOnCombatWin`、`PyOnCombatLoss`、`PyOnBeginTurn` | 昇進の Python フック。`PyOnCombatWin` / `PyOnCombatLoss`: その昇進を持つユニットが通常の戦闘（`CvUnit::updateCombat`。空爆・砲撃・迎撃は含まない）に勝った / 負けた（直後に消える）とき。撤退はどちらでもない。昇進は戦闘に持っていたもので判定する（`doCombatPromotions` の前に集めるので、戦闘で外れる昇進も呼ぶ。`CvUnit::doCombatPythonHooks`）。戦闘のフックでは `pUnit`・`pOpponent` を消したり回復させたりしない。`PyOnBeginTurn`: その昇進を持つユニットの毎ターン、回復の後（`CvUnit::doTurnPromotions`。`iFreeXPPerTurn` などの前）。使える名前は `pUnit`・`pPlayer`（持ち主）・`ePromotion`、戦闘では `pOpponent` も。ユニットを消すときは遅延の `pUnit.kill(True, -1)`。式は `EntryPoints\CvHookInterface.py` が `eval` する（ファイルの先頭に、フックごとの呼ばれる時点・使える名前・サンプル・決まりをまとめてある）。共通の関数は `CvHookUtils.py`（`gainGold`・`createUnits`・`addPromotion`・`healUnit`・`addCulture`・`isOnFeature` など。志向・呪文の Python からも使える）。ワールドビルダーでは呼ばない。キャッシュには文字列で書く。説明文にはフックの効果を出さないので、`Help` に書く |
+### `PromotionInfo/iExpireChance`、`bRemovedByCombat`、`PromotionVictory`、`iPromotionVictoryChance`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 状態の昇進と戦闘結果（第 1 段階。名前は FFH2 と同じ。`PromotionVictory` / `iPromotionVictoryChance` だけ新規）。
+- `iExpireChance`: 自分のターンの開始時に ○% で消える（`CvUnit::doTurnPromotions`）。
+- `bRemovedByCombat`: 戦闘で生き残ると消える。
+- `PromotionVictory`: 戦闘に勝利すると `iPromotionVictoryChance`%（省略時 100）でその昇進を得る。
+- 戦闘の処理は `CvUnit::doCombatPromotions`（`updateCombat` の決着時、両ユニットがまだ存在するうちに呼ぶ）で、**戦闘中に持っていた昇進**で判定し、戦闘で消える昇進を外してから勝利の効果を与える（勝利で得た昇進はその戦闘では消えない）。
+- 勝利は「相手が倒れて自分が生き残った」とき（自爆ユニットは除く。撤退は勝者なし）。
+- 対象は通常の攻撃・防御だけで、空中戦・迎撃・爆撃・付随ダメージ・核は含まない。
+- 昇進がその兵科で取れるかはチェックしない。
+- 状態用の昇進は `UnitCombats` を空にしてレベルアップで選べないようにする。
+- 乱数は `getSorenRandNum`。
+- セーブデータは変わらない。
+- `PromotionVictory` は昇進を参照するので `readPass2` で読む
+
+### `PromotionInfo/bRemovedWhenHealed`、`PromotionCombatApply`、`iPromotionCombatApplyChance`、`iFreeXPPerTurn`、`iFreeXPCap`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 第 2 段階（名前は FFH2 と同じ。`iPromotionCombatApplyChance` / `iFreeXPCap` だけ新規）。
+- ターンの開始時（`doTurnPromotions`、回復の後）に、`iFreeXPPerTurn` の経験値を足し（戦闘の経験値ではないので補正・大将軍ポイントなし。**ユニットの経験値が `iFreeXPCap`（省略時 100）に達したらそれ以上増えない**）、`bRemovedWhenHealed` はダメージ 0 なら消える。
+- `PromotionCombatApply`: 戦闘の後、生き残った相手に `iPromotionCombatApplyChance`%（省略時 100）でその昇進を与える（与える側が倒れていても与える。戦闘で消える昇進を外した後、勝利の効果の前）。
+- `PromotionCombatApply` も `readPass2` で読む
+
+### `PromotionInfo/iGoldFromCombat`、`iCombatCapturePercent`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 第 3 段階（名前は FFH2 と同じ）。
+- どちらも勝者の（戦闘中に持っていた）昇進の値を**足し算**する。
+- `iGoldFromCombat`: 勝利すると合計が正なら資金を得る（メッセージ `TXT_KEY_MISC_GOLD_FROM_COMBAT`）。
+- `iCombatCapturePercent`: 勝利すると合計 % で、倒したユニットと同じ種類のユニットを勝者のタイルに新しく作る（倒したユニットの昇進・経験値は引き継がない。新しいユニットと同じく志向の昇進の組などは付く。そのターンは動けない。メッセージは BtS の `TXT_KEY_MISC_YOU_CAPTURED_UNIT`）。
+- 捕獲しないのは、倒したのが動物（領土に入れないため）、陸と海などドメインが違う、陸のユニットが水上から勝った（船からの上陸攻撃）、勝者が蛮族のとき
+
+### `PromotionInfo/iCombatHealPercent`、`iEnslavementChance`、`EnslavedUnitClass`、`EnslavementUnitClasses`、`iCombatGoldStealPercent`、`iCombatGoldStealMax`、`iCombatPromotionStealChance`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 第 4 段階の戦闘結果（勝利の判定は第 1 段階と同じ。志向・建物から与えるときは、この昇進を与える）。
+- `iCombatHealPercent`（FFH2 と同じ名前）: 勝利するとダメージを ○ 回復（合計）。
+- 奴隷化（FFH2 の `iEnslavementChance` を昇進にしたもの。CGE の奴隷制）: 勝利すると、昇進ごとに順に `iEnslavementChance`% で判定し、倒した相手を「`EnslavementUnitClasses`（`<EnslavementUnitClass>` が倒した相手の `UnitClassType` + `EnslavedUnitClass`）で相手のユニットクラスに書いたもの、なければ `EnslavedUnitClass`」のユニットクラス（勝者の文明のユニット）として勝者のタイルに作る（そのターンは動けない）。
+- 対応表で `EnslavedUnitClass` を `NONE` にすると、そのユニットクラスは捕らえない。
+- 捕獲（`iCombatCapturePercent`）が起きたときは奴隷化しない。
+- 捕獲と同じく、動物・勝者が蛮族・倒した相手が消える召喚ユニットのときは不可。
+- 作るユニットがいられないタイル（陸のユニットを海上に、など。勝者の都市・砦は可）と、ユニットクラスの数の上限も不可（`canInitUnitOnPlot`。召喚と共通）。
+- `iCombatGoldStealPercent` / `iCombatGoldStealMax`（CGE の収奪）: 勝利すると、相手の持ち主の国庫の ○% を奪う（最大 ○。0 なら上限なし。どちらも合計）。
+- `iCombatPromotionStealChance`（CGE の武勇）: 勝利すると ○%（合計）で、相手が戦闘中に持っていて自分が持っていない昇進を 1 つ（ランダム）得る。
+- 大将軍の昇進（`isLeader`）と状態の昇進（`UnitCombats` が空）は対象外。
+- 奴隷化・国庫・昇進は両者にメッセージ。
+- 処理の順は 勝利の昇進 → 資金 → 国庫 → 回復 → 捕獲 → 奴隷化 → 昇進の奪取（`CvUnit::doCombatPromotions`）
+
+### `PromotionInfo/iCombatPercentInBorders`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- FFH2 と同じ名前（Civ5 のショショーニ）。
+- 自国の領土（ユニットのいるタイルの持ち主が自分）にいるとき戦闘力 ○%。
+- 攻撃でも防御でも、そのユニット自身のいるタイルで判定する（`CvUnit::getExtraCombatPercent` に足すので、ユニットの説明の「戦闘力 +○%」と戦闘の勝率の内訳にも含まれる）。
+- ユニットごとの合計 `CvUnit::m_iCombatPercentInBorders` はセーブに保存せず、読み込み時に昇進から計算する。
+- 説明文 `TXT_KEY_PROMOTION_COMBAT_PERCENT_IN_BORDERS`（「自国の領土で戦闘力+15%」）
+
+### `PromotionInfo/iCombatPercentOverseas`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 海外（ユニットのいるタイルが、持ち主の首都と別の地域）で戦闘力 %。
+- `iCombatPercentInBorders` と同じく、攻撃でも防御でも**ユニット自身のタイル**で判定する（`CvUnit::getExtraCombatPercent`）。
+- 外洋はどの地域にも属さないので海外にならない。
+- セーブしない値で、`updatePromotionCounts` で数え直す。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=13`
+
+### `PromotionInfo/iOtherReligionCombatPercent`、`iStateReligionCityAttack`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 異教徒との戦闘のボーナス。
+- `iOtherReligionCombatPercent`: 持ち主に国教があり、戦う相手の文明の国教がそれと違う（国教なしも違う扱いなので蛮族にも効く）ときの戦闘力 %。
+- 攻撃でも防御でも効く（兵科ボーナスと同じく、両方のユニットがわかっている戦闘で `CvUnit::maxCombatStr` に足す）。
+- `iStateReligionCityAttack`: 持ち主の国教が広まっている都市を攻撃するときの都市攻撃 %（`iCityAttack` と同じ位置）。
+- 持ち主に国教がなければどちらも効かない。
+- 戦闘のオッズの説明に行を出す（BtS の `CombatDetails` は exe と共有の構造体なので変えていない）。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=14`
+
+### `PromotionInfo/bRivalTerritory`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- ユニットの同名のタグの昇進版。
+- 国境を開いていない他国の領土にも入れる（`CvUnit::isRivalTerritory`）。
+- セーブしない値で、`updatePromotionCounts` で数え直す。
+- RFC のオランダ「艦船が他国の領土に入れる」。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=15`
+
+### `PromotionInfo/bRiverNavigation`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 艦船が川を進める（ヴァイキングの「川の遡上」）。
+- 川に面した陸のタイル（`CvPlot::isRiver`。都市を除く）に入れる（`CvUnit::canSailOnRiver`、`canMoveInto` の `DOMAIN_SEA`）。
+- どのタイルから入れるかは経路探索（`pathValid`）で確かめる（`CvPlot::isRiverPassage`）: 水のタイルからはどの川のタイルにも入れる（河口）。
+- 陸のタイルどうしでは、川に沿うとき（交易網と同じ `isRiverConnection`）か、川をはさんで向かい合うとき（`isRiverCrossing`）だけ進める。
+- 都市は BtS のまま（味方の都市だけ。運河）。
+- 川のタイルの移動コストは、地形・地形の特徴によらず 1 で、道路は使わない（`CvPlot::movementCost`）。
+- 川のタイルは船が行動できる場所になる（`isValidDomainForAction`）ので、攻撃されると自分で守る（地形の防御も受ける）。
+- 船から陸のユニットへの攻撃と、陸の施設の略奪はできない（BtS と同じ。`canMoveInto`・`canPillage`）。
+- 運んでいる陸上ユニットは、タイルが陸なので普通の移動で降りられ、そこから攻撃しても上陸の不利はない。
+- 全員が川を進めるグループを川のタイルへ動かすと、積んだユニットを上陸させずに船ごと進む。
+- 敵のユニットがいるときは従来どおり上陸攻撃になる（`CvSelectionGroup::isAmphibPlot`）。
+- 他国の領土に入る条件は変えない。
+- AI の判断は変えていない（経路探索は同じものを使うので、AI の船も川を通ることがある）。
+- セーブしない値で、`updatePromotionCounts` で数え直す。
+- 説明文 `TXT_KEY_PROMOTION_RIVER_NAVIGATION`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=17`。
+- Python は `CvPromotionInfo.isRiverNavigation()`、`CyUnit.isRiverNavigation()`
+
+### `PromotionInfo/bFreeEmbark`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 陸上ユニットが海上の船に乗るときは移動力を使わず（最小の 1/60）、海上の船から陸へ降りるときは普通の移動と同じ（降りた先の地形のコスト）になる。
+- BtS では、乗るのに 1（`CvPlot::movementCost`）を使ったうえ、船に積まれた時点で残りの移動力もすべて捨て（`CvUnit::setTransportUnit` の `finishMoves`。都市での積み込みも同じ）、降りるのに残りの移動力すべてを使う（`movementCost`。経路探索も同じ）。
+- このタグを持つユニットは、積まれても移動力を捨てない。
+- 上陸攻撃の不利（水陸両用の役目）は変えない。
+- 都市や川のタイルにいる船（陸のタイル）との乗り降りは、もともと普通の移動。
+- セーブしない値で、`updatePromotionCounts` で数え直す。
+- 説明文 `TXT_KEY_PROMOTION_FREE_EMBARK`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=17`。
+- Python は `CvPromotionInfo.isFreeEmbark()`、`CyUnit.isFreeEmbark()`
+
+### `PromotionInfo/bPillageNoMoveCost`、`iPillageHealPercent`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 略奪（`CvUnit::pillage`）の効果。
+- `bPillageNoMoveCost`: 略奪で移動力を使わない（BtS は 1 使う）。
+- 略奪を始めるのに移動力が残っている必要があるのは BtS と同じ。
+- 同じタイルの施設と道路を続けて略奪し、そのまま進める。
+- `iPillageHealPercent`: 略奪するたびに最大 HP の ○% を回復（昇進の値の合計）。
+- どちらも略奪するときに昇進を調べる（セーブしない）。
+- 説明文 `TXT_KEY_PROMOTION_PILLAGE_NO_MOVE_COST`・`TXT_KEY_PROMOTION_PILLAGE_HEAL`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=17`。
+- Python は `CvPromotionInfo.isPillageNoMoveCost()`・`getPillageHealPercent()`
+
+### `PromotionInfo/iPillageExperience`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- DoC のタタールの UP から。
+- 施設を略奪するたびに経験値 +N（昇進の値の合計。`CvUnit::pillage`）。
+- 道路の略奪では得ない。
+- 戦闘の経験値ではないので、大将軍のポイントにならず、指揮官（Leadership）の % もかからない。
+- 昇進を選べるようになるかはすぐ判定する。
+- 説明文 `TXT_KEY_PROMOTION_PILLAGE_EXPERIENCE`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=18`。
+- Python は `CvPromotionInfo.getPillageExperience()`
+
+### `PromotionInfo/BuildingCombatPercents`、`iBuildingCombatMaxPercent`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 自国の建物の数に応じた戦闘力 %。
+- `<BuildingCombatPercent>` を何個でも書け、各項目は `BuildingClassType` か `SpecialBuildingType` のどちらか（両方書けば建物クラス）+ `iCombatPercent`（建物 1 つあたり）+ `bStateReligion`（省略時 0）。
+- 数えるのは持ち主の全都市の建物（`CvPlayer::getNumActiveBuildingsForCombat`）。
+- 特殊建造物は、既定の建物（`DefaultBuilding`）がその特殊建造物に属する建物クラスをすべて合計する（`SPECIALBUILDING_TEMPLE` なら 7 宗教の寺院）。
+- **陳腐化した建物は数えない**（`CvPlayer::getBuildingClassCount` が `processBuilding` で陳腐化した建物を除くため）。
+- 陳腐化させない志向（`bIgnoreBuildingObsolescence`・`NoObsoleteBuildingClasses`・`NoObsoleteSpecialBuildings`）で残っている建物は数える。
+- `bStateReligion`: 既定の建物の宗教（`ReligionType`、なければ `PrereqReligion`）が持ち主の国教と同じ建物クラスだけを数える。
+- 国教がなければ 0、宗教のない建物クラスに付けると常に 0。
+- `iBuildingCombatMaxPercent`（省略時 -1 = 上限なし）: その昇進の項目の合計の上限。
+- 複数の昇進を持てば、昇進ごとに上限をかけてから足す。
+- 攻撃でも防御でも、場所を問わず効く（`CvUnit::getExtraCombatPercent` に足すので、ユニットの説明の「戦闘力 +○%」と戦闘の勝率の内訳に含まれる）。
+- 数はそのつど数える（`CvUnit::getBuildingCombatPercent`）ので、建物が増減するとすぐ変わる。
+- 持っている昇進の数（`m_iBuildingCombatCount`）はセーブせず、`updatePromotionCounts` で数え直す。
+- 建物クラス・特殊建造物は昇進より後に読み込まれるので `readPass3` で番号に変える（昇進の `readPass3` を呼ぶ位置を、資源の後から建物クラスの後に移した）。
+- 説明文 `TXT_KEY_PROMOTION_BUILDING_COMBAT`（「自国の兵舎 1つにつき戦闘力+5%」。建物クラスは既定の建物へのリンク、特殊建造物はリンクなし）・`_STATE_RELIGION`（「（国教のもの）」）・`_MAX`（「自国の建造物による戦闘力は最大+20%」）、ユニットのマウスオーバーの戦闘力の行に `TXT_KEY_UNIT_BUILDING_COMBAT_NOW`（「（うち建造物から+8%）」）。
+- AI の評価は変えていない（戦闘力には含まれる）。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=19`。
+- Python は `CvPromotionInfo.getNumBuildingCombatPercents()` / `getBuildingCombatBuildingClass(i)` / `SpecialBuilding(i)` / `Percent(i)` / `isBuildingCombatStateReligion(i)` / `getBuildingCombatMaxPercent()`、`CyUnit.getBuildingCombatPercent()`
+
+### `PromotionInfo/ImpassablePlotPassages`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 通行不可タイルに入る昇進。
+- `<ImpassablePlotPassage>`（`TerrainType` か `FeatureType` のどちらか + `iDamagePercent`）を何個でも。
+- 書いた通行不可タイルに入れ（`CvUnit::canMoveInto`。経路探索も同じ判定）、そこで自分のターンの開始時を迎えると最大 HP の ○% のダメージを受ける（`CvUnit::doTurn`。BtS の地形の特徴のダメージの直後、回復の前。0 で無傷。**死ぬことがある**。輸送中は受けない）。
+- `TERRAIN_PEAK` は山岳のタイルを指す。
+- 判定は `CvPlot::isImpassable` と同じ順（山岳 → 地形の特徴 → 地形）で、同じタイルに複数の昇進があれば最も少ないダメージ（`CvUnit::getImpassablePlotPassageDamage`）。
+- ユニットの `bCanMoveImpassable` はそのままで、ダメージなし。
+- **陸上ユニットは氷河の上も歩ける**: BtS の氷河は水上にしかないので、書いてあれば「陸上ユニットは水上に入れない」も外す（`canMoveInto`、`CvPlot::isValidDomainForAction`、`shouldLoadOnMove`）。
+- 氷河にいる陸上ユニットは海からの攻撃の扱いを受けない（上陸のペナルティなし、砲兵も攻撃可、撤退可。`CvUnit::maxCombatStr`、`canAttack`、`withdrawalProbability`、戦闘の説明文）。
+- 船が陸に入れない規則は変えないので、`TERRAIN_PEAK` を書いても船は山岳に入れない（氷河には入れる）。
+- ユニットの `TerrainImpassables` も変えないので、ガレー船のように外洋に入れない船は、外洋の上の氷河にも入れない（自国の文化圏内なら入れるのは BtS の外洋と同じ）。
+- **攻撃は BtS のまま**: 昇進のないユニットは、通行不可タイルのユニットを近接攻撃できない（砲撃・空爆は可）。
+- 昇進を失ったときはそのタイルに留まり、出ることはできるが（BtS の無効な場所からの移動と同じく移動力をすべて使う）、ダメージは受けなくなる。
+- AI の判断は変えていない（AI も通行不可タイルを経路に使う）。
+- そのつど判定するのでセーブデータは変わらない。
+- 説明文は `TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE`（「通行できる: 氷河」）/ `_DAMAGE`（「通行できる: 山岳（そこでターンを迎えると最大HPの34%のダメージ）」）。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=6`。
+- Python は `CvPromotionInfo.getNumImpassablePlotPassages()` / `getImpassablePlotPassageTerrain(i)` / `Feature` / `Damage`
+
+### `ImpassablePlotPassage` の `iExtraMoveCost`・`bRemoveFeature`、`PromotionInfo/iRiverCrossingDamagePercent`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 砕氷船と吸血鬼のためのもの。
+- `iExtraMoveCost`（省略時 0）: そのタイルに入る追加の移動コスト。
+- ユニットの移動力が上限で、同じタイルに複数の昇進があれば最も少ないもの（`CvPlot::movementCost`・`CvUnit::getImpassablePlotPassageMoveCost`）。
+- `bRemoveFeature`（省略時 0）: そのタイルに入ると地形の特徴が消える（`CvUnit::move`。移動コストは消える前の分を払う）。
+- 水上の特徴を消すのは船だけで、氷河を歩く陸上ユニットは消さない。
+- 氷河の上に陸上ユニットがいれば、最寄りの有効なタイルへ移る（`CvPlot::verifyUnitValidPlot`）。
+- `iRiverCrossingDamagePercent`: 川を渡るたびに最大 HP の ○% のダメージ（昇進の合計。`CvUnit::move`）。
+- グループの移動の途中なので死なせず、HP 1 で止める。
+- 水陸両用や橋梁建設があっても受ける。
+- AI は避けない。
+- 説明文は `TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_MOVE_COST`（「（移動コスト+1）」）・`TXT_KEY_PROMOTION_IMPASSABLE_PASSAGE_REMOVE`（「（入ると消える）」）・`TXT_KEY_PROMOTION_RIVER_CROSSING_DAMAGE`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=7`
+
+### `PromotionInfo/bNoDamagePenalty`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 傷を負っても戦闘力が下がらない（Civ5 の日本の武士道）。
+- `CvUnit::currCombatStr` が最大戦闘力をそのまま返すので、`currFirepower` も下がらず、戦闘の勝率とダメージは無傷と同じになる。
+- **HP はそのまま**なので、耐えられる攻撃の回数は減り、0 になれば死ぬ。
+- 航空ユニットには効かない（`CvUnit::isNoDamagePenalty`。迎撃率と爆撃率も HP のまま）。
+- ユニットの表示（ホバー、スタックの一覧、選択中のパネル）も合わせてある。
+- 軍事顧問の地図の戦力の合計（`CvPlayer` の `SHOW_*`）は HP の分を引いたまま。
+- セーブには保存せず、ロード時に昇進から数え直す（`m_iNoDamagePenaltyCount`）。
+- 志向から配るときは `FreePromotionSets` を使う
+
+### `PromotionInfo/bChooseGoody`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 部族集落の報酬を選べる（Civ5 のショショーニのパスファインダー）。
+- その昇進を持つユニットが部族集落に入ると、人間のプレイヤーには報酬を選ぶ画面が出る（`CvPlayer::launchChooseGoodyPopup`）。
+- 選択肢は難易度の報酬の一覧（`HandicapInfo/Goodies`）のうち、そこで受け取れる（`canReceiveGoody`）もので、悪い報酬（`bBad`。敵対的な蛮族）は除く。
+- ボタンの文字は報酬の内容から作る（`TXT_KEY_CHOOSE_GOODY_*`。金額はゲーム速度の補正込みの範囲）。
+- 選択肢が 1 つならそのまま受け取り、0 なら本体どおりランダム。
+- 部族集落は入った時点で消える。
+- 選んだ結果は `ModNetMessage`（`MOD_NET_MESSAGE_CHOOSE_GOODY`。`CvNetModNetMessage::Execute` が DLL で処理し、Python には渡さない）で全員のパソコンに送るので、マルチプレイでも同期する（`BUTTONPOPUP_PYTHON` の画面を使うが Python は呼ばない）。
+- 受け取る時点でユニットが死んでいるなどで受け取れなければ、本体どおりランダム。
+- AI は本体どおりランダム。
+- 画面を開いたままセーブして読み込むと、報酬は失われる。
+- Python の `doGoody`（`CvGameUtils`）が処理した場合は本体どおり。
+- ランダムに選ぶ部分は `CvPlayer::doRandomGoody` に分けた。
+- 固有ユニットの初期昇進（`UnitInfo/FreePromotions`）や志向の `FreePromotionSets` で配る。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=9`
+
+### `PromotionInfo/FeatureSpreads`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- ターン終了時に地形の特徴をまく。
+- `<FeatureSpread>` を何個でも書ける。
+- 各項目は `FeatureType`、`iSpreadChance`（タイルごとの確率 %）、`iSpreadRange`（省略時 0 = いるタイルだけ。N = 周囲 N マスの正方形）、`bNotOwnPlot`（いるタイルを除く）、`bForce`。
+- ユニットのターンの処理（`CvUnit::doTurn`、回復や昇進の処理の後）で、範囲の各タイルについて、置けるなら確率で置く（`CvUnit::doFeatureSpreads`）。
+- 置ける条件（`canSpreadFeatureToPlot`）: 通常は森が自然に広がるときと同じ（`canHaveFeature`。地形の特徴も施設もなく、資源があればその資源がその地形の特徴を許す）。
+- `bForce` は核の死の灰と同じ（陸、通行可、都市以外、核に耐える地形の特徴は置き換えない）で、既存の地形の特徴を置き換え、施設を消す。
+- ただし恒久的な施設（`bPermanent`）と名所（`iUniqueChance`）のあるタイルは飛ばす。
+- 死の灰（`FEATURE_FALLOUT`）は置ける地形がないので `bForce` が必要。
+- 持ち主に関係なく他国の領土にも置く。
+- 乱数は置けるタイルでだけ引く。
+- 説明文 `TXT_KEY_PROMOTION_FEATURE_SPREAD_PLOT` / `_AROUND` / `_AREA`、`_FORCE`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=10`
+
+### `PromotionInfo/bHiddenNationality`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 国籍秘匿（FFH2 と同じ名前・動き）。
+- BtS のユニットの `bHiddenNationality`（私掠船）の判定を、ユニット単位の `CvUnit::isHiddenNationality()`（ユニットの種類か昇進）に置き換えた。
+- 国籍を隠したユニットは、他のチームには蛮族に見え（`getVisualOwner`。自国の都市の中では見える）、ツールチップに持ち主が出ない。
+- 常に敵対（`isAlwaysHostile`。宣戦せずに攻撃でき、攻撃もされる。自国の都市の中では普通）、どの国の領土にも入れる（`canEnterTerritory`）、厭戦感情と戦果に数えない。
+- 昇進で国籍を隠したユニットは捕獲しない（`isNoCapture`。ユニットも都市も。私掠船は本体どおり）。
+- 輸送船が国籍を隠していなければ、乗っているユニットも隠れない。
+- 国籍を隠したユニットと隠していないユニットは同じスタックにできない（本体は片方向だけだった）。
+- 昇進の付け外しで状態が変わると、封鎖をやめ、スタックから外れる。
+- 数はセーブに保存せず、読み込み時に昇進から数え直す（`m_iHiddenNationalityCount`）。
+- 説明文 `TXT_KEY_PROMOTION_HIDDEN_NATIONALITY`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=11`
+
+### `UnitInfo/BonusAffinities`（`PromotionInfo` にも同名タグ）
+
+- ファイル: `CIV4UnitInfos.xml`、`CIV4PromotionInfos.xml`
+- FFH2 と同じ名前・書式（`<BonusAffinity>` が `BonusType` + `iAffinity`）。
+- 持ち主がその資源を持つ数 1 つにつき、戦闘力（基本の戦闘力）+○（マイナスも可）。
+- 数は首都の交易網の中の数（`CvPlayer::getNumAvailableBonuses`。輸入も含む。首都がなければ 0）。
+- ユニットの種類と持っている昇進の値の合計（`CvUnit::getBonusAffinity`。セーブせず、`setHasPromotion` で足し引きし、読み込み時に `updatePromotionCounts` で数え直す）。
+- 戦闘力はそのつど計算する（`CvUnit::baseCombatStr`）ので、資源の数が変わるとすぐに変わる。
+- 基本の戦闘力が 0 のユニット（労働者など）には効かず、効くユニットの戦闘力は 1 未満にならない。
+- FFH2 の属性ダメージ（`DamageType`）はないので、すべて基本の戦闘力に足す。
+- AI の評価は変えていない。
+- 昇進は資源より先に読み込まれるので、資源の名前は `CvPromotionInfo::readPass3`（資源の読み込みの直後に呼ぶ）で番号に変える。
+- 説明文はユニット・昇進の説明に `TXT_KEY_BONUS_AFFINITY`（「持っている銀 1つにつき戦闘力+1」）、ユニットのマウスオーバーに `TXT_KEY_UNIT_BONUS_AFFINITY_NOW`（「（今+3）」）。
+- キャッシュの形式: `CvUnitInfo` `uiFlag=3`、`CvPromotionInfo` `uiFlag=12`。
+- Python は `CvUnitInfo` / `CvPromotionInfo` の `getBonusAffinity(iBonus)`
+
+### `PromotionInfo/PyOnCombatWin`、`PyOnCombatLoss`、`PyOnBeginTurn`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 昇進の Python フック。
+- `PyOnCombatWin` / `PyOnCombatLoss`: その昇進を持つユニットが通常の戦闘（`CvUnit::updateCombat`。空爆・砲撃・迎撃は含まない）に勝った / 負けた（直後に消える）とき。
+- 撤退はどちらでもない。
+- 昇進は戦闘に持っていたもので判定する（`doCombatPromotions` の前に集めるので、戦闘で外れる昇進も呼ぶ。`CvUnit::doCombatPythonHooks`）。
+- 戦闘のフックでは `pUnit`・`pOpponent` を消したり回復させたりしない。
+- `PyOnBeginTurn`: その昇進を持つユニットの毎ターン、回復の後（`CvUnit::doTurnPromotions`。`iFreeXPPerTurn` などの前）。
+- 使える名前は `pUnit`・`pPlayer`（持ち主）・`ePromotion`、戦闘では `pOpponent` も。
+- ユニットを消すときは遅延の `pUnit.kill(True, -1)`。
+- 式は `EntryPoints\CvHookInterface.py` が `eval` する（ファイルの先頭に、フックごとの呼ばれる時点・使える名前・サンプル・決まりをまとめてある）。
+- 共通の関数は `CvHookUtils.py`（`gainGold`・`createUnits`・`addPromotion`・`healUnit`・`addCulture`・`isOnFeature` など。志向・呪文の Python からも使える）。
+- ワールドビルダーでは呼ばない。
+- キャッシュには文字列で書く。
+- 説明文にはフックの効果を出さないので、`Help` に書く
 
 ## 呪文
 
-| ファイル | タグ | 内容 |
-|---|---|---|
-| `CIV4SpellInfos.xml`（新規） | `SpellInfo` の `PromotionPrereq1` / `PromotionPrereq2`、`UnitPrereq`、`UnitClassPrereq`、`UnitCombatPrereq`、`CivilizationPrereq`、`TechPrereq`、`iCasterMinLevel`、`bInBordersOnly`、`bInCityOnly`、`bHasCasted`、`bIgnoreHasCasted`、`bDisplayWhenDisabled`、`PyRequirement`、`PyResult`（と `Type`・`Description`・`Civilopedia`・`Help`・`Button`・ホットキー） | 呪文（第 1 段階。名前は FFH2 と同じ）。仕組みは `docs/spells.md` |
-| `CIV4SpellInfos.xml` | `SpellInfo` の `bAllowAI`、`iAIWeight` | 呪文の第 3 段階（名前は FFH2 と同じ）。AI が使ってよい呪文と、AI の評価値に足す値。仕組みは `docs/spells.md` |
-| `CIV4SpellInfos.xml` | `SpellInfo` の `CreateUnitType`、`iCreateUnitNum`、`bPermanentUnitCreate`、`bCopyCastersPromotions`、`CreateUnitPromotion`、`bCasterNoDuration`、`iMiscastChance`、`PyMiscast`、`bGlobal`、`iDelay` | 呪文の第 2 段階 c（名前は FFH2 と同じ）。召喚・失敗・世界呪文・遅延。FFH2 との違いは `docs/spells.md` |
-| `CIV4SpellInfos.xml` | `SpellInfo` の `iRange`、`iDamage`、`iDamageLimit`、`iImmobileTurns`、`bImmuneTeam`、`bImmuneEnemy`、`bImmuneFlying`（と、`bBuffCasterOnly=0` の `AddPromotionType1`〜`3` / `RemovePromotionType1`〜`3`） | 呪文の第 2 段階 b（名前は FFH2 と同じ）。周りのユニットへの効果。交戦中でない他国のユニットは常に対象外など、FFH2 との違いは `docs/spells.md` |
-| `CIV4SpellInfos.xml` | `SpellInfo` の前提 `UnitInStackPrereq`、`BuildingPrereq`、`BuildingClassOwnedPrereq`、`CorporationPrereq`、`FeatureOrPrereq1` / `2`、`ImprovementPrereq`、`PromotionInStackPrereq`、`StateReligionPrereq`、`bAdjacentToWaterOnly` と、効果 `iCost`、`AddPromotionType1`〜`3`、`RemovePromotionType1`〜`3`、`bBuffCasterOnly`、`ConvertUnitType`、`CreateBuildingType`、`CreateFeatureType`、`CreateImprovementType`、`SpreadReligion`、`iChangePopulation`、`bSacrificeCaster`、`bRemoveHasCasted`、`Effect`、`Sound` | 呪文の第 2 段階 a（名前は FFH2 と同じ）。術者自身・今いるタイル・今いる都市への効果。FFH2 との違い（自分の都市・領土に限るものなど）は「呪文」の節 |
+### `SpellInfo` の `PromotionPrereq1` / `PromotionPrereq2`、`UnitPrereq`、`UnitClassPrereq`、`UnitCombatPrereq`、`CivilizationPrereq`、`TechPrereq`、`iCasterMinLevel`、`bInBordersOnly`、`bInCityOnly`、`bHasCasted`、`bIgnoreHasCasted`、`bDisplayWhenDisabled`、`PyRequirement`、`PyResult`（と `Type`・`Description`・`Civilopedia`・`Help`・`Button`・ホットキー）
+
+- ファイル: `CIV4SpellInfos.xml`（新規）
+- 呪文（第 1 段階。名前は FFH2 と同じ）。
+- 仕組みは `docs/spells.md`
+
+### `SpellInfo` の `bAllowAI`、`iAIWeight`
+
+- ファイル: `CIV4SpellInfos.xml`
+- 呪文の第 3 段階（名前は FFH2 と同じ）。
+- AI が使ってよい呪文と、AI の評価値に足す値。
+- 仕組みは `docs/spells.md`
+
+### `SpellInfo` の `CreateUnitType`、`iCreateUnitNum`、`bPermanentUnitCreate`、`bCopyCastersPromotions`、`CreateUnitPromotion`、`bCasterNoDuration`、`iMiscastChance`、`PyMiscast`、`bGlobal`、`iDelay`
+
+- ファイル: `CIV4SpellInfos.xml`
+- 呪文の第 2 段階 c（名前は FFH2 と同じ）。
+- 召喚・失敗・世界呪文・遅延。
+- FFH2 との違いは `docs/spells.md`
+
+### `SpellInfo` の `iRange`、`iDamage`、`iDamageLimit`、`iImmobileTurns`、`bImmuneTeam`、`bImmuneEnemy`、`bImmuneFlying`（と、`bBuffCasterOnly=0` の `AddPromotionType1`〜`3` / `RemovePromotionType1`〜`3`）
+
+- ファイル: `CIV4SpellInfos.xml`
+- 呪文の第 2 段階 b（名前は FFH2 と同じ）。
+- 周りのユニットへの効果。
+- 交戦中でない他国のユニットは常に対象外など、FFH2 との違いは `docs/spells.md`
+
+### `SpellInfo` の前提 `UnitInStackPrereq`、`BuildingPrereq`、`BuildingClassOwnedPrereq`、`CorporationPrereq`、`FeatureOrPrereq1` / `2`、`ImprovementPrereq`、`PromotionInStackPrereq`、`StateReligionPrereq`、`bAdjacentToWaterOnly` と、効果 `iCost`、`AddPromotionType1`〜`3`、`RemovePromotionType1`〜`3`、`bBuffCasterOnly`、`ConvertUnitType`、`CreateBuildingType`、`CreateFeatureType`、`CreateImprovementType`、`SpreadReligion`、`iChangePopulation`、`bSacrificeCaster`、`bRemoveHasCasted`、`Effect`、`Sound`
+
+- ファイル: `CIV4SpellInfos.xml`
+- 呪文の第 2 段階 a（名前は FFH2 と同じ）。
+- 術者自身・今いるタイル・今いる都市への効果。
+- FFH2 との違い（自分の都市・領土に限るものなど）は「呪文」の節
