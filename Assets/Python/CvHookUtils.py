@@ -365,7 +365,9 @@ def createPartisans(pPlayer, pCity, iNum, iCultureLevel):
 
 ## Great people chosen at the end of calendar cycles (chooseGreatPeopleByCalendar, the Maya calendar of Civ5)
 
-# iData1 of CyMessageControl().sendModNetMessage for the choice (MOD_NET_MESSAGE_CHOOSE_GOODY of the DLL is -20261110)
+# iData1 of CyMessageControl().sendModNetMessage for the choice. The DLL handles some numbers itself and Python never sees
+# them (MOD_NET_MESSAGE_* of CvDefines.h): -20261110 (bChooseGoody), -20261125 (bUnsettleGreatPeople), -20261126
+# (bIgnoreEvents). Do not use those here
 MOD_NET_MESSAGE_CHOOSE_GREAT_PERSON = -20261123
 # The trait counter of chooseGreatPeopleByCalendar: bits 0-23 are the great people already chosen (the bits of
 # greatPeopleUnitClasses), the higher bits the number of choices still to make
@@ -507,6 +509,328 @@ def applyGreatPersonChoice(pPlayer, eTrait, iBit):
 	CyInterface().addMessage(pPlayer.getID(), True, gc.getEVENT_MESSAGE_TIME(), szText, "AS2D_UNIT_GREATPEOPLE", InterfaceMessageTypes.MESSAGE_TYPE_MAJOR_EVENT, kUnit.getButton(), gc.getInfoTypeForString("COLOR_UNIT_TEXT"), pPlot.getX(), pPlot.getY(), True, True)
 	return True
 
+## Treaty zones: the half of the map east or west of the capital (the Treaty of Tordesillas)
+
+# iData1 of CyMessageControl().sendModNetMessage for the choices of the treaty zone and of its terms
+MOD_NET_MESSAGE_CHOOSE_TREATY_ZONE = -20261124
+MOD_NET_MESSAGE_CHOOSE_TREATY_TERMS = -20261127
+# The trait counter of chooseTreatyZone: the side + TREATY_ZONE_SIDES * (the x of the line through the capital)
+TREATY_ZONE_NONE = 0
+TREATY_ZONE_WEST = 1
+TREATY_ZONE_EAST = 2
+TREATY_ZONE_PENDING = 3
+TREATY_ZONE_SIDES = 4
+# The terms of offerTreatyTerms (the bits of the flags of its popup)
+TREATY_TERMS_GOLD = 0
+TREATY_TERMS_TECH = 1
+TREATY_TERMS_BUILDING = 2
+NUM_TREATY_TERMS = 3
+# The gold and the building in one int of the popup and of the net message of offerTreatyTerms
+TREATY_TERMS_GOLD_LIMIT = 100000
+# The icons of the buttons of offerTreatyTerms (the building uses its own)
+TREATY_TERMS_GOLD_BUTTON = "Art/Interface/Buttons/Process/ProcessWealth.dds"
+TREATY_TERMS_TECH_BUTTON = "Art/Interface/Buttons/Process/ProcessResearch.dds"
+# The overlay of updateTreatyZonePlots
+TREATY_ZONE_PLOT_ALPHA = 0.35
+
+def treatyZone(pPlayer, eTrait):
+	"(the side: TREATY_ZONE_NONE, _WEST, _EAST or _PENDING, the x of the line) from the trait counter"
+	iCounter = pPlayer.getTraitCounter(eTrait)
+	return (iCounter % TREATY_ZONE_SIDES, iCounter / TREATY_ZONE_SIDES)
+
+def setTreatyZone(pPlayer, eTrait, iSide, iX):
+	pPlayer.setTraitCounter(eTrait, iSide + TREATY_ZONE_SIDES * iX)
+
+def isTreatyZoneSet(iSide):
+	return iSide == TREATY_ZONE_WEST or iSide == TREATY_ZONE_EAST
+
+def isInTreatyZone(iSide, iX, pPlot):
+	"""The plot is in the half of the map on the side (TREATY_ZONE_WEST or _EAST) of the line at the x iX. On a map that
+	wraps east and west, each half has the line and half of the other columns: the column of the line (and the one on the
+	other side of the globe) belongs to both. On a map that does not wrap, the line splits the map where it is"""
+	if not isTreatyZoneSet(iSide):
+		return False
+	iWidth = CyMap().getGridWidth()
+	if CyMap().isWrapX():
+		iDX = (pPlot.getX() - iX) % iWidth
+		if iSide == TREATY_ZONE_EAST:
+			return iDX <= iWidth / 2
+		return iDX == 0 or iDX >= iWidth - iWidth / 2
+	if iSide == TREATY_ZONE_EAST:
+		return pPlot.getX() >= iX
+	return pPlot.getX() <= iX
+
+def countTreatyZoneLand(iSide, iX):
+	"The number of land plots in the half of the map"
+	iCount = 0
+	for i in range(CyMap().numPlots()):
+		pPlot = CyMap().plotByIndex(i)
+		if not pPlot.isWater() and isInTreatyZone(iSide, iX, pPlot):
+			iCount += 1
+	return iCount
+
+def treatyZoneSideName(iSide):
+	if iSide == TREATY_ZONE_EAST:
+		return CyTranslator().getText("TXT_KEY_TREATY_ZONE_EAST", ())
+	return CyTranslator().getText("TXT_KEY_TREATY_ZONE_WEST", ())
+
+def chooseTreatyZone(pPlayer, eTrait):
+	"""For PyOnProjectBuilt (or any hook, once): the line through the capital of the player is fixed now, and the player
+	chooses the west or the east half of the map as its zone: a human player in a popup, the AI the half with more land
+	(countTreatyZoneLand). Uses the counter of the trait. Nothing without a capital or when the zone is already set.
+	A choice not made yet (the game was loaded before the popup was answered) is offered again by treatyZoneTurn"""
+	pPlot = capitalPlot(pPlayer)
+	if pPlot is None or treatyZone(pPlayer, eTrait)[0] != TREATY_ZONE_NONE:
+		return
+	setTreatyZone(pPlayer, eTrait, TREATY_ZONE_PENDING, pPlot.getX())
+	offerTreatyZoneChoice(pPlayer, eTrait)
+
+def offerTreatyZoneChoice(pPlayer, eTrait):
+	(iSide, iX) = treatyZone(pPlayer, eTrait)
+	if iSide != TREATY_ZONE_PENDING:
+		return
+	if pPlayer.isHuman():
+		popupInfo = CyPopupInfo()
+		popupInfo.setButtonPopupType(ButtonPopupTypes.BUTTONPOPUP_PYTHON)
+		popupInfo.setText(CyTranslator().getText("TXT_KEY_POPUP_CHOOSE_TREATY_ZONE", ()))
+		popupInfo.setData1(eTrait)
+		# The exe finds the callback only in a module of EntryPoints: CvTraitInterface imports everything here
+		popupInfo.setPythonModule("CvTraitInterface")
+		popupInfo.setOnClickedPythonCallback("chooseTreatyZoneCallback")
+		popupInfo.addPythonButton(treatyZoneSideName(TREATY_ZONE_WEST), "")
+		popupInfo.addPythonButton(treatyZoneSideName(TREATY_ZONE_EAST), "")
+		popupInfo.addPopup(pPlayer.getID())
+		return
+	if countTreatyZoneLand(TREATY_ZONE_EAST, iX) > countTreatyZoneLand(TREATY_ZONE_WEST, iX):
+		applyTreatyZoneChoice(pPlayer, eTrait, TREATY_ZONE_EAST)
+	else:
+		applyTreatyZoneChoice(pPlayer, eTrait, TREATY_ZONE_WEST)
+
+def chooseTreatyZoneCallback(argsList):
+	"The button of the popup of offerTreatyZoneChoice (only on the computer of the player): 0 west, 1 east"
+	iButton = argsList[0]
+	eTrait = argsList[1]
+	iSide = TREATY_ZONE_WEST
+	if iButton == 1:
+		iSide = TREATY_ZONE_EAST
+	CyMessageControl().sendModNetMessage(MOD_NET_MESSAGE_CHOOSE_TREATY_ZONE, CyGame().getActivePlayer(), eTrait, iSide, 0)
+
+def applyTreatyZoneChoice(pPlayer, eTrait, iSide):
+	"The zone of the player becomes the side, if the choice is still to make. Every player gets a message. Returns True if it was set"
+	if not pPlayer.isAlive() or not pPlayer.hasTrait(eTrait) or not isTreatyZoneSet(iSide):
+		return False
+	(iOldSide, iX) = treatyZone(pPlayer, eTrait)
+	if iOldSide != TREATY_ZONE_PENDING:
+		return False
+	setTreatyZone(pPlayer, eTrait, iSide, iX)
+	szText = CyTranslator().getText("TXT_KEY_MISC_TREATY_ZONE_CHOSEN", (pPlayer.getCivilizationShortDescription(0), treatyZoneSideName(iSide)))
+	for iLoopPlayer in range(gc.getMAX_CIV_PLAYERS()):
+		if gc.getPlayer(iLoopPlayer).isAlive():
+			CyInterface().addMessage(iLoopPlayer, True, gc.getEVENT_MESSAGE_TIME(), szText, "", InterfaceMessageTypes.MESSAGE_TYPE_MAJOR_EVENT, None, gc.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"), -1, -1, False, False)
+	return True
+
+def isTreatyZoneCity(pPlayer, eTrait, pCity):
+	"The city is in the zone of the player and belongs to another player who is not a barbarian"
+	(iSide, iX) = treatyZone(pPlayer, eTrait)
+	if pCity is None or pCity.isNone() or not isTreatyZoneSet(iSide):
+		return False
+	if pCity.getOwner() == pPlayer.getID() or gc.getPlayer(pCity.getOwner()).isBarbarian():
+		return False
+	return isInTreatyZone(iSide, iX, pCity.plot())
+
+def treatyZoneTurn(pPlayer, eTrait, iGoldPerCity, szSource = None):
+	"""For PyOnBeginTurn: the player gains iGoldPerCity gold for each city of the other players in its zone (isTreatyZoneCity:
+	whoever founded it and whenever), with a message "From <source>: +N gold" (TXT_KEY_MISC_TREATY_ZONE_INCOME). szSource is
+	the type of the info named in the message, e.g. 'PROJECT_MANHATTAN_PROJECT' (None: the trait). A zone still to choose is
+	offered again. Returns the number of cities"""
+	(iSide, iX) = treatyZone(pPlayer, eTrait)
+	if iSide == TREATY_ZONE_PENDING:
+		offerTreatyZoneChoice(pPlayer, eTrait)
+		return 0
+	if not isTreatyZoneSet(iSide):
+		return 0
+	iCount = 0
+	for iLoopPlayer in range(gc.getMAX_CIV_PLAYERS()):
+		pLoopPlayer = gc.getPlayer(iLoopPlayer)
+		if iLoopPlayer == pPlayer.getID() or not pLoopPlayer.isAlive():
+			continue
+		(pLoopCity, iIter) = pLoopPlayer.firstCity(False)
+		while pLoopCity is not None and not pLoopCity.isNone():
+			if isInTreatyZone(iSide, iX, pLoopCity.plot()):
+				iCount += 1
+			(pLoopCity, iIter) = pLoopPlayer.nextCity(iIter, False)
+	if iCount > 0 and iGoldPerCity != 0:
+		pPlayer.changeGold(iCount * iGoldPerCity)
+		szName = gc.getTraitInfo(eTrait).getDescription()
+		if szSource is not None and gc.getInfoTypeForString(szSource) != -1:
+			szName = getInfoDescriptionByType(szSource)
+		showMessage(pPlayer, 'TXT_KEY_MISC_TREATY_ZONE_INCOME', (szName, iCount * iGoldPerCity, iCount))
+	return iCount
+
+def getInfoDescriptionByType(szType):
+	"The name of the info of the type (a project, building, trait, civic or tech: the class from the prefix PROJECT_ etc.)"
+	iType = gc.getInfoTypeForString(szType)
+	for (szPrefix, szInfo) in (('PROJECT_', 'Project'), ('BUILDING_', 'Building'), ('TRAIT_', 'Trait'), ('CIVIC_', 'Civic'), ('TECH_', 'Tech')):
+		if szType.startswith(szPrefix):
+			return infoDescription(szInfo, iType)
+	return szType
+
+def treatyTermsTechs(pPlayer, eFounder):
+	"The techs of offerTreatyTerms: the team of the founder has them and the team of the player does not. The techs the player can research now if there are some"
+	pTeam = gc.getTeam(pPlayer.getTeam())
+	pFounderTeam = gc.getTeam(gc.getPlayer(eFounder).getTeam())
+	lTechs = []
+	lResearchable = []
+	for eTech in range(gc.getNumTechInfos()):
+		if pFounderTeam.isHasTech(eTech) and not pTeam.isHasTech(eTech):
+			lTechs.append(eTech)
+			if pPlayer.canResearch(eTech, False):
+				lResearchable.append(eTech)
+	if len(lResearchable) > 0:
+		return lResearchable
+	return lTechs
+
+def treatyTermsBuilding(szBuildingClass):
+	"The building of offerTreatyTerms: the default building of the class (-1 if none)"
+	iBuildingClass = gc.getInfoTypeForString(szBuildingClass)
+	if iBuildingClass == -1:
+		return -1
+	return gc.getBuildingClassInfo(iBuildingClass).getDefaultBuildingIndex()
+
+def treatyTermsChoices(pPlayer, pCity, iGold, eBuilding):
+	"The bits of the terms the founder can choose now"
+	pFounder = gc.getPlayer(pCity.getOwner())
+	iChoices = 0
+	if iGold > 0 and pFounder.getGold() >= iGold:
+		iChoices |= (1 << TREATY_TERMS_GOLD)
+	if len(treatyTermsTechs(pPlayer, pCity.getOwner())) > 0:
+		iChoices |= (1 << TREATY_TERMS_TECH)
+	if eBuilding != -1:
+		iChoices |= (1 << TREATY_TERMS_BUILDING)
+	return iChoices
+
+def offerTreatyTerms(pPlayer, eTrait, pCity, iGold, szBuildingClass):
+	"""For PyOnOtherCityFounded: when another player (not a barbarian, not of the same team) founds the city in the zone of the
+	player (chooseTreatyZone), the founder chooses one of the terms: pay iGold gold to the player (only with that much gold),
+	give the player a random tech the founder's team has and the player's team does not (treatyTermsTechs), or the city gets
+	the building of szBuildingClass. A human founder chooses in a popup, the AI at random. The popup is not offered again
+	after loading a game. Returns True if the terms were offered"""
+	if not isTreatyZoneCity(pPlayer, eTrait, pCity):
+		return False
+	pFounder = gc.getPlayer(pCity.getOwner())
+	if pFounder.getTeam() == pPlayer.getTeam():
+		return False
+	iGold = max(0, min(iGold, TREATY_TERMS_GOLD_LIMIT - 1))
+	eBuilding = treatyTermsBuilding(szBuildingClass)
+	iChoices = treatyTermsChoices(pPlayer, pCity, iGold, eBuilding)
+	if iChoices == 0:
+		return False
+	if pFounder.isHuman():
+		popupInfo = CyPopupInfo()
+		popupInfo.setButtonPopupType(ButtonPopupTypes.BUTTONPOPUP_PYTHON)
+		popupInfo.setText(CyTranslator().getText("TXT_KEY_POPUP_TREATY_TERMS", (pCity.getNameKey(), pPlayer.getCivilizationShortDescription(0))))
+		popupInfo.setData1(pPlayer.getID())
+		popupInfo.setData2(pCity.getID())
+		popupInfo.setData3(iGold + TREATY_TERMS_GOLD_LIMIT * (eBuilding + 1))
+		popupInfo.setFlags(iChoices)
+		popupInfo.setPythonModule("CvTraitInterface")
+		popupInfo.setOnClickedPythonCallback("chooseTreatyTermsCallback")
+		if iChoices & (1 << TREATY_TERMS_GOLD):
+			popupInfo.addPythonButton(CyTranslator().getText("TXT_KEY_TREATY_TERMS_GOLD", (iGold, pPlayer.getCivilizationShortDescription(0))), TREATY_TERMS_GOLD_BUTTON)
+		if iChoices & (1 << TREATY_TERMS_TECH):
+			popupInfo.addPythonButton(CyTranslator().getText("TXT_KEY_TREATY_TERMS_TECH", (pPlayer.getCivilizationShortDescription(0),)), TREATY_TERMS_TECH_BUTTON)
+		if iChoices & (1 << TREATY_TERMS_BUILDING):
+			kBuilding = gc.getBuildingInfo(eBuilding)
+			popupInfo.addPythonButton(CyTranslator().getText("TXT_KEY_TREATY_TERMS_BUILDING", (kBuilding.getDescription(),)), kBuilding.getButton())
+		popupInfo.addPopup(pFounder.getID())
+		return True
+	lTerms = []
+	for iTerms in range(NUM_TREATY_TERMS):
+		if iChoices & (1 << iTerms):
+			lTerms.append(iTerms)
+	applyTreatyTerms(pPlayer, pCity, lTerms[CyGame().getSorenRandNum(len(lTerms), "Treaty terms")], iGold, eBuilding)
+	return True
+
+def chooseTreatyTermsCallback(argsList):
+	"The button of the popup of offerTreatyTerms (only on the computer of the founder): the choice goes to every computer"
+	iButton = argsList[0]
+	ePlayer = argsList[1]
+	iCityID = argsList[2]
+	iGoldAndBuilding = argsList[3]
+	iChoices = argsList[4]
+	for iTerms in range(NUM_TREATY_TERMS):
+		if iChoices & (1 << iTerms):
+			if iButton == 0:
+				# iData5: the terms + NUM_TREATY_TERMS * (the gold + TREATY_TERMS_GOLD_LIMIT * (the building + 1))
+				CyMessageControl().sendModNetMessage(MOD_NET_MESSAGE_CHOOSE_TREATY_TERMS, CyGame().getActivePlayer(), ePlayer, iCityID, iTerms + NUM_TREATY_TERMS * iGoldAndBuilding)
+				return
+			iButton -= 1
+
+def applyTreatyTerms(pPlayer, pCity, iTerms, iGold, eBuilding):
+	"The founder of the city fulfils the terms of offerTreatyTerms, if it still can. Both players get a message. Returns True if it did"
+	if pCity is None or pCity.isNone() or not pPlayer.isAlive() or eBuilding < -1 or eBuilding >= gc.getNumBuildingInfos():
+		return False
+	eFounder = pCity.getOwner()
+	pFounder = gc.getPlayer(eFounder)
+	if iTerms < 0 or iTerms >= NUM_TREATY_TERMS or not (treatyTermsChoices(pPlayer, pCity, iGold, eBuilding) & (1 << iTerms)):
+		return False
+	szCiv = pPlayer.getCivilizationShortDescription(0)
+	szFounder = pFounder.getCivilizationShortDescription(0)
+	if iTerms == TREATY_TERMS_GOLD:
+		pFounder.changeGold(-iGold)
+		pPlayer.changeGold(iGold)
+		szText = CyTranslator().getText("TXT_KEY_MISC_TREATY_TERMS_GOLD", (szFounder, iGold, szCiv, pCity.getNameKey()))
+	elif iTerms == TREATY_TERMS_TECH:
+		lTechs = treatyTermsTechs(pPlayer, eFounder)
+		eTech = lTechs[CyGame().getSorenRandNum(len(lTechs), "Treaty terms tech")]
+		gc.getTeam(pPlayer.getTeam()).setHasTech(eTech, True, pPlayer.getID(), False, False)
+		szText = CyTranslator().getText("TXT_KEY_MISC_TREATY_TERMS_TECH", (szFounder, gc.getTechInfo(eTech).getDescription(), szCiv, pCity.getNameKey()))
+	else:
+		pCity.setNumRealBuilding(eBuilding, 1)
+		szText = CyTranslator().getText("TXT_KEY_MISC_TREATY_TERMS_BUILDING", (szFounder, pCity.getNameKey(), gc.getBuildingInfo(eBuilding).getDescription(), szCiv))
+	for iLoopPlayer in (pPlayer.getID(), eFounder):
+		CyInterface().addMessage(iLoopPlayer, True, gc.getEVENT_MESSAGE_TIME(), szText, "", InterfaceMessageTypes.MESSAGE_TYPE_MAJOR_EVENT, None, gc.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"), pCity.getX(), pCity.getY(), True, True)
+	return True
+
+def treatyZones():
+	"[(pPlayer, iSide, iX)] of the players alive whose trait with treatyZoneTurn in PyOnBeginTurn has its zone set"
+	lZones = []
+	for eTrait in range(gc.getNumTraitInfos()):
+		if gc.getTraitInfo(eTrait).getPyOnBeginTurn().find('treatyZoneTurn') < 0:
+			continue
+		for iPlayer in range(gc.getMAX_CIV_PLAYERS()):
+			pPlayer = gc.getPlayer(iPlayer)
+			if pPlayer.isAlive() and pPlayer.hasTrait(eTrait):
+				(iSide, iX) = treatyZone(pPlayer, eTrait)
+				if isTreatyZoneSet(iSide):
+					lZones.append((pPlayer, iSide, iX))
+	return lZones
+
+def updateTreatyZonePlots():
+	"""From CvGameUtils.updateColoredPlots (the DLL has just cleared the layer): while the active player has a unit that can
+	found cities selected, the revealed land plots of the treaty zones are colored with the main color of the player of the
+	zone. Returns False (the DLL draws its own plots after it)"""
+	pUnit = CyInterface().getHeadSelectedUnit()
+	if pUnit is None or pUnit.isNone() or not pUnit.isFound():
+		return False
+	lZones = treatyZones()
+	if len(lZones) == 0:
+		return False
+	lColors = []
+	for (pPlayer, iSide, iX) in lZones:
+		lColors.append(gc.getColorInfo(gc.getPlayerColorInfo(pPlayer.getPlayerColor()).getColorTypePrimary()).getType())
+	iActiveTeam = CyGame().getActiveTeam()
+	for i in range(CyMap().numPlots()):
+		pPlot = CyMap().plotByIndex(i)
+		if pPlot.isWater() or not pPlot.isRevealed(iActiveTeam, False):
+			continue
+		for iZone in range(len(lZones)):
+			(pPlayer, iSide, iX) = lZones[iZone]
+			if isInTreatyZone(iSide, iX, pPlot):
+				CyEngine().addColoredPlotAlt(pPlot.getX(), pPlot.getY(), PlotStyles.PLOT_STYLE_BOX_FILL, PlotLandscapeLayers.PLOT_LANDSCAPE_LAYER_BASE, lColors[iZone], TREATY_ZONE_PLOT_ALPHA)
+				break
+	return False
+
 def receiveModNetMessage(iData1, iData2, iData3, iData4, iData5):
 	"The messages of this file from CvEventManager.onModNetMessage (on every computer). Returns True if the message was one of them"
 	if iData1 == MOD_NET_MESSAGE_CHOOSE_GREAT_PERSON:
@@ -516,5 +840,18 @@ def receiveModNetMessage(iData1, iData2, iData3, iData4, iData5):
 			if applyGreatPersonChoice(pPlayer, iData3, iData4):
 				if greatPersonChoiceState(pPlayer, iData3)[1] > 0:
 					offerGreatPersonChoice(pPlayer, iData3)
+		return True
+	if iData1 == MOD_NET_MESSAGE_CHOOSE_TREATY_ZONE:
+		# iData2: player, iData3: trait, iData4: side
+		if iData2 >= 0 and iData2 < gc.getMAX_PLAYERS() and iData3 >= 0 and iData3 < gc.getNumTraitInfos():
+			applyTreatyZoneChoice(gc.getPlayer(iData2), iData3, iData4)
+		return True
+	if iData1 == MOD_NET_MESSAGE_CHOOSE_TREATY_TERMS:
+		# iData2: founder, iData3: player of the zone, iData4: city of the founder, iData5: the terms + NUM_TREATY_TERMS *
+		# (the gold + TREATY_TERMS_GOLD_LIMIT * (the building + 1))
+		if iData2 >= 0 and iData2 < gc.getMAX_PLAYERS() and iData3 >= 0 and iData3 < gc.getMAX_PLAYERS() and iData5 >= 0:
+			pCity = gc.getPlayer(iData2).getCity(iData4)
+			iGoldAndBuilding = iData5 / NUM_TREATY_TERMS
+			applyTreatyTerms(gc.getPlayer(iData3), pCity, iData5 % NUM_TREATY_TERMS, iGoldAndBuilding % TREATY_TERMS_GOLD_LIMIT, iGoldAndBuilding / TREATY_TERMS_GOLD_LIMIT - 1)
 		return True
 	return False

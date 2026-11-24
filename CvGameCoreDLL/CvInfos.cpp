@@ -19710,6 +19710,44 @@ int CvProjectInfo::getProjectsNeeded(int i) const
 	return m_piProjectsNeeded ? m_piProjectsNeeded[i] : false; 
 }
 
+// PrereqOrTechs (added by this mod): the team needs one of the techs (and TechPrereq if it has one). Empty: no tech of
+// this list is needed
+int CvProjectInfo::getNumPrereqOrTechs() const
+{
+	return (int)m_aiPrereqOrTechs.size();
+}
+
+int CvProjectInfo::getPrereqOrTechs(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrTechs(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_aiPrereqOrTechs[i];
+}
+
+const std::vector<int>& CvProjectInfo::getPrereqOrTechsVector() const
+{
+	return m_aiPrereqOrTechs;
+}
+
+// PrereqOrTraits (added by this mod): only the players with one of the traits can create the project
+// (CvPlayer::canCreate). Empty: everyone
+int CvProjectInfo::getNumPrereqOrTraits() const
+{
+	return (int)m_aiPrereqOrTraits.size();
+}
+
+int CvProjectInfo::getPrereqOrTraits(int i) const
+{
+	FAssertMsg(i < getNumPrereqOrTraits(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_aiPrereqOrTraits[i];
+}
+
+const std::vector<int>& CvProjectInfo::getPrereqOrTraitsVector() const
+{
+	return m_aiPrereqOrTraits;
+}
+
 bool CvProjectInfo::read(CvXMLLoadUtility* pXML)
 {
 	CvString szTextVal;
@@ -19723,6 +19761,10 @@ bool CvProjectInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->GetChildXmlValByName(szTextVal, "TechPrereq");
 	m_iTechPrereq = pXML->FindInInfoClass(szTextVal);
+
+	// PrereqOrTechs and PrereqOrTraits (added by this mod): the techs and the traits are loaded before the projects
+	readTypeList(pXML, "PrereqOrTechs", m_aiPrereqOrTechs);
+	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
 
 	pXML->GetChildXmlValByName(&m_iMaxGlobalInstances, "iMaxGlobalInstances");
 	pXML->GetChildXmlValByName(&m_iMaxTeamInstances, "iMaxTeamInstances");
@@ -22340,6 +22382,12 @@ const TCHAR* CvTraitInfo::getPyOnCircumnavigated() const
 	return m_aszPythonHook[TRAIT_PYHOOK_CIRCUMNAVIGATED];
 }
 
+// PyOnOtherCityFounded (added by this mod): another player founded a city (CvPlayer::found)
+const TCHAR* CvTraitInfo::getPyOnOtherCityFounded() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_OTHER_CITY_FOUNDED];
+}
+
 // ConditionalFreeTraits (added by this mod): the traits the player has while the conditions hold
 int CvTraitInfo::getNumConditionalFreeTraits() const
 {
@@ -23515,6 +23563,7 @@ void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_RELIGION_SPREAD], "PyOnReligionSpread");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CIVIC_CHANGED], "PyOnCivicChanged");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CIRCUMNAVIGATED], "PyOnCircumnavigated");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_OTHER_CITY_FOUNDED], "PyOnOtherCityFounded");
 }
 
 // The part of read() for ConditionalFreeTraits (added by this mod)

@@ -1101,4 +1101,40 @@
 		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Each time a cycle of 200 years ends (one ends in AD 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</Spanish>
 		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]200 &#24180;&#12398;&#21608;&#26399;&#65288;&#35199;&#26278; 2012 &#24180;&#12395;&#32066;&#12431;&#12427;&#21608;&#26399;&#65289;&#12364;&#32066;&#12431;&#12427;&#12383;&#12403;&#12395;&#12289;&#20553;&#20154;&#12434; 1 &#20154;&#36984;&#12435;&#12391;&#39318;&#37117;&#12395;&#20986;&#12377;&#65288;&#36984;&#12435;&#12384;&#20553;&#20154;&#12399;&#12289;&#20840;&#21729;&#12434;&#36984;&#12406;&#12414;&#12391;&#36984;&#12409;&#12394;&#12356;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_TREATY</Tag>
+		<English>Test Trait (Treaty)</English>
+		<French>Test Trait (Treaty)</French>
+		<German>Test Trait (Treaty)</German>
+		<Italian>Test Trait (Treaty)</Italian>
+		<Spanish>Test Trait (Treaty)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;&#26465;&#32004;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_TREATY_SHORT</Tag>
+		<English>Tre</English>
+		<French>Tre</French>
+		<German>Tre</German>
+		<Italian>Tre</Italian>
+		<Spanish>Tre</Spanish>
+		<Japanese>&#26465;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_TREATY_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Test Treaty: choose the west or the east half of the map (the line runs through the capital) as your zone (the AI chooses at its first city)[NEWLINE][SPACE][SPACE][ICON_BULLET]+1 gold per turn for each city of another civilization in your zone[NEWLINE][SPACE][SPACE][ICON_BULLET]When another civilization founds a city in your zone, it pays 50 gold, gives you a technology or gets the Test Building</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Test Treaty: choose the west or the east half of the map (the line runs through the capital) as your zone (the AI chooses at its first city)[NEWLINE][SPACE][SPACE][ICON_BULLET]+1 gold per turn for each city of another civilization in your zone[NEWLINE][SPACE][SPACE][ICON_BULLET]When another civilization founds a city in your zone, it pays 50 gold, gives you a technology or gets the Test Building</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Test Treaty: choose the west or the east half of the map (the line runs through the capital) as your zone (the AI chooses at its first city)[NEWLINE][SPACE][SPACE][ICON_BULLET]+1 gold per turn for each city of another civilization in your zone[NEWLINE][SPACE][SPACE][ICON_BULLET]When another civilization founds a city in your zone, it pays 50 gold, gives you a technology or gets the Test Building</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Test Treaty: choose the west or the east half of the map (the line runs through the capital) as your zone (the AI chooses at its first city)[NEWLINE][SPACE][SPACE][ICON_BULLET]+1 gold per turn for each city of another civilization in your zone[NEWLINE][SPACE][SPACE][ICON_BULLET]When another civilization founds a city in your zone, it pays 50 gold, gives you a technology or gets the Test Building</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Test Treaty: choose the west or the east half of the map (the line runs through the capital) as your zone (the AI chooses at its first city)[NEWLINE][SPACE][SPACE][ICON_BULLET]+1 gold per turn for each city of another civilization in your zone[NEWLINE][SPACE][SPACE][ICON_BULLET]When another civilization founds a city in your zone, it pays 50 gold, gives you a technology or gets the Test Building</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#26908;&#35388;&#29992;&#12503;&#12525;&#12472;&#12455;&#12463;&#12488;&#65288;&#26465;&#32004;&#65289;: &#39318;&#37117;&#12434;&#36890;&#12427;&#32218;&#12391;&#22320;&#22259;&#12434;&#26481;&#35199;&#12395;&#20998;&#12369;&#12289;&#12393;&#12385;&#12425;&#12363;&#12434;&#20778;&#20808;&#22320;&#22495;&#12395;&#36984;&#12406;&#65288;AI &#12399;&#26368;&#21021;&#12398;&#37117;&#24066;&#12391;&#36984;&#12406;&#65289;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#20778;&#20808;&#22320;&#22495;&#12395;&#12354;&#12427;&#20182;&#25991;&#26126;&#12398;&#37117;&#24066; 1 &#12388;&#12395;&#12388;&#12365;&#27598;&#12479;&#12540;&#12531;&#37329; +1[NEWLINE][SPACE][SPACE][ICON_BULLET]&#20182;&#25991;&#26126;&#12364;&#20778;&#20808;&#22320;&#22495;&#12395;&#37117;&#24066;&#12434;&#24314;&#12390;&#12427;&#12392;&#12289;50 &#12468;&#12540;&#12523;&#12489;&#12434;&#25173;&#12358;&#12539;&#25216;&#34899;&#12434; 1 &#12388;&#28193;&#12377;&#12539;&#12381;&#12398;&#37117;&#24066;&#12395;&#26908;&#35388;&#29992;&#24314;&#36896;&#29289;&#12364;&#24314;&#12388;&#12289;&#12398;&#12393;&#12428;&#12363;&#12434;&#36984;&#12406;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROJECT_TEST_TREATY</Tag>
+		<English>Test Project (Treaty)</English>
+		<French>Test Project (Treaty)</French>
+		<German>Test Project (Treaty)</German>
+		<Italian>Test Project (Treaty)</Italian>
+		<Spanish>Test Project (Treaty)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#12503;&#12525;&#12472;&#12455;&#12463;&#12488;&#65288;&#26465;&#32004;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

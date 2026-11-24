@@ -500,6 +500,15 @@ bool isTechRequiredForProject(TechTypes eTech, ProjectTypes eProject)
 		return true;
 	}
 
+	// PrereqOrTechs of the project (added by this mod)
+	for (int iI = 0; iI < GC.getProjectInfo(eProject).getNumPrereqOrTechs(); iI++)
+	{
+		if (GC.getProjectInfo(eProject).getPrereqOrTechs(iI) == eTech)
+		{
+			return true;
+		}
+	}
+
 	return false;
 }
 

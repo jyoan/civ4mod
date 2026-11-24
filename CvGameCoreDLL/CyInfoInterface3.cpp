@@ -9,6 +9,7 @@
 // The getters of CvTraitInfo added on 2026-11-18 and later, in CyInfoInterface4.cpp (added by this mod): more definitions
 // in this file overflow MSVC 7.1 (fatal error C1204)
 void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInfoBase> >& kTraitInfo);
+void CyInfoPythonInterfaceProject2(python::class_<CvProjectInfo, python::bases<CvInfoBase> >& kProjectInfo);
 
 void CyInfoPythonInterface3()
 {
@@ -206,7 +207,8 @@ void CyInfoPythonInterface3()
 		.def("isVoteSourceType", &CvVoteInfo::isVoteSourceType, "bool (int i)")
 		;
 
-	python::class_<CvProjectInfo, python::bases<CvInfoBase> >("CvProjectInfo")
+	python::class_<CvProjectInfo, python::bases<CvInfoBase> > kProjectInfo("CvProjectInfo");
+	kProjectInfo
 		.def("getVictoryPrereq", &CvProjectInfo::getVictoryPrereq, "int ()")
 		.def("getTechPrereq", &CvProjectInfo::getTechPrereq, "int ()")
 		.def("getAnyoneProjectPrereq", &CvProjectInfo::getAnyoneProjectPrereq, "int ()")
@@ -233,6 +235,7 @@ void CyInfoPythonInterface3()
 		.def("getSuccessRate", &CvProjectInfo::getSuccessRate, "int ()")
 		.def("getProjectsNeeded", &CvProjectInfo::getProjectsNeeded, "int (int i)")
 		;
+	CyInfoPythonInterfaceProject2(kProjectInfo);	// added by this mod
 
 	python::class_<CvReligionInfo, python::bases<CvInfoBase> >("CvReligionInfo")
 		.def("getChar", &CvReligionInfo::getChar, "int ()")

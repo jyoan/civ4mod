@@ -1901,4 +1901,13 @@
 		<Spanish>[ICON_BULLET]%D1%% chance of revolt in foreign cities by your culture</Spanish>
 		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#25991;&#21270;&#12395;&#12424;&#12427;&#22806;&#22269;&#12398;&#37117;&#24066;&#12398;&#21453;&#20081;&#12398;&#30906;&#29575;%D1%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNIQUE_PROJECT</Tag>
+		<English>[ICON_BULLET]Unique project: %s1_Name</English>
+		<French>[ICON_BULLET]Unique project: %s1_Name</French>
+		<German>[ICON_BULLET]Unique project: %s1_Name</German>
+		<Italian>[ICON_BULLET]Unique project: %s1_Name</Italian>
+		<Spanish>[ICON_BULLET]Unique project: %s1_Name</Spanish>
+		<Japanese>[ICON_BULLET]&#22266;&#26377;&#12503;&#12525;&#12472;&#12455;&#12463;&#12488;: %s1_Name</Japanese>
+	</TEXT>
 </Civ4GameText>

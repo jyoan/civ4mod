@@ -146,6 +146,16 @@ class CvTechChooser:
 				szKey += str(i) + ","
 		return szKey
 
+	# Added by this mod: PrereqOrTraits of the project (empty: everyone)
+	def isProjectOfPlayer (self, pPlayer, eProject):
+		kProject = gc.getProjectInfo(eProject)
+		if (kProject.getNumPrereqOrTraits() == 0):
+			return True
+		for k in range(kProject.getNumPrereqOrTraits()):
+			if (pPlayer.hasTrait(kProject.getPrereqOrTraits(k))):
+				return True
+		return False
+
 	def placeTechs (self):
 	
 		iMaxX = 0
@@ -605,7 +615,8 @@ class CvTechChooser:
 
 			# Projects possible
 			for j in range( gc.getNumProjectInfos() ):
-				if (gc.getProjectInfo(j).getTechPrereq() == i):
+				# PrereqOrTechs and PrereqOrTraits of the project (changed by this mod)
+				if (isTechRequiredForProject(i, j) and self.isProjectOfPlayer(gc.getPlayer(self.iCivSelected), j)):
 					szProjectInfo = "ProjectInfoButton" + str( ( i * 1000 ) + j )
 					screen.addDDSGFCAt( szProjectInfo, szTechRecord, gc.getProjectInfo(j).getButton(), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROJECT, j, 1, False )
 					fX += X_INCREMENT

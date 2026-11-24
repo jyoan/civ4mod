@@ -536,6 +536,9 @@
 	</ElementType>
 	<ElementType name="CreateSound" content="textOnly"/>
 	<ElementType name="MovieDefineTag" content="textOnly"/>
+	<ElementType name="PrereqOrTechs" content="eltOnly">
+		<element type="TechType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="ProjectInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -543,6 +546,8 @@
 		<element type="Strategy"/>
 		<element type="VictoryPrereq"/>
 		<element type="TechPrereq"/>
+		<element type="PrereqOrTechs" minOccurs="0"/>
+		<element type="PrereqOrTraits" minOccurs="0"/>
 		<element type="AnyonePrereqProject" minOccurs="0"/>
 		<element type="iMaxGlobalInstances"/>
 		<element type="iMaxTeamInstances"/>
