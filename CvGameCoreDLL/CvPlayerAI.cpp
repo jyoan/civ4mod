@@ -5019,8 +5019,41 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 	iAttitude += AI_getColonyAttitude(ePlayer);
 	iAttitude += AI_getAttitudeExtra(ePlayer);
 	iAttitude += GET_PLAYER(ePlayer).getAttitudeChange();	// iAttitudeChange of the traits of ePlayer (added by this mod)
+	iAttitude += AI_getStationedUnitAttitude(ePlayer);	// iStationedAttitudeChange of the units (added by this mod)
 
 	return range(iAttitude, -100, 100);
+}
+
+// iStationedAttitudeChange of the units of ePlayer on the city plots of this player (added by this mod): an envoy staying in
+// our cities. Invisible units count too
+int CvPlayerAI::AI_getStationedUnitAttitude(PlayerTypes ePlayer) const
+{
+	CLLNode<IDInfo>* pUnitNode;
+	CvUnit* pLoopUnit;
+	CvCity* pLoopCity;
+	int iAttitude = 0;
+	int iLoop;
+
+	if (ePlayer == getID())
+	{
+		return 0;
+	}
+
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		pUnitNode = pLoopCity->plot()->headUnitNode();
+		while (pUnitNode != NULL)
+		{
+			pLoopUnit = ::getUnit(pUnitNode->m_data);
+			pUnitNode = pLoopCity->plot()->nextUnitNode(pUnitNode);
+			if (pLoopUnit != NULL && pLoopUnit->getOwnerINLINE() == ePlayer)
+			{
+				iAttitude += pLoopUnit->getUnitInfo().getStationedAttitudeChange();
+			}
+		}
+	}
+
+	return iAttitude;
 }
 
 // added by this mod: one of the parts of AI_getAttitudeVal that the BtS diplomacy tooltip does not show. Moved from

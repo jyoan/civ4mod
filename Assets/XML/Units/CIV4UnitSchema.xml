@@ -563,6 +563,7 @@
 	<ElementType name="iBuildingCombatMaxPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="PyOnCreated" content="textOnly"/>
 	<ElementType name="PyOnDeath" content="textOnly"/>
+	<ElementType name="iStationedAttitudeChange" content="textOnly" dt:type="int"/>
 	<ElementType name="UnitInfo" content="eltOnly">
 		<element type="Class"/>
 		<element type="Type"/>
@@ -730,6 +731,7 @@
 		<element type="iOrderPriority" minOccurs="0"/>
 		<element type="PyOnCreated" minOccurs="0"/>
 		<element type="PyOnDeath" minOccurs="0"/>
+		<element type="iStationedAttitudeChange" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="UnitInfos" content="eltOnly">
 		<element type="UnitInfo" maxOccurs="*"/>

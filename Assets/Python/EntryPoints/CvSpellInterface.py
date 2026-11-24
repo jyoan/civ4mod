@@ -40,6 +40,15 @@ def reqNotHasPromotion(pCaster, szPromotion):
 	"True if the caster does not have the promotion yet"
 	return not pCaster.isHasPromotion(gc.getInfoTypeForString(szPromotion))
 
+def reqInWarEnemyCity(pCaster):
+	"True if the caster is in a city of a team at war with its team, and the war can be ended (not a vassal, no trait forbids peace)"
+	pPlot = pCaster.plot()
+	if not pPlot.isCity():
+		return False
+	eOtherTeam = pPlot.getTeam()
+	pTeam = gc.getTeam(pCaster.getTeam())
+	return pTeam.isAtWar(eOtherTeam) and pTeam.canChangeWarPeace(eOtherTeam)
+
 ## Common functions for PyResult and PyMiscast
 
 def spellAddPromotion(pCaster, szPromotion):
@@ -58,6 +67,11 @@ def spellToggleFreeTrait(pCaster, szTrait):
 		pPlayer.changeFreeTraitCount(eTrait, -1)
 	else:
 		pPlayer.changeFreeTraitCount(eTrait, 1)
+
+def spellForcePeaceWithCityOwner(pCaster):
+	"Peace between the team of the caster and the team of the owner of its city; the caster dies (sacrifice)"
+	gc.getTeam(pCaster.getTeam()).makePeace(pCaster.plot().getTeam())
+	pCaster.kill(True, -1)
 
 def spellDamageCaster(pCaster, iDamage):
 	"The caster takes damage (it dies at 100, with a delay)"

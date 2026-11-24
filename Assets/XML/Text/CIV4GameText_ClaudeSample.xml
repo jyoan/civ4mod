@@ -1340,6 +1340,24 @@
 		<Japanese>%D1: &#24535;&#21521;&#12395;&#12424;&#12427;&#21360;&#35937;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_MISC_ATTITUDE_STATIONED_UNITS</Tag>
+		<English>%D1: Their envoys stay in our cities</English>
+		<French>%D1: Their envoys stay in our cities</French>
+		<German>%D1: Their envoys stay in our cities</German>
+		<Italian>%D1: Their envoys stay in our cities</Italian>
+		<Spanish>%D1: Their envoys stay in our cities</Spanish>
+		<Japanese>%D1: &#37117;&#24066;&#12395;&#28382;&#22312;&#12377;&#12427;&#20351;&#31680;&#12395;&#12424;&#12427;&#21360;&#35937;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_STATIONED_ATTITUDE</Tag>
+		<English>[ICON_BULLET]While in a city of another civilization, its attitude toward us %D1</English>
+		<French>[ICON_BULLET]While in a city of another civilization, its attitude toward us %D1</French>
+		<German>[ICON_BULLET]While in a city of another civilization, its attitude toward us %D1</German>
+		<Italian>[ICON_BULLET]While in a city of another civilization, its attitude toward us %D1</Italian>
+		<Spanish>[ICON_BULLET]While in a city of another civilization, its attitude toward us %D1</Spanish>
+		<Japanese>[ICON_BULLET]&#12411;&#12363;&#12398;&#25991;&#26126;&#12398;&#37117;&#24066;&#12395;&#12356;&#12427;&#38291;&#12289;&#12381;&#12398;&#25991;&#26126;&#12398;&#24907;&#24230;%D1</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_MISC_ATTITUDE_HIDDEN_PERSONALITY</Tag>
 		<English>%D1: Leader personality</English>
 		<French>%D1: Leader personality</French>
