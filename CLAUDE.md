@@ -5,7 +5,7 @@ Civilization IV: Beyond the Sword 日本語版（CyberFront 版）向けの Mod�
 ## トークンを節約する読み方
 
 - `docs/` の大きなファイル（`docs/tags/*`・`test-data*.md`・`test-log*.md`・`civ-design.md`・`civ4_mod_design_handoff.md`）は丸ごと Read しない。Grep で該当箇所を探し、`offset` / `limit` でその付近だけ読む（タグと検証用データは見出し 1 つが 1 項目）
-- 大きなソース（`CvInfos.cpp` 約 3 万行、`CvPlayer.cpp`・`CvGameTextMgr.cpp` など）も同じ。関数名を Grep してから範囲を指定して読む
+- 大きなソース（`CvInfos.cpp` 約 2.7 万行、`CvPlayer.cpp`・`CvGameTextMgr.cpp` など）も同じ。関数名を Grep してから範囲を指定して読む
 - 一度読んだファイルを同じ会話で読み直さない
 
 ## フォルダ構成
@@ -78,7 +78,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 タグを追加するときは、次をすべて更新する:
 
 1. `CvInfos.h`: メンバ変数と getter
-2. `CvInfos.cpp`: コンストラクタでの初期化（配列ならデストラクタで解放）と、`read(CvXMLLoadUtility* pXML)` 内の `pXML->GetChildXmlValByName(&m_iFoo, "iFoo");`
+2. `CvInfos.cpp`（志向は `CvTraitInfo.cpp`）: コンストラクタでの初期化（配列ならデストラクタで解放）と、`read(CvXMLLoadUtility* pXML)` 内の `pXML->GetChildXmlValByName(&m_iFoo, "iFoo");`
 3. Schema（`Assets/XML/<分類>/CIV4*Schema.xml`）: `ElementType` の宣言と、親要素への `element` の追加
 4. その Info クラスに `read(FDataStreamBase*)` / `write(FDataStreamBase*)` もある場合（Unit, Building, Tech, Promotion, Civic, Bonus など）は、そちらにも追加し、`uiFlag` を上げる（現在の値は `docs/xml-rules.md`）
 5. Python から使うなら `CyInfoInterface*.cpp` で公開する
@@ -111,11 +111,12 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 この Mod の狙いは、FFH2 のような大規模なソース改変ではなく、**XML から設定できる要素を増やすこと**。AI がその要素を使いこなせるかは考慮しない。
 
 - 新しい効果は、**志向などの Info に専用のタグを足す方式**で実装する
+- 志向のコードの置き場所: `CvTraitInfo` は `CvTraitInfo.cpp`、`CvPlayer` の志向の関数（`sumTraitValues`・`hasTraitFlag`・志向のタグの getter と効果）は `CvPlayerTraits.cpp`、志向の説明文の部品（`parseTrait〜`）は `CvGameTextMgrTrait.cpp`。ほかの Info と共有する XML 読み込みの関数は `CvInfosReadUtils.h`、説明文の関数は `CvGameTextMgrUtils.h` で宣言する（ファイル内だけで使う補助関数は `static`）
 - **ダミー建物（全都市に無料で置く建物）で効果を代用しない**（建設候補に出る、未来の時代の開始で前提技術が与えられる、遷都に対応できない、イベントやスパイの対象になる）
 - 志向の効果のうち `CvPlayer::init()` で 1 回だけ適用されるもの（健康・幸福・商業・偉人率・労働者速度など）は、既存のセーブには反映されない。動作確認は新しいゲームで行う（ゲーム中に得た志向は `CvPlayer::processTrait` が足し引きする）
 - 志向の数値の合計は `CvPlayer::sumTraitValues(&CvTraitInfo::getFoo)`（引数 2 つまで）。ループを書かない
 - 志向の「どれかが持っていれば有効」は `CvPlayer::hasTraitFlag(&CvTraitInfo::isFoo)`（引数 1 つまで）、チーム単位は `CvTeam::hasPlayerTraitFlag`。昇進は `CvUnit::hasPromotionFlag` / `countPromotions` / `sumPromotionValues`。セーブしない昇進の値は `CvUnit::updatePromotionCounts` で読み込み時に数え直す
-- 志向の説明文は、Mod の部分を `CvGameTextMgr::parseTrait〜` に分けてある。1 行の追加は `appendTraitLine`、リンクは `getLinkText`
+- 志向の説明文は、Mod の部分を `CvGameTextMgr::parseTrait〜`（`CvGameTextMgrTrait.cpp`）に分けてある。1 行の追加は `appendTraitLine`、リンクは `getLinkText`
 - 志向の説明文は文明選択の画面（ゲーム開始前）からも呼ばれ、そこでは指導者が `NO_LEADER` なので `hasTrait` などを呼ぶと強制終了する。プレイヤーを見るときは `GC.getGameINLINE().isFinalInitialized()` と指導者を先に確かめる
 - 社会制度・建物がすでに持つ「文明全体に効く数値」は、志向にも同じ名前のタグで持たせ、既存の `CvPlayer::change〜()` で適用する。説明文は社会制度のテキストキーを流用する（キーは `[ICON_BULLET]` 始まりで改行を含まないので、コード側で改行と字下げ 2 文字を付ける）
 - 「首都の産出 +X%」系（`CapitalYieldModifiers` など）は計算のたびに現在の首都を参照するので、遷都しても自動で移る

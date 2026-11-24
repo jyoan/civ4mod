@@ -79,6 +79,7 @@ OBJS = \
 	$(INTDIR)\CvGameCoreUtils.obj \
 	$(INTDIR)\CvGameInterface.obj \
 	$(INTDIR)\CvGameTextMgr.obj \
+	$(INTDIR)\CvGameTextMgrTrait.obj \
 	$(INTDIR)\CvGlobals.obj \
 	$(INTDIR)\CvHallOfFameInfo.obj \
 	$(INTDIR)\CvInfos.obj \
@@ -90,6 +91,7 @@ OBJS = \
 	$(INTDIR)\CvMessageData.obj \
 	$(INTDIR)\CvPlayer.obj \
 	$(INTDIR)\CvPlayerAI.obj \
+	$(INTDIR)\CvPlayerTraits.obj \
 	$(INTDIR)\CvPlot.obj \
 	$(INTDIR)\CvPlotGroup.obj \
 	$(INTDIR)\CvPopupInfo.obj \
@@ -104,6 +106,7 @@ OBJS = \
 	$(INTDIR)\CvTalkingHeadMessage.obj \
 	$(INTDIR)\CvTeam.obj \
 	$(INTDIR)\CvTeamAI.obj \
+	$(INTDIR)\CvTraitInfo.obj \
 	$(INTDIR)\CvUnit.obj \
 	$(INTDIR)\CvUnitAI.obj \
 	$(INTDIR)\CvXMLLoadUtility.obj \
