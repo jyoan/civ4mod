@@ -2246,7 +2246,10 @@
 			<Description>TXT_KEY_TRAIT_EXPLORER_KING</Description>
 			<ShortDescription>TXT_KEY_TRAIT_EXPLORER_KING_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_EXPLORER_KING_HELP</Help>
+			<PyOnBeginTurn>treatyZoneTurn(pPlayer, eTrait, 1, 'PROJECT_TORDESILLAS')</PyOnBeginTurn>
 			<PyOnCityFounded>pCity.isCapital() and createUnits(pPlayer, 'UNITCLASS_SCOUT', 1, pCity.plot())</PyOnCityFounded>
+			<PyOnProjectBuilt>eProject == gc.getInfoTypeForString('PROJECT_TORDESILLAS') and chooseTreatyZone(pPlayer, eTrait)</PyOnProjectBuilt>
+			<PyOnOtherCityFounded>offerTreatyTerms(pPlayer, eTrait, pCity, scaleBySpeed(25 * (gc.getPlayer(pCity.getOwner()).getCurrentEra() + 1) * pCity.getPopulation(), 'Train'), 'BUILDINGCLASS_TORDESILLAS_VIOLATION')</PyOnOtherCityFounded>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>

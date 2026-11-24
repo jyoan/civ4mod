@@ -1003,12 +1003,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_EXPLORER_KING_HELP</Tag>
-		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded</English>
-		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded</French>
-		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded</German>
-		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded</Italian>
-		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded</Spanish>
-		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#39318;&#37117;&#12434;&#24314;&#35373;&#12377;&#12427;&#12392;&#26021;&#20505;&#12364;1&#20307;&#21152;&#12431;&#12427;</Japanese>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded[NEWLINE][SPACE][SPACE][ICON_BULLET]Treaty of Tordesillas: the world is divided into east and west along a line through the capital, and you choose your zone[NEWLINE][SPACE][SPACE][SPACE][SPACE]+1[ICON_GOLD] per turn for each city of another civilization in your zone[NEWLINE][SPACE][SPACE][SPACE][SPACE]When another civilization founds a city in your zone, it pays you gold (by era, population and game speed), gives you a technology or gets the Treaty of Tordesillas Violation (+3 unhappiness) in the city</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded[NEWLINE][SPACE][SPACE][ICON_BULLET]Treaty of Tordesillas: the world is divided into east and west along a line through the capital, and you choose your zone[NEWLINE][SPACE][SPACE][SPACE][SPACE]+1[ICON_GOLD] per turn for each city of another civilization in your zone[NEWLINE][SPACE][SPACE][SPACE][SPACE]When another civilization founds a city in your zone, it pays you gold (by era, population and game speed), gives you a technology or gets the Treaty of Tordesillas Violation (+3 unhappiness) in the city</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded[NEWLINE][SPACE][SPACE][ICON_BULLET]Treaty of Tordesillas: the world is divided into east and west along a line through the capital, and you choose your zone[NEWLINE][SPACE][SPACE][SPACE][SPACE]+1[ICON_GOLD] per turn for each city of another civilization in your zone[NEWLINE][SPACE][SPACE][SPACE][SPACE]When another civilization founds a city in your zone, it pays you gold (by era, population and game speed), gives you a technology or gets the Treaty of Tordesillas Violation (+3 unhappiness) in the city</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded[NEWLINE][SPACE][SPACE][ICON_BULLET]Treaty of Tordesillas: the world is divided into east and west along a line through the capital, and you choose your zone[NEWLINE][SPACE][SPACE][SPACE][SPACE]+1[ICON_GOLD] per turn for each city of another civilization in your zone[NEWLINE][SPACE][SPACE][SPACE][SPACE]When another civilization founds a city in your zone, it pays you gold (by era, population and game speed), gives you a technology or gets the Treaty of Tordesillas Violation (+3 unhappiness) in the city</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A free Scout when the capital is founded[NEWLINE][SPACE][SPACE][ICON_BULLET]Treaty of Tordesillas: the world is divided into east and west along a line through the capital, and you choose your zone[NEWLINE][SPACE][SPACE][SPACE][SPACE]+1[ICON_GOLD] per turn for each city of another civilization in your zone[NEWLINE][SPACE][SPACE][SPACE][SPACE]When another civilization founds a city in your zone, it pays you gold (by era, population and game speed), gives you a technology or gets the Treaty of Tordesillas Violation (+3 unhappiness) in the city</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#39318;&#37117;&#12434;&#24314;&#35373;&#12377;&#12427;&#12392;&#26021;&#20505;&#12364;1&#20307;&#21152;&#12431;&#12427;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#12488;&#12523;&#12487;&#12471;&#12522;&#12515;&#12473;&#26465;&#32004;: &#39318;&#37117;&#12434;&#36890;&#12427;&#32218;&#12391;&#19990;&#30028;&#12434;&#26481;&#35199;&#12395;&#20998;&#12369;&#12289;&#12393;&#12385;&#12425;&#12363;&#12434;&#20778;&#20808;&#22320;&#22495;&#12395;&#36984;&#12406;[NEWLINE][SPACE][SPACE][SPACE][SPACE]&#20778;&#20808;&#22320;&#22495;&#12395;&#12354;&#12427;&#20182;&#25991;&#26126;&#12398;&#37117;&#24066; 1 &#12388;&#12395;&#12388;&#12365;&#27598;&#12479;&#12540;&#12531;[ICON_GOLD]+1[NEWLINE][SPACE][SPACE][SPACE][SPACE]&#20182;&#25991;&#26126;&#12364;&#20778;&#20808;&#22320;&#22495;&#12395;&#37117;&#24066;&#12434;&#24314;&#12390;&#12427;&#12392;&#12289;&#37329;&#12434;&#25173;&#12358;&#65288;&#26178;&#20195;&#12539;&#20154;&#21475;&#12539;&#12466;&#12540;&#12512;&#36895;&#24230;&#12395;&#12424;&#12427;&#65289;&#12539;&#25216;&#34899;&#12434; 1 &#12388;&#28193;&#12377;&#12539;&#12381;&#12398;&#37117;&#24066;&#12395;&#12300;&#12488;&#12523;&#12487;&#12471;&#12522;&#12515;&#12473;&#26465;&#32004;&#36949;&#21453;&#12301;&#65288;&#19981;&#28288; +3&#65289;&#12364;&#24314;&#12388;&#12289;&#12398;&#12393;&#12428;&#12363;&#12434;&#36984;&#12400;&#12379;&#12427;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_DEVSHIRME_HELP</Tag>
@@ -1855,5 +1855,50 @@
 		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</Italian>
 		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</Spanish>
 		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#31070;&#23398;&#12434;&#24471;&#12383;&#24460;&#12289;&#12510;&#12516;&#38263;&#26399;&#26278;&#12398;&#21608;&#26399;&#65288;394 &#24180;&#12290;&#35199;&#26278; 830&#12539;1224&#12539;1618&#12539;2012 &#24180;&#65289;&#12364;&#32066;&#12431;&#12427;&#12383;&#12403;&#12395;&#12289;&#20553;&#20154;&#12434; 1 &#20154;&#36984;&#12435;&#12391;&#39318;&#37117;&#12395;&#20986;&#12377;&#65288;&#36984;&#12435;&#12384;&#20553;&#20154;&#12399;&#12289;&#20840;&#21729;&#12434;&#36984;&#12406;&#12414;&#12391;&#36984;&#12409;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROJECT_TORDESILLAS</Tag>
+		<English>Treaty of Tordesillas</English>
+		<French>Treaty of Tordesillas</French>
+		<German>Treaty of Tordesillas</German>
+		<Italian>Treaty of Tordesillas</Italian>
+		<Spanish>Treaty of Tordesillas</Spanish>
+		<Japanese>&#12488;&#12523;&#12487;&#12471;&#12522;&#12515;&#12473;&#26465;&#32004;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROJECT_TORDESILLAS_PEDIA</Tag>
+		<English>The Treaty of Tordesillas (1494), concluded under King John II of Portugal, divided the newly found lands outside Europe between Portugal and Castile along a meridian west of the Cape Verde islands.</English>
+		<French>The Treaty of Tordesillas (1494), concluded under King John II of Portugal, divided the newly found lands outside Europe between Portugal and Castile along a meridian west of the Cape Verde islands.</French>
+		<German>The Treaty of Tordesillas (1494), concluded under King John II of Portugal, divided the newly found lands outside Europe between Portugal and Castile along a meridian west of the Cape Verde islands.</German>
+		<Italian>The Treaty of Tordesillas (1494), concluded under King John II of Portugal, divided the newly found lands outside Europe between Portugal and Castile along a meridian west of the Cape Verde islands.</Italian>
+		<Spanish>The Treaty of Tordesillas (1494), concluded under King John II of Portugal, divided the newly found lands outside Europe between Portugal and Castile along a meridian west of the Cape Verde islands.</Spanish>
+		<Japanese>1494 &#24180;&#12289;&#12509;&#12523;&#12488;&#12460;&#12523;&#29579;&#12472;&#12519;&#12450;&#12531;2&#19990;&#12398;&#12418;&#12392;&#12391;&#32080;&#12400;&#12428;&#12383;&#12488;&#12523;&#12487;&#12471;&#12522;&#12515;&#12473;&#26465;&#32004;&#12399;&#12289;&#12520;&#12540;&#12525;&#12483;&#12497;&#12398;&#22806;&#12391;&#26032;&#12383;&#12395;&#35211;&#12388;&#12363;&#12387;&#12383;&#22303;&#22320;&#12434;&#12289;&#12532;&#12455;&#12523;&#12487;&#23724;&#35576;&#23798;&#12398;&#35199;&#12398;&#23376;&#21320;&#32218;&#12391;&#12509;&#12523;&#12488;&#12460;&#12523;&#12392;&#12459;&#12473;&#12486;&#12451;&#12540;&#12522;&#12515;&#12395;&#20998;&#12369;&#12383;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROJECT_TORDESILLAS_STRATEGY</Tag>
+		<English>Divides the world into east and west along a line through your capital. Choose the half with the most room for foreign settlers: their cities pay you every turn.</English>
+		<French>Divides the world into east and west along a line through your capital. Choose the half with the most room for foreign settlers: their cities pay you every turn.</French>
+		<German>Divides the world into east and west along a line through your capital. Choose the half with the most room for foreign settlers: their cities pay you every turn.</German>
+		<Italian>Divides the world into east and west along a line through your capital. Choose the half with the most room for foreign settlers: their cities pay you every turn.</Italian>
+		<Spanish>Divides the world into east and west along a line through your capital. Choose the half with the most room for foreign settlers: their cities pay you every turn.</Spanish>
+		<Japanese>&#39318;&#37117;&#12434;&#36890;&#12427;&#32218;&#12391;&#19990;&#30028;&#12434;&#26481;&#35199;&#12395;&#20998;&#12369;&#12414;&#12377;&#12290;&#20182;&#25991;&#26126;&#12364;&#37117;&#24066;&#12434;&#24314;&#12390;&#12381;&#12358;&#12394;&#20596;&#12434;&#36984;&#12406;&#12392;&#12289;&#12381;&#12398;&#37117;&#24066;&#12363;&#12425;&#27598;&#12479;&#12540;&#12531;&#21454;&#20837;&#12364;&#20837;&#12426;&#12414;&#12377;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TORDESILLAS_VIOLATION</Tag>
+		<English>Treaty of Tordesillas Violation</English>
+		<French>Treaty of Tordesillas Violation</French>
+		<German>Treaty of Tordesillas Violation</German>
+		<Italian>Treaty of Tordesillas Violation</Italian>
+		<Spanish>Treaty of Tordesillas Violation</Spanish>
+		<Japanese>&#12488;&#12523;&#12487;&#12471;&#12522;&#12515;&#12473;&#26465;&#32004;&#36949;&#21453;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_TORDESILLAS_VIOLATION_PEDIA</Tag>
+		<English>This city was founded in the zone of the Treaty of Tordesillas without accepting its terms. It cannot be built, removed or sold, and stays when the city is captured.</English>
+		<French>This city was founded in the zone of the Treaty of Tordesillas without accepting its terms. It cannot be built, removed or sold, and stays when the city is captured.</French>
+		<German>This city was founded in the zone of the Treaty of Tordesillas without accepting its terms. It cannot be built, removed or sold, and stays when the city is captured.</German>
+		<Italian>This city was founded in the zone of the Treaty of Tordesillas without accepting its terms. It cannot be built, removed or sold, and stays when the city is captured.</Italian>
+		<Spanish>This city was founded in the zone of the Treaty of Tordesillas without accepting its terms. It cannot be built, removed or sold, and stays when the city is captured.</Spanish>
+		<Japanese>&#12488;&#12523;&#12487;&#12471;&#12522;&#12515;&#12473;&#26465;&#32004;&#12398;&#20778;&#20808;&#22320;&#22495;&#12395;&#12289;&#26465;&#20214;&#12434;&#25298;&#21542;&#12375;&#12390;&#24314;&#12390;&#12425;&#12428;&#12383;&#37117;&#24066;&#12290;&#24314;&#35373;&#12539;&#25764;&#21435;&#12399;&#12391;&#12365;&#12378;&#12289;&#37117;&#24066;&#12364;&#21344;&#38936;&#12373;&#12428;&#12390;&#12418;&#27531;&#12427;&#12290;</Japanese>
 	</TEXT>
 </Civ4GameText>
