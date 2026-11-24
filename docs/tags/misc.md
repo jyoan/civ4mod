@@ -2,17 +2,69 @@
 
 ## ゲームオプション
 
-| ファイル | タグ | 内容 |
-|---|---|---|
-| `CIV4GameOptionInfos.xml` | `GAMEOPTION_MULTIPLE_PRODUCTION`（ゲームオプション） | マルチプルプロダクション（denev 氏の Multiple Production Mod のルールを参考に実装）。完成した項目の余りで、キューの次の項目も同じターンに完成させる（`CvCity::doMultipleProduction`）。遺産（世界・チーム・国家）とプロジェクトは対象外（先に積み立てる不正を防ぐ）。食料を使うユニットも、最初の完成品がそのユニットでなければ対象外。そこで止まった余りは次のターンへ繰り越す。AI と自動の都市は、キューが空になると次の項目を選んで続ける。繰り越しの上限は BtS と同じ（品物の費用か、そのターンの生産力の大きい方）で、超えた分は `MAXED_*_GOLD_PERCENT` で金に変わる（Unofficial Patch の計算で、オプションによらない。その品物だけに効く生産力の補正の分は金にしない。BtS の計算は上限を掛けたあとの値から求めるのでほとんど金にならなかった）。オプションが有効なときはメッセージ `TXT_KEY_MISC_LOST_PROD_CONVERTED` を出す（`doOverflowGold`）。オプションの数が変わったので `CvInitCore` の `uiSaveFlag` を 2 に上げ、古いセーブでは無効として読む |
-| `CIV4GameOptionInfos.xml` | `GAMEOPTION_ALWAYS_WAR_AI`（ゲームオプション「AI同士の戦争」） | 本体の「戦争」（`GAMEOPTION_ALWAYS_WAR`）は人間と AI のチームを常に戦争にするが、こちらは **AI のチームどうし**を常に戦争にする。人間のプレイヤーを含むチーム、蛮族、小文明、属国（宗主国に従う）は対象外（`CvGame::isAlwaysWarAI`）。出会ったときに宣戦し（`CvTeam::meet`）、毎ターンの `CvGame::updateWar` でも、出会い済みで戦争していない組（独立した属国など）に宣戦する。出会っていない相手とは戦争にならない（本体の「戦争」と同じ）。和平できない（`CvTeam::canChangeWarPeace`。戦争中で和平できない相手とは交渉もできない `CvPlayer::canContact`）。国連の停戦決議でも和平しない（`CvPlayer::forcePeace`）。AI の厭戦感情は本体の「戦争」と同じ補正（`FORCED_WAR_WAR_WEARINESS_MODIFIER`、平時と同じ減衰）。「平和」（`GAMEOPTION_ALWAYS_PEACE`）と両方選ぶと「平和」が優先。「戦争」と両方選ぶと全員が常に戦争。AI 観戦モードと組み合わせると、AI どうしの戦争を眺められる。セーブの形式: `CvInitCore` の `uiSaveFlag=3`（古いセーブではオフ） |
+### `GAMEOPTION_MULTIPLE_PRODUCTION`（ゲームオプション）
+
+- ファイル: `CIV4GameOptionInfos.xml`
+- マルチプルプロダクション（denev 氏の Multiple Production Mod のルールを参考に実装）。
+- 完成した項目の余りで、キューの次の項目も同じターンに完成させる（`CvCity::doMultipleProduction`）。
+- 遺産（世界・チーム・国家）とプロジェクトは対象外（先に積み立てる不正を防ぐ）。
+- 食料を使うユニットも、最初の完成品がそのユニットでなければ対象外。
+- そこで止まった余りは次のターンへ繰り越す。
+- AI と自動の都市は、キューが空になると次の項目を選んで続ける。
+- 繰り越しの上限は BtS と同じ（品物の費用か、そのターンの生産力の大きい方）で、超えた分は `MAXED_*_GOLD_PERCENT` で金に変わる（Unofficial Patch の計算で、オプションによらない。その品物だけに効く生産力の補正の分は金にしない。BtS の計算は上限を掛けたあとの値から求めるのでほとんど金にならなかった）。
+- オプションが有効なときはメッセージ `TXT_KEY_MISC_LOST_PROD_CONVERTED` を出す（`doOverflowGold`）。
+- オプションの数が変わったので `CvInitCore` の `uiSaveFlag` を 2 に上げ、古いセーブでは無効として読む
+
+### `GAMEOPTION_ALWAYS_WAR_AI`（ゲームオプション「AI同士の戦争」）
+
+- ファイル: `CIV4GameOptionInfos.xml`
+- 本体の「戦争」（`GAMEOPTION_ALWAYS_WAR`）は人間と AI のチームを常に戦争にするが、こちらは **AI のチームどうし**を常に戦争にする。
+- 人間のプレイヤーを含むチーム、蛮族、小文明、属国（宗主国に従う）は対象外（`CvGame::isAlwaysWarAI`）。
+- 出会ったときに宣戦し（`CvTeam::meet`）、毎ターンの `CvGame::updateWar` でも、出会い済みで戦争していない組（独立した属国など）に宣戦する。
+- 出会っていない相手とは戦争にならない（本体の「戦争」と同じ）。
+- 和平できない（`CvTeam::canChangeWarPeace`。戦争中で和平できない相手とは交渉もできない `CvPlayer::canContact`）。
+- 国連の停戦決議でも和平しない（`CvPlayer::forcePeace`）。
+- AI の厭戦感情は本体の「戦争」と同じ補正（`FORCED_WAR_WAR_WEARINESS_MODIFIER`、平時と同じ減衰）。
+- 「平和」（`GAMEOPTION_ALWAYS_PEACE`）と両方選ぶと「平和」が優先。
+- 「戦争」と両方選ぶと全員が常に戦争。
+- AI 観戦モードと組み合わせると、AI どうしの戦争を眺められる。
+- セーブの形式: `CvInitCore` の `uiSaveFlag=3`（古いセーブではオフ）
 
 ## タグのない機能
 
-| ファイル | タグ | 内容 |
-|---|---|---|
-| （タグなし） | AI 観戦 | ゲーム中に Ctrl+Shift+O で確認のポップアップを出し、「はい」で始める（シングルプレイのみ。元に戻せない）。操作中の文明は都市とユニットをすべて失い、戦争・従属・取引もなくなるが、**生きたまま**残る（`CvPlayer::isObserver`。BtS の AI 自動プレイのように滅ぼすと、exe が地図のクリックやホイールを受け付けなくなる）。手番はユニットがないので Enter（ふつうのターン終了）を待って止まる。Space で連続再生と停止を切り替える（`CvEventManager.py`。連続再生は `CvGame::update` が手番を自動で終える）。観戦者は外交・宣戦の対象にならず（`canContact`・`canDeclareWar`）、イベントと志向の Python フック、定期的な文明のランキング（`CvTopCivs`）も動かない。滅びない（`verifyAlive`）。地図はデバッグモードで全表示する（`updateDebugModeCache` が観戦中はチートなしでも通す。保存されないので `CvGame::update` で戻す）。案内は `CvMainInterface.py` の `EndTurnText`（`TXT_KEY_OBSERVE_*`）。勝者が決まると連続再生が止まり、ふつうのゲームと同じ終了画面になる。セーブに入る（`CvGame` の `uiFlag` 2） |
-| （タグなし） | 地域区分 | 陸地と、外洋でない水タイル（沿岸・湖）を 8 方向につないだまとまり（`CvMap::calculateRegions`）。境界は外洋（`DEEP_WATER_TERRAIN`）と通れない水タイル（極地の氷）。初期の船（ガレー船など）は外洋に入れないので、別の地域は外洋船がないと渡れない場所になる。浅い海でつながった島々は 1 つの地域。BtS の `CvArea`（陸塊。島ごとに別）とは別物で、`CvArea` を使う既存の効果（ノートルダムなど）は変えていない。陸地が `REGION_MIN_LAND_PLOTS` 未満の地域は、いちばん近い（歩数が最小の）大きな地域にまとめる（同点なら陸地の多い方）。大きな地域が 1 つもなければまとめない。ゲーム開始時（`CvGame::setInitialItems` の開始地点の調整の後）に 1 回計算してセーブする（`CvMap` の `uiFlag=1`）ので、後で地形が変わっても地域は動かない。地域の機能より前のセーブは、最初に使うときに計算する。判定: `CvPlot::isNewWorld`（開始時にどのプレイヤー（蛮族以外）の開始地点もない地域）、`isOverseas(ePlayer)`（そのプレイヤーの本国と別の地域。本国は首都の地域で、首都がなければ開始地点の地域。遷都すると本国も移る。`CvPlayer::getHomePlot`）、`isDistant(ePlayer)`（首都（なければ開始地点）からの距離が、マップの最大距離（`maxPlotDistance`）の `REGION_DISTANT_PERCENT`% 以上。地域は使わず、外洋も含む）。外洋と通れない水タイルはどの地域にも属さず（`getRegion` が -1）、新世界・海外にもならない。Python: `CyPlot.getRegion` / `isNewWorld` / `isOverseas` / `isDistant`、`CyMap.getNumRegions` / `isRegionNewWorld`。表示は「画面の表示の追加」の地球儀ビューのレイヤー。使う効果のタグ: 志向の `iNewWorldCityPopulation`・`iOverseasCityPopulation`・`iOverseasMaintenanceModifier`・`iDistantTradeRouteModifier`・`ExplorationRewards`、昇進の `iCombatPercentOverseas`。ペディアの概念「地域区分」（`CONCEPT_REGIONS`。`BasicInfos/CIV4NewConceptInfos.xml` に足した。ペディアの「BtS の新しい概念」の分類）で、地域・本国と海外・新世界と旧世界を説明する。説明文からは `<link=literal>` でリンクできる（名前は `TXT_KEY_CONCEPT_REGIONS`） |
+### AI 観戦
+
+- ファイル: （タグなし）
+- ゲーム中に Ctrl+Shift+O で確認のポップアップを出し、「はい」で始める（シングルプレイのみ。元に戻せない）。
+- 操作中の文明は都市とユニットをすべて失い、戦争・従属・取引もなくなるが、**生きたまま**残る（`CvPlayer::isObserver`。BtS の AI 自動プレイのように滅ぼすと、exe が地図のクリックやホイールを受け付けなくなる）。
+- 手番はユニットがないので Enter（ふつうのターン終了）を待って止まる。
+- Space で連続再生と停止を切り替える（`CvEventManager.py`。連続再生は `CvGame::update` が手番を自動で終える）。
+- 観戦者は外交・宣戦の対象にならず（`canContact`・`canDeclareWar`）、イベントと志向の Python フック、定期的な文明のランキング（`CvTopCivs`）も動かない。
+- 滅びない（`verifyAlive`）。
+- 地図はデバッグモードで全表示する（`updateDebugModeCache` が観戦中はチートなしでも通す。保存されないので `CvGame::update` で戻す）。
+- 案内は `CvMainInterface.py` の `EndTurnText`（`TXT_KEY_OBSERVE_*`）。
+- 勝者が決まると連続再生が止まり、ふつうのゲームと同じ終了画面になる。
+- セーブに入る（`CvGame` の `uiFlag` 2）
+
+### 地域区分
+
+- ファイル: （タグなし）
+- 陸地と、外洋でない水タイル（沿岸・湖）を 8 方向につないだまとまり（`CvMap::calculateRegions`）。
+- 境界は外洋（`DEEP_WATER_TERRAIN`）と通れない水タイル（極地の氷）。
+- 初期の船（ガレー船など）は外洋に入れないので、別の地域は外洋船がないと渡れない場所になる。
+- 浅い海でつながった島々は 1 つの地域。
+- BtS の `CvArea`（陸塊。島ごとに別）とは別物で、`CvArea` を使う既存の効果（ノートルダムなど）は変えていない。
+- 陸地が `REGION_MIN_LAND_PLOTS` 未満の地域は、いちばん近い（歩数が最小の）大きな地域にまとめる（同点なら陸地の多い方）。
+- 大きな地域が 1 つもなければまとめない。
+- ゲーム開始時（`CvGame::setInitialItems` の開始地点の調整の後）に 1 回計算してセーブする（`CvMap` の `uiFlag=1`）ので、後で地形が変わっても地域は動かない。
+- 地域の機能より前のセーブは、最初に使うときに計算する。
+- 判定: `CvPlot::isNewWorld`（開始時にどのプレイヤー（蛮族以外）の開始地点もない地域）、`isOverseas(ePlayer)`（そのプレイヤーの本国と別の地域。本国は首都の地域で、首都がなければ開始地点の地域。遷都すると本国も移る。`CvPlayer::getHomePlot`）、`isDistant(ePlayer)`（首都（なければ開始地点）からの距離が、マップの最大距離（`maxPlotDistance`）の `REGION_DISTANT_PERCENT`% 以上。地域は使わず、外洋も含む）。
+- 外洋と通れない水タイルはどの地域にも属さず（`getRegion` が -1）、新世界・海外にもならない。
+- Python: `CyPlot.getRegion` / `isNewWorld` / `isOverseas` / `isDistant`、`CyMap.getNumRegions` / `isRegionNewWorld`。
+- 表示は「画面の表示の追加」の地球儀ビューのレイヤー。
+- 使う効果のタグ: 志向の `iNewWorldCityPopulation`・`iOverseasCityPopulation`・`iOverseasMaintenanceModifier`・`iDistantTradeRouteModifier`・`ExplorationRewards`、昇進の `iCombatPercentOverseas`。
+- ペディアの概念「地域区分」（`CONCEPT_REGIONS`。`BasicInfos/CIV4NewConceptInfos.xml` に足した。ペディアの「BtS の新しい概念」の分類）で、地域・本国と海外・新世界と旧世界を説明する。
+- 説明文からは `<link=literal>` でリンクできる（名前は `TXT_KEY_CONCEPT_REGIONS`）
 
 ## 志向の付け外し（仕組み）
 

@@ -1,31 +1,338 @@
-# 志向のタグ（ルール・条件・フック）
+# 志向のタグ（ルール）
 
-社会制度・技術・陳腐化・外交・固有ユニット・緊急生産・志向の条件（ConditionalFreeTraits）・Python フック。
+社会制度・技術・陳腐化・外交（`FoundingVassal`・`Deals` を含む）・固有ユニット・緊急生産・ランダムイベント。Python フックと `ConditionalFreeTraits` は `trait-hooks.md`。
 
-| ファイル | タグ | 内容 |
-|---|---|---|
-| `CIV4TraitInfos.xml` | `TraitInfo/iReligionSpreadChange`・`iCorporationSpreadChange` | そのプレイヤーの宣教師の布教（`CvUnit::spread`）と幹部の企業の進出（`CvUnit::spreadCorporation`）の成功率（%）に足す。本体の成功率（ユニットの `ReligionSpreads`・`CorporationSpreads`、他チームの都市なら半分、都市の宗教・企業が少ないほど上がる）を計算した後に足すので、100 なら必ず成功する。志向の合計。企業の進出の費用は本体どおり。都市から自然に広まる宗教の伝播（`CvCity::doReligion`）は対象外。成功率は画面に出ない（本体と同じ）。説明文: 100 以上は `TXT_KEY_TRAIT_RELIGION_SPREAD_ALWAYS` / `TXT_KEY_TRAIT_CORPORATION_SPREAD_ALWAYS`、それ以外は `_CHANGE` |
-| `CIV4TraitInfos.xml` | `TraitInfo/ForbiddenCivics` | `<CivicType>` を何個でも書ける。その志向を持つプレイヤーは、書いた社会制度を採用できない（ex 氏の CivGoldEmpires の機巧志向「奴隷制採用不可」。ある区分を 1 つに固定するなら、その区分のほかの社会制度をすべて書く）。`CvPlayer::canDoCivics`（`PrereqOrTraits` の後）で判定し、社会制度の画面では採用できない社会制度として出る。技術を得たときの採用のポップアップは出ない（`canRevolution` の修正。下記）。ゲームの途中でその志向を得たときは、BtS の `verifyCivics` がターンの初めに、その区分で採用できる最初の社会制度に無政府期間なしで変える（採用できるものがなければそのまま）。初期の社会制度は止めない。説明文: 志向に `TXT_KEY_TRAIT_FORBIDDEN_CIVICS`（「採用できない社会制度: 奴隷制」）、社会制度に `TXT_KEY_CIVIC_FORBIDDEN_TRAITS`（「次の志向を持つと採用できない: 検証用志向」。ペディアではすべての志向、ゲーム中は自分の志向だけ）。社会制度は志向より後に読み込まれるので `readPass3()` で番号に変える。そのつど判定（`CvPlayer::isForbiddenCivic`） |
-| `CIV4TraitInfos.xml` | `TraitInfo/CivicOptionExtraSlots` | 2026-11-22。`<CivicOptionExtraSlot>` に `CivicOptionType` と `iExtraSlots` を何個でも書ける。その分類の社会制度を同時に `1 + iExtraSlots` 個採用できる（複数の志向は合計。上限は `MAX_CIVIC_SLOTS` = 3。`CvPlayer::getNumCivicSlots`）。書いていない分類は 1 個のまま。**仕組み**: `CvPlayer::m_paeCivics` を「分類 × 枠」の配列にした（添字は `iSlot * 分類の数 + 分類`。先頭の分類の数ぶんが枠 0 = BtS の `getCivics`。空の枠は `NO_CIVIC`）。`revolution`・`canRevolution`・`getCivicAnarchyLength`・`getCivicUpkeep` の配列も同じ長さ（`CvPlayer::getNumCivicEntries()`）。`isCivic` と、社会制度の値を直接合計していた箇所（兵科の経験値・生産・アップグレード割引・領土外アップグレード、内訳の説明文、財務の維持費、外交画面のアイコン）はすべての枠を見る。**ルール**: 同じ制度を 2 枠に入れられない。2 つ目以降の枠は空でもよい（ゲームの途中で志向を得た直後は空）。維持費は採用している制度ごと。無政府は分類の制度の組が変わったら「1 分類の変更」（枠の入れ替えだけなら変更なし）で、まだ採用していない制度ごとにその制度の `iAnarchyLength` を足す。決議でその分類が強制されている間は枠 0 だけ（ほかの枠は空にする）。志向を失ったら、なくなった枠の制度を無政府なしで外す（`verifyCivicSlots`。`setCivicSlot` や `revolution` の途中では待ち、最後にまとめて外す。政治の制度を変えて `PrereqCivic` の志向を失うと、同じ革命で選んだ枠も外れる）。外交の「制度を変えよ」・技術を得たときのポップアップ・AI・諜報・Python の `setCivics` は、制度をすでにどこかの枠で採用していなければ枠 0 に入れる（2 枠目にある制度を `setCivics` で指定すると、外さずに枠 0 へ移し、枠 0 の制度を外す）。AI は 2 つ目以降の枠を使わない。**画面**（`CvCivicsScreen.py`）: 枠が 2 以上の分類は見出しに「(2)」と出て、クリックで追加・外す（最後の 1 つは外せない。いっぱいなら最後の枠と入れ替え）。カーソルを乗せると、クリックした場合の無政府・維持費が出る。Python: `CyPlayer.getNumCivicSlots(分類)`・`getCivicSlot(分類, 枠)`・`getMaxCivicSlots()`。`getCivicAnarchyLength`・`getCivicUpkeep`・`sendUpdateCivics` には全枠のリストを渡す（分類の数だけのリストなら、ほかの枠は今のまま）。セーブ: `CvPlayer` の `uiFlag` 16（古いセーブは 2 つ目以降の枠が空）。説明文 `TXT_KEY_TRAIT_CIVIC_OPTION_EXTRA_SLOTS` |
-| `CIV4TraitInfos.xml` | `TraitInfo/PeaceAnger` | `<PeaceAnger>` に `iPerTurn`（必須）、`iDecayPerTurn`（省略可）、`iMax`（必須）を書く。2026-11-21 に親タグにまとめた。平和だと都市が不満になる（厭戦感情の逆）。文明（マイナー文明を除く）と戦争していないターンに `iPerTurn` 増え、戦争中のターンに `iDecayPerTurn` 減る。上限が `iMax`（0 なら効果なし）。単位は社会制度の `iCivicPercentAnger` と同じ人口の 0.1%（50 で 5%）。蛮族との戦争は数えない。増減はゲーム速度の `iGrowthPercent` で割る（マラソンは 3 分の 1）。厭戦感情の修正は受けない。複数の志向の値は足す。値はプレイヤーごとに `CvPlayer::doPeaceAnger()` で毎ターン更新し、セーブに入る（`CvPlayer` の `uiFlag` 6）。Python は `getPeaceAngerPercentAnger()`。説明文は `TXT_KEY_TRAIT_PEACE_ANGER`、都市の怒りの内訳は `TXT_KEY_ANGER_PEACE` |
-| `CIV4TraitInfos.xml` | `TraitInfo/UniqueUnits`、`UniqueBuildings` | 志向の固有ユニット・固有建造物。`<UniqueUnit><UnitClassType>…</UnitClassType><UnitType>…</UnitType></UniqueUnit>` の形で、文明の XML と同じくユニットクラス（建物クラス）ごとに書く。ユニットはそのクラスのものであること（違うと起動時にエラー）。**文明の固有より志向が優先**で、複数の志向が同じクラスを持つと XML の順で先のもの。偉人と大将軍も固有にできる。解決は `CvPlayer::getCivilizationUnit`・`getCivilizationBuilding` で、プレイヤーが分かる処理はすべてこれを通す（Python も `CyPlayer` の同名の関数。文明のペディアなど文明単位の表示は文明の XML のまま）。ゲーム中に志向を得ると、それ以降の生産が固有のものに変わる。すでにあるユニットと建物はそのまま残り、生産キューの元のものは続けられなくなる。BtS の大将軍の生成は全ユニットから `iLeaderExperience` などを持つものをランダムに選ぶだけだったので、そのプレイヤーのユニットに変換するよう直した（文明の固有の大将軍もこれで動く）。説明文は `TXT_KEY_TRAIT_UNIQUE_UNIT`・`TXT_KEY_TRAIT_UNIQUE_BUILDING`。ユニットと建物の説明には `TXT_KEY_UNIQUE_UNIT`・`TXT_KEY_UNIQUE_BUILDING` で志向名を出す。Mod に入れていない BtS の Python（`CvAdvisorUtils`・`CvRandomEventInterface`・`CvTechSplashScreen`）と、捕獲したユニット（`getCaptureUnitType`）は文明の XML のまま |
-| `CIV4TraitInfos.xml` | `TraitInfo/KnownTechCost` | `<KnownTechCost>` に `iModifier`（必須）と `iLimit`（省略可）を書く。2026-11-21 に親タグにまとめた。研究費 %。その技術を持つ、出会ったことのある他のチーム（生きている、マイナー文明と蛮族を除く）1 つにつき `iModifier`（-10 なら -10%）。合計は `iLimit`（-75 なら -75% まで）で止める。`iLimit` 0 は上限なし（研究費は最低 1）。チームの研究費（`CvTeam::getResearchCost`）に掛ける。チームのメンバーのうちいちばん大きい割引を使う（`CvTeam::getKnownTechCostModifier`）。BtS の「技術を知っている国の数による研究速度」（研究力に足す）とは別に効く。説明文は `TXT_KEY_TRAIT_KNOWN_TECH_COST_LIMIT` / `TXT_KEY_TRAIT_KNOWN_TECH_COST` |
-| `CIV4TraitInfos.xml` | `TraitInfo/iAnarchyGoldenAgePercent` | 社会制度・宗教の変更による無政府期間が終わると、その無政府期間のターン数のこの % の黄金期になる（`CvPlayer::changeAnarchyTurns` で無政府が終わったとき）。ゲームの速度は BtS の黄金期と同じ比率で効かせる: 無政府のターン数を速度の `iAnarchyPercent` で割って通常の速度に直し、`iGoldenAgePercent` を掛ける（エピックは無政府 150%・黄金期 125%、クイックは 67%・80%）。黄金期の期間 % `getGoldenAgeModifier` もかかる。1/100 ターンの精度で計算して最後に四捨五入、最低 1 ターン。マップサイズ・都市数・開始時代は無政府の長さを通して効く（志向独自の補正はない）。数えるのは実際に無政府で過ごしたターン数で、社会制度・宗教の変更で足された無政府のターン数まで（スパイの任務による無政府は数えない）。無政府にならなければ黄金期もない（宗教志向やキリスト像では起きない）。数えている値は `CvPlayer` のセーブ（`uiFlag=9`）に入る。フランスの「革命」の案 |
-| `CIV4TraitInfos.xml` | `TraitInfo/iTechCostModifier`、`iAttitudeChange` | RFC の固有能力から。`iTechCostModifier`: 技術の研究コスト %（`CvTeam::getResearchCost` の最後。チームの生きているメンバーの値の平均。RFC のマヤ「中世の終わりまで -40%」は `ConditionalFreeTraits` の `EraMax` と組み合わせる）。`iAttitudeChange`: ほかのプレイヤー（AI）からこのプレイヤーへの態度 +N（`CvPlayerAI::AI_getAttitudeVal`。外交画面の態度の内訳に「志向による印象」の行。RFC のフランス） |
-| `CIV4TraitInfos.xml` | `TraitInfo/iMaxNationalWondersPerCity`、`iMaxNationalWondersPerCityForOCC` | 1 都市に建設できる国家遺産の数の上限。GlobalDefines の `MAX_NATIONAL_WONDERS_PER_CITY`（通常 2）・`MAX_NATIONAL_WONDERS_PER_CITY_FOR_OCC`（1 つの都市でチャレンジの人間のプレイヤー。通常 5）を、その志向を持つプレイヤーについて**置き換える**（緩める値だけでなく、define より小さい値も効く）。`-1` で無制限、`0`（省略時）は指定なしで define のまま。複数の志向が値を持つときは最も緩いもの（`-1` が最優先、ほかは最大値）。`CvPlayer::getMaxNationalWondersPerCity` にまとめ、`CvCity::isNationalWondersMaxed` と建物の説明文（上限に達したときの警告）がこれを使う。ゲーム中に志向が変われば即座に反映される（数えるだけで状態を持たない）。上限を下げても建設済みの国家遺産は消えない。Python: `CyPlayer.getMaxNationalWondersPerCity()` |
-| `CIV4TraitInfos.xml` | `TraitInfo/bHumanCanBeVassal` | 人間のプレイヤーでも AI のプレイヤーの属国（平和的な属国・降伏）になれる。BtS は人間を人間の属国にしかしない（`CvPlayer::canTradeItem` の `TRADE_VASSAL` / `TRADE_SURRENDER`。属国になる側のプレイヤーの志向を見る）。AI の宗主国は、AI 同士のときと同じく、属国の戦争・和平を引き受けられるときだけ受け入れる（`CvPlayerAI::AI_considerOffer` で、人間の申し出の属国の項目に `getTradeDenial` = `CvTeamAI::AI_vassalTrade` / `AI_surrenderTrade` を見る。属国の側の意思の判定は人間なので素通り。それ以外は贈り物と同じく受け入れる）。属国になったあとは BtS の人間どうしの属国と同じ（宗主国の戦争に加わる、単独で宣戦・和平できない、平和的な属国は `PEACE_TREATY_LENGTH` ターン後に解消でき、降伏は `canVassalRevolt` を満たすと解消できる、宗主国は解消できない）。AI の側から人間に属国化・降伏を求めることはない。`ConditionalFreeTraits` の `bVassal` と組み合わせる。説明文 `TXT_KEY_TRAIT_HUMAN_CAN_BE_VASSAL`。Python: `CyPlayer.isHumanCanBeVassal()`、`CvTraitInfo.isHumanCanBeVassal()`。三国志の Mod（The History of Three Kingdoms）にも同様の仕組みがあったはずとユーザーから聞いたが、DLL のソースが同梱されておらず、Python・XML にも見当たらなかった |
-| `CIV4TraitInfos.xml` | `TraitInfo/NoObsolescence`（`bAllBuildings`・`BuildingClasses`・`SpecialBuildings`） | 2026-11-23 に `<NoObsolescence>` の子に移し、名前を `bIgnoreBuildingObsolescence`・`NoObsoleteBuildingClasses`・`NoObsoleteSpecialBuildings` から変えた（getter と Python の名前は元のまま）。その志向を持つプレイヤーの都市では、建物が陳腐化しない。`bAllBuildings` はすべての建物、`BuildingClasses`（`<BuildingClassType>` を何個でも。固有建物にも効く）と `SpecialBuildings`（`<SpecialBuildingType>` を何個でも。僧院は宗教ごとに建物クラスが違うので `SPECIALBUILDING_MONASTERY` で書く）は書いたものだけ。建物自身の `ObsoleteTech` と特殊建物の `ObsoleteTech` の**両方**を無視する。BtS の陳腐化はチーム単位（`CvTeam::isObsoleteBuilding`）なので、プレイヤー単位の `CvPlayer::isObsoleteBuilding()`（チームとして陳腐化していて、志向で無視していない）を作り、都市の効果（`CvCity::processBuilding`・`getNumActiveBuilding`・`hasActiveWorldWonder`）、建設の可否（`CvPlayer::canConstruct`。陳腐化しないので技術の後も建てられる）、陳腐化した瞬間に効果を外す処理（`CvTeam::changeObsoleteBuildingCount`。志向を持つプレイヤーの都市は外さない）、チームの合流（`CvTeam::addTeam`）、商業・産出の内訳の表示をこれに置き換えた。同じチームでも、志向を持つメンバーの都市だけ効き続ける。説明文: 志向は `TXT_KEY_TRAIT_IGNORE_BUILDING_OBSOLESCENCE`（「建物が陳腐化しない」）か `TXT_KEY_TRAIT_NO_OBSOLETE_BUILDINGS`（「陳腐化しない: 城, 大図書館, 僧院」。建物はその文明の建物で、リンク付き）。ゲーム中は、志向で無視する建物について、建物の「○○によって陳腐化」と技術の「○○を陳腐化させる」を出さない（ペディアでは常に出す）。資源（`TechObsolete`。BtS のデータでは未使用）とイベント（`ObsoleteTechs`）は対象外。建物クラスは志向より後に読み込まれるので、`readPass3()` で番号に変える（このため `CvTraitInfo::readPass3()` を呼ぶ位置を建物クラスの読み込みの後に移した）。そのつど判定するのでセーブデータは変わらないが、**既存のセーブで志向を与えると、すでに陳腐化して外された効果は戻らず、その建物が壊されると値がずれる**ので、確認は新しいゲームで行う。志向をゲームの途中で付け外しできるようにするときは、陳腐化した建物の効果の足し引きが必要 |
-| `CIV4TraitInfos.xml` | `TraitInfo/NoObsolescence`（`bAllBonuses`・`Bonuses`） | 2026-11-23 に `<NoObsolescence>` の子に移し、名前を `bIgnoreBonusObsolescence`・`NoObsoleteBonuses` から変えた（getter と Python の名前は元のまま）。資源の陳腐化を防ぐ（上の行の `bAllBuildings`・`BuildingClasses` の資源版）。`bAllBonuses` はすべての資源、`Bonuses`（`BonusType` を何個でも）は書いた資源。BtS で陳腐化する資源は毛皮（プラスチック）、象牙（工業主義）、鯨（内燃機関）。資源の陳腐化はチーム単位（`CvTeam::isBonusObsolete`）なので、チームの生きているプレイヤーの誰かが志向を持てば、チーム全体でその資源が陳腐化しない（`isBonusObsolescenceIgnored`）。ゲームの途中で志向を得た・失ったときは、そのチームのタイルの資源を数え直す（`CvPlayer::updateTraitBonusPlots`）。取引は本体どおり、受け取る側で陳腐化していれば取引できない。資源は志向より後に読み込まれるので、リストは `readPass3()` で番号に変える。説明文 `TXT_KEY_TRAIT_IGNORE_BONUS_OBSOLESCENCE` / `TXT_KEY_TRAIT_NO_OBSOLETE_BONUSES` |
-| `CIV4TraitInfos.xml` | `TraitInfo/PyOnGameStart`、`PyOnBeginTurn`、`PyOnCityFounded`、`PyOnCityAcquired`、`PyOnCorporationFounded`、`PyOnCityLost`、`PyOnBuildingBuilt`、`PyOnReligionFounded`、`PyOnGained`、`PyOnLost` | 志向の Python フック。Python の式を書き、`EntryPoints\CvTraitInterface.py` が評価する（呪文の `PyResult` と同じ方式）。その志向を持つプレイヤーごとに、志向の番号順に呼ぶ（`CvPlayer::doTraitPythonHook`）。`FreeTraits` で社会制度・建物・技術から与えた志向でも呼ばれる。式で使える名前: `pPlayer`（CyPlayer）・`eTrait`、`PyOnCityFounded` / `PyOnCityAcquired` は `pCity`（CyCity）、`PyOnCityAcquired` はさらに `iOldOwner`・`bConquest`・`bTrade`（1 か 0）。呼ぶ時: `PyOnGameStart` はゲーム開始時に 1 回（`CvGame::setInitialItems` で開始時の資金とユニットを配った後。シナリオは開始時の配布がないので呼ばない。開始時に持つ志向（初期の社会制度・技術の `FreeTraits` を含む）だけ）、`PyOnBeginTurn` はそのプレイヤーのターンの初め（`CvPlayer::doTurn` の `onBeginPlayerTurn` の直後）、`PyOnCityFounded` は都市を建設した後（`CvPlayer::found` の `onCityBuilt` の直後）、`PyOnCityAcquired` は都市を獲得した後（征服・取引・文化。`CvPlayer::acquireCity` の `onCityAcquired` の直後。征服した都市はその後で破壊されることがある）。`PyOnCorporationFounded`（2026-11-15 に追加）はそのプレイヤーが企業を設立した後（`CvGame::makeCorporationFounded`。本社の都市が初めて企業を持ったとき。ワールドビルダーとゲーム開始前は呼ばない）で、名前は `pPlayer`・`eTrait`・`pCity`（本社）・`eCorporation`。`PyOnCityLost`（2026-11-19 に追加）はそのプレイヤーが都市を失った後（征服・取引・文化。`CvPlayer::acquireCity` で新しい持ち主の `PyOnCityAcquired` の直後に、元の持ち主について呼ぶ。征服した都市を破壊するかはその後で決まるので、**破壊された都市でも呼ばれる**（都市が破壊されるのは占領された直後だけ）。元の持ち主が生きているときだけ）で、名前は `pPlayer`・`eTrait`・`pCity`（もう新しい持ち主の都市）・`iNewOwner`・`bConquest`・`bTrade`・`iPopulation`・`iCultureLevel`（失う前の人口と、元の持ち主にとっての文化レベル。征服で人口が 1 減る前の値）。共通関数 `createPartisans(pPlayer, pCity, iNum, iCultureLevel)`（2026-11-19）: 首都で今徴兵できるユニット（`CyCity.getConscriptUnit`。徴兵の値が最大のもの）を iNum 体、都市の隣のタイルにランダムに置く（`isPartisanPlot`: 陸で、通行不能でも都市でもなく、そのプレイヤーと交戦中のユニットがいない。隣に 1 つもなければ 2 タイル先）。文化レベルの段階まで戦闘術を与える（貧弱で戦闘術Ⅰ … 伝説でⅠ～Ⅵ。`PARTISAN_PROMOTIONS`）。本人にメッセージ `TXT_KEY_MISC_PARTISANS_CREATED`。首都・徴兵できるユニット・置けるタイルのどれかがなければ何もしない。例: `bConquest and createPartisans(pPlayer, pCity, 2 + iPopulation, iCultureLevel)`（Python 2.4 は条件式がないので `and` で書く）。`PyOnBuildingBuilt`（2026-11-22 に追加。バビロニアの案）はそのプレイヤーの都市が生産で建物を完成した後（`CvCity::popOrder` で、建物の `PyOnBuilt` の直後、`onBuildingBuilt` の前。建物の `PyOnBuilt` と同じく、無料の建物・イベント・Python で置いた建物では呼ばない）で、名前は `pPlayer`・`eTrait`・`pCity`・`eBuilding`。共通関数 `isBuildingClassIn(eBuilding, ['BUILDINGCLASS_GRANARY', ...])`（その建物の種類が一覧のどれか。固有建物も種類で判定する）。例: `isBuildingClassIn(eBuilding, ['BUILDINGCLASS_GRANARY']) and pCity.changePopulation(1)`。`PyOnReligionFounded`（2026-11-22 に追加。ユスティニアヌス1世の案）はそのプレイヤーが宗教を創始した後（`CvPlayer::foundReligion` で聖都を決め、宗教の無料のユニット（BtS の宣教師 1 体）を配った後。技術で創始したとき、宗教を選ぶオプションで選んだとき、開始時代が遅いゲームで聖都のない宗教が割り当てられたとき（`CvGame::doHolyCity`。無料のユニットはない）も呼ぶ。ワールドビルダーとゲーム開始前は呼ばない）で、名前は `pPlayer`・`eTrait`・`pCity`（聖都）・`eReligion`。共通関数 `createMissionaries(pPlayer, eReligion, iNum, pCity)`: その宗教を広める文明のユニット（宣教師）を都市に iNum 体作る（`createExecutives` の宗教版）。例: `createMissionaries(pPlayer, eReligion, 2, pCity)`。`PyOnGained` / `PyOnLost`（2026-11-19 に追加。Mod Helper の考え方）は、その志向をゲーム中に得た・失ったとき（`CvPlayer::changeFreeTraitCount` で持つかどうかが変わったとき。条件つきの志向、社会制度・建物・技術の `FreeTraits`、期間つきの志向、Python）に、その志向について呼ぶ（`CvPlayer::doTraitGainedPythonHook`）。名前は `pPlayer`・`eTrait`。ゲーム開始の時点で持っている志向（開始時に条件で得たものも。`isFinalInitialized` の前）では呼ばない。指導者・文明の志向と同じ志向をほかから得ても、持つかどうかは変わらないので呼ばない。**期間つきの志向**（2026-11-19。DynTraits の考え方）: `CvPlayer::setTraitTurns(eTrait, iTurns)` でその志向を iTurns ターン持つ（0 で終わる）。残りターンが 1 以上の間、`getFreeTraitCount` に 1 つ数えるので、ほかからも得ている志向は期間が終わっても残る。そのプレイヤーのターンの初め（`doTurn` の `updateConditionalTraits` の直後、`PyOnBeginTurn` の前）に 1 ずつ減る（`doTraitTurns`）。得た・終わったとき本人にメッセージ（`TXT_KEY_MISC_TEMPORARY_TRAIT_GAINED` / `_ENDED`。持つかどうかが変わったときだけ）。ゲーム中の指導者の説明（`parsePlayerLeaderTraits`）では志向の名前の後に「（残り N ターン）」（`TXT_KEY_TRAIT_TURNS_LEFT`。exe が使う `parseTraits` は引数を変えられないので `parseTraitsWithTurns` を足した）。セーブに保存（`CvPlayer::m_paiTraitTurns`、`uiFlag=12`。古いセーブは期間つきの志向なし）。Python は `CyPlayer.getTraitTurns(eTrait)` / `setTraitTurns(eTrait, iTurns)`、共通関数 `gainTraitForTurns(pPlayer, 'TRAIT_X', iTurns)`（すでに期間つきなら長い方。重ねない。ゲーム速度で変えるなら `scaleBySpeed(iTurns, 'GoldenAge')`）。共通関数 `makeCityPlotHills(pCity, 'TERRAIN_PLAINS')`（2026-11-19。エチオピアの案）: 都市のタイルをその地形の丘陵にする（`PyOnCityFounded` から。`CyPlot.setPlotType`・`setTerrainType`。残せない地形の特徴は消す）。共通関数 `buildRouteToCapital(pCity, 'ROUTE_ROAD', iMaxDistance)`（2026-11-23。Civ6 のローマの案）: 首都から陸路 iMaxDistance タイル以内でつながる都市なら、首都までその道を敷く（`PyOnCityFounded` から。技術は問わない）。経路は同じ陸地の、通行不能でなく、持ち主がいないか自チームのタイルだけを通る、iMaxDistance タイル以内の経路のうち、労働者の経路のようにコストが最小のもの（Python のダイクストラ法。状態は (x, y, タイル数)。`isImprovementPassable` は見ない）。コストは `CvHookUtils.py` の定数 `ROUTE_COST_*`: 同等以上の道があるタイル 1、ないタイルは移動コスト（地形または地形の特徴 + 丘陵）× 10、川を渡ると +30、斜めに（川の角で）渡るとさらに +30（2026-11-23。最初はタイル数が最小の経路にしていたが、川沿いで川を何度もまたぐ道になり見た目が不自然だった）。同等以上の道（`CvRouteInfo` の `iValue`。鉄道は道路で置き換えない）があるタイルと都市のタイルはそのまま。道を敷いたタイル数を返す（経路がなければ -1）。例: `buildRouteToCapital(pCity, 'ROUTE_ROAD', 15)`。共通関数 `createCityConscripts(pPlayer, iMinPopulation)`（2026-11-19）: 首都と人口 iMinPopulation 以上の都市に、その都市で今徴兵できるユニットを 1 体ずつ出し、本人に数のメッセージ（`TXT_KEY_MISC_CITY_CONSCRIPTS_CREATED`）。1 つのフックで 2 つのことをするには、タプルで書く（`(addBuilding(pCity, 'BUILDINGCLASS_WALLS'), gainTraitForTurns(pPlayer, 'TRAIT_X', 3))`）。どれも `CvEventManager` のイベントと同じく全マシンで呼ばれるので、乱数は `getSorenRandNum`。`CvTraitInterface.py` の共通関数: 値 `scaleBySpeed(iValue, 'Train')`（ゲーム速度の `iTrainPercent` などで掛ける）・`startEra()`・`isEveryTurns(iTurns)`・`capitalPlot(pPlayer)`、効果 `gainGold`・`createUnits(pPlayer, 'UNITCLASS_X', iNum, pPlot)`（文明のユニット）・`addBuilding(pCity, 'BUILDINGCLASS_X')`（文明の建物）。2026-11-15 に、都市の判定 `isCoastalCity(pCity)`（海に面する）・`isOverseasCity(pCity)`・`isNewWorldCity(pCity)` と、`createExecutives(pPlayer, eCorporation, iNum, pCity)`（その企業を広める文明のユニット）を足した。効果の説明は志向の `Help` に書く（志向の説明文に出る。BtS の志向のテキストと同じく `[NEWLINE][SPACE][SPACE][ICON_BULLET]` で始める）。キャッシュなし（`CvTraitInfo` はストリーム版の `read` / `write` を持たない）。共通の関数は 2026-11-14 に `CvHookUtils.py` へ移した（`CvTraitInterface.py`・`CvHookInterface.py`・`CvSpellInterface.py` が import する）。**2026-11-23 に追加したフック**（どれもゲーム開始前とワールドビルダーでは呼ばない）: `PyOnTechAcquired` はチームが技術を得た後（`CvTeam::setHasTech` で技術の `PyOnDiscovered` と同じ場所。研究・取引・遺跡・諜報・Python と経路を問わない。開始時の技術では呼ばない）で、名前は `pPlayer`・`eTrait`・`eTech`・`bFirst`（そのチームが最初に得た技術なら 1）。`PyOnGreatPersonBorn` は偉人が生まれた後（`CvPlayer::createGreatPeople` の `onGreatPersonBorn` の後。戦闘で生まれた偉大な将軍のように都市がないときも呼ぶ）で、名前は `pPlayer`・`eTrait`・`pUnit`（CyUnit）・`pCity`（都市がなければ `pCity.isNone()` が真）。`PyOnGoldenAgeStart` / `PyOnGoldenAgeEnd` は黄金時代が始まった・終わったとき（`CvPlayer::changeGoldenAgeTurns` で黄金時代かどうかが変わったとき。延長では呼ばない）で、名前は `pPlayer`・`eTrait`。`PyOnWarDeclared` は戦争が始まった後（`CvTeam::declareWar` の `changeWar` の後。`CvTeam::doWarPeaceTraitPythonHooks`）に両方のチームのプレイヤーについて呼び、名前は `pPlayer`・`eTrait`・`iOtherTeam`・`bAggressor`（宣戦した側なら 1。防衛協定や属国で参戦したチームも宣戦した側になる）。`PyOnPeaceMade` は講和した後（`CvTeam::makePeace`）に両方のチームのプレイヤーについて呼び、名前は `pPlayer`・`eTrait`・`iOtherTeam`。`PyOnEraChanged` は新しい時代に入った後（`CvPlayer::setCurrentEra`。後の時代の技術を得ると時代を飛ばすことがある。開始時の時代では呼ばない）で、名前は `pPlayer`・`eTrait`・`eEra`・`iOldEra`。DLL では、引数が整数だけのフックは `CvPlayer::doTraitPythonHookInts`、共通部分は `callTraitPythonHook`（ユニット・都市・整数の並び）。**志向のカウンター**（2026-11-23）: プレイヤーごと・志向ごとの整数（`CvPlayer::m_paiTraitCounter`、セーブに保存、`uiFlag=19`。古いセーブは 0）。DLL は使わず、フックの式で数えるためのもの。志向を失っても残る。同じ志向のフックは 1 つのカウンターを共有する。Python は `CyPlayer.getTraitCounter(eTrait)` / `setTraitCounter(eTrait, iValue)` / `changeTraitCounter(eTrait, iChange)`、共通関数 `addTraitCounter(pPlayer, eTrait, iChange)`（足して新しい値を返す。`eTrait` は志向の名前の文字列でもよい）・`countEvery(pPlayer, eTrait, iEvery)`（1 足して iEvery 回目に真を返し、0 に戻す）。共通関数 `isUnitClassIn(pUnit, ['UNITCLASS_GREAT_GENERAL'])`・`isTechIn(eTech, ['TECH_WRITING'])` も足した。**2026-11-23 に追加したフック（2 回目）**（どれもゲーム開始前とワールドビルダーでは呼ばない）: `PyOnFirstContact` はそのプレイヤーのチームがほかのチームと初めて出会った後（`CvTeam::makeHasMet` の `firstContact` の後。ユニットでも連絡先の取引でも。蛮族は除く）で、名前は `pPlayer`・`eTrait`・`iOtherTeam`。`PyOnProjectBuilt` はそのプレイヤーの都市がプロジェクトを完成した後（`CvCity::popOrder` で `changeProjectCount` の後）で、名前は `pPlayer`・`eTrait`・`pCity`・`eProject`。`PyOnVassalGained` はほかのチームがそのプレイヤーのチームの属国になった後（`CvTeam::setVassal` の `vassalState` の後）で、名前は `pPlayer`・`eTrait`・`iVassalTeam`・`bCapitulated`（降伏による属国なら 1）。`PyOnReligionSpread` はそのプレイヤーの都市に宗教が広まった後（`CvCity::setHasReligion` の `religionSpread` の後。自然な伝播・宣教師・聖都・イベントなど、告知するときだけ。都市の持ち主が変わって引き継ぐ宗教では呼ばない）で、名前は `pPlayer`・`eTrait`・`pCity`・`eReligion`。`PyOnCivicChanged` はそのプレイヤーが社会制度を変えた後（`CvPlayer::setCivics` で社会制度の `PyOnAdopt` の後。変わった枠ごとに 1 回）で、名前は `pPlayer`・`eTrait`・`eCivic`・`iOldCivic`（`CivicOptionExtraSlots` の空いた枠は -1）。`PyOnCircumnavigated`（2026-11-23 に追加）はそのプレイヤーのチームが世界一周を達成した後（`CvTeam::testCircumnavigated`。1 番目は船の移動力のボーナスを得た後。ゲーム開始時の達成では呼ばない）で、名前は `pPlayer`・`eTrait`・`iOrder`（1 番目なら 1、2 番目なら 2…）。このため世界一周の判定を**チームごと**にしたが、ゲームのルールは元のまま: 移動力 +`CIRCUMNAVIGATE_FREE_MOVES` と通知は 1 番目のチームだけで、2 番目以降のチームは志向のフックの効果だけを得る（通知もない）。順位は `CvTeam::m_iCircumnavigatedOrder`（セーブする。`CvTeam` の `uiFlag` 1。Python は `CyTeam.getCircumnavigatedOrder()`）。共通関数 `gainCircumnavigationMoves(pPlayer)`: そのプレイヤーのチームが 1 番目と同じ移動力のボーナスと通知（`TXT_KEY_MISC_YOU_CIRC_GLOBE`）を得る。例: `iOrder &gt; 1 and gainCircumnavigationMoves(pPlayer)`（XML では `&gt;`）。プレイヤーごとに呼ばれるので、この志向を持つ 2 人のチームでは 2 回得る。地図の条件は `CvGame::isCircumnavigationMap()` に分け、`circumnavigationAvailable()`（AI が狙うかの判定）は「まだ誰も達成していない」のまま。変更前のセーブで達成済みのゲームでは、誰が 1 番目か分からないので 2 番目以降は起きない。共通関数 `startGoldenAge(pPlayer)`: 通常の長さの黄金期を始める（進行中なら延びる。偉人は消費しない）。例: `iOrder == 1 and startGoldenAge(pPlayer)`。共通関数 `isCivicIn(eCivic, ['CIVIC_REPRESENTATION'])` も足した。共通関数 `showMessage(pPlayer, 'TXT_KEY_X', (引数, ...))`（そのプレイヤーのイベントログにテキストを出す。引数はテキストの %s1, %s2...）・`infoDescription('Tech', eTech)`（Info の名前。-1 なら '-'）・`cityName(pCity)`（都市がなければ '-'）も足した |
-| `CIV4TraitInfos.xml` | `TraitInfo/ConditionalFreeTraits` | `<ConditionalFreeTrait>` を何個でも書ける。各項目は `TraitType`（与える志向）と条件（どれも省略可。書いたものすべてを満たすとき）: `bAtWar`（蛮族・小文明以外のどこかと交戦中。チーム単位）、`bAtPeace`（交戦していない）、`StateReligion`（その宗教が国教）、`bNoStateReligion`（国教なし）、`EraMin` / `EraMax`（そのプレイヤーの今の時代が範囲内）、`PrereqCivic`（その社会制度を採用中）、`bFavoriteCivic`（指導者の `FavoriteCivic` を採用中。`ReplacedCivic` で置き換えた制度も採用中として扱う。AI の性格ではなくプレイヤーの指導者で引くので、性格ランダムのオプションでも変わらない。制度をやめると外れる。説明文には、読んでいるプレイヤーがその志向を持っていれば、その指導者の制度名も出す。社会制度の画面では、その制度の名前を黄色にし、説明欄に `TXT_KEY_CIVIC_FAVORITE_GIVES_TRAIT` を出す（`CvPlayer::getFavoriteCivicTraits`・`isFavoriteCivicWithTraits`。同じ項目のほかの条件は見ない））、`iMinUnitsKilled`（ゲーム全体で倒した敵ユニットの累計が○体以上。蛮族・動物も数える。倒した側のプレイヤーに数え、輸送中のユニットも 1 体ずつ数える。捕獲は数えない。`CvUnit::kill`）、`iMinCitiesConquered`（占領した都市の累計が○個以上。`acquireCity` の `bConquest` で数えるので、奪い返しも破壊した都市も数え、文化による転向と取引は数えない。解放で元の持ち主に戻った場合は受け取った側に数える）。累計は減らないので、この 2 つの条件だけの志向は一度得ると失わない（成長する志向）。累計は `CvPlayer::m_iNumUnitsKilled` / `m_iNumCitiesConquered`（セーブに保存、`CvPlayer` の `uiFlag=7`。古いセーブは 0 から数える）。条件を満たした瞬間に志向を与え、本人にだけメッセージ `TXT_KEY_MISC_TRAIT_GAINED_BY_RECORD` を出す。この志向を持つ間、条件を満たす項目の志向を与える（ex 氏の CivGoldEmpires の双頭志向・転生志向・五賢帝を XML で書くためのもの）。与えた数は `CvPlayer::m_paiConditionalTraitCount` に持ち（セーブに保存、`CvPlayer` の `uiFlag=4`）、`changeFreeTraitCount` で差分だけ足し引きする（`CvPlayer::updateConditionalTraits`）。計算し直すのは、交戦状態の変化（`CvTeam::setAtWar`。宣戦・和平）、戦績の増加（`changeNumUnitsKilled`・`changeNumCitiesConquered`）、国教の変更（`setLastStateReligion`）、時代の変化（`setCurrentEra`）、社会制度の変更（`setCivics`。国教の有無もここで変わる）、`ConditionalFreeTraits` を持つ志向を得た・失ったとき、ゲーム開始時（`PyOnGameStart` の前）、ターンの初め（`PyOnBeginTurn` の前。無政府期間などほかの経路の変化もここで反映）。与えた志向がさらに `ConditionalFreeTraits` を持っていてもよい（変化がなくなるまで繰り返す）。ただし輪（A が B を、B が A を与える。ほかの志向を経由する場合と、自分自身を与える場合も）にすると、一度得た志向が互いを与え合い、条件が外れても残る（`tools\check_refs.ps1` が警告する）。既存のセーブでは、次のターンの初めに与える。説明文は `TXT_KEY_TRAIT_CONDITIONAL_FREE_TRAIT`（「攻撃志向を得る（戦時）」「組織志向を得る（平時、検証用社会制度を採用）」。志向・宗教・社会制度はリンク）で、条件は `TXT_KEY_CONDITION_*`。戦績の条件は、読んでいるプレイヤーがその志向を持っていれば現在の数も出す。`PrereqCivic` の項目は社会制度の説明にも出す（`TXT_KEY_CIVIC_CONDITIONAL_FREE_TRAIT` / `_IF`。「検証用志向があれば検証用志向（蛮族）を得る（平時）」。置き換えた制度の説明にも出す。ゲーム中は操作中のプレイヤーの志向の分だけ、ペディアでは全部）。条件の文は `getConditionalFreeTraitConditions` で作る。読み込みは、この志向より後の志向と社会制度を参照するので種類を文字列のまま持ち、`CvTraitInfo::readPass3()` で番号に変える（このため `readPass3()` を呼ぶ位置を社会制度の読み込みの後に移した）。Python は `CyPlayer.getConditionalTraitCount(eTrait)` / `updateConditionalTraits()` / `getNumUnitsKilled()` / `getNumCitiesConquered()`、`CvTraitInfo.getNumConditionalFreeTraits()` / `getConditionalFreeTraitType(i)`。`PrereqTech`（チームがその技術を持っている。技術を得たとき `CvTeam::setHasTech` で更新。RFC のドイツ「産業主義の後」のような、技術で目覚める志向）。`bGoldenAge` / `bNoGoldenAge`（黄金時代中 / 黄金時代でない。`changeGoldenAgeTurns` で始まり・終わりに更新）、`bAnarchy` / `bNoAnarchy`（無政府状態中 / 無政府状態でない。`changeAnarchyTurns`）、`iMinCities` / `iMaxCities`（都市数が○以上 / ○以下。0 は制限なし。都市の建設（`found`。`PyOnCityFounded`・`CityFoundedUnits` の前）、取得（`acquireCity`。新旧の持ち主。`PyOnCityAcquired` の前）、破壊（`raze`）で更新）、`PrereqBonus`（その資源を使える。首都の交易網の資源で、交易画面と同じ `getNumAvailableBonuses`。ターンの初めにだけ更新するので、反映は最大 1 ターン遅れる）、`PrereqBuildingClass`（その建物クラスの建物をどこかの都市に持つ。陳腐化していても数える `getBuildingClassCount`。生産で完成したとき（`CvCity::popOrder`）と都市の取得・破壊で更新し、無料の建物・イベント・Python で置いた建物はターンの初めに反映）、`bVassal` / `bHasVassal`（チームが属国である / 属国を持つ。`CvTeam::setVassal` で両方のチームのプレイヤーを更新。人間のプレイヤーが属国になるには志向の `bHumanCanBeVassal` が要る）、`iMinScoreRank`（スコアの順位が○位以下。1 が首位。順位は `CvGame::updateScore` のものなので、ターンの初めにだけ更新）。説明文の条件は `TXT_KEY_CONDITION_GOLDEN_AGE` など（都市数は `_CITIES_RANGE` / `_MIN_CITIES` / `_MAX_CITIES`）。都市数とスコアの順位は、読んでいるプレイヤーがその志向を持っていれば現在の値も出す。建物は建物クラスの既定の建物の名前（リンク）。資源と建物クラスは `readPass3()` で番号に変える（1 項目につき 7 個の種類を文字列で持つ）。志向そのものが条件を変える組み合わせ（例: 都市数で得た志向が都市数を変える）は付け外しを繰り返しうるが、判定するのは上の時点とターンの初めだけなので、止まらなくなることはない。`PyCondition`（Python の式。ほかの条件をすべて満たすときに最後に評価し、真なら満たす。`CvHookInterface.py` の `isConditionTrue` が `pPlayer`・`eTrait`（与える志向）で `eval` する。ゲームを変えてはいけない。判定し直すのは上の時点とターンの初めなので、資金や人口の条件は次のターンに反映）と`PyConditionText`（説明文に出す条件のテキストキー。省略すると `TXT_KEY_CONDITION_PYTHON`「特別な条件」） |
-| `CIV4TraitInfos.xml` | `TraitInfo/Hurrys` | 緊急生産の解禁と補正（2026-11-19 に `WonderHurrys`・`bIgnoreWonderHurryCostModifier`・`UnitHurrys`・`HurryUnitExperiences` をまとめて作り直した）。`<Hurry>` を何個でも書ける。各項目は `HurryType` と、省略可の対象の絞り込み `bUnitsOnly`（ユニット）・`bBuildingsOnly`（建造物すべて）・`bWondersOnly`（世界遺産・チーム遺産・国家遺産）・`bWorldWondersOnly`・`bNationalWondersOnly`（どれもなければユニットと建造物すべて、複数あればそのどれか）、`iCostModifier`（その緊急生産の費用 %）、`bIgnoreCostModifier`（遺産などの追加の費用 `iHurryCostModifier` を無視。割引はそのまま）、`iExperience`（その方法で緊急生産したユニットの経験値。ユニット以外では何もしない。エラーも出さない）。対象の項目があれば、その緊急生産を社会制度なしで使える（`CvPlayer::isTraitHurry`。`CvCity::canHurry` / `canHurryUnit` / `canHurryBuilding`、緊急生産のボタンの説明で必要な社会制度を出さない）。費用・追加費用の無視・経験値は、社会制度で解禁された緊急生産にも効く（`CvPlayer::getTraitHurryCostModifier` / `isTraitHurryIgnoreCostModifier` / `getTraitHurryExperience`）。費用は `CvCity::getHurryCostModifier` に緊急生産の種類を渡して掛ける（`hurryGold` / `hurryPopulation` / `hurryProduction` も同じ種類で計算するので、人口による緊急生産でも完成までの生産になる。AI の見積もりの一部は種類を渡さない）。経験値は、緊急生産した都市で次に完成した同じユニットに付く（`CvCity` の `m_eHurriedUnit`・`m_eHurriedUnitHurry`、セーブの `uiFlag=6`）。緊急生産の種類は志向より後に読み込まれるので `readPass3()` で番号に変える。説明文 `TXT_KEY_TRAIT_HURRY`（「社会制度なしで資金による緊急生産ができる（ユニット）：費用-25%、緊急生産したユニットの経験値+3」。対象は `TXT_KEY_TRAIT_HURRY_TARGET_*`、補正は `TXT_KEY_TRAIT_HURRY_COST` / `_IGNORE_COST` / `_EXPERIENCE`）。Python は `CvTraitInfo.getNumHurrys()` / `getHurryType(i)` / `getHurryCostModifier(i)` / `getHurryExperience(i)`、`CyPlayer.isTraitHurry(eHurry, eUnit, eBuilding)` / `getTraitHurryCostModifier(eHurry, eUnit, eBuilding)` / `getTraitHurryExperience(eHurry, eUnit)` |
-| `CIV4TraitInfos.xml` | `TraitInfo/NoTechProcesses` | 生産の種類（`ProcessType`。富・研究・文化）を何個でも書ける。その生産の `TechPrereq` なしで都市が選べる（`CvPlayer::canMaintain`）。アルファベットなしで研究、通貨なしで富。志向を失うと、次に都市が生産を続けられるか確かめたときに外れる（BtS の判定）。生産の種類は `LoadPostMenuGlobals`（ゲームを始めるとき）で読み込まれるので、`CvTraitInfo::readPass4()` で番号に変える（文字列を残しておき、読み込み直されても同じ結果になる）。このため文明選択の画面など、ゲームの前の説明文には出ない。説明文 `TXT_KEY_TRAIT_NO_TECH_PROCESSES`（「技術なしで選べる生産: 富, 研究」）。Python は `CyPlayer.isNoTechProcess(eProcess)`、`CvTraitInfo.isNoTechProcess(iProcess)` |
-| `CIV4TraitInfos.xml` | `TraitInfo/FreeTechs` | 文明の `FreeTechs` と同じ書式（`<FreeTech>` が `TechType` + `bFreeTech`）。ゲーム開始時にその技術をチームに与える（`CvPlayer::initTraitFreeTechs`。`CvGame::setInitialItems` で、`ConditionalFreeTraits` の後、`PyOnGameStart` の前。開始時に条件で得た志向の分も与える）。文明の初期技術と同じく、前提の技術は見ない。ゲームの途中で得た志向では与えない。技術の数は開始時代で価値が変わる（後の時代から始めると、すでに持っている）。説明文 `TXT_KEY_TRAIT_FREE_TECHS`（「ゲーム開始時に得る技術: 車輪, 陶器」。リンク）。Python は `CvTraitInfo.isFreeTech(iTech)` |
-| `CIV4TraitInfos.xml` | `TraitInfo/bRevealWonderProduction`・`bRevealWarPlans` | 他の文明の内情が、右下の指導者名と指導者の顔（外交画面・外交顧問）のツールチップに出る。どれかの志向が持っていれば有効（`CvPlayer::isRevealWonderProduction`・`isRevealWarPlans`）。**`bRevealWonderProduction`**: 相手の都市のうち、生産の先頭が世界遺産の都市ごとに「建造中「遺産名」：「都市名」」（`TXT_KEY_REVEALED_WONDER_PRODUCTION`）。都市がこちらの地図で未確認なら都市名は「？？？」（`TXT_KEY_REVEALED_UNKNOWN`）。人間の相手にも出る。**`bRevealWarPlans`**: 相手（AI だけ）のチームが戦争計画（準備中・自分から始めた戦争・応戦のすべて。`CvTeamAI::AI_getWarPlan` が `NO_WARPLAN` 以外）を持っていれば「戦争計画「文明名」・「都市名」」（`TXT_KEY_REVEALED_WAR_PLAN`）。計画が複数あれば `CvTeamAI::AI_startWarVal` が最も大きいチーム。ただし表示では近さの項（`AI_teamCloseness`）を飛ばす（`bIgnoreCloseness`。都市の AI のキャッシュを書き換えるため、表示から呼ぶと同期がずれうる）。都市はそのチームの全都市のうち、相手のプレイヤーから見た `CvPlayerAI::AI_targetCityValue`（乱数なし）が最も大きいもの。文明名はその都市の持ち主（都市がなければチームのリーダー）。こちらが未接触の文明は「？？？」、未確認の都市も「？？？」。AI の文明の行は `CvGameTextMgr::getAttitudeString` の末尾で、態度の相手が操作中のプレイヤーのときだけ足す（外交顧問の AI 同士の関係には出ない）。人間の文明の行は `CvDLLWidgetData::parseContactCivHelp` で足す。本体は `CvGameTextMgr::getRevealedPlansString`（文言は `getRevealedWonderText`・`getRevealedWarPlanText`）。**アナウンス**: 志向を持つ人間のプレイヤー（相手のチームと接触済み・別のチーム）に、先頭に文明名を付けて同じ文言で知らせる（`TXT_KEY_REVEALED_ANNOUNCE`。例「モンゴル：建造中「ピラミッド」：「？？？」」）。都市が見えていれば矢印でその場所を示す。世界遺産は都市のターンの終わり（`CvCity::doTurn` の生産の後、`CvCity::doRevealedWonderAnnouncement`）に、生産の先頭の世界遺産が前回の判定から変わっていたら出す（AI は生産を選び直すときに予約を空にして積み直すので、先頭が変わるたびに判定すると一瞬だけ先頭に来た遺産も拾ってしまう）。前回の遺産 `CvCity::m_eRevealedWonderProduction` はセーブせず、読み込み時に今の先頭の遺産を入れる（読み込み直後には出さない）。遺産から別の遺産に切り替えるたび、また切り替えて戻ったときにも出る。戦争計画は、AI のチームが計画なしから新しい計画を持ったとき（`CvTeamAI::AI_setWarPlan` から `AI_announceWarPlan`。準備中・戦争・応戦のどれでも。準備中から総力戦などへの切り替えでは出さない）。都市はチームのリーダーから見て選ぶ。説明文 `TXT_KEY_TRAIT_REVEAL_WONDER_PRODUCTION`・`TXT_KEY_TRAIT_REVEAL_WAR_PLANS`。Python は `CyPlayer.isRevealWonderProduction()`・`isRevealWarPlans()`、`CvTraitInfo.isRevealWonderProduction()`・`isRevealWarPlans()`。AI の隠れた挙動の全体は `docs/ai-hidden-behavior.md` |
-| `CIV4TraitInfos.xml` | `TraitInfo/bRevealHiddenAttitude` | AI の態度のうち、BtS の外交のツールチップに出ない補正も、ほかの補正と同じく緑（プラス）・赤（マイナス）の行で出す（`CvGameTextMgr::getAttitudeString`）。操作中のプレイヤーの志向で判定するので、外交顧問での AI 同士の態度にも出る。どれかの志向が持っていれば有効（`CvPlayer::isRevealHiddenAttitude`）。項目は `CvPlayerAI::AI_getHiddenAttitude`（`HiddenAttitudeTypes`）: 指導者の性格（`iBaseAttitude`）、難易度（相手の難易度の `iAttitudeChange`）、和平への姿勢の近さ（AI 同士だけ。`4 - |PeaceWeight の差|`）、好戦性への敬意（AI 同士だけ。`iWarmongerRespect` の小さい方）、チームの人数の差、順位の差（`iWorseRankDifferenceAttitudeChange`・`iBetterRankDifferenceAttitudeChange`）、ともに下位（+1）、戦争での劣勢（`iLostWarAttitudeChange`）。これらは `CvPlayerAI::AI_getAttitudeVal` から値を変えずに移したもので、態度の計算もこの関数を使う（表示と計算がずれない）。表示される行の合計が態度の値になる（-100〜100 に収める前）。テキストは `TXT_KEY_MISC_ATTITUDE_HIDDEN_*`（`CIV4GameText_ClaudeSample.xml`）。説明文 `TXT_KEY_TRAIT_REVEAL_HIDDEN_ATTITUDE`。Python は `CyPlayer.isRevealHiddenAttitude()`、`CvTraitInfo.isRevealHiddenAttitude()` |
-| `CvHookUtils.py` | `chooseGreatPeopleByCalendar(pPlayer, eTrait, szTech, iCycleYears, iCycleEndYear)`（`PyOnBeginTurn` に書く共通関数） | Civ5 のマヤの長期暦（2026-11-23）。チームが `szTech` を持っていれば（`None` なら最初から）、暦の周期が終わるたびに偉人を 1 人選び、首都に出す。周期は `iCycleYears` 年で、`iCycleEndYear` 年に 1 つ終わり、その前後も `iCycleYears` 年ごとに終わる（`calendarCyclesEnded`。フックはゲームのターンが進む前に呼ばれるので、次のターンの年 `getTurnYear(iTurn + 1)` と今のターンの年をはさむ区切りを数える。暦はゲーム速度ごとに年の進み方が違うので、速度の補正は要らない）。選べるのは、既定のユニットが偉人として都市に定住できる（`GreatPeoples` を持つ）ユニットクラス（`greatPeopleUnitClasses`。BtS では預言者・芸術家・科学者・商人・技術者・大将軍・大スパイの 7 種）のうち、その文明にユニットがあるもの。文明の固有ユニットで出す。一度選んだものは、全員を選ぶまで選べず、全員を選ぶとまた全員を選べる（`greatPersonChoices`）。人間は選択の画面（`BUTTONPOPUP_PYTHON`。Esc では閉じられない。ボタンはユニットの名前とアイコン。ボタンの関数 `chooseGreatPersonCallback` は、exe が `EntryPoints` のモジュールからしか呼べない（`Can't find module CvHookUtils` になった）ので、`setPythonModule("CvTraitInterface")` で呼ぶ。`CvTraitInterface` は `CvHookUtils` を `import *` している）で選び、選んだ結果は `CyMessageControl().sendModNetMessage`（`MOD_NET_MESSAGE_CHOOSE_GREAT_PERSON` = -20261123。DLL の bChooseGoody の -20261110 と重ならない）から `CvEventManager.onModNetMessage` → `receiveModNetMessage` で全員のコンピューターに届き、そこでユニットを出す（マルチプレイでずれない）。AI は `getSorenRandNum` で選ぶ。状態は志向のカウンターに持つ（下位 24 ビットが選んだ偉人、上位が未選択の数。`greatPersonChoiceState`）。首都がないときや、選ぶ前にロードして画面が消えたとき（選択の画面はセーブされない）は未選択のまま残り、次のターンの初めにもう一度画面を出す。未選択が 2 つ以上なら、1 つ選ぶたびに次の画面を出す。出したときに本人にメッセージ `TXT_KEY_MISC_CALENDAR_GREAT_PERSON`（首都の位置。偉人の誕生の音）。画面の文 `TXT_KEY_POPUP_CHOOSE_GREAT_PERSON`。説明文は自動で出ないので、志向の `Help` に書く。周期が終わったターンは周期の数を返す（式で `and` につなげられる） |
-| `CIV4TraitInfos.xml` | `TraitInfo/bLongCountCalendar` | Civ5 のマヤ（2026-11-23）。そのプレイヤーの画面の右上の日付を、年の代わりにマヤの長期暦（`長期暦 13.0.0.0.0`。バクトゥン.カトゥン.トゥン.ウィナル.キン）で出す（`CvGameTextMgr::setInterfaceTime` → `setLongCountStr`。exe と `CvMainInterface.py` の `getInterfaceTimeStr` が使う）。西暦 2012 年 12 月 21 日を 13.0.0.0.0 とし（GMT 相関）、ターンの月（`getTurnMonthForGame`。1 か月 = 365.2425 / 12 日）から日数を数える。紀元前 3114 年 8 月 11 日の基準日より前は、その前の周期（同じく 13.0.0.0.0 で終わる）で数える。ゲームの暦は細かくても月までなので、下の 2 桁はおおよその値。暦がターン数（`CALENDAR_TURNS`）のときは変えない。日付にマウスを重ねると、ゲームの暦の日付（「紀元前3760年」など。`setTimeStr`）が出る（`CvMainInterface.py` の `TimeText` の 2 か所を `WIDGET_GENERAL` の `iData1` = -20261124（`CvDefines.h` の `WIDGET_DATA_INTERFACE_TIME`）にし、`CvDLLWidgetData::parseHelp` の `WIDGET_GENERAL` で出す。BtS ではこの部品に説明がなかった。長期暦でないプレイヤーには何も出さない）。イベントログ・リプレイ・セーブ名・勝利の画面などの日付は西暦のまま。説明文 `TXT_KEY_TRAIT_LONG_COUNT_CALENDAR`、日付 `TXT_KEY_TIME_LONG_COUNT`。Python: `CyPlayer.isLongCountCalendar()`、`CvTraitInfo.isLongCountCalendar()`。偉人の選択（`chooseGreatPeopleByCalendar`）とは別のタグなので、片方だけでも使える |
-| `CIV4TraitInfos.xml` | `TraitInfo/bIgnoreEvents`、`iEventChanceChange`、`bNoFirstEventDelay` | 2026-11-23。`bIgnoreEvents`: その志向を持つプレイヤーのランダムイベントの画面に、選択肢「このイベントを無視する」（`TXT_KEY_POPUP_IGNORE_EVENT`）が増える（`CvDLLButtonPopup::launchEventPopup`。選べる選択肢が 1 つもなく画面が出ないイベントには出ない）。イベントの XML は変えず、良いイベントにも出る。選ぶとどの選択肢も適用されず、トリガーは選択肢を選んだときと同じく発生済みになる（繰り返さないトリガーは二度と来ない。グローバル・チームのトリガーは他のプレイヤーでも発生済み。世界ニュースは出さない。トリガーの `PythonCallback` は呼ばれる。BtS のトリガーには設定されていない）（`CvPlayer::ignoreEvent`）。結果は `ModNetMessage`（`MOD_NET_MESSAGE_IGNORE_EVENT` = -20261126。`CvNetModNetMessage::Execute` が DLL で処理し、Python には渡さない）で全員のコンピューターに送る。無視できないもの: クエストは断ることになる（完了報酬の画面で選ぶと報酬を失う）、前の選択で予約された後続のイベント（`AdditionalEvent` のカウントダウン。画面なしで適用）、他国の選択による効果。AI は使わない（`AI_chooseEvent` で選ぶ）。`iEventChanceChange`: 毎ターンの新しいイベントの判定（`CvPlayer::doEvents`。100 面のうち時代の `iEventChancePerTurn`。古代 1 〜 未来 10）に志向の合計を足す。100 以上なら毎ターン判定に通る（そのうえで発生できるトリガーの重みから 1 つ選ぶ）。最初の 20 ターン（`FIRST_EVENT_DELAY_TURNS`）は変わらず発生しない。`bNoFirstEventDelay`: その最初の 20 ターンの待ちをなくし、ゲームの開始直後から新しいイベントの判定をする（`doEvents`）。説明文 `TXT_KEY_TRAIT_IGNORE_EVENTS`・`TXT_KEY_TRAIT_EVENT_CHANCE_CHANGE`・`TXT_KEY_TRAIT_NO_FIRST_EVENT_DELAY`（`FIRST_EVENT_DELAY_TURNS` の値を渡す）。Python: `CvTraitInfo.isIgnoreEvents()`・`getEventChanceChange()`、`CvTraitInfo.isNoFirstEventDelay()`、`CyPlayer.isIgnoreEvents()`・`getEventChanceChange()`・`isNoFirstEventDelay()`・`ignoreEvent(iEventTriggeredId)`（全員のコンピューターで呼ぶこと） |
-| `CIV4TraitInfos.xml` | `TraitInfo/PyOnOtherCityFounded` | 2026-11-24（トルデシリャス条約の案）。**ほかのプレイヤーが**都市を建設した後（`CvPlayer::found` で、建てたプレイヤーの `PyOnCityFounded` の直後）に、生きているほかの全プレイヤー（蛮族も含む）について呼ぶ。名前は `pPlayer`（志向の持ち主）・`eTrait`・`pCity`（建てたプレイヤーの都市。建てた人は `pCity.getOwner()`）。DLL は `CvPlayer::doTraitPythonHook(TRAIT_PYHOOK_OTHER_CITY_FOUNDED, pCity)` |
-| `CvHookUtils.py` | 優先地域（`chooseTreatyZone`・`treatyZoneTurn`・`offerTreatyTerms`） | 2026-11-24（トルデシリャス条約の案）。**地域**: `chooseTreatyZone(pPlayer, eTrait)`（`PyOnProjectBuilt` などに 1 回）で、その時点の首都の x を線として固定し、地図の西半分か東半分を優先地域に選ぶ。人間はポップアップ（`TXT_KEY_POPUP_CHOOSE_TREATY_ZONE`。ModNetMessage `-20261124` で全員に送る）、AI は陸のタイルが多い側（同数なら西）。選ぶと全員にメッセージ（`TXT_KEY_MISC_TREATY_ZONE_CHOSEN`）。首都が移っても線は動かない。東西につながった地図では、線の列と地球の反対側の列は両方に入り、残りを半分ずつ（`isInTreatyZone`）。つながっていない地図では線の位置で分ける（均等にならない）。状態は志向のカウンター（側 + 4 × 線の x。0 = 未設定、3 = 選択待ち）。選択待ちのままロードしたら、`treatyZoneTurn` が次のターンにもう一度出す。**収入**: `treatyZoneTurn(pPlayer, eTrait, iGoldPerCity, szSource)`（`PyOnBeginTurn`）で、優先地域にあるほかのプレイヤー（蛮族を除く）の都市 1 つにつき金 iGoldPerCity。金を得たターンは本人に「<szSource の名前>より[金]N を取得。」（`TXT_KEY_MISC_TREATY_ZONE_INCOME`。szSource は `'PROJECT_TORDESILLAS'` のような種類の名前で、接頭辞でプロジェクト・建物・志向・社会制度・技術を見分ける。省略すると志向の名前）。いつ誰が建てた都市でも、占領・譲渡で持ち主が変わった都市でも、そのときの状態で数える。都市の数を返す。**条件**: `offerTreatyTerms(pPlayer, eTrait, pCity, iGold, 'BUILDINGCLASS_X')`（`PyOnOtherCityFounded`）で、ほかのプレイヤー（蛮族・同じチームを除く）が優先地域に都市を建てたら、建てた側が 1 つ選ぶ: iGold ゴールドを払う（それだけの資金があるときだけ）、建てた側のチームが持ち志向の持ち主のチームが持たない技術をランダムに 1 つ渡す（今研究できるものがあればその中から）、その都市にその種類の建物（既定の建物）が建つ。人間はポップアップ（`TXT_KEY_POPUP_TREATY_TERMS`。ModNetMessage `-20261127`）、AI はランダム。結果は両方にメッセージ（`TXT_KEY_MISC_TREATY_TERMS_*`）。ポップアップに答える前にロードすると、条件はなくなる（もう一度は出ない）。**色分け**: 開拓者など都市を建てられるユニットを選んでいる間、優先地域の見えている陸のタイルを地域の持ち主のメインの色で塗る（`updateTreatyZonePlots`。`CvGameUtils.updateColoredPlots` から。DLL が消す `PLOT_LANDSCAPE_LAYER_BASE` に描くので選択を外すと消える）。対象は `PyOnBeginTurn` に `treatyZoneTurn` を書いた志向 |
-| `CIV4TraitInfos.xml` | `TraitInfo/Deals`（`bBuyCities`・`iCityValueModifier`・`iGoldLimitModifier`・`iGoldValueModifier`） | 2026-11-24。AI との取引の条件。すべて省略可。`bBuyCities`: 平時でも AI がこのプレイヤーに都市を売る（`CvPlayerAI::AI_cityTrade` の `DENIAL_NEVER` を飛ばす。BtS の AI は戦争を終える取引でしか都市を出さない）。首都・属国・「都市の排除」のオプションの制限は `canTradeItem` のまま。AI は都市の値段（下記）と釣り合えば売る。BtS の外交画面は、平時の人間と AI の取引で都市を都市としか組み合わせられない（`CvPlayer::updateTradeList`）。どちらかのプレイヤーが `bBuyCities` を持つときは、都市を毎ターンでない品物（金・技術など）と同じ取引に載せられる（毎ターンの品物とは BtS どおり組み合わせられない）。都市の重要さ（聖都・遺産）は値段に入らない（BtS の値段の式のまま）。`iCityValueModifier`: このプレイヤーが取引で受け取る都市の値段 %（`AI_cityTradeVal` の最後。値段は受け取る側が計算するので、AI はこの値段を求める。-50 で半額）。戦争を終える取引で都市を要求するときにも効く。このプレイヤーが AI に都市を渡すときは変わらない。`iGoldLimitModifier`: AI がこのプレイヤーに 1 回の取引で出す金の上限 %（一括 `AI_maxGoldTrade` と毎ターン `AI_maxGoldPerTurnTrade`。指導者の `iMaxGoldTradePercent` などの後に掛ける）。AI の所持金・研究の蓄え・収入による上限はそのまま。`iGoldValueModifier`: このプレイヤーが出す金（一括・毎ターン）を AI が評価する価値 %（`AI_goldTradeValuePercent(eGiver)`。BtS は金 1 = 価値 2、財政難なら 3。50 なら AI が求める金は 2/3）。`AI_dealVal`・逆提案（`AI_counterPropose`）・AI からの技術の取引の提案（`AI_doDiplo`）で使う。どれも志向の合計（`bBuyCities` はどれかが持っていれば有効）。AI どうしの取引には効かない（そのプレイヤーが AI でも、相手の AI がこのプレイヤーと取引するときは効く）。Python: `CyPlayer.isBuyCities()`・`getDealCityValueModifier()`・`getDealGoldLimitModifier()`・`getDealGoldValueModifier()`。説明文 `TXT_KEY_TRAIT_DEAL_BUY_CITIES`・`_CITY_VALUE_MODIFIER`・`_GOLD_LIMIT_MODIFIER`・`_GOLD_VALUE_MODIFIER`。外交画面で AI の都市にカーソルを乗せると「値段の目安: [金]N（価値 V）」が出る（志向に関係なく、相手が AI の都市すべて。`CvDLLWidgetData::parseTradeItem`、`TXT_KEY_TRADE_CITY_PRICE`）。V は受け取る側の `AI_cityTradeVal`、N は V を AI がこちらの金につける価値（`AI_goldTradeValuePercent(eGiver)`）で割って切り上げた額で、`AI_considerOffer` と同じ計算。平時は金 N だけで取引が成立する。戦争中は戦争を終える価値が取引に加わるので目安にならない |
+## `TraitInfo/iReligionSpreadChange`・`iCorporationSpreadChange`
+
+- ファイル: `CIV4TraitInfos.xml`
+- そのプレイヤーの宣教師の布教（`CvUnit::spread`）と幹部の企業の進出（`CvUnit::spreadCorporation`）の成功率（%）に足す。
+- 本体の成功率（ユニットの `ReligionSpreads`・`CorporationSpreads`、他チームの都市なら半分、都市の宗教・企業が少ないほど上がる）を計算した後に足すので、100 なら必ず成功する。
+- 志向の合計。
+- 企業の進出の費用は本体どおり。
+- 都市から自然に広まる宗教の伝播（`CvCity::doReligion`）は対象外。
+- 成功率は画面に出ない（本体と同じ）。
+- 説明文: 100 以上は `TXT_KEY_TRAIT_RELIGION_SPREAD_ALWAYS` / `TXT_KEY_TRAIT_CORPORATION_SPREAD_ALWAYS`、それ以外は `_CHANGE`
+
+## `TraitInfo/ForbiddenCivics`
+
+- ファイル: `CIV4TraitInfos.xml`
+- `<CivicType>` を何個でも書ける。
+- その志向を持つプレイヤーは、書いた社会制度を採用できない（ex 氏の CivGoldEmpires の機巧志向「奴隷制採用不可」。ある区分を 1 つに固定するなら、その区分のほかの社会制度をすべて書く）。
+- `CvPlayer::canDoCivics`（`PrereqOrTraits` の後）で判定し、社会制度の画面では採用できない社会制度として出る。
+- 技術を得たときの採用のポップアップは出ない（`canRevolution` の修正。`misc.md` の「BtS 本体の修正」）。
+- ゲームの途中でその志向を得たときは、BtS の `verifyCivics` がターンの初めに、その区分で採用できる最初の社会制度に無政府期間なしで変える（採用できるものがなければそのまま）。
+- 初期の社会制度は止めない。
+- 説明文: 志向に `TXT_KEY_TRAIT_FORBIDDEN_CIVICS`（「採用できない社会制度: 奴隷制」）、社会制度に `TXT_KEY_CIVIC_FORBIDDEN_TRAITS`（「次の志向を持つと採用できない: 検証用志向」。ペディアではすべての志向、ゲーム中は自分の志向だけ）。
+- 社会制度は志向より後に読み込まれるので `readPass3()` で番号に変える。
+- そのつど判定（`CvPlayer::isForbiddenCivic`）
+
+## `TraitInfo/CivicOptionExtraSlots`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-22。
+- `<CivicOptionExtraSlot>` に `CivicOptionType` と `iExtraSlots` を何個でも書ける。
+- その分類の社会制度を同時に `1 + iExtraSlots` 個採用できる（複数の志向は合計。上限は `MAX_CIVIC_SLOTS` = 3。`CvPlayer::getNumCivicSlots`）。
+- 書いていない分類は 1 個のまま。
+- **仕組み**: `CvPlayer::m_paeCivics` を「分類 × 枠」の配列にした（添字は `iSlot * 分類の数 + 分類`。先頭の分類の数ぶんが枠 0 = BtS の `getCivics`。空の枠は `NO_CIVIC`）。
+- `revolution`・`canRevolution`・`getCivicAnarchyLength`・`getCivicUpkeep` の配列も同じ長さ（`CvPlayer::getNumCivicEntries()`）。
+- `isCivic` と、社会制度の値を直接合計していた箇所（兵科の経験値・生産・アップグレード割引・領土外アップグレード、内訳の説明文、財務の維持費、外交画面のアイコン）はすべての枠を見る。
+- **ルール**: 同じ制度を 2 枠に入れられない。
+- 2 つ目以降の枠は空でもよい（ゲームの途中で志向を得た直後は空）。
+- 維持費は採用している制度ごと。
+- 無政府は分類の制度の組が変わったら「1 分類の変更」（枠の入れ替えだけなら変更なし）で、まだ採用していない制度ごとにその制度の `iAnarchyLength` を足す。
+- 決議でその分類が強制されている間は枠 0 だけ（ほかの枠は空にする）。
+- 志向を失ったら、なくなった枠の制度を無政府なしで外す（`verifyCivicSlots`。`setCivicSlot` や `revolution` の途中では待ち、最後にまとめて外す。政治の制度を変えて `PrereqCivic` の志向を失うと、同じ革命で選んだ枠も外れる）。
+- 外交の「制度を変えよ」・技術を得たときのポップアップ・AI・諜報・Python の `setCivics` は、制度をすでにどこかの枠で採用していなければ枠 0 に入れる（2 枠目にある制度を `setCivics` で指定すると、外さずに枠 0 へ移し、枠 0 の制度を外す）。
+- AI は 2 つ目以降の枠を使わない。
+- **画面**（`CvCivicsScreen.py`）: 枠が 2 以上の分類は見出しに「(2)」と出て、クリックで追加・外す（最後の 1 つは外せない。いっぱいなら最後の枠と入れ替え）。
+- カーソルを乗せると、クリックした場合の無政府・維持費が出る。
+- Python: `CyPlayer.getNumCivicSlots(分類)`・`getCivicSlot(分類, 枠)`・`getMaxCivicSlots()`。
+- `getCivicAnarchyLength`・`getCivicUpkeep`・`sendUpdateCivics` には全枠のリストを渡す（分類の数だけのリストなら、ほかの枠は今のまま）。
+- セーブ: `CvPlayer` の `uiFlag` 16（古いセーブは 2 つ目以降の枠が空）。
+- 説明文 `TXT_KEY_TRAIT_CIVIC_OPTION_EXTRA_SLOTS`
+
+## `TraitInfo/PeaceAnger`
+
+- ファイル: `CIV4TraitInfos.xml`
+- `<PeaceAnger>` に `iPerTurn`（必須）、`iDecayPerTurn`（省略可）、`iMax`（必須）を書く。
+- 2026-11-21 に親タグにまとめた。
+- 平和だと都市が不満になる（厭戦感情の逆）。
+- 文明（マイナー文明を除く）と戦争していないターンに `iPerTurn` 増え、戦争中のターンに `iDecayPerTurn` 減る。
+- 上限が `iMax`（0 なら効果なし）。
+- 単位は社会制度の `iCivicPercentAnger` と同じ人口の 0.1%（50 で 5%）。
+- 蛮族との戦争は数えない。
+- 増減はゲーム速度の `iGrowthPercent` で割る（マラソンは 3 分の 1）。
+- 厭戦感情の修正は受けない。
+- 複数の志向の値は足す。
+- 値はプレイヤーごとに `CvPlayer::doPeaceAnger()` で毎ターン更新し、セーブに入る（`CvPlayer` の `uiFlag` 6）。
+- Python は `getPeaceAngerPercentAnger()`。
+- 説明文は `TXT_KEY_TRAIT_PEACE_ANGER`、都市の怒りの内訳は `TXT_KEY_ANGER_PEACE`
+
+## `TraitInfo/UniqueUnits`、`UniqueBuildings`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 志向の固有ユニット・固有建造物。
+- `<UniqueUnit><UnitClassType>…</UnitClassType><UnitType>…</UnitType></UniqueUnit>` の形で、文明の XML と同じくユニットクラス（建物クラス）ごとに書く。
+- ユニットはそのクラスのものであること（違うと起動時にエラー）。
+- **文明の固有より志向が優先**で、複数の志向が同じクラスを持つと XML の順で先のもの。
+- 偉人と大将軍も固有にできる。
+- 解決は `CvPlayer::getCivilizationUnit`・`getCivilizationBuilding` で、プレイヤーが分かる処理はすべてこれを通す（Python も `CyPlayer` の同名の関数。文明のペディアなど文明単位の表示は文明の XML のまま）。
+- ゲーム中に志向を得ると、それ以降の生産が固有のものに変わる。
+- すでにあるユニットと建物はそのまま残り、生産キューの元のものは続けられなくなる。
+- BtS の大将軍の生成は全ユニットから `iLeaderExperience` などを持つものをランダムに選ぶだけだったので、そのプレイヤーのユニットに変換するよう直した（文明の固有の大将軍もこれで動く）。
+- 説明文は `TXT_KEY_TRAIT_UNIQUE_UNIT`・`TXT_KEY_TRAIT_UNIQUE_BUILDING`。
+- ユニットと建物の説明には `TXT_KEY_UNIQUE_UNIT`・`TXT_KEY_UNIQUE_BUILDING` で志向名を出す。
+- Mod に入れていない BtS の Python（`CvAdvisorUtils`・`CvRandomEventInterface`・`CvTechSplashScreen`）と、捕獲したユニット（`getCaptureUnitType`）は文明の XML のまま
+
+## `TraitInfo/KnownTechCost`
+
+- ファイル: `CIV4TraitInfos.xml`
+- `<KnownTechCost>` に `iModifier`（必須）と `iLimit`（省略可）を書く。
+- 2026-11-21 に親タグにまとめた。
+- 研究費 %。
+- その技術を持つ、出会ったことのある他のチーム（生きている、マイナー文明と蛮族を除く）1 つにつき `iModifier`（-10 なら -10%）。
+- 合計は `iLimit`（-75 なら -75% まで）で止める。
+- `iLimit` 0 は上限なし（研究費は最低 1）。
+- チームの研究費（`CvTeam::getResearchCost`）に掛ける。
+- チームのメンバーのうちいちばん大きい割引を使う（`CvTeam::getKnownTechCostModifier`）。
+- BtS の「技術を知っている国の数による研究速度」（研究力に足す）とは別に効く。
+- 説明文は `TXT_KEY_TRAIT_KNOWN_TECH_COST_LIMIT` / `TXT_KEY_TRAIT_KNOWN_TECH_COST`
+
+## `TraitInfo/iAnarchyGoldenAgePercent`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 社会制度・宗教の変更による無政府期間が終わると、その無政府期間のターン数のこの % の黄金期になる（`CvPlayer::changeAnarchyTurns` で無政府が終わったとき）。
+- ゲームの速度は BtS の黄金期と同じ比率で効かせる: 無政府のターン数を速度の `iAnarchyPercent` で割って通常の速度に直し、`iGoldenAgePercent` を掛ける（エピックは無政府 150%・黄金期 125%、クイックは 67%・80%）。
+- 黄金期の期間 % `getGoldenAgeModifier` もかかる。
+- 1/100 ターンの精度で計算して最後に四捨五入、最低 1 ターン。
+- マップサイズ・都市数・開始時代は無政府の長さを通して効く（志向独自の補正はない）。
+- 数えるのは実際に無政府で過ごしたターン数で、社会制度・宗教の変更で足された無政府のターン数まで（スパイの任務による無政府は数えない）。
+- 無政府にならなければ黄金期もない（宗教志向やキリスト像では起きない）。
+- 数えている値は `CvPlayer` のセーブ（`uiFlag=9`）に入る。
+- フランスの「革命」の案
+
+## `TraitInfo/iTechCostModifier`、`iAttitudeChange`
+
+- ファイル: `CIV4TraitInfos.xml`
+- RFC の固有能力から。
+- `iTechCostModifier`: 技術の研究コスト %（`CvTeam::getResearchCost` の最後。チームの生きているメンバーの値の平均。RFC のマヤ「中世の終わりまで -40%」は `ConditionalFreeTraits` の `EraMax` と組み合わせる）。
+- `iAttitudeChange`: ほかのプレイヤー（AI）からこのプレイヤーへの態度 +N（`CvPlayerAI::AI_getAttitudeVal`。外交画面の態度の内訳に「志向による印象」の行。RFC のフランス）
+
+## `TraitInfo/iMaxNationalWondersPerCity`、`iMaxNationalWondersPerCityForOCC`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 1 都市に建設できる国家遺産の数の上限。
+- GlobalDefines の `MAX_NATIONAL_WONDERS_PER_CITY`（通常 2）・`MAX_NATIONAL_WONDERS_PER_CITY_FOR_OCC`（1 つの都市でチャレンジの人間のプレイヤー。通常 5）を、その志向を持つプレイヤーについて**置き換える**（緩める値だけでなく、define より小さい値も効く）。
+- `-1` で無制限、`0`（省略時）は指定なしで define のまま。
+- 複数の志向が値を持つときは最も緩いもの（`-1` が最優先、ほかは最大値）。
+- `CvPlayer::getMaxNationalWondersPerCity` にまとめ、`CvCity::isNationalWondersMaxed` と建物の説明文（上限に達したときの警告）がこれを使う。
+- ゲーム中に志向が変われば即座に反映される（数えるだけで状態を持たない）。
+- 上限を下げても建設済みの国家遺産は消えない。
+- Python: `CyPlayer.getMaxNationalWondersPerCity()`
+
+## `TraitInfo/bHumanCanBeVassal`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 人間のプレイヤーでも AI のプレイヤーの属国（平和的な属国・降伏）になれる。
+- BtS は人間を人間の属国にしかしない（`CvPlayer::canTradeItem` の `TRADE_VASSAL` / `TRADE_SURRENDER`。属国になる側のプレイヤーの志向を見る）。
+- AI の宗主国は、AI 同士のときと同じく、属国の戦争・和平を引き受けられるときだけ受け入れる（`CvPlayerAI::AI_considerOffer` で、人間の申し出の属国の項目に `getTradeDenial` = `CvTeamAI::AI_vassalTrade` / `AI_surrenderTrade` を見る。属国の側の意思の判定は人間なので素通り。それ以外は贈り物と同じく受け入れる）。
+- 属国になったあとは BtS の人間どうしの属国と同じ（宗主国の戦争に加わる、単独で宣戦・和平できない、平和的な属国は `PEACE_TREATY_LENGTH` ターン後に解消でき、降伏は `canVassalRevolt` を満たすと解消できる、宗主国は解消できない）。
+- AI の側から人間に属国化・降伏を求めることはない。
+- `ConditionalFreeTraits` の `bVassal` と組み合わせる。
+- 説明文 `TXT_KEY_TRAIT_HUMAN_CAN_BE_VASSAL`。
+- Python: `CyPlayer.isHumanCanBeVassal()`、`CvTraitInfo.isHumanCanBeVassal()`。
+- 三国志の Mod（The History of Three Kingdoms）にも同様の仕組みがあったはずとユーザーから聞いたが、DLL のソースが同梱されておらず、Python・XML にも見当たらなかった
+
+## `TraitInfo/NoObsolescence`（`bAllBuildings`・`BuildingClasses`・`SpecialBuildings`）
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-23 に `<NoObsolescence>` の子に移し、名前を `bIgnoreBuildingObsolescence`・`NoObsoleteBuildingClasses`・`NoObsoleteSpecialBuildings` から変えた（getter と Python の名前は元のまま）。
+- その志向を持つプレイヤーの都市では、建物が陳腐化しない。
+- `bAllBuildings` はすべての建物、`BuildingClasses`（`<BuildingClassType>` を何個でも。固有建物にも効く）と `SpecialBuildings`（`<SpecialBuildingType>` を何個でも。僧院は宗教ごとに建物クラスが違うので `SPECIALBUILDING_MONASTERY` で書く）は書いたものだけ。
+- 建物自身の `ObsoleteTech` と特殊建物の `ObsoleteTech` の**両方**を無視する。
+- BtS の陳腐化はチーム単位（`CvTeam::isObsoleteBuilding`）なので、プレイヤー単位の `CvPlayer::isObsoleteBuilding()`（チームとして陳腐化していて、志向で無視していない）を作り、都市の効果（`CvCity::processBuilding`・`getNumActiveBuilding`・`hasActiveWorldWonder`）、建設の可否（`CvPlayer::canConstruct`。陳腐化しないので技術の後も建てられる）、陳腐化した瞬間に効果を外す処理（`CvTeam::changeObsoleteBuildingCount`。志向を持つプレイヤーの都市は外さない）、チームの合流（`CvTeam::addTeam`）、商業・産出の内訳の表示をこれに置き換えた。
+- 同じチームでも、志向を持つメンバーの都市だけ効き続ける。
+- 説明文: 志向は `TXT_KEY_TRAIT_IGNORE_BUILDING_OBSOLESCENCE`（「建物が陳腐化しない」）か `TXT_KEY_TRAIT_NO_OBSOLETE_BUILDINGS`（「陳腐化しない: 城, 大図書館, 僧院」。建物はその文明の建物で、リンク付き）。
+- ゲーム中は、志向で無視する建物について、建物の「○○によって陳腐化」と技術の「○○を陳腐化させる」を出さない（ペディアでは常に出す）。
+- 資源（`TechObsolete`。BtS のデータでは未使用）とイベント（`ObsoleteTechs`）は対象外。
+- 建物クラスは志向より後に読み込まれるので、`readPass3()` で番号に変える（このため `CvTraitInfo::readPass3()` を呼ぶ位置を建物クラスの読み込みの後に移した）。
+- そのつど判定するのでセーブデータは変わらないが、**既存のセーブで志向を与えると、すでに陳腐化して外された効果は戻らず、その建物が壊されると値がずれる**ので、確認は新しいゲームで行う。
+- 志向をゲームの途中で付け外しできるようにするときは、陳腐化した建物の効果の足し引きが必要
+
+## `TraitInfo/NoObsolescence`（`bAllBonuses`・`Bonuses`）
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-23 に `<NoObsolescence>` の子に移し、名前を `bIgnoreBonusObsolescence`・`NoObsoleteBonuses` から変えた（getter と Python の名前は元のまま）。
+- 資源の陳腐化を防ぐ（上の項目の `bAllBuildings`・`BuildingClasses` の資源版）。
+- `bAllBonuses` はすべての資源、`Bonuses`（`BonusType` を何個でも）は書いた資源。
+- BtS で陳腐化する資源は毛皮（プラスチック）、象牙（工業主義）、鯨（内燃機関）。
+- 資源の陳腐化はチーム単位（`CvTeam::isBonusObsolete`）なので、チームの生きているプレイヤーの誰かが志向を持てば、チーム全体でその資源が陳腐化しない（`isBonusObsolescenceIgnored`）。
+- ゲームの途中で志向を得た・失ったときは、そのチームのタイルの資源を数え直す（`CvPlayer::updateTraitBonusPlots`）。
+- 取引は本体どおり、受け取る側で陳腐化していれば取引できない。
+- 資源は志向より後に読み込まれるので、リストは `readPass3()` で番号に変える。
+- 説明文 `TXT_KEY_TRAIT_IGNORE_BONUS_OBSOLESCENCE` / `TXT_KEY_TRAIT_NO_OBSOLETE_BONUSES`
+
+## `TraitInfo/Hurrys`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 緊急生産の解禁と補正（2026-11-19 に `WonderHurrys`・`bIgnoreWonderHurryCostModifier`・`UnitHurrys`・`HurryUnitExperiences` をまとめて作り直した）。
+- `<Hurry>` を何個でも書ける。
+- 各項目は `HurryType` と、省略可の対象の絞り込み `bUnitsOnly`（ユニット）・`bBuildingsOnly`（建造物すべて）・`bWondersOnly`（世界遺産・チーム遺産・国家遺産）・`bWorldWondersOnly`・`bNationalWondersOnly`（どれもなければユニットと建造物すべて、複数あればそのどれか）、`iCostModifier`（その緊急生産の費用 %）、`bIgnoreCostModifier`（遺産などの追加の費用 `iHurryCostModifier` を無視。割引はそのまま）、`iExperience`（その方法で緊急生産したユニットの経験値。ユニット以外では何もしない。エラーも出さない）。
+- 対象の項目があれば、その緊急生産を社会制度なしで使える（`CvPlayer::isTraitHurry`。`CvCity::canHurry` / `canHurryUnit` / `canHurryBuilding`、緊急生産のボタンの説明で必要な社会制度を出さない）。
+- 費用・追加費用の無視・経験値は、社会制度で解禁された緊急生産にも効く（`CvPlayer::getTraitHurryCostModifier` / `isTraitHurryIgnoreCostModifier` / `getTraitHurryExperience`）。
+- 費用は `CvCity::getHurryCostModifier` に緊急生産の種類を渡して掛ける（`hurryGold` / `hurryPopulation` / `hurryProduction` も同じ種類で計算するので、人口による緊急生産でも完成までの生産になる。AI の見積もりの一部は種類を渡さない）。
+- 経験値は、緊急生産した都市で次に完成した同じユニットに付く（`CvCity` の `m_eHurriedUnit`・`m_eHurriedUnitHurry`、セーブの `uiFlag=6`）。
+- 緊急生産の種類は志向より後に読み込まれるので `readPass3()` で番号に変える。
+- 説明文 `TXT_KEY_TRAIT_HURRY`（「社会制度なしで資金による緊急生産ができる（ユニット）：費用-25%、緊急生産したユニットの経験値+3」。対象は `TXT_KEY_TRAIT_HURRY_TARGET_*`、補正は `TXT_KEY_TRAIT_HURRY_COST` / `_IGNORE_COST` / `_EXPERIENCE`）。
+- Python は `CvTraitInfo.getNumHurrys()` / `getHurryType(i)` / `getHurryCostModifier(i)` / `getHurryExperience(i)`、`CyPlayer.isTraitHurry(eHurry, eUnit, eBuilding)` / `getTraitHurryCostModifier(eHurry, eUnit, eBuilding)` / `getTraitHurryExperience(eHurry, eUnit)`
+
+## `TraitInfo/NoTechProcesses`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 生産の種類（`ProcessType`。富・研究・文化）を何個でも書ける。
+- その生産の `TechPrereq` なしで都市が選べる（`CvPlayer::canMaintain`）。
+- アルファベットなしで研究、通貨なしで富。
+- 志向を失うと、次に都市が生産を続けられるか確かめたときに外れる（BtS の判定）。
+- 生産の種類は `LoadPostMenuGlobals`（ゲームを始めるとき）で読み込まれるので、`CvTraitInfo::readPass4()` で番号に変える（文字列を残しておき、読み込み直されても同じ結果になる）。
+- このため文明選択の画面など、ゲームの前の説明文には出ない。
+- 説明文 `TXT_KEY_TRAIT_NO_TECH_PROCESSES`（「技術なしで選べる生産: 富, 研究」）。
+- Python は `CyPlayer.isNoTechProcess(eProcess)`、`CvTraitInfo.isNoTechProcess(iProcess)`
+
+## `TraitInfo/FreeTechs`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 文明の `FreeTechs` と同じ書式（`<FreeTech>` が `TechType` + `bFreeTech`）。
+- ゲーム開始時にその技術をチームに与える（`CvPlayer::initTraitFreeTechs`。`CvGame::setInitialItems` で、`ConditionalFreeTraits` の後、`PyOnGameStart` の前。開始時に条件で得た志向の分も与える）。
+- 文明の初期技術と同じく、前提の技術は見ない。
+- ゲームの途中で得た志向では与えない。
+- 技術の数は開始時代で価値が変わる（後の時代から始めると、すでに持っている）。
+- 説明文 `TXT_KEY_TRAIT_FREE_TECHS`（「ゲーム開始時に得る技術: 車輪, 陶器」。リンク）。
+- Python は `CvTraitInfo.isFreeTech(iTech)`
+
+## `TraitInfo/bRevealWonderProduction`・`bRevealWarPlans`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 他の文明の内情が、右下の指導者名と指導者の顔（外交画面・外交顧問）のツールチップに出る。
+- どれかの志向が持っていれば有効（`CvPlayer::isRevealWonderProduction`・`isRevealWarPlans`）。
+- **`bRevealWonderProduction`**: 相手の都市のうち、生産の先頭が世界遺産の都市ごとに「建造中「遺産名」：「都市名」」（`TXT_KEY_REVEALED_WONDER_PRODUCTION`）。
+- 都市がこちらの地図で未確認なら都市名は「？？？」（`TXT_KEY_REVEALED_UNKNOWN`）。
+- 人間の相手にも出る。
+- **`bRevealWarPlans`**: 相手（AI だけ）のチームが戦争計画（準備中・自分から始めた戦争・応戦のすべて。`CvTeamAI::AI_getWarPlan` が `NO_WARPLAN` 以外）を持っていれば「戦争計画「文明名」・「都市名」」（`TXT_KEY_REVEALED_WAR_PLAN`）。
+- 計画が複数あれば `CvTeamAI::AI_startWarVal` が最も大きいチーム。
+- ただし表示では近さの項（`AI_teamCloseness`）を飛ばす（`bIgnoreCloseness`。都市の AI のキャッシュを書き換えるため、表示から呼ぶと同期がずれうる）。
+- 都市はそのチームの全都市のうち、相手のプレイヤーから見た `CvPlayerAI::AI_targetCityValue`（乱数なし）が最も大きいもの。
+- 文明名はその都市の持ち主（都市がなければチームのリーダー）。
+- こちらが未接触の文明は「？？？」、未確認の都市も「？？？」。
+- AI の文明の行は `CvGameTextMgr::getAttitudeString` の末尾で、態度の相手が操作中のプレイヤーのときだけ足す（外交顧問の AI 同士の関係には出ない）。
+- 人間の文明の行は `CvDLLWidgetData::parseContactCivHelp` で足す。
+- 本体は `CvGameTextMgr::getRevealedPlansString`（文言は `getRevealedWonderText`・`getRevealedWarPlanText`）。
+- **アナウンス**: 志向を持つ人間のプレイヤー（相手のチームと接触済み・別のチーム）に、先頭に文明名を付けて同じ文言で知らせる（`TXT_KEY_REVEALED_ANNOUNCE`。例「モンゴル：建造中「ピラミッド」：「？？？」」）。
+- 都市が見えていれば矢印でその場所を示す。
+- 世界遺産は都市のターンの終わり（`CvCity::doTurn` の生産の後、`CvCity::doRevealedWonderAnnouncement`）に、生産の先頭の世界遺産が前回の判定から変わっていたら出す（AI は生産を選び直すときに予約を空にして積み直すので、先頭が変わるたびに判定すると一瞬だけ先頭に来た遺産も拾ってしまう）。
+- 前回の遺産 `CvCity::m_eRevealedWonderProduction` はセーブせず、読み込み時に今の先頭の遺産を入れる（読み込み直後には出さない）。
+- 遺産から別の遺産に切り替えるたび、また切り替えて戻ったときにも出る。
+- 戦争計画は、AI のチームが計画なしから新しい計画を持ったとき（`CvTeamAI::AI_setWarPlan` から `AI_announceWarPlan`。準備中・戦争・応戦のどれでも。準備中から総力戦などへの切り替えでは出さない）。
+- 都市はチームのリーダーから見て選ぶ。
+- 説明文 `TXT_KEY_TRAIT_REVEAL_WONDER_PRODUCTION`・`TXT_KEY_TRAIT_REVEAL_WAR_PLANS`。
+- Python は `CyPlayer.isRevealWonderProduction()`・`isRevealWarPlans()`、`CvTraitInfo.isRevealWonderProduction()`・`isRevealWarPlans()`。
+- AI の隠れた挙動の全体は `docs/ai-hidden-behavior.md`
+
+## `TraitInfo/bRevealHiddenAttitude`
+
+- ファイル: `CIV4TraitInfos.xml`
+- AI の態度のうち、BtS の外交のツールチップに出ない補正も、ほかの補正と同じく緑（プラス）・赤（マイナス）の行で出す（`CvGameTextMgr::getAttitudeString`）。
+- 操作中のプレイヤーの志向で判定するので、外交顧問での AI 同士の態度にも出る。
+- どれかの志向が持っていれば有効（`CvPlayer::isRevealHiddenAttitude`）。
+- 項目は `CvPlayerAI::AI_getHiddenAttitude`（`HiddenAttitudeTypes`）: 指導者の性格（`iBaseAttitude`）、難易度（相手の難易度の `iAttitudeChange`）、和平への姿勢の近さ（AI 同士だけ。`4 - |PeaceWeight の差|`）、好戦性への敬意（AI 同士だけ。`iWarmongerRespect` の小さい方）、チームの人数の差、順位の差（`iWorseRankDifferenceAttitudeChange`・`iBetterRankDifferenceAttitudeChange`）、ともに下位（+1）、戦争での劣勢（`iLostWarAttitudeChange`）。
+- これらは `CvPlayerAI::AI_getAttitudeVal` から値を変えずに移したもので、態度の計算もこの関数を使う（表示と計算がずれない）。
+- 表示される行の合計が態度の値になる（-100〜100 に収める前）。
+- テキストは `TXT_KEY_MISC_ATTITUDE_HIDDEN_*`（`CIV4GameText_ClaudeSample.xml`）。
+- 説明文 `TXT_KEY_TRAIT_REVEAL_HIDDEN_ATTITUDE`。
+- Python は `CyPlayer.isRevealHiddenAttitude()`、`CvTraitInfo.isRevealHiddenAttitude()`
+
+## `TraitInfo/bIgnoreEvents`、`iEventChanceChange`、`bNoFirstEventDelay`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-23。
+- `bIgnoreEvents`: その志向を持つプレイヤーのランダムイベントの画面に、選択肢「このイベントを無視する」（`TXT_KEY_POPUP_IGNORE_EVENT`）が増える（`CvDLLButtonPopup::launchEventPopup`。選べる選択肢が 1 つもなく画面が出ないイベントには出ない）。
+- イベントの XML は変えず、良いイベントにも出る。
+- 選ぶとどの選択肢も適用されず、トリガーは選択肢を選んだときと同じく発生済みになる（繰り返さないトリガーは二度と来ない。グローバル・チームのトリガーは他のプレイヤーでも発生済み。世界ニュースは出さない。トリガーの `PythonCallback` は呼ばれる。BtS のトリガーには設定されていない）（`CvPlayer::ignoreEvent`）。
+- 結果は `ModNetMessage`（`MOD_NET_MESSAGE_IGNORE_EVENT` = -20261126。`CvNetModNetMessage::Execute` が DLL で処理し、Python には渡さない）で全員のコンピューターに送る。
+- 無視できないもの: クエストは断ることになる（完了報酬の画面で選ぶと報酬を失う）、前の選択で予約された後続のイベント（`AdditionalEvent` のカウントダウン。画面なしで適用）、他国の選択による効果。
+- AI は使わない（`AI_chooseEvent` で選ぶ）。
+- `iEventChanceChange`: 毎ターンの新しいイベントの判定（`CvPlayer::doEvents`。100 面のうち時代の `iEventChancePerTurn`。古代 1 〜 未来 10）に志向の合計を足す。
+- 100 以上なら毎ターン判定に通る（そのうえで発生できるトリガーの重みから 1 つ選ぶ）。
+- 最初の 20 ターン（`FIRST_EVENT_DELAY_TURNS`）は変わらず発生しない。
+- `bNoFirstEventDelay`: その最初の 20 ターンの待ちをなくし、ゲームの開始直後から新しいイベントの判定をする（`doEvents`）。
+- 説明文 `TXT_KEY_TRAIT_IGNORE_EVENTS`・`TXT_KEY_TRAIT_EVENT_CHANCE_CHANGE`・`TXT_KEY_TRAIT_NO_FIRST_EVENT_DELAY`（`FIRST_EVENT_DELAY_TURNS` の値を渡す）。
+- Python: `CvTraitInfo.isIgnoreEvents()`・`getEventChanceChange()`、`CvTraitInfo.isNoFirstEventDelay()`、`CyPlayer.isIgnoreEvents()`・`getEventChanceChange()`・`isNoFirstEventDelay()`・`ignoreEvent(iEventTriggeredId)`（全員のコンピューターで呼ぶこと）
+
+## `TraitInfo/Deals`（`bBuyCities`・`iCityValueModifier`・`iGoldLimitModifier`・`iGoldValueModifier`）
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-24。
+- AI との取引の条件。
+- すべて省略可。
+- `bBuyCities`: 平時でも AI がこのプレイヤーに都市を売る（`CvPlayerAI::AI_cityTrade` の `DENIAL_NEVER` を飛ばす。BtS の AI は戦争を終える取引でしか都市を出さない）。
+- 首都・属国・「都市の排除」のオプションの制限は `canTradeItem` のまま。
+- AI は都市の値段（下記）と釣り合えば売る。
+- BtS の外交画面は、平時の人間と AI の取引で都市を都市としか組み合わせられない（`CvPlayer::updateTradeList`）。
+- どちらかのプレイヤーが `bBuyCities` を持つときは、都市を毎ターンでない品物（金・技術など）と同じ取引に載せられる（毎ターンの品物とは BtS どおり組み合わせられない）。
+- 都市の重要さ（聖都・遺産）は値段に入らない（BtS の値段の式のまま）。
+- `iCityValueModifier`: このプレイヤーが取引で受け取る都市の値段 %（`AI_cityTradeVal` の最後。値段は受け取る側が計算するので、AI はこの値段を求める。-50 で半額）。
+- 戦争を終える取引で都市を要求するときにも効く。
+- このプレイヤーが AI に都市を渡すときは変わらない。
+- `iGoldLimitModifier`: AI がこのプレイヤーに 1 回の取引で出す金の上限 %（一括 `AI_maxGoldTrade` と毎ターン `AI_maxGoldPerTurnTrade`。指導者の `iMaxGoldTradePercent` などの後に掛ける）。
+- AI の所持金・研究の蓄え・収入による上限はそのまま。
+- `iGoldValueModifier`: このプレイヤーが出す金（一括・毎ターン）を AI が評価する価値 %（`AI_goldTradeValuePercent(eGiver)`。BtS は金 1 = 価値 2、財政難なら 3。50 なら AI が求める金は 2/3）。
+- `AI_dealVal`・逆提案（`AI_counterPropose`）・AI からの技術の取引の提案（`AI_doDiplo`）で使う。
+- どれも志向の合計（`bBuyCities` はどれかが持っていれば有効）。
+- AI どうしの取引には効かない（そのプレイヤーが AI でも、相手の AI がこのプレイヤーと取引するときは効く）。
+- Python: `CyPlayer.isBuyCities()`・`getDealCityValueModifier()`・`getDealGoldLimitModifier()`・`getDealGoldValueModifier()`。
+- 説明文 `TXT_KEY_TRAIT_DEAL_BUY_CITIES`・`_CITY_VALUE_MODIFIER`・`_GOLD_LIMIT_MODIFIER`・`_GOLD_VALUE_MODIFIER`。
+- 外交画面で AI の都市にカーソルを乗せると「値段の目安: [金]N（価値 V）」が出る（志向に関係なく、相手が AI の都市すべて。`CvDLLWidgetData::parseTradeItem`、`TXT_KEY_TRADE_CITY_PRICE`）。
+- V は受け取る側の `AI_cityTradeVal`、N は V を AI がこちらの金につける価値（`AI_goldTradeValuePercent(eGiver)`）で割って切り上げた額で、`AI_considerOffer` と同じ計算。
+- 平時は金 N だけで取引が成立する。
+- 戦争中は戦争を終える価値が取引に加わるので目安にならない
+
+## `TraitInfo/FoundingVassal`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-23。
+- 最初の都市を建てると、AI の文明がその近くでゲームに参加し、永久同盟としてチームに加わる。
+- `<FoundingVassal>` に `CivilizationType`・`LeaderType`・`HandicapType`・`iRange` を書く（すべて省略可。タグを書けば有効）。
+- **発動**: `CvPlayer::found` の最後（`PyOnCityFounded`・`CityFoundedUnits` の後）の `doFoundingVassal`。
+- 1 プレイヤーにつき 1 回だけ（`m_bFoundingVassalDone`。都市をすべて失って建て直しても発動しない。何も起きなかったときも済みになる）。
+- 複数の志向が持つときは番号の小さい志向。
+- 蛮族・小文明は対象外。
+- 上級スタートでは、最初の都市を置いた時点で発動する（都市を売り戻しても AI は残る）。
+- **プレイヤーの枠**: 一度も参加していない枠 → 滅んだプレイヤーの枠（チームも滅んでいるもの）の順（植民地の分離と同じ）。
+- 空きがなければ何も起きない。
+- **文明と指導者**: タグの値（組み合わせは自由）。
+- すでに参加した（`isEverAlive`）プレイヤーが使っている、蛮族、`NONE`、省略のときは自動。
+- 文明の自動は植民地の分離と同じ（`getSplitEmpireLeaders`: 自分以外の、未使用で AI がプレイできる文明。`DerivativeCiv` を優先し、あとは乱数）。
+- 指導者の自動は、その文明の指導者（「どの文明の指導者にも」オプションなら全員）→ 全指導者、の順に未使用のものから乱数。
+- **場所**: 最初の都市から `iRange`（省略時 5、最小 1）タイル以内で 3 タイル以上（`iRange` が 3 未満ならその値以上）離れた、同じ大陸の陸地。
+- 通行可能、誰の領土でもない、ユニットがいない、部族集落がないタイル。
+- その中で、新しい AI の開始位置としての価値（`AI_foundValue` の `bStartingLoc`）が最大のタイル。
+- 価値がどれも 0 なら最も近いタイル。
+- 候補がなければ何も起きない（プレイヤーを足す前に調べる）。
+- **参加の処理**: `CvGame::addPlayer`（植民地の分離と同じ）→ 開始時の資金（`initFreeState`）→ 開始位置 → `CvTeam::addTeam`（永久同盟の合流と同じ。技術・地図・接触・戦争をチームで共有）→ ユニット。
+- AI 自身の難易度は `STANDARD_HANDICAP`（貴族）。
+- **ユニット**: その難易度の AI がゲーム開始時に持つ初期ユニットすべて（`CvPlayer::addStartingUnits`。上級スタートなしの `initFreeUnits` から切り出した）。
+- 文明の初期ユニット × （時代の `iStartingUnitMultiplier` + `HandicapType` の `iAIStartingUnitMultiplier`）、防衛ユニット・労働者・探索ユニットを それぞれ 時代の値 + 自分の難易度の値 + `HandicapType` の `iAI〜` 体。
+- 種類はチームの技術で決まる（`addFreeUnitAI`）。
+- 貴族・古代なら開拓者 1 体と探索ユニット（戦士か斥候）1 体。
+- 上級スタートのゲームでも、開始ポイントではなくユニットを出す。
+- **AI の補正**: `HandicapType` を書くと、この AI の AI 補正（`iAITrainPercent`・`iAIGrowthPercent`・`iAIUnitCostPercent` など）は、ゲームの難易度ではなくその難易度のものになる（`CvPlayer::getAIHandicapType`）。
+- `NONE` または省略ならゲームの難易度（他の AI と同じ）。
+- AI 補正を読む CvPlayer・CvPlayerAI・CvUnit の 34 か所を `getAIHandicapType()` に変えた（チーム単位の `iAIDeclareWarProb` はゲームの難易度のまま）。
+- 研究はチームで共有するので、研究コストには効かない。
+- **チームへの影響**: 参加した AI（`CvPlayer::isFoundingVassal`）は、研究コストのメンバー数の補正（`TECH_COST_EXTRA_TEAM_MEMBER_MODIFIER`）と、チームの難易度の平均（`CvTeam::getHandicapType`。研究コストに使う）に数えない（参加した AI しか生きていなければ数える）。
+- そのほかはチーム戦の仕様どおり（AI の指導者の志向のうちチームで効くもの、諜報任務のコストがメンバー数倍など）。
+- 参加した AI の志向に `FoundingVassal` があっても発動しない。
+- ゲーム開始時の志向のフック（`PyOnGameStart`）は、参加した AI では呼ばれない。
+- **メッセージ**: 「（文明）の（指導者）が（自分）と永久同盟を結び、ゲームに参加」（`TXT_KEY_MISC_FOUNDING_VASSAL_JOINED`）を、そのチームを知るプレイヤーに出し、リプレイにも残す。
+- セーブは `CvPlayer` の `uiFlag=18`（`m_bFoundingVassalDone`・`m_bFoundingVassal`・`m_eAIHandicap`）。
+- 説明文: `TXT_KEY_TRAIT_FOUNDING_VASSAL`（文明・指導者は `_ANY_CIV`・`_LED_BY`、難易度は `_HANDICAP`）。
+- Python: `CvTraitInfo.isFoundingVassal`・`getFoundingVassalCivilization`・`getFoundingVassalLeader`・`getFoundingVassalHandicap`・`getFoundingVassalRange`、`CyPlayer.getAIHandicapType`・`isFoundingVassal`

@@ -2,30 +2,298 @@
 
 ## 施設・作業
 
-| ファイル | タグ | 内容 |
-|---|---|---|
-| `CIV4ImprovementInfos.xml` | `ImprovementInfo/AdjacentPeakYieldChanges` | 隣接する山岳のタイル 1 つにつき、施設の産出に加算（Civ5 のインカの棚田）。隣接は 8 方向（`CvPlot::getNumAdjacentPeaks`）。`CvPlot::calculateImprovementYieldChange` で足すので、作業の説明の予測にも含まれる。山岳はゲーム中ふつう変わらないので、隣のタイルが山岳に変わっても（ワールドビルダーなど）そのタイルの産出が計算し直されるまで反映されない。説明文は施設の説明に「+1[食料] (隣接する山岳1つにつき)」（`TXT_KEY_MISC_PER_ADJACENT_PEAK`）。キャッシュの形式: `CvImprovementInfo` `uiFlag=1`。施設の XML と Schema（`Terrain/CIV4ImprovementInfos.xml`・`CIV4TerrainSchema.xml`）はこのために Mod に追加した |
-| `CIV4ImprovementInfos.xml` | `ImprovementInfo/AdjacentImprovementYieldChanges`、`AdjacentFeatureYieldChanges` | 隣接するタイル（8 方向）1 つにつき、施設の産出に加算（Civ6 の隣接ボーナス）。`<AdjacentImprovementYieldChange>`（`ImprovementType` + `Yields`）・`<AdjacentFeatureYieldChange>`（`FeatureType` + `Yields`）を何個でも書ける。施設は、書いた施設とその上位の施設（コテージなら集落・村・町）を数えるので、同じ系統は一番下の施設だけを書く（両方書くと両方足される）。自分と同じ施設も書ける（並べるほど強くなる）。隣接するタイルの持ち主は問わない。`CvPlot::calculateImprovementYieldChange` で足すので、作業の説明の予測にも含まれる。施設か地形の特徴が変わると、周りの施設の産出を計算し直す（`CvPlot::updateAdjacentImprovementYields`）。施設が後ろの施設を参照できるように `readPass2` で読む。説明文は施設の説明とペディアに「(隣接する○○ 1つにつき)」。キャッシュの形式: `CvImprovementInfo` `uiFlag=5` |
-| `CIV4ImprovementInfos.xml` | `ImprovementInfo/iUniqueRange`、`iMaxPerCity`、`iMaxPerPlayer` | 施設の数の制限（`iUniqueRange` は C2C と同じ名前）。どれも同じ系統（最終的な上位の施設が同じ。コテージと集落など）を数え、作業を始めるときと作業中の毎ターンに確かめる（`CvPlot::canBuild` の `bTestVisible` でないとき。`CvPlot::getImprovementLimit`）。作業のボタンは表示されたまま押せなくなり、ボタンの説明に理由が赤字で出る。施設の上位への成長は制限しない。`iUniqueRange`: 同じ系統の施設からこの距離以内には作れない（`plotDistance`。1 なら隣接 8 タイル）。`iMaxPerCity`: そのタイルを働かせられる自分の各都市の都市圏に、同じ系統の施設がこの数あると作れない（重なった都市圏では、どの都市にも空きが要る）。`iMaxPerPlayer`: 自国の領土（`CvPlayer::getImprovementCount`。自分が持つタイル）に同じ系統の施設がこの数あると作れない（領土の外の施設は数えない）。0 は制限なし |
-| `CIV4ImprovementInfos.xml` | `ImprovementInfo/iRange`、`iHealRateChange`、`iRangeDefenseModifier` | 範囲内のユニットへの効果（FFH2 と同じ名前。FFH2 の `iHealRateChange` は施設の上のユニットだけだが、この Mod は `iRange` の範囲に広げた）。施設のタイルから `iRange`（`plotDistance`。0 なら施設のタイルだけ）以内にいる、**施設のタイルを持つチーム**のユニットの回復（% / ターン。`CvUnit::healRate`）と防御（%。`CvPlot::defenseModifier` に足すので、戦闘のオッズとタイルの説明では地形の防御に含まれ、防御ボーナスを受けないユニットには効かない）。施設の上に敵のユニットがいる間は効かない。複数の施設の効果は重ならず、いちばん大きい値だけ（正の値だけ）。領土の外の施設（持ち主がいない）は効かない。効果を持つ施設がなければ周りを探さない（`getMaxImprovementRange`）。`CvPlot::getImprovementRangeValue`。キャッシュの形式: `CvImprovementInfo` `uiFlag=6` |
-| `CIV4ImprovementInfos.xml` | `ImprovementInfo/iPlotVisibilityChange` | 施設のタイルの持ち主は、そのタイルから `PLOT_VISIBILITY_RANGE`（1）+ この値のタイルまで見える（見張り台・烽燧台）。ユニットは要らない。FFH2・C2C の `iVisibilityChange`（施設の上にいるユニットの視界）とは別物で、ユニットの視界はユニットが動くたびに計算するため、ユニットがいる間に施設が変わると視界の数がずれる。こちらはタイルの持ち主の視界（`CvPlot::getOwnerVisibilityRange`）に足し、持ち主が変わるとき（`setOwner`）、施設が変わるとき（`setImprovementType`）、地形の特徴が変わるとき（`updateSeeFromSight` の範囲を最大の値まで広げた）に同じ範囲で足し引きする。**ゲームの途中でこの値を変えると、すでにある施設の視界の数がずれる**（新しいゲームで確かめる） |
-| `CIV4ImprovementInfos.xml` | `ImprovementInfo/iCulture`、`iCultureRange` | 施設の文化と国境（名前は C2C と同じ。C2C は文化の仕組みごと作り変えているので、作りは別物）。施設のタイルの持ち主は、毎ターン、そこから `iCultureRange`（`plotDistance`。0 なら施設のタイルだけ）以内の各タイルに `iCulture` の文化を得る（`CvPlot::doImprovementCulture`。`CvPlot::doTurn` から。他国のタイルにも入るので、他国の国境を押し返す）。BtS はタイルの持ち主を「文化が一番多く、そのタイルを都市の文化圏に含む文明」で決めるので、その範囲を持ち主の文化圏の範囲内として扱う（`CvPlot::isWithinCultureRange` → `isImprovementCultureRange`）。これで、都市の文化圏の外にも国境が広がる。**自国の領土の施設だけ**（持ち主のいないタイルの施設は何もしない。領土の外に建てて国境を主張する仕組みは、後で FFH2 の集落として作る予定）。施設のタイルの持ち主が変わると、範囲も新しい持ち主のものになる（周りのタイルは次のターンの文化で決め直される）。施設がなくなると、その範囲のタイルの持ち主をすぐ決め直す（`setImprovementType`）。セーブする値はない。`iCulture` が 0 なら `iCultureRange` も働かない。キャッシュの形式: `CvImprovementInfo` `uiFlag=7` |
-| `CIV4ImprovementInfos.xml` | `ImprovementInfo/bMakesPassable`、`iPassageMoveCost` | 山岳など通れないタイルに作れて、陸上ユニットがその上を通れるようになる施設（Civ6 のインカのトンネル）。作れる地形は `TerrainMakesValids`（山岳は `TERRAIN_PEAK`）で書く。通れる相手は国境のふつうのルールのとおり。`iPassageMoveCost` は追加の移動コスト（ユニットの移動力まで）。道路を引けて、交易路や資源もつながる（`isTradeNetworkImpassable`）。`isImpassable()` は true のままなので、都市は建てられず、タイルの産出も 0 のまま。作る前の山岳には、その施設を作れる労働者だけが入れる（`CvUnit::canEnterImpassablePlot`）。そのため、作れる範囲の山岳は労働者の経路にも使われる。略奪されると通れなくなる（上にいるユニットは出られる）。完成した施設の上では、昇進の `ImpassablePlotPassages` のダメージを受けず、移動コストも `iPassageMoveCost` だけになる。説明文は `TXT_KEY_IMPROVEMENT_MAKES_PASSABLE`・`TXT_KEY_IMPROVEMENT_PASSAGE_MOVE_COST`。**水上の施設（`bWater` 1）にも使える**（Civ6 のオランダのポルダー）。湖と沿岸は `TERRAIN_COAST`。陸上ユニットがそのタイルを歩け、上陸のペナルティもない。市民は `isWaterWork` なしで働け、封鎖の影響も受けない。作る前の水上タイルには、作れる労働者が**陸から**だけ入れる（海を歩けないように）。略奪されると、上の陸上ユニットは近くの陸へ移る（`verifyUnitValidPlot`）。タイルは水のままなので、船も通れる |
-| `CIV4ImprovementInfos.xml` | `ImprovementInfo/iUniqueChance`、`bImpassable` | 世界に 1 つだけの名所（FFH2 の旧所名跡、Civ5 の自然遺産）。`iUniqueChance` は地図の生成時に 1 つ置かれる確率 %（100 なら必ず）。FFH2 の `bUnique` は全施設で共通の確率だが、施設ごとに書ける形にした。配置は `CvMapGenerator::addUniqueImprovements`（`addGoodies` の直後なので再生成にも効く。シナリオの地図は通らない）。候補は資源と施設がなく、隣接タイルにも施設がなく、`canHaveImprovement` が通るタイルで、そこからランダムに選ぶ。置くと地形の特徴を消す。地図には名前の看板を立てる（`CvEventManager.onImprovementBuilt` の `CyEngine().addSign`。FFH2 と同じで、`addLandmark` は日本語が化ける）。山岳に置くなら `TerrainMakesValids` に `TERRAIN_PEAK`。略奪や上書きを防ぐには BtS の `bPermanent` も書く。都市は建てられない（`canFound`）。`bImpassable` はそのタイルを通れなくする（`CvPlot::isImpassable`。都市圏にあれば働ける）。タイルの産出は `YieldChanges`。説明文は `TXT_KEY_IMPROVEMENT_UNIQUE`・`TXT_KEY_IMPROVEMENT_IMPASSABLE` |
-| `CIV4BuildInfos.xml` / `CIV4ImprovementInfos.xml` | `BuildInfo/PrereqOrTraits`・`ReplacedBuild`・`UnitsFromBuild`、`ImprovementInfo/ReplacedImprovement` | 固有の施設（道路などの作業も同じ）。**新規**: 施設と作業を足し、作業に `PrereqOrTraits`（どれか 1 つの志向を持つプレイヤーだけ作業できる。`CvPlayer::canBuildByTraits`）を書く。**置換**: さらに作業に `ReplacedBuild`（例: `BUILD_FARM`）を書くと、その志向を持つプレイヤーには元の作業が出なくなる。志向のない `ReplacedBuild` は全員の作業を置き換える。置き換える作業の前提技術が元より遅くても、元の作業は志向を持つ時点で消える（固有ユニットと同じ考え方）。`ReplacedBuild` と `UnitsFromBuild` は**そのファイルで先に書かれた作業**だけを書ける。`UnitsFromBuild`（例: `BUILD_FARM`）: その作業ができるユニットは、この作業もできる（`CvUnitInfo::read`。`ReplacedBuild` も同じ）。労働者などの `Builds` を書き換えなくてよい。`ReplacedImprovement`（施設の側）: 元の施設への、社会制度と志向の `ImprovementYieldChanges`、建物の `ImprovementFreeSpecialists` を受ける（`CvPlot::calculateImprovementYieldChange`、`CvCity::getImprovementFreeSpecialists`）。イベントの `ImprovementsRequired` と建物の `PrereqOrImprovements` では元の施設として数える（`CvPlot::isImprovementOrReplacing`）。施設自身の数値は引き継がないので、元の施設の項目を複製して書く（`TechYieldChanges` も施設の項目なので複製する）。1 段だけで、連鎖はしない。**作業と施設の置換は別のタグ**（作業の置換だけ書くと元の施設の社会制度の効果は受けない）。すでにあるタイルはそのまま: 元の施設は残り（作業で上書きできる）、固有の施設を占領した相手も使える（作り直しはできない）。志向を得た・失ったときも同じ。AI は `canBuild` で判定するので、作業できるものから選ぶ。説明文: 志向に `TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT` / `_REPLACES`、施設に `TXT_KEY_IMPROVEMENT_REPLACES` と前提の志向。ゲーム中の説明文（ユニット、技術、タイルの資源）と技術ツリーは、操作中のプレイヤーの作業だけを出す。技術ツリーは志向の組み合わせが変わると開いたときに作り直す（`CvTechChooser.getTraitKey`）。キャッシュの形式: `CvImprovementInfo` `uiFlag=2`（`CvBuildInfo` にストリーム版はない）。Python は `CyPlayer.canBuildByTraits(iBuild)`、`CvBuildInfo.getNumPrereqOrTraits()` / `getPrereqOrTraits(i)` / `getReplacedBuild()` / `getUnitsFromBuild()`、`CvImprovementInfo.getReplacedImprovement()` |
+### `ImprovementInfo/AdjacentPeakYieldChanges`
+
+- ファイル: `CIV4ImprovementInfos.xml`
+- 隣接する山岳のタイル 1 つにつき、施設の産出に加算（Civ5 のインカの棚田）。
+- 隣接は 8 方向（`CvPlot::getNumAdjacentPeaks`）。
+- `CvPlot::calculateImprovementYieldChange` で足すので、作業の説明の予測にも含まれる。
+- 山岳はゲーム中ふつう変わらないので、隣のタイルが山岳に変わっても（ワールドビルダーなど）そのタイルの産出が計算し直されるまで反映されない。
+- 説明文は施設の説明に「+1[食料] (隣接する山岳1つにつき)」（`TXT_KEY_MISC_PER_ADJACENT_PEAK`）。
+- キャッシュの形式: `CvImprovementInfo` `uiFlag=1`。
+- 施設の XML と Schema（`Terrain/CIV4ImprovementInfos.xml`・`CIV4TerrainSchema.xml`）はこのために Mod に追加した
+
+### `ImprovementInfo/AdjacentImprovementYieldChanges`、`AdjacentFeatureYieldChanges`
+
+- ファイル: `CIV4ImprovementInfos.xml`
+- 隣接するタイル（8 方向）1 つにつき、施設の産出に加算（Civ6 の隣接ボーナス）。
+- `<AdjacentImprovementYieldChange>`（`ImprovementType` + `Yields`）・`<AdjacentFeatureYieldChange>`（`FeatureType` + `Yields`）を何個でも書ける。
+- 施設は、書いた施設とその上位の施設（コテージなら集落・村・町）を数えるので、同じ系統は一番下の施設だけを書く（両方書くと両方足される）。
+- 自分と同じ施設も書ける（並べるほど強くなる）。
+- 隣接するタイルの持ち主は問わない。
+- `CvPlot::calculateImprovementYieldChange` で足すので、作業の説明の予測にも含まれる。
+- 施設か地形の特徴が変わると、周りの施設の産出を計算し直す（`CvPlot::updateAdjacentImprovementYields`）。
+- 施設が後ろの施設を参照できるように `readPass2` で読む。
+- 説明文は施設の説明とペディアに「(隣接する○○ 1つにつき)」。
+- キャッシュの形式: `CvImprovementInfo` `uiFlag=5`
+
+### `ImprovementInfo/iUniqueRange`、`iMaxPerCity`、`iMaxPerPlayer`
+
+- ファイル: `CIV4ImprovementInfos.xml`
+- 施設の数の制限（`iUniqueRange` は C2C と同じ名前）。
+- どれも同じ系統（最終的な上位の施設が同じ。コテージと集落など）を数え、作業を始めるときと作業中の毎ターンに確かめる（`CvPlot::canBuild` の `bTestVisible` でないとき。`CvPlot::getImprovementLimit`）。
+- 作業のボタンは表示されたまま押せなくなり、ボタンの説明に理由が赤字で出る。
+- 施設の上位への成長は制限しない。
+- `iUniqueRange`: 同じ系統の施設からこの距離以内には作れない（`plotDistance`。1 なら隣接 8 タイル）。
+- `iMaxPerCity`: そのタイルを働かせられる自分の各都市の都市圏に、同じ系統の施設がこの数あると作れない（重なった都市圏では、どの都市にも空きが要る）。
+- `iMaxPerPlayer`: 自国の領土（`CvPlayer::getImprovementCount`。自分が持つタイル）に同じ系統の施設がこの数あると作れない（領土の外の施設は数えない）。
+- 0 は制限なし
+
+### `ImprovementInfo/iRange`、`iHealRateChange`、`iRangeDefenseModifier`
+
+- ファイル: `CIV4ImprovementInfos.xml`
+- 範囲内のユニットへの効果（FFH2 と同じ名前。FFH2 の `iHealRateChange` は施設の上のユニットだけだが、この Mod は `iRange` の範囲に広げた）。
+- 施設のタイルから `iRange`（`plotDistance`。0 なら施設のタイルだけ）以内にいる、**施設のタイルを持つチーム**のユニットの回復（% / ターン。`CvUnit::healRate`）と防御（%。`CvPlot::defenseModifier` に足すので、戦闘のオッズとタイルの説明では地形の防御に含まれ、防御ボーナスを受けないユニットには効かない）。
+- 施設の上に敵のユニットがいる間は効かない。
+- 複数の施設の効果は重ならず、いちばん大きい値だけ（正の値だけ）。
+- 領土の外の施設（持ち主がいない）は効かない。
+- 効果を持つ施設がなければ周りを探さない（`getMaxImprovementRange`）。
+- `CvPlot::getImprovementRangeValue`。
+- キャッシュの形式: `CvImprovementInfo` `uiFlag=6`
+
+### `ImprovementInfo/iPlotVisibilityChange`
+
+- ファイル: `CIV4ImprovementInfos.xml`
+- 施設のタイルの持ち主は、そのタイルから `PLOT_VISIBILITY_RANGE`（1）+ この値のタイルまで見える（見張り台・烽燧台）。
+- ユニットは要らない。
+- FFH2・C2C の `iVisibilityChange`（施設の上にいるユニットの視界）とは別物で、ユニットの視界はユニットが動くたびに計算するため、ユニットがいる間に施設が変わると視界の数がずれる。
+- こちらはタイルの持ち主の視界（`CvPlot::getOwnerVisibilityRange`）に足し、持ち主が変わるとき（`setOwner`）、施設が変わるとき（`setImprovementType`）、地形の特徴が変わるとき（`updateSeeFromSight` の範囲を最大の値まで広げた）に同じ範囲で足し引きする。
+- **ゲームの途中でこの値を変えると、すでにある施設の視界の数がずれる**（新しいゲームで確かめる）
+
+### `ImprovementInfo/iCulture`、`iCultureRange`
+
+- ファイル: `CIV4ImprovementInfos.xml`
+- 施設の文化と国境（名前は C2C と同じ。C2C は文化の仕組みごと作り変えているので、作りは別物）。
+- 施設のタイルの持ち主は、毎ターン、そこから `iCultureRange`（`plotDistance`。0 なら施設のタイルだけ）以内の各タイルに `iCulture` の文化を得る（`CvPlot::doImprovementCulture`。`CvPlot::doTurn` から。他国のタイルにも入るので、他国の国境を押し返す）。
+- BtS はタイルの持ち主を「文化が一番多く、そのタイルを都市の文化圏に含む文明」で決めるので、その範囲を持ち主の文化圏の範囲内として扱う（`CvPlot::isWithinCultureRange` → `isImprovementCultureRange`）。
+- これで、都市の文化圏の外にも国境が広がる。
+- **自国の領土の施設だけ**（持ち主のいないタイルの施設は何もしない。領土の外に建てて国境を主張する仕組みは、後で FFH2 の集落として作る予定）。
+- 施設のタイルの持ち主が変わると、範囲も新しい持ち主のものになる（周りのタイルは次のターンの文化で決め直される）。
+- 施設がなくなると、その範囲のタイルの持ち主をすぐ決め直す（`setImprovementType`）。
+- セーブする値はない。
+- `iCulture` が 0 なら `iCultureRange` も働かない。
+- キャッシュの形式: `CvImprovementInfo` `uiFlag=7`
+
+### `ImprovementInfo/bMakesPassable`、`iPassageMoveCost`
+
+- ファイル: `CIV4ImprovementInfos.xml`
+- 山岳など通れないタイルに作れて、陸上ユニットがその上を通れるようになる施設（Civ6 のインカのトンネル）。
+- 作れる地形は `TerrainMakesValids`（山岳は `TERRAIN_PEAK`）で書く。
+- 通れる相手は国境のふつうのルールのとおり。
+- `iPassageMoveCost` は追加の移動コスト（ユニットの移動力まで）。
+- 道路を引けて、交易路や資源もつながる（`isTradeNetworkImpassable`）。
+- `isImpassable()` は true のままなので、都市は建てられず、タイルの産出も 0 のまま。
+- 作る前の山岳には、その施設を作れる労働者だけが入れる（`CvUnit::canEnterImpassablePlot`）。
+- そのため、作れる範囲の山岳は労働者の経路にも使われる。
+- 略奪されると通れなくなる（上にいるユニットは出られる）。
+- 完成した施設の上では、昇進の `ImpassablePlotPassages` のダメージを受けず、移動コストも `iPassageMoveCost` だけになる。
+- 説明文は `TXT_KEY_IMPROVEMENT_MAKES_PASSABLE`・`TXT_KEY_IMPROVEMENT_PASSAGE_MOVE_COST`。
+- **水上の施設（`bWater` 1）にも使える**（Civ6 のオランダのポルダー）。
+- 湖と沿岸は `TERRAIN_COAST`。
+- 陸上ユニットがそのタイルを歩け、上陸のペナルティもない。
+- 市民は `isWaterWork` なしで働け、封鎖の影響も受けない。
+- 作る前の水上タイルには、作れる労働者が**陸から**だけ入れる（海を歩けないように）。
+- 略奪されると、上の陸上ユニットは近くの陸へ移る（`verifyUnitValidPlot`）。
+- タイルは水のままなので、船も通れる
+
+### `ImprovementInfo/iUniqueChance`、`bImpassable`
+
+- ファイル: `CIV4ImprovementInfos.xml`
+- 世界に 1 つだけの名所（FFH2 の旧所名跡、Civ5 の自然遺産）。
+- `iUniqueChance` は地図の生成時に 1 つ置かれる確率 %（100 なら必ず）。
+- FFH2 の `bUnique` は全施設で共通の確率だが、施設ごとに書ける形にした。
+- 配置は `CvMapGenerator::addUniqueImprovements`（`addGoodies` の直後なので再生成にも効く。シナリオの地図は通らない）。
+- 候補は資源と施設がなく、隣接タイルにも施設がなく、`canHaveImprovement` が通るタイルで、そこからランダムに選ぶ。
+- 置くと地形の特徴を消す。
+- 地図には名前の看板を立てる（`CvEventManager.onImprovementBuilt` の `CyEngine().addSign`。FFH2 と同じで、`addLandmark` は日本語が化ける）。
+- 山岳に置くなら `TerrainMakesValids` に `TERRAIN_PEAK`。
+- 略奪や上書きを防ぐには BtS の `bPermanent` も書く。
+- 都市は建てられない（`canFound`）。
+- `bImpassable` はそのタイルを通れなくする（`CvPlot::isImpassable`。都市圏にあれば働ける）。
+- タイルの産出は `YieldChanges`。
+- 説明文は `TXT_KEY_IMPROVEMENT_UNIQUE`・`TXT_KEY_IMPROVEMENT_IMPASSABLE`
+
+### `BuildInfo/PrereqOrTraits`・`ReplacedBuild`・`UnitsFromBuild`、`ImprovementInfo/ReplacedImprovement`
+
+- ファイル: `CIV4BuildInfos.xml` / `CIV4ImprovementInfos.xml`
+- 固有の施設（道路などの作業も同じ）。
+- **新規**: 施設と作業を足し、作業に `PrereqOrTraits`（どれか 1 つの志向を持つプレイヤーだけ作業できる。`CvPlayer::canBuildByTraits`）を書く。
+- **置換**: さらに作業に `ReplacedBuild`（例: `BUILD_FARM`）を書くと、その志向を持つプレイヤーには元の作業が出なくなる。
+- 志向のない `ReplacedBuild` は全員の作業を置き換える。
+- 置き換える作業の前提技術が元より遅くても、元の作業は志向を持つ時点で消える（固有ユニットと同じ考え方）。
+- `ReplacedBuild` と `UnitsFromBuild` は**そのファイルで先に書かれた作業**だけを書ける。
+- `UnitsFromBuild`（例: `BUILD_FARM`）: その作業ができるユニットは、この作業もできる（`CvUnitInfo::read`。`ReplacedBuild` も同じ）。
+- 労働者などの `Builds` を書き換えなくてよい。
+- `ReplacedImprovement`（施設の側）: 元の施設への、社会制度と志向の `ImprovementYieldChanges`、建物の `ImprovementFreeSpecialists` を受ける（`CvPlot::calculateImprovementYieldChange`、`CvCity::getImprovementFreeSpecialists`）。
+- イベントの `ImprovementsRequired` と建物の `PrereqOrImprovements` では元の施設として数える（`CvPlot::isImprovementOrReplacing`）。
+- 施設自身の数値は引き継がないので、元の施設の項目を複製して書く（`TechYieldChanges` も施設の項目なので複製する）。
+- 1 段だけで、連鎖はしない。
+- **作業と施設の置換は別のタグ**（作業の置換だけ書くと元の施設の社会制度の効果は受けない）。
+- すでにあるタイルはそのまま: 元の施設は残り（作業で上書きできる）、固有の施設を占領した相手も使える（作り直しはできない）。
+- 志向を得た・失ったときも同じ。
+- AI は `canBuild` で判定するので、作業できるものから選ぶ。
+- 説明文: 志向に `TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT` / `_REPLACES`、施設に `TXT_KEY_IMPROVEMENT_REPLACES` と前提の志向。
+- ゲーム中の説明文（ユニット、技術、タイルの資源）と技術ツリーは、操作中のプレイヤーの作業だけを出す。
+- 技術ツリーは志向の組み合わせが変わると開いたときに作り直す（`CvTechChooser.getTraitKey`）。
+- キャッシュの形式: `CvImprovementInfo` `uiFlag=2`（`CvBuildInfo` にストリーム版はない）。
+- Python は `CyPlayer.canBuildByTraits(iBuild)`、`CvBuildInfo.getNumPrereqOrTraits()` / `getPrereqOrTraits(i)` / `getReplacedBuild()` / `getUnitsFromBuild()`、`CvImprovementInfo.getReplacedImprovement()`
 
 ## 社会制度・資源・ユニット・イベント
 
-| ファイル | タグ | 内容 |
-|---|---|---|
-| `CIV4SpecialistInfos.xml` | `SpecialistInfo/iHappiness`、`iHealth` | 専門家 1 人につき、その都市の幸福・衛生（負なら不満・不衛生）。働かせている専門家と、無償の専門家（定住した偉人、建物の無償の専門家）の両方を数える（`CvCity::getSpecialistGoodHappiness` などで、聞かれたときに数えるのでセーブする値はない）。都市の幸福・不満・衛生・不衛生の内訳に「専門家により」の行、専門家の説明とペディアに行を出す。`CIV4SpecialistInfos.xml` は BtS からコピーした |
-| `CIV4UnitInfos.xml`、`CIV4BuildingInfos.xml`、`CIV4CivicInfos.xml` | `UnitInfo/PrereqOrTraits`（`BuildingInfo`・`CivicInfo` にも同名タグ） | `<TraitType>` を何個でも書ける。**どれか 1 つの志向を持つ**プレイヤーだけが生産・建設・採用できる（`CvPlayer::hasPrereqOrTrait()`。指導者・文明どちらの志向でも可）。ユニット・建物は、志向を持たないプレイヤーの生産候補に出ない（`canTrain` / `canConstruct` の `bTestVisible` より前で判定）。社会制度は採用できず（`canDoCivics`）、社会制度の画面の一覧にも出ない（`CvCivicsScreen.py`。技術の前提を外す建物の `CivicOption` でも志向の前提は外れない）。止めるのは生産・建設・採用の判定だけで、無料で配られるもの（開始ユニット、文明の無料建物、技術の無料ユニット、不思議の無料建物、イベント）には効かない。アップグレード先と偉人による建設は生産の判定を通るので制限される。説明文は「必要条件: A または B」（既存の `TXT_KEY_REQUIRES` / `TXT_KEY_OR`。志向名はリンク）で、ペディアでは常に、ゲーム中は条件を満たさないときだけ表示（`CvGameTextMgr::buildPrereqOrTraitsString`）。そのつど判定するので既存のセーブにも効く。Schema の位置はユニット・建物が `PrereqBonuses` の後、社会制度が `TechPrereq` の後。ユニットの Schema（`CIV4UnitSchema.xml`）はこのために Mod に追加した |
-| `CIV4UnitInfos.xml` | `UnitInfo/iPrereqPopulation`、`PrereqCultureLevel`、`PrereqOrTerrains`、`PrereqOrFeatures`、`PrereqRawVicinityBonuses`、`PrereqVicinityBonuses`、`PrereqOrImprovements` | ユニットの都市の前提。建物の同名タグ（建物の節）と同じ書式・同じ判定で、判定（`CvCity::hasPrereqOrTerrains` など）と説明文（`CvGameTextMgr::buildPrereqVicinityString`・`buildPrereqCityLevelString`）は建物と共通。地形・地形の特徴・未開発の資源は満たさないと生産の一覧に出ない。開発済みの資源・施設・文化レベル・人口は灰色で出る（`CvCity::hasCityPrereqs`。`canTrain` の `bTestVisible`）。人口は生産の列に入れるときだけ確かめる（`bContinue`）。ほかは生産中も確かめ、満たさなくなると列から外れる。アップグレードも BtS と同じく、そのユニットを生産できる都市（`CvUnit::getUpgradeCity` の `canTrain`）が要るので、都市の中・近くでアップグレードするときは前提を満たす都市が要る。AI は `canTrain` を通るので前提を守る。そのつど判定するのでセーブデータは変わらない。説明文は建物と同じキー（`TXT_KEY_BUILDING_PREREQ_VICINITY` など）で、ペディアでは常に、ゲーム中は満たしていない条件だけ。Python は `CvUnitInfo` の同名の関数（`getPrereqPopulation()`、`getNumPrereqOrTerrains()` / `getPrereqOrTerrain(i)` など）。キャッシュの形式: `CvUnitInfo` `uiFlag=2` |
-| `CIV4CivicInfos.xml` | `CivicInfo/ReplacedCivic` | 固有の社会制度の置換。`PrereqOrTraits` と組み合わせて、志向を持つプレイヤーには元の社会制度の代わりに出す。書けるのは同じ区分で、ファイル内で先に書かれた社会制度だけ。**置換先を採用できるときだけ**元が消える（`CvPlayer::isCivicReplaced`）ので、置換先の技術がまだなら元を採用できる。元を採用中に置換先が採用できるようになると、次のターンに無政府状態なしで切り替わる（`verifyCivics`）。初期の社会制度は、技術のいらない置換先があればそれから始まる（`getInitialCivic`）。建物の前提（`PrereqAndCivics`・`PrereqOrCivics`）、志向の条件、イベント、投票の前提では、置換先を元として数える（`isCivicOrReplacing`）。効果は引き継がないので、置換先に複製して書く。AI の好みの社会制度と、国連で強制される社会制度は元のまま。画面・技術ツリー・技術の説明は `canDoCivicByTraits` で絞る。技術ツリーは永続画面なので、志向の組み合わせが変わると開いたときに作り直す（`CvTechChooser.getTraitKey`）。これは固有ユニット・固有建造物・固有の施設のアイコンにも効く。説明文は `TXT_KEY_TRAIT_UNIQUE_CIVIC`・`TXT_KEY_TRAIT_UNIQUE_CIVIC_REPLACES`・`TXT_KEY_CIVIC_REPLACES` |
-| `CIV4BonusInfos.xml` | `BonusInfo/PrereqOrTraits` | 固有資源（FFH2 のラヌーンの真珠に近い）。FFH2 は研究できない技術を `TechReveal` にする XML だけの作りだが、開始時代より前の技術は全員に与えられる（`CvGame::initFreeState`）ので、公開の判定に志向を足した（`CvPlot::getBonusType`）。その志向を持つプレイヤーのいないチームには、資源が見えず、産出もなく、資源としても得られない。**取引はできる**ので、持つ文明の輸出品になる。**地図に置くのは、ゲームに登場する文明・指導者の志向の資源だけ**（`CvGame::isTraitBonusInGame`。`addBonuses` で判定するので再生成にも効く。ランダムのスロットがあれば置く）。あとから志向を持つプレイヤーが現れたとき（帝国の分裂、`FreeTraits`）は、地図にまだなければターンの終わりに置く（`updateTraitBonuses`。シナリオの地図を除く）。他の資源の枠を奪わないよう `iPlacementOrder` を BtS の最大の 6 より大きくする。マップスクリプトが `addBonuses` を丸ごと置き換える場合はこの判定を通らない。説明文は `TXT_KEY_TRAIT_UNIQUE_BONUS` |
-| `CIV4BonusInfos.xml` | `BonusInfo/bModifierPerBonus`、`YieldModifiers`、`CommerceModifiers`、`iGreatPeopleRateModifier`、`iMaintenanceModifier`、`FreePromotion`、`iHealChange`、`iHealChangeEnemy`、`iDiscoverRandModifier` | FFH2 のマナ資源の効果（FFH2 と同じ名前。FFH2 の `iResearchModifier` は建物と同じ名前の `YieldModifiers` / `CommerceModifiers` に一般化した。FFH2 の `iBadAttitude`（AI の態度）・`DamageType`（属性ダメージ）・`iMutateChance`（変異）は入れていない）。**都市の効果**（その資源を持つ都市ごと。`CvCity::processBonus`）: `YieldModifiers` / `CommerceModifiers`（都市の産出・商業 %）、`iGreatPeopleRateModifier`（都市の偉人ポイント %）、`iMaintenanceModifier`（都市の維持費 %）。都市画面の内訳: 産出は建物の `BonusYieldModifiers` と同じ資源の補正（`changeBonusYieldRateModifier`）に足すので「資源により」の行に出る。商業と偉人ポイントは都市の補正の合計に足し、内訳に「資源により」の行を足した（`CvCity::getBonusCommerceRateModifier`・`getBonusGreatPeopleRateModifier`、`TXT_KEY_MISC_HELP_YIELD_BONUS`・`TXT_KEY_MISC_HELP_GREATPEOPLE_BONUS`）。維持費は維持費のマウスオーバーの合計の % に入る。`FreePromotion`: その資源を持つ都市で作ったユニットが昇進を得る（建物の `FreePromotion` と同じ。`processBonusPresence`。持つ数によらず 1 回）。**プレイヤーの効果**（FFH2 と同じく首都が持つ資源で判定。`CvPlayer::getCapitalBonusEffect`。首都がなければ 0）: `iHealChange`（自国の領土でのユニットの回復 % / ターン。`CvUnit::healRate`）、`iHealChangeEnemy`（自国の領土にいる敵のユニットの回復。マイナスで遅くする）、`iDiscoverRandModifier`（施設で資源が見つかる確率 %。+100 で確率 2 倍。`CvPlot::doImprovement`）。`bModifierPerBonus`（**累積**）: その資源の効果を、都市が使える数（交易網の中の数。輸入・企業が生む分も含む。`getNumBonuses`）の回数だけ数える。対象は幸福・衛生と上の都市・プレイヤーの効果、建物の `BonusHappinessChanges` / `BonusHealthChanges` / `BonusYieldModifiers`・電力（`FreePromotion` は 1 回のまま）。数の増減・建物による無効化（`NoBonus`）・企業の資源の更新のたびに、数えた回数の差だけ足し引きする（`CvCity::getBonusEffectCount`）。建物の `BonusCommerceChanges` など、この Mod の建物の成長のタグは累積しない。都市の値はセーブに入るので、既存のセーブで資源に `bModifierPerBonus` を付けると数がずれる（新しいゲームで確かめる）。説明文は資源の説明（ペディアとマウスオーバー）に `TXT_KEY_BONUS_CITY_MODIFIERS` などで出す（`CvGameTextMgr::buildBonusEffectsString`）。キャッシュの形式: `CvBonusInfo` `uiFlag=2`。Python は `CvBonusInfo` の同名の関数、`CyPlayer.getBonusHealChange()`・`getBonusHealChangeEnemy()`・`getBonusDiscoverRandModifier()` |
-| `CIV4CivicInfos.xml`、`CIV4BuildingInfos.xml`、`CIV4TechInfos.xml` | `CivicInfo/FreeTraits`（`BuildingInfo`・`TechInfo` にも同名タグ） | `<TraitType>` を何個でも書ける（`PrereqOrTraits` と同じ書式）。その志向を、社会制度は採用している間、建物は陳腐化していないものをどこかの都市に持つ間（建物 1 つにつき 1 回分）、技術はチームが持つ間、持つ。志向の付け外しの仕組み（下記）で `CvPlayer::changeFreeTraitCount` を呼ぶ: 社会制度は `CvPlayer::processCivics`、建物は `CvCity::processBuilding`（陳腐化したとき・都市が奪われたときも外れる）、技術は `CvTeam::processTech`（チームの全プレイヤー。BtS の技術の労働者速度などと同じ）。志向の効果はすべて使える（例: 不思議の `FreeTraits` に陳腐化を無視する志向を書けば、その不思議がある間だけ城が陳腐化しない）。建物が与えた志向で別の建物が陳腐化しなくなり、その建物がまた志向を与える、という連鎖も処理する（`updateTraitDependents` が変化がなくなるまで繰り返す）。説明文は `TXT_KEY_FREE_TRAITS`（「次の志向を得る: 金融志向」。志向名はリンク）で、3 つで共通（`CvGameTextMgr::buildFreeTraitsString`）。技術は志向より先に読み込まれるので、種類を文字列のまま持ち（キャッシュにも文字列で書く）、志向の読み込み直後に `CvTechInfo::readPass3()` で番号に変える。技術の XML と Schema（`CIV4TechInfos.xml` / `CIV4TechnologiesSchema.xml`）はこのために Mod に追加した。キャッシュの形式: `CvCivicInfo` `uiFlag=5`、`CvBuildingInfo` `uiFlag=9`、`CvTechInfo` `uiFlag=1`。既存のセーブに、すでに持っている社会制度・建物・技術へ `FreeTraits` を足しても反映されない（得たときに数えるため）。ゲーム中に表示する「今の志向」（国旗の説明 `CvDLLWidgetData::parseFlagHelp`、勝利条件の画面の設定 `CvVictoryScreen.py`、他の指導者の説明 `parsePlayerTraits`）は、得た志向も含む（`CvGameTextMgr::parsePlayerLeaderTraits`、Python は `CyGameTextMgr().parsePlayerLeaderTraits(iPlayer, bDawnOfMan)`。exe に公開している `parseLeaderTraits` は変えていない）。文明の夜明けの画面とペディアは指導者・文明の志向のまま |
-| `CIV4EventTriggerInfos.xml` | `EventTriggerInfo/PrereqOrTraits` | どれか 1 つの志向を持つプレイヤーにだけ起きるイベント（`CvPlayer::getEventTriggerWeight`）。新しいトリガーとイベントを足す方式で、既存のイベントの置き換えはない。説明文には出ない。キャッシュの形式: `CvEventTriggerInfo` `uiFlag=1`。Python は `CvEventTriggerInfo.getNumPrereqOrTraits()` / `getPrereqOrTraits(i)` |
-| `CIV4TechInfos.xml`、`CIV4CivicInfos.xml`、`CIV4UnitInfos.xml` | `TechInfo/PyOnDiscovered`、`CivicInfo/PyOnAdopt`・`PyOnRevoke`、`UnitInfo/PyOnCreated`・`PyOnDeath` | Python フック。`PyOnDiscovered`: チームが技術を得たとき（研究・交換・小屋など）、チームの各プレイヤーに 1 回（`CvTeam::setHasTech` の最後。技術の効果の後）。名前は `pPlayer`・`eTech`・`bFirst`（そのチームが最初に持った: BtS の `bFirst` かつ持つチームが 1 つだけ。交換では 0）。ゲーム開始時の技術では呼ばない。`PyOnAdopt` / `PyOnRevoke`: 社会制度を採用した / やめたとき（`CvPlayer::setCivics`。やめる方が先）。名前は `pPlayer`・`eCivic`。ゲーム開始時の社会制度では呼ばない。`PyOnCreated` / `PyOnDeath`: その種類のユニットが生まれた（`CvUnit::init` の最後。生産・Python・偉人など）/ 死んだ（`CvUnit::kill`。倒された・解散など。遅延の死では最初の 1 回だけ、まだタイルにいる）とき。名前は `pUnit`・`pPlayer`（持ち主）、`PyOnDeath` は `iKiller`（倒したプレイヤー、なければ -1）も。アップグレード・贈与・呪文の `ConvertUnit`（`initUnit` して `convert` する。同じユニットが続くとみなす）では、新しいユニットの `PyOnCreated` も古いユニットの `PyOnDeath` も呼ばない（`CvUnit.cpp` の `s_bReplacingUnit`）。滅びたプレイヤーのユニットでは `PyOnDeath` を呼ばない。式は `EntryPoints\CvHookInterface.py` が `eval` する（ファイルの先頭に、フックごとの呼ばれる時点・使える名前・サンプル・決まりをまとめてある）。共通の関数は `CvHookUtils.py`（`gainGold`・`createUnits`・`addPromotion`・`healUnit`・`addCulture`・`isOnFeature` など。志向・呪文の Python からも使える）。ワールドビルダーでは呼ばない。キャッシュには文字列で書く。説明文にはフックの効果を出さないので、`Help` に書く |
-| `CIV4ProcessInfo.xml` | `ProcessInfo/PrereqOrTraits` | 生産の種類（富・研究など）の固有。`<TraitType>` を何個でも書け、どれかの志向を持つプレイヤーだけが都市で選べる（`CvPlayer::canMaintain`。省略で誰でも）。生産の種類は `LoadPostMenuGlobals` で読み込まれるので `read` で番号に変える。`CIV4ProcessInfo.xml` は Warlords(J) のものを Mod に入れた（BtS(J) には無い）。あわせて `TechPrereq` を `NONE` にすると技術なしで選べるようにした（BtS では `NONE` を考えていない）。BtS には諜報ポイントの生産が無いので、`ProductionToCommerceModifiers` の 4 つ目（諜報）に値を書いた生産を足せば、ハンマーを諜報ポイントに変えられる（検証用 `PROCESS_TEST_ESPIONAGE`）。志向の説明文に `TXT_KEY_TRAIT_UNIQUE_PROCESSES`（「固有の生産: 諜報（検証用）」。ゲームの前の説明文には出ない） |
-| `CIV4ProjectInfo.xml` | `ProjectInfo/PrereqOrTechs`、`PrereqOrTraits` | 2026-11-24（トルデシリャス条約の案）。`PrereqOrTechs`: `<TechType>` を何個でも書け、チームがどれか 1 つを持てば作れる（`TechPrereq` もあればそれも必要。`NONE` にすれば OR だけ）。`PrereqOrTraits`: どれかの志向を持つプレイヤーだけが作れる（省略で誰でも）。判定は `CvPlayer::canCreate`。技術の説明文の「プロジェクトを作れる」と技術ツリー（`isTechRequiredForProject`）は OR の技術でも出る。プロジェクトの説明文に、満たしていないとき「必要: 光学 または 紙」「必要: 〜志向」。志向の説明文に「固有プロジェクト: X」（`TXT_KEY_TRAIT_UNIQUE_PROJECT`）。Python は `CvProjectInfo.getNumPrereqOrTechs()` / `getPrereqOrTechs(i)` / `getNumPrereqOrTraits()` / `getPrereqOrTraits(i)`（`CyInfoInterface4.cpp`）。プロジェクトは志向・技術より後に読み込まれるので `read()` で番号に変える。キャッシュなし。Mod に `CIV4ProjectInfo.xml` を入れたのはこのとき（末尾に civ-design の目印） |
+### `SpecialistInfo/iHappiness`、`iHealth`
+
+- ファイル: `CIV4SpecialistInfos.xml`
+- 専門家 1 人につき、その都市の幸福・衛生（負なら不満・不衛生）。
+- 働かせている専門家と、無償の専門家（定住した偉人、建物の無償の専門家）の両方を数える（`CvCity::getSpecialistGoodHappiness` などで、聞かれたときに数えるのでセーブする値はない）。
+- 都市の幸福・不満・衛生・不衛生の内訳に「専門家により」の行、専門家の説明とペディアに行を出す。
+- `CIV4SpecialistInfos.xml` は BtS からコピーした
+
+### `UnitInfo/PrereqOrTraits`（`BuildingInfo`・`CivicInfo` にも同名タグ）
+
+- ファイル: `CIV4UnitInfos.xml`、`CIV4BuildingInfos.xml`、`CIV4CivicInfos.xml`
+- `<TraitType>` を何個でも書ける。
+- **どれか 1 つの志向を持つ**プレイヤーだけが生産・建設・採用できる（`CvPlayer::hasPrereqOrTrait()`。指導者・文明どちらの志向でも可）。
+- ユニット・建物は、志向を持たないプレイヤーの生産候補に出ない（`canTrain` / `canConstruct` の `bTestVisible` より前で判定）。
+- 社会制度は採用できず（`canDoCivics`）、社会制度の画面の一覧にも出ない（`CvCivicsScreen.py`。技術の前提を外す建物の `CivicOption` でも志向の前提は外れない）。
+- 止めるのは生産・建設・採用の判定だけで、無料で配られるもの（開始ユニット、文明の無料建物、技術の無料ユニット、不思議の無料建物、イベント）には効かない。
+- アップグレード先と偉人による建設は生産の判定を通るので制限される。
+- 説明文は「必要条件: A または B」（既存の `TXT_KEY_REQUIRES` / `TXT_KEY_OR`。志向名はリンク）で、ペディアでは常に、ゲーム中は条件を満たさないときだけ表示（`CvGameTextMgr::buildPrereqOrTraitsString`）。
+- そのつど判定するので既存のセーブにも効く。
+- Schema の位置はユニット・建物が `PrereqBonuses` の後、社会制度が `TechPrereq` の後。
+- ユニットの Schema（`CIV4UnitSchema.xml`）はこのために Mod に追加した
+
+### `UnitInfo/iPrereqPopulation`、`PrereqCultureLevel`、`PrereqOrTerrains`、`PrereqOrFeatures`、`PrereqRawVicinityBonuses`、`PrereqVicinityBonuses`、`PrereqOrImprovements`
+
+- ファイル: `CIV4UnitInfos.xml`
+- ユニットの都市の前提。
+- 建物の同名タグ（建物の節）と同じ書式・同じ判定で、判定（`CvCity::hasPrereqOrTerrains` など）と説明文（`CvGameTextMgr::buildPrereqVicinityString`・`buildPrereqCityLevelString`）は建物と共通。
+- 地形・地形の特徴・未開発の資源は満たさないと生産の一覧に出ない。
+- 開発済みの資源・施設・文化レベル・人口は灰色で出る（`CvCity::hasCityPrereqs`。`canTrain` の `bTestVisible`）。
+- 人口は生産の列に入れるときだけ確かめる（`bContinue`）。
+- ほかは生産中も確かめ、満たさなくなると列から外れる。
+- アップグレードも BtS と同じく、そのユニットを生産できる都市（`CvUnit::getUpgradeCity` の `canTrain`）が要るので、都市の中・近くでアップグレードするときは前提を満たす都市が要る。
+- AI は `canTrain` を通るので前提を守る。
+- そのつど判定するのでセーブデータは変わらない。
+- 説明文は建物と同じキー（`TXT_KEY_BUILDING_PREREQ_VICINITY` など）で、ペディアでは常に、ゲーム中は満たしていない条件だけ。
+- Python は `CvUnitInfo` の同名の関数（`getPrereqPopulation()`、`getNumPrereqOrTerrains()` / `getPrereqOrTerrain(i)` など）。
+- キャッシュの形式: `CvUnitInfo` `uiFlag=2`
+
+### `CivicInfo/ReplacedCivic`
+
+- ファイル: `CIV4CivicInfos.xml`
+- 固有の社会制度の置換。
+- `PrereqOrTraits` と組み合わせて、志向を持つプレイヤーには元の社会制度の代わりに出す。
+- 書けるのは同じ区分で、ファイル内で先に書かれた社会制度だけ。
+- **置換先を採用できるときだけ**元が消える（`CvPlayer::isCivicReplaced`）ので、置換先の技術がまだなら元を採用できる。
+- 元を採用中に置換先が採用できるようになると、次のターンに無政府状態なしで切り替わる（`verifyCivics`）。
+- 初期の社会制度は、技術のいらない置換先があればそれから始まる（`getInitialCivic`）。
+- 建物の前提（`PrereqAndCivics`・`PrereqOrCivics`）、志向の条件、イベント、投票の前提では、置換先を元として数える（`isCivicOrReplacing`）。
+- 効果は引き継がないので、置換先に複製して書く。
+- AI の好みの社会制度と、国連で強制される社会制度は元のまま。
+- 画面・技術ツリー・技術の説明は `canDoCivicByTraits` で絞る。
+- 技術ツリーは永続画面なので、志向の組み合わせが変わると開いたときに作り直す（`CvTechChooser.getTraitKey`）。
+- これは固有ユニット・固有建造物・固有の施設のアイコンにも効く。
+- 説明文は `TXT_KEY_TRAIT_UNIQUE_CIVIC`・`TXT_KEY_TRAIT_UNIQUE_CIVIC_REPLACES`・`TXT_KEY_CIVIC_REPLACES`
+
+### `BonusInfo/PrereqOrTraits`
+
+- ファイル: `CIV4BonusInfos.xml`
+- 固有資源（FFH2 のラヌーンの真珠に近い）。
+- FFH2 は研究できない技術を `TechReveal` にする XML だけの作りだが、開始時代より前の技術は全員に与えられる（`CvGame::initFreeState`）ので、公開の判定に志向を足した（`CvPlot::getBonusType`）。
+- その志向を持つプレイヤーのいないチームには、資源が見えず、産出もなく、資源としても得られない。
+- **取引はできる**ので、持つ文明の輸出品になる。
+- **地図に置くのは、ゲームに登場する文明・指導者の志向の資源だけ**（`CvGame::isTraitBonusInGame`。`addBonuses` で判定するので再生成にも効く。ランダムのスロットがあれば置く）。
+- あとから志向を持つプレイヤーが現れたとき（帝国の分裂、`FreeTraits`）は、地図にまだなければターンの終わりに置く（`updateTraitBonuses`。シナリオの地図を除く）。
+- 他の資源の枠を奪わないよう `iPlacementOrder` を BtS の最大の 6 より大きくする。
+- マップスクリプトが `addBonuses` を丸ごと置き換える場合はこの判定を通らない。
+- 説明文は `TXT_KEY_TRAIT_UNIQUE_BONUS`
+
+### `BonusInfo/bModifierPerBonus`、`YieldModifiers`、`CommerceModifiers`、`iGreatPeopleRateModifier`、`iMaintenanceModifier`、`FreePromotion`、`iHealChange`、`iHealChangeEnemy`、`iDiscoverRandModifier`
+
+- ファイル: `CIV4BonusInfos.xml`
+- FFH2 のマナ資源の効果（FFH2 と同じ名前。FFH2 の `iResearchModifier` は建物と同じ名前の `YieldModifiers` / `CommerceModifiers` に一般化した。FFH2 の `iBadAttitude`（AI の態度）・`DamageType`（属性ダメージ）・`iMutateChance`（変異）は入れていない）。
+- **都市の効果**（その資源を持つ都市ごと。`CvCity::processBonus`）: `YieldModifiers` / `CommerceModifiers`（都市の産出・商業 %）、`iGreatPeopleRateModifier`（都市の偉人ポイント %）、`iMaintenanceModifier`（都市の維持費 %）。
+- 都市画面の内訳: 産出は建物の `BonusYieldModifiers` と同じ資源の補正（`changeBonusYieldRateModifier`）に足すので「資源により」の行に出る。
+- 商業と偉人ポイントは都市の補正の合計に足し、内訳に「資源により」の行を足した（`CvCity::getBonusCommerceRateModifier`・`getBonusGreatPeopleRateModifier`、`TXT_KEY_MISC_HELP_YIELD_BONUS`・`TXT_KEY_MISC_HELP_GREATPEOPLE_BONUS`）。
+- 維持費は維持費のマウスオーバーの合計の % に入る。
+- `FreePromotion`: その資源を持つ都市で作ったユニットが昇進を得る（建物の `FreePromotion` と同じ。`processBonusPresence`。持つ数によらず 1 回）。
+- **プレイヤーの効果**（FFH2 と同じく首都が持つ資源で判定。`CvPlayer::getCapitalBonusEffect`。首都がなければ 0）: `iHealChange`（自国の領土でのユニットの回復 % / ターン。`CvUnit::healRate`）、`iHealChangeEnemy`（自国の領土にいる敵のユニットの回復。マイナスで遅くする）、`iDiscoverRandModifier`（施設で資源が見つかる確率 %。+100 で確率 2 倍。`CvPlot::doImprovement`）。
+- `bModifierPerBonus`（**累積**）: その資源の効果を、都市が使える数（交易網の中の数。輸入・企業が生む分も含む。`getNumBonuses`）の回数だけ数える。
+- 対象は幸福・衛生と上の都市・プレイヤーの効果、建物の `BonusHappinessChanges` / `BonusHealthChanges` / `BonusYieldModifiers`・電力（`FreePromotion` は 1 回のまま）。
+- 数の増減・建物による無効化（`NoBonus`）・企業の資源の更新のたびに、数えた回数の差だけ足し引きする（`CvCity::getBonusEffectCount`）。
+- 建物の `BonusCommerceChanges` など、この Mod の建物の成長のタグは累積しない。
+- 都市の値はセーブに入るので、既存のセーブで資源に `bModifierPerBonus` を付けると数がずれる（新しいゲームで確かめる）。
+- 説明文は資源の説明（ペディアとマウスオーバー）に `TXT_KEY_BONUS_CITY_MODIFIERS` などで出す（`CvGameTextMgr::buildBonusEffectsString`）。
+- キャッシュの形式: `CvBonusInfo` `uiFlag=2`。
+- Python は `CvBonusInfo` の同名の関数、`CyPlayer.getBonusHealChange()`・`getBonusHealChangeEnemy()`・`getBonusDiscoverRandModifier()`
+
+### `CivicInfo/FreeTraits`（`BuildingInfo`・`TechInfo` にも同名タグ）
+
+- ファイル: `CIV4CivicInfos.xml`、`CIV4BuildingInfos.xml`、`CIV4TechInfos.xml`
+- `<TraitType>` を何個でも書ける（`PrereqOrTraits` と同じ書式）。
+- その志向を、社会制度は採用している間、建物は陳腐化していないものをどこかの都市に持つ間（建物 1 つにつき 1 回分）、技術はチームが持つ間、持つ。
+- 志向の付け外しの仕組み（`misc.md`）で `CvPlayer::changeFreeTraitCount` を呼ぶ: 社会制度は `CvPlayer::processCivics`、建物は `CvCity::processBuilding`（陳腐化したとき・都市が奪われたときも外れる）、技術は `CvTeam::processTech`（チームの全プレイヤー。BtS の技術の労働者速度などと同じ）。
+- 志向の効果はすべて使える（例: 不思議の `FreeTraits` に陳腐化を無視する志向を書けば、その不思議がある間だけ城が陳腐化しない）。
+- 建物が与えた志向で別の建物が陳腐化しなくなり、その建物がまた志向を与える、という連鎖も処理する（`updateTraitDependents` が変化がなくなるまで繰り返す）。
+- 説明文は `TXT_KEY_FREE_TRAITS`（「次の志向を得る: 金融志向」。志向名はリンク）で、3 つで共通（`CvGameTextMgr::buildFreeTraitsString`）。
+- 技術は志向より先に読み込まれるので、種類を文字列のまま持ち（キャッシュにも文字列で書く）、志向の読み込み直後に `CvTechInfo::readPass3()` で番号に変える。
+- 技術の XML と Schema（`CIV4TechInfos.xml` / `CIV4TechnologiesSchema.xml`）はこのために Mod に追加した。
+- キャッシュの形式: `CvCivicInfo` `uiFlag=5`、`CvBuildingInfo` `uiFlag=9`、`CvTechInfo` `uiFlag=1`。
+- 既存のセーブに、すでに持っている社会制度・建物・技術へ `FreeTraits` を足しても反映されない（得たときに数えるため）。
+- ゲーム中に表示する「今の志向」（国旗の説明 `CvDLLWidgetData::parseFlagHelp`、勝利条件の画面の設定 `CvVictoryScreen.py`、他の指導者の説明 `parsePlayerTraits`）は、得た志向も含む（`CvGameTextMgr::parsePlayerLeaderTraits`、Python は `CyGameTextMgr().parsePlayerLeaderTraits(iPlayer, bDawnOfMan)`。exe に公開している `parseLeaderTraits` は変えていない）。
+- 文明の夜明けの画面とペディアは指導者・文明の志向のまま
+
+### `EventTriggerInfo/PrereqOrTraits`
+
+- ファイル: `CIV4EventTriggerInfos.xml`
+- どれか 1 つの志向を持つプレイヤーにだけ起きるイベント（`CvPlayer::getEventTriggerWeight`）。
+- 新しいトリガーとイベントを足す方式で、既存のイベントの置き換えはない。
+- 説明文には出ない。
+- キャッシュの形式: `CvEventTriggerInfo` `uiFlag=1`。
+- Python は `CvEventTriggerInfo.getNumPrereqOrTraits()` / `getPrereqOrTraits(i)`
+
+### `TechInfo/PyOnDiscovered`、`CivicInfo/PyOnAdopt`・`PyOnRevoke`、`UnitInfo/PyOnCreated`・`PyOnDeath`
+
+- ファイル: `CIV4TechInfos.xml`、`CIV4CivicInfos.xml`、`CIV4UnitInfos.xml`
+- Python フック。
+- `PyOnDiscovered`: チームが技術を得たとき（研究・交換・小屋など）、チームの各プレイヤーに 1 回（`CvTeam::setHasTech` の最後。技術の効果の後）。
+- 名前は `pPlayer`・`eTech`・`bFirst`（そのチームが最初に持った: BtS の `bFirst` かつ持つチームが 1 つだけ。交換では 0）。
+- ゲーム開始時の技術では呼ばない。
+- `PyOnAdopt` / `PyOnRevoke`: 社会制度を採用した / やめたとき（`CvPlayer::setCivics`。やめる方が先）。
+- 名前は `pPlayer`・`eCivic`。
+- ゲーム開始時の社会制度では呼ばない。
+- `PyOnCreated` / `PyOnDeath`: その種類のユニットが生まれた（`CvUnit::init` の最後。生産・Python・偉人など）/ 死んだ（`CvUnit::kill`。倒された・解散など。遅延の死では最初の 1 回だけ、まだタイルにいる）とき。
+- 名前は `pUnit`・`pPlayer`（持ち主）、`PyOnDeath` は `iKiller`（倒したプレイヤー、なければ -1）も。
+- アップグレード・贈与・呪文の `ConvertUnit`（`initUnit` して `convert` する。同じユニットが続くとみなす）では、新しいユニットの `PyOnCreated` も古いユニットの `PyOnDeath` も呼ばない（`CvUnit.cpp` の `s_bReplacingUnit`）。
+- 滅びたプレイヤーのユニットでは `PyOnDeath` を呼ばない。
+- 式は `EntryPoints\CvHookInterface.py` が `eval` する（ファイルの先頭に、フックごとの呼ばれる時点・使える名前・サンプル・決まりをまとめてある）。
+- 共通の関数は `CvHookUtils.py`（`gainGold`・`createUnits`・`addPromotion`・`healUnit`・`addCulture`・`isOnFeature` など。志向・呪文の Python からも使える）。
+- ワールドビルダーでは呼ばない。
+- キャッシュには文字列で書く。
+- 説明文にはフックの効果を出さないので、`Help` に書く
+
+### `ProcessInfo/PrereqOrTraits`
+
+- ファイル: `CIV4ProcessInfo.xml`
+- 生産の種類（富・研究など）の固有。
+- `<TraitType>` を何個でも書け、どれかの志向を持つプレイヤーだけが都市で選べる（`CvPlayer::canMaintain`。省略で誰でも）。
+- 生産の種類は `LoadPostMenuGlobals` で読み込まれるので `read` で番号に変える。
+- `CIV4ProcessInfo.xml` は Warlords(J) のものを Mod に入れた（BtS(J) には無い）。
+- あわせて `TechPrereq` を `NONE` にすると技術なしで選べるようにした（BtS では `NONE` を考えていない）。
+- BtS には諜報ポイントの生産が無いので、`ProductionToCommerceModifiers` の 4 つ目（諜報）に値を書いた生産を足せば、ハンマーを諜報ポイントに変えられる（検証用 `PROCESS_TEST_ESPIONAGE`）。
+- 志向の説明文に `TXT_KEY_TRAIT_UNIQUE_PROCESSES`（「固有の生産: 諜報（検証用）」。ゲームの前の説明文には出ない）
+
+### `ProjectInfo/PrereqOrTechs`、`PrereqOrTraits`
+
+- ファイル: `CIV4ProjectInfo.xml`
+- 2026-11-24（トルデシリャス条約の案）。
+- `PrereqOrTechs`: `<TechType>` を何個でも書け、チームがどれか 1 つを持てば作れる（`TechPrereq` もあればそれも必要。`NONE` にすれば OR だけ）。
+- `PrereqOrTraits`: どれかの志向を持つプレイヤーだけが作れる（省略で誰でも）。
+- 判定は `CvPlayer::canCreate`。
+- 技術の説明文の「プロジェクトを作れる」と技術ツリー（`isTechRequiredForProject`）は OR の技術でも出る。
+- プロジェクトの説明文に、満たしていないとき「必要: 光学 または 紙」「必要: 〜志向」。
+- 志向の説明文に「固有プロジェクト: X」（`TXT_KEY_TRAIT_UNIQUE_PROJECT`）。
+- Python は `CvProjectInfo.getNumPrereqOrTechs()` / `getPrereqOrTechs(i)` / `getNumPrereqOrTraits()` / `getPrereqOrTraits(i)`（`CyInfoInterface4.cpp`）。
+- プロジェクトは志向・技術より後に読み込まれるので `read()` で番号に変える。
+- キャッシュなし。
+- Mod に `CIV4ProjectInfo.xml` を入れたのはこのとき（末尾に civ-design の目印）

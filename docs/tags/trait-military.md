@@ -2,29 +2,288 @@
 
 ユニット・戦闘・征服・昇進・経験値・維持費。
 
-| ファイル | タグ | 内容 |
-|---|---|---|
-| `CIV4TraitInfos.xml` | `TraitInfo/FreePromotionSets` | `<FreePromotionSet>` を何個でも書ける。各組は `<FreePromotions>`（省略不可）と、対象の指定を持つ。対象は `<FreePromotionUnitCombats>`（既存と同じ書式の兵科）、`<FreePromotionUnitClasses>`（`UnitClassType` を何個でも。兵科のない労働者や開拓者も指定できる）、`<bFreePromotionNoUnitCombat>`（兵科のないユニットすべて: 労働者、開拓者、宣教師、幹部、偉人、スパイ、作業船など）のどれかに当てはまるユニットで、`<FreePromotionDomains>`（`DomainType` を何個でも）があれば、その領域のユニットだけに絞る（兵科やユニットクラスの指定にも効く）。対象の指定はどれも省略可（`CvTraitInfo::isFreePromotionSetUnit`）。組の中の全昇進を対象に付与する。既存の `FreePromotions` / `FreePromotionUnitCombats` と併用可。付与はユニット生成時（既存のセーブでも新しいユニットには効く）。その兵科が本来取れる昇進かはチェックしない |
-| `CIV4TraitInfos.xml`、`CIV4CivicInfos.xml` | `TraitInfo/UnitCombatFreeExperiences`、`UnitCombatProductionModifiers`（`CivicInfo` にも同名タグ） | 兵科ごとの新ユニットの経験値（建物の同名タグと同じ書式: `UnitCombatType` + `iExperience`）と、兵科ごとのユニット生産 %（`UnitCombatType` + `iProductionModifier`）。既存の `iFreeExperience` / `iMilitaryProductionModifier` に上乗せされる。`CvPlayer::getUnitCombatFreeExperience()` / `getUnitCombatProductionModifier()` が「持っている志向 + 今の社会制度」を**そのつど合計**するので、セーブデータは変わらず、社会制度の切り替えも既存のセーブもそのまま反映される。経験値は都市で生産したユニットだけ。生産の内訳では、志向の分は既存の志向の行に含め、社会制度の分は `TXT_KEY_MISC_HELP_PROD_CIVIC_UNITCOMBAT` の行で表示 |
-| `CIV4TraitInfos.xml`、`CIV4CivicInfos.xml` | `TraitInfo/UnitCombatUpgradeDiscounts`（`CivicInfo` にも同名タグ） | 兵科ごとのアップグレード費用の割引率 %（`UnitCombatType` + `iUpgradeDiscount`。マイナスで割増）。**アップグレード元**のユニットの兵科で判定する。ユニットの昇進による割引と、志向・社会制度の割引を**足し算**して 1 回で引く（`CvUnit::upgradePrice`）。合計 100% 以上で無料。上と同じくそのつど合計（`CvPlayer::getUnitCombatUpgradeDiscount()`）。説明文では費用の増減として「-50%」のように表示（`TXT_KEY_UNITCOMBAT_UPGRADE_COST_MODIFIER`） |
-| `CIV4TraitInfos.xml`、`CIV4CivicInfos.xml`、`CIV4BuildingInfos.xml` | `TraitInfo/UpgradeAnywhereUnitCombats`（`CivicInfo`・`BuildingInfo` にも同名タグ） | 各 `<UpgradeAnywhereUnitCombat>` は `UnitCombatType` + `bUpgradeAnywhere` + 省略可の `bExcludeEnemyTerritory`（既定 0）。その兵科（アップグレード元）は**自チームの領土外でもアップグレードできる**。`bExcludeEnemyTerritory=1` なら交戦中のチームの領土では不可。有効になるのは「その志向を持つ」「その社会制度を採用中」「その建物を（陳腐化していない状態で）どこかの都市に持つ」のいずれか。複数が許可している場合、1 つでも「敵国でも可」なら敵国でも可。緩めるのは「領土内にいること」（`CvUnit::isReadyForUpgrade`）と「最寄りの都市が同じ大陸・水域にあること」（`CvUnit::getUpgradeCity` の非探索時）の 2 点だけで、移動力・費用・最寄りの自チーム都市でアップグレード先を生産できること（海洋は沿岸都市）は従来どおり必要。読み込みは 3 つの値を持つので、共通関数 `readUpgradeAnywhereUnitCombats()`（`CvInfos.cpp`）を使う |
-| `CIV4TraitInfos.xml` | `TraitInfo/iUnitCostModifier`、`iBuildingCostModifier` | すべてのユニット・すべての建物（不思議を含む）の生産コスト ○%（ex 氏の CivGoldEmpires の丘陵志向・森林志向・卸売商。CGE は Python の `getUnitCostMod` / `getBuildingCostMod` で処理している）。`CvPlayer::getProductionNeeded` で、BtS の補正（ゲーム速度・開始時代・AI の難易度、ユニットは開拓者などの追加コストも）の後に掛ける（-100 以下で 0、コストは最低 1）。生産コストから計算するアップグレードの費用・資金での購入の費用も変わる。生産の速さ（`iMilitaryProductionModifier` など）とは別の値。持っている志向の値の合計で、そのつど合計する（`CvPlayer::getUnitCostModifier()` / `getBuildingCostModifier()`）。説明文は `TXT_KEY_TRAIT_UNIT_COST_MODIFIER`（「ユニットの生産コスト-20%」）・`TXT_KEY_TRAIT_BUILDING_COST_MODIFIER` |
-| `CIV4TraitInfos.xml` | `TraitInfo/iGoldenAgeLandMovesChange`・`iGoldenAgeSeaMovesChange` | 黄金期の間、そのプレイヤーの陸上ユニット・艦船（非戦闘ユニットも含む）の移動力に足す（Civ5 のペルシャ）。志向の合計。`CvUnit::baseMoves` で、持ち主が黄金期のときだけ足す（`CvPlayer::getGoldenAgeMovesChange`）。Civ4 は使った移動力を数えるので、黄金期が始まった直後のターンの途中から増え、終わると戻る。移動力が 0 のユニットと航空ユニット（行動範囲で動く）は対象外。ユニットの説明の移動力にも出る。説明文 `TXT_KEY_TRAIT_GOLDEN_AGE_LAND_MOVES` / `_SEA_MOVES`。Python は `CyPlayer.getGoldenAgeMovesChange(eDomain)` |
-| `CIV4TraitInfos.xml` | `TraitInfo/Conquest`（`iCulturePercent`・`iBuildingSurviveModifier`・`bNoPopulationLoss`・`bNoAutoRaze`） | 2026-11-23 に `<Conquest>` の子に移し、名前を `iConquestCulturePercent`・`iConquestBuildingSurviveModifier`・`bNoConquestPopulationLoss` から変えた（getter と Python の名前は元のまま）。`<Conquest>` には下の行と `trait-territory.md`・`trait-economy.md` の征服のタグも書く。都市を占領したとき（`CvPlayer::acquireCity` の `bConquest`。取引・文化による転向には効かない）。三国志 Mod（The History of Three Kingdoms）の劉備の仁徳（`bBenevolent`）を数値のタグに分けたもの（反乱なしは `iOccupationTimeModifier` -100）。`iCulturePercent`: 都市の他の全プレイヤーの文化の ○% と、都市の文化圏（`getCultureRange`）のタイルの旧持ち主の文化の ○% を、征服した側の文化に移す（志向の合計、0〜100）。反乱期間の計算（自チームの文化の割合）より前なので、反乱も短くなる。`iBuildingSurviveModifier`: 建物が残る確率（BtS の `iConquestProbability`）に ○% の補正（志向の合計。`確率 × (100 + ○) ÷ 100`、0〜100 に収める。マイナスで壊れやすくなる。確率 0 の建物（宮殿など）と `bNeverCapture` は変わらない。奪還では BtS と同じくすべて残る）。三国志 Mod は条件が逆で、仁徳を持たない側の確率が上がる不具合がある。`bNoPopulationLoss`: 占領しても人口が 1 減らない（BtS は奪還以外で 1 減る。人口 1 のまま大きくなったことのない都市が自動で破壊される規則は `bNoAutoRaze` で外す）。`bNoAutoRaze`: 占領した都市が一度も人口 2 以上になったことがなくても（最大人口 `getHighestPopulation` が 1。元の持ち主の記録を引き継ぐ）、自動で破壊しない（`CvCity::isAutoRaze`。新しい持ち主＝征服した側の志向で判定）。人間には普通の都市と同じく破壊するか残すかのポップアップが出て、AI は自分で決める。都市の除去数の上限があるゲームと、一都市チャレンジの人間のプレイヤーの自動破壊は BtS のまま。そのつど判定するのでセーブデータは変わらない。説明文は `TXT_KEY_TRAIT_CONQUEST_CULTURE`・`TXT_KEY_TRAIT_CONQUEST_BUILDING_SURVIVE`・`TXT_KEY_TRAIT_NO_CONQUEST_POPULATION_LOSS`・`TXT_KEY_TRAIT_NO_AUTO_RAZE`。Python は `CyPlayer.getConquestCulturePercent()`・`getConquestBuildingSurviveModifier()`・`isNoConquestPopulationLoss()`・`isNoAutoRaze()` と `CvTraitInfo` の同名の関数 |
-| `CIV4TraitInfos.xml` | `TraitInfo/Conquest/bLearnUniqueUnits`、`bLearnUniqueBuildings` | 2026-11-23 に `<Conquest>` の子に移し、名前を `bConquestLearnUniqueUnits`・`bConquestLearnUniqueBuildings` から変えた（getter と Python の名前は元のまま）。都市を征服すると（`CvPlayer::acquireCity` の `bConquest`。割譲・文化による寝返り・蛮族からは学ばない）、奪った相手の文明の固有ユニット・固有建造物（文明の XML。相手の志向の固有は含まない）を学ぶ（`CvPlayer::learnConquestUniques`）。自分に固有がない種類だけ: `CvPlayer::getCivilizationUnit` / `getCivilizationBuilding` は、志向の `UniqueUnits` / `UniqueBuildings` → 文明の固有 → 学んだもの → 普通のもの、の順に決める（志向と文明の分は `getNativeCivilizationUnit` / `getNativeCivilizationBuilding`）。同じ種類は後に学んだものに替わる（中国の楼閣のあとビザンチンを征服すると、劇場の枠はヒッポドローム）。学んだものはプレイヤーごとにセーブする（`CvPlayer` の uiFlag 10）。志向を持っている間だけ使われる。学んだとき、今いるユニットはそのまま。自分の全都市で、その種類の建物（`getNumRealBuilding`）を学んだものに建て替える（建てた人と時期は引き継ぐ。沿岸専用などの立地の条件は見ない）。無償の建物（`setNumFreeBuilding`）はそのまま。生産キューの元のユニット・建物は学んだものに置き換わり、それまでの生産量も移る。占領した都市そのものの建物は、学んだあとに渡すので学んだものになる。学ぶとメッセージ `TXT_KEY_MISC_LEARNED_CONQUEST_UNIQUES`。説明文は `TXT_KEY_TRAIT_CONQUEST_LEARN_UNIQUE_UNITS` / `_BUILDINGS`。Python は `CyPlayer.isConquestLearnUniqueUnits` / `isConquestLearnUniqueBuildings` / `getLearnedUnit(iUnitClass)` / `getLearnedBuilding(iBuildingClass)`（なければ -1） |
-| `CIV4TraitInfos.xml` | `TraitInfo/iEnemyMoveCostInBorders` | その志向を持つプレイヤーの領土のタイルに入る、交戦中のチームの陸上ユニットの移動コスト +○（`CvPlot::movementCost`。地形のコストに足し、ユニットの移動力全部まで。川を渡るコストと同じ扱い）。敵は相手の領土の道路を使えないので、道路では避けられない（敵の道路を使えるユニットは道路の方が安ければそちら）。経路探索も同じ。説明文は `TXT_KEY_TRAIT_ENEMY_MOVE_COST_IN_BORDERS` |
-| `CIV4TraitInfos.xml` | `TraitInfo/iRevengeCombatPercent` | 自分の都市を一度でも征服したことのあるプレイヤーのユニットと戦うときの戦闘力 %。征服（`acquireCity` の `bConquest`）で都市を失ったとき、失った側の `CvPlayer` に奪った相手を記録する（`m_abCityConqueredBy`、セーブする。uiFlag 11。取り返しても消えない）。攻撃でも防御でも効く（`CvUnit::maxCombatStr` の防御側の計算で、両方の持ち主の分を足し引きする）。戦闘の勝率の内訳に「復讐（志向）」の行（`TXT_KEY_COMBAT_PLOT_REVENGE_MOD`）。説明文は `TXT_KEY_TRAIT_REVENGE_COMBAT` |
-| `CIV4TraitInfos.xml` | `TraitInfo/Conquest/bHeal` | 2026-11-23 に `<Conquest>` の子に移し、名前を `bConquestHeal` から変えた（getter と Python の名前は元のまま）。都市を征服すると、そのプレイヤーの全ユニットが全回復する（`CvUnit::setXY` で `acquireCity` の直後。征服したユニットの持ち主の志向で判定）。説明文は `TXT_KEY_TRAIT_CONQUEST_HEAL` |
-| `CIV4TraitInfos.xml` | `TraitInfo/EnemyAttrition` | `<EnemyAttrition>` に `iPercent`（必須）と `iLimit`（省略可）を書く。2026-11-21 に親タグにまとめた。自国の領土の敵ユニットの損耗（RFC のロシアの UP を汎用にしたもの。RFC は Python で文明・時期・範囲を決め打ち）。そのプレイヤーのターンのはじめ（`PyOnBeginTurn` の後）に、自国の領土にいる**交戦中**のチーム（蛮族を含む）のユニットが、最大 HP の `iPercent`% を失う（陸・海・空すべて。`CvPlayer::doEnemyAttrition`）。`iLimit`（省略時 100）を超えるダメージにはならない（50 なら HP 50% で止まる）。100 なら HP が尽きたユニットは死に、損耗を与えたプレイヤーが倒したことになる。複数の志向: 損耗は合計、上限は損耗を持つ志向のうち最大 |
-| `CIV4TraitInfos.xml` | `TraitInfo/iSummonDuration` | 呪文で召喚したユニットが消えるまでのターン +○（FFH2 と同じ名前）。そのつど合計（`CvPlayer::getSummonDuration`）。説明文は `TXT_KEY_TRAIT_SUMMON_DURATION` |
-| `CIV4TraitInfos.xml` | `TraitInfo/iCombatPercent` | その志向を持つ間、そのプレイヤーの全ユニットの戦闘力 ○%（マイナスも可）。攻撃でも防御でも効く。昇進の `iCombatPercentInBorders` と同じく `CvUnit::getExtraCombatPercent` に足すので、ユニットの説明の戦闘力と、戦闘の勝率の内訳にも含まれる。志向の値の合計をそのつど求める（`CvPlayer::getTraitCombatPercent`）ので、`ConditionalFreeTraits` で志向を付け外しすると、今いるユニットにもすぐ効く（ユニットを作ったときに付く昇進の組との違い。フランスの「無政府期間中の戦闘力」を `bAnarchy` で作るためのもの）。セーブデータは変わらない。説明文 `TXT_KEY_TRAIT_COMBAT_PERCENT`（「全ユニットの戦闘力+25%」）。Python は `CyPlayer.getTraitCombatPercent()`、`CvTraitInfo.getCombatPercent()` |
-| `CIV4TraitInfos.xml` | `TraitInfo/iDefenseCombatPercent`、`iEnemyWarWearinessModifier` | ガンジーの「非暴力不服従」。`iDefenseCombatPercent`: そのプレイヤーのユニットが防衛するときの戦闘力 ○%（`CvUnit::maxCombatStr` の防衛側の補正。志向の値の合計 `CvPlayer::getTraitDefenseCombatPercent`、その都度合計する）。戦闘の勝率の説明の防衛側に「防衛（志向）」の行（`TXT_KEY_COMBAT_PLOT_TRAIT_DEFENSE_MOD`）。`iEnemyWarWearinessModifier`（建物の同名タグと同じ。ゼウス像）: そのプレイヤーのチームと交戦中のチームが、このチームとの戦争で受ける厭戦感情 ○%。BtS のチームの値（`CvTeam::changeEnemyWarWearinessModifier`。セーブに入る）に `processTrait` で足し引きする。永久同盟でチームが変わるときは、志向の分も新しいチームへ移す（`CvPlayer::setTeam`）。説明文は `TXT_KEY_TRAIT_DEFENSE_COMBAT_PERCENT`、建物の `TXT_KEY_BUILDING_ENEMY_WAR_WEAR`。Python は `CyPlayer.getTraitDefenseCombatPercent()`、`CvTraitInfo` の同名の関数 |
-| `CIV4TraitInfos.xml` | `TraitInfo/iMaxExperienceAfterUpgrade`、`iExpOutsideBordersChange` | DoC（Dawn of Civilization）のドイツ・ラージプートの UP から。`iMaxExperienceAfterUpgrade`: アップグレードしたあとに残る経験値の上限。BtS は `MAX_EXPERIENCE_AFTER_UPGRADE`（`GlobalDefines.xml`、10）で切り詰める（`CvUnit::upgrade`。大将軍が加わったユニットは BtS どおり切り詰めない）。この値で置き換える。`-1` で切り詰めない（全部残る）、`0`（省略時）は define のまま。複数の志向: `-1` が最優先、ほかは最大値（`CvPlayer::getMaxExperienceAfterUpgrade`）。`iExpOutsideBordersChange`: 戦闘の経験値に足す（志向の合計）。戦ったタイル（防御側のタイル）が自分の領土でないとき。BtS の `iExpInBorderModifier`（領土内の %）と同じく `CvUnit::changeExperience` で足すので、勝ったとき・撤退したとき・迎撃など、戦闘の経験値すべてに効き、指揮官（Leadership）の % もかかる。蛮族からの経験値の上限は BtS どおり。大将軍のポイントには数えない。そのつど合計するのでセーブデータは変わらない。説明文 `TXT_KEY_TRAIT_KEEP_UPGRADE_EXPERIENCE` / `TXT_KEY_TRAIT_MAX_UPGRADE_EXPERIENCE`・`TXT_KEY_TRAIT_EXP_OUTSIDE_BORDERS`。Python は `CyPlayer` / `CvTraitInfo` の同名の関数 |
-| `CIV4TraitInfos.xml` | `TraitInfo/Conscription/bNoExperiencePenalty` | 2026-11-23 に `<Conscription>` の子に移し、名前を `bNoConscriptExperiencePenalty` から変えた（getter の名前は元のまま）。徴兵したユニットも、都市の経験値（兵舎など）を半分にせず全部得る（`CvCity::addProductionExperience` の `bConscript`）。説明文 `TXT_KEY_TRAIT_NO_CONSCRIPT_EXPERIENCE_PENALTY`。Python は `CyPlayer.isNoConscriptExperiencePenalty()`、`CvTraitInfo.isNoConscriptExperiencePenalty()` |
-| `CIV4TraitInfos.xml` | `TraitInfo/Conscription/iMaxConscript`、`bMilitaryFoodProduction`、`iHealRateChange`、`DomainFreeExperiences`、`DomainProductionModifiers` | 社会制度・建物の同名のタグの志向版（2026-11-19）。`iMaxConscript`（2026-11-23 に `<Conscription>` の子に移した。毎ターン徴兵できる数。社会制度と同じくマップの大きさの `iMaxConscriptModifier` で補正。国家主義などの社会制度なしでも徴兵できるようになる）と `bMilitaryFoodProduction`（余剰の食料を軍事ユニットの生産に回す）は `CvPlayer::processTrait` で社会制度と同じ `changeMaxConscript` / `changeMilitaryFoodProductionCount` に足す（ゲーム開始時の `init` で適用するので、既存のセーブの指導者・文明に足しても反映されない）。`iHealRateChange`（都市にいるユニットの回復 +%）、`DomainFreeExperiences`（`DomainType` + `iExperience`。その種類のユニットの経験値 +N）、`DomainProductionModifiers`（`DomainType` + `iProductionModifier`。その種類のユニットの生産 %）は建物と同じ書式で、全都市に効く（`CvCity::getHealRate` / `getDomainFreeExperience` / `getDomainProductionModifier` にそのつど志向の合計を足す。生産の内訳は BtS の「○○ユニット」の行に合算）。説明文は社会制度の `TXT_KEY_CIVIC_CONSCRIPTION`・`TXT_KEY_CIVIC_MILITARY_FOOD`、建物の `TXT_KEY_BUILDING_HEAL_MOD`・`TXT_KEY_BUILDING_FREE_XP`・`TXT_KEY_BUILDING_BUILDS_FASTER_DOMAIN`。Python は `CvTraitInfo` の同名の getter |
-| `CIV4TraitInfos.xml` | `TraitInfo/iBaseFreeUnits`、`iBaseFreeMilitaryUnits`、`iFreeUnitsPopulationPercent`、`iFreeMilitaryUnitsPopulationPercent`、`iGoldPerUnit`、`iGoldPerMilitaryUnit`、`iCorporationMaintenanceModifier`、`iMaintenanceModifier` | 社会制度・建物の同名のタグの志向版（2026-11-19）。ユニットの扶養（無料で維持できるユニット・軍事ユニットの数、総人口の % 分の無料ユニット、無料の数を超えたユニット・軍事ユニット 1 体あたりの維持費。値は整数の金で、難易度の `iUnitCostPercent` がかかる）と企業の維持費 % は `CvPlayer::processTrait` で社会制度と同じ `change…()` に足す（ゲーム開始時の `init` で適用するので、既存のセーブの指導者・文明に足しても反映されない）。`iMaintenanceModifier`（都市の維持費 %。全都市）は `CvCity::getMaintenanceModifier` にそのつど志向の合計を足す（志向が変わると `updateTraitDependents` が維持費を計算し直す）。説明文は社会制度の `TXT_KEY_CIVIC_FREE_UNITS`・`TXT_KEY_CIVIC_FREE_MILITARY_UNITS`・`TXT_KEY_CIVIC_SUPPORT_COSTS`・`TXT_KEY_CIVIC_MILITARY_SUPPORT_COSTS`（社会制度の説明は値でなく真偽値を渡しているが、志向では値を渡す）・`TXT_KEY_CIVIC_NO_MAINT_CORPORATION`（-100 以下）/ `_MOD`、建物の `TXT_KEY_BUILDING_MAINT_MOD`、人口の % は `TXT_KEY_TRAIT_FREE_UNITS_POPULATION` / `TXT_KEY_TRAIT_FREE_MILITARY_UNITS_POPULATION`。Python は `CvTraitInfo` の同名の getter |
-| `CIV4TraitInfos.xml` | `TraitInfo/bStackCityDefense` | 都市の防御で、文化による防御（文化レベルの `iCityDefenseModifier`）と建造物の防御（城壁など）の大きい方ではなく、両方を足す（`CvCity::getTotalDefense`。BtS は `std::max`）。プレイヤー全体の都市の防御（チチェン・イッツァなど。`CvPlayer::getCityDefenseModifier`）はこれまでどおりさらに足す。建造物の防御を無視するユニット（火薬以降）への防御は文化による防御だけで BtS と同じ。都市の防御が上がるので、砲撃で 0 にするのにかかる回数も増える。そのつど判定するのでセーブデータは変わらない。どれかの志向が持っていれば有効（`CvPlayer::isStackCityDefense`）。AI は防御の建物の価値を文化による防御で減らさない（`CvCityAI::AI_buildingValueThreshold`）。説明文 `TXT_KEY_TRAIT_STACK_CITY_DEFENSE`。Python は `CyPlayer.isStackCityDefense()`、`CvTraitInfo.isStackCityDefense()` |
-| `CIV4TraitInfos.xml` | `TraitInfo/bBasicTrait`、`bGainTraitOnCapitalCapture`、`bGainTraitsOnElimination` | `bBasicTrait`: 基本志向の印。BtS の指導者の志向 11 個（攻撃・防衛・カリスマ・帝国主義・金融・組織・創造・勤労・哲学・拡張・宗教）に `1` を書いた。海洋志向・文明固有・指導者固有の志向には書かない。`bGainTraitOnCapitalCapture`: 戦争で相手の首都を占領すると（`acquireCity` の `bConquest`。占領した時点で首都だった都市。その場で破壊しても数える）、相手の基本志向のうち自分が持っていないものから 1 つをランダム（`getSorenRandNum`）に得る。`bGainTraitsOnElimination`: 相手が滅びると（`CvPlayer::setAlive(false)`）、相手の最後の都市を占領したプレイヤー（`CvPlayer::m_eLastConqueror`。都市を占領するたびに書き換える。セーブに保存、`CvPlayer` の `uiFlag=13`）が、相手の基本志向のうち持っていないものをすべて得る。滅亡の判定は BtS のまま（完全抹殺のオプションでは、最後のユニットが倒されたときに、最後の都市を占領したプレイヤーが得る）。候補は相手の指導者と文明の志向（`hasBaseTrait`。相手がゲーム中に得た志向は含まない）。候補がなければ何も得ない。得た志向は失わない（`changeFreeTraitCount` で 1。`CvPlayer::gainBasicTraitsOf`）。首都が最後の都市なら、首都の 1 つを得たあと、滅亡で残りを得る。本人にメッセージ `TXT_KEY_MISC_TRAIT_GAINED_BY_CAPITAL` / `_BY_ELIMINATION`（「徳川家康の首都を陥落させ、攻撃志向を得ました！」）。説明文 `TXT_KEY_TRAIT_GAIN_TRAIT_ON_CAPITAL_CAPTURE` / `TXT_KEY_TRAIT_GAIN_TRAITS_ON_ELIMINATION`（基本志向そのものの説明文には何も出さない）。Python は `CvTraitInfo.isBasicTrait()` / `isGainTraitOnCapitalCapture()` / `isGainTraitsOnElimination()` |
-| `CIV4TraitInfos.xml` | `TraitInfo/RandomBasicTraits` | FFH2 の狂気志向から。`<RandomBasicTraits>` に `iTurns`（間隔）と `iCount`（数）を書く（両方必須。要素があればオン）。`iCount` が 1 以上の志向を持つ間、ターンの初め（`CvPlayer::doTurn`。`ConditionalFreeTraits` と期間つきの志向の後、`PyOnBeginTurn` の前）とゲーム開始時（`CvGame::setInitialItems`）に、前回の変化から `iTurns` ターン（ゲーム速度で変わる: × `iGrowthPercent` / 100、最低 1。普通 3 → エピック 4・マラソン 9・迅速 2）が過ぎていれば、前回得た志向の代わりに基本志向（`bBasicTrait`）を `iCount` 個ランダムに（`getSorenRandNum`、重複なし）得る。初回（ゲーム開始時、またはゲーム中にこの志向を得た次のターンの初め）はすぐに得る。候補は、ほかの経路（指導者・文明・条件・社会制度など）で持っていない基本志向で、前回得た志向も候補に戻る。候補が足りなければある分だけ。前回と同じ志向が選ばれたら外さずに残す（効果と `PyOnLost` / `PyOnGained` は動かない）。この志向を失うと、次のターンの初めに得た志向をすべて外す。複数の志向が持つ場合、個数は合計、間隔は最短。得た志向は `CvPlayer::m_paiRandomBasicTrait`、前回の変化のターンは `m_iRandomBasicTraitTurn`（セーブに保存、`CvPlayer` の `uiFlag=14`。`changeFreeTraitCount` で 1 ずつ足し引き。`CvPlayer::doRandomBasicTraits`）。得たときに本人にメッセージ `TXT_KEY_MISC_RANDOM_BASIC_TRAITS`（「検証用志向（狂気）により、次の志向が付与されました。攻撃志向, 金融志向, 宗教志向」）。説明文 `TXT_KEY_TRAIT_RANDOM_BASIC_TRAITS`（「3 ターンごとに、基本志向を 3 個ランダムに得る（前回得た志向と入れ替わる）」。ターン数はゲーム速度を反映）。Python は `CvTraitInfo.isRandomBasicTraits()` / `getRandomBasicTraitTurns()`（`iTurns`、速度の補正前） / `getRandomBasicTraitCount()`（`iCount`）、`CyPlayer.isRandomBasicTrait(eTrait)` / `getRandomBasicTraitTurn()` |
-| `CIV4TraitInfos.xml` | `TraitInfo/GainTraitsOnFriendly` | `<GainTraitsOnFriendly>` を書くとオン。子の `bAll`（省略可、既定 `0`）: `0` = 1 つをランダム（`getSorenRandNum`）、`1` = すべて。この志向を持つ間、自分のターンの初め（`CvPlayer::doTurn`。`RandomBasicTraits` の後、`PyOnBeginTurn` の前）に、出会っている AI のプレイヤー（生存・人間でない・蛮族でない）のうち、自分への本当の態度（`AI_getAttitude(ePlayer, false)`。同じチーム・属国の自動の「親密」は含まない）が親密のものから、その指導者と文明の基本志向（`bBasicTrait`・`hasBaseTrait`）のうち自分が持っていないものを得る（`CvPlayer::gainBasicTraitsOf`。得た志向は失わない）。**1 人の AI につき 1 回だけ**: 親密になった時点で印を付け（`CvPlayer::m_abFriendlyTraitGainedFrom`。セーブに保存、`CvPlayer` の `uiFlag=15`）、いったん親密でなくなって再び親密になっても、もう得ない。候補がすべて重複していて何も得なかったときも印を付ける。すでに親密な AI がいる状態でこの志向を得ると、次のターンの初めに得る。複数の志向が持つ場合、どれかが `bAll` 1 ならすべて。本人にメッセージ `TXT_KEY_MISC_TRAIT_GAINED_BY_FRIENDLY`（「徳川家康と親密になり、攻撃志向を得ました！」）。説明文 `TXT_KEY_TRAIT_GAIN_TRAIT_ON_FRIENDLY` / `TXT_KEY_TRAIT_GAIN_TRAITS_ON_FRIENDLY_ALL`。Python は `CvTraitInfo.isGainTraitsOnFriendly()` / `isGainTraitsOnFriendlyAll()`（`bAll`）、`CyPlayer.isFriendlyTraitGainedFrom(ePlayer)` |
-| `CIV4TraitInfos.xml` | `TraitInfo/Conscription`（`iPopulationModifier`・`iMinCityPopulationChange`・`iMinCulturePercentChange`・`iPopAngerChange`・`iAngerLengthPercent`） | 2026-11-23。徴兵の条件を GlobalDefines から加減する（複数の志向は合計）。`<Conscription>` には `iMaxConscript`・`bNoExperiencePenalty`（上の行）も書く。`iPopulationModifier`: 失う人口の計算でユニットの生産コストを ±%（`CONSCRIPT_POPULATION_PER_COST` 60 で割る。最低 1 人は変わらない。`CvCity::getConscriptPopulation`）。`iMinCityPopulationChange`: 必要な人口の基本値 `CONSCRIPT_MIN_CITY_POPULATION`（5）に足す（0 未満にしない。これに失う人口を足したものが必要な人口。`conscriptMinCityPopulation`）。`iMinCulturePercentChange`: 都市のタイルで必要な自国の文化の % `CONSCRIPT_MIN_CULTURE_PERCENT`（10）に足す（0〜100。`CvCity::conscriptMinCulturePercent`）。`iPopAngerChange`: 1 回の徴兵の不満の人数 `CONSCRIPT_POP_ANGER`（3）に足す（0 未満にしない。0 なら不満なし。`CvCity::conscriptPopAnger`・`getConscriptPercentAnger`）。`iAngerLengthPercent`: 不満の期間 `CONSCRIPT_ANGER_DIVISOR`（10 ターン × ゲーム速度）を ±%（最低 1 ターン。`flatConscriptAngerLength`）。徴兵ボタンの説明（`CvDLLWidgetData`）と AI の判断（`CvCityAI` の不満の計算）も同じ値を使う。説明文 `TXT_KEY_TRAIT_CONSCRIPT_POPULATION`・`_MIN_POPULATION`・`_MIN_CULTURE`・`_ANGER`・`_ANGER_LENGTH`。Python は `CvTraitInfo.getConscriptPopulationModifier()`・`getConscriptMinCityPopulationChange()`・`getConscriptMinCulturePercentChange()`・`getConscriptPopAngerChange()`・`getConscriptAngerLengthPercent()` |
+## `TraitInfo/FreePromotionSets`
+
+- ファイル: `CIV4TraitInfos.xml`
+- `<FreePromotionSet>` を何個でも書ける。
+- 各組は `<FreePromotions>`（省略不可）と、対象の指定を持つ。
+- 対象は `<FreePromotionUnitCombats>`（既存と同じ書式の兵科）、`<FreePromotionUnitClasses>`（`UnitClassType` を何個でも。兵科のない労働者や開拓者も指定できる）、`<bFreePromotionNoUnitCombat>`（兵科のないユニットすべて: 労働者、開拓者、宣教師、幹部、偉人、スパイ、作業船など）のどれかに当てはまるユニットで、`<FreePromotionDomains>`（`DomainType` を何個でも）があれば、その領域のユニットだけに絞る（兵科やユニットクラスの指定にも効く）。
+- 対象の指定はどれも省略可（`CvTraitInfo::isFreePromotionSetUnit`）。
+- 組の中の全昇進を対象に付与する。
+- 既存の `FreePromotions` / `FreePromotionUnitCombats` と併用可。
+- 付与はユニット生成時（既存のセーブでも新しいユニットには効く）。
+- その兵科が本来取れる昇進かはチェックしない
+
+## `TraitInfo/UnitCombatFreeExperiences`、`UnitCombatProductionModifiers`（`CivicInfo` にも同名タグ）
+
+- ファイル: `CIV4TraitInfos.xml`、`CIV4CivicInfos.xml`
+- 兵科ごとの新ユニットの経験値（建物の同名タグと同じ書式: `UnitCombatType` + `iExperience`）と、兵科ごとのユニット生産 %（`UnitCombatType` + `iProductionModifier`）。
+- 既存の `iFreeExperience` / `iMilitaryProductionModifier` に上乗せされる。
+- `CvPlayer::getUnitCombatFreeExperience()` / `getUnitCombatProductionModifier()` が「持っている志向 + 今の社会制度」を**そのつど合計**するので、セーブデータは変わらず、社会制度の切り替えも既存のセーブもそのまま反映される。
+- 経験値は都市で生産したユニットだけ。
+- 生産の内訳では、志向の分は既存の志向の行に含め、社会制度の分は `TXT_KEY_MISC_HELP_PROD_CIVIC_UNITCOMBAT` の行で表示
+
+## `TraitInfo/UnitCombatUpgradeDiscounts`（`CivicInfo` にも同名タグ）
+
+- ファイル: `CIV4TraitInfos.xml`、`CIV4CivicInfos.xml`
+- 兵科ごとのアップグレード費用の割引率 %（`UnitCombatType` + `iUpgradeDiscount`。マイナスで割増）。
+- **アップグレード元**のユニットの兵科で判定する。
+- ユニットの昇進による割引と、志向・社会制度の割引を**足し算**して 1 回で引く（`CvUnit::upgradePrice`）。
+- 合計 100% 以上で無料。
+- 上と同じくそのつど合計（`CvPlayer::getUnitCombatUpgradeDiscount()`）。
+- 説明文では費用の増減として「-50%」のように表示（`TXT_KEY_UNITCOMBAT_UPGRADE_COST_MODIFIER`）
+
+## `TraitInfo/UpgradeAnywhereUnitCombats`（`CivicInfo`・`BuildingInfo` にも同名タグ）
+
+- ファイル: `CIV4TraitInfos.xml`、`CIV4CivicInfos.xml`、`CIV4BuildingInfos.xml`
+- 各 `<UpgradeAnywhereUnitCombat>` は `UnitCombatType` + `bUpgradeAnywhere` + 省略可の `bExcludeEnemyTerritory`（既定 0）。
+- その兵科（アップグレード元）は**自チームの領土外でもアップグレードできる**。
+- `bExcludeEnemyTerritory=1` なら交戦中のチームの領土では不可。
+- 有効になるのは「その志向を持つ」「その社会制度を採用中」「その建物を（陳腐化していない状態で）どこかの都市に持つ」のいずれか。
+- 複数が許可している場合、1 つでも「敵国でも可」なら敵国でも可。
+- 緩めるのは「領土内にいること」（`CvUnit::isReadyForUpgrade`）と「最寄りの都市が同じ大陸・水域にあること」（`CvUnit::getUpgradeCity` の非探索時）の 2 点だけで、移動力・費用・最寄りの自チーム都市でアップグレード先を生産できること（海洋は沿岸都市）は従来どおり必要。
+- 読み込みは 3 つの値を持つので、共通関数 `readUpgradeAnywhereUnitCombats()`（`CvInfos.cpp`）を使う
+
+## `TraitInfo/iUnitCostModifier`、`iBuildingCostModifier`
+
+- ファイル: `CIV4TraitInfos.xml`
+- すべてのユニット・すべての建物（不思議を含む）の生産コスト ○%（ex 氏の CivGoldEmpires の丘陵志向・森林志向・卸売商。CGE は Python の `getUnitCostMod` / `getBuildingCostMod` で処理している）。
+- `CvPlayer::getProductionNeeded` で、BtS の補正（ゲーム速度・開始時代・AI の難易度、ユニットは開拓者などの追加コストも）の後に掛ける（-100 以下で 0、コストは最低 1）。
+- 生産コストから計算するアップグレードの費用・資金での購入の費用も変わる。
+- 生産の速さ（`iMilitaryProductionModifier` など）とは別の値。
+- 持っている志向の値の合計で、そのつど合計する（`CvPlayer::getUnitCostModifier()` / `getBuildingCostModifier()`）。
+- 説明文は `TXT_KEY_TRAIT_UNIT_COST_MODIFIER`（「ユニットの生産コスト-20%」）・`TXT_KEY_TRAIT_BUILDING_COST_MODIFIER`
+
+## `TraitInfo/iGoldenAgeLandMovesChange`・`iGoldenAgeSeaMovesChange`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 黄金期の間、そのプレイヤーの陸上ユニット・艦船（非戦闘ユニットも含む）の移動力に足す（Civ5 のペルシャ）。
+- 志向の合計。
+- `CvUnit::baseMoves` で、持ち主が黄金期のときだけ足す（`CvPlayer::getGoldenAgeMovesChange`）。
+- Civ4 は使った移動力を数えるので、黄金期が始まった直後のターンの途中から増え、終わると戻る。
+- 移動力が 0 のユニットと航空ユニット（行動範囲で動く）は対象外。
+- ユニットの説明の移動力にも出る。
+- 説明文 `TXT_KEY_TRAIT_GOLDEN_AGE_LAND_MOVES` / `_SEA_MOVES`。
+- Python は `CyPlayer.getGoldenAgeMovesChange(eDomain)`
+
+## `TraitInfo/Conquest`（`iCulturePercent`・`iBuildingSurviveModifier`・`bNoPopulationLoss`・`bNoAutoRaze`）
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-23 に `<Conquest>` の子に移し、名前を `iConquestCulturePercent`・`iConquestBuildingSurviveModifier`・`bNoConquestPopulationLoss` から変えた（getter と Python の名前は元のまま）。
+- `<Conquest>` には下の項目と `trait-territory.md`・`trait-economy.md` の征服のタグも書く。
+- 都市を占領したとき（`CvPlayer::acquireCity` の `bConquest`。取引・文化による転向には効かない）。
+- 三国志 Mod（The History of Three Kingdoms）の劉備の仁徳（`bBenevolent`）を数値のタグに分けたもの（反乱なしは `iOccupationTimeModifier` -100）。
+- `iCulturePercent`: 都市の他の全プレイヤーの文化の ○% と、都市の文化圏（`getCultureRange`）のタイルの旧持ち主の文化の ○% を、征服した側の文化に移す（志向の合計、0〜100）。
+- 反乱期間の計算（自チームの文化の割合）より前なので、反乱も短くなる。
+- `iBuildingSurviveModifier`: 建物が残る確率（BtS の `iConquestProbability`）に ○% の補正（志向の合計。`確率 × (100 + ○) ÷ 100`、0〜100 に収める。マイナスで壊れやすくなる。確率 0 の建物（宮殿など）と `bNeverCapture` は変わらない。奪還では BtS と同じくすべて残る）。
+- 三国志 Mod は条件が逆で、仁徳を持たない側の確率が上がる不具合がある。
+- `bNoPopulationLoss`: 占領しても人口が 1 減らない（BtS は奪還以外で 1 減る。人口 1 のまま大きくなったことのない都市が自動で破壊される規則は `bNoAutoRaze` で外す）。
+- `bNoAutoRaze`: 占領した都市が一度も人口 2 以上になったことがなくても（最大人口 `getHighestPopulation` が 1。元の持ち主の記録を引き継ぐ）、自動で破壊しない（`CvCity::isAutoRaze`。新しい持ち主＝征服した側の志向で判定）。
+- 人間には普通の都市と同じく破壊するか残すかのポップアップが出て、AI は自分で決める。
+- 都市の除去数の上限があるゲームと、一都市チャレンジの人間のプレイヤーの自動破壊は BtS のまま。
+- そのつど判定するのでセーブデータは変わらない。
+- 説明文は `TXT_KEY_TRAIT_CONQUEST_CULTURE`・`TXT_KEY_TRAIT_CONQUEST_BUILDING_SURVIVE`・`TXT_KEY_TRAIT_NO_CONQUEST_POPULATION_LOSS`・`TXT_KEY_TRAIT_NO_AUTO_RAZE`。
+- Python は `CyPlayer.getConquestCulturePercent()`・`getConquestBuildingSurviveModifier()`・`isNoConquestPopulationLoss()`・`isNoAutoRaze()` と `CvTraitInfo` の同名の関数
+
+## `TraitInfo/Conquest/bLearnUniqueUnits`、`bLearnUniqueBuildings`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-23 に `<Conquest>` の子に移し、名前を `bConquestLearnUniqueUnits`・`bConquestLearnUniqueBuildings` から変えた（getter と Python の名前は元のまま）。
+- 都市を征服すると（`CvPlayer::acquireCity` の `bConquest`。割譲・文化による寝返り・蛮族からは学ばない）、奪った相手の文明の固有ユニット・固有建造物（文明の XML。相手の志向の固有は含まない）を学ぶ（`CvPlayer::learnConquestUniques`）。
+- 自分に固有がない種類だけ: `CvPlayer::getCivilizationUnit` / `getCivilizationBuilding` は、志向の `UniqueUnits` / `UniqueBuildings` → 文明の固有 → 学んだもの → 普通のもの、の順に決める（志向と文明の分は `getNativeCivilizationUnit` / `getNativeCivilizationBuilding`）。
+- 同じ種類は後に学んだものに替わる（中国の楼閣のあとビザンチンを征服すると、劇場の枠はヒッポドローム）。
+- 学んだものはプレイヤーごとにセーブする（`CvPlayer` の uiFlag 10）。
+- 志向を持っている間だけ使われる。
+- 学んだとき、今いるユニットはそのまま。
+- 自分の全都市で、その種類の建物（`getNumRealBuilding`）を学んだものに建て替える（建てた人と時期は引き継ぐ。沿岸専用などの立地の条件は見ない）。
+- 無償の建物（`setNumFreeBuilding`）はそのまま。
+- 生産キューの元のユニット・建物は学んだものに置き換わり、それまでの生産量も移る。
+- 占領した都市そのものの建物は、学んだあとに渡すので学んだものになる。
+- 学ぶとメッセージ `TXT_KEY_MISC_LEARNED_CONQUEST_UNIQUES`。
+- 説明文は `TXT_KEY_TRAIT_CONQUEST_LEARN_UNIQUE_UNITS` / `_BUILDINGS`。
+- Python は `CyPlayer.isConquestLearnUniqueUnits` / `isConquestLearnUniqueBuildings` / `getLearnedUnit(iUnitClass)` / `getLearnedBuilding(iBuildingClass)`（なければ -1）
+
+## `TraitInfo/iEnemyMoveCostInBorders`
+
+- ファイル: `CIV4TraitInfos.xml`
+- その志向を持つプレイヤーの領土のタイルに入る、交戦中のチームの陸上ユニットの移動コスト +○（`CvPlot::movementCost`。地形のコストに足し、ユニットの移動力全部まで。川を渡るコストと同じ扱い）。
+- 敵は相手の領土の道路を使えないので、道路では避けられない（敵の道路を使えるユニットは道路の方が安ければそちら）。
+- 経路探索も同じ。
+- 説明文は `TXT_KEY_TRAIT_ENEMY_MOVE_COST_IN_BORDERS`
+
+## `TraitInfo/iRevengeCombatPercent`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 自分の都市を一度でも征服したことのあるプレイヤーのユニットと戦うときの戦闘力 %。
+- 征服（`acquireCity` の `bConquest`）で都市を失ったとき、失った側の `CvPlayer` に奪った相手を記録する（`m_abCityConqueredBy`、セーブする。uiFlag 11。取り返しても消えない）。
+- 攻撃でも防御でも効く（`CvUnit::maxCombatStr` の防御側の計算で、両方の持ち主の分を足し引きする）。
+- 戦闘の勝率の内訳に「復讐（志向）」の行（`TXT_KEY_COMBAT_PLOT_REVENGE_MOD`）。
+- 説明文は `TXT_KEY_TRAIT_REVENGE_COMBAT`
+
+## `TraitInfo/Conquest/bHeal`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-23 に `<Conquest>` の子に移し、名前を `bConquestHeal` から変えた（getter と Python の名前は元のまま）。
+- 都市を征服すると、そのプレイヤーの全ユニットが全回復する（`CvUnit::setXY` で `acquireCity` の直後。征服したユニットの持ち主の志向で判定）。
+- 説明文は `TXT_KEY_TRAIT_CONQUEST_HEAL`
+
+## `TraitInfo/EnemyAttrition`
+
+- ファイル: `CIV4TraitInfos.xml`
+- `<EnemyAttrition>` に `iPercent`（必須）と `iLimit`（省略可）を書く。
+- 2026-11-21 に親タグにまとめた。
+- 自国の領土の敵ユニットの損耗（RFC のロシアの UP を汎用にしたもの。RFC は Python で文明・時期・範囲を決め打ち）。
+- そのプレイヤーのターンのはじめ（`PyOnBeginTurn` の後）に、自国の領土にいる**交戦中**のチーム（蛮族を含む）のユニットが、最大 HP の `iPercent`% を失う（陸・海・空すべて。`CvPlayer::doEnemyAttrition`）。
+- `iLimit`（省略時 100）を超えるダメージにはならない（50 なら HP 50% で止まる）。
+- 100 なら HP が尽きたユニットは死に、損耗を与えたプレイヤーが倒したことになる。
+- 複数の志向: 損耗は合計、上限は損耗を持つ志向のうち最大
+
+## `TraitInfo/iSummonDuration`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 呪文で召喚したユニットが消えるまでのターン +○（FFH2 と同じ名前）。
+- そのつど合計（`CvPlayer::getSummonDuration`）。
+- 説明文は `TXT_KEY_TRAIT_SUMMON_DURATION`
+
+## `TraitInfo/iCombatPercent`
+
+- ファイル: `CIV4TraitInfos.xml`
+- その志向を持つ間、そのプレイヤーの全ユニットの戦闘力 ○%（マイナスも可）。
+- 攻撃でも防御でも効く。
+- 昇進の `iCombatPercentInBorders` と同じく `CvUnit::getExtraCombatPercent` に足すので、ユニットの説明の戦闘力と、戦闘の勝率の内訳にも含まれる。
+- 志向の値の合計をそのつど求める（`CvPlayer::getTraitCombatPercent`）ので、`ConditionalFreeTraits` で志向を付け外しすると、今いるユニットにもすぐ効く（ユニットを作ったときに付く昇進の組との違い。フランスの「無政府期間中の戦闘力」を `bAnarchy` で作るためのもの）。
+- セーブデータは変わらない。
+- 説明文 `TXT_KEY_TRAIT_COMBAT_PERCENT`（「全ユニットの戦闘力+25%」）。
+- Python は `CyPlayer.getTraitCombatPercent()`、`CvTraitInfo.getCombatPercent()`
+
+## `TraitInfo/iDefenseCombatPercent`、`iEnemyWarWearinessModifier`
+
+- ファイル: `CIV4TraitInfos.xml`
+- ガンジーの「非暴力不服従」。
+- `iDefenseCombatPercent`: そのプレイヤーのユニットが防衛するときの戦闘力 ○%（`CvUnit::maxCombatStr` の防衛側の補正。志向の値の合計 `CvPlayer::getTraitDefenseCombatPercent`、その都度合計する）。
+- 戦闘の勝率の説明の防衛側に「防衛（志向）」の行（`TXT_KEY_COMBAT_PLOT_TRAIT_DEFENSE_MOD`）。
+- `iEnemyWarWearinessModifier`（建物の同名タグと同じ。ゼウス像）: そのプレイヤーのチームと交戦中のチームが、このチームとの戦争で受ける厭戦感情 ○%。
+- BtS のチームの値（`CvTeam::changeEnemyWarWearinessModifier`。セーブに入る）に `processTrait` で足し引きする。
+- 永久同盟でチームが変わるときは、志向の分も新しいチームへ移す（`CvPlayer::setTeam`）。
+- 説明文は `TXT_KEY_TRAIT_DEFENSE_COMBAT_PERCENT`、建物の `TXT_KEY_BUILDING_ENEMY_WAR_WEAR`。
+- Python は `CyPlayer.getTraitDefenseCombatPercent()`、`CvTraitInfo` の同名の関数
+
+## `TraitInfo/iMaxExperienceAfterUpgrade`、`iExpOutsideBordersChange`
+
+- ファイル: `CIV4TraitInfos.xml`
+- DoC（Dawn of Civilization）のドイツ・ラージプートの UP から。
+- `iMaxExperienceAfterUpgrade`: アップグレードしたあとに残る経験値の上限。
+- BtS は `MAX_EXPERIENCE_AFTER_UPGRADE`（`GlobalDefines.xml`、10）で切り詰める（`CvUnit::upgrade`。大将軍が加わったユニットは BtS どおり切り詰めない）。
+- この値で置き換える。
+- `-1` で切り詰めない（全部残る）、`0`（省略時）は define のまま。
+- 複数の志向: `-1` が最優先、ほかは最大値（`CvPlayer::getMaxExperienceAfterUpgrade`）。
+- `iExpOutsideBordersChange`: 戦闘の経験値に足す（志向の合計）。
+- 戦ったタイル（防御側のタイル）が自分の領土でないとき。
+- BtS の `iExpInBorderModifier`（領土内の %）と同じく `CvUnit::changeExperience` で足すので、勝ったとき・撤退したとき・迎撃など、戦闘の経験値すべてに効き、指揮官（Leadership）の % もかかる。
+- 蛮族からの経験値の上限は BtS どおり。
+- 大将軍のポイントには数えない。
+- そのつど合計するのでセーブデータは変わらない。
+- 説明文 `TXT_KEY_TRAIT_KEEP_UPGRADE_EXPERIENCE` / `TXT_KEY_TRAIT_MAX_UPGRADE_EXPERIENCE`・`TXT_KEY_TRAIT_EXP_OUTSIDE_BORDERS`。
+- Python は `CyPlayer` / `CvTraitInfo` の同名の関数
+
+## `TraitInfo/Conscription/bNoExperiencePenalty`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-23 に `<Conscription>` の子に移し、名前を `bNoConscriptExperiencePenalty` から変えた（getter の名前は元のまま）。
+- 徴兵したユニットも、都市の経験値（兵舎など）を半分にせず全部得る（`CvCity::addProductionExperience` の `bConscript`）。
+- 説明文 `TXT_KEY_TRAIT_NO_CONSCRIPT_EXPERIENCE_PENALTY`。
+- Python は `CyPlayer.isNoConscriptExperiencePenalty()`、`CvTraitInfo.isNoConscriptExperiencePenalty()`
+
+## `TraitInfo/Conscription/iMaxConscript`、`bMilitaryFoodProduction`、`iHealRateChange`、`DomainFreeExperiences`、`DomainProductionModifiers`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 社会制度・建物の同名のタグの志向版（2026-11-19）。
+- `iMaxConscript`（2026-11-23 に `<Conscription>` の子に移した。毎ターン徴兵できる数。社会制度と同じくマップの大きさの `iMaxConscriptModifier` で補正。国家主義などの社会制度なしでも徴兵できるようになる）と `bMilitaryFoodProduction`（余剰の食料を軍事ユニットの生産に回す）は `CvPlayer::processTrait` で社会制度と同じ `changeMaxConscript` / `changeMilitaryFoodProductionCount` に足す（ゲーム開始時の `init` で適用するので、既存のセーブの指導者・文明に足しても反映されない）。
+- `iHealRateChange`（都市にいるユニットの回復 +%）、`DomainFreeExperiences`（`DomainType` + `iExperience`。その種類のユニットの経験値 +N）、`DomainProductionModifiers`（`DomainType` + `iProductionModifier`。その種類のユニットの生産 %）は建物と同じ書式で、全都市に効く（`CvCity::getHealRate` / `getDomainFreeExperience` / `getDomainProductionModifier` にそのつど志向の合計を足す。生産の内訳は BtS の「○○ユニット」の行に合算）。
+- 説明文は社会制度の `TXT_KEY_CIVIC_CONSCRIPTION`・`TXT_KEY_CIVIC_MILITARY_FOOD`、建物の `TXT_KEY_BUILDING_HEAL_MOD`・`TXT_KEY_BUILDING_FREE_XP`・`TXT_KEY_BUILDING_BUILDS_FASTER_DOMAIN`。
+- Python は `CvTraitInfo` の同名の getter
+
+## `TraitInfo/iBaseFreeUnits`、`iBaseFreeMilitaryUnits`、`iFreeUnitsPopulationPercent`、`iFreeMilitaryUnitsPopulationPercent`、`iGoldPerUnit`、`iGoldPerMilitaryUnit`、`iCorporationMaintenanceModifier`、`iMaintenanceModifier`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 社会制度・建物の同名のタグの志向版（2026-11-19）。
+- ユニットの扶養（無料で維持できるユニット・軍事ユニットの数、総人口の % 分の無料ユニット、無料の数を超えたユニット・軍事ユニット 1 体あたりの維持費。値は整数の金で、難易度の `iUnitCostPercent` がかかる）と企業の維持費 % は `CvPlayer::processTrait` で社会制度と同じ `change…()` に足す（ゲーム開始時の `init` で適用するので、既存のセーブの指導者・文明に足しても反映されない）。
+- `iMaintenanceModifier`（都市の維持費 %。全都市）は `CvCity::getMaintenanceModifier` にそのつど志向の合計を足す（志向が変わると `updateTraitDependents` が維持費を計算し直す）。
+- 説明文は社会制度の `TXT_KEY_CIVIC_FREE_UNITS`・`TXT_KEY_CIVIC_FREE_MILITARY_UNITS`・`TXT_KEY_CIVIC_SUPPORT_COSTS`・`TXT_KEY_CIVIC_MILITARY_SUPPORT_COSTS`（社会制度の説明は値でなく真偽値を渡しているが、志向では値を渡す）・`TXT_KEY_CIVIC_NO_MAINT_CORPORATION`（-100 以下）/ `_MOD`、建物の `TXT_KEY_BUILDING_MAINT_MOD`、人口の % は `TXT_KEY_TRAIT_FREE_UNITS_POPULATION` / `TXT_KEY_TRAIT_FREE_MILITARY_UNITS_POPULATION`。
+- Python は `CvTraitInfo` の同名の getter
+
+## `TraitInfo/bStackCityDefense`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 都市の防御で、文化による防御（文化レベルの `iCityDefenseModifier`）と建造物の防御（城壁など）の大きい方ではなく、両方を足す（`CvCity::getTotalDefense`。BtS は `std::max`）。
+- プレイヤー全体の都市の防御（チチェン・イッツァなど。`CvPlayer::getCityDefenseModifier`）はこれまでどおりさらに足す。
+- 建造物の防御を無視するユニット（火薬以降）への防御は文化による防御だけで BtS と同じ。
+- 都市の防御が上がるので、砲撃で 0 にするのにかかる回数も増える。
+- そのつど判定するのでセーブデータは変わらない。
+- どれかの志向が持っていれば有効（`CvPlayer::isStackCityDefense`）。
+- AI は防御の建物の価値を文化による防御で減らさない（`CvCityAI::AI_buildingValueThreshold`）。
+- 説明文 `TXT_KEY_TRAIT_STACK_CITY_DEFENSE`。
+- Python は `CyPlayer.isStackCityDefense()`、`CvTraitInfo.isStackCityDefense()`
+
+## `TraitInfo/bBasicTrait`、`bGainTraitOnCapitalCapture`、`bGainTraitsOnElimination`
+
+- ファイル: `CIV4TraitInfos.xml`
+- `bBasicTrait`: 基本志向の印。
+- BtS の指導者の志向 11 個（攻撃・防衛・カリスマ・帝国主義・金融・組織・創造・勤労・哲学・拡張・宗教）に `1` を書いた。
+- 海洋志向・文明固有・指導者固有の志向には書かない。
+- `bGainTraitOnCapitalCapture`: 戦争で相手の首都を占領すると（`acquireCity` の `bConquest`。占領した時点で首都だった都市。その場で破壊しても数える）、相手の基本志向のうち自分が持っていないものから 1 つをランダム（`getSorenRandNum`）に得る。
+- `bGainTraitsOnElimination`: 相手が滅びると（`CvPlayer::setAlive(false)`）、相手の最後の都市を占領したプレイヤー（`CvPlayer::m_eLastConqueror`。都市を占領するたびに書き換える。セーブに保存、`CvPlayer` の `uiFlag=13`）が、相手の基本志向のうち持っていないものをすべて得る。
+- 滅亡の判定は BtS のまま（完全抹殺のオプションでは、最後のユニットが倒されたときに、最後の都市を占領したプレイヤーが得る）。
+- 候補は相手の指導者と文明の志向（`hasBaseTrait`。相手がゲーム中に得た志向は含まない）。
+- 候補がなければ何も得ない。
+- 得た志向は失わない（`changeFreeTraitCount` で 1。`CvPlayer::gainBasicTraitsOf`）。
+- 首都が最後の都市なら、首都の 1 つを得たあと、滅亡で残りを得る。
+- 本人にメッセージ `TXT_KEY_MISC_TRAIT_GAINED_BY_CAPITAL` / `_BY_ELIMINATION`（「徳川家康の首都を陥落させ、攻撃志向を得ました！」）。
+- 説明文 `TXT_KEY_TRAIT_GAIN_TRAIT_ON_CAPITAL_CAPTURE` / `TXT_KEY_TRAIT_GAIN_TRAITS_ON_ELIMINATION`（基本志向そのものの説明文には何も出さない）。
+- Python は `CvTraitInfo.isBasicTrait()` / `isGainTraitOnCapitalCapture()` / `isGainTraitsOnElimination()`
+
+## `TraitInfo/RandomBasicTraits`
+
+- ファイル: `CIV4TraitInfos.xml`
+- FFH2 の狂気志向から。
+- `<RandomBasicTraits>` に `iTurns`（間隔）と `iCount`（数）を書く（両方必須。要素があればオン）。
+- `iCount` が 1 以上の志向を持つ間、ターンの初め（`CvPlayer::doTurn`。`ConditionalFreeTraits` と期間つきの志向の後、`PyOnBeginTurn` の前）とゲーム開始時（`CvGame::setInitialItems`）に、前回の変化から `iTurns` ターン（ゲーム速度で変わる: × `iGrowthPercent` / 100、最低 1。普通 3 → エピック 4・マラソン 9・迅速 2）が過ぎていれば、前回得た志向の代わりに基本志向（`bBasicTrait`）を `iCount` 個ランダムに（`getSorenRandNum`、重複なし）得る。
+- 初回（ゲーム開始時、またはゲーム中にこの志向を得た次のターンの初め）はすぐに得る。
+- 候補は、ほかの経路（指導者・文明・条件・社会制度など）で持っていない基本志向で、前回得た志向も候補に戻る。
+- 候補が足りなければある分だけ。
+- 前回と同じ志向が選ばれたら外さずに残す（効果と `PyOnLost` / `PyOnGained` は動かない）。
+- この志向を失うと、次のターンの初めに得た志向をすべて外す。
+- 複数の志向が持つ場合、個数は合計、間隔は最短。
+- 得た志向は `CvPlayer::m_paiRandomBasicTrait`、前回の変化のターンは `m_iRandomBasicTraitTurn`（セーブに保存、`CvPlayer` の `uiFlag=14`。`changeFreeTraitCount` で 1 ずつ足し引き。`CvPlayer::doRandomBasicTraits`）。
+- 得たときに本人にメッセージ `TXT_KEY_MISC_RANDOM_BASIC_TRAITS`（「検証用志向（狂気）により、次の志向が付与されました。攻撃志向, 金融志向, 宗教志向」）。
+- 説明文 `TXT_KEY_TRAIT_RANDOM_BASIC_TRAITS`（「3 ターンごとに、基本志向を 3 個ランダムに得る（前回得た志向と入れ替わる）」。ターン数はゲーム速度を反映）。
+- Python は `CvTraitInfo.isRandomBasicTraits()` / `getRandomBasicTraitTurns()`（`iTurns`、速度の補正前） / `getRandomBasicTraitCount()`（`iCount`）、`CyPlayer.isRandomBasicTrait(eTrait)` / `getRandomBasicTraitTurn()`
+
+## `TraitInfo/GainTraitsOnFriendly`
+
+- ファイル: `CIV4TraitInfos.xml`
+- `<GainTraitsOnFriendly>` を書くとオン。
+- 子の `bAll`（省略可、既定 `0`）: `0` = 1 つをランダム（`getSorenRandNum`）、`1` = すべて。
+- この志向を持つ間、自分のターンの初め（`CvPlayer::doTurn`。`RandomBasicTraits` の後、`PyOnBeginTurn` の前）に、出会っている AI のプレイヤー（生存・人間でない・蛮族でない）のうち、自分への本当の態度（`AI_getAttitude(ePlayer, false)`。同じチーム・属国の自動の「親密」は含まない）が親密のものから、その指導者と文明の基本志向（`bBasicTrait`・`hasBaseTrait`）のうち自分が持っていないものを得る（`CvPlayer::gainBasicTraitsOf`。得た志向は失わない）。
+- **1 人の AI につき 1 回だけ**: 親密になった時点で印を付け（`CvPlayer::m_abFriendlyTraitGainedFrom`。セーブに保存、`CvPlayer` の `uiFlag=15`）、いったん親密でなくなって再び親密になっても、もう得ない。
+- 候補がすべて重複していて何も得なかったときも印を付ける。
+- すでに親密な AI がいる状態でこの志向を得ると、次のターンの初めに得る。
+- 複数の志向が持つ場合、どれかが `bAll` 1 ならすべて。
+- 本人にメッセージ `TXT_KEY_MISC_TRAIT_GAINED_BY_FRIENDLY`（「徳川家康と親密になり、攻撃志向を得ました！」）。
+- 説明文 `TXT_KEY_TRAIT_GAIN_TRAIT_ON_FRIENDLY` / `TXT_KEY_TRAIT_GAIN_TRAITS_ON_FRIENDLY_ALL`。
+- Python は `CvTraitInfo.isGainTraitsOnFriendly()` / `isGainTraitsOnFriendlyAll()`（`bAll`）、`CyPlayer.isFriendlyTraitGainedFrom(ePlayer)`
+
+## `TraitInfo/Conscription`（`iPopulationModifier`・`iMinCityPopulationChange`・`iMinCulturePercentChange`・`iPopAngerChange`・`iAngerLengthPercent`）
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-23。
+- 徴兵の条件を GlobalDefines から加減する（複数の志向は合計）。
+- `<Conscription>` には `iMaxConscript`・`bNoExperiencePenalty`（上の項目）も書く。
+- `iPopulationModifier`: 失う人口の計算でユニットの生産コストを ±%（`CONSCRIPT_POPULATION_PER_COST` 60 で割る。最低 1 人は変わらない。`CvCity::getConscriptPopulation`）。
+- `iMinCityPopulationChange`: 必要な人口の基本値 `CONSCRIPT_MIN_CITY_POPULATION`（5）に足す（0 未満にしない。これに失う人口を足したものが必要な人口。`conscriptMinCityPopulation`）。
+- `iMinCulturePercentChange`: 都市のタイルで必要な自国の文化の % `CONSCRIPT_MIN_CULTURE_PERCENT`（10）に足す（0〜100。`CvCity::conscriptMinCulturePercent`）。
+- `iPopAngerChange`: 1 回の徴兵の不満の人数 `CONSCRIPT_POP_ANGER`（3）に足す（0 未満にしない。0 なら不満なし。`CvCity::conscriptPopAnger`・`getConscriptPercentAnger`）。
+- `iAngerLengthPercent`: 不満の期間 `CONSCRIPT_ANGER_DIVISOR`（10 ターン × ゲーム速度）を ±%（最低 1 ターン。`flatConscriptAngerLength`）。
+- 徴兵ボタンの説明（`CvDLLWidgetData`）と AI の判断（`CvCityAI` の不満の計算）も同じ値を使う。
+- 説明文 `TXT_KEY_TRAIT_CONSCRIPT_POPULATION`・`_MIN_POPULATION`・`_MIN_CULTURE`・`_ANGER`・`_ANGER_LENGTH`。
+- Python は `CvTraitInfo.getConscriptPopulationModifier()`・`getConscriptMinCityPopulationChange()`・`getConscriptMinCulturePercentChange()`・`getConscriptPopAngerChange()`・`getConscriptAngerLengthPercent()`

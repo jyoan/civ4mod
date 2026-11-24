@@ -4,7 +4,7 @@ Civilization IV: Beyond the Sword 日本語版（CyberFront 版）向けの Mod�
 
 ## トークンを節約する読み方
 
-- `docs/` の大きなファイル（`docs/tags/*`・`test-data.md`・`test-log.md`・`civ-design.md`・`civ4_mod_design_handoff.md`）は丸ごと Read しない。Grep で該当箇所を探し、`offset` / `limit` でその付近だけ読む
+- `docs/` の大きなファイル（`docs/tags/*`・`test-data*.md`・`test-log*.md`・`civ-design.md`・`civ4_mod_design_handoff.md`）は丸ごと Read しない。Grep で該当箇所を探し、`offset` / `limit` でその付近だけ読む（タグと検証用データは見出し 1 つが 1 項目）
 - 大きなソース（`CvInfos.cpp` 約 3 万行、`CvPlayer.cpp`・`CvGameTextMgr.cpp` など）も同じ。関数名を Grep してから範囲を指定して読む
 - 一度読んだファイルを同じ会話で読み直さない
 
@@ -127,7 +127,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 
 ### 検証用データ
 
-**動作確認は検証用データで行い、既存の Info（日本・兵舎・専制政治など）には検証用の値を入れない。** 新しいタグを足したら、検証用の項目（`docs/test-data.md`）に値を入れて確かめる。検証用の項目は各ファイルの末尾にあり、テキストは `CIV4GameText_ClaudeSample_Test.xml`（説明文は共通の `TXT_KEY_CLAUDE_TEST_PEDIA`）。アイコン・グラフィックは複製元のものを使う。
+**動作確認は検証用データで行い、既存の Info（日本・兵舎・専制政治など）には検証用の値を入れない。** 新しいタグを足したら、検証用の項目（文明・指導者・志向は `docs/test-data.md`、それ以外は `docs/test-data-other.md`）に値を入れて確かめる。検証用の項目は各ファイルの末尾にあり、テキストは `CIV4GameText_ClaudeSample_Test.xml`（説明文は共通の `TXT_KEY_CLAUDE_TEST_PEDIA`）。アイコン・グラフィックは複製元のものを使う。
 
 - 新しい Info は既存の番号を変えないため常に各ファイルの末尾に足す。末尾に目印のコメント（`Entries of the civ-design branch go below this line`）があるファイルでは、`master` の項目は目印の**上**、`civ-design` の項目は**下**に足す
 
@@ -151,7 +151,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 | `docs/xml-rules.md` | XML の読み込み順、XML キャッシュと `uiFlag` の現在の値、テキストの書き方 |
 | `docs/build-env.md` | ビルド・check_refs・配置・ツールチェーンの詳細 |
 | `docs/git-workflow.md` | ブランチ運用とマージの目印 |
-| `docs/test-data.md` | 検証用データの中身 |
+| `docs/test-data.md`・`test-data-other.md` | 検証用データの中身（文明・指導者・志向／それ以外） |
 | `docs/city-radius.md` | 都市圏の半径（都市圏のタイルを扱うコードを書くとき） |
 | `docs/spells.md` | 呪文 |
 | `docs/python-screens.md` | 社会制度の画面、ペディア（画面番号の落とし穴）、Mod に入れている Python の一覧 |
@@ -159,5 +159,5 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 | `docs/test-log.md` | 動作確認の記録 |
 | `docs/civ-design.md` | 実在の文明のデザイン（`civ-design` ブランチだけにある） |
 
-- タグを足したら `docs/tags/` の該当ファイルと `docs/test-data.md` を更新する。ユーザーが動作確認したら `docs/test-log.md` に 1 行足す（コミットの前）
+- タグを足したら `docs/tags/` の該当ファイルと `docs/test-data*.md` を更新する（項目の形は `docs/xml-tags.md`）。ユーザーが動作確認したら `docs/test-log.md` に 1 行足す（コミットの前）
 - docs のファイルも UTF-8・CRLF
