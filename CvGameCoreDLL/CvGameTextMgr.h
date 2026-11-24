@@ -70,6 +70,7 @@ public:
 	DllExport void parseLeaderShortTraits(CvWStringBuffer &szInfoText, LeaderHeadTypes eLeader);
 	DllExport void parseCivInfos(CvWStringBuffer &szHelpString, CivilizationTypes eCivilization, bool bDawnOfMan = false, bool bLinks = true);
 	DllExport void parseSpecialistHelp(CvWStringBuffer &szHelpString, SpecialistTypes eSpecialist, CvCity* pCity, bool bCivilopediaText = false);
+	void parseSpecialistCityEffectsHelp(CvWStringBuffer &szHelpString, SpecialistTypes eSpecialist);	// added by this mod
 	DllExport void parseFreeSpecialistHelp(CvWStringBuffer &szHelpString, const CvCity& kCity);
 	DllExport void parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes ePromotion, const wchar* pcNewline = NEWLINE);
 	void parsePromotionStatusEffects(CvWStringBuffer& szBuffer, PromotionTypes ePromotion, const wchar* pcNewline);	// added by this mod

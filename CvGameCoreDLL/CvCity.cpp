@@ -4399,6 +4399,90 @@ void CvCity::processSpecialist(SpecialistTypes eSpecialist, int iChange)
 	updateExtraSpecialistYield();
 
 	changeSpecialistFreeExperience(GC.getSpecialistInfo(eSpecialist).getExperience() * iChange);
+
+	processSpecialistCityEffects(eSpecialist, iChange);	// added by this mod
+}
+
+// City effects of the specialists (added by this mod): the values with the same names as the building tags are added
+// like a building's (CvCity::processBuilding). FeatureHappinessChanges, ExtraSpecialistCommerces and bNoAnarchyDisorder
+// are counted from the specialists of the city when needed (getSpecialistCount + getFreeSpecialistCount), so they only
+// need an update here
+void CvCity::processSpecialistCityEffects(SpecialistTypes eSpecialist, int iChange)
+{
+	const CvSpecialistInfo& kSpecialist = GC.getSpecialistInfo(eSpecialist);
+	int iI;
+
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		if (kSpecialist.getYieldModifier(iI) != 0)
+		{
+			changeYieldRateModifier((YieldTypes)iI, kSpecialist.getYieldModifier(iI) * iChange);
+		}
+	}
+
+	changeMaintenanceModifier(kSpecialist.getMaintenanceModifier() * iChange);
+	changeEspionageDefenseModifier(kSpecialist.getEspionageDefense() * iChange);
+	changeGreatPeopleRateModifier(kSpecialist.getGreatPeopleRateModifier() * iChange);
+	changeBuildingDefense(kSpecialist.getDefense() * iChange);
+	changeBuildingBombardDefense(kSpecialist.getBombardDefense() * iChange);
+
+	if (kSpecialist.isNoUnhappiness())
+	{
+		changeNoUnhappinessCount(iChange);
+	}
+
+	if (kSpecialist.isAnyFeatureHappiness())
+	{
+		updateFeatureHappiness();
+	}
+
+	// ExtraSpecialistCommerces of any specialist of the city changes with the number of specialists
+	if (kSpecialist.isAnyExtraSpecialistCommerce() || isAnyExtraSpecialistCommerce())
+	{
+		updateCommerce();
+	}
+
+	if (kSpecialist.isNoAnarchyDisorder() && GET_PLAYER(getOwnerINLINE()).isAnarchy())
+	{
+		updateCommerce();
+		AI_setAssignWorkDirty(true);
+	}
+
+	if (kSpecialist.getGreatPeopleRateModifier() != 0 || kSpecialist.isNoAnarchyDisorder())
+	{
+		setInfoDirty(true);
+	}
+}
+
+// A specialist of the city (assigned or free) has the flag (added by this mod)
+bool CvCity::hasSpecialistFlag(bool (CvSpecialistInfo::*pfFlag)() const) const
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
+	{
+		if ((GC.getSpecialistInfo((SpecialistTypes)iI).*pfFlag)())
+		{
+			if (getSpecialistCount((SpecialistTypes)iI) + getFreeSpecialistCount((SpecialistTypes)iI) > 0)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+// bNoAnarchyDisorder of a specialist of the city (added by this mod)
+bool CvCity::isNoAnarchyDisorder() const
+{
+	return hasSpecialistFlag(&CvSpecialistInfo::isNoAnarchyDisorder);
+}
+
+// ExtraSpecialistCommerces of a specialist of the city (added by this mod)
+bool CvCity::isAnyExtraSpecialistCommerce() const
+{
+	return hasSpecialistFlag(&CvSpecialistInfo::isAnyExtraSpecialistCommerce);
 }
 
 
@@ -4479,7 +4563,8 @@ bool CvCity::isCoastal(int iMinWaterSize) const
 
 bool CvCity::isDisorder() const
 {
-	return (isOccupation() || GET_PLAYER(getOwnerINLINE()).isAnarchy());
+	// bNoAnarchyDisorder of the specialists (added by this mod): the city keeps working during the anarchy
+	return (isOccupation() || (GET_PLAYER(getOwnerINLINE()).isAnarchy() && !isNoAnarchyDisorder()));
 }
 
 
@@ -7449,6 +7534,7 @@ void CvCity::updateFeatureHappiness()
 			if (eFeature != NO_FEATURE)
 			{
 				int iHappy = GET_PLAYER(getOwnerINLINE()).getFeatureHappiness(eFeature);
+				iHappy += getSpecialistFeatureHappiness(eFeature);	// FeatureHappinessChanges of the specialists (added by this mod)
 				if (iHappy > 0)
 				{
 					iNewFeatureGoodHappiness += iHappy;
@@ -7491,6 +7577,26 @@ void CvCity::updateFeatureHappiness()
 
 		AI_setAssignWorkDirty(true);
 	}
+}
+
+
+// FeatureHappinessChanges of the specialists of the city, assigned or free (added by this mod)
+int CvCity::getSpecialistFeatureHappiness(FeatureTypes eFeature) const
+{
+	int iHappy = 0;
+	int iCount;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
+	{
+		if (GC.getSpecialistInfo((SpecialistTypes)iI).isAnyFeatureHappiness())
+		{
+			iCount = getSpecialistCount((SpecialistTypes)iI) + getFreeSpecialistCount((SpecialistTypes)iI);
+			iHappy += iCount * GC.getSpecialistInfo((SpecialistTypes)iI).getFeatureHappinessChange(eFeature);
+		}
+	}
+
+	return iHappy;
 }
 
 
@@ -9355,17 +9461,32 @@ int CvCity::getSpecialistTypeExtraCommerce(CommerceTypes eIndex) const
 {
 	CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
 	int iCommerce = 0;
+	int iCityExtra = 0;
+	int iTotalCount = 0;
+	int iCount;
 	int iI;
 
 	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
 	{
+		iCount = getSpecialistCount((SpecialistTypes)iI) + getFreeSpecialistCount((SpecialistTypes)iI);
+		if (iCount <= 0)
+		{
+			continue;
+		}
+
 		int iExtra = kOwner.getSpecialistTypeExtraCommerce((SpecialistTypes)iI, eIndex);
 
 		if (iExtra != 0)
 		{
-			iCommerce += (getSpecialistCount((SpecialistTypes)iI) + getFreeSpecialistCount((SpecialistTypes)iI)) * iExtra;
+			iCommerce += iCount * iExtra;
 		}
+
+		// ExtraSpecialistCommerces of the specialists (added by this mod): for each specialist of the city
+		iCityExtra += iCount * GC.getSpecialistInfo((SpecialistTypes)iI).getExtraSpecialistCommerce(eIndex);
+		iTotalCount += iCount;
 	}
+
+	iCommerce += iCityExtra * iTotalCount;
 
 	return iCommerce;
 }
@@ -11343,7 +11464,7 @@ bool CvCity::canUnsettleGreatPerson(SpecialistTypes eSpecialist) const
 		return false;
 	}
 
-	if (!GET_PLAYER(getOwnerINLINE()).isUnsettleGreatPeople())
+	if (!GET_PLAYER(getOwnerINLINE()).canUnsettleSpecialist(eSpecialist))
 	{
 		return false;
 	}

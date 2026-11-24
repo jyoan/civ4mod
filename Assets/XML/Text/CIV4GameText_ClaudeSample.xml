@@ -319,6 +319,24 @@
 		<Japanese>[SPACE][SPACE][ICON_BULLET]&#23554;&#38272;&#23478;: %F2%d1</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_SPECIALIST_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1%%%F2 from Specialists</English>
+		<French>[ICON_BULLET]%D1%%%F2 from Specialists</French>
+		<German>[ICON_BULLET]%D1%%%F2 from Specialists</German>
+		<Italian>[ICON_BULLET]%D1%%%F2 from Specialists</Italian>
+		<Spanish>[ICON_BULLET]%D1%%%F2 from Specialists</Spanish>
+		<Japanese>[ICON_BULLET]&#23554;&#38272;&#23478;&#12395;&#12424;&#12426;%F2%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_TRAIT_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1%%%F2 from Traits</English>
+		<French>[ICON_BULLET]%D1%%%F2 from Traits</French>
+		<German>[ICON_BULLET]%D1%%%F2 from Traits</German>
+		<Italian>[ICON_BULLET]%D1%%%F2 from Traits</Italian>
+		<Spanish>[ICON_BULLET]%D1%%%F2 from Traits</Spanish>
+		<Japanese>[ICON_BULLET]&#24535;&#21521;&#12395;&#12424;&#12426;%F2%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_MISC_HELP_YIELD_BUILDINGS</Tag>
 		<English>[SPACE][SPACE][ICON_BULLET]Buildings: %d1%F2</English>
 		<French>[SPACE][SPACE][ICON_BULLET]Buildings: %d1%F2</French>
@@ -1257,6 +1275,33 @@
 		<Italian>[ICON_BULLET]+%d1[ICON_UNHEALTHY] in the city</Italian>
 		<Spanish>[ICON_BULLET]+%d1[ICON_UNHEALTHY] in the city</Spanish>
 		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12395;[ICON_UNHEALTHY]+%d1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_PER_SPECIALIST_IN_CITY</Tag>
+		<English>[SPACE]per Specialist in the city</English>
+		<French>[SPACE]per Specialist in the city</French>
+		<German>[SPACE]per Specialist in the city</German>
+		<Italian>[SPACE]per Specialist in the city</Italian>
+		<Spanish>[SPACE]per Specialist in the city</Spanish>
+		<Japanese>[SPACE]&#65288;&#12371;&#12398;&#37117;&#24066;&#12398;&#12473;&#12506;&#12471;&#12515;&#12522;&#12473;&#12488;1&#20154;&#12395;&#12388;&#12365;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_NO_ANARCHY_DISORDER</Tag>
+		<English>[ICON_BULLET]The city keeps working during anarchy</English>
+		<French>[ICON_BULLET]The city keeps working during anarchy</French>
+		<German>[ICON_BULLET]The city keeps working during anarchy</German>
+		<Italian>[ICON_BULLET]The city keeps working during anarchy</Italian>
+		<Spanish>[ICON_BULLET]The city keeps working during anarchy</Spanish>
+		<Japanese>[ICON_BULLET]&#28961;&#25919;&#24220;&#29366;&#24907;&#12391;&#12418;&#12371;&#12398;&#37117;&#24066;&#12399;&#20572;&#27490;&#12375;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_EXCLUSIVE_SETTLE</Tag>
+		<English>[ICON_BULLET]A city can have only one of the exclusive settled great people</English>
+		<French>[ICON_BULLET]A city can have only one of the exclusive settled great people</French>
+		<German>[ICON_BULLET]A city can have only one of the exclusive settled great people</German>
+		<Italian>[ICON_BULLET]A city can have only one of the exclusive settled great people</Italian>
+		<Spanish>[ICON_BULLET]A city can have only one of the exclusive settled great people</Spanish>
+		<Japanese>[ICON_BULLET]1&#12388;&#12398;&#37117;&#24066;&#12395;&#23450;&#20303;&#12391;&#12365;&#12427;&#12398;&#12399;&#12289;&#25490;&#20182;&#12398;&#23450;&#20303;&#20553;&#20154;&#12398;&#12358;&#12385;1&#20154;&#12384;&#12369;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_COMBAT_PLOT_OTHER_RELIGION_MOD</Tag>

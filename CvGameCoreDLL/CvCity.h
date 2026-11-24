@@ -13,6 +13,7 @@ class CvPlotGroup;
 class CvArea;
 class CvGenericBuilding;
 class CvArtInfoBuilding;
+class CvSpecialistInfo;	// added by this mod
 
 class CvCity : public CvDLLEntity
 {
@@ -154,6 +155,10 @@ public:
 	void processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolete = false);
 	void processProcess(ProcessTypes eProcess, int iChange);
 	void processSpecialist(SpecialistTypes eSpecialist, int iChange);
+	void processSpecialistCityEffects(SpecialistTypes eSpecialist, int iChange);	// added by this mod
+	bool hasSpecialistFlag(bool (CvSpecialistInfo::*pfFlag)() const) const;	// added by this mod
+	bool isNoAnarchyDisorder() const;	// Exposed to Python, added by this mod
+	bool isAnyExtraSpecialistCommerce() const;	// added by this mod
 
 	HandicapTypes getHandicapType() const;												// Exposed to Python
 	CivilizationTypes getCivilizationType() const;								// Exposed to Python
@@ -417,6 +422,7 @@ public:
 
 	int getFeatureGoodHappiness() const;																	// Exposed to Python
 	int getFeatureBadHappiness() const;																		// Exposed to Python
+	int getSpecialistFeatureHappiness(FeatureTypes eFeature) const;	// added by this mod
 	void updateFeatureHappiness();
 
 	int getBonusGoodHappiness() const;																		// Exposed to Python  

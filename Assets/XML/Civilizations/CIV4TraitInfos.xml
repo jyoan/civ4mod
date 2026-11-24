@@ -1306,7 +1306,10 @@
 			<ShortDescription>TXT_KEY_TRAIT_TEST_CALENDAR_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_TEST_CALENDAR_HELP</Help>
 			<bLongCountCalendar>1</bLongCountCalendar>
-			<bUnsettleGreatPeople>1</bUnsettleGreatPeople>
+			<UnsettleSpecialists>
+				<SpecialistType>SPECIALIST_TEST_SCHOOL_A</SpecialistType>
+				<SpecialistType>SPECIALIST_TEST_SCHOOL_B</SpecialistType>
+			</UnsettleSpecialists>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_TREATY</Type>

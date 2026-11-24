@@ -4340,6 +4340,8 @@ void CvGameTextMgr::parseSpecialistHelp(CvWStringBuffer &szHelpString, Specialis
 			szHelpString.append(gDLL->getText(((GC.getSpecialistInfo(eSpecialist).getHealth() > 0) ? "TXT_KEY_SPECIALIST_HEALTHY" : "TXT_KEY_SPECIALIST_UNHEALTHY"), abs(GC.getSpecialistInfo(eSpecialist).getHealth())));
 		}
 
+		parseSpecialistCityEffectsHelp(szHelpString, eSpecialist);	// added by this mod
+
 		if (GC.getSpecialistInfo(eSpecialist).getGreatPeopleRateChange() != 0)
 		{
 			szHelpString.append(NEWLINE);
@@ -4351,6 +4353,92 @@ void CvGameTextMgr::parseSpecialistHelp(CvWStringBuffer &szHelpString, Specialis
 			szHelpString.append(NEWLINE);
 			szHelpString.append(GC.getSpecialistInfo(eSpecialist).getHelp());
 		}
+	}
+}
+
+// City effects of the specialist (added by this mod). The lines of the same effects of the buildings are reused
+void CvGameTextMgr::parseSpecialistCityEffectsHelp(CvWStringBuffer &szHelpString, SpecialistTypes eSpecialist)
+{
+	const CvSpecialistInfo& kSpecialist = GC.getSpecialistInfo(eSpecialist);
+	CvWString szFirstBuffer;
+	CvWString szFeature;
+	int aiCommerces[NUM_COMMERCE_TYPES];
+	int aiYields[NUM_YIELD_TYPES];
+	int iLast;
+	int iValue;
+	int iI;
+
+	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		aiYields[iI] = kSpecialist.getYieldModifier(iI);
+	}
+	setYieldChangeHelp(szHelpString, L"", L"", L"", aiYields, true);
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		aiCommerces[iI] = kSpecialist.getExtraSpecialistCommerce(iI);
+	}
+	setCommerceChangeHelp(szHelpString, L"", L"", gDLL->getText("TXT_KEY_SPECIALIST_PER_SPECIALIST_IN_CITY"), aiCommerces);
+
+	if (kSpecialist.isNoUnhappiness())
+	{
+		szHelpString.append(NEWLINE);
+		szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_NO_UNHAPPY"));
+	}
+
+	iLast = 0;
+	for (iI = 0; iI < GC.getNumFeatureInfos(); iI++)
+	{
+		iValue = kSpecialist.getFeatureHappinessChange(iI);
+		if (iValue != 0)
+		{
+			szFirstBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_FEATURE_HAPPINESS", abs(iValue), ((iValue > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR))).c_str());
+			szFeature.Format(L"<link=literal>%s</link>", GC.getFeatureInfo((FeatureTypes)iI).getDescription());
+			setListHelp(szHelpString, szFirstBuffer, szFeature, L", ", (iValue != iLast));
+			iLast = iValue;
+		}
+	}
+
+	if (kSpecialist.getGreatPeopleRateModifier() != 0)
+	{
+		szHelpString.append(NEWLINE);
+		szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_BIRTH_RATE_MOD", kSpecialist.getGreatPeopleRateModifier()));
+	}
+
+	if (kSpecialist.getMaintenanceModifier() != 0)
+	{
+		szHelpString.append(NEWLINE);
+		szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_MAINT_MOD", kSpecialist.getMaintenanceModifier()));
+	}
+
+	if (kSpecialist.getDefense() != 0)
+	{
+		szHelpString.append(NEWLINE);
+		szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_DEFENSE_MOD", kSpecialist.getDefense()));
+	}
+
+	if (kSpecialist.getBombardDefense() != 0)
+	{
+		szHelpString.append(NEWLINE);
+		szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_BOMBARD_DEFENSE_MOD", -kSpecialist.getBombardDefense()));
+	}
+
+	if (kSpecialist.getEspionageDefense() != 0)
+	{
+		szHelpString.append(NEWLINE);
+		szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_ESPIONAGE_DEFENSE_MOD", kSpecialist.getEspionageDefense()));
+	}
+
+	if (kSpecialist.isNoAnarchyDisorder())
+	{
+		szHelpString.append(NEWLINE);
+		szHelpString.append(gDLL->getText("TXT_KEY_SPECIALIST_NO_ANARCHY_DISORDER"));
+	}
+
+	if (kSpecialist.isExclusiveSettle())
+	{
+		szHelpString.append(NEWLINE);
+		szHelpString.append(gDLL->getText("TXT_KEY_SPECIALIST_EXCLUSIVE_SETTLE"));
 	}
 }
 
@@ -14921,6 +15009,20 @@ void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldT
 		iBaseModifier += iBuildingMod;
 	}
 
+	// YieldModifiers of the specialists of the city (added by this mod)
+	int iSpecialistMod = 0;
+	for (int iSpecialist = 0; iSpecialist < GC.getNumSpecialistInfos(); iSpecialist++)
+	{
+		int iSpecialistCount = city.getSpecialistCount((SpecialistTypes)iSpecialist) + city.getFreeSpecialistCount((SpecialistTypes)iSpecialist);
+		iSpecialistMod += iSpecialistCount * GC.getSpecialistInfo((SpecialistTypes)iSpecialist).getYieldModifier(eYieldType);
+	}
+	if (0 != iSpecialistMod)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_SPECIALIST_MODIFIER", iSpecialistMod, info.getChar()));
+		szBuffer.append(NEWLINE);
+		iBaseModifier += iSpecialistMod;
+	}
+
 	// Power
 	if (city.isPower())
 	{
@@ -14968,6 +15070,15 @@ void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldT
 		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_CIVICS", iCivicMod, info.getChar()));
 		szBuffer.append(NEWLINE);
 		iBaseModifier += iCivicMod;
+	}
+
+	// YieldModifiers of the traits (added by this mod): in the yield rate modifier of the player like the civics'
+	int iTraitMod = owner.sumTraitValues(&CvTraitInfo::getYieldModifier, (int)eYieldType);
+	if (0 != iTraitMod)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_TRAIT_MODIFIER", iTraitMod, info.getChar()));
+		szBuffer.append(NEWLINE);
+		iBaseModifier += iTraitMod;
 	}
 
 	FAssertMsg((iBaseModifier * iBaseProduction) / 100 == city.getYieldRate(eYieldType), "Yield Modifier in setProductionHelp does not agree with actual value");

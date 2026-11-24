@@ -196,3 +196,4 @@
 - 2026-11-24: 志向の `Deals`（`bBuyCities`: 平時に AI の都市を金・技術と同じ取引に載せて買える、`iCityValueModifier`・`iGoldLimitModifier`・`iGoldValueModifier`）と外交画面の都市の値段の目安（ツールチップ）をゲーム内で確認した（検証用志向）
 - 2026-11-24: ソースの分割（`CvTraitInfo.cpp`・`CvGameTextMgrTrait.cpp`・`CvPlayerTraits.cpp`）の後に、起動・文明選択の画面の志向の説明文・新しいゲームの開始とペディアの志向のページをゲーム内で確認（変化なし）
 - 2026-11-24: 重複の整理（`CvTraitInfo.cpp` の配列の読み込みを `readYieldChanges`・`readCommerceChanges` に、志向の説明文の行を `appendTraitValueLine`・`appendTraitFlagLine` に）の後に、起動とペディアの志向の説明文をゲーム内で確認
+- 2026-11-24: 専門家の都市への効果（`YieldModifiers`・`iMaintenanceModifier`・`iEspionageDefense`・`bNoUnhappiness`・`iGreatPeopleRateModifier`・`iDefense`・`iBombardDefense`・`FeatureHappinessChanges`・`ExtraSpecialistCommerces`・`bNoAnarchyDisorder`・`bExclusiveSettle`）、志向の `UnsettleSpecialists`、世界ユニットの定住と、産出の内訳の「専門家により」「志向により」の行をゲーム内で確認（検証用学派A・B）

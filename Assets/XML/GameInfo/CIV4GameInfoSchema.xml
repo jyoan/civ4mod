@@ -1023,6 +1023,16 @@
 	<ElementType name="iGreatPeopleRateChange" content="textOnly" dt:type="int"/>
 	<ElementType name="iHappiness" content="textOnly" dt:type="int"/>
 	<ElementType name="iHealth" content="textOnly" dt:type="int"/>
+	<ElementType name="iMaintenanceModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iEspionageDefense" content="textOnly" dt:type="int"/>
+	<ElementType name="bNoUnhappiness" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iDefense" content="textOnly" dt:type="int"/>
+	<ElementType name="iBombardDefense" content="textOnly" dt:type="int"/>
+	<ElementType name="ExtraSpecialistCommerces" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="bNoAnarchyDisorder" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bExclusiveSettle" content="textOnly" dt:type="boolean"/>
 	<ElementType name="SpecialistInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -1038,6 +1048,17 @@
 		<element type="iExperience"/>
 		<element type="iHappiness" minOccurs="0"/>
 		<element type="iHealth" minOccurs="0"/>
+		<element type="YieldModifiers" minOccurs="0"/>
+		<element type="iMaintenanceModifier" minOccurs="0"/>
+		<element type="iEspionageDefense" minOccurs="0"/>
+		<element type="bNoUnhappiness" minOccurs="0"/>
+		<element type="iGreatPeopleRateModifier" minOccurs="0"/>
+		<element type="iDefense" minOccurs="0"/>
+		<element type="iBombardDefense" minOccurs="0"/>
+		<element type="FeatureHappinessChanges" minOccurs="0"/>
+		<element type="ExtraSpecialistCommerces" minOccurs="0"/>
+		<element type="bNoAnarchyDisorder" minOccurs="0"/>
+		<element type="bExclusiveSettle" minOccurs="0"/>
 		<element type="Flavors"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>

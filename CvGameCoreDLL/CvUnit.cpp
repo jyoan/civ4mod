@@ -7752,6 +7752,12 @@ bool CvUnit::canJoin(const CvPlot* pPlot, SpecialistTypes eSpecialist) const
 		return false;
 	}
 
+	// bExclusiveSettle of the specialists (added by this mod): one of them in a city
+	if (GC.getSpecialistInfo(eSpecialist).isExclusiveSettle() && pCity->hasSpecialistFlag(&CvSpecialistInfo::isExclusiveSettle))
+	{
+		return false;
+	}
+
 	return true;
 }
 

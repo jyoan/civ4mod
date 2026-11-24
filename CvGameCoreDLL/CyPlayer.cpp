@@ -2486,6 +2486,11 @@ bool CyPlayer::isUnsettleGreatPeople()
 	return m_pPlayer ? m_pPlayer->isUnsettleGreatPeople() : false;
 }
 
+bool CyPlayer::canUnsettleSpecialist(int /*SpecialistTypes*/ eSpecialist)
+{
+	return m_pPlayer ? m_pPlayer->canUnsettleSpecialist((SpecialistTypes)eSpecialist) : false;
+}
+
 bool CyPlayer::isIgnoreEvents()
 {
 	return m_pPlayer ? m_pPlayer->isIgnoreEvents() : false;

@@ -429,6 +429,7 @@ public:
 	void changeFreeSpecialistCount(int /*SpecialistTypes*/ eIndex, int iChange);
 	int getAddedFreeSpecialistCount(int /*SpecialistTypes*/ eIndex);
 	bool canUnsettleGreatPerson(int /*SpecialistTypes*/ eSpecialist);	// added by this mod
+	bool isNoAnarchyDisorder();	// added by this mod
 	bool unsettleGreatPerson(int /*SpecialistTypes*/ eSpecialist);	// added by this mod
 	int getImprovementFreeSpecialists(int /*ImprovementTypes*/ iIndex);
 	void changeImprovementFreeSpecialists(int /*ImprovementTypes*/ iIndex, int iChange);
