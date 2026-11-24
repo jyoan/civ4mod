@@ -4902,6 +4902,7 @@ m_iPrereqBuilding(NO_BUILDING),
 m_iPrereqAndTech(NO_TECH),
 m_iPrereqAndBonus(NO_BONUS),
 m_iPrereqPopulation(0),
+m_iStationedAttitudeChange(0),
 m_iPrereqCultureLevel(NO_CULTURELEVEL),
 m_iGroupSize(0),
 m_iGroupDefinitions(0),
@@ -5662,6 +5663,13 @@ const std::vector<int>& CvUnitInfo::getPrereqOrTraitsVector() const
 int CvUnitInfo::getPrereqPopulation() const
 {
 	return m_iPrereqPopulation;
+}
+
+// iStationedAttitudeChange (added by this mod): while the unit is on a city plot of another player, the attitude of that
+// player toward the owner of the unit (CvPlayerAI::AI_getStationedUnitAttitude)
+int CvUnitInfo::getStationedAttitudeChange() const
+{
+	return m_iStationedAttitudeChange;
 }
 
 int CvUnitInfo::getPrereqCultureLevel() const
@@ -6785,13 +6793,20 @@ void CvUnitInfo::read(FDataStreamBase* stream)
 		stream->ReadString(m_szPyOnCreated);
 		stream->ReadString(m_szPyOnDeath);
 	}
+
+	// uiFlag < 5: cache written before iStationedAttitudeChange existed (added by this mod)
+	m_iStationedAttitudeChange = 0;
+	if (uiFlag > 4)
+	{
+		stream->Read(&m_iStationedAttitudeChange);
+	}
 }
 
 void CvUnitInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=4;	// 1: PrereqOrTraits, 2: city prerequisites, 3: BonusAffinities, 4: Python hooks (added by this mod)
+	uint uiFlag=5;	// 1: PrereqOrTraits, 2: city prerequisites, 3: BonusAffinities, 4: Python hooks, 5: iStationedAttitudeChange (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAIWeight);
@@ -6973,6 +6988,7 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 	writePrereqOrTraits(stream, m_aiBonusAffinity);
 	stream->WriteString(m_szPyOnCreated);
 	stream->WriteString(m_szPyOnDeath);
+	stream->Write(m_iStationedAttitudeChange);
 }
 
 //
@@ -6983,6 +6999,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	// Python hooks (added by this mod)
 	pXML->GetChildXmlValByName(m_szPyOnCreated, "PyOnCreated");
 	pXML->GetChildXmlValByName(m_szPyOnDeath, "PyOnDeath");
+	pXML->GetChildXmlValByName(&m_iStationedAttitudeChange, "iStationedAttitudeChange");
 
 	CvString szTextVal;
 	if (!CvHotkeyInfo::read(pXML))

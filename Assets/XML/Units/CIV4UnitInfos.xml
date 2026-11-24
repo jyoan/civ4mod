@@ -24806,6 +24806,7 @@
 			</FreePromotions>
 			<LeaderPromotion>NONE</LeaderPromotion>
 			<iLeaderExperience>0</iLeaderExperience>
+			<iStationedAttitudeChange>3</iStationedAttitudeChange>
 		</UnitInfo>
 		<UnitInfo>
 			<Class>UNITCLASS_TEST_SCHOOL_A</Class>

@@ -209,6 +209,17 @@
 			<PyResult>spellToggleFreeTrait(pCaster, 'TRAIT_TEST')</PyResult>
 			<Button>Art/Interface/Buttons/Process/ProcessResearch.dds</Button>
 		</SpellInfo>
+		<SpellInfo>
+			<Type>SPELL_TEST_PEACE</Type>
+			<Description>TXT_KEY_SPELL_TEST_PEACE</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<Help>TXT_KEY_SPELL_TEST_PEACE_HELP</Help>
+			<UnitPrereq>UNIT_TEST_SPY</UnitPrereq>
+			<PyResult>spellForcePeaceWithCityOwner(pCaster)</PyResult>
+			<PyRequirement>reqInWarEnemyCity(pCaster)</PyRequirement>
+			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
+			<Button>Art/Interface/Buttons/Process/ProcessResearch.dds</Button>
+		</SpellInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</SpellInfos>
 </Civ4SpellInfos>

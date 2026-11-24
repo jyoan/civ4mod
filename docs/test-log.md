@@ -198,3 +198,4 @@
 - 2026-11-24: 重複の整理（`CvTraitInfo.cpp` の配列の読み込みを `readYieldChanges`・`readCommerceChanges` に、志向の説明文の行を `appendTraitValueLine`・`appendTraitFlagLine` に）の後に、起動とペディアの志向の説明文をゲーム内で確認
 - 2026-11-24: 専門家の都市への効果（`YieldModifiers`・`iMaintenanceModifier`・`iEspionageDefense`・`bNoUnhappiness`・`iGreatPeopleRateModifier`・`iDefense`・`iBombardDefense`・`FeatureHappinessChanges`・`ExtraSpecialistCommerces`・`bNoAnarchyDisorder`・`bExclusiveSettle`）、志向の `UnsettleSpecialists`、世界ユニットの定住と、産出の内訳の「専門家により」「志向により」の行をゲーム内で確認（検証用学派A・B）
 - 2026-11-24: 専門家の `iDomesticGreatGeneralRateModifier`（都市圏での戦闘の大将軍ポイント）と、志向の `StackPromotions`（組ごとの `StackUnitClasses`・`StackPromotionTypes`・`StackUnitCombats`。同じタイルにいる間だけ昇進、離れると外れる）をゲーム内で確認（検証用学派A・B、検証用随行）
+- 2026-11-24: ユニットの `iStationedAttitudeChange`（ほかの文明の都市にいる間の態度、外交画面の内訳とユニットの説明）と、呪文の共通関数 `reqInWarEnemyCity`・`spellForcePeaceWithCityOwner`（戦争中の都市で生贄にして和平）をゲーム内で確認（検証用スパイ、検証用呪文（和平））

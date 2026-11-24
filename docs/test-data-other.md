@@ -279,6 +279,7 @@
 - 複製元: スパイ
 - 無印 Civ4 の旧スパイの行動をすべて有効にした（`bSabotage`・`bDestroy`・`bStealPlans`・`bInvestigate` を 1。`bCounterSpy` は元から 1）。
 - 前提技術なし（スパイはアルファベット）、生産コスト 10（スパイは 40）。
+- `iStationedAttitudeChange` 3（ほかの文明の都市にいる間、その AI の態度 +3）。検証用呪文（和平）を使える。
 - 行動の費用の金は `GlobalDefines.xml` の共通の値（破壊工作 `BASE_SPY_SABOTAGE_COST` 200、生産の破壊 `BASE_SPY_DESTROY_COST` 50 から、計画を盗む `BASE_SPY_STEAL_PLANS_COST` 100 から）。
 - 検証用志向の固有ユニット
 
@@ -533,3 +534,8 @@
 検証用文明が `CIVIC_TEST` を採用したあと、白兵戦ユニット（都市で生産）で期待される値: 生産直後の経験値 5（志向 +2、白兵戦 +2、社会制度 +1。その後は毎ターン +1 で 10 まで増える）、ユニット A → B のアップグレード割引 75%（志向 50% + 社会制度 25%）、`PROMOTION_TEST` が付く
 
 ゲームルールの確認: `GlobalDefinesAlt.xml` の `RIVER_CROSSING_MOVE_COST` はコミット時は 0（BtS と同じ）。確かめるときだけ一時的に 1 にする
+
+## `SPELL_TEST_PEACE`（検証用呪文（和平））
+
+- 2026-11-24。検証用スパイだけ。
+- 戦争中の文明の都市にいるときに使える（`reqInWarEnemyCity`）。その文明と和平し、術者は消える（`spellForcePeaceWithCityOwner`）

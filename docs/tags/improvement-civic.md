@@ -218,6 +218,18 @@
 - Python は `CvUnitInfo` の同名の関数（`getPrereqPopulation()`、`getNumPrereqOrTerrains()` / `getPrereqOrTerrain(i)` など）。
 - キャッシュの形式: `CvUnitInfo` `uiFlag=2`
 
+### `UnitInfo/iStationedAttitudeChange`
+
+- ファイル: `CIV4UnitInfos.xml`
+- 2026-11-24。諸子百家の張儀（縦横家）。
+- そのユニットがほかのプレイヤーの都市のタイルにいる間、その都市の持ち主（AI）のユニットの持ち主への態度 +値（負なら悪化）。
+- 都市ごと・ユニットごとに足し合わせる。見えないユニット（スパイと同じ `InvisibleType`）も数える（`CvPlayerAI::AI_getStationedUnitAttitude`。`AI_getAttitudeVal` に入る）。
+- 外交画面の態度の内訳に `TXT_KEY_MISC_ATTITUDE_STATIONED_UNITS`（「+3: 都市に滞在する使節による印象」）。
+- ユニットの説明（ペディア・生産の候補・マップ上のユニット）に `TXT_KEY_UNIT_STATIONED_ATTITUDE`（「ほかの文明の都市にいる間、その文明の態度+3」）。
+- 都市の様子は既存の `bInvestigate`（旧スパイ）、強制和平は呪文（`reqInWarEnemyCity`・`spellForcePeaceWithCityOwner`。`docs/spells.md`）。
+- `CvUnitInfo` の `uiFlag` を 5 にした。
+- Python: `CvUnitInfo.getStationedAttitudeChange()`
+
 ### `CivicInfo/ReplacedCivic`
 
 - ファイル: `CIV4CivicInfos.xml`
