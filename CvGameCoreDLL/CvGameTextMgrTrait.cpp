@@ -53,6 +53,24 @@ static void appendTraitLine(CvWStringBuffer& szHelpString, const CvWString& szLi
 	szHelpString.append(szLine);
 }
 
+// One line of the help of a trait with szKey and iValue, when iValue is not 0 (added by this mod)
+static void appendTraitValueLine(CvWStringBuffer& szHelpString, const char* szKey, int iValue)
+{
+	if (iValue != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText(szKey, iValue));
+	}
+}
+
+// One line of the help of a trait with szKey, when bFlag is set (added by this mod)
+static void appendTraitFlagLine(CvWStringBuffer& szHelpString, const char* szKey, bool bFlag)
+{
+	if (bFlag)
+	{
+		appendTraitLine(szHelpString, gDLL->getText(szKey));
+	}
+}
+
 // A name that links to its Civilopedia page (added by this mod)
 CvWString getLinkText(const wchar* szName)
 {
@@ -82,15 +100,8 @@ void CvGameTextMgr::parseTraitCivicEffects(CvWStringBuffer& szHelpString, TraitT
 
 	// Civic-like modifiers. The civic text keys start with [ICON_BULLET] and no newline,
 	// so the newline and the trait indent are added here.
-	if (kTrait.getFreeExperience() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_FREE_XP", kTrait.getFreeExperience()));
-	}
-
-	if (kTrait.getMilitaryProductionModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_MILITARY_PRODUCTION", kTrait.getMilitaryProductionModifier()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_CIVIC_FREE_XP", kTrait.getFreeExperience());
+	appendTraitValueLine(szHelpString, "TXT_KEY_CIVIC_MILITARY_PRODUCTION", kTrait.getMilitaryProductionModifier());
 
 	if (kTrait.getImprovementUpgradeRateModifier() != 0)
 	{
@@ -143,20 +154,9 @@ void CvGameTextMgr::parseTraitCivicEffects(CvWStringBuffer& szHelpString, TraitT
 		}
 	}
 
-	if (kTrait.getFreeSpecialist() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_FREE_SPECIALISTS", kTrait.getFreeSpecialist()));
-	}
-
-	if (kTrait.getTradeRoutes() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_TRADE_ROUTES", kTrait.getTradeRoutes()));
-	}
-
-	if (kTrait.getExpInBorderModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_EXPERIENCE_IN_BORDERS", kTrait.getExpInBorderModifier()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_CIVIC_FREE_SPECIALISTS", kTrait.getFreeSpecialist());
+	appendTraitValueLine(szHelpString, "TXT_KEY_CIVIC_TRADE_ROUTES", kTrait.getTradeRoutes());
+	appendTraitValueLine(szHelpString, "TXT_KEY_CIVIC_EXPERIENCE_IN_BORDERS", kTrait.getExpInBorderModifier());
 
 	if (kTrait.getCityRadiusChange() != 0)
 	{
@@ -370,42 +370,17 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		appendTraitLine(szHelpString, gDLL->getText(((kTrait.getMaxCitiesPercent() != 0) ? "TXT_KEY_TRAIT_MAX_CITIES_MAP" : "TXT_KEY_TRAIT_MAX_CITIES"), kTrait.getMaxCitiesLimit(GC.getMapINLINE().getWorldSize())));
 	}
 
-	if (kTrait.getNewCityPopulation() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_NEW_CITY_POPULATION", kTrait.getNewCityPopulation()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_NEW_CITY_POPULATION", kTrait.getNewCityPopulation());
 
 	// Regions (added by this mod)
-	if (kTrait.getNewWorldCityPopulation() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NEW_WORLD_CITY_POPULATION", kTrait.getNewWorldCityPopulation()));
-	}
-
-	if (kTrait.getOverseasCityPopulation() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_OVERSEAS_CITY_POPULATION", kTrait.getOverseasCityPopulation()));
-	}
-
-	if (kTrait.getOverseasMaintenanceModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_OVERSEAS_MAINTENANCE", kTrait.getOverseasMaintenanceModifier()));
-	}
-
-	if (kTrait.getDistantTradeRouteModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DISTANT_TRADE_ROUTE", kTrait.getDistantTradeRouteModifier()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_NEW_WORLD_CITY_POPULATION", kTrait.getNewWorldCityPopulation());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_OVERSEAS_CITY_POPULATION", kTrait.getOverseasCityPopulation());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_OVERSEAS_MAINTENANCE", kTrait.getOverseasMaintenanceModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_DISTANT_TRADE_ROUTE", kTrait.getDistantTradeRouteModifier());
 
 	// iTechCostModifier, iAttitudeChange (added by this mod)
-	if (kTrait.getTechCostModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_TECH_COST", kTrait.getTechCostModifier()));
-	}
-
-	if (kTrait.getAttitudeChange() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ATTITUDE_CHANGE", kTrait.getAttitudeChange()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_TECH_COST", kTrait.getTechCostModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_ATTITUDE_CHANGE", kTrait.getAttitudeChange());
 
 	// iAnarchyGoldenAgePercent (added by this mod)
 	if (kTrait.getAnarchyGoldenAgePercent() > 0)
@@ -426,46 +401,18 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		}
 	}
 
-	if (kTrait.isNewCityStateReligion())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_NEW_CITY_STATE_RELIGION"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_NEW_CITY_STATE_RELIGION", kTrait.isNewCityStateReligion());
 
-	if (kTrait.getOccupationTimeModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_OCCUPATION_TIME_MODIFIER", kTrait.getOccupationTimeModifier()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_OCCUPATION_TIME_MODIFIER", kTrait.getOccupationTimeModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_CONQUEST_CULTURE", kTrait.getConquestCulturePercent());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_CONQUEST_BUILDING_SURVIVE", kTrait.getConquestBuildingSurviveModifier());
 
-	if (kTrait.getConquestCulturePercent() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_CULTURE", kTrait.getConquestCulturePercent()));
-	}
-
-	if (kTrait.getConquestBuildingSurviveModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_BUILDING_SURVIVE", kTrait.getConquestBuildingSurviveModifier()));
-	}
-
-	if (kTrait.isNoConquestPopulationLoss())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_CONQUEST_POPULATION_LOSS"));
-	}
-
-	if (kTrait.isNoAutoRaze())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_AUTO_RAZE"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_NO_CONQUEST_POPULATION_LOSS", kTrait.isNoConquestPopulationLoss());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_NO_AUTO_RAZE", kTrait.isNoAutoRaze());
 
 	// bConquestLearnUniqueUnits and bConquestLearnUniqueBuildings (added by this mod)
-	if (kTrait.isConquestLearnUniqueUnits())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_LEARN_UNIQUE_UNITS"));
-	}
-
-	if (kTrait.isConquestLearnUniqueBuildings())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_LEARN_UNIQUE_BUILDINGS"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_CONQUEST_LEARN_UNIQUE_UNITS", kTrait.isConquestLearnUniqueUnits());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_CONQUEST_LEARN_UNIQUE_BUILDINGS", kTrait.isConquestLearnUniqueBuildings());
 
 	// Batch of 2026-11-17 (added by this mod). iStateReligionHappiness uses the civic text key
 	if (kTrait.getStateReligionHappiness() != 0)
@@ -485,20 +432,9 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_GREAT_PEOPLE_MOD_STATE_RELIGION", kTrait.getStateReligionGreatPeopleRateModifier(), gDLL->getSymbolID(RELIGION_CHAR)));
 	}
 
-	if (kTrait.getStateReligionUnitProductionModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_STATE_REL_TRAIN_BONUS", kTrait.getStateReligionUnitProductionModifier()));
-	}
-
-	if (kTrait.getStateReligionBuildingProductionModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_STATE_REL_BUILDING_BONUS", kTrait.getStateReligionBuildingProductionModifier()));
-	}
-
-	if (kTrait.getStateReligionFreeExperience() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_STATE_REL_FREE_XP", kTrait.getStateReligionFreeExperience()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_CIVIC_STATE_REL_TRAIN_BONUS", kTrait.getStateReligionUnitProductionModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_CIVIC_STATE_REL_BUILDING_BONUS", kTrait.getStateReligionBuildingProductionModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_CIVIC_STATE_REL_FREE_XP", kTrait.getStateReligionFreeExperience());
 
 	if (kTrait.isAnyGreatPeopleClassRateModifier())
 	{
@@ -511,15 +447,8 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		}
 	}
 
-	if (kTrait.getEnemyMoveCostInBorders() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ENEMY_MOVE_COST_IN_BORDERS", kTrait.getEnemyMoveCostInBorders()));
-	}
-
-	if (kTrait.getRevengeCombatPercent() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_REVENGE_COMBAT", kTrait.getRevengeCombatPercent()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_ENEMY_MOVE_COST_IN_BORDERS", kTrait.getEnemyMoveCostInBorders());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_REVENGE_COMBAT", kTrait.getRevengeCombatPercent());
 
 	if (kTrait.getKnownTechCostModifier() != 0)
 	{
@@ -533,15 +462,8 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 		}
 	}
 
-	if (kTrait.isConquestHeal())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_HEAL"));
-	}
-
-	if (kTrait.isStackCityDefense())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_STACK_CITY_DEFENSE"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_CONQUEST_HEAL", kTrait.isConquestHeal());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_STACK_CITY_DEFENSE", kTrait.isStackCityDefense());
 
 	// iMinCityRangeChange: the range of this trait alone (added by this mod)
 	if (kTrait.getMinCityRangeChange() != 0)
@@ -558,10 +480,7 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 	}
 
 	// bFoundInForeignTerritory (added by this mod)
-	if (kTrait.isFoundInForeignTerritory())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FOUND_IN_FOREIGN_TERRITORY"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_FOUND_IN_FOREIGN_TERRITORY", kTrait.isFoundInForeignTerritory());
 }
 
 // The part of the trait help for spreads and units (iReligionSpreadChange, golden age moves, CityFoundedUnits) (added by this mod)
@@ -591,14 +510,8 @@ void CvGameTextMgr::parseTraitSpreadAndUnitEffects(CvWStringBuffer& szHelpString
 	}
 
 	// iGoldenAgeLandMovesChange / iGoldenAgeSeaMovesChange (added by this mod)
-	if (kTrait.getGoldenAgeLandMovesChange() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_LAND_MOVES", kTrait.getGoldenAgeLandMovesChange()));
-	}
-	if (kTrait.getGoldenAgeSeaMovesChange() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_SEA_MOVES", kTrait.getGoldenAgeSeaMovesChange()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_GOLDEN_AGE_LAND_MOVES", kTrait.getGoldenAgeLandMovesChange());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_GOLDEN_AGE_SEA_MOVES", kTrait.getGoldenAgeSeaMovesChange());
 
 	// CityFoundedUnits (added by this mod): "Each city founded gets 1 Galley (cities on the coast only)"
 	for (iI = 0; iI < kTrait.getNumCityFoundedUnits(); iI++)
@@ -677,16 +590,10 @@ void CvGameTextMgr::parseTraitTerritoryEffects(CvWStringBuffer& szHelpString, Tr
 	}
 
 	// bBarbarianAlly (added by this mod)
-	if (kTrait.isBarbarianAlly())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_BARBARIAN_ALLY"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_BARBARIAN_ALLY", kTrait.isBarbarianAlly());
 
 	// bBarbarianVision (added by this mod)
-	if (kTrait.isBarbarianVision())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_BARBARIAN_VISION"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_BARBARIAN_VISION", kTrait.isBarbarianVision());
 
 	// PassableTerrainsInBorders / PassableFeaturesInBorders and FeatureHealChanges (added by this mod)
 	{
@@ -724,22 +631,13 @@ void CvGameTextMgr::parseTraitTerritoryEffects(CvWStringBuffer& szHelpString, Tr
 	}
 
 	// bInlandCanals (added by this mod)
-	if (kTrait.isInlandCanals())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_INLAND_CANALS"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_INLAND_CANALS", kTrait.isInlandCanals());
 
 	// bNoGlobalWarmingInBorders (added by this mod)
-	if (kTrait.isNoGlobalWarmingInBorders())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_GLOBAL_WARMING_IN_BORDERS"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_NO_GLOBAL_WARMING_IN_BORDERS", kTrait.isNoGlobalWarmingInBorders());
 
 	// bNoPillageInBorders (added by this mod)
-	if (kTrait.isNoPillageInBorders())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_PILLAGE_IN_BORDERS"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_NO_PILLAGE_IN_BORDERS", kTrait.isNoPillageInBorders());
 }
 
 // The part of the trait help for the economy and the rest (interest, culture range, peace anger, ForbiddenCivics, costs, Civ5 abilities) (added by this mod)
@@ -764,10 +662,7 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 	}
 
 	// iCultureRangeChange: "+1 culture range of all cities" (added by this mod)
-	if (kTrait.getCultureRangeChange() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CULTURE_RANGE_CHANGE", kTrait.getCultureRangeChange()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_CULTURE_RANGE_CHANGE", kTrait.getCultureRangeChange());
 
 	// Revolts and flips by culture (added by this mod)
 	if (kTrait.isNoRevoltAndNoCultureFlip())
@@ -779,15 +674,9 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_CULTURE_FLIP"));
 	}
 
-	if (kTrait.isInstantCultureFlip())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_INSTANT_CULTURE_FLIP"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_INSTANT_CULTURE_FLIP", kTrait.isInstantCultureFlip());
 
-	if (kTrait.getCultureRevoltChance() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CULTURE_REVOLT_CHANCE", kTrait.getCultureRevoltChance()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_CULTURE_REVOLT_CHANCE", kTrait.getCultureRevoltChance());
 
 	// PeaceAnger/iPerTurn: "Cities grow angry in peace" (added by this mod)
 	if (kTrait.getPeaceAngerPerTurn() > 0 && kTrait.getPeaceAngerMax() > 0)
@@ -831,22 +720,13 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 	}
 
 	// iRouteMovementModifierInBorders, bConquestStateReligion, bConquestReligionBuildings (added by this mod)
-	if (kTrait.getRouteMovementModifierInBorders() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ROUTE_MOVEMENT_IN_BORDERS", kTrait.getRouteMovementModifierInBorders()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_ROUTE_MOVEMENT_IN_BORDERS", kTrait.getRouteMovementModifierInBorders());
 
 	// iCombatPercent (added by this mod)
-	if (kTrait.getCombatPercent() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_COMBAT_PERCENT", kTrait.getCombatPercent()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_COMBAT_PERCENT", kTrait.getCombatPercent());
 
 	// iHappinessPerReligion, CommercePerReligion, iDefenseCombatPercent, iEnemyWarWearinessModifier (added by this mod)
-	if (kTrait.getHappinessPerReligion() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HAPPINESS_PER_RELIGION", kTrait.getHappinessPerReligion()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_HAPPINESS_PER_RELIGION", kTrait.getHappinessPerReligion());
 
 	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
 	{
@@ -856,10 +736,7 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		}
 	}
 
-	if (kTrait.getDefenseCombatPercent() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DEFENSE_COMBAT_PERCENT", kTrait.getDefenseCombatPercent()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_DEFENSE_COMBAT_PERCENT", kTrait.getDefenseCombatPercent());
 
 	// WorldWonderCommerceChanges, GlobalWorldWonderCommerceChanges (added by this mod)
 	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
@@ -878,15 +755,9 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		}
 	}
 
-	if (kTrait.getEnemyWarWearinessModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_ENEMY_WAR_WEAR", kTrait.getEnemyWarWearinessModifier()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_BUILDING_ENEMY_WAR_WEAR", kTrait.getEnemyWarWearinessModifier());
 
-	if (kTrait.isConquestStateReligion())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONQUEST_STATE_RELIGION"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_CONQUEST_STATE_RELIGION", kTrait.isConquestStateReligion());
 
 	// ConquestReligionBuildings: "Conquered cities get (when they could build it): Temple, Cathedral". Special buildings have
 	// no Civilopedia page: no link
@@ -915,21 +786,11 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 	}
 
 	// bHumanCanBeVassal (added by this mod)
-	if (kTrait.isHumanCanBeVassal())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HUMAN_CAN_BE_VASSAL"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_HUMAN_CAN_BE_VASSAL", kTrait.isHumanCanBeVassal());
 
 	// bGainTraitOnCapitalCapture / bGainTraitsOnElimination (added by this mod)
-	if (kTrait.isGainTraitOnCapitalCapture())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GAIN_TRAIT_ON_CAPITAL_CAPTURE"));
-	}
-
-	if (kTrait.isGainTraitsOnElimination())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GAIN_TRAITS_ON_ELIMINATION"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_GAIN_TRAIT_ON_CAPITAL_CAPTURE", kTrait.isGainTraitOnCapitalCapture());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_GAIN_TRAITS_ON_ELIMINATION", kTrait.isGainTraitsOnElimination());
 
 	// GainTraitsOnFriendly (added by this mod)
 	if (kTrait.isGainTraitsOnFriendly())
@@ -945,46 +806,16 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 	}
 
 	// iUnitCostModifier / iBuildingCostModifier: "-20% production cost of units" (added by this mod)
-	if (kTrait.getUnitCostModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_UNIT_COST_MODIFIER", kTrait.getUnitCostModifier()));
-	}
-
-	if (kTrait.getBuildingCostModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_BUILDING_COST_MODIFIER", kTrait.getBuildingCostModifier()));
-	}
-
-	if (kTrait.getSummonDuration() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_SUMMON_DURATION", kTrait.getSummonDuration()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_UNIT_COST_MODIFIER", kTrait.getUnitCostModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_BUILDING_COST_MODIFIER", kTrait.getBuildingCostModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_SUMMON_DURATION", kTrait.getSummonDuration());
 
 	// Civ5 abilities (added by this mod)
-	if (kTrait.getGoldenAgeModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_GOLDENAGE_MOD", kTrait.getGoldenAgeModifier()));
-	}
-
-	if (kTrait.getGoldenAgeGreatPeopleRateModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_GREAT_PEOPLE", kTrait.getGoldenAgeGreatPeopleRateModifier()));
-	}
-
-	if (kTrait.getCapitalBuildingProductionModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CAPITAL_BUILDING_PRODUCTION", kTrait.getCapitalBuildingProductionModifier()));
-	}
-
-	if (kTrait.getPillageGoldModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_PILLAGE_GOLD", kTrait.getPillageGoldModifier()));
-	}
-
-	if (kTrait.getCityCaptureGoldModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CITY_CAPTURE_GOLD", kTrait.getCityCaptureGoldModifier()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_BUILDING_GOLDENAGE_MOD", kTrait.getGoldenAgeModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_GOLDEN_AGE_GREAT_PEOPLE", kTrait.getGoldenAgeGreatPeopleRateModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_CAPITAL_BUILDING_PRODUCTION", kTrait.getCapitalBuildingProductionModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_PILLAGE_GOLD", kTrait.getPillageGoldModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_CITY_CAPTURE_GOLD", kTrait.getCityCaptureGoldModifier());
 
 	if (kTrait.getNewCityCultureLevel() != NO_CULTURELEVEL)
 	{
@@ -1283,10 +1114,7 @@ void CvGameTextMgr::parseTraitUnitAndCityEffects(CvWStringBuffer& szHelpString, 
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_MAX_UPGRADE_EXPERIENCE", iValue));
 	}
 
-	if (kTrait.getExpOutsideBordersChange() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_EXP_OUTSIDE_BORDERS", kTrait.getExpOutsideBordersChange()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_EXP_OUTSIDE_BORDERS", kTrait.getExpOutsideBordersChange());
 
 	iValue = kTrait.getWeLoveTheKingChance();
 	if (iValue >= 100)
@@ -1437,10 +1265,7 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 	setYieldChangeHelp(szHelpString, szTempBuffer, L"", gDLL->getText("TXT_KEY_CIVIC_PER_SPECIALIST"), kTrait.getSpecialistExtraYieldArray(), false, false);
 
 	// iHealthPerReligion, YieldPerReligion
-	if (kTrait.getHealthPerReligion() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_HEALTH_PER_RELIGION", kTrait.getHealthPerReligion()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_HEALTH_PER_RELIGION", kTrait.getHealthPerReligion());
 
 	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
 	{
@@ -1532,35 +1357,17 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 	}
 
 	// Trade routes and defense: the building text keys
-	if (kTrait.getCoastalTradeRoutes() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_COASTAL_TRADE_ROUTES", kTrait.getCoastalTradeRoutes()));
-	}
-
-	if (kTrait.getTradeRouteModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_TRADE_ROUTE_MOD", kTrait.getTradeRouteModifier()));
-	}
-
-	if (kTrait.getForeignTradeRouteModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_FOREIGN_TRADE_ROUTE_MOD", kTrait.getForeignTradeRouteModifier()));
-	}
-
-	if (kTrait.getAllCityDefense() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_DEFENSE_MOD_ALL_CITIES", kTrait.getAllCityDefense()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_BUILDING_COASTAL_TRADE_ROUTES", kTrait.getCoastalTradeRoutes());
+	appendTraitValueLine(szHelpString, "TXT_KEY_BUILDING_TRADE_ROUTE_MOD", kTrait.getTradeRouteModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_BUILDING_FOREIGN_TRADE_ROUTE_MOD", kTrait.getForeignTradeRouteModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_BUILDING_DEFENSE_MOD_ALL_CITIES", kTrait.getAllCityDefense());
 
 	if (kTrait.getBombardDefense() != 0)
 	{
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_BOMBARD_DEFENSE_MOD", -kTrait.getBombardDefense()));
 	}
 
-	if (kTrait.getEspionageDefense() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_ESPIONAGE_DEFENSE_MOD", kTrait.getEspionageDefense()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_BUILDING_ESPIONAGE_DEFENSE_MOD", kTrait.getEspionageDefense());
 
 	// The world size of the game, also on the screens before a game, where it may not be set yet
 	WorldSizeTypes eWorldSize = GC.getMapINLINE().getWorldSize();
@@ -1578,20 +1385,10 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_UNIT_HAPPINESS", abs(iValue), ((iValue > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR))));
 	}
 
-	if (kTrait.isNoUnhealthyPopulation())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_NO_POP_UNHEALTHY"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_CIVIC_NO_POP_UNHEALTHY", kTrait.isNoUnhealthyPopulation());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_CIVIC_NO_BUILDING_UNHEALTHY", kTrait.isBuildingOnlyHealthy());
 
-	if (kTrait.isBuildingOnlyHealthy())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_NO_BUILDING_UNHEALTHY"));
-	}
-
-	if (kTrait.getFoodKept() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_STORES_FOOD", kTrait.getFoodKept()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_BUILDING_STORES_FOOD", kTrait.getFoodKept());
 
 	// FreeBonuses, BonusProductionModifiers, CommerceHappinesses, CommerceHealths: the building text keys
 	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
@@ -1666,25 +1463,10 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 	}
 
 	// Unit support and maintenance: the civic and building text keys
-	if (kTrait.getBaseFreeUnits() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_FREE_UNITS", kTrait.getBaseFreeUnits()));
-	}
-
-	if (kTrait.getFreeUnitsPopulationPercent() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FREE_UNITS_POPULATION", kTrait.getFreeUnitsPopulationPercent()));
-	}
-
-	if (kTrait.getBaseFreeMilitaryUnits() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_FREE_MILITARY_UNITS", kTrait.getBaseFreeMilitaryUnits()));
-	}
-
-	if (kTrait.getFreeMilitaryUnitsPopulationPercent() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FREE_MILITARY_UNITS_POPULATION", kTrait.getFreeMilitaryUnitsPopulationPercent()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_CIVIC_FREE_UNITS", kTrait.getBaseFreeUnits());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_FREE_UNITS_POPULATION", kTrait.getFreeUnitsPopulationPercent());
+	appendTraitValueLine(szHelpString, "TXT_KEY_CIVIC_FREE_MILITARY_UNITS", kTrait.getBaseFreeMilitaryUnits());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_FREE_MILITARY_UNITS_POPULATION", kTrait.getFreeMilitaryUnitsPopulationPercent());
 
 	if (kTrait.getGoldPerUnit() != 0)
 	{
@@ -1708,10 +1490,7 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 		}
 	}
 
-	if (kTrait.getMaintenanceModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_MAINT_MOD", kTrait.getMaintenanceModifier()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_BUILDING_MAINT_MOD", kTrait.getMaintenanceModifier());
 
 	// Military: the civic and building text keys. The draft with the modifier of the world size, as the civics
 	if (kTrait.getMaxConscript() != 0)
@@ -1720,45 +1499,16 @@ void CvGameTextMgr::parseTraitCounterpartEffects(CvWStringBuffer& szHelpString, 
 	}
 
 	// The other children of Conscription (added by this mod)
-	if (kTrait.getConscriptPopulationModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_POPULATION", kTrait.getConscriptPopulationModifier()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_CONSCRIPT_POPULATION", kTrait.getConscriptPopulationModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_CONSCRIPT_MIN_POPULATION", kTrait.getConscriptMinCityPopulationChange());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_CONSCRIPT_MIN_CULTURE", kTrait.getConscriptMinCulturePercentChange());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_CONSCRIPT_ANGER", kTrait.getConscriptPopAngerChange());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_CONSCRIPT_ANGER_LENGTH", kTrait.getConscriptAngerLengthPercent());
 
-	if (kTrait.getConscriptMinCityPopulationChange() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_MIN_POPULATION", kTrait.getConscriptMinCityPopulationChange()));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_NO_CONSCRIPT_EXPERIENCE_PENALTY", kTrait.isNoConscriptExperiencePenalty());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_CIVIC_MILITARY_FOOD", kTrait.isMilitaryFoodProduction());
 
-	if (kTrait.getConscriptMinCulturePercentChange() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_MIN_CULTURE", kTrait.getConscriptMinCulturePercentChange()));
-	}
-
-	if (kTrait.getConscriptPopAngerChange() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_ANGER", kTrait.getConscriptPopAngerChange()));
-	}
-
-	if (kTrait.getConscriptAngerLengthPercent() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CONSCRIPT_ANGER_LENGTH", kTrait.getConscriptAngerLengthPercent()));
-	}
-
-	if (kTrait.isNoConscriptExperiencePenalty())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_CONSCRIPT_EXPERIENCE_PENALTY"));
-	}
-
-	if (kTrait.isMilitaryFoodProduction())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_CIVIC_MILITARY_FOOD"));
-	}
-
-	if (kTrait.getHealRateChange() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_BUILDING_HEAL_MOD", kTrait.getHealRateChange()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_BUILDING_HEAL_MOD", kTrait.getHealRateChange());
 
 	for (iI = 0; iI < NUM_DOMAIN_TYPES; iI++)
 	{
@@ -1796,45 +1546,15 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 		}
 	}
 
-	if (kTrait.isRevealWonderProduction())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_REVEAL_WONDER_PRODUCTION"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_REVEAL_WONDER_PRODUCTION", kTrait.isRevealWonderProduction());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_REVEAL_WAR_PLANS", kTrait.isRevealWarPlans());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_REVEAL_HIDDEN_ATTITUDE", kTrait.isRevealHiddenAttitude());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_LONG_COUNT_CALENDAR", kTrait.isLongCountCalendar());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_IMPROVEMENT_UPGRADE_UNWORKED", kTrait.isImprovementUpgradeUnworked());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_UNSETTLE_GREAT_PEOPLE", kTrait.isUnsettleGreatPeople());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_IGNORE_EVENTS", kTrait.isIgnoreEvents());
 
-	if (kTrait.isRevealWarPlans())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_REVEAL_WAR_PLANS"));
-	}
-
-	if (kTrait.isRevealHiddenAttitude())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_REVEAL_HIDDEN_ATTITUDE"));
-	}
-
-	if (kTrait.isLongCountCalendar())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_LONG_COUNT_CALENDAR"));
-	}
-
-	if (kTrait.isImprovementUpgradeUnworked())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_IMPROVEMENT_UPGRADE_UNWORKED"));
-	}
-
-	if (kTrait.isUnsettleGreatPeople())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_UNSETTLE_GREAT_PEOPLE"));
-	}
-
-	if (kTrait.isIgnoreEvents())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_IGNORE_EVENTS"));
-	}
-
-	if (kTrait.getEventChanceChange() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_EVENT_CHANCE_CHANGE", kTrait.getEventChanceChange()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_EVENT_CHANCE_CHANGE", kTrait.getEventChanceChange());
 
 	if (kTrait.isNoFirstEventDelay())
 	{
@@ -1842,25 +1562,11 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 	}
 
 	// Deals
-	if (kTrait.isBuyCities())
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DEAL_BUY_CITIES"));
-	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_DEAL_BUY_CITIES", kTrait.isBuyCities());
 
-	if (kTrait.getDealCityValueModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DEAL_CITY_VALUE_MODIFIER", kTrait.getDealCityValueModifier()));
-	}
-
-	if (kTrait.getDealGoldLimitModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DEAL_GOLD_LIMIT_MODIFIER", kTrait.getDealGoldLimitModifier()));
-	}
-
-	if (kTrait.getDealGoldValueModifier() != 0)
-	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DEAL_GOLD_VALUE_MODIFIER", kTrait.getDealGoldValueModifier()));
-	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_DEAL_CITY_VALUE_MODIFIER", kTrait.getDealCityValueModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_DEAL_GOLD_LIMIT_MODIFIER", kTrait.getDealGoldLimitModifier());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_DEAL_GOLD_VALUE_MODIFIER", kTrait.getDealGoldValueModifier());
 
 	// "Can build without the technology: Research". The processes are loaded when a game is launched: none on the screens
 	// before (GC.getNumProcessInfos() is 0)

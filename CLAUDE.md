@@ -116,7 +116,7 @@ Civ4 本体が MSVC 7.1 ランタイムなので、**新しい MSVC や Windows 
 - 志向の効果のうち `CvPlayer::init()` で 1 回だけ適用されるもの（健康・幸福・商業・偉人率・労働者速度など）は、既存のセーブには反映されない。動作確認は新しいゲームで行う（ゲーム中に得た志向は `CvPlayer::processTrait` が足し引きする）
 - 志向の数値の合計は `CvPlayer::sumTraitValues(&CvTraitInfo::getFoo)`（引数 2 つまで）。ループを書かない
 - 志向の「どれかが持っていれば有効」は `CvPlayer::hasTraitFlag(&CvTraitInfo::isFoo)`（引数 1 つまで）、チーム単位は `CvTeam::hasPlayerTraitFlag`。昇進は `CvUnit::hasPromotionFlag` / `countPromotions` / `sumPromotionValues`。セーブしない昇進の値は `CvUnit::updatePromotionCounts` で読み込み時に数え直す
-- 志向の説明文は、Mod の部分を `CvGameTextMgr::parseTrait〜`（`CvGameTextMgrTrait.cpp`）に分けてある。1 行の追加は `appendTraitLine`、リンクは `getLinkText`
+- 志向の説明文は、Mod の部分を `CvGameTextMgr::parseTrait〜`（`CvGameTextMgrTrait.cpp`）に分けてある。1 行の追加は `appendTraitLine`（値が 0 でなければ出す行は `appendTraitValueLine`、フラグの行は `appendTraitFlagLine`）、リンクは `getLinkText`
 - 志向の説明文は文明選択の画面（ゲーム開始前）からも呼ばれ、そこでは指導者が `NO_LEADER` なので `hasTrait` などを呼ぶと強制終了する。プレイヤーを見るときは `GC.getGameINLINE().isFinalInitialized()` と指導者を先に確かめる
 - 社会制度・建物がすでに持つ「文明全体に効く数値」は、志向にも同じ名前のタグで持たせ、既存の `CvPlayer::change〜()` で適用する。説明文は社会制度のテキストキーを流用する（キーは `[ICON_BULLET]` 始まりで改行を含まないので、コード側で改行と字下げ 2 文字を付ける）
 - 「首都の産出 +X%」系（`CapitalYieldModifiers` など）は計算のたびに現在の首都を参照するので、遷都しても自動で移る

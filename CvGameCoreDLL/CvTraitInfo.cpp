@@ -2914,34 +2914,10 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iRouteMovementModifierInBorders, "iRouteMovementModifierInBorders");
 	pXML->GetChildXmlValByName(&m_iCombatPercent, "iCombatPercent");
 	pXML->GetChildXmlValByName(&m_iHappinessPerReligion, "iHappinessPerReligion");
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CommercePerReligion"))
-	{
-		pXML->SetCommerce(&m_paiCommercePerReligion);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiCommercePerReligion, NUM_COMMERCE_TYPES);
-	}
+	readCommerceChanges(pXML, "CommercePerReligion", &m_paiCommercePerReligion);
 	pXML->GetChildXmlValByName(&m_iDefenseCombatPercent, "iDefenseCombatPercent");
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "WorldWonderCommerceChanges"))
-	{
-		pXML->SetCommerce(&m_paiWorldWonderCommerceChange);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiWorldWonderCommerceChange, NUM_COMMERCE_TYPES);
-	}
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "GlobalWorldWonderCommerceChanges"))
-	{
-		pXML->SetCommerce(&m_paiGlobalWorldWonderCommerceChange);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiGlobalWorldWonderCommerceChange, NUM_COMMERCE_TYPES);
-	}
+	readCommerceChanges(pXML, "WorldWonderCommerceChanges", &m_paiWorldWonderCommerceChange);
+	readCommerceChanges(pXML, "GlobalWorldWonderCommerceChanges", &m_paiGlobalWorldWonderCommerceChange);
 	pXML->GetChildXmlValByName(&m_iEnemyWarWearinessModifier, "iEnemyWarWearinessModifier");
 	readTypeList(pXML, "NoTechCivics", m_aszNoTechCivicTypes);	// civics are loaded later: readPass3()
 	readCivicOptionExtraSlots(pXML);
@@ -2975,85 +2951,14 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 // The part of read() for the yield and commerce arrays, the unit combat arrays, the free promotions and MaintainFeatures (added by this mod)
 void CvTraitInfo::readYieldAndUnitArrays(CvXMLLoadUtility* pXML)
 {
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "ExtraYieldThresholds"))
-	{
-		pXML->SetYields(&m_paiExtraYieldThreshold);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiExtraYieldThreshold, NUM_YIELD_TYPES);
-	}
-
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "TradeYieldModifiers"))
-	{
-		pXML->SetYields(&m_paiTradeYieldModifier);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiTradeYieldModifier, NUM_YIELD_TYPES);
-	}
-
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CommerceChanges"))
-	{
-		pXML->SetCommerce(&m_paiCommerceChange);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiCommerceChange, NUM_COMMERCE_TYPES);
-	}
-
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CommerceModifiers"))
-	{
-		pXML->SetCommerce(&m_paiCommerceModifier);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiCommerceModifier, NUM_COMMERCE_TYPES);
-	}
-
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "YieldModifiers"))
-	{
-		pXML->SetYields(&m_paiYieldModifier);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiYieldModifier, NUM_YIELD_TYPES);
-	}
-
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CapitalYieldModifiers"))
-	{
-		pXML->SetYields(&m_paiCapitalYieldModifier);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiCapitalYieldModifier, NUM_YIELD_TYPES);
-	}
-
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CapitalCommerceModifiers"))
-	{
-		pXML->SetCommerce(&m_paiCapitalCommerceModifier);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiCapitalCommerceModifier, NUM_COMMERCE_TYPES);
-	}
-
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "SpecialistExtraCommerces"))
-	{
-		pXML->SetCommerce(&m_paiSpecialistExtraCommerce);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiSpecialistExtraCommerce, NUM_COMMERCE_TYPES);
-	}
+	readYieldChanges(pXML, "ExtraYieldThresholds", &m_paiExtraYieldThreshold);
+	readYieldChanges(pXML, "TradeYieldModifiers", &m_paiTradeYieldModifier);
+	readCommerceChanges(pXML, "CommerceChanges", &m_paiCommerceChange);
+	readCommerceChanges(pXML, "CommerceModifiers", &m_paiCommerceModifier);
+	readYieldChanges(pXML, "YieldModifiers", &m_paiYieldModifier);
+	readYieldChanges(pXML, "CapitalYieldModifiers", &m_paiCapitalYieldModifier);
+	readCommerceChanges(pXML, "CapitalCommerceModifiers", &m_paiCapitalCommerceModifier);
+	readCommerceChanges(pXML, "SpecialistExtraCommerces", &m_paiSpecialistExtraCommerce);
 
 	pXML->SetVariableListTagPair(&m_paiUnitCombatFreeExperience, "UnitCombatFreeExperiences", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
 	pXML->SetVariableListTagPair(&m_paiUnitCombatProductionModifier, "UnitCombatProductionModifiers", sizeof(GC.getUnitCombatInfo((UnitCombatTypes)0)), GC.getNumUnitCombatInfos());
@@ -3308,47 +3213,10 @@ void CvTraitInfo::readPlotYieldChanges(CvXMLLoadUtility* pXML)
 	readYieldChanges(pXML, "ImprovementYieldChanges", "ImprovementYieldChange", "ImprovementType", "ImprovementYields", m_aszImprovementYieldChangeTypes, m_aaiImprovementYieldChangeValues);
 	// Same format as TerrainYieldChanges. Resolved in readPass3()
 	readYieldChanges(pXML, "BonusYieldChanges", "BonusYieldChange", "BonusType", "Yields", m_aszBonusYieldChangeTypes, m_aaiBonusYieldChangeValues);
-
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "RiverPlotYieldChanges"))
-	{
-		pXML->SetYields(&m_paiRiverPlotYieldChange);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiRiverPlotYieldChange, NUM_YIELD_TYPES);
-	}
-
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "RiverEdgeYieldPercents"))
-	{
-		pXML->SetYields(&m_paiRiverEdgeYieldPercent);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiRiverEdgeYieldPercent, NUM_YIELD_TYPES);
-	}
-
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "LakePlotYieldChanges"))
-	{
-		pXML->SetYields(&m_paiLakePlotYieldChange);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiLakePlotYieldChange, NUM_YIELD_TYPES);
-	}
-
-	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "LakePlotYieldChangesPerEra"))
-	{
-		pXML->SetYields(&m_paiLakePlotYieldChangePerEra);
-		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
-	}
-	else
-	{
-		pXML->InitList(&m_paiLakePlotYieldChangePerEra, NUM_YIELD_TYPES);
-	}
-
+	readYieldChanges(pXML, "RiverPlotYieldChanges", &m_paiRiverPlotYieldChange);
+	readYieldChanges(pXML, "RiverEdgeYieldPercents", &m_paiRiverEdgeYieldPercent);
+	readYieldChanges(pXML, "LakePlotYieldChanges", &m_paiLakePlotYieldChange);
+	readYieldChanges(pXML, "LakePlotYieldChangesPerEra", &m_paiLakePlotYieldChangePerEra);
 	readYieldChanges(pXML, "AngryYieldChanges", &m_paiAngryYieldChange);
 	readCommerceChanges(pXML, "AngryCommerceChanges", &m_paiAngryCommerceChange);
 	readYieldChanges(pXML, "UnhealthyYieldChanges", &m_paiUnhealthyYieldChange);

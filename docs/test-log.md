@@ -173,3 +173,4 @@
 - 2026-11-24: プロジェクトのタグ `PrereqOrTechs`・`PrereqOrTraits`（技術ツリーの表示を含む）、志向のフック `PyOnOtherCityFounded`、共通関数 `chooseTreatyZone`（東西の選択のポップアップ、AI の自動選択、全員へのメッセージ）・`treatyZoneTurn`（毎ターンの収入とメッセージ）・`offerTreatyTerms`（3 択のポップアップと金・技術・建物の各結果、AI のランダム選択）・優先地域の色分けをゲーム内で確認した（検証用志向（条約））
 - 2026-11-24: 志向の `Deals`（`bBuyCities`: 平時に AI の都市を金・技術と同じ取引に載せて買える、`iCityValueModifier`・`iGoldLimitModifier`・`iGoldValueModifier`）と外交画面の都市の値段の目安（ツールチップ）をゲーム内で確認した（検証用志向）
 - 2026-11-24: ソースの分割（`CvTraitInfo.cpp`・`CvGameTextMgrTrait.cpp`・`CvPlayerTraits.cpp`）の後に、起動・文明選択の画面の志向の説明文・新しいゲームの開始とペディアの志向のページをゲーム内で確認（変化なし）
+- 2026-11-24: 重複の整理（`CvTraitInfo.cpp` の配列の読み込みを `readYieldChanges`・`readCommerceChanges` に、志向の説明文の行を `appendTraitValueLine`・`appendTraitFlagLine` に）の後に、起動とペディアの志向の説明文をゲーム内で確認
