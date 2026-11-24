@@ -171,6 +171,16 @@
 - 説明文: `TXT_KEY_CIVIC_FEATURE_HAPPINESS`（社会制度と同じ）、`TXT_KEY_SPECIALIST_PER_SPECIALIST_IN_CITY`、`TXT_KEY_SPECIALIST_NO_ANARCHY_DISORDER`。
 - Python: `CvSpecialistInfo.getFeatureHappinessChange(i)`・`getExtraSpecialistCommerce(i)`・`isNoAnarchyDisorder()`、`CyCity.isNoAnarchyDisorder()`
 
+### `SpecialistInfo/CommerceModifiers`、`FreeSpecialistCounts`
+
+- ファイル: `CIV4SpecialistInfos.xml`
+- 2026-11-24。建物の同名のタグと同じ書式・効果（商業 %、無償の専門家）を、専門家 1 人につきその都市に。
+- `CommerceModifiers` は `CvCity::changeCommerceRateModifier` に足す。都市の商業の内訳に「専門家により」の行（`TXT_KEY_MISC_HELP_YIELD_SPECIALIST_MODIFIER`）。
+- `FreeSpecialistCounts` は `CvCity::changeFreeSpecialistCount` に足す（建物の無償の専門家と同じ）。偉人ではないので、ユニットに戻せず、要人の殺害・誘拐の対象にもならない（`CvCity::getAddedFreeSpecialistCount` が建物と同じく差し引く）。
+- 自分自身は指定できない。後に読み込まれる専門家も指定できるよう `CvSpecialistInfo::readPass3()` で番号に変える。
+- 説明文は建物と同じ（`setCommerceChangeHelp` の %、`TXT_KEY_BUILDING_FREE_SPECIALIST`）。
+- Python: `CvSpecialistInfo.getCommerceModifier(i)`・`getFreeSpecialistCount(i)`
+
 ### `SpecialistInfo/bExclusiveSettle`
 
 - ファイル: `CIV4SpecialistInfos.xml`

@@ -1031,6 +1031,14 @@
 	<ElementType name="ExtraSpecialistCommerces" content="eltOnly">
 		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="iFreeSpecialistCount" content="textOnly" dt:type="int"/>
+	<ElementType name="FreeSpecialistCount" content="eltOnly">
+		<element type="SpecialistType"/>
+		<element type="iFreeSpecialistCount"/>
+	</ElementType>
+	<ElementType name="FreeSpecialistCounts" content="eltOnly">
+		<element type="FreeSpecialistCount" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="bNoAnarchyDisorder" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bExclusiveSettle" content="textOnly" dt:type="boolean"/>
 	<ElementType name="SpecialistInfo" content="eltOnly">
@@ -1058,6 +1066,8 @@
 		<element type="iDomesticGreatGeneralRateModifier" minOccurs="0"/>
 		<element type="FeatureHappinessChanges" minOccurs="0"/>
 		<element type="ExtraSpecialistCommerces" minOccurs="0"/>
+		<element type="CommerceModifiers" minOccurs="0"/>
+		<element type="FreeSpecialistCounts" minOccurs="0"/>
 		<element type="bNoAnarchyDisorder" minOccurs="0"/>
 		<element type="bExclusiveSettle" minOccurs="0"/>
 		<element type="Flavors"/>

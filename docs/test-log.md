@@ -177,3 +177,4 @@
 - 2026-11-24: 専門家の都市への効果（`YieldModifiers`・`iMaintenanceModifier`・`iEspionageDefense`・`bNoUnhappiness`・`iGreatPeopleRateModifier`・`iDefense`・`iBombardDefense`・`FeatureHappinessChanges`・`ExtraSpecialistCommerces`・`bNoAnarchyDisorder`・`bExclusiveSettle`）、志向の `UnsettleSpecialists`、世界ユニットの定住と、産出の内訳の「専門家により」「志向により」の行をゲーム内で確認（検証用学派A・B）
 - 2026-11-24: 専門家の `iDomesticGreatGeneralRateModifier`（都市圏での戦闘の大将軍ポイント）と、志向の `StackPromotions`（組ごとの `StackUnitClasses`・`StackPromotionTypes`・`StackUnitCombats`。同じタイルにいる間だけ昇進、離れると外れる）をゲーム内で確認（検証用学派A・B、検証用随行）
 - 2026-11-24: ユニットの `iStationedAttitudeChange`（ほかの文明の都市にいる間の態度、外交画面の内訳とユニットの説明）と、呪文の共通関数 `reqInWarEnemyCity`・`spellForcePeaceWithCityOwner`（戦争中の都市で生贄にして和平）をゲーム内で確認（検証用スパイ、検証用呪文（和平））
+- 2026-11-24: 専門家の `CommerceModifiers`（都市の商業 %、内訳の「専門家により」）と `FreeSpecialistCounts`（無償の専門家。ユニットに戻せない）をゲーム内で確認（検証用学派A）
