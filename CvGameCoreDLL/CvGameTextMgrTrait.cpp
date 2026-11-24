@@ -1552,6 +1552,19 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_LONG_COUNT_CALENDAR", kTrait.isLongCountCalendar());
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_IMPROVEMENT_UPGRADE_UNWORKED", kTrait.isImprovementUpgradeUnworked());
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_UNSETTLE_GREAT_PEOPLE", kTrait.isUnsettleGreatPeople());
+
+	// UnsettleSpecialists: "Settled great people that can become units again: Confucius (settled)"
+	if (!kTrait.isUnsettleGreatPeople())
+	{
+		bFirst = true;
+		for (iI = 0; iI < (int)kTrait.getUnsettleSpecialists().size(); iI++)
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_UNSETTLE_SPECIALISTS").c_str());
+			szText = getLinkText(GC.getSpecialistInfo((SpecialistTypes)kTrait.getUnsettleSpecialists()[iI]).getDescription());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirst);
+			bFirst = false;
+		}
+	}
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_IGNORE_EVENTS", kTrait.isIgnoreEvents());
 
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_EVENT_CHANCE_CHANGE", kTrait.getEventChanceChange());

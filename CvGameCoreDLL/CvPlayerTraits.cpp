@@ -2236,6 +2236,13 @@ bool CvPlayer::isUnsettleGreatPeople() const
 	return hasTraitFlag(&CvTraitInfo::isUnsettleGreatPeople);
 }
 
+// bUnsettleGreatPeople (all of them) or UnsettleSpecialists of the traits (added by this mod): the great people settled as
+// this specialist can become units again. See CvCity::canUnsettleGreatPerson
+bool CvPlayer::canUnsettleSpecialist(SpecialistTypes eSpecialist) const
+{
+	return (isUnsettleGreatPeople() || hasTraitFlag(&CvTraitInfo::isUnsettleSpecialist, (int)eSpecialist));
+}
+
 // bIgnoreEvents of the traits (added by this mod): see CvDLLButtonPopup::launchEventPopup and ignoreEvent
 bool CvPlayer::isIgnoreEvents() const
 {

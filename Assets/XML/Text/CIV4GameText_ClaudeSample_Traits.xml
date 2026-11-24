@@ -1812,6 +1812,15 @@
 		<Japanese>[ICON_BULLET]&#23450;&#20303;&#12375;&#12383;&#20553;&#20154;&#12434;&#12518;&#12491;&#12483;&#12488;&#12395;&#25147;&#12379;&#12427;&#65288;&#37117;&#24066;&#30011;&#38754;&#12391;&#12463;&#12522;&#12483;&#12463;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_UNSETTLE_SPECIALISTS</Tag>
+		<English>[ICON_BULLET]Settled great people that can become units again (click them on the city screen): </English>
+		<French>[ICON_BULLET]Settled great people that can become units again (click them on the city screen): </French>
+		<German>[ICON_BULLET]Settled great people that can become units again (click them on the city screen): </German>
+		<Italian>[ICON_BULLET]Settled great people that can become units again (click them on the city screen): </Italian>
+		<Spanish>[ICON_BULLET]Settled great people that can become units again (click them on the city screen): </Spanish>
+		<Japanese>[ICON_BULLET]&#12518;&#12491;&#12483;&#12488;&#12395;&#25147;&#12379;&#12427;&#23450;&#20303;&#20553;&#20154;&#65288;&#37117;&#24066;&#30011;&#38754;&#12391;&#12463;&#12522;&#12483;&#12463;&#65289;: </Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_UNSETTLE_GREAT_PERSON_CLICK</Tag>
 		<English>[COLOR_HIGHLIGHT_TEXT]Click to turn into a %s1 unit[COLOR_REVERT]</English>
 		<French>[COLOR_HIGHLIGHT_TEXT]Click to turn into a %s1 unit[COLOR_REVERT]</French>

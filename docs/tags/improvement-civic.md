@@ -148,6 +148,38 @@
 - 都市の幸福・不満・衛生・不衛生の内訳に「専門家により」の行、専門家の説明とペディアに行を出す。
 - `CIV4SpecialistInfos.xml` は BtS からコピーした
 
+### `SpecialistInfo/YieldModifiers`、`iMaintenanceModifier`、`iEspionageDefense`、`bNoUnhappiness`、`iGreatPeopleRateModifier`、`iDefense`、`iBombardDefense`
+
+- ファイル: `CIV4SpecialistInfos.xml`
+- 2026-11-24。定住した偉人を「都市に駐留する人物」として使うためのタグ（諸子百家）。
+- 専門家 1 人につき、その都市に建物の同名のタグと同じ効果（産出 %・維持費 %・諜報への防御 %・不満なし・偉人ポイント %・都市防御 %・砲撃への耐性 %）。
+- 働かせている専門家と無償の専門家（定住した偉人など）の両方。
+- 都市に加わる・抜けるときに `CvCity::processSpecialist` → `processSpecialistCityEffects` が建物と同じ都市の値（`changeYieldRateModifier` など）に足し引きするので、セーブの形は変わらない。
+- `iGreatPeopleRateModifier` はほかの補正と足し合わせる（-100 でも、ほかに +50 があれば -50%）。合計が -100% 未満なら 0。
+- 説明文は建物と同じキー（`TXT_KEY_BUILDING_MAINT_MOD` など）を専門家の説明（`CvGameTextMgr::parseSpecialistCityEffectsHelp`）に出す。
+- Python: `CvSpecialistInfo.getYieldModifier(i)`・`getMaintenanceModifier()`・`getEspionageDefense()`・`isNoUnhappiness()`・`getGreatPeopleRateModifier()`・`getDefense()`・`getBombardDefense()`
+
+### `SpecialistInfo/FeatureHappinessChanges`、`ExtraSpecialistCommerces`、`bNoAnarchyDisorder`
+
+- ファイル: `CIV4SpecialistInfos.xml`
+- 2026-11-24。
+- `FeatureHappinessChanges`: 社会制度と同じ書式（`FeatureType` + `iHappinessChange`）。専門家 1 人につき、都市圏にあるその地形の特徴 1 つごとに幸福（`CvCity::updateFeatureHappiness`。地形の特徴の幸福の内訳に入る）。
+- 地形の特徴は専門家より後に読み込まれるので、`CvSpecialistInfo::readPass3()`（地形の特徴の読み込みの直後）で番号に変える。
+- `ExtraSpecialistCommerces`: `<iCommerce>` を 3 つ。この都市の専門家（働かせている・無償の両方、自分を含む）1 人につき商業（`CvCity::getSpecialistTypeExtraCommerce`。都市の商業の内訳では専門家の行に入る）。
+- `bNoAnarchyDisorder`: 持ち主が無政府状態でも、その都市は止まらない（食料・生産・商業・偉人ポイント。`CvCity::isDisorder`）。占領による停止はそのまま。
+- どれも都市の専門家からその場で数える（セーブする値はない）。
+- 説明文: `TXT_KEY_CIVIC_FEATURE_HAPPINESS`（社会制度と同じ）、`TXT_KEY_SPECIALIST_PER_SPECIALIST_IN_CITY`、`TXT_KEY_SPECIALIST_NO_ANARCHY_DISORDER`。
+- Python: `CvSpecialistInfo.getFeatureHappinessChange(i)`・`getExtraSpecialistCommerce(i)`・`isNoAnarchyDisorder()`、`CyCity.isNoAnarchyDisorder()`
+
+### `SpecialistInfo/bExclusiveSettle`
+
+- ファイル: `CIV4SpecialistInfos.xml`
+- 2026-11-24。
+- このフラグを持つ専門家は、1 つの都市に 1 人までしか定住できない（同じ種類でも別の種類でも、フラグを持つ専門家がいる都市には加われない。`CvUnit::canJoin`）。
+- 0 にすれば重ねて定住できる（XML で切り替える）。
+- 説明文 `TXT_KEY_SPECIALIST_EXCLUSIVE_SETTLE`。
+- Python: `CvSpecialistInfo.isExclusiveSettle()`
+
 ### `UnitInfo/PrereqOrTraits`（`BuildingInfo`・`CivicInfo` にも同名タグ）
 
 - ファイル: `CIV4UnitInfos.xml`、`CIV4BuildingInfos.xml`、`CIV4CivicInfos.xml`

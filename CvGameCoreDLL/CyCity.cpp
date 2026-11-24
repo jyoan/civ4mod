@@ -1998,6 +1998,11 @@ bool CyCity::canUnsettleGreatPerson(int /*SpecialistTypes*/ eSpecialist)
 	return m_pCity ? m_pCity->canUnsettleGreatPerson((SpecialistTypes)eSpecialist) : false;
 }
 
+bool CyCity::isNoAnarchyDisorder()
+{
+	return m_pCity ? m_pCity->isNoAnarchyDisorder() : false;
+}
+
 bool CyCity::unsettleGreatPerson(int /*SpecialistTypes*/ eSpecialist)
 {
 	return m_pCity ? m_pCity->unsettleGreatPerson((SpecialistTypes)eSpecialist) : false;

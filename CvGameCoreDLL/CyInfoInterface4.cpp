@@ -35,6 +35,7 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("isLongCountCalendar", &CvTraitInfo::isLongCountCalendar, "bool ()")
 		.def("isImprovementUpgradeUnworked", &CvTraitInfo::isImprovementUpgradeUnworked, "bool ()")
 		.def("isUnsettleGreatPeople", &CvTraitInfo::isUnsettleGreatPeople, "bool ()")
+		.def("isUnsettleSpecialist", &CvTraitInfo::isUnsettleSpecialist, "bool (int iSpecialist)")
 		.def("isIgnoreEvents", &CvTraitInfo::isIgnoreEvents, "bool ()")
 		.def("getEventChanceChange", &CvTraitInfo::getEventChanceChange, "int ()")
 		.def("isNoFirstEventDelay", &CvTraitInfo::isNoFirstEventDelay, "bool ()")

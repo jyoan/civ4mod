@@ -724,6 +724,42 @@
 		<Japanese>&#26908;&#35388;&#29992;&#23450;&#20303;&#20553;&#20154;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_TEST_SCHOOL_A</Tag>
+		<English>Test School A (Settled)</English>
+		<French>Test School A (Settled)</French>
+		<German>Test School A (Settled)</German>
+		<Italian>Test School A (Settled)</Italian>
+		<Spanish>Test School A (Settled)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#23398;&#27966;A&#65288;&#23450;&#20303;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_TEST_SCHOOL_B</Tag>
+		<English>Test School B (Settled)</English>
+		<French>Test School B (Settled)</French>
+		<German>Test School B (Settled)</German>
+		<Italian>Test School B (Settled)</Italian>
+		<Spanish>Test School B (Settled)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#23398;&#27966;B&#65288;&#23450;&#20303;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_SCHOOL_A</Tag>
+		<English>Test School A</English>
+		<French>Test School A</French>
+		<German>Test School A</German>
+		<Italian>Test School A</Italian>
+		<Spanish>Test School A</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#23398;&#27966;A</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_TEST_SCHOOL_B</Tag>
+		<English>Test School B</English>
+		<French>Test School B</French>
+		<German>Test School B</German>
+		<Italian>Test School B</Italian>
+		<Spanish>Test School B</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#23398;&#27966;B</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_UNIT_TEST_SPY</Tag>
 		<English>Test Spy</English>
 		<French>Test Spy</French>

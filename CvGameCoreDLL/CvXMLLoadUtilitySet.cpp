@@ -597,6 +597,11 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 	LoadGlobalClassInfo(GC.getVoteSourceInfo(), "CIV4VoteSourceInfos", "GameInfo", "Civ4VoteSourceInfos/VoteSourceInfos/VoteSourceInfo", false);
 	LoadGlobalClassInfo(GC.getTechInfo(), "CIV4TechInfos", "Technologies", "Civ4TechInfos/TechInfos/TechInfo", true, &CvDLLUtilityIFaceBase::createTechInfoCacheObject);
 	LoadGlobalClassInfo(GC.getFeatureInfo(), "Civ4FeatureInfos", "Terrain", "Civ4FeatureInfos/FeatureInfos/FeatureInfo", false);
+	for (int iSpecialistPass3 = 0; iSpecialistPass3 < GC.getNumSpecialistInfos(); ++iSpecialistPass3)
+	{
+		// FeatureHappinessChanges of the specialists (added by this mod): the features are loaded after the specialists
+		GC.getSpecialistInfo((SpecialistTypes)iSpecialistPass3).readPass3();
+	}
 	LoadGlobalClassInfo(GC.getReligionInfo(), "CIV4ReligionInfo", "GameInfo", "Civ4ReligionInfo/ReligionInfos/ReligionInfo", false);
 	LoadGlobalClassInfo(GC.getAnimationCategoryInfo(), "CIV4AnimationInfos", "Units", "Civ4AnimationInfos/AnimationCategories/AnimationCategory", false);
 	LoadGlobalClassInfo(GC.getAnimationPathInfo(), "CIV4AnimationPathInfos", "Units", "Civ4AnimationPathInfos/AnimationPaths/AnimationPath", false);

@@ -333,3 +333,15 @@
 - AI は使わない。
 - 説明文 `TXT_KEY_TRAIT_UNSETTLE_GREAT_PEOPLE`。
 - Python: `CvTraitInfo.isUnsettleGreatPeople()`、`CyPlayer.isUnsettleGreatPeople()`、`CyCity.canUnsettleGreatPerson(eSpecialist)`・`unsettleGreatPerson(eSpecialist)`（後者は全員のコンピューターで呼ぶこと）
+
+## `TraitInfo/UnsettleSpecialists`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-24。
+- 書式は `<UnsettleSpecialists><SpecialistType>SPECIALIST_...</SpecialistType></UnsettleSpecialists>`。
+- `bUnsettleGreatPeople` と同じく定住した偉人をユニットに戻せるが、書いた専門家として定住した偉人だけ（`CvPlayer::canUnsettleSpecialist`）。
+- `bUnsettleGreatPeople` はすべての偉人で、どちらかがあれば戻せる。
+- 戻す操作・同期・ユニットの決め方は `bUnsettleGreatPeople` と同じ。
+- 世界ユニット（`iMaxGlobalInstances`）でも戻せる。BtS の上限は「作った数」で数え、減らないので、定住しても作り直せず、戻しても数が増えるだけ。
+- 説明文 `TXT_KEY_TRAIT_UNSETTLE_SPECIALISTS`（「ユニットに戻せる定住偉人（都市画面でクリック）: 検証用学派A（定住）, …」。`bUnsettleGreatPeople` があるときは出さない）。
+- Python: `CvTraitInfo.isUnsettleSpecialist(iSpecialist)`、`CyPlayer.canUnsettleSpecialist(eSpecialist)`

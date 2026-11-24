@@ -484,6 +484,9 @@
 	<ElementType name="bLongCountCalendar" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bImprovementUpgradeUnworked" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bUnsettleGreatPeople" content="textOnly" dt:type="boolean"/>
+	<ElementType name="UnsettleSpecialists" content="eltOnly">
+		<element type="SpecialistType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="bIgnoreEvents" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iEventChanceChange" content="textOnly" dt:type="int"/>
 	<ElementType name="bNoFirstEventDelay" content="textOnly" dt:type="boolean"/>
@@ -1189,6 +1192,7 @@
 		<element type="bLongCountCalendar" minOccurs="0"/>
 		<element type="bImprovementUpgradeUnworked" minOccurs="0"/>
 		<element type="bUnsettleGreatPeople" minOccurs="0"/>
+		<element type="UnsettleSpecialists" minOccurs="0"/>
 		<element type="bIgnoreEvents" minOccurs="0"/>
 		<element type="iEventChanceChange" minOccurs="0"/>
 		<element type="bNoFirstEventDelay" minOccurs="0"/>

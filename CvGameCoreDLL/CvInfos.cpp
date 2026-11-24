@@ -827,7 +827,17 @@ m_piCommerceChange(NULL),
 m_piFlavorValue(NULL),
 m_iExperience(0),
 m_iHappiness(0),
-m_iHealth(0)
+m_iHealth(0),
+m_iMaintenanceModifier(0),
+m_iEspionageDefense(0),
+m_iGreatPeopleRateModifier(0),
+m_iDefense(0),
+m_iBombardDefense(0),
+m_bNoUnhappiness(false),
+m_bNoAnarchyDisorder(false),
+m_bExclusiveSettle(false),
+m_piYieldModifier(NULL),
+m_piExtraSpecialistCommerce(NULL)
 {
 }
 
@@ -843,6 +853,8 @@ CvSpecialistInfo::~CvSpecialistInfo()
 	SAFE_DELETE_ARRAY(m_piYieldChange);
 	SAFE_DELETE_ARRAY(m_piCommerceChange);
 	SAFE_DELETE_ARRAY(m_piFlavorValue);
+	SAFE_DELETE_ARRAY(m_piYieldModifier);
+	SAFE_DELETE_ARRAY(m_piExtraSpecialistCommerce);
 }
 
 int CvSpecialistInfo::getGreatPeopleUnitClass() const
@@ -886,6 +898,93 @@ int CvSpecialistInfo::getHappiness() const
 int CvSpecialistInfo::getHealth() const
 {
 	return m_iHealth;
+}
+
+// City effects of each specialist of this type in the city, assigned or free (added by this mod). The values with the
+// same names as the building tags work like those of a building (CvCity::processSpecialist)
+int CvSpecialistInfo::getYieldModifier(int i) const
+{
+	FAssertMsg(i < NUM_YIELD_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piYieldModifier ? m_piYieldModifier[i] : 0;
+}
+
+int CvSpecialistInfo::getMaintenanceModifier() const
+{
+	return m_iMaintenanceModifier;
+}
+
+int CvSpecialistInfo::getEspionageDefense() const
+{
+	return m_iEspionageDefense;
+}
+
+int CvSpecialistInfo::getGreatPeopleRateModifier() const
+{
+	return m_iGreatPeopleRateModifier;
+}
+
+int CvSpecialistInfo::getDefense() const
+{
+	return m_iDefense;
+}
+
+int CvSpecialistInfo::getBombardDefense() const
+{
+	return m_iBombardDefense;
+}
+
+// FeatureHappinessChanges: happiness for each plot of the city radius with the feature (CvCity::updateFeatureHappiness)
+int CvSpecialistInfo::getFeatureHappinessChange(int i) const
+{
+	FAssertMsg(i < GC.getNumFeatureInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_aiFeatureHappinessChange.empty() ? 0 : m_aiFeatureHappinessChange[i];
+}
+
+// ExtraSpecialistCommerces: commerce for each specialist of the city, assigned or free (CvCity::getSpecialistTypeExtraCommerce)
+int CvSpecialistInfo::getExtraSpecialistCommerce(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piExtraSpecialistCommerce ? m_piExtraSpecialistCommerce[i] : 0;
+}
+
+bool CvSpecialistInfo::isNoUnhappiness() const
+{
+	return m_bNoUnhappiness;
+}
+
+// bNoAnarchyDisorder: the city keeps working during the anarchy of its owner (CvCity::isDisorder)
+bool CvSpecialistInfo::isNoAnarchyDisorder() const
+{
+	return m_bNoAnarchyDisorder;
+}
+
+// bExclusiveSettle: a city can have only one great person settled as a specialist with this flag (CvUnit::canJoin)
+bool CvSpecialistInfo::isExclusiveSettle() const
+{
+	return m_bExclusiveSettle;
+}
+
+bool CvSpecialistInfo::isAnyFeatureHappiness() const
+{
+	return !m_aiFeatureHappinessChange.empty();
+}
+
+bool CvSpecialistInfo::isAnyExtraSpecialistCommerce() const
+{
+	int iI;
+
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		if (getExtraSpecialistCommerce(iI) != 0)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 // Arrays
@@ -971,7 +1070,52 @@ bool CvSpecialistInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iHappiness, "iHappiness");
 	pXML->GetChildXmlValByName(&m_iHealth, "iHealth");
 
+	// City effects (added by this mod)
+	readYieldChanges(pXML, "YieldModifiers", &m_piYieldModifier);
+	pXML->GetChildXmlValByName(&m_iMaintenanceModifier, "iMaintenanceModifier");
+	pXML->GetChildXmlValByName(&m_iEspionageDefense, "iEspionageDefense");
+	pXML->GetChildXmlValByName(&m_bNoUnhappiness, "bNoUnhappiness");
+	pXML->GetChildXmlValByName(&m_iGreatPeopleRateModifier, "iGreatPeopleRateModifier");
+	pXML->GetChildXmlValByName(&m_iDefense, "iDefense");
+	pXML->GetChildXmlValByName(&m_iBombardDefense, "iBombardDefense");
+	readTypeStringValueList(pXML, "FeatureHappinessChanges", "FeatureHappinessChange", "FeatureType", "iHappinessChange", m_aszFeatureHappinessTypes, m_aiFeatureHappinessValues);	// features are loaded later: readPass3()
+	readCommerceChanges(pXML, "ExtraSpecialistCommerces", &m_piExtraSpecialistCommerce);
+	pXML->GetChildXmlValByName(&m_bNoAnarchyDisorder, "bNoAnarchyDisorder");
+	pXML->GetChildXmlValByName(&m_bExclusiveSettle, "bExclusiveSettle");
+
 	pXML->SetVariableListTagPair(&m_piFlavorValue, "Flavors", GC.getFlavorTypes(), GC.getNumFlavorTypes());
+
+	return true;
+}
+
+// FeatureHappinessChanges (added by this mod): the features are loaded after the specialists
+bool CvSpecialistInfo::readPass3()
+{
+	char szMessage[1024];
+	int iFeature;
+	int i;
+
+	m_aiFeatureHappinessChange.clear();
+
+	for (i = 0; i < (int)m_aszFeatureHappinessTypes.size(); i++)
+	{
+		iFeature = GC.getInfoTypeForString(m_aszFeatureHappinessTypes[i].GetCString(), true);
+		if (iFeature < 0 || iFeature >= GC.getNumFeatureInfos())
+		{
+			sprintf(szMessage, "Tag: %s in FeatureHappinessChanges of CIV4SpecialistInfos.xml was incorrect", m_aszFeatureHappinessTypes[i].GetCString());
+			gDLL->MessageBox(szMessage, "XML Error");
+			continue;
+		}
+
+		if (m_aiFeatureHappinessChange.empty())
+		{
+			m_aiFeatureHappinessChange.resize(GC.getNumFeatureInfos(), 0);
+		}
+		m_aiFeatureHappinessChange[iFeature] += m_aiFeatureHappinessValues[i];
+	}
+
+	m_aszFeatureHappinessTypes.clear();
+	m_aiFeatureHappinessValues.clear();
 
 	return true;
 }

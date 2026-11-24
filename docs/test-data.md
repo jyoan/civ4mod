@@ -259,7 +259,7 @@
 - 検証用文明と検証用 AI 文明の文明の志向（2 つ目）。
 - 暦による偉人（`PyOnBeginTurn` の `chooseGreatPeopleByCalendar`）は書いていない（確認済み。ほかの確認の邪魔になるため 2026-11-23 に外した。確かめるときは一時的に `PyOnBeginTurn` に `chooseGreatPeopleByCalendar(pPlayer, eTrait, None, 200, 2012)` を書く。200 年の周期が終わるたびに偉人を 1 人選んで首都に出す）。
 - `bLongCountCalendar` 1（右上の日付が長期暦）。
-- `bUnsettleGreatPeople` 1（都市画面で定住した偉人をクリックするとユニットに戻る）
+- `UnsettleSpecialists` に検証用学派A・B（定住）（都市画面でクリックするとユニットに戻る。検証用定住偉人などほかの偉人は戻せない）。2026-11-24 に `bUnsettleGreatPeople` 1 から替えた（`bUnsettleGreatPeople` を確かめるときは一時的に戻す）
 
 ## `TRAIT_TEST_TREATY`（検証用志向（条約））・`PROJECT_TEST_TREATY`（検証用プロジェクト（条約））
 

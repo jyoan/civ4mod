@@ -924,6 +924,18 @@ bool CvTraitInfo::isUnsettleGreatPeople() const
 	return m_bUnsettleGreatPeople;
 }
 
+// UnsettleSpecialists (added by this mod): like bUnsettleGreatPeople, only for the great people settled as these specialists
+// (CvPlayer::canUnsettleSpecialist)
+bool CvTraitInfo::isUnsettleSpecialist(int iSpecialist) const
+{
+	return (std::find(m_aiUnsettleSpecialists.begin(), m_aiUnsettleSpecialists.end(), iSpecialist) != m_aiUnsettleSpecialists.end());
+}
+
+const std::vector<int>& CvTraitInfo::getUnsettleSpecialists() const
+{
+	return m_aiUnsettleSpecialists;
+}
+
 // bIgnoreEvents (added by this mod): the popup of a random event of the player has one more choice that ignores the event
 // (CvDLLButtonPopup::launchEventPopup, CvPlayer::ignoreEvent). The AI does not use it
 bool CvTraitInfo::isIgnoreEvents() const
@@ -2873,6 +2885,7 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bLongCountCalendar, "bLongCountCalendar");
 	pXML->GetChildXmlValByName(&m_bImprovementUpgradeUnworked, "bImprovementUpgradeUnworked");
 	pXML->GetChildXmlValByName(&m_bUnsettleGreatPeople, "bUnsettleGreatPeople");
+	readTypeList(pXML, "UnsettleSpecialists", m_aiUnsettleSpecialists);	// specialists are loaded before traits
 	pXML->GetChildXmlValByName(&m_bIgnoreEvents, "bIgnoreEvents");
 	pXML->GetChildXmlValByName(&m_iEventChanceChange, "iEventChanceChange");
 	pXML->GetChildXmlValByName(&m_bNoFirstEventDelay, "bNoFirstEventDelay");

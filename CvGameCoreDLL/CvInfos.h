@@ -251,6 +251,21 @@ public:
 	int getHappiness() const;				// Exposed to Python (added by this mod)
 	int getHealth() const;				// Exposed to Python (added by this mod)
 
+	// City effects of each specialist of this type in the city (added by this mod): see CvCity::processSpecialist
+	int getYieldModifier(int i) const;				// Exposed to Python
+	int getMaintenanceModifier() const;				// Exposed to Python
+	int getEspionageDefense() const;				// Exposed to Python
+	int getGreatPeopleRateModifier() const;				// Exposed to Python
+	int getDefense() const;				// Exposed to Python
+	int getBombardDefense() const;				// Exposed to Python
+	int getFeatureHappinessChange(int i) const;				// Exposed to Python
+	int getExtraSpecialistCommerce(int i) const;				// Exposed to Python
+	bool isNoUnhappiness() const;				// Exposed to Python
+	bool isNoAnarchyDisorder() const;				// Exposed to Python
+	bool isExclusiveSettle() const;				// Exposed to Python
+	bool isAnyFeatureHappiness() const;
+	bool isAnyExtraSpecialistCommerce() const;
+
 	bool isVisible() const;				// Exposed to Python
 
 	// Arrays
@@ -264,6 +279,7 @@ public:
 	void setTexture(const TCHAR* szVal);
 
 	bool read(CvXMLLoadUtility* pXML);
+	bool readPass3();		// added by this mod: the features are loaded after the specialists
 
 	//---------------------------------------PROTECTED MEMBER VARIABLES---------------------------------
 
@@ -275,6 +291,20 @@ protected:
 	int m_iExperience;
 	int m_iHappiness;	// added by this mod
 	int m_iHealth;	// added by this mod
+	int m_iMaintenanceModifier;	// added by this mod
+	int m_iEspionageDefense;	// added by this mod
+	int m_iGreatPeopleRateModifier;	// added by this mod
+	int m_iDefense;	// added by this mod
+	int m_iBombardDefense;	// added by this mod
+	bool m_bNoUnhappiness;	// added by this mod
+	bool m_bNoAnarchyDisorder;	// added by this mod
+	bool m_bExclusiveSettle;	// added by this mod
+
+	int* m_piYieldModifier;	// added by this mod
+	int* m_piExtraSpecialistCommerce;	// added by this mod
+	std::vector<int> m_aiFeatureHappinessChange;	// added by this mod, empty when not set (indexed by feature after readPass3)
+	std::vector<CvString> m_aszFeatureHappinessTypes;	// read() keeps the types as strings until readPass3()
+	std::vector<int> m_aiFeatureHappinessValues;
 
 	bool m_bVisible;				// Exposed to Python
 
@@ -4968,6 +4998,8 @@ public:
 	bool isLongCountCalendar() const;				// Exposed to Python
 	bool isImprovementUpgradeUnworked() const;		// Exposed to Python
 	bool isUnsettleGreatPeople() const;				// Exposed to Python
+	bool isUnsettleSpecialist(int iSpecialist) const;				// Exposed to Python (UnsettleSpecialists, added by this mod)
+	const std::vector<int>& getUnsettleSpecialists() const;
 	bool isIgnoreEvents() const;					// Exposed to Python
 	int getEventChanceChange() const;				// Exposed to Python
 	bool isNoFirstEventDelay() const;				// Exposed to Python
@@ -5339,6 +5371,7 @@ protected:
 	bool m_bLongCountCalendar;	// added by this mod
 	bool m_bImprovementUpgradeUnworked;	// added by this mod
 	bool m_bUnsettleGreatPeople;	// added by this mod
+	std::vector<int> m_aiUnsettleSpecialists;	// added by this mod
 	bool m_bIgnoreEvents;	// added by this mod
 	int m_iEventChanceChange;	// added by this mod
 	bool m_bNoFirstEventDelay;	// added by this mod
