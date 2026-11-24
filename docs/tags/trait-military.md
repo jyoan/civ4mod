@@ -287,3 +287,18 @@
 - 徴兵ボタンの説明（`CvDLLWidgetData`）と AI の判断（`CvCityAI` の不満の計算）も同じ値を使う。
 - 説明文 `TXT_KEY_TRAIT_CONSCRIPT_POPULATION`・`_MIN_POPULATION`・`_MIN_CULTURE`・`_ANGER`・`_ANGER_LENGTH`。
 - Python は `CvTraitInfo.getConscriptPopulationModifier()`・`getConscriptMinCityPopulationChange()`・`getConscriptMinCulturePercentChange()`・`getConscriptPopAngerChange()`・`getConscriptAngerLengthPercent()`
+
+## `TraitInfo/StackPromotions`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-24。随行（諸子百家の孫武・墨子）。
+- `<StackPromotion>`（組）を何個でも書ける。各組は次の 3 つ:
+  - `<StackUnitClasses>`（省略不可）: `UnitClassType` を何個でも。どれか 1 つの自分のユニットが同じタイルにいれば有効。
+  - `<StackPromotionTypes>`（省略不可）: `PromotionType` を何個でも。組の昇進をすべて付ける。
+  - `<StackUnitCombats>`（省略可）: `UnitCombatType` を何個でも。付ける対象の兵科。省略すると兵科のあるユニットすべて。
+- 対象のユニットは、同じタイルに組のユニットクラスの自分のユニット（自分自身を除く）がいる間その昇進を持ち、いなくなると失う（`CvPlayer::updateStackPromotions`）。
+- 同じ昇進が複数の組にあるときは、どれか 1 つの組が当てはまれば持つ。
+- ユニットがタイルに出入りするたびに、元のタイルと先のタイルを計算し直す（`CvUnit::setXY`。生成・死亡も含む）。志向を得た・失ったときは全ユニットを計算し直す（`CvPlayer::processTrait`）。
+- 昇進はどう得たかを見ずに外すので、この用途だけの状態の昇進（`UnitCombats` が空）を使う。
+- 説明文は組ごとに 1 行 `TXT_KEY_TRAIT_STACK_PROMOTION`（「検証用学派Bと同じタイルにいる白兵戦ユニット: 検証用随行」。ユニットクラスは `TXT_KEY_OR` でつなぐ。兵科の省略時は `TXT_KEY_TRAIT_STACK_PROMOTION_UNITS`「ユニット」）。
+- Python: `CvTraitInfo.getNumStackPromotionSets()`、`getStackPromotionSetNumUnitClasses(i)`・`getStackPromotionSetUnitClass(i, j)`、`getStackPromotionSetNumPromotions(i)`・`getStackPromotionSetPromotion(i, j)`、`getStackPromotionSetNumUnitCombats(i)`・`getStackPromotionSetUnitCombat(i, j)`

@@ -17930,6 +17930,12 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	{
 		verifyCivicSlots();
 	}
+
+	// StackPromotions (added by this mod): hasTrait already has the new state here
+	if (kTrait.getNumStackPromotionSets() > 0)
+	{
+		updateAllStackPromotions(eTrait, iChange);
+	}
 }
 
 void CvPlayer::showMissedMessages()

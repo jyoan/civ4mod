@@ -760,6 +760,15 @@
 		<Japanese>&#26908;&#35388;&#29992;&#23398;&#27966;B</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_STACK</Tag>
+		<English>Test Companion</English>
+		<French>Test Companion</French>
+		<German>Test Companion</German>
+		<Italian>Test Companion</Italian>
+		<Spanish>Test Companion</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#38543;&#34892;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_UNIT_TEST_SPY</Tag>
 		<English>Test Spy</English>
 		<French>Test Spy</French>

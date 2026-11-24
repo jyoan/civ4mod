@@ -2236,6 +2236,199 @@ bool CvPlayer::isUnsettleGreatPeople() const
 	return hasTraitFlag(&CvTraitInfo::isUnsettleGreatPeople);
 }
 
+// StackPromotions of the traits (added by this mod)
+bool CvPlayer::isAnyStackPromotions() const
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (GC.getTraitInfo((TraitTypes)iI).getNumStackPromotionSets() > 0 && hasTrait((TraitTypes)iI))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+static bool isInTypeList(const std::vector<int>& aiTypes, int iType)
+{
+	return (std::find(aiTypes.begin(), aiTypes.end(), iType) != aiTypes.end());
+}
+
+// The unit gets the promotions of the set: it has a unit combat, one of StackUnitCombats when they are given
+static bool isStackPromotionSetTarget(const StackPromotionSet& kSet, const CvUnit* pUnit)
+{
+	if (pUnit->getUnitCombatType() == NO_UNITCOMBAT)
+	{
+		return false;
+	}
+
+	return (kSet.aiUnitCombats.empty() || isInTypeList(kSet.aiUnitCombats, pUnit->getUnitCombatType()));
+}
+
+// StackPromotions of the traits (added by this mod): our units on the plot have the promotions of a set while another unit
+// of ours of one of its classes is on the plot (StackUnitClasses), when they are its targets (StackUnitCombats), and lose
+// them otherwise. Called when a unit enters or leaves the plot (CvUnit::setXY) and when a trait with StackPromotions is
+// gained or lost. The promotions should be used only for this (state promotions without UnitCombats), because they are
+// removed without checking how the unit got them
+void CvPlayer::updateStackPromotions(CvPlot* pPlot)
+{
+	std::vector<const StackPromotionSet*> apSets;
+	std::vector<int> aiPromotions;
+	std::vector<CvUnit*> apUnits;
+	CLLNode<IDInfo>* pUnitNode;
+	CvUnit* pLoopUnit;
+	bool bHas;
+	int iI;
+	int iJ;
+	int iK;
+	int iP;
+	int iS;
+
+	if (pPlot == NULL || !isAnyStackPromotions())
+	{
+		return;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (hasTrait((TraitTypes)iI))
+		{
+			for (iJ = 0; iJ < GC.getTraitInfo((TraitTypes)iI).getNumStackPromotionSets(); iJ++)
+			{
+				const StackPromotionSet& kSet = GC.getTraitInfo((TraitTypes)iI).getStackPromotionSet(iJ);
+				apSets.push_back(&kSet);
+				for (iK = 0; iK < (int)kSet.aiPromotions.size(); iK++)
+				{
+					if (!isInTypeList(aiPromotions, kSet.aiPromotions[iK]))
+					{
+						aiPromotions.push_back(kSet.aiPromotions[iK]);
+					}
+				}
+			}
+		}
+	}
+
+	pUnitNode = pPlot->headUnitNode();
+	while (pUnitNode != NULL)
+	{
+		pLoopUnit = ::getUnit(pUnitNode->m_data);
+		pUnitNode = pPlot->nextUnitNode(pUnitNode);
+		if (pLoopUnit != NULL && pLoopUnit->getOwnerINLINE() == getID() && !pLoopUnit->isDelayedDeath())
+		{
+			apUnits.push_back(pLoopUnit);
+		}
+	}
+
+	for (iK = 0; iK < (int)apUnits.size(); iK++)
+	{
+		pLoopUnit = apUnits[iK];
+
+		for (iP = 0; iP < (int)aiPromotions.size(); iP++)
+		{
+			// the promotion may be in several sets: it is kept when any of them applies
+			bHas = false;
+			for (iS = 0; iS < (int)apSets.size() && !bHas; iS++)
+			{
+				if (!isInTypeList(apSets[iS]->aiPromotions, aiPromotions[iP]) || !isStackPromotionSetTarget(*apSets[iS], pLoopUnit))
+				{
+					continue;
+				}
+
+				for (iI = 0; iI < (int)apUnits.size(); iI++)
+				{
+					if (iI != iK && isInTypeList(apSets[iS]->aiUnitClasses, apUnits[iI]->getUnitClassType()))
+					{
+						bHas = true;
+						break;
+					}
+				}
+			}
+
+			if (pLoopUnit->isHasPromotion((PromotionTypes)aiPromotions[iP]) != bHas)
+			{
+				pLoopUnit->setHasPromotion((PromotionTypes)aiPromotions[iP], bHas);
+			}
+		}
+	}
+}
+
+// After a trait with StackPromotions is gained or lost (added by this mod). Removes the promotions of the lost trait too
+void CvPlayer::updateAllStackPromotions(TraitTypes eTrait, int iChange)
+{
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvUnit* pLoopUnit;
+	PromotionTypes ePromotion;
+	int iLoop;
+	int iJ;
+	int iK;
+
+	if (iChange < 0)
+	{
+		for (pLoopUnit = firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = nextUnit(&iLoop))
+		{
+			for (iJ = 0; iJ < kTrait.getNumStackPromotionSets(); iJ++)
+			{
+				for (iK = 0; iK < kTrait.getStackPromotionSetNumPromotions(iJ); iK++)
+				{
+					ePromotion = (PromotionTypes)kTrait.getStackPromotionSetPromotion(iJ, iK);
+					if (pLoopUnit->isHasPromotion(ePromotion))
+					{
+						pLoopUnit->setHasPromotion(ePromotion, false);
+					}
+				}
+			}
+		}
+	}
+
+	for (pLoopUnit = firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = nextUnit(&iLoop))
+	{
+		updateStackPromotions(pLoopUnit->plot());
+	}
+}
+
+// iDomesticGreatGeneralRateModifier of the specialists (added by this mod): great general points of the combat on a plot in
+// the radius of our cities, from the specialists of those cities (a Great Wall for one city)
+int CvPlayer::getCityRadiusGreatGeneralRateModifier(const CvPlot* pPlot) const
+{
+	CvCity* pLoopCity;
+	int iModifier = 0;
+	int iCityModifier;
+	int iIndex;
+	int iLoop;
+	int iI;
+
+	if (pPlot == NULL)
+	{
+		return 0;
+	}
+
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		iCityModifier = 0;
+		for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
+		{
+			if (GC.getSpecialistInfo((SpecialistTypes)iI).getDomesticGreatGeneralRateModifier() != 0)
+			{
+				iCityModifier += (pLoopCity->getSpecialistCount((SpecialistTypes)iI) + pLoopCity->getFreeSpecialistCount((SpecialistTypes)iI)) * GC.getSpecialistInfo((SpecialistTypes)iI).getDomesticGreatGeneralRateModifier();
+			}
+		}
+
+		if (iCityModifier != 0)
+		{
+			iIndex = pLoopCity->getCityPlotIndex(pPlot);
+			if (iIndex >= 0 && iIndex < pLoopCity->getNumCityPlots())
+			{
+				iModifier += iCityModifier;
+			}
+		}
+	}
+
+	return iModifier;
+}
+
 // bUnsettleGreatPeople (all of them) or UnsettleSpecialists of the traits (added by this mod): the great people settled as
 // this specialist can become units again. See CvCity::canUnsettleGreatPerson
 bool CvPlayer::canUnsettleSpecialist(SpecialistTypes eSpecialist) const

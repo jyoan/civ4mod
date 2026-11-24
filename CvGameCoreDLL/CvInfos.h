@@ -258,6 +258,7 @@ public:
 	int getGreatPeopleRateModifier() const;				// Exposed to Python
 	int getDefense() const;				// Exposed to Python
 	int getBombardDefense() const;				// Exposed to Python
+	int getDomesticGreatGeneralRateModifier() const;				// Exposed to Python
 	int getFeatureHappinessChange(int i) const;				// Exposed to Python
 	int getExtraSpecialistCommerce(int i) const;				// Exposed to Python
 	bool isNoUnhappiness() const;				// Exposed to Python
@@ -296,6 +297,7 @@ protected:
 	int m_iGreatPeopleRateModifier;	// added by this mod
 	int m_iDefense;	// added by this mod
 	int m_iBombardDefense;	// added by this mod
+	int m_iDomesticGreatGeneralRateModifier;	// added by this mod
 	bool m_bNoUnhappiness;	// added by this mod
 	bool m_bNoAnarchyDisorder;	// added by this mod
 	bool m_bExclusiveSettle;	// added by this mod
@@ -4880,6 +4882,14 @@ struct TraitHurry
 	bool isTarget(UnitTypes eUnit, BuildingTypes eBuilding) const;
 };
 
+// One set of StackPromotions of a trait (added by this mod)
+struct StackPromotionSet
+{
+	std::vector<int> aiUnitClasses;		// a unit of one of these classes on the plot
+	std::vector<int> aiPromotions;		// the promotions the other units get
+	std::vector<int> aiUnitCombats;		// the units that get them; all units with a unit combat when empty
+};
+
 class CvTraitInfo :
 	public CvInfoBase
 {
@@ -5000,6 +5010,14 @@ public:
 	bool isUnsettleGreatPeople() const;				// Exposed to Python
 	bool isUnsettleSpecialist(int iSpecialist) const;				// Exposed to Python (UnsettleSpecialists, added by this mod)
 	const std::vector<int>& getUnsettleSpecialists() const;
+	int getNumStackPromotionSets() const;				// Exposed to Python (StackPromotions, added by this mod)
+	const StackPromotionSet& getStackPromotionSet(int i) const;
+	int getStackPromotionSetNumUnitClasses(int i) const;				// Exposed to Python
+	int getStackPromotionSetUnitClass(int i, int j) const;				// Exposed to Python
+	int getStackPromotionSetNumPromotions(int i) const;				// Exposed to Python
+	int getStackPromotionSetPromotion(int i, int j) const;				// Exposed to Python
+	int getStackPromotionSetNumUnitCombats(int i) const;				// Exposed to Python
+	int getStackPromotionSetUnitCombat(int i, int j) const;				// Exposed to Python
 	bool isIgnoreEvents() const;					// Exposed to Python
 	int getEventChanceChange() const;				// Exposed to Python
 	bool isNoFirstEventDelay() const;				// Exposed to Python
@@ -5372,6 +5390,7 @@ protected:
 	bool m_bImprovementUpgradeUnworked;	// added by this mod
 	bool m_bUnsettleGreatPeople;	// added by this mod
 	std::vector<int> m_aiUnsettleSpecialists;	// added by this mod
+	std::vector<StackPromotionSet> m_aStackPromotionSets;	// added by this mod
 	bool m_bIgnoreEvents;	// added by this mod
 	int m_iEventChanceChange;	// added by this mod
 	bool m_bNoFirstEventDelay;	// added by this mod

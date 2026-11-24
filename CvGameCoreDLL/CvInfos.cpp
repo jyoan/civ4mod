@@ -833,6 +833,7 @@ m_iEspionageDefense(0),
 m_iGreatPeopleRateModifier(0),
 m_iDefense(0),
 m_iBombardDefense(0),
+m_iDomesticGreatGeneralRateModifier(0),
 m_bNoUnhappiness(false),
 m_bNoAnarchyDisorder(false),
 m_bExclusiveSettle(false),
@@ -932,6 +933,12 @@ int CvSpecialistInfo::getDefense() const
 int CvSpecialistInfo::getBombardDefense() const
 {
 	return m_iBombardDefense;
+}
+
+// iDomesticGreatGeneralRateModifier: great general points % of the combat in the city radius (CvPlayer::getCityRadiusGreatGeneralRateModifier)
+int CvSpecialistInfo::getDomesticGreatGeneralRateModifier() const
+{
+	return m_iDomesticGreatGeneralRateModifier;
 }
 
 // FeatureHappinessChanges: happiness for each plot of the city radius with the feature (CvCity::updateFeatureHappiness)
@@ -1078,6 +1085,7 @@ bool CvSpecialistInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iGreatPeopleRateModifier, "iGreatPeopleRateModifier");
 	pXML->GetChildXmlValByName(&m_iDefense, "iDefense");
 	pXML->GetChildXmlValByName(&m_iBombardDefense, "iBombardDefense");
+	pXML->GetChildXmlValByName(&m_iDomesticGreatGeneralRateModifier, "iDomesticGreatGeneralRateModifier");
 	readTypeStringValueList(pXML, "FeatureHappinessChanges", "FeatureHappinessChange", "FeatureType", "iHappinessChange", m_aszFeatureHappinessTypes, m_aiFeatureHappinessValues);	// features are loaded later: readPass3()
 	readCommerceChanges(pXML, "ExtraSpecialistCommerces", &m_piExtraSpecialistCommerce);
 	pXML->GetChildXmlValByName(&m_bNoAnarchyDisorder, "bNoAnarchyDisorder");

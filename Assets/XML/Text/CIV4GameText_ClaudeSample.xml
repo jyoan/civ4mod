@@ -1304,6 +1304,15 @@
 		<Japanese>[ICON_BULLET]1&#12388;&#12398;&#37117;&#24066;&#12395;&#23450;&#20303;&#12391;&#12365;&#12427;&#12398;&#12399;&#12289;&#25490;&#20182;&#12398;&#23450;&#20303;&#20553;&#20154;&#12398;&#12358;&#12385;1&#20154;&#12384;&#12369;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_CITY_GREAT_GENERAL_MOD</Tag>
+		<English>[ICON_BULLET]%D1%% [ICON_GREATPEOPLE] Great General points from combat in the city radius</English>
+		<French>[ICON_BULLET]%D1%% [ICON_GREATPEOPLE] Great General points from combat in the city radius</French>
+		<German>[ICON_BULLET]%D1%% [ICON_GREATPEOPLE] Great General points from combat in the city radius</German>
+		<Italian>[ICON_BULLET]%D1%% [ICON_GREATPEOPLE] Great General points from combat in the city radius</Italian>
+		<Spanish>[ICON_BULLET]%D1%% [ICON_GREATPEOPLE] Great General points from combat in the city radius</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#22287;&#12391;&#12398;&#25126;&#38360;&#12395;&#12424;&#12427;&#22823;&#23558;&#36557;&#12509;&#12452;&#12531;&#12488;%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_COMBAT_PLOT_OTHER_RELIGION_MOD</Tag>
 		<English>[ICON_BULLET]%D1%% vs. Another State Religion</English>
 		<French>[ICON_BULLET]%D1%% vs. Another State Religion</French>

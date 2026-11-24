@@ -936,6 +936,78 @@ const std::vector<int>& CvTraitInfo::getUnsettleSpecialists() const
 	return m_aiUnsettleSpecialists;
 }
 
+// StackPromotions (added by this mod): sets of promotions. The units of the player on the same plot as a unit of one of the
+// classes of a set have its promotions while they stay together (CvPlayer::updateStackPromotions)
+int CvTraitInfo::getNumStackPromotionSets() const
+{
+	return (int)m_aStackPromotionSets.size();
+}
+
+const StackPromotionSet& CvTraitInfo::getStackPromotionSet(int i) const
+{
+	FAssertMsg(i >= 0 && i < getNumStackPromotionSets(), "Index out of bounds");
+	return m_aStackPromotionSets[i];
+}
+
+int CvTraitInfo::getStackPromotionSetNumUnitClasses(int i) const
+{
+	return (int)getStackPromotionSet(i).aiUnitClasses.size();
+}
+
+int CvTraitInfo::getStackPromotionSetUnitClass(int i, int j) const
+{
+	return getStackPromotionSet(i).aiUnitClasses[j];
+}
+
+int CvTraitInfo::getStackPromotionSetNumPromotions(int i) const
+{
+	return (int)getStackPromotionSet(i).aiPromotions.size();
+}
+
+int CvTraitInfo::getStackPromotionSetPromotion(int i, int j) const
+{
+	return getStackPromotionSet(i).aiPromotions[j];
+}
+
+int CvTraitInfo::getStackPromotionSetNumUnitCombats(int i) const
+{
+	return (int)getStackPromotionSet(i).aiUnitCombats.size();
+}
+
+int CvTraitInfo::getStackPromotionSetUnitCombat(int i, int j) const
+{
+	return getStackPromotionSet(i).aiUnitCombats[j];
+}
+
+// StackPromotions: unit classes and promotions are loaded before the traits
+static void readStackPromotions(CvXMLLoadUtility* pXML, std::vector<StackPromotionSet>& aSets)
+{
+	aSets.clear();
+
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "StackPromotions"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "StackPromotion"))
+		{
+			do
+			{
+				StackPromotionSet kSet;
+				readTypeList(pXML, "StackUnitClasses", kSet.aiUnitClasses);
+				readTypeList(pXML, "StackPromotionTypes", kSet.aiPromotions);
+				readTypeList(pXML, "StackUnitCombats", kSet.aiUnitCombats);
+				if (!kSet.aiUnitClasses.empty() && !kSet.aiPromotions.empty())
+				{
+					aSets.push_back(kSet);
+				}
+			}
+			while (gDLL->getXMLIFace()->NextSibling(pXML->GetXML()));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+}
+
 // bIgnoreEvents (added by this mod): the popup of a random event of the player has one more choice that ignores the event
 // (CvDLLButtonPopup::launchEventPopup, CvPlayer::ignoreEvent). The AI does not use it
 bool CvTraitInfo::isIgnoreEvents() const
@@ -2886,6 +2958,7 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bImprovementUpgradeUnworked, "bImprovementUpgradeUnworked");
 	pXML->GetChildXmlValByName(&m_bUnsettleGreatPeople, "bUnsettleGreatPeople");
 	readTypeList(pXML, "UnsettleSpecialists", m_aiUnsettleSpecialists);	// specialists are loaded before traits
+	readStackPromotions(pXML, m_aStackPromotionSets);
 	pXML->GetChildXmlValByName(&m_bIgnoreEvents, "bIgnoreEvents");
 	pXML->GetChildXmlValByName(&m_iEventChanceChange, "iEventChanceChange");
 	pXML->GetChildXmlValByName(&m_bNoFirstEventDelay, "bNoFirstEventDelay");

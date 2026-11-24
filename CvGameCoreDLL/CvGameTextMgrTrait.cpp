@@ -1553,6 +1553,40 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_IMPROVEMENT_UPGRADE_UNWORKED", kTrait.isImprovementUpgradeUnworked());
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_UNSETTLE_GREAT_PEOPLE", kTrait.isUnsettleGreatPeople());
 
+	// StackPromotions: "Melee Units on the same plot as Sun Tzu or Great General: Combat I, Drill I", one line for each set
+	for (iI = 0; iI < kTrait.getNumStackPromotionSets(); iI++)
+	{
+		const StackPromotionSet& kSet = kTrait.getStackPromotionSet(iI);
+		CvWString szClasses;
+		CvWString szCombats;
+		CvWString szPromotions;
+		int iJ;
+
+		for (iJ = 0; iJ < (int)kSet.aiUnitClasses.size(); iJ++)
+		{
+			szClasses += ((iJ > 0) ? CvWString(gDLL->getText("TXT_KEY_OR")) : CvWString(L""));
+			szClasses += GC.getUnitClassInfo((UnitClassTypes)kSet.aiUnitClasses[iJ]).getDescription();
+		}
+
+		for (iJ = 0; iJ < (int)kSet.aiUnitCombats.size(); iJ++)
+		{
+			szCombats += ((iJ > 0) ? L", " : L"");
+			szCombats += GC.getUnitCombatInfo((UnitCombatTypes)kSet.aiUnitCombats[iJ]).getDescription();
+		}
+		if (szCombats.empty())
+		{
+			szCombats = gDLL->getText("TXT_KEY_TRAIT_STACK_PROMOTION_UNITS");
+		}
+
+		for (iJ = 0; iJ < (int)kSet.aiPromotions.size(); iJ++)
+		{
+			szPromotions += ((iJ > 0) ? L", " : L"");
+			szPromotions += getLinkText(GC.getPromotionInfo((PromotionTypes)kSet.aiPromotions[iJ]).getDescription());
+		}
+
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_STACK_PROMOTION", szClasses.GetCString(), szCombats.GetCString(), szPromotions.GetCString()));
+	}
+
 	// UnsettleSpecialists: "Settled great people that can become units again: Confucius (settled)"
 	if (!kTrait.isUnsettleGreatPeople())
 	{
