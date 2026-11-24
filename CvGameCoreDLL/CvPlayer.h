@@ -417,6 +417,10 @@ public:
 	bool isIgnoreEvents() const;					// Exposed to Python
 	int getEventChanceChange() const;				// Exposed to Python
 	bool isNoFirstEventDelay() const;				// Exposed to Python
+	bool isBuyCities() const;						// Exposed to Python
+	int getDealCityValueModifier() const;			// Exposed to Python
+	int getDealGoldLimitModifier() const;			// Exposed to Python
+	int getDealGoldValueModifier() const;			// Exposed to Python
 	void ignoreEvent(int iEventTriggeredId);		// Exposed to Python: bIgnoreEvents of the traits (added by this mod)
 	bool isNoCultureFlip() const;					// Exposed to Python: bNoCultureFlip or bNoRevoltAndNoCultureFlip of the traits
 	bool isNoRevoltAndNoCultureFlip() const;		// Exposed to Python

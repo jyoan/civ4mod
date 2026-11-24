@@ -2501,6 +2501,26 @@ bool CyPlayer::isNoFirstEventDelay()
 	return m_pPlayer ? m_pPlayer->isNoFirstEventDelay() : false;
 }
 
+bool CyPlayer::isBuyCities()
+{
+	return m_pPlayer ? m_pPlayer->isBuyCities() : false;
+}
+
+int CyPlayer::getDealCityValueModifier()
+{
+	return m_pPlayer ? m_pPlayer->getDealCityValueModifier() : 0;
+}
+
+int CyPlayer::getDealGoldLimitModifier()
+{
+	return m_pPlayer ? m_pPlayer->getDealGoldLimitModifier() : 0;
+}
+
+int CyPlayer::getDealGoldValueModifier()
+{
+	return m_pPlayer ? m_pPlayer->getDealGoldValueModifier() : 0;
+}
+
 void CyPlayer::ignoreEvent(int iEventTriggeredId)
 {
 	if (m_pPlayer)

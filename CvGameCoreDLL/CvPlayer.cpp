@@ -9604,6 +9604,28 @@ bool CvPlayer::isNoFirstEventDelay() const
 	return hasTraitFlag(&CvTraitInfo::isNoFirstEventDelay);
 }
 
+// Deals of the traits (added by this mod): the terms of the deals between the AI and the player. See CvPlayerAI::AI_cityTrade,
+// AI_cityTradeVal, AI_maxGoldTrade, AI_maxGoldPerTurnTrade and AI_goldTradeValuePercent
+bool CvPlayer::isBuyCities() const
+{
+	return hasTraitFlag(&CvTraitInfo::isBuyCities);
+}
+
+int CvPlayer::getDealCityValueModifier() const
+{
+	return sumTraitValues(&CvTraitInfo::getDealCityValueModifier);
+}
+
+int CvPlayer::getDealGoldLimitModifier() const
+{
+	return sumTraitValues(&CvTraitInfo::getDealGoldLimitModifier);
+}
+
+int CvPlayer::getDealGoldValueModifier() const
+{
+	return sumTraitValues(&CvTraitInfo::getDealGoldValueModifier);
+}
+
 // bIgnoreEvents of the traits (added by this mod): the player chose to ignore the triggered event. No choice is applied.
 // The trigger counts as fired, as when a choice is applied (a trigger that is not recurring does not come again, a global
 // or team trigger is fired for the others too), without the world news. Called on every computer (ModNetMessage)
@@ -27043,9 +27065,13 @@ void CvPlayer::updateTradeList(PlayerTypes eOtherPlayer, CLinkList<TradeData>& o
 		{
 			if (!CvDeal::isEndWar(pFirstOffer->m_data.m_eItemType) || !::atWar(getTeam(), GET_PLAYER(eOtherPlayer).getTeam()))
 			{
+				// Deals/bBuyCities of the traits of either player (added by this mod): cities go on the table with the other
+				// items that are not annual (gold, techs, ...), not only with other cities
+				bool bBuyCities = (isBuyCities() || GET_PLAYER(eOtherPlayer).isBuyCities());
+
 				for (CLLNode<TradeData>* pNode = ourInventory.head(); pNode != NULL; pNode = ourInventory.next(pNode))
 				{
-					if (pFirstOffer->m_data.m_eItemType == TRADE_CITIES || pNode->m_data.m_eItemType == TRADE_CITIES)
+					if (!bBuyCities && (pFirstOffer->m_data.m_eItemType == TRADE_CITIES || pNode->m_data.m_eItemType == TRADE_CITIES))
 					{
 						pNode->m_data.m_bHidden = true;
 					}

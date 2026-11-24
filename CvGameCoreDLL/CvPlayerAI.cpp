@@ -5867,12 +5867,12 @@ int CvPlayerAI::AI_dealVal(PlayerTypes ePlayer, const CLinkList<TradeData>* pLis
 			}
 			break;
 		case TRADE_GOLD:
-			iValue += (pNode->m_data.m_iData * AI_goldTradeValuePercent()) / 100;
+			iValue += (pNode->m_data.m_iData * AI_goldTradeValuePercent(ePlayer)) / 100;	// ePlayer added by this mod
 			break;
 		case TRADE_GOLD_PER_TURN:
 			if (!bIgnoreAnnual)
 			{
-				iValue += AI_goldPerTurnTradeVal(pNode->m_data.m_iData);
+				iValue += AI_goldPerTurnTradeVal(pNode->m_data.m_iData, ePlayer);	// ePlayer added by this mod
 			}
 			break;
 		case TRADE_MAPS:
@@ -6089,6 +6089,8 @@ bool CvPlayerAI::AI_counterPropose(PlayerTypes ePlayer, const CLinkList<TradeDat
 	iAIDealWeight = GET_PLAYER(ePlayer).AI_dealVal(getID(), pOurList);
 
 	int iGoldValuePercent = AI_goldTradeValuePercent();
+	// the gold that ePlayer gives (Deals/iGoldValueModifier of the traits; added by this mod)
+	int iTheirGoldValuePercent = AI_goldTradeValuePercent(ePlayer);
 
 	pTheirCounter->clear();
 	pOurCounter->clear();
@@ -6175,7 +6177,7 @@ bool CvPlayerAI::AI_counterPropose(PlayerTypes ePlayer, const CLinkList<TradeDat
 			if (pGoldNode)
 			{
 				iGoldData = iGoldWeight * 100;
-				iGoldData /= iGoldValuePercent;
+				iGoldData /= iTheirGoldValuePercent;
 /************************************************************************************************/
 /* UNOFFICIAL_PATCH                       09/17/09                     dilandau & jdog5000      */
 /*                                                                                              */
@@ -6184,7 +6186,7 @@ bool CvPlayerAI::AI_counterPropose(PlayerTypes ePlayer, const CLinkList<TradeDat
 /* original bts code
 				if ((iGoldData * iGoldValuePercent) < iGoldWeight)
 */
-				if ((iGoldData * iGoldValuePercent) < iGoldWeight * 100)
+				if ((iGoldData * iTheirGoldValuePercent) < iGoldWeight * 100)
 /************************************************************************************************/
 /* UNOFFICIAL_PATCH                        END                                                  */
 /************************************************************************************************/
@@ -6194,7 +6196,7 @@ bool CvPlayerAI::AI_counterPropose(PlayerTypes ePlayer, const CLinkList<TradeDat
 				if (GET_PLAYER(ePlayer).AI_maxGoldTrade(getID()) >= iGoldData)
 				{
 					pGoldNode->m_data.m_iData = iGoldData;
-					iHumanDealWeight += (iGoldData * iGoldValuePercent) / 100;
+					iHumanDealWeight += (iGoldData * iTheirGoldValuePercent) / 100;
 					pTheirCounter->insertAtEnd(pGoldNode->m_data);
 					pGoldNode = NULL;
 				}
@@ -6281,9 +6283,9 @@ bool CvPlayerAI::AI_counterPropose(PlayerTypes ePlayer, const CLinkList<TradeDat
 			if (pGoldNode)
 			{
 				iGoldData = iGoldWeight * 100;
-				iGoldData /= iGoldValuePercent;
+				iGoldData /= iTheirGoldValuePercent;
 				
-				if ((iGoldWeight * 100) > (iGoldData * iGoldValuePercent))
+				if ((iGoldWeight * 100) > (iGoldData * iTheirGoldValuePercent))
 				{
 					iGoldData++;
 				}
@@ -6293,7 +6295,7 @@ bool CvPlayerAI::AI_counterPropose(PlayerTypes ePlayer, const CLinkList<TradeDat
 				if (iGoldData > 0)
 				{
 					pGoldNode->m_data.m_iData = iGoldData;
-					iHumanDealWeight += (iGoldData * iGoldValuePercent) / 100;
+					iHumanDealWeight += (iGoldData * iTheirGoldValuePercent) / 100;
 					pTheirCounter->insertAtEnd(pGoldNode->m_data);
 					pGoldNode = NULL;
 				}
@@ -6306,7 +6308,7 @@ bool CvPlayerAI::AI_counterPropose(PlayerTypes ePlayer, const CLinkList<TradeDat
 			{
 				iGoldData = 0;
 
-				while (AI_goldPerTurnTradeVal(iGoldData) < (iAIDealWeight - iHumanDealWeight))
+				while (AI_goldPerTurnTradeVal(iGoldData, ePlayer) < (iAIDealWeight - iHumanDealWeight))
 				{
 					iGoldData++;
 				}
@@ -6316,7 +6318,7 @@ bool CvPlayerAI::AI_counterPropose(PlayerTypes ePlayer, const CLinkList<TradeDat
 				if (iGoldData > 0)
 				{
 					pGoldPerTurnNode->m_data.m_iData = iGoldData;
-					iHumanDealWeight += AI_goldPerTurnTradeVal(pGoldPerTurnNode->m_data.m_iData);
+					iHumanDealWeight += AI_goldPerTurnTradeVal(pGoldPerTurnNode->m_data.m_iData, ePlayer);
 					pTheirCounter->insertAtEnd(pGoldPerTurnNode->m_data);
 					pGoldPerTurnNode = NULL;
 				}
@@ -6630,6 +6632,10 @@ int CvPlayerAI::AI_maxGoldTrade(PlayerTypes ePlayer) const
 		iMaxGold *= GC.getLeaderHeadInfo(getPersonalityType()).getMaxGoldTradePercent();
 		iMaxGold /= 100;
 
+		// Deals/iGoldLimitModifier of the traits of ePlayer (added by this mod)
+		iMaxGold *= std::max(0, 100 + GET_PLAYER(ePlayer).getDealGoldLimitModifier());
+		iMaxGold /= 100;
+
 		iMaxGold -= AI_getGoldTradedTo(ePlayer);
 
         iResearchBuffer = -calculateGoldRate() * 12;
@@ -6664,6 +6670,10 @@ int CvPlayerAI::AI_maxGoldPerTurnTrade(PlayerTypes ePlayer) const
 		iMaxGoldPerTurn *= GC.getLeaderHeadInfo(getPersonalityType()).getMaxGoldPerTurnTradePercent();
 		iMaxGoldPerTurn /= 100;
 
+		// Deals/iGoldLimitModifier of the traits of ePlayer (added by this mod)
+		iMaxGoldPerTurn *= std::max(0, 100 + GET_PLAYER(ePlayer).getDealGoldLimitModifier());
+		iMaxGoldPerTurn /= 100;
+
 		iMaxGoldPerTurn += std::min(0, getGoldPerTurnByPlayer(ePlayer));
 	}
 
@@ -6671,10 +6681,10 @@ int CvPlayerAI::AI_maxGoldPerTurnTrade(PlayerTypes ePlayer) const
 }
 
 
-int CvPlayerAI::AI_goldPerTurnTradeVal(int iGoldPerTurn) const
+int CvPlayerAI::AI_goldPerTurnTradeVal(int iGoldPerTurn, PlayerTypes eGiver) const
 {
 	int iValue = iGoldPerTurn * GC.getDefineINT("PEACE_TREATY_LENGTH");
-	iValue *= AI_goldTradeValuePercent();
+	iValue *= AI_goldTradeValuePercent(eGiver);
 	iValue /= 100;
 	
 	return iValue;
@@ -7244,6 +7254,10 @@ int CvPlayerAI::AI_cityTradeVal(CvCity* pCity) const
 		iValue /= 2;
 	}
 
+	// Deals/iCityValueModifier of our traits (added by this mod): we receive the city, so this is its price for us
+	iValue *= std::max(0, 100 + getDealCityValueModifier());
+	iValue /= 100;
+
 	iValue -= (iValue % GC.getDefineINT("DIPLOMACY_VALUE_REMAINDER"));
 
 	if (isHuman())
@@ -7301,6 +7315,13 @@ DenialTypes CvPlayerAI::AI_cityTrade(CvCity* pCity, PlayerTypes ePlayer) const
 
 	if (GET_PLAYER(ePlayer).getTeam() != getTeam())
 	{
+		// Deals/bBuyCities of the traits of ePlayer (added by this mod): we sell cities in peace, too. canTradeItem still
+		// keeps the capital
+		if (GET_PLAYER(ePlayer).isBuyCities())
+		{
+			return NO_DENIAL;
+		}
+
 		return DENIAL_NEVER;
 	}
 
@@ -12453,8 +12474,8 @@ void CvPlayerAI::AI_doDiplo()
 													if (iTheirValue > iOurValue)
 													{
 														iGoldWeight = iTheirValue - iOurValue;
-														iGoldData = (iGoldWeight * 100) / iGoldValuePercent;
-														if (iGoldWeight * 100 > iGoldData * iGoldValuePercent)
+														iGoldData = (iGoldWeight * 100) / AI_goldTradeValuePercent((PlayerTypes)iI);
+														if (iGoldWeight * 100 > iGoldData * AI_goldTradeValuePercent((PlayerTypes)iI))
 														{
 															iGoldData++;															
 														}
@@ -12468,7 +12489,7 @@ void CvPlayerAI::AI_doDiplo()
 															if (GET_PLAYER((PlayerTypes)iI).canTradeItem(getID(), item, true))
 															{
 																iReceiveGold = iGold;
-																iOurValue += (iGold * iGoldValuePercent) / 100;
+																iOurValue += (iGold * AI_goldTradeValuePercent((PlayerTypes)iI)) / 100;
 															}
 														}
 													}
@@ -12824,7 +12845,7 @@ void CvPlayerAI::AI_doDiplo()
 
 												if (iTheirValue > iOurValue)
 												{
-													iGold = std::min(((iTheirValue - iOurValue) * 100) / iGoldValuePercent, GET_PLAYER((PlayerTypes)iI).AI_maxGoldTrade(getID()));
+													iGold = std::min(((iTheirValue - iOurValue) * 100) / AI_goldTradeValuePercent((PlayerTypes)iI), GET_PLAYER((PlayerTypes)iI).AI_maxGoldTrade(getID()));
 
 													if (iGold > 0)
 													{
@@ -12833,7 +12854,7 @@ void CvPlayerAI::AI_doDiplo()
 														if (GET_PLAYER((PlayerTypes)iI).canTradeItem(getID(), item, true))
 														{
 															iReceiveGold = iGold;
-															iOurValue += (iGold * iGoldValuePercent) / 100;
+															iOurValue += (iGold * AI_goldTradeValuePercent((PlayerTypes)iI)) / 100;
 														}
 													}
 												}
@@ -15234,15 +15255,21 @@ int CvPlayerAI::AI_goldToUpgradeAllUnits(int iExpThreshold) const
 	return iTotalGold;
 }
 
-int CvPlayerAI::AI_goldTradeValuePercent() const
+// eGiver (added by this mod): the player who gives the gold. Deals/iGoldValueModifier of its traits raises the value
+int CvPlayerAI::AI_goldTradeValuePercent(PlayerTypes eGiver) const
 {
 	int iValue = 2;
 	if (AI_isFinancialTrouble())
 	{
 		iValue += 1;
 	}
-	return 100 * iValue;
-	
+	iValue *= 100;
+	if (eGiver != NO_PLAYER && eGiver != getID())
+	{
+		iValue *= std::max(0, 100 + GET_PLAYER(eGiver).getDealGoldValueModifier());
+		iValue /= 100;
+	}
+	return std::max(1, iValue);
 }
 
 int CvPlayerAI::AI_averageYieldMultiplier(YieldTypes eYield) const

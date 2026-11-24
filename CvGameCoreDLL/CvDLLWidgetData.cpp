@@ -3605,6 +3605,21 @@ void CvDLLWidgetData::parseTradeItem(CvWidgetDataStruct &widgetDataStruct, CvWSt
 		case TRADE_CITIES:
 			szBuffer.assign(gDLL->getText("TXT_KEY_TRADE_CITIES"));
 			eWhoDenies = (widgetDataStruct.m_bOption ? eWhoFrom : eWhoTo);
+			// The price in gold of a city of an AI (added by this mod): as in CvPlayerAI::AI_considerOffer, the receiver puts the
+			// value on the city (AI_cityTradeVal, with Deals/iCityValueModifier) and the AI on the gold of the receiver
+			// (AI_goldTradeValuePercent, with Deals/iGoldValueModifier). At war, the value of ending the war is added to the deal
+			if (!GET_PLAYER(eWhoFrom).isHuman() && GET_PLAYER(eWhoFrom).getTeam() != GET_PLAYER(eWhoTo).getTeam())
+			{
+				CvCity* pTradeCity = GET_PLAYER(eWhoFrom).getCity(widgetDataStruct.m_iData2);
+				if (pTradeCity != NULL)
+				{
+					int iCityValue = GET_PLAYER(eWhoTo).AI_cityTradeVal(pTradeCity);
+					int iGoldPercent = GET_PLAYER(eWhoFrom).AI_goldTradeValuePercent(eWhoTo);
+					int iPrice = (iCityValue * 100 + iGoldPercent - 1) / iGoldPercent;
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_TRADE_CITY_PRICE", iPrice, iCityValue));
+				}
+			}
 			break;
 		case TRADE_PEACE:
 			szBuffer.append(gDLL->getText("TXT_KEY_TRADE_MAKE_PEACE", GET_TEAM(GET_PLAYER(eWhoFrom).getTeam()).getName().GetCString(), GET_TEAM((TeamTypes)widgetDataStruct.m_iData2).getName().GetCString()));

@@ -4971,6 +4971,10 @@ public:
 	bool isIgnoreEvents() const;					// Exposed to Python
 	int getEventChanceChange() const;				// Exposed to Python
 	bool isNoFirstEventDelay() const;				// Exposed to Python
+	bool isBuyCities() const;						// Exposed to Python
+	int getDealCityValueModifier() const;			// Exposed to Python
+	int getDealGoldLimitModifier() const;			// Exposed to Python
+	int getDealGoldValueModifier() const;			// Exposed to Python
 	bool isNoCultureFlip() const;					// Exposed to Python
 	bool isNoRevoltAndNoCultureFlip() const;		// Exposed to Python
 	bool isInstantCultureFlip() const;				// Exposed to Python
@@ -5338,6 +5342,10 @@ protected:
 	bool m_bIgnoreEvents;	// added by this mod
 	int m_iEventChanceChange;	// added by this mod
 	bool m_bNoFirstEventDelay;	// added by this mod
+	bool m_bBuyCities;	// added by this mod
+	int m_iDealCityValueModifier;	// added by this mod
+	int m_iDealGoldLimitModifier;	// added by this mod
+	int m_iDealGoldValueModifier;	// added by this mod
 	bool m_bNoCultureFlip;	// added by this mod
 	bool m_bNoRevoltAndNoCultureFlip;	// added by this mod
 	bool m_bInstantCultureFlip;	// added by this mod
