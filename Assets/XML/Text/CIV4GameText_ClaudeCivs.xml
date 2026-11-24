@@ -1901,4 +1901,193 @@
 		<Spanish>The Treaty of Tordesillas rested on the papal bulls that granted the new lands to Portugal and Castile. This city was founded in the zone of the treaty against its terms, and the Pope has condemned it. It cannot be built or removed, and stays when the city is captured.</Spanish>
 		<Japanese>&#12488;&#12523;&#12487;&#12471;&#12522;&#12515;&#12473;&#26465;&#32004;&#12399;&#12289;&#26032;&#12383;&#12394;&#22303;&#22320;&#12434;&#12509;&#12523;&#12488;&#12460;&#12523;&#12392;&#12459;&#12473;&#12486;&#12451;&#12540;&#12522;&#12515;&#12395;&#19982;&#12360;&#12383;&#25945;&#30343;&#12398;&#21189;&#26360;&#12434;&#19979;&#25975;&#12365;&#12395;&#12375;&#12390;&#12356;&#12383;&#12290;&#26465;&#32004;&#12398;&#20778;&#20808;&#22320;&#22495;&#12395;&#26465;&#20214;&#12434;&#25298;&#12435;&#12391;&#24314;&#12390;&#12425;&#12428;&#12383;&#12371;&#12398;&#37117;&#24066;&#12399;&#12289;&#25945;&#30343;&#12363;&#12425;&#38750;&#38627;&#12373;&#12428;&#12390;&#12356;&#12427;&#12290;&#24314;&#35373;&#12539;&#25764;&#21435;&#12399;&#12391;&#12365;&#12378;&#12289;&#37117;&#24066;&#12364;&#21344;&#38936;&#12373;&#12428;&#12390;&#12418;&#27531;&#12427;&#12290;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HUNDRED_SCHOOLS</Tag>
+		<English>Hundred Schools</English>
+		<French>Hundred Schools</French>
+		<German>Hundred Schools</German>
+		<Italian>Hundred Schools</Italian>
+		<Spanish>Hundred Schools</Spanish>
+		<Japanese>&#35576;&#23376;&#30334;&#23478;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HUNDRED_SCHOOLS_SHORT</Tag>
+		<English>Hundred</English>
+		<French>Hundred</French>
+		<German>Hundred</German>
+		<Italian>Hundred</Italian>
+		<Spanish>Hundred</Spanish>
+		<Japanese>&#30334;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HUNDRED_SCHOOLS_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Can build the thinkers of the Hundred Schools (Confucius, Han Feizi, Sun Wu, Mozi, Laozi, Zou Yan, Zhang Yi; one of each in the world). Settled in a city, each gives the effect of its school (one per city)</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Can build the thinkers of the Hundred Schools (Confucius, Han Feizi, Sun Wu, Mozi, Laozi, Zou Yan, Zhang Yi; one of each in the world). Settled in a city, each gives the effect of its school (one per city)</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Can build the thinkers of the Hundred Schools (Confucius, Han Feizi, Sun Wu, Mozi, Laozi, Zou Yan, Zhang Yi; one of each in the world). Settled in a city, each gives the effect of its school (one per city)</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Can build the thinkers of the Hundred Schools (Confucius, Han Feizi, Sun Wu, Mozi, Laozi, Zou Yan, Zhang Yi; one of each in the world). Settled in a city, each gives the effect of its school (one per city)</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Can build the thinkers of the Hundred Schools (Confucius, Han Feizi, Sun Wu, Mozi, Laozi, Zou Yan, Zhang Yi; one of each in the world). Settled in a city, each gives the effect of its school (one per city)</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#35576;&#23376;&#30334;&#23478;&#12398;&#20154;&#29289;&#65288;&#23380;&#23376;&#12539;&#38867;&#38750;&#23376;&#12539;&#23403;&#27494;&#12539;&#22696;&#23376;&#12539;&#32769;&#23376;&#12539;&#37138;&#34893;&#12539;&#24373;&#20736;&#12290;&#19990;&#30028;&#12395;1&#20154;&#12378;&#12388;&#65289;&#12434;&#29983;&#29987;&#12391;&#12365;&#12427;&#12290;&#37117;&#24066;&#12395;&#23450;&#20303;&#12377;&#12427;&#12392;&#23398;&#27966;&#12398;&#21177;&#26524;&#12434;&#37117;&#24066;&#12395;&#19982;&#12360;&#12427;&#65288;1&#12388;&#12398;&#37117;&#24066;&#12395;1&#20154;&#12414;&#12391;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_HUNDRED_SCHOOLS_PEDIA</Tag>
+		<English>A thinker of the Hundred Schools of Thought of the Spring and Autumn and Warring States periods.</English>
+		<French>A thinker of the Hundred Schools of Thought of the Spring and Autumn and Warring States periods.</French>
+		<German>A thinker of the Hundred Schools of Thought of the Spring and Autumn and Warring States periods.</German>
+		<Italian>A thinker of the Hundred Schools of Thought of the Spring and Autumn and Warring States periods.</Italian>
+		<Spanish>A thinker of the Hundred Schools of Thought of the Spring and Autumn and Warring States periods.</Spanish>
+		<Japanese>&#26149;&#31179;&#25126;&#22269;&#26178;&#20195;&#12398;&#35576;&#23376;&#30334;&#23478;&#12398;&#24605;&#24819;&#23478;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_CONFUCIUS</Tag>
+		<English>Confucius</English>
+		<French>Confucius</French>
+		<German>Confucius</German>
+		<Italian>Confucius</Italian>
+		<Spanish>Confucius</Spanish>
+		<Japanese>&#23380;&#23376;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_HAN_FEIZI</Tag>
+		<English>Han Feizi</English>
+		<French>Han Feizi</French>
+		<German>Han Feizi</German>
+		<Italian>Han Feizi</Italian>
+		<Spanish>Han Feizi</Spanish>
+		<Japanese>&#38867;&#38750;&#23376;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_SUN_WU</Tag>
+		<English>Sun Wu</English>
+		<French>Sun Wu</French>
+		<German>Sun Wu</German>
+		<Italian>Sun Wu</Italian>
+		<Spanish>Sun Wu</Spanish>
+		<Japanese>&#23403;&#27494;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_MOZI</Tag>
+		<English>Mozi</English>
+		<French>Mozi</French>
+		<German>Mozi</German>
+		<Italian>Mozi</Italian>
+		<Spanish>Mozi</Spanish>
+		<Japanese>&#22696;&#23376;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_LAOZI</Tag>
+		<English>Laozi</English>
+		<French>Laozi</French>
+		<German>Laozi</German>
+		<Italian>Laozi</Italian>
+		<Spanish>Laozi</Spanish>
+		<Japanese>&#32769;&#23376;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_ZOU_YAN</Tag>
+		<English>Zou Yan</English>
+		<French>Zou Yan</French>
+		<German>Zou Yan</German>
+		<Italian>Zou Yan</Italian>
+		<Spanish>Zou Yan</Spanish>
+		<Japanese>&#37138;&#34893;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_ZHANG_YI</Tag>
+		<English>Zhang Yi</English>
+		<French>Zhang Yi</French>
+		<German>Zhang Yi</German>
+		<Italian>Zhang Yi</Italian>
+		<Spanish>Zhang Yi</Spanish>
+		<Japanese>&#24373;&#20736;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_CONFUCIUS</Tag>
+		<English>Confucius (Confucianism)</English>
+		<French>Confucius (Confucianism)</French>
+		<German>Confucius (Confucianism)</German>
+		<Italian>Confucius (Confucianism)</Italian>
+		<Spanish>Confucius (Confucianism)</Spanish>
+		<Japanese>&#23380;&#23376;&#65288;&#20754;&#23478;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_HAN_FEIZI</Tag>
+		<English>Han Feizi (Legalism)</English>
+		<French>Han Feizi (Legalism)</French>
+		<German>Han Feizi (Legalism)</German>
+		<Italian>Han Feizi (Legalism)</Italian>
+		<Spanish>Han Feizi (Legalism)</Spanish>
+		<Japanese>&#38867;&#38750;&#23376;&#65288;&#27861;&#23478;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_SUN_WU</Tag>
+		<English>Sun Wu (Military)</English>
+		<French>Sun Wu (Military)</French>
+		<German>Sun Wu (Military)</German>
+		<Italian>Sun Wu (Military)</Italian>
+		<Spanish>Sun Wu (Military)</Spanish>
+		<Japanese>&#23403;&#27494;&#65288;&#20853;&#23478;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_MOZI</Tag>
+		<English>Mozi (Mohism)</English>
+		<French>Mozi (Mohism)</French>
+		<German>Mozi (Mohism)</German>
+		<Italian>Mozi (Mohism)</Italian>
+		<Spanish>Mozi (Mohism)</Spanish>
+		<Japanese>&#22696;&#23376;&#65288;&#22696;&#23478;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_LAOZI</Tag>
+		<English>Laozi (Taoism)</English>
+		<French>Laozi (Taoism)</French>
+		<German>Laozi (Taoism)</German>
+		<Italian>Laozi (Taoism)</Italian>
+		<Spanish>Laozi (Taoism)</Spanish>
+		<Japanese>&#32769;&#23376;&#65288;&#36947;&#23478;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPECIALIST_ZOU_YAN</Tag>
+		<English>Zou Yan (Yin and Yang)</English>
+		<French>Zou Yan (Yin and Yang)</French>
+		<German>Zou Yan (Yin and Yang)</German>
+		<Italian>Zou Yan (Yin and Yang)</Italian>
+		<Spanish>Zou Yan (Yin and Yang)</Spanish>
+		<Japanese>&#37138;&#34893;&#65288;&#38512;&#38525;&#23478;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_ART_OF_WAR</Tag>
+		<English>The Art of War</English>
+		<French>The Art of War</French>
+		<German>The Art of War</German>
+		<Italian>The Art of War</Italian>
+		<Spanish>The Art of War</Spanish>
+		<Japanese>&#23403;&#23376;&#12398;&#20853;&#27861;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_MOHIST_DEFENSE</Tag>
+		<English>Mohist Defense</English>
+		<French>Mohist Defense</French>
+		<German>Mohist Defense</German>
+		<Italian>Mohist Defense</Italian>
+		<Spanish>Mohist Defense</Spanish>
+		<Japanese>&#22696;&#23432;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_LIANHENG</Tag>
+		<English>Lianheng</English>
+		<French>Lianheng</French>
+		<German>Lianheng</German>
+		<Italian>Lianheng</Italian>
+		<Spanish>Lianheng</Spanish>
+		<Japanese>&#36899;&#34913;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_LIANHENG_HELP</Tag>
+		<English>[ICON_BULLET]In a city of a civilization at war with us: peace with it, Zhang Yi is sacrificed</English>
+		<French>[ICON_BULLET]In a city of a civilization at war with us: peace with it, Zhang Yi is sacrificed</French>
+		<German>[ICON_BULLET]In a city of a civilization at war with us: peace with it, Zhang Yi is sacrificed</German>
+		<Italian>[ICON_BULLET]In a city of a civilization at war with us: peace with it, Zhang Yi is sacrificed</Italian>
+		<Spanish>[ICON_BULLET]In a city of a civilization at war with us: peace with it, Zhang Yi is sacrificed</Spanish>
+		<Japanese>[ICON_BULLET]&#25126;&#20105;&#20013;&#12398;&#25991;&#26126;&#12398;&#37117;&#24066;&#12391;&#20351;&#12358;: &#12381;&#12398;&#25991;&#26126;&#12392;&#21644;&#24179;&#12375;&#12289;&#24373;&#20736;&#12399;&#28040;&#12360;&#12427;</Japanese>
+	</TEXT>
 </Civ4GameText>

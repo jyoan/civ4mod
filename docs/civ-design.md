@@ -236,6 +236,7 @@ BtS の効果はそのままにして足す。
 | 文明 | 追加した要素 | 内容 |
 |---|---|---|
 | `CIVILIZATION_JAPAN`（日本） | 文明の `Traits` に `TRAIT_BUSHIDO` | Civ5 の文明能力「武士道」。指導者（徳川家康）の志向は元のまま |
+| `CIVILIZATION_CHINA`（中国） | 文明の `Traits` に `TRAIT_HUNDRED_SCHOOLS` | 諸子百家（2026-11-24）。指導者の志向は元のまま |
 
 ## 志向と昇進
 
@@ -243,6 +244,17 @@ BtS の効果はそのままにして足す。
 |---|---|
 | `TRAIT_BUSHIDO`（武士道志向、短縮名「武」） | `FreePromotionSets` で、航空以外の全戦闘ユニット（偵察・弓兵・騎乗・白兵戦・攻城・銃・装甲・ヘリコプター・海洋）に `PROMOTION_BUSHIDO` を配る |
 | `PROMOTION_BUSHIDO`（武士道） | `bNoDamagePenalty` 1。`UnitCombats` は空でレベルアップでは選べない。アイコンはコマンドーの流用 |
+| `TRAIT_HUNDRED_SCHOOLS`（諸子百家志向、短縮名「百」） | 7 人の世界ユニット（生産 60、`PrereqOrTraits` でこの志向だけ）を作れる。張儀以外の 6 人は専用の専門家として定住し（`bExclusiveSettle` で 1 都市 1 人）、`UnsettleSpecialists` でユニットに戻せる。`StackPromotions` で孫武と同じタイルに孫子の兵法、墨子と同じタイルに墨守 |
+| `UNIT_CONFUCIUS`・`SPECIALIST_CONFUCIUS`（孔子（儒家）） | 法律。幸福 +2、この都市の専門家 1 人につき金 +1・研究 +1（`ExtraSpecialistCommerces`） |
+| `UNIT_HAN_FEIZI`・`SPECIALIST_HAN_FEIZI`（韓非子（法家）） | 君主政治。生産 +25%、維持費 -50%、諜報への防御 +50%、不満なし、偉人ポイント -100% |
+| `UNIT_SUN_WU`・`SPECIALIST_SUN_WU`（孫武（兵家）） | 鉄器。新しいユニットに経験値 +4、大将軍の偉人ポイント +3、都市圏での戦闘の大将軍ポイント +100% |
+| `UNIT_MOZI`・`SPECIALIST_MOZI`（墨子（墨家）） | 数学。都市防御 +50%、砲撃への耐性 50% |
+| `UNIT_LAOZI`・`SPECIALIST_LAOZI`（老子（道家）） | 哲学。食料 +20%、都市圏の森 1 つにつき幸福 +1、無政府状態でも止まらない |
+| `UNIT_ZOU_YAN`・`SPECIALIST_ZOU_YAN`（鄒衍（陰陽家）） | 天文学。天文暦法: 研究 +25%（`CommerceModifiers`）、無償の科学者 1 人（`FreeSpecialistCounts`。偉人ではない） |
+| `UNIT_ZHANG_YI`（張儀（縦横家）） | 筆記。スパイの複製（見えない、諜報任務）。`bInvestigate`（都市の様子）、`iStationedAttitudeChange` 3。定住しない |
+| `PROMOTION_ART_OF_WAR`（孫子の兵法） | 戦闘力 +10%、撤退率 +20%。状態の昇進 |
+| `PROMOTION_MOHIST_DEFENSE`（墨守） | 都市防御 +25%。状態の昇進 |
+| `SPELL_LIANHENG`（連衡） | 張儀だけ。戦争中の文明の都市で、その文明と和平し、張儀は消える |
 
 ## 確認の記録
 

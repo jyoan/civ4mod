@@ -221,5 +221,16 @@
 			<Button>Art/Interface/Buttons/Process/ProcessResearch.dds</Button>
 		</SpellInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
+		<SpellInfo>
+			<Type>SPELL_LIANHENG</Type>
+			<Description>TXT_KEY_SPELL_LIANHENG</Description>
+			<Civilopedia>TXT_KEY_UNIT_HUNDRED_SCHOOLS_PEDIA</Civilopedia>
+			<Help>TXT_KEY_SPELL_LIANHENG_HELP</Help>
+			<UnitPrereq>UNIT_ZHANG_YI</UnitPrereq>
+			<PyResult>spellForcePeaceWithCityOwner(pCaster)</PyResult>
+			<PyRequirement>reqInWarEnemyCity(pCaster)</PyRequirement>
+			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
+			<Button>Art/Interface/Buttons/Process/ProcessResearch.dds</Button>
+		</SpellInfo>
 	</SpellInfos>
 </Civ4SpellInfos>
