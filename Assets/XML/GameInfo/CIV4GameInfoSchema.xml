@@ -1055,6 +1055,7 @@
 		<element type="iGreatPeopleRateModifier" minOccurs="0"/>
 		<element type="iDefense" minOccurs="0"/>
 		<element type="iBombardDefense" minOccurs="0"/>
+		<element type="iDomesticGreatGeneralRateModifier" minOccurs="0"/>
 		<element type="FeatureHappinessChanges" minOccurs="0"/>
 		<element type="ExtraSpecialistCommerces" minOccurs="0"/>
 		<element type="bNoAnarchyDisorder" minOccurs="0"/>

@@ -1310,6 +1310,27 @@
 				<SpecialistType>SPECIALIST_TEST_SCHOOL_A</SpecialistType>
 				<SpecialistType>SPECIALIST_TEST_SCHOOL_B</SpecialistType>
 			</UnsettleSpecialists>
+			<StackPromotions>
+				<StackPromotion>
+					<StackUnitClasses>
+						<UnitClassType>UNITCLASS_TEST_SCHOOL_B</UnitClassType>
+					</StackUnitClasses>
+					<StackPromotionTypes>
+						<PromotionType>PROMOTION_TEST_STACK</PromotionType>
+					</StackPromotionTypes>
+					<StackUnitCombats>
+						<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
+					</StackUnitCombats>
+				</StackPromotion>
+				<StackPromotion>
+					<StackUnitClasses>
+						<UnitClassType>UNITCLASS_TEST_SCHOOL_A</UnitClassType>
+					</StackUnitClasses>
+					<StackPromotionTypes>
+						<PromotionType>PROMOTION_TEST_STACK</PromotionType>
+					</StackPromotionTypes>
+				</StackPromotion>
+			</StackPromotions>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_TREATY</Type>

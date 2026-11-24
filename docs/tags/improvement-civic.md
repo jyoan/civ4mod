@@ -180,6 +180,14 @@
 - 説明文 `TXT_KEY_SPECIALIST_EXCLUSIVE_SETTLE`。
 - Python: `CvSpecialistInfo.isExclusiveSettle()`
 
+### `SpecialistInfo/iDomesticGreatGeneralRateModifier`
+
+- ファイル: `CIV4SpecialistInfos.xml`
+- 2026-11-24。万里の長城（建物の同名タグ: 自国の領土）の 1 都市圏版。
+- 専門家 1 人につき、その都市の都市圏のタイルでの戦闘で得る大将軍ポイント +%（`CvPlayer::getCityRadiusGreatGeneralRateModifier`、`CvUnit::changeExperience`）。
+- 判定するのは戦闘したユニットのいるタイル。領土かどうかは問わない。複数の都市圏に入るタイルでは足し合わせる。
+- 説明文 `TXT_KEY_SPECIALIST_CITY_GREAT_GENERAL_MOD`。Python: `CvSpecialistInfo.getDomesticGreatGeneralRateModifier()`
+
 ### `UnitInfo/PrereqOrTraits`（`BuildingInfo`・`CivicInfo` にも同名タグ）
 
 - ファイル: `CIV4UnitInfos.xml`、`CIV4BuildingInfos.xml`、`CIV4CivicInfos.xml`

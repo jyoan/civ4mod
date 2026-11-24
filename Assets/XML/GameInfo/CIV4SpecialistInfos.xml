@@ -483,6 +483,7 @@
 			<iHappiness>1</iHappiness>
 			<iDefense>50</iDefense>
 			<iBombardDefense>50</iBombardDefense>
+			<iDomesticGreatGeneralRateModifier>100</iDomesticGreatGeneralRateModifier>
 			<ExtraSpecialistCommerces>
 				<iCommerce>0</iCommerce>
 				<iCommerce>2</iCommerce>

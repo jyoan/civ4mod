@@ -414,6 +414,10 @@ public:
 	bool isLongCountCalendar() const;				// Exposed to Python
 	bool isImprovementUpgradeUnworked() const;		// Exposed to Python
 	bool isUnsettleGreatPeople() const;				// Exposed to Python
+	int getCityRadiusGreatGeneralRateModifier(const CvPlot* pPlot) const;	// added by this mod
+	bool isAnyStackPromotions() const;	// added by this mod
+	void updateStackPromotions(CvPlot* pPlot);	// added by this mod
+	void updateAllStackPromotions(TraitTypes eTrait, int iChange);	// added by this mod
 	bool canUnsettleSpecialist(SpecialistTypes eSpecialist) const;	// Exposed to Python (bUnsettleGreatPeople or UnsettleSpecialists of the traits, added by this mod)
 	bool isIgnoreEvents() const;					// Exposed to Python
 	int getEventChanceChange() const;				// Exposed to Python

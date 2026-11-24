@@ -294,7 +294,7 @@
 - 複製元: 定住した大預言者・定住した大技術者（テクスチャだけ）
 - 2026-11-24。諸子百家の検証用。
 - A: 食料 +20%・生産 +25%（`YieldModifiers`）、維持費 -50%、諜報への防御 +50%、不満なし、偉人ポイント -100%、都市圏の森 1 つにつき幸福 +1、無政府状態でも止まらない、排他。
-- B: 大将軍の偉人ポイント +3（既存の `GreatPeopleUnitClass` と `iGreatPeopleRateChange`）、新しいユニットに経験値 +4（既存の `iExperience`）、幸福 +1、都市防御 +50%、砲撃への耐性 50%、この都市の専門家 1 人につき研究 +2、排他。
+- B: 大将軍の偉人ポイント +3（既存の `GreatPeopleUnitClass` と `iGreatPeopleRateChange`）、新しいユニットに経験値 +4（既存の `iExperience`）、幸福 +1、都市防御 +50%、砲撃への耐性 50%、この都市の専門家 1 人につき研究 +2、都市圏での戦闘の大将軍ポイント +100%、排他。
 - A と B は同じ都市に定住できない。
 
 ## `UNIT_TEST_SCHOOL_A`・`UNIT_TEST_SCHOOL_B` / `UNITCLASS_TEST_SCHOOL_A`・`_B`（検証用学派A・B）
@@ -304,6 +304,12 @@
 - 世界ユニット（`iMaxGlobalInstances` 1）、生産コスト 30、前提の志向 `TRAIT_TEST`（検証用文明だけが作れる）。前提技術なし。
 - 黄金時代・技術・建物の行動はない。定住するとそれぞれ `SPECIALIST_TEST_SCHOOL_A` / `_B` になる。
 - 検証用志向（暦）の `UnsettleSpecialists` で、定住したあとユニットに戻せる
+
+## `PROMOTION_TEST_STACK`（検証用随行）
+
+- 複製元: 検証用状態Ⅱ
+- 2026-11-24。状態の昇進（`UnitCombats` は空）、戦闘力 +25%。
+- 検証用志向（暦）の `StackPromotions` で、検証用学派Bと同じタイルにいる白兵戦ユニットと、検証用学派Aと同じタイルにいる兵科のあるユニットに付く
 
 ## `UNIT_TEST_PREREQ` / `UNITCLASS_TEST_PREREQ`（検証用ユニット（前提））
 

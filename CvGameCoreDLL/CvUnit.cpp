@@ -12246,6 +12246,10 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 	FAssert(pOldPlot != pNewPlot);
 	GET_PLAYER(getOwnerINLINE()).updateGroupCycle(this);
 
+	// StackPromotions of the owner's traits (added by this mod)
+	GET_PLAYER(getOwnerINLINE()).updateStackPromotions(pOldPlot);
+	GET_PLAYER(getOwnerINLINE()).updateStackPromotions(pNewPlot);
+
 	setInfoBarDirty(true);
 
 	if (IsSelected())
@@ -12499,6 +12503,7 @@ void CvUnit::changeExperience(int iChange, int iMax, bool bFromCombat, bool bInB
 		CvPlayer& kPlayer = GET_PLAYER(getOwnerINLINE());
 
 		int iCombatExperienceMod = 100 + kPlayer.getGreatGeneralRateModifier();
+		iCombatExperienceMod += kPlayer.getCityRadiusGreatGeneralRateModifier(plot());	// specialists (added by this mod)
 
 		if (bInBorders)
 		{

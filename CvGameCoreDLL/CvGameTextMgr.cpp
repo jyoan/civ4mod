@@ -4429,6 +4429,12 @@ void CvGameTextMgr::parseSpecialistCityEffectsHelp(CvWStringBuffer &szHelpString
 		szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_ESPIONAGE_DEFENSE_MOD", kSpecialist.getEspionageDefense()));
 	}
 
+	if (kSpecialist.getDomesticGreatGeneralRateModifier() != 0)
+	{
+		szHelpString.append(NEWLINE);
+		szHelpString.append(gDLL->getText("TXT_KEY_SPECIALIST_CITY_GREAT_GENERAL_MOD", kSpecialist.getDomesticGreatGeneralRateModifier()));
+	}
+
 	if (kSpecialist.isNoAnarchyDisorder())
 	{
 		szHelpString.append(NEWLINE);

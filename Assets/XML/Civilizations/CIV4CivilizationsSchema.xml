@@ -484,6 +484,23 @@
 	<ElementType name="bLongCountCalendar" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bImprovementUpgradeUnworked" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bUnsettleGreatPeople" content="textOnly" dt:type="boolean"/>
+	<ElementType name="StackUnitClasses" content="eltOnly">
+		<element type="UnitClassType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="StackPromotionTypes" content="eltOnly">
+		<element type="PromotionType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="StackUnitCombats" content="eltOnly">
+		<element type="UnitCombatType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="StackPromotion" content="eltOnly">
+		<element type="StackUnitClasses"/>
+		<element type="StackPromotionTypes"/>
+		<element type="StackUnitCombats" minOccurs="0"/>
+	</ElementType>
+	<ElementType name="StackPromotions" content="eltOnly">
+		<element type="StackPromotion" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="UnsettleSpecialists" content="eltOnly">
 		<element type="SpecialistType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -1193,6 +1210,7 @@
 		<element type="bImprovementUpgradeUnworked" minOccurs="0"/>
 		<element type="bUnsettleGreatPeople" minOccurs="0"/>
 		<element type="UnsettleSpecialists" minOccurs="0"/>
+		<element type="StackPromotions" minOccurs="0"/>
 		<element type="bIgnoreEvents" minOccurs="0"/>
 		<element type="iEventChanceChange" minOccurs="0"/>
 		<element type="bNoFirstEventDelay" minOccurs="0"/>
