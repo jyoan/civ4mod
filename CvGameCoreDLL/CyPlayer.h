@@ -553,6 +553,10 @@ public:
 	bool isIgnoreEvents();	// added by this mod
 	int getEventChanceChange();	// added by this mod
 	bool isNoFirstEventDelay();	// added by this mod
+	bool isBuyCities();	// added by this mod
+	int getDealCityValueModifier();	// added by this mod
+	int getDealGoldLimitModifier();	// added by this mod
+	int getDealGoldValueModifier();	// added by this mod
 	void ignoreEvent(int iEventTriggeredId);	// added by this mod
 	bool isNoCultureFlip();	// added by this mod
 	bool isNoRevoltAndNoCultureFlip();	// added by this mod

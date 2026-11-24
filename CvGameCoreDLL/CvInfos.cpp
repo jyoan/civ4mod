@@ -20463,6 +20463,10 @@ m_bUnsettleGreatPeople(false),
 m_bIgnoreEvents(false),
 m_iEventChanceChange(0),
 m_bNoFirstEventDelay(false),
+m_bBuyCities(false),
+m_iDealCityValueModifier(0),
+m_iDealGoldLimitModifier(0),
+m_iDealGoldValueModifier(0),
 m_bNoCultureFlip(false),
 m_bNoRevoltAndNoCultureFlip(false),
 m_bInstantCultureFlip(false),
@@ -21282,6 +21286,34 @@ int CvTraitInfo::getEventChanceChange() const
 bool CvTraitInfo::isNoFirstEventDelay() const
 {
 	return m_bNoFirstEventDelay;
+}
+
+// Deals/bBuyCities (added by this mod): the AI sells its cities other than the capital to the player in peace, too
+// (CvPlayerAI::AI_cityTrade). Without it, the AI gives cities only in the deals of the end of a war
+bool CvTraitInfo::isBuyCities() const
+{
+	return m_bBuyCities;
+}
+
+// Deals/iCityValueModifier (added by this mod): % to the value of the cities that the player receives in deals, that is the
+// price that the AI asks for them (CvPlayerAI::AI_cityTradeVal). -50: half price
+int CvTraitInfo::getDealCityValueModifier() const
+{
+	return m_iDealCityValueModifier;
+}
+
+// Deals/iGoldLimitModifier (added by this mod): % to the most gold (lump sum and per turn) that an AI gives to the player in a
+// deal (CvPlayerAI::AI_maxGoldTrade, AI_maxGoldPerTurnTrade). The gold that the AI has and earns still caps it
+int CvTraitInfo::getDealGoldLimitModifier() const
+{
+	return m_iDealGoldLimitModifier;
+}
+
+// Deals/iGoldValueModifier (added by this mod): % to the value that the AI puts on the gold (lump sum and per turn) that the
+// player gives in deals (CvPlayerAI::AI_goldTradeValuePercent). 50: the AI asks for 2/3 of the gold
+int CvTraitInfo::getDealGoldValueModifier() const
+{
+	return m_iDealGoldValueModifier;
 }
 
 // CultureFlip/bNoFlip (added by this mod): the cities of the player do not flip to another player by culture. The revolts still
@@ -23332,6 +23364,15 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iAnarchyGoldenAgePercent, "iAnarchyGoldenAgePercent");
 	pXML->GetChildXmlValByName(&m_iTechCostModifier, "iTechCostModifier");
 	pXML->GetChildXmlValByName(&m_iAttitudeChange, "iAttitudeChange");
+	// Deals: bBuyCities, iCityValueModifier, iGoldLimitModifier, iGoldValueModifier
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Deals"))
+	{
+		pXML->GetChildXmlValByName(&m_bBuyCities, "bBuyCities");
+		pXML->GetChildXmlValByName(&m_iDealCityValueModifier, "iCityValueModifier");
+		pXML->GetChildXmlValByName(&m_iDealGoldLimitModifier, "iGoldLimitModifier");
+		pXML->GetChildXmlValByName(&m_iDealGoldValueModifier, "iGoldValueModifier");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 	pXML->GetChildXmlValByName(&m_iRouteMovementModifierInBorders, "iRouteMovementModifierInBorders");
 	pXML->GetChildXmlValByName(&m_iCombatPercent, "iCombatPercent");
 	pXML->GetChildXmlValByName(&m_iHappinessPerReligion, "iHappinessPerReligion");

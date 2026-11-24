@@ -521,6 +521,16 @@
 	<ElementType name="iAnarchyGoldenAgePercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iTechCostModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iAttitudeChange" content="textOnly" dt:type="int"/>
+	<ElementType name="bBuyCities" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iCityValueModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iGoldLimitModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iGoldValueModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="Deals" content="eltOnly">
+		<element type="bBuyCities" minOccurs="0"/>
+		<element type="iCityValueModifier" minOccurs="0"/>
+		<element type="iGoldLimitModifier" minOccurs="0"/>
+		<element type="iGoldValueModifier" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="iRouteMovementModifierInBorders" content="textOnly" dt:type="int"/>
 	<ElementType name="iCombatPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="HurryType" content="textOnly"/>
@@ -1195,6 +1205,7 @@
 		<element type="iAnarchyGoldenAgePercent" minOccurs="0"/>
 		<element type="iTechCostModifier" minOccurs="0"/>
 		<element type="iAttitudeChange" minOccurs="0"/>
+		<element type="Deals" minOccurs="0"/>
 		<element type="iRouteMovementModifierInBorders" minOccurs="0"/>
 		<element type="iCombatPercent" minOccurs="0"/>
 		<element type="Hurrys" minOccurs="0"/>

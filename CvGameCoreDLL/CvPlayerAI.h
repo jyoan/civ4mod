@@ -148,7 +148,7 @@ public:
 	DllExport int AI_maxGoldTrade(PlayerTypes ePlayer) const;
 
 	DllExport int AI_maxGoldPerTurnTrade(PlayerTypes ePlayer) const;
-	int AI_goldPerTurnTradeVal(int iGoldPerTurn) const;
+	int AI_goldPerTurnTradeVal(int iGoldPerTurn, PlayerTypes eGiver = NO_PLAYER) const;	// eGiver added by this mod
 
 	int AI_bonusVal(BonusTypes eBonus, int iChange = 1) const;
 	int AI_baseBonusVal(BonusTypes eBonus) const;
@@ -290,7 +290,7 @@ public:
 
 	int AI_goldToUpgradeAllUnits(int iExpThreshold = 0) const;
 
-	int AI_goldTradeValuePercent() const;
+	int AI_goldTradeValuePercent(PlayerTypes eGiver = NO_PLAYER) const;	// eGiver added by this mod
 	
 	int AI_averageYieldMultiplier(YieldTypes eYield) const;
 	int AI_averageCommerceMultiplier(CommerceTypes eCommerce) const;

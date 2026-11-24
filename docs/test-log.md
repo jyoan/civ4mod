@@ -171,3 +171,4 @@
 - 2026-11-23: 志向のタグ `bUnsettleGreatPeople`（都市画面で定住した偉人のアイコンをクリック → 確認の画面 → その都市に偉人ユニットが出る。マウスオーバーの行、建物の無料の専門家では何も起きないこと、志向の説明文）をゲーム内で確認した（検証用志向（暦））
 - 2026-11-23: 志向のタグ `bIgnoreEvents`（イベントの画面に黄色の「このイベントを無視する（何も起きない）」。選ぶと何も起きない）・`iEventChanceChange`（100 で毎ターンイベント）・`bNoFirstEventDelay`（開始直後からイベント）と志向の説明文をゲーム内で確認した（検証用志向）
 - 2026-11-24: プロジェクトのタグ `PrereqOrTechs`・`PrereqOrTraits`（技術ツリーの表示を含む）、志向のフック `PyOnOtherCityFounded`、共通関数 `chooseTreatyZone`（東西の選択のポップアップ、AI の自動選択、全員へのメッセージ）・`treatyZoneTurn`（毎ターンの収入とメッセージ）・`offerTreatyTerms`（3 択のポップアップと金・技術・建物の各結果、AI のランダム選択）・優先地域の色分けをゲーム内で確認した（検証用志向（条約））
+- 2026-11-24: 志向の `Deals`（`bBuyCities`: 平時に AI の都市を金・技術と同じ取引に載せて買える、`iCityValueModifier`・`iGoldLimitModifier`・`iGoldValueModifier`）と外交画面の都市の値段の目安（ツールチップ）をゲーム内で確認した（検証用志向）

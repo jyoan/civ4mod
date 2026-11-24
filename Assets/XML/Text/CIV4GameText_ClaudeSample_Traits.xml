@@ -1857,6 +1857,42 @@
 		<Japanese>[ICON_BULLET]&#12466;&#12540;&#12512;&#12398;&#38283;&#22987;&#30452;&#24460;&#12363;&#12425;&#12521;&#12531;&#12480;&#12512;&#12452;&#12505;&#12531;&#12488;&#12364;&#36215;&#12365;&#12427;&#65288;&#36890;&#24120;&#12399;&#26368;&#21021;&#12398; %d1 &#12479;&#12540;&#12531;&#12399;&#36215;&#12365;&#12394;&#12356;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DEAL_BUY_CITIES</Tag>
+		<English>[ICON_BULLET]AI civilizations sell their cities (except capitals) to you in peacetime, too</English>
+		<French>[ICON_BULLET]AI civilizations sell their cities (except capitals) to you in peacetime, too</French>
+		<German>[ICON_BULLET]AI civilizations sell their cities (except capitals) to you in peacetime, too</German>
+		<Italian>[ICON_BULLET]AI civilizations sell their cities (except capitals) to you in peacetime, too</Italian>
+		<Spanish>[ICON_BULLET]AI civilizations sell their cities (except capitals) to you in peacetime, too</Spanish>
+		<Japanese>[ICON_BULLET]&#24179;&#26178;&#12391;&#12418; AI &#12363;&#12425;&#37117;&#24066;&#65288;&#39318;&#37117;&#12434;&#38500;&#12367;&#65289;&#12434;&#21462;&#24341;&#12391;&#24471;&#12425;&#12428;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DEAL_CITY_VALUE_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1%% to the price of the cities you get in deals</English>
+		<French>[ICON_BULLET]%D1%% to the price of the cities you get in deals</French>
+		<German>[ICON_BULLET]%D1%% to the price of the cities you get in deals</German>
+		<Italian>[ICON_BULLET]%D1%% to the price of the cities you get in deals</Italian>
+		<Spanish>[ICON_BULLET]%D1%% to the price of the cities you get in deals</Spanish>
+		<Japanese>[ICON_BULLET]&#21462;&#24341;&#12391;&#24471;&#12427;&#37117;&#24066;&#12398;&#20516;&#27573; %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DEAL_GOLD_LIMIT_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1%% to the most gold AI civilizations give you in a deal</English>
+		<French>[ICON_BULLET]%D1%% to the most gold AI civilizations give you in a deal</French>
+		<German>[ICON_BULLET]%D1%% to the most gold AI civilizations give you in a deal</German>
+		<Italian>[ICON_BULLET]%D1%% to the most gold AI civilizations give you in a deal</Italian>
+		<Spanish>[ICON_BULLET]%D1%% to the most gold AI civilizations give you in a deal</Spanish>
+		<Japanese>[ICON_BULLET]AI &#12364;&#21462;&#24341;&#12391;&#20986;&#12377;&#37329;&#12398;&#19978;&#38480; %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DEAL_GOLD_VALUE_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1%% to the value AI civilizations put on the gold you give in deals</English>
+		<French>[ICON_BULLET]%D1%% to the value AI civilizations put on the gold you give in deals</French>
+		<German>[ICON_BULLET]%D1%% to the value AI civilizations put on the gold you give in deals</German>
+		<Italian>[ICON_BULLET]%D1%% to the value AI civilizations put on the gold you give in deals</Italian>
+		<Spanish>[ICON_BULLET]%D1%% to the value AI civilizations put on the gold you give in deals</Spanish>
+		<Japanese>[ICON_BULLET]&#21462;&#24341;&#12391;&#25903;&#25173;&#12358;&#37329;&#12398;&#12289;AI &#12363;&#12425;&#35211;&#12383;&#20385;&#20516; %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_POPUP_IGNORE_EVENT</Tag>
 		<English>[COLOR_YELLOW]Ignore this event (nothing happens)[COLOR_REVERT]</English>
 		<French>[COLOR_YELLOW]Ignore this event (nothing happens)[COLOR_REVERT]</French>

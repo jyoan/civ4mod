@@ -332,6 +332,12 @@
 			<iAnarchyGoldenAgePercent>200</iAnarchyGoldenAgePercent>
 			<iTechCostModifier>-40</iTechCostModifier>
 			<iAttitudeChange>3</iAttitudeChange>
+			<Deals>
+				<bBuyCities>1</bBuyCities>
+				<iCityValueModifier>-50</iCityValueModifier>
+				<iGoldLimitModifier>100</iGoldLimitModifier>
+				<iGoldValueModifier>50</iGoldValueModifier>
+			</Deals>
 			<iRouteMovementModifierInBorders>-50</iRouteMovementModifierInBorders>
 			<Hurrys>
 				<Hurry>

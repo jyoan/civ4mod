@@ -5309,6 +5309,27 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_NO_FIRST_EVENT_DELAY", GC.getDefineINT("FIRST_EVENT_DELAY_TURNS")));
 	}
 
+	// Deals
+	if (kTrait.isBuyCities())
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DEAL_BUY_CITIES"));
+	}
+
+	if (kTrait.getDealCityValueModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DEAL_CITY_VALUE_MODIFIER", kTrait.getDealCityValueModifier()));
+	}
+
+	if (kTrait.getDealGoldLimitModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DEAL_GOLD_LIMIT_MODIFIER", kTrait.getDealGoldLimitModifier()));
+	}
+
+	if (kTrait.getDealGoldValueModifier() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_DEAL_GOLD_VALUE_MODIFIER", kTrait.getDealGoldValueModifier()));
+	}
+
 	// "Can build without the technology: Research". The processes are loaded when a game is launched: none on the screens
 	// before (GC.getNumProcessInfos() is 0)
 	bFirst = true;

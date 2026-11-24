@@ -1943,4 +1943,13 @@
 		<Spanish>From %s1: [ICON_GOLD]%d2</Spanish>
 		<Japanese>%s1&#12424;&#12426;[ICON_GOLD]%d2&#12434;&#21462;&#24471;&#12290;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRADE_CITY_PRICE</Tag>
+		<English>Price: about [ICON_GOLD]%d1 (value %d2)</English>
+		<French>Price: about [ICON_GOLD]%d1 (value %d2)</French>
+		<German>Price: about [ICON_GOLD]%d1 (value %d2)</German>
+		<Italian>Price: about [ICON_GOLD]%d1 (value %d2)</Italian>
+		<Spanish>Price: about [ICON_GOLD]%d1 (value %d2)</Spanish>
+		<Japanese>&#20516;&#27573;&#12398;&#30446;&#23433;: [ICON_GOLD]%d1&#65288;&#20385;&#20516; %d2&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>
