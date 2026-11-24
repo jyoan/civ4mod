@@ -449,6 +449,17 @@
 					<iHappinessChange>1</iHappinessChange>
 				</FeatureHappinessChange>
 			</FeatureHappinessChanges>
+			<CommerceModifiers>
+				<iCommerce>0</iCommerce>
+				<iCommerce>25</iCommerce>
+				<iCommerce>0</iCommerce>
+			</CommerceModifiers>
+			<FreeSpecialistCounts>
+				<FreeSpecialistCount>
+					<SpecialistType>SPECIALIST_SCIENTIST</SpecialistType>
+					<iFreeSpecialistCount>1</iFreeSpecialistCount>
+				</FreeSpecialistCount>
+			</FreeSpecialistCounts>
 			<bNoAnarchyDisorder>1</bNoAnarchyDisorder>
 			<bExclusiveSettle>1</bExclusiveSettle>
 			<Flavors/>

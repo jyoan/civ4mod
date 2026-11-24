@@ -4387,6 +4387,22 @@ void CvGameTextMgr::parseSpecialistCityEffectsHelp(CvWStringBuffer &szHelpString
 	}
 	setCommerceChangeHelp(szHelpString, L"", L"", gDLL->getText("TXT_KEY_SPECIALIST_PER_SPECIALIST_IN_CITY"), aiCommerces);
 
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		aiCommerces[iI] = kSpecialist.getCommerceModifier(iI);
+	}
+	setCommerceChangeHelp(szHelpString, L"", L"", L"", aiCommerces, true);
+
+	// FreeSpecialistCounts: the line of the buildings
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
+	{
+		if (kSpecialist.getFreeSpecialistCount(iI) > 0)
+		{
+			szHelpString.append(NEWLINE);
+			szHelpString.append(gDLL->getText("TXT_KEY_BUILDING_FREE_SPECIALIST", kSpecialist.getFreeSpecialistCount(iI), GC.getSpecialistInfo((SpecialistTypes)iI).getTextKeyWide()));
+		}
+	}
+
 	if (kSpecialist.isNoUnhappiness())
 	{
 		szHelpString.append(NEWLINE);
@@ -14712,6 +14728,20 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_BUILDINGS", iBuildingMod, info.getChar()));
 		szBuffer.append(NEWLINE);
 		iModifier += iBuildingMod;
+	}
+
+	// CommerceModifiers of the specialists of the city (added by this mod)
+	int iSpecialistCommerceMod = 0;
+	for (int iSpecialist = 0; iSpecialist < GC.getNumSpecialistInfos(); iSpecialist++)
+	{
+		int iSpecialistCount = city.getSpecialistCount((SpecialistTypes)iSpecialist) + city.getFreeSpecialistCount((SpecialistTypes)iSpecialist);
+		iSpecialistCommerceMod += iSpecialistCount * GC.getSpecialistInfo((SpecialistTypes)iSpecialist).getCommerceModifier(eCommerceType);
+	}
+	if (0 != iSpecialistCommerceMod)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_SPECIALIST_MODIFIER", iSpecialistCommerceMod, info.getChar()));
+		szBuffer.append(NEWLINE);
+		iModifier += iSpecialistCommerceMod;
 	}
 
 

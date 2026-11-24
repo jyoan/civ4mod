@@ -838,7 +838,8 @@ m_bNoUnhappiness(false),
 m_bNoAnarchyDisorder(false),
 m_bExclusiveSettle(false),
 m_piYieldModifier(NULL),
-m_piExtraSpecialistCommerce(NULL)
+m_piExtraSpecialistCommerce(NULL),
+m_piCommerceModifier(NULL)
 {
 }
 
@@ -856,6 +857,7 @@ CvSpecialistInfo::~CvSpecialistInfo()
 	SAFE_DELETE_ARRAY(m_piFlavorValue);
 	SAFE_DELETE_ARRAY(m_piYieldModifier);
 	SAFE_DELETE_ARRAY(m_piExtraSpecialistCommerce);
+	SAFE_DELETE_ARRAY(m_piCommerceModifier);
 }
 
 int CvSpecialistInfo::getGreatPeopleUnitClass() const
@@ -955,6 +957,23 @@ int CvSpecialistInfo::getExtraSpecialistCommerce(int i) const
 	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
 	FAssertMsg(i > -1, "Index out of bounds");
 	return m_piExtraSpecialistCommerce ? m_piExtraSpecialistCommerce[i] : 0;
+}
+
+// CommerceModifiers: commerce % of the city, like the building tag (CvCity::processSpecialistCityEffects)
+int CvSpecialistInfo::getCommerceModifier(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_piCommerceModifier ? m_piCommerceModifier[i] : 0;
+}
+
+// FreeSpecialistCounts: free specialists in the city, like the building tag. They are not great people: they cannot be
+// unsettled, killed or kidnapped (CvCity::getAddedFreeSpecialistCount)
+int CvSpecialistInfo::getFreeSpecialistCount(int i) const
+{
+	FAssertMsg(i < GC.getNumSpecialistInfos(), "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_aiFreeSpecialistCount.empty() ? 0 : m_aiFreeSpecialistCount[i];
 }
 
 bool CvSpecialistInfo::isNoUnhappiness() const
@@ -1088,6 +1107,8 @@ bool CvSpecialistInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iDomesticGreatGeneralRateModifier, "iDomesticGreatGeneralRateModifier");
 	readTypeStringValueList(pXML, "FeatureHappinessChanges", "FeatureHappinessChange", "FeatureType", "iHappinessChange", m_aszFeatureHappinessTypes, m_aiFeatureHappinessValues);	// features are loaded later: readPass3()
 	readCommerceChanges(pXML, "ExtraSpecialistCommerces", &m_piExtraSpecialistCommerce);
+	readCommerceChanges(pXML, "CommerceModifiers", &m_piCommerceModifier);
+	readTypeStringValueList(pXML, "FreeSpecialistCounts", "FreeSpecialistCount", "SpecialistType", "iFreeSpecialistCount", m_aszFreeSpecialistTypes, m_aiFreeSpecialistValues);	// the later specialists are not loaded yet: readPass3()
 	pXML->GetChildXmlValByName(&m_bNoAnarchyDisorder, "bNoAnarchyDisorder");
 	pXML->GetChildXmlValByName(&m_bExclusiveSettle, "bExclusiveSettle");
 
@@ -1124,6 +1145,28 @@ bool CvSpecialistInfo::readPass3()
 
 	m_aszFeatureHappinessTypes.clear();
 	m_aiFeatureHappinessValues.clear();
+
+	// FreeSpecialistCounts: all the specialists are loaded now. A specialist cannot give itself
+	m_aiFreeSpecialistCount.clear();
+	for (i = 0; i < (int)m_aszFreeSpecialistTypes.size(); i++)
+	{
+		int iSpecialist = GC.getInfoTypeForString(m_aszFreeSpecialistTypes[i].GetCString(), true);
+		if (iSpecialist < 0 || iSpecialist >= GC.getNumSpecialistInfos() || iSpecialist == GC.getInfoTypeForString(getType(), true))
+		{
+			sprintf(szMessage, "Tag: %s in FreeSpecialistCounts of CIV4SpecialistInfos.xml was incorrect", m_aszFreeSpecialistTypes[i].GetCString());
+			gDLL->MessageBox(szMessage, "XML Error");
+			continue;
+		}
+
+		if (m_aiFreeSpecialistCount.empty())
+		{
+			m_aiFreeSpecialistCount.resize(GC.getNumSpecialistInfos(), 0);
+		}
+		m_aiFreeSpecialistCount[iSpecialist] += m_aiFreeSpecialistValues[i];
+	}
+
+	m_aszFreeSpecialistTypes.clear();
+	m_aiFreeSpecialistValues.clear();
 
 	return true;
 }

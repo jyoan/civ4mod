@@ -261,6 +261,8 @@ public:
 	int getDomesticGreatGeneralRateModifier() const;				// Exposed to Python
 	int getFeatureHappinessChange(int i) const;				// Exposed to Python
 	int getExtraSpecialistCommerce(int i) const;				// Exposed to Python
+	int getCommerceModifier(int i) const;				// Exposed to Python
+	int getFreeSpecialistCount(int i) const;				// Exposed to Python
 	bool isNoUnhappiness() const;				// Exposed to Python
 	bool isNoAnarchyDisorder() const;				// Exposed to Python
 	bool isExclusiveSettle() const;				// Exposed to Python
@@ -304,6 +306,10 @@ protected:
 
 	int* m_piYieldModifier;	// added by this mod
 	int* m_piExtraSpecialistCommerce;	// added by this mod
+	int* m_piCommerceModifier;	// added by this mod
+	std::vector<int> m_aiFreeSpecialistCount;	// added by this mod, empty when not set (indexed by specialist after readPass3)
+	std::vector<CvString> m_aszFreeSpecialistTypes;	// read() keeps the types as strings until readPass3()
+	std::vector<int> m_aiFreeSpecialistValues;
 	std::vector<int> m_aiFeatureHappinessChange;	// added by this mod, empty when not set (indexed by feature after readPass3)
 	std::vector<CvString> m_aszFeatureHappinessTypes;	// read() keeps the types as strings until readPass3()
 	std::vector<int> m_aiFeatureHappinessValues;

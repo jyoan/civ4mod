@@ -4420,6 +4420,23 @@ void CvCity::processSpecialistCityEffects(SpecialistTypes eSpecialist, int iChan
 		}
 	}
 
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		if (kSpecialist.getCommerceModifier(iI) != 0)
+		{
+			changeCommerceRateModifier((CommerceTypes)iI, kSpecialist.getCommerceModifier(iI) * iChange);
+		}
+	}
+
+	// FreeSpecialistCounts: like a building's (not great people, see getAddedFreeSpecialistCount)
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
+	{
+		if (kSpecialist.getFreeSpecialistCount(iI) != 0)
+		{
+			changeFreeSpecialistCount((SpecialistTypes)iI, kSpecialist.getFreeSpecialistCount(iI) * iChange);
+		}
+	}
+
 	changeMaintenanceModifier(kSpecialist.getMaintenanceModifier() * iChange);
 	changeEspionageDefenseModifier(kSpecialist.getEspionageDefense() * iChange);
 	changeGreatPeopleRateModifier(kSpecialist.getGreatPeopleRateModifier() * iChange);
@@ -11504,6 +11521,16 @@ int CvCity::getAddedFreeSpecialistCount(SpecialistTypes eIndex) const
 		if (kBuilding.getFreeSpecialistCount(eIndex) > 0)
 		{
 			iNumAddedSpecialists -= getNumActiveBuilding((BuildingTypes)iJ) * kBuilding.getFreeSpecialistCount(eIndex);
+		}
+	}
+
+	// FreeSpecialistCounts of the specialists of the city (added by this mod): not settled great people either
+	for (int iS = 0; iS < GC.getNumSpecialistInfos(); ++iS)
+	{
+		int iFree = GC.getSpecialistInfo((SpecialistTypes)iS).getFreeSpecialistCount(eIndex);
+		if (iFree != 0)
+		{
+			iNumAddedSpecialists -= (getSpecialistCount((SpecialistTypes)iS) + getFreeSpecialistCount((SpecialistTypes)iS)) * iFree;
 		}
 	}
 
