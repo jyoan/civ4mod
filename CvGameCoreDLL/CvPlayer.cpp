@@ -3901,7 +3901,7 @@ void CvPlayer::callTraitPythonHook(TraitPythonHookTypes eHook, CvUnit* pUnit, Cv
 		return;
 	}
 
-	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onBuildingBuilt", "onReligionFounded", "onGained", "onLost", "onTechAcquired", "onGreatPersonBorn", "onGoldenAgeStart", "onGoldenAgeEnd", "onWarDeclared", "onPeaceMade", "onEraChanged", "onFirstContact", "onProjectBuilt", "onVassalGained", "onReligionSpread", "onCivicChanged", "onCircumnavigated" };	// onGained and onLost: doTraitGainedPythonHook
+	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onBuildingBuilt", "onReligionFounded", "onGained", "onLost", "onTechAcquired", "onGreatPersonBorn", "onGoldenAgeStart", "onGoldenAgeEnd", "onWarDeclared", "onPeaceMade", "onEraChanged", "onFirstContact", "onProjectBuilt", "onVassalGained", "onReligionSpread", "onCivicChanged", "onCircumnavigated", "onOtherCityFounded" };	// onGained and onLost: doTraitGainedPythonHook
 	bool bHasUnit = (eHook == TRAIT_PYHOOK_GREAT_PERSON_BORN);
 	bool bHasCity = (pCity != NULL || eHook == TRAIT_PYHOOK_GREAT_PERSON_BORN);
 	CyPlayer* pyPlayer;
@@ -7271,6 +7271,15 @@ void CvPlayer::found(int iX, int iY)
 	CvEventReporter::getInstance().cityBuilt(pCity);
 	doTraitPythonHook(TRAIT_PYHOOK_CITY_FOUNDED, pCity);	// PyOnCityFounded (added by this mod)
 
+	// PyOnOtherCityFounded of the traits of the other players alive (added by this mod): pCity is the city of this player
+	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		if (iI != getID() && GET_PLAYER((PlayerTypes)iI).isAlive())
+		{
+			GET_PLAYER((PlayerTypes)iI).doTraitPythonHook(TRAIT_PYHOOK_OTHER_CITY_FOUNDED, pCity);
+		}
+	}
+
 	// CityFoundedUnits of the traits (added by this mod): the unit of the civilization of each class, in the city. Ships and
 	// bCoastalOnly only in a city on the coast of an ocean
 	bool bCoastalCity = pCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN());
@@ -7966,6 +7975,30 @@ bool CvPlayer::canCreate(ProjectTypes eProject, bool bContinue, bool bTestVisibl
 	}
 
 	if (!(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getProjectInfo(eProject).getTechPrereq()))))
+	{
+		return false;
+	}
+
+	// PrereqOrTechs and PrereqOrTraits of the project (added by this mod)
+	if (GC.getProjectInfo(eProject).getNumPrereqOrTechs() > 0)
+	{
+		bool bOrTech = false;
+		for (iI = 0; iI < GC.getProjectInfo(eProject).getNumPrereqOrTechs(); iI++)
+		{
+			if (GET_TEAM(getTeam()).isHasTech((TechTypes)GC.getProjectInfo(eProject).getPrereqOrTechs(iI)))
+			{
+				bOrTech = true;
+				break;
+			}
+		}
+
+		if (!bOrTech)
+		{
+			return false;
+		}
+	}
+
+	if (getLeaderType() == NO_LEADER ? !GC.getProjectInfo(eProject).getPrereqOrTraitsVector().empty() : !hasPrereqOrTrait(GC.getProjectInfo(eProject).getPrereqOrTraitsVector()))
 	{
 		return false;
 	}

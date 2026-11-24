@@ -4678,6 +4678,18 @@ void CvGameTextMgr::parseTraitUniqueElements(CvWStringBuffer& szHelpString, Trai
 			}
 		}
 	}
+
+	// Projects that need this trait (PrereqOrTraits): "Unique project: X" (added by this mod)
+	for (iI = 0; iI < GC.getNumProjectInfos(); iI++)
+	{
+		const std::vector<int>& aiProjectTraits = GC.getProjectInfo((ProjectTypes)iI).getPrereqOrTraitsVector();
+		if (std::find(aiProjectTraits.begin(), aiProjectTraits.end(), (int)eTrait) != aiProjectTraits.end())
+		{
+			CvWString szProject;
+			szProject = getLinkText(GC.getProjectInfo((ProjectTypes)iI).getDescription());
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_UNIQUE_PROJECT", szProject.GetCString()));
+		}
+	}
 }
 
 void CvGameTextMgr::parseTraitMiseryAndLakeEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
@@ -8698,7 +8710,7 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 			{
 				if (!bPlayerContext || !(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).canCreate(((ProjectTypes)iI), false, true)))
 				{
-					if (GC.getProjectInfo((ProjectTypes)iI).getTechPrereq() == eTech)
+					if (isTechRequiredForProject(eTech, (ProjectTypes)iI))	// with PrereqOrTechs (added by this mod)
 					{
 						szFirstBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_TECH_CAN_CREATE").c_str());
 						szTempBuffer.Format( SETCOLR L"%s" ENDCOLR , TEXT_COLOR("COLOR_PROJECT_TEXT"), GC.getProjectInfo((ProjectTypes)iI).getDescription());
@@ -12306,6 +12318,44 @@ void CvGameTextMgr::setProjectHelp(CvWStringBuffer &szBuffer, ProjectTypes eProj
 						szBuffer.append(gDLL->getText("TXT_KEY_PROJECT_REQUIRES_NO_CITY", GC.getProjectInfo((ProjectTypes)iI).getTextKeyWide(), kProject.getProjectsNeeded(iI)));
 					}
 				}
+			}
+		}
+
+		// PrereqOrTechs and PrereqOrTraits (added by this mod): "Requires Optics or Paper", "Requires Trait A"
+		if (kProject.getNumPrereqOrTechs() > 0)
+		{
+			bool bOrTech = false;
+			if (pCity != NULL)
+			{
+				for (iI = 0; iI < kProject.getNumPrereqOrTechs(); ++iI)
+				{
+					if (GET_TEAM(GET_PLAYER(ePlayer).getTeam()).isHasTech((TechTypes)kProject.getPrereqOrTechs(iI)))
+					{
+						bOrTech = true;
+						break;
+					}
+				}
+			}
+
+			if (!bOrTech)
+			{
+				bFirst = true;
+				for (iI = 0; iI < kProject.getNumPrereqOrTechs(); ++iI)
+				{
+					szFirstBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_REQUIRES").c_str());
+					szTempBuffer.Format(L"<link=literal>%s</link>", GC.getTechInfo((TechTypes)kProject.getPrereqOrTechs(iI)).getDescription());
+					setListHelp(szBuffer, szFirstBuffer, szTempBuffer, gDLL->getText("TXT_KEY_OR").c_str(), bFirst);
+					bFirst = false;
+				}
+				szBuffer.append(ENDCOLR);
+			}
+		}
+
+		if (kProject.getNumPrereqOrTraits() > 0)
+		{
+			if (pCity == NULL || !GET_PLAYER(ePlayer).hasPrereqOrTrait(kProject.getPrereqOrTraitsVector()))
+			{
+				buildPrereqOrTraitsString(szBuffer, kProject.getPrereqOrTraitsVector());
 			}
 		}
 

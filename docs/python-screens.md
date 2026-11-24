@@ -21,7 +21,7 @@
 
 元の Python ファイルをどこからコピーしたか（`Assets\Python\` からの相対パス）。
 
-- BtS(J) のコピーに追記: `Screens\CvPediaMain.py`・`Screens\CvPediaCivilization.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`・`Screens\CvVictoryScreen.py`・`Screens\CvMainInterface.py`・`Screens\CvTechChooser.py`・`CvEventManager.py`
+- BtS(J) のコピーに追記: `Screens\CvPediaMain.py`・`Screens\CvPediaCivilization.py`・`Screens\CvScreenEnums.py`・`EntryPoints\CvScreensInterface.py`・`Screens\CvVictoryScreen.py`・`Screens\CvMainInterface.py`・`Screens\CvTechChooser.py`・`CvEventManager.py`・`CvGameUtils.py`（`updateColoredPlots` から優先地域の色分け。2026-11-24）
 - 無印 Civ4(J) のコピーに追記: `Screens\CvCivicsScreen.py`（BtS(J)・Warlords(J) には無く、無印のものが使われている）
 - Warlords(J) のコピーに追記: `Screens\CvFinanceAdvisor.py`（BtS(J) には無い）
 - BtS(J) のコピーに Unofficial Patch の修正: `CvAdvisorUtils.py`・`Screens\CvDomesticAdvisor.py`・`EntryPoints\CvRandomEventInterface.py`

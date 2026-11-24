@@ -4596,6 +4596,14 @@ public:
 	int getVictoryMinThreshold(int i) const;					// Exposed to Python
 	int getProjectsNeeded(int i) const;						// Exposed to Python
 
+	// PrereqOrTechs and PrereqOrTraits (added by this mod)
+	int getNumPrereqOrTechs() const;						// Exposed to Python
+	int getPrereqOrTechs(int i) const;						// Exposed to Python
+	const std::vector<int>& getPrereqOrTechsVector() const;
+	int getNumPrereqOrTraits() const;						// Exposed to Python
+	int getPrereqOrTraits(int i) const;						// Exposed to Python
+	const std::vector<int>& getPrereqOrTraitsVector() const;
+
 	bool read(CvXMLLoadUtility* pXML);
 	bool readPass2(CvXMLLoadUtility* pXML);
 
@@ -4627,6 +4635,9 @@ protected:
 	int* m_piVictoryThreshold;
 	int* m_piVictoryMinThreshold;
 	int* m_piProjectsNeeded;
+
+	std::vector<int> m_aiPrereqOrTechs;	// added by this mod
+	std::vector<int> m_aiPrereqOrTraits;	// added by this mod
 
 };
 
@@ -5176,6 +5187,7 @@ public:
 	const TCHAR* getPyOnReligionSpread() const;	// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnCivicChanged() const;		// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnCircumnavigated() const;	// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnOtherCityFounded() const;	// Exposed to Python (added by this mod)
 	int getNumConditionalFreeTraits() const;		// Exposed to Python
 	int getConditionalFreeTraitType(int i) const;	// Exposed to Python
 	const ConditionalFreeTrait& getConditionalFreeTrait(int i) const;

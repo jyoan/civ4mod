@@ -716,6 +716,7 @@
 	<ElementType name="PyOnReligionSpread" content="textOnly"/>
 	<ElementType name="PyOnCivicChanged" content="textOnly"/>
 	<ElementType name="PyOnCircumnavigated" content="textOnly"/>
+	<ElementType name="PyOnOtherCityFounded" content="textOnly"/>
 	<ElementType name="iHappinessPerReligion" content="textOnly" dt:type="int"/>
 	<ElementType name="CommercePerReligion" content="eltOnly">
 		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
@@ -1284,6 +1285,7 @@
 		<element type="PyOnReligionSpread" minOccurs="0"/>
 		<element type="PyOnCivicChanged" minOccurs="0"/>
 		<element type="PyOnCircumnavigated" minOccurs="0"/>
+		<element type="PyOnOtherCityFounded" minOccurs="0"/>
 		<element type="ConditionalFreeTraits" minOccurs="0"/>
 		<element type="ExtraYieldThresholds" minOccurs="0"/>
 		<element type="TradeYieldModifiers" minOccurs="0"/>

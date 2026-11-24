@@ -26,6 +26,7 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getPyOnReligionSpread", &CvTraitInfo::getPyOnReligionSpread, "string ()")
 		.def("getPyOnCivicChanged", &CvTraitInfo::getPyOnCivicChanged, "string ()")
 		.def("getPyOnCircumnavigated", &CvTraitInfo::getPyOnCircumnavigated, "string ()")
+		.def("getPyOnOtherCityFounded", &CvTraitInfo::getPyOnOtherCityFounded, "string ()")
 		.def("isBarbarianVision", &CvTraitInfo::isBarbarianVision, "bool ()")
 		.def("isStackCityDefense", &CvTraitInfo::isStackCityDefense, "bool ()")
 		.def("isRevealWonderProduction", &CvTraitInfo::isRevealWonderProduction, "bool ()")
@@ -138,5 +139,16 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getFoundingVassalLeader", &CvTraitInfo::getFoundingVassalLeader, "int ()")
 		.def("getFoundingVassalHandicap", &CvTraitInfo::getFoundingVassalHandicap, "int ()")
 		.def("getFoundingVassalRange", &CvTraitInfo::getFoundingVassalRange, "int ()")
+		;
+}
+
+// The getters of CvProjectInfo added by this mod. Called from CyInfoPythonInterface3 with the class
+void CyInfoPythonInterfaceProject2(python::class_<CvProjectInfo, python::bases<CvInfoBase> >& kProjectInfo)
+{
+	kProjectInfo
+		.def("getNumPrereqOrTechs", &CvProjectInfo::getNumPrereqOrTechs, "int ()")
+		.def("getPrereqOrTechs", &CvProjectInfo::getPrereqOrTechs, "int (int i)")
+		.def("getNumPrereqOrTraits", &CvProjectInfo::getNumPrereqOrTraits, "int ()")
+		.def("getPrereqOrTraits", &CvProjectInfo::getPrereqOrTraits, "int (int i)")
 		;
 }

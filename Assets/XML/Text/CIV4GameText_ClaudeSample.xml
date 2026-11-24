@@ -1835,4 +1835,112 @@
 		<Spanish>Long Count %s1</Spanish>
 		<Japanese>&#38263;&#26399;&#26278; %s1</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_POPUP_CHOOSE_TREATY_ZONE</Tag>
+		<English>The treaty divides the world into east and west along a line through your capital. Choose the half that becomes your zone.</English>
+		<French>The treaty divides the world into east and west along a line through your capital. Choose the half that becomes your zone.</French>
+		<German>The treaty divides the world into east and west along a line through your capital. Choose the half that becomes your zone.</German>
+		<Italian>The treaty divides the world into east and west along a line through your capital. Choose the half that becomes your zone.</Italian>
+		<Spanish>The treaty divides the world into east and west along a line through your capital. Choose the half that becomes your zone.</Spanish>
+		<Japanese>&#26465;&#32004;&#12395;&#12424;&#12426;&#12289;&#39318;&#37117;&#12434;&#36890;&#12427;&#32218;&#12391;&#19990;&#30028;&#12364;&#26481;&#35199;&#12395;&#20998;&#12369;&#12425;&#12428;&#12414;&#12377;&#12290;&#20778;&#20808;&#22320;&#22495;&#12395;&#12377;&#12427;&#20596;&#12434;&#36984;&#12435;&#12391;&#12367;&#12384;&#12373;&#12356;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TREATY_ZONE_WEST</Tag>
+		<English>West</English>
+		<French>West</French>
+		<German>West</German>
+		<Italian>West</Italian>
+		<Spanish>West</Spanish>
+		<Japanese>&#35199;&#20596;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TREATY_ZONE_EAST</Tag>
+		<English>East</English>
+		<French>East</French>
+		<German>East</German>
+		<Italian>East</Italian>
+		<Spanish>East</Spanish>
+		<Japanese>&#26481;&#20596;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_TREATY_ZONE_CHOSEN</Tag>
+		<English>%s1 has claimed the %s2 half of the world as its zone.</English>
+		<French>%s1 has claimed the %s2 half of the world as its zone.</French>
+		<German>%s1 has claimed the %s2 half of the world as its zone.</German>
+		<Italian>%s1 has claimed the %s2 half of the world as its zone.</Italian>
+		<Spanish>%s1 has claimed the %s2 half of the world as its zone.</Spanish>
+		<Japanese>%s1&#12364;&#19990;&#30028;&#12398;%s2&#12434;&#20778;&#20808;&#22320;&#22495;&#12395;&#12375;&#12414;&#12375;&#12383;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_POPUP_TREATY_TERMS</Tag>
+		<English>%s1 lies in the zone of %s2. Choose the terms:</English>
+		<French>%s1 lies in the zone of %s2. Choose the terms:</French>
+		<German>%s1 lies in the zone of %s2. Choose the terms:</German>
+		<Italian>%s1 lies in the zone of %s2. Choose the terms:</Italian>
+		<Spanish>%s1 lies in the zone of %s2. Choose the terms:</Spanish>
+		<Japanese>%s1&#12399;%s2&#12398;&#20778;&#20808;&#22320;&#22495;&#12395;&#12354;&#12426;&#12414;&#12377;&#12290;&#26465;&#20214;&#12434;&#36984;&#12435;&#12391;&#12367;&#12384;&#12373;&#12356;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TREATY_TERMS_GOLD</Tag>
+		<English>Pay %d1 gold to %s2</English>
+		<French>Pay %d1 gold to %s2</French>
+		<German>Pay %d1 gold to %s2</German>
+		<Italian>Pay %d1 gold to %s2</Italian>
+		<Spanish>Pay %d1 gold to %s2</Spanish>
+		<Japanese>%s2&#12395;%d1&#12468;&#12540;&#12523;&#12489;&#12434;&#25903;&#25173;&#12358;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TREATY_TERMS_TECH</Tag>
+		<English>Give %s1 a random technology it does not know</English>
+		<French>Give %s1 a random technology it does not know</French>
+		<German>Give %s1 a random technology it does not know</German>
+		<Italian>Give %s1 a random technology it does not know</Italian>
+		<Spanish>Give %s1 a random technology it does not know</Spanish>
+		<Japanese>%s1&#12364;&#25345;&#12383;&#12394;&#12356;&#25216;&#34899;&#12434;&#12521;&#12531;&#12480;&#12512;&#12395;1&#12388;&#28193;&#12377;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TREATY_TERMS_BUILDING</Tag>
+		<English>Refuse (the city gets %s1)</English>
+		<French>Refuse (the city gets %s1)</French>
+		<German>Refuse (the city gets %s1)</German>
+		<Italian>Refuse (the city gets %s1)</Italian>
+		<Spanish>Refuse (the city gets %s1)</Spanish>
+		<Japanese>&#25298;&#21542;&#12377;&#12427;&#65288;&#37117;&#24066;&#12395;%s1&#12364;&#24314;&#12388;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_TREATY_TERMS_GOLD</Tag>
+		<English>%s1 paid %d2 gold to %s3 for %s4.</English>
+		<French>%s1 paid %d2 gold to %s3 for %s4.</French>
+		<German>%s1 paid %d2 gold to %s3 for %s4.</German>
+		<Italian>%s1 paid %d2 gold to %s3 for %s4.</Italian>
+		<Spanish>%s1 paid %d2 gold to %s3 for %s4.</Spanish>
+		<Japanese>%s1&#12364;%s4&#12398;&#12383;&#12417;&#12395;%s3&#12408;%d2&#12468;&#12540;&#12523;&#12489;&#12434;&#25903;&#25173;&#12356;&#12414;&#12375;&#12383;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_TREATY_TERMS_TECH</Tag>
+		<English>%s1 gave %s2 to %s3 for %s4.</English>
+		<French>%s1 gave %s2 to %s3 for %s4.</French>
+		<German>%s1 gave %s2 to %s3 for %s4.</German>
+		<Italian>%s1 gave %s2 to %s3 for %s4.</Italian>
+		<Spanish>%s1 gave %s2 to %s3 for %s4.</Spanish>
+		<Japanese>%s1&#12364;%s4&#12398;&#12383;&#12417;&#12395;%s3&#12408;%s2&#12434;&#28193;&#12375;&#12414;&#12375;&#12383;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_TREATY_TERMS_BUILDING</Tag>
+		<English>%s1 refused the terms of %s4: %s2 has %s3.</English>
+		<French>%s1 refused the terms of %s4: %s2 has %s3.</French>
+		<German>%s1 refused the terms of %s4: %s2 has %s3.</German>
+		<Italian>%s1 refused the terms of %s4: %s2 has %s3.</Italian>
+		<Spanish>%s1 refused the terms of %s4: %s2 has %s3.</Spanish>
+		<Japanese>%s1&#12399;%s4&#12398;&#26465;&#20214;&#12434;&#25298;&#21542;&#12375;&#12414;&#12375;&#12383;&#12290;%s2&#12395;%s3&#12364;&#24314;&#12385;&#12414;&#12375;&#12383;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_TREATY_ZONE_INCOME</Tag>
+		<English>From %s1: [ICON_GOLD]%d2</English>
+		<French>From %s1: [ICON_GOLD]%d2</French>
+		<German>From %s1: [ICON_GOLD]%d2</German>
+		<Italian>From %s1: [ICON_GOLD]%d2</Italian>
+		<Spanish>From %s1: [ICON_GOLD]%d2</Spanish>
+		<Japanese>%s1&#12424;&#12426;[ICON_GOLD]%d2&#12434;&#21462;&#24471;&#12290;</Japanese>
+	</TEXT>
 </Civ4GameText>

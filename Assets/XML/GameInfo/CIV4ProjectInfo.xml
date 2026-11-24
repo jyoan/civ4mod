@@ -434,5 +434,40 @@
 			<CreateSound/>
 			<MovieDefineTag/>
 		</ProjectInfo>
+		<ProjectInfo>
+			<Type>PROJECT_TEST_TREATY</Type>
+			<Description>TXT_KEY_PROJECT_TEST_TREATY</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<Strategy>TXT_KEY_CLAUDE_TEST_PEDIA</Strategy>
+			<VictoryPrereq>NONE</VictoryPrereq>
+			<TechPrereq>NONE</TechPrereq>
+			<PrereqOrTechs>
+				<TechType>TECH_WRITING</TechType>
+				<TechType>TECH_HORSEBACK_RIDING</TechType>
+			</PrereqOrTechs>
+			<PrereqOrTraits>
+				<TraitType>TRAIT_TEST_TREATY</TraitType>
+			</PrereqOrTraits>
+			<AnyonePrereqProject>NONE</AnyonePrereqProject>
+			<iMaxGlobalInstances>-1</iMaxGlobalInstances>
+			<iMaxTeamInstances>1</iMaxTeamInstances>
+			<iCost>30</iCost>
+			<iNukeInterception>0</iNukeInterception>
+			<iTechShare>0</iTechShare>
+			<EveryoneSpecialUnit>NONE</EveryoneSpecialUnit>
+			<EveryoneSpecialBuilding>NONE</EveryoneSpecialBuilding>
+			<bSpaceship>0</bSpaceship>
+			<bAllowsNukes>0</bAllowsNukes>
+			<Button>,Art/Interface/Buttons/Buildings/Internet.dds,Art/Interface/Buttons/Buildings_Atlas.dds,1,4</Button>
+			<PrereqProjects/>
+			<VictoryThresholds/>
+			<VictoryMinThresholds/>
+			<iVictoryDelayPercent>0</iVictoryDelayPercent>
+			<iSuccessRate>0</iSuccessRate>
+			<BonusProductionModifiers/>
+			<CreateSound/>
+			<MovieDefineTag>NONE</MovieDefineTag>
+		</ProjectInfo>
+	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</ProjectInfos>
 </Civ4ProjectInfo>

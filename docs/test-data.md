@@ -89,3 +89,4 @@
 検証用文明が `CIVIC_TEST` を採用したあと、白兵戦ユニット（都市で生産）で期待される値: 生産直後の経験値 5（志向 +2、白兵戦 +2、社会制度 +1。その後は毎ターン +1 で 10 まで増える）、ユニット A → B のアップグレード割引 75%（志向 50% + 社会制度 25%）、`PROMOTION_TEST` が付く
 
 ゲームルールの確認: `GlobalDefinesAlt.xml` の `RIVER_CROSSING_MOVE_COST` はコミット時は 0（BtS と同じ）。確かめるときだけ一時的に 1 にする
+| `TRAIT_TEST_TREATY`（検証用志向（条約））・`PROJECT_TEST_TREATY`（検証用プロジェクト（条約）） | — / インターネット | 2026-11-24。検証用文明と検証用 AI 文明の文明の志向（3 つ目）。プロジェクトは筆記か乗馬で作れ（`PrereqOrTechs`）、この志向が必要（`PrereqOrTraits`）、コスト 30、チームに 1 回。完成すると優先地域を選ぶ（`chooseTreatyZone`）。AI は最初の都市で自動で選ぶ（`PyOnCityFounded` の `pPlayer.isHuman() or chooseTreatyZone(...)`）。毎ターン、優先地域の他文明の都市 1 つにつき金 +1（イベントログに「検証用プロジェクト（条約）より[金]N を取得。」）。他文明が優先地域に都市を建てると、建てた側が 50 ゴールド（ゲーム速度で変わる）・技術 1 つ・その都市に検証用建造物（`BUILDINGCLASS_TEST`）から選ぶ（`offerTreatyTerms`。イベントログに「[検証] PyOnOtherCityFounded: 都市名, offerTreatyTerms True/False」）。人間が建てた側になる確認は、カスタムゲームで AI の枠に検証用 AI 文明を入れ、その優先地域に都市を建てる |

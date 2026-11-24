@@ -4786,6 +4786,10 @@
 					<TraitType>TRAIT_TEST_CALENDAR</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_TEST_TREATY</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<UniqueBuilds>
 				<UniqueBuild>
@@ -4901,6 +4905,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_TEST_CALENDAR</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_TEST_TREATY</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>

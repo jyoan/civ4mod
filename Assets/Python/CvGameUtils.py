@@ -6,6 +6,7 @@
 import CvUtil
 from CvPythonExtensions import *
 import CvEventInterface
+import CvHookUtils	# added by this mod
 
 # globals
 gc = CyGlobalContext()
@@ -81,7 +82,8 @@ class CvGameUtils:
 		return BuildingTypes.NO_BUILDING
 
 	def updateColoredPlots(self):
-		return False
+		# The treaty zones while a unit that can found cities is selected (added by this mod)
+		return CvHookUtils.updateTreatyZonePlots()
 
 	def isActionRecommended(self,argsList):
 		pUnit = argsList[0]

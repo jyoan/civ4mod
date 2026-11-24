@@ -52,6 +52,9 @@
 ##                     2 if the second...): after the team circumnavigates the globe (the first team has its bonus moves
 ##                     of the ships by then; a later team gets nothing else), e.g. iOrder == 1 and startGoldenAge(pPlayer),
 ##                     iOrder > 1 and gainCircumnavigationMoves(pPlayer)
+##   PyOnOtherCityFounded  pPlayer, eTrait, pCity (CyCity of the founder): after another player (any player alive but this
+##                     one, the barbarians too) founds a city, e.g. offerTreatyTerms(pPlayer, eTrait, pCity, 100,
+##                     'BUILDINGCLASS_X')
 ## Counters: each player has a number per trait for the hooks (CyPlayer.getTraitCounter, saved with the game), e.g.
 ##   countEvery(pPlayer, eTrait, 3) and gainGold(pPlayer, 100)   (every third time)
 ## Temporary traits: gainTraitForTurns(pPlayer, 'TRAIT_X', iTurns) gives a trait for some turns, e.g. from a hook.
@@ -158,3 +161,7 @@ def onCivicChanged(argsList):
 def onCircumnavigated(argsList):
 	pPlayer, eTrait, iOrder = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnCircumnavigated())
+
+def onOtherCityFounded(argsList):
+	pPlayer, eTrait, pCity = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnOtherCityFounded())
