@@ -3114,5 +3114,16 @@
 				</StackPromotion>
 			</StackPromotions>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_ARSENAL_OF_DEMOCRACY</Type>
+			<Description>TXT_KEY_TRAIT_ARSENAL_OF_DEMOCRACY</Description>
+			<ShortDescription>TXT_KEY_TRAIT_ARSENAL_OF_DEMOCRACY_SHORT</ShortDescription>
+			<LendLease>
+				<bLendLease>1</bLendLease>
+				<iResearchPercent>50</iResearchPercent>
+				<iGoldPercent>25</iGoldPercent>
+				<iAttitudeChange>1</iAttitudeChange>
+			</LendLease>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>

@@ -2090,4 +2090,22 @@
 		<Spanish>[ICON_BULLET]In a city of a civilization at war with us: peace with it, Zhang Yi is sacrificed</Spanish>
 		<Japanese>[ICON_BULLET]&#25126;&#20105;&#20013;&#12398;&#25991;&#26126;&#12398;&#37117;&#24066;&#12391;&#20351;&#12358;: &#12381;&#12398;&#25991;&#26126;&#12392;&#21644;&#24179;&#12375;&#12289;&#24373;&#20736;&#12399;&#28040;&#12360;&#12427;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ARSENAL_OF_DEMOCRACY</Tag>
+		<English>Arsenal of Democracy</English>
+		<French>Arsenal of Democracy</French>
+		<German>Arsenal of Democracy</German>
+		<Italian>Arsenal of Democracy</Italian>
+		<Spanish>Arsenal of Democracy</Spanish>
+		<Japanese>&#27665;&#20027;&#20027;&#32681;&#12398;&#20853;&#22120;&#24288;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ARSENAL_OF_DEMOCRACY_SHORT</Tag>
+		<English>Arsenal</English>
+		<French>Arsenal</French>
+		<German>Arsenal</German>
+		<Italian>Arsenal</Italian>
+		<Spanish>Arsenal</Spanish>
+		<Japanese>&#24288;</Japanese>
+	</TEXT>
 </Civ4GameText>
