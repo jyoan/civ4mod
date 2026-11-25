@@ -378,6 +378,12 @@
 				<iGoldLimitModifier>100</iGoldLimitModifier>
 				<iGoldValueModifier>50</iGoldValueModifier>
 			</Deals>
+			<LendLease>
+				<bLendLease>1</bLendLease>
+				<iResearchPercent>50</iResearchPercent>
+				<iGoldPercent>25</iGoldPercent>
+				<iAttitudeChange>1</iAttitudeChange>
+			</LendLease>
 			<iRouteMovementModifierInBorders>-50</iRouteMovementModifierInBorders>
 			<Hurrys>
 				<Hurry>

@@ -559,6 +559,16 @@ void CvNetModNetMessage::Execute()
 		return;
 	}
 
+	// LendLease of the traits (added by this mod): player, receiver, head unit ID
+	if (m_iData1 == MOD_NET_MESSAGE_LEND_LEASE)
+	{
+		if (m_iData2 >= 0 && m_iData2 < MAX_CIV_PLAYERS)
+		{
+			GET_PLAYER((PlayerTypes)m_iData2).lendLease((PlayerTypes)m_iData3, m_iData4);
+		}
+		return;
+	}
+
 	CvEventReporter::getInstance().reportModNetMessage(m_iData1, m_iData2, m_iData3, m_iData4, m_iData5);
 }
 

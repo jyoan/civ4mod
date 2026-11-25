@@ -412,6 +412,35 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 			break;
 		}
 
+		// The popup of LendLease of the traits (added by this mod): the flags keep which players the buttons are, in their
+		// order (the last button cancels). The selected units are joined into one group first, as for a move, and the
+		// group of the head unit goes (CvPlayer::lendLease)
+		if (info.getOnClickedPythonCallback() == "claudeLendLease")
+		{
+			int iButton = 0;
+			for (int iPlayer = 0; iPlayer < MAX_CIV_PLAYERS; iPlayer++)
+			{
+				if (info.getFlags() & (1 << iPlayer))
+				{
+					if (iButton == pPopupReturn->getButtonClicked())
+					{
+						CvUnit* pHeadSelectedUnit = gDLL->getInterfaceIFace()->getHeadSelectedUnit();
+						if (pHeadSelectedUnit != NULL && pHeadSelectedUnit->getOwnerINLINE() == GC.getGameINLINE().getActivePlayer())
+						{
+							if (!(gDLL->getInterfaceIFace()->mirrorsSelectionGroup()))
+							{
+								GC.getGameINLINE().selectionListGameNetMessage(GAMEMESSAGE_JOIN_GROUP);
+							}
+							CvMessageControl::getInstance().sendModNetMessage(MOD_NET_MESSAGE_LEND_LEASE, GC.getGameINLINE().getActivePlayer(), iPlayer, pHeadSelectedUnit->getID(), 0);
+						}
+						break;
+					}
+					iButton++;
+				}
+			}
+			break;
+		}
+
 		// The popup of bChooseGoody (added by this mod): the choice goes to every computer, Python is not called
 		if (info.getOnClickedPythonCallback() == "claudeChooseGoody")
 		{

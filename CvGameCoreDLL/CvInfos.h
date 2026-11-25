@@ -5033,6 +5033,11 @@ public:
 	int getDealCityValueModifier() const;			// Exposed to Python
 	int getDealGoldLimitModifier() const;			// Exposed to Python
 	int getDealGoldValueModifier() const;			// Exposed to Python
+	bool isLendLease() const;						// Exposed to Python
+	int getLendLeaseResearchPercent() const;		// Exposed to Python
+	int getLendLeaseGoldPercent() const;			// Exposed to Python
+	int getLendLeaseAttitudeChange() const;			// Exposed to Python
+	int getLendLeaseAttitudeLimit() const;			// Exposed to Python
 	bool isNoCultureFlip() const;					// Exposed to Python
 	bool isNoRevoltAndNoCultureFlip() const;		// Exposed to Python
 	bool isInstantCultureFlip() const;				// Exposed to Python
@@ -5406,6 +5411,11 @@ protected:
 	int m_iDealCityValueModifier;	// added by this mod
 	int m_iDealGoldLimitModifier;	// added by this mod
 	int m_iDealGoldValueModifier;	// added by this mod
+	bool m_bLendLease;	// added by this mod
+	int m_iLendLeaseResearchPercent;	// added by this mod
+	int m_iLendLeaseGoldPercent;	// added by this mod
+	int m_iLendLeaseAttitudeChange;	// added by this mod
+	int m_iLendLeaseAttitudeLimit;	// added by this mod
 	bool m_bNoCultureFlip;	// added by this mod
 	bool m_bNoRevoltAndNoCultureFlip;	// added by this mod
 	bool m_bInstantCultureFlip;	// added by this mod

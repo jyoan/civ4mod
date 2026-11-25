@@ -1192,6 +1192,14 @@ void CvGame::handleAction(int iAction)
 	{
 		bSkip = false;
 
+		// LendLease of the traits (added by this mod): only a popup here, as COMMAND_LOAD. The choice is sent as
+		// MOD_NET_MESSAGE_LEND_LEASE (CvDLLButtonPopup)
+		if (GC.getActionInfo(iAction).getCommandType() == COMMAND_LEND_LEASE)
+		{
+			GET_PLAYER(getActivePlayer()).launchLendLeasePopup();
+			bSkip = true;
+		}
+
 		if (GC.getActionInfo(iAction).getCommandType() == COMMAND_LOAD)
 		{
 			CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_LOADUNIT);

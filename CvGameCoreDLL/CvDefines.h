@@ -38,6 +38,8 @@
 #define MOD_NET_MESSAGE_UNSETTLE_GREAT_PERSON						(-20261125)
 // The ModNetMessage of bIgnoreEvents of the traits: the DLL handles it, Python does not see it (added by this mod)
 #define MOD_NET_MESSAGE_IGNORE_EVENT								(-20261126)
+// The ModNetMessage of LendLease of the traits: the DLL handles it, Python does not see it (added by this mod)
+#define MOD_NET_MESSAGE_LEND_LEASE									(-20261128)
 // iData1 of WIDGET_GENERAL for the date at the top right of the main interface (CvMainInterface.py writes the same
 // number): the help of CvDLLWidgetData::parseHelp (added by this mod)
 #define WIDGET_DATA_INTERFACE_TIME								(-20261124)

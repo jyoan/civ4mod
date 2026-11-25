@@ -426,6 +426,17 @@ public:
 	int getDealCityValueModifier() const;			// Exposed to Python
 	int getDealGoldLimitModifier() const;			// Exposed to Python
 	int getDealGoldValueModifier() const;			// Exposed to Python
+	bool isLendLease() const;						// Exposed to Python
+	int getLendLeaseResearchPercent() const;		// Exposed to Python
+	int getLendLeaseGoldPercent() const;			// Exposed to Python
+	int getLendLeaseAttitudeChange() const;			// Exposed to Python
+	int getLendLeaseAttitudeLimit() const;			// Exposed to Python
+	bool canLendLeaseTo(PlayerTypes eTarget) const;	// Exposed to Python: LendLease of the traits (added by this mod)
+	void getLendLeaseUnits(const std::vector<CvUnit*>& apUnits, PlayerTypes eTarget, std::vector<CvUnit*>& apSent, int& iNumUnits, CvWString& szDenial) const;	// added by this mod
+	void launchLendLeasePopup();					// added by this mod: LendLease of the traits
+	void lendLease(PlayerTypes eTarget, int iUnitID);	// added by this mod: LendLease of the traits
+	void changeLendLeaseAttitude(PlayerTypes eTarget);	// added by this mod: LendLease of the traits
+	void receiveResearch(int iResearch);			// added by this mod: research for the current tech, or the overflow
 	void ignoreEvent(int iEventTriggeredId);		// Exposed to Python: bIgnoreEvents of the traits (added by this mod)
 	bool isNoCultureFlip() const;					// Exposed to Python: bNoCultureFlip or bNoRevoltAndNoCultureFlip of the traits
 	bool isNoRevoltAndNoCultureFlip() const;		// Exposed to Python

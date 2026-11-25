@@ -2526,6 +2526,36 @@ int CyPlayer::getDealGoldValueModifier()
 	return m_pPlayer ? m_pPlayer->getDealGoldValueModifier() : 0;
 }
 
+bool CyPlayer::isLendLease()
+{
+	return m_pPlayer ? m_pPlayer->isLendLease() : false;
+}
+
+int CyPlayer::getLendLeaseResearchPercent()
+{
+	return m_pPlayer ? m_pPlayer->getLendLeaseResearchPercent() : 0;
+}
+
+int CyPlayer::getLendLeaseGoldPercent()
+{
+	return m_pPlayer ? m_pPlayer->getLendLeaseGoldPercent() : 0;
+}
+
+int CyPlayer::getLendLeaseAttitudeChange()
+{
+	return m_pPlayer ? m_pPlayer->getLendLeaseAttitudeChange() : 0;
+}
+
+int CyPlayer::getLendLeaseAttitudeLimit()
+{
+	return m_pPlayer ? m_pPlayer->getLendLeaseAttitudeLimit() : 0;
+}
+
+bool CyPlayer::canLendLeaseTo(int /*PlayerTypes*/ eTarget)
+{
+	return m_pPlayer ? m_pPlayer->canLendLeaseTo((PlayerTypes)eTarget) : false;
+}
+
 void CyPlayer::ignoreEvent(int iEventTriggeredId)
 {
 	if (m_pPlayer)

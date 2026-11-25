@@ -207,6 +207,7 @@
 - 2026-11-23 に足したフック 12 個は、効果に加えてイベントログに「[検証] フック名: 引数」を出す（`showMessage` と `TXT_KEY_CLAUDE_TEST_HOOK_LOG`。例: 技術の名前・bFirst・カウンター、相手のチーム名、都市と宗教、前と後の社会制度）。
 - ランダムイベントのタグ `bIgnoreEvents`・`iEventChanceChange`・`bNoFirstEventDelay` は書いていない（確認済み。ほかの確認の邪魔になるため 2026-11-23 に外した。確かめるときは一時的に `1`・`100`・`1` を書く。開始直後から毎ターンイベントが来て、画面に「このイベントを無視する」が出る）。
 - 2026-11-24 の分（`Deals`）: 平時でも AI から首都以外の都市を買える（`bBuyCities`）、取引で得る都市の値段 -50%（`iCityValueModifier`）、AI が出す金の上限 +100%（`iGoldLimitModifier`）、こちらが出す金の AI から見た価値 +50%（`iGoldValueModifier`。AI が求める金は 2/3）
+- 2026-11-26 の分（`LendLease`）: 自国の都市のユニットに行動ボタン「レンドリース」（`bLendLease`）、生産コストの 50% を研究（`iResearchPercent`）・25% を金（`iGoldPercent`）、送るたびに相手の取引の態度 +1（`iAttitudeChange`。上限は省略して 4）。
 
 ## `TRAIT_TEST_TEMPORARY`（検証用志向（期間））
 

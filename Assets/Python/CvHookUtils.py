@@ -367,7 +367,7 @@ def createPartisans(pPlayer, pCity, iNum, iCultureLevel):
 
 # iData1 of CyMessageControl().sendModNetMessage for the choice. The DLL handles some numbers itself and Python never sees
 # them (MOD_NET_MESSAGE_* of CvDefines.h): -20261110 (bChooseGoody), -20261125 (bUnsettleGreatPeople), -20261126
-# (bIgnoreEvents). Do not use those here
+# (bIgnoreEvents), -20261128 (LendLease). Do not use those here
 MOD_NET_MESSAGE_CHOOSE_GREAT_PERSON = -20261123
 # The trait counter of chooseGreatPeopleByCalendar: bits 0-23 are the great people already chosen (the bits of
 # greatPeopleUnitClasses), the higher bits the number of choices still to make
