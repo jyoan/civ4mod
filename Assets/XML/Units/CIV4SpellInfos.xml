@@ -4,7 +4,8 @@
 <!-- PyRequirement, PyResult and PyMiscast are Python expressions evaluated in Assets/Python/EntryPoints/CvSpellInterface.py (pCaster is the casting unit) -->
 <Civ4SpellInfos xmlns="x-schema:CIV4SpellSchema.xml">
 	<SpellInfos>
-		<!-- Dedicated test entries -->
+		<!-- Dedicated test entries: disabled on 2026-11-26 (already tested; their buttons got in the way of other checks). Remove the comment marks to use them again -->
+		<!--
 		<SpellInfo>
 			<Type>SPELL_TEST_GOLD</Type>
 			<Description>TXT_KEY_SPELL_TEST_GOLD</Description>
@@ -220,6 +221,7 @@
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Button>Art/Interface/Buttons/Process/ProcessResearch.dds</Button>
 		</SpellInfo>
+		-->
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</SpellInfos>
 </Civ4SpellInfos>

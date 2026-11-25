@@ -1615,6 +1615,15 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_DEAL_GOLD_LIMIT_MODIFIER", kTrait.getDealGoldLimitModifier());
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_DEAL_GOLD_VALUE_MODIFIER", kTrait.getDealGoldValueModifier());
 
+	// LendLease
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_LEND_LEASE", kTrait.isLendLease());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_LEND_LEASE_RESEARCH_PERCENT", kTrait.getLendLeaseResearchPercent());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_LEND_LEASE_GOLD_PERCENT", kTrait.getLendLeaseGoldPercent());
+	if (kTrait.getLendLeaseAttitudeChange() != 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_LEND_LEASE_ATTITUDE", kTrait.getLendLeaseAttitudeChange(), ((kTrait.getLendLeaseAttitudeLimit() <= 0 || kTrait.getLendLeaseAttitudeLimit() > 4) ? 4 : kTrait.getLendLeaseAttitudeLimit())));
+	}
+
 	// "Can build without the technology: Research". The processes are loaded when a game is launched: none on the screens
 	// before (GC.getNumProcessInfos() is 0)
 	bFirst = true;

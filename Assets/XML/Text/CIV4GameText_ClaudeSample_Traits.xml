@@ -1973,4 +1973,40 @@
 		<Spanish>[ICON_BULLET]Unique project: %s1_Name</Spanish>
 		<Japanese>[ICON_BULLET]&#22266;&#26377;&#12503;&#12525;&#12472;&#12455;&#12463;&#12488;: %s1_Name</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LEND_LEASE</Tag>
+		<English>[ICON_BULLET]Units in your cities can be sent to the capital of a civilization at peace (Lend-Lease)</English>
+		<French>[ICON_BULLET]Units in your cities can be sent to the capital of a civilization at peace (Lend-Lease)</French>
+		<German>[ICON_BULLET]Units in your cities can be sent to the capital of a civilization at peace (Lend-Lease)</German>
+		<Italian>[ICON_BULLET]Units in your cities can be sent to the capital of a civilization at peace (Lend-Lease)</Italian>
+		<Spanish>[ICON_BULLET]Units in your cities can be sent to the capital of a civilization at peace (Lend-Lease)</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#37117;&#24066;&#12395;&#12356;&#12427;&#12518;&#12491;&#12483;&#12488;&#12434;&#12289;&#24179;&#21644;&#12394;&#25991;&#26126;&#12398;&#39318;&#37117;&#12395;&#36865;&#12428;&#12427;&#65288;&#12524;&#12531;&#12489;&#12522;&#12540;&#12473;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LEND_LEASE_RESEARCH_PERCENT</Tag>
+		<English>[ICON_BULLET]Lend-Lease: research of %d1%% of the production cost of the units sent</English>
+		<French>[ICON_BULLET]Lend-Lease: research of %d1%% of the production cost of the units sent</French>
+		<German>[ICON_BULLET]Lend-Lease: research of %d1%% of the production cost of the units sent</German>
+		<Italian>[ICON_BULLET]Lend-Lease: research of %d1%% of the production cost of the units sent</Italian>
+		<Spanish>[ICON_BULLET]Lend-Lease: research of %d1%% of the production cost of the units sent</Spanish>
+		<Japanese>[ICON_BULLET]&#12524;&#12531;&#12489;&#12522;&#12540;&#12473;: &#36865;&#12387;&#12383;&#12518;&#12491;&#12483;&#12488;&#12398;&#29983;&#29987;&#12467;&#12473;&#12488;&#12398; %d1%% &#12434;&#30740;&#31350;&#12392;&#12375;&#12390;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LEND_LEASE_GOLD_PERCENT</Tag>
+		<English>[ICON_BULLET]Lend-Lease: gold of %d1%% of the production cost of the units sent</English>
+		<French>[ICON_BULLET]Lend-Lease: gold of %d1%% of the production cost of the units sent</French>
+		<German>[ICON_BULLET]Lend-Lease: gold of %d1%% of the production cost of the units sent</German>
+		<Italian>[ICON_BULLET]Lend-Lease: gold of %d1%% of the production cost of the units sent</Italian>
+		<Spanish>[ICON_BULLET]Lend-Lease: gold of %d1%% of the production cost of the units sent</Spanish>
+		<Japanese>[ICON_BULLET]&#12524;&#12531;&#12489;&#12522;&#12540;&#12473;: &#36865;&#12387;&#12383;&#12518;&#12491;&#12483;&#12488;&#12398;&#29983;&#29987;&#12467;&#12473;&#12488;&#12398; %d1%% &#12434;&#37329;&#12392;&#12375;&#12390;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LEND_LEASE_ATTITUDE</Tag>
+		<English>[ICON_BULLET]Lend-Lease: attitude of the receiver (trade) %D1 each time, up to +%d2</English>
+		<French>[ICON_BULLET]Lend-Lease: attitude of the receiver (trade) %D1 each time, up to +%d2</French>
+		<German>[ICON_BULLET]Lend-Lease: attitude of the receiver (trade) %D1 each time, up to +%d2</German>
+		<Italian>[ICON_BULLET]Lend-Lease: attitude of the receiver (trade) %D1 each time, up to +%d2</Italian>
+		<Spanish>[ICON_BULLET]Lend-Lease: attitude of the receiver (trade) %D1 each time, up to +%d2</Spanish>
+		<Japanese>[ICON_BULLET]&#12524;&#12531;&#12489;&#12522;&#12540;&#12473;: &#36865;&#12427;&#12383;&#12403;&#12395;&#30456;&#25163;&#12398;&#24907;&#24230;&#65288;&#21462;&#24341;&#65289;%D1&#65288;+%d2 &#12414;&#12391;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

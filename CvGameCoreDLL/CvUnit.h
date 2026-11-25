@@ -158,6 +158,9 @@ public:
 
 	bool canGift(bool bTestVisible = false, bool bTestTransport = true);																											// Exposed to Python 
 	void gift(bool bTestTransport = true);
+	bool canLendLease(bool bTestVisible = false);					// added by this mod: LendLease of the traits
+	const char* getLendLeaseDenial(PlayerTypes eTarget);			// added by this mod: LendLease of the traits
+	CvUnit* lendLease(PlayerTypes eTarget);							// added by this mod: LendLease of the traits
 
 	bool canLoadUnit(const CvUnit* pUnit, const CvPlot* pPlot) const;															// Exposed to Python
 	void loadUnit(CvUnit* pUnit);

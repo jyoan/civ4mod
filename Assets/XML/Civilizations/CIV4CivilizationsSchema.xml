@@ -551,6 +551,17 @@
 		<element type="iGoldLimitModifier" minOccurs="0"/>
 		<element type="iGoldValueModifier" minOccurs="0"/>
 	</ElementType>
+	<ElementType name="bLendLease" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iResearchPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iGoldPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iAttitudeLimit" content="textOnly" dt:type="int"/>
+	<ElementType name="LendLease" content="eltOnly">
+		<element type="bLendLease" minOccurs="0"/>
+		<element type="iResearchPercent" minOccurs="0"/>
+		<element type="iGoldPercent" minOccurs="0"/>
+		<element type="iAttitudeChange" minOccurs="0"/>
+		<element type="iAttitudeLimit" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="iRouteMovementModifierInBorders" content="textOnly" dt:type="int"/>
 	<ElementType name="iCombatPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="HurryType" content="textOnly"/>
@@ -1228,6 +1239,7 @@
 		<element type="iTechCostModifier" minOccurs="0"/>
 		<element type="iAttitudeChange" minOccurs="0"/>
 		<element type="Deals" minOccurs="0"/>
+		<element type="LendLease" minOccurs="0"/>
 		<element type="iRouteMovementModifierInBorders" minOccurs="0"/>
 		<element type="iCombatPercent" minOccurs="0"/>
 		<element type="Hurrys" minOccurs="0"/>

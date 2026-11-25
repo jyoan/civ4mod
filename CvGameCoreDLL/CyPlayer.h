@@ -558,6 +558,12 @@ public:
 	int getDealCityValueModifier();	// added by this mod
 	int getDealGoldLimitModifier();	// added by this mod
 	int getDealGoldValueModifier();	// added by this mod
+	bool isLendLease();	// added by this mod
+	int getLendLeaseResearchPercent();	// added by this mod
+	int getLendLeaseGoldPercent();	// added by this mod
+	int getLendLeaseAttitudeChange();	// added by this mod
+	int getLendLeaseAttitudeLimit();	// added by this mod
+	bool canLendLeaseTo(int /*PlayerTypes*/ eTarget);	// added by this mod
 	void ignoreEvent(int iEventTriggeredId);	// added by this mod
 	bool isNoCultureFlip();	// added by this mod
 	bool isNoRevoltAndNoCultureFlip();	// added by this mod

@@ -124,6 +124,11 @@ m_bBuyCities(false),
 m_iDealCityValueModifier(0),
 m_iDealGoldLimitModifier(0),
 m_iDealGoldValueModifier(0),
+m_bLendLease(false),
+m_iLendLeaseResearchPercent(0),
+m_iLendLeaseGoldPercent(0),
+m_iLendLeaseAttitudeChange(0),
+m_iLendLeaseAttitudeLimit(0),
 m_bNoCultureFlip(false),
 m_bNoRevoltAndNoCultureFlip(false),
 m_bInstantCultureFlip(false),
@@ -1055,6 +1060,39 @@ int CvTraitInfo::getDealGoldLimitModifier() const
 int CvTraitInfo::getDealGoldValueModifier() const
 {
 	return m_iDealGoldValueModifier;
+}
+
+// LendLease/bLendLease (added by this mod): the units of the player in its own cities get the action button Lend-Lease
+// (COMMAND_LEND_LEASE): the selected units go to the capital of a civilization at peace and become its units
+bool CvTraitInfo::isLendLease() const
+{
+	return m_bLendLease;
+}
+
+// LendLease/iResearchPercent (added by this mod): research for the player, % of the production cost of the units sent
+int CvTraitInfo::getLendLeaseResearchPercent() const
+{
+	return m_iLendLeaseResearchPercent;
+}
+
+// LendLease/iGoldPercent (added by this mod): gold for the player, % of the production cost of the units sent
+int CvTraitInfo::getLendLeaseGoldPercent() const
+{
+	return m_iLendLeaseGoldPercent;
+}
+
+// LendLease/iAttitudeChange (added by this mod): the trade attitude of the receiver towards the player goes up by this much
+// each time units are sent (CvPlayerAI::AI_getTradeAttitude, shared with the deals)
+int CvTraitInfo::getLendLeaseAttitudeChange() const
+{
+	return m_iLendLeaseAttitudeChange;
+}
+
+// LendLease/iAttitudeLimit (added by this mod): iAttitudeChange does not raise the trade attitude above this. 0: 4, the
+// most of the trade attitude of BtS
+int CvTraitInfo::getLendLeaseAttitudeLimit() const
+{
+	return m_iLendLeaseAttitudeLimit;
 }
 
 // CultureFlip/bNoFlip (added by this mod): the cities of the player do not flip to another player by culture. The revolts still
@@ -2995,6 +3033,16 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 		pXML->GetChildXmlValByName(&m_iDealCityValueModifier, "iCityValueModifier");
 		pXML->GetChildXmlValByName(&m_iDealGoldLimitModifier, "iGoldLimitModifier");
 		pXML->GetChildXmlValByName(&m_iDealGoldValueModifier, "iGoldValueModifier");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	// LendLease: bLendLease, iResearchPercent, iGoldPercent, iAttitudeChange, iAttitudeLimit
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "LendLease"))
+	{
+		pXML->GetChildXmlValByName(&m_bLendLease, "bLendLease");
+		pXML->GetChildXmlValByName(&m_iLendLeaseResearchPercent, "iResearchPercent");
+		pXML->GetChildXmlValByName(&m_iLendLeaseGoldPercent, "iGoldPercent");
+		pXML->GetChildXmlValByName(&m_iLendLeaseAttitudeChange, "iAttitudeChange");
+		pXML->GetChildXmlValByName(&m_iLendLeaseAttitudeLimit, "iAttitudeLimit");
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 	pXML->GetChildXmlValByName(&m_iRouteMovementModifierInBorders, "iRouteMovementModifierInBorders");

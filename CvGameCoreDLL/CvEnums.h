@@ -1477,6 +1477,7 @@ enum CommandTypes					// Exposed to Python
 	COMMAND_UNLOAD_ALL,
 	COMMAND_HOTKEY,
 	COMMAND_CAST,		// added by this mod (spells, same as FFH2)
+	COMMAND_LEND_LEASE,	// added by this mod (LendLease of the traits)
 
 #ifdef _USRDLL
 	NUM_COMMAND_TYPES

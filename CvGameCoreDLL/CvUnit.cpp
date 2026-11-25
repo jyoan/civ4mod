@@ -2556,6 +2556,13 @@ bool CvUnit::canDoCommand(CommandTypes eCommand, int iData1, int iData2, bool bT
 		}
 		break;
 
+	case COMMAND_LEND_LEASE:
+		if (canLendLease(bTestVisible))
+		{
+			return true;
+		}
+		break;
+
 	default:
 		FAssert(false);
 		break;
@@ -2648,6 +2655,10 @@ void CvUnit::doCommand(CommandTypes eCommand, int iData1, int iData2)
 
 		case COMMAND_CAST:
 			cast(iData1);
+			break;
+
+		case COMMAND_LEND_LEASE:
+			// Not sent as a command: CvGame::handleAction opens the popup, the choice comes as a ModNetMessage
 			break;
 
 		default:
@@ -5077,6 +5088,127 @@ void CvUnit::gift(bool bTestTransport)
 
 	// Python Event
 	CvEventReporter::getInstance().unitGifted(pGiftUnit, getOwnerINLINE(), plot());
+}
+
+// The action button Lend-Lease (COMMAND_LEND_LEASE, LendLease of the traits, added by this mod): shown on the units of a
+// player with bLendLease in its own cities. Usable when a civilization at peace can receive the unit now. Pressing it opens
+// the popup of CvPlayer::launchLendLeasePopup (CvGame::handleAction), the units go in CvPlayer::lendLease
+bool CvUnit::canLendLease(bool bTestVisible)
+{
+	CvPlot* pPlot = plot();
+	int iI;
+
+	if (!GET_PLAYER(getOwnerINLINE()).isLendLease())
+	{
+		return false;
+	}
+
+	if (!pPlot->isCity() || pPlot->getOwnerINLINE() != getOwnerINLINE())
+	{
+		return false;
+	}
+
+	if (bTestVisible)
+	{
+		return true;
+	}
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		if (GET_PLAYER(getOwnerINLINE()).canLendLeaseTo((PlayerTypes)iI) && getLendLeaseDenial((PlayerTypes)iI) == NULL)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// The text key of the reason why eTarget cannot receive this unit by lend-lease now, NULL if it can (added by this mod).
+// The conditions of canGift that do not depend on the plot, the unit in a city of its owner, and a coastal capital for
+// ships. The civilization itself is checked by CvPlayer::canLendLeaseTo
+const char* CvUnit::getLendLeaseDenial(PlayerTypes eTarget)
+{
+	CvPlayerAI& kTarget = GET_PLAYER(eTarget);
+	CvCity* pCapital = kTarget.getCapitalCity();
+	CvPlot* pPlot = plot();
+	int iCorp;
+
+	if (pCapital == NULL)
+	{
+		return "TXT_KEY_LEND_LEASE_DENIAL_NO_CAPITAL";
+	}
+
+	if (isDelayedDeath() || !pPlot->isCity() || pPlot->getOwnerINLINE() != getOwnerINLINE())
+	{
+		return "TXT_KEY_LEND_LEASE_DENIAL_NOT_IN_CITY";
+	}
+
+	for (iCorp = 0; iCorp < GC.getNumCorporationInfos(); ++iCorp)
+	{
+		if (m_pUnitInfo->getCorporationSpreads(iCorp) > 0)
+		{
+			return "TXT_KEY_LEND_LEASE_DENIAL_EXECUTIVE";
+		}
+	}
+
+	if (getDomainType() == DOMAIN_SEA && !pCapital->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()))
+	{
+		return "TXT_KEY_LEND_LEASE_DENIAL_NOT_COASTAL";
+	}
+
+	if (GET_TEAM(kTarget.getTeam()).isUnitClassMaxedOut(getUnitClassType(), GET_TEAM(kTarget.getTeam()).getUnitClassMaking(getUnitClassType())) ||
+		kTarget.isUnitClassMaxedOut(getUnitClassType(), kTarget.getUnitClassMaking(getUnitClassType())))
+	{
+		return "TXT_KEY_LEND_LEASE_DENIAL_MAXED_OUT";
+	}
+
+	if (!kTarget.AI_acceptUnit(this))
+	{
+		return "TXT_KEY_LEND_LEASE_DENIAL_FINANCIAL_TROUBLE";
+	}
+
+	return NULL;
+}
+
+// Sends this unit to the capital of eTarget by lend-lease (added by this mod). Unlike gift: the new unit gets the default
+// unit AI of its type, it is not loaded (this unit and its cargo are unloaded first; CvPlayer::lendLease sends the cargo on
+// its own), and no peacetime grant value is added here (CvPlayer::changeLendLeaseAttitude). Returns the new unit
+CvUnit* CvUnit::lendLease(PlayerTypes eTarget)
+{
+	CvCity* pCapital = GET_PLAYER(eTarget).getCapitalCity();
+	CvPlot* pOldPlot = plot();
+	PlayerTypes eOwner = getOwnerINLINE();
+	CvUnit* pNewUnit;
+	std::vector<CvUnit*> aCargoUnits;
+	uint i;
+
+	if (pCapital == NULL)
+	{
+		return NULL;
+	}
+
+	setTransportUnit(NULL);
+	getCargoUnits(aCargoUnits);
+	for (i = 0; i < aCargoUnits.size(); ++i)
+	{
+		aCargoUnits[i]->setTransportUnit(NULL);
+	}
+
+	s_bReplacingUnit = true;	// no PyOnCreated / PyOnDeath
+	pNewUnit = GET_PLAYER(eTarget).initUnit(getUnitType(), pCapital->getX_INLINE(), pCapital->getY_INLINE(), ((UnitAITypes)(m_pUnitInfo->getDefaultUnitAIType())));
+	if (pNewUnit != NULL)
+	{
+		pNewUnit->convert(this);
+	}
+	s_bReplacingUnit = false;
+
+	if (pNewUnit != NULL)
+	{
+		CvEventReporter::getInstance().unitGifted(pNewUnit, eOwner, pOldPlot);
+	}
+
+	return pNewUnit;
 }
 
 

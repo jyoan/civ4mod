@@ -2476,6 +2476,387 @@ int CvPlayer::getDealGoldValueModifier() const
 	return sumTraitValues(&CvTraitInfo::getDealGoldValueModifier);
 }
 
+// LendLease of the traits (added by this mod): the action button Lend-Lease sends the selected units to the capital of a
+// civilization at peace. See CvUnit::canLendLease, launchLendLeasePopup and lendLease
+bool CvPlayer::isLendLease() const
+{
+	return hasTraitFlag(&CvTraitInfo::isLendLease);
+}
+
+int CvPlayer::getLendLeaseResearchPercent() const
+{
+	return sumTraitValues(&CvTraitInfo::getLendLeaseResearchPercent);
+}
+
+int CvPlayer::getLendLeaseGoldPercent() const
+{
+	return sumTraitValues(&CvTraitInfo::getLendLeaseGoldPercent);
+}
+
+int CvPlayer::getLendLeaseAttitudeChange() const
+{
+	return sumTraitValues(&CvTraitInfo::getLendLeaseAttitudeChange);
+}
+
+// Not written (0) or above 4: 4, the most of the trade attitude of BtS (CvPlayerAI::AI_getTradeAttitude)
+int CvPlayer::getLendLeaseAttitudeLimit() const
+{
+	int iLimit = sumTraitValues(&CvTraitInfo::getLendLeaseAttitudeLimit);
+
+	if (iLimit <= 0 || iLimit > 4)
+	{
+		iLimit = 4;
+	}
+
+	return iLimit;
+}
+
+// The civilizations that can receive lend-lease from this player: alive, met, not at war, with a capital. Team mates and
+// vassals too, the barbarians not
+bool CvPlayer::canLendLeaseTo(PlayerTypes eTarget) const
+{
+	if (eTarget < 0 || eTarget >= MAX_CIV_PLAYERS || eTarget == getID())
+	{
+		return false;
+	}
+
+	CvPlayer& kTarget = GET_PLAYER(eTarget);
+
+	if (!kTarget.isAlive() || kTarget.getCapitalCity() == NULL)
+	{
+		return false;
+	}
+
+	if (!GET_TEAM(getTeam()).isHasMet(kTarget.getTeam()) || atWar(getTeam(), kTarget.getTeam()))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+// The units of apUnits (the selection or a group) and their cargo that eTarget can receive now (CvUnit::getLendLeaseDenial),
+// each transport before its cargo. iNumUnits: how many units and cargo there are. szDenial: the reason of the first unit that
+// cannot go (empty if all can)
+void CvPlayer::getLendLeaseUnits(const std::vector<CvUnit*>& apUnits, PlayerTypes eTarget, std::vector<CvUnit*>& apSent, int& iNumUnits, CvWString& szDenial) const
+{
+	std::vector<CvUnit*> apAll;
+	std::vector<CvUnit*> apCargo;
+	const char* szKey;
+	uint i;
+	uint j;
+
+	for (i = 0; i < apUnits.size(); i++)
+	{
+		if (std::find(apAll.begin(), apAll.end(), apUnits[i]) == apAll.end())
+		{
+			apAll.push_back(apUnits[i]);
+		}
+
+		apCargo.clear();
+		apUnits[i]->getCargoUnits(apCargo);
+		for (j = 0; j < apCargo.size(); j++)
+		{
+			if (std::find(apAll.begin(), apAll.end(), apCargo[j]) == apAll.end())
+			{
+				apAll.push_back(apCargo[j]);
+			}
+		}
+	}
+
+	iNumUnits = (int)apAll.size();
+	apSent.clear();
+	szDenial.clear();
+
+	for (i = 0; i < apAll.size(); i++)
+	{
+		szKey = apAll[i]->getLendLeaseDenial(eTarget);
+		if (szKey == NULL)
+		{
+			apSent.push_back(apAll[i]);
+		}
+		else if (szDenial.empty())
+		{
+			szDenial = gDLL->getText(szKey);
+		}
+	}
+}
+
+// The production cost of the units for this player, summed before any of them leaves (the cost of a unit can depend on how
+// many units of its class the player has). The percents are taken of the sum, not of each unit
+static int getLendLeaseCost(const CvPlayer& kPlayer, const std::vector<CvUnit*>& apUnits)
+{
+	int iCost = 0;
+	uint i;
+
+	for (i = 0; i < apUnits.size(); i++)
+	{
+		iCost += kPlayer.getProductionNeeded(apUnits[i]->getUnitType());
+	}
+
+	return iCost;
+}
+
+// The popup of the action button Lend-Lease (CvGame::handleAction, on the computer of the active player only): a button for
+// each civilization that can receive some of the selected units (leader, civilization, its wars, its attitude, research and
+// gold), and greyed lines with the reason for the others. CvDLLButtonPopup sends the choice as MOD_NET_MESSAGE_LEND_LEASE
+void CvPlayer::launchLendLeasePopup()
+{
+	std::vector<CvUnit*> apSelected;
+	std::vector<CvUnit*> apSent;
+	CLLNode<IDInfo>* pSelectedUnitNode;
+	CvUnit* pLoopUnit;
+	CvPopupInfo* pInfo;
+	CvWString szBody;
+	CvWString szName;
+	CvWString szButton;
+	CvWString szWars;
+	CvWString szDenial;
+	CvWString szTemp;
+	int iFlags = 0;
+	int iNumUnits;
+	int iCost;
+	int iI;
+	int iJ;
+
+	pSelectedUnitNode = gDLL->getInterfaceIFace()->headSelectionListNode();
+	while (pSelectedUnitNode != NULL)
+	{
+		pLoopUnit = ::getUnit(pSelectedUnitNode->m_data);
+		pSelectedUnitNode = gDLL->getInterfaceIFace()->nextSelectionListNode(pSelectedUnitNode);
+
+		if (pLoopUnit != NULL && pLoopUnit->getOwnerINLINE() == getID())
+		{
+			apSelected.push_back(pLoopUnit);
+		}
+	}
+
+	if (apSelected.empty())
+	{
+		return;
+	}
+
+	pInfo = new CvPopupInfo(BUTTONPOPUP_PYTHON);
+	pInfo->setOnClickedPythonCallback("claudeLendLease");
+	szBody = gDLL->getText("TXT_KEY_POPUP_LEND_LEASE");
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		if (!canLendLeaseTo((PlayerTypes)iI))
+		{
+			continue;
+		}
+
+		CvPlayerAI& kTarget = GET_PLAYER((PlayerTypes)iI);
+
+		getLendLeaseUnits(apSelected, (PlayerTypes)iI, apSent, iNumUnits, szDenial);
+		szName = gDLL->getText("TXT_KEY_LEND_LEASE_CIV", kTarget.getNameKey(), kTarget.getCivilizationShortDescriptionKey());
+
+		if (apSent.empty())
+		{
+			szTemp.Format(SETCOLR L"%s: %s" ENDCOLR, TEXT_COLOR("COLOR_LIGHT_GREY"), szName.GetCString(), szDenial.GetCString());
+			szBody += NEWLINE;
+			szBody += szTemp;
+			continue;
+		}
+
+		szButton = szName;
+
+		// The civilizations at war with it that this player has met
+		szWars.clear();
+		for (iJ = 0; iJ < MAX_CIV_PLAYERS; iJ++)
+		{
+			CvPlayer& kEnemy = GET_PLAYER((PlayerTypes)iJ);
+			if (kEnemy.isAlive() && atWar(kTarget.getTeam(), kEnemy.getTeam()) && GET_TEAM(getTeam()).isHasMet(kEnemy.getTeam()))
+			{
+				if (!szWars.empty())
+				{
+					szWars += L", ";
+				}
+				szWars += kEnemy.getCivilizationShortDescription();
+			}
+		}
+		szButton += L" / ";
+		if (szWars.empty())
+		{
+			szButton += gDLL->getText("TXT_KEY_LEND_LEASE_NO_WARS");
+		}
+		else
+		{
+			szButton += gDLL->getText("TXT_KEY_LEND_LEASE_WARS", szWars.GetCString());
+		}
+
+		if (!kTarget.isHuman())
+		{
+			szButton += L" / ";
+			szButton += gDLL->getText("TXT_KEY_LEND_LEASE_ATTITUDE", GC.getAttitudeInfo(kTarget.AI_getAttitude(getID())).getDescription());
+		}
+
+		iCost = getLendLeaseCost(*this, apSent);
+		szButton += L" / ";
+		szButton += gDLL->getText("TXT_KEY_LEND_LEASE_REWARD", (iCost * getLendLeaseResearchPercent()) / 100, (iCost * getLendLeaseGoldPercent()) / 100);
+
+		if ((int)apSent.size() < iNumUnits)
+		{
+			szButton += L" ";
+			szButton += gDLL->getText("TXT_KEY_LEND_LEASE_PART", (int)apSent.size(), iNumUnits);
+		}
+
+		pInfo->addPythonButton(szButton, GC.getLeaderHeadInfo(kTarget.getLeaderType()).getButton());
+		iFlags |= (1 << iI);
+	}
+
+	if (iFlags == 0)
+	{
+		szBody += NEWLINE;
+		szBody += gDLL->getText("TXT_KEY_LEND_LEASE_NO_TARGET");
+	}
+
+	pInfo->addPythonButton(gDLL->getText("TXT_KEY_POPUP_CANCEL"), "");
+	pInfo->setFlags(iFlags);
+	pInfo->setText(szBody);
+	gDLL->getInterfaceIFace()->addPopup(pInfo, getID(), true);
+}
+
+// The choice of the popup of Lend-Lease, sent to every computer as MOD_NET_MESSAGE_LEND_LEASE: the group of the unit iUnitID
+// and its cargo go to the capital of eTarget (the units that it can receive). This player gets research and gold of the
+// production cost, and the trade attitude of eTarget goes up once for the whole batch
+void CvPlayer::lendLease(PlayerTypes eTarget, int iUnitID)
+{
+	CvUnit* pHeadUnit = getUnit(iUnitID);
+	CvUnit* pLoopUnit;
+	CvUnit* pNewUnit;
+	CvUnit* pFirstNewUnit = NULL;
+	CLLNode<IDInfo>* pUnitNode;
+	std::vector<CvUnit*> apGroup;
+	std::vector<CvUnit*> apSent;
+	std::vector<int> aiCosts;
+	CvWString szDenial;
+	CvWString szBuffer;
+	int iNumUnits;
+	int iCost = 0;
+	int iCount = 0;
+	int iResearch;
+	int iGold;
+	uint i;
+
+	if (pHeadUnit == NULL || !isLendLease() || !canLendLeaseTo(eTarget) || !pHeadUnit->canLendLease(true))
+	{
+		return;
+	}
+
+	pUnitNode = pHeadUnit->getGroup()->headUnitNode();
+	while (pUnitNode != NULL)
+	{
+		pLoopUnit = ::getUnit(pUnitNode->m_data);
+		pUnitNode = pHeadUnit->getGroup()->nextUnitNode(pUnitNode);
+
+		if (pLoopUnit != NULL)
+		{
+			apGroup.push_back(pLoopUnit);
+		}
+	}
+
+	getLendLeaseUnits(apGroup, eTarget, apSent, iNumUnits, szDenial);
+
+	// The costs before any unit leaves
+	for (i = 0; i < apSent.size(); i++)
+	{
+		aiCosts.push_back(getProductionNeeded(apSent[i]->getUnitType()));
+	}
+
+	for (i = 0; i < apSent.size(); i++)
+	{
+		// Checked again: the units sent before count for the limits of the unit classes of the receiver
+		if (apSent[i]->getLendLeaseDenial(eTarget) != NULL)
+		{
+			continue;
+		}
+
+		pNewUnit = apSent[i]->lendLease(eTarget);
+		if (pNewUnit != NULL)
+		{
+			iCost += aiCosts[i];
+			iCount++;
+			if (pFirstNewUnit == NULL)
+			{
+				pFirstNewUnit = pNewUnit;
+			}
+		}
+	}
+
+	if (iCount == 0)
+	{
+		return;
+	}
+
+	iResearch = (iCost * getLendLeaseResearchPercent()) / 100;
+	if (iResearch > 0)
+	{
+		receiveResearch(iResearch);
+	}
+
+	iGold = (iCost * getLendLeaseGoldPercent()) / 100;
+	if (iGold != 0)
+	{
+		changeGold(iGold);
+	}
+
+	changeLendLeaseAttitude(eTarget);
+
+	CvCity* pCapital = GET_PLAYER(eTarget).getCapitalCity();
+
+	szBuffer = gDLL->getText("TXT_KEY_LEND_LEASE_SENT", iCount, GET_PLAYER(eTarget).getNameKey(), iResearch, iGold);
+	gDLL->getInterfaceIFace()->addMessage(getID(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_UNITGIFTED", MESSAGE_TYPE_INFO, pFirstNewUnit->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"));
+
+	szBuffer = gDLL->getText("TXT_KEY_LEND_LEASE_RECEIVED", getNameKey(), iCount, pCapital->getNameKey());
+	gDLL->getInterfaceIFace()->addMessage(eTarget, false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_UNITGIFTED", MESSAGE_TYPE_INFO, pFirstNewUnit->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), pCapital->getX_INLINE(), pCapital->getY_INLINE(), true, true);
+}
+
+// iAttitudeChange of LendLease: raises the trade attitude of eTarget towards this player (CvPlayerAI::AI_getTradeAttitude,
+// "(grant value + trade value) / ((turns since met + 1) * 5)", 0 to 4) by adding just enough peacetime grant value, up to
+// iAttitudeLimit. It fades as in BtS: the divisor grows each turn. As AI_changePeacetimeGrantValue does, the enemies of
+// eTarget like this player less
+void CvPlayer::changeLendLeaseAttitude(PlayerTypes eTarget)
+{
+	CvPlayerAI& kTarget = GET_PLAYER(eTarget);
+	int iCurrent = kTarget.AI_getTradeAttitude(getID());
+	int iGoal = std::min(iCurrent + getLendLeaseAttitudeChange(), getLendLeaseAttitudeLimit());
+	int iDivisor;
+	int iValue;
+
+	if (iGoal <= iCurrent)
+	{
+		return;
+	}
+
+	iDivisor = (GET_TEAM(kTarget.getTeam()).AI_getHasMetCounter(getTeam()) + 1) * 5;
+	iValue = kTarget.AI_getPeacetimeGrantValue(getID()) + std::max(0, kTarget.AI_getPeacetimeTradeValue(getID()) - GET_PLAYER(getID()).AI_getPeacetimeTradeValue(eTarget));
+
+	if (iGoal * iDivisor > iValue)
+	{
+		kTarget.AI_changePeacetimeGrantValue(getID(), iGoal * iDivisor - iValue);
+	}
+}
+
+// Research for the current tech, or the overflow when there is none (added by this mod)
+void CvPlayer::receiveResearch(int iResearch)
+{
+	TechTypes eCurrentTech = getCurrentResearch();
+	int iModifier;
+
+	if (eCurrentTech != NO_TECH)
+	{
+		GET_TEAM(getTeam()).changeResearchProgress(eCurrentTech, iResearch, getID());
+	}
+	else
+	{
+		// The overflow gets the research modifier when it is used (doResearch), so it is stored without it
+		iModifier = std::max(1, calculateResearchModifier(NO_TECH));
+		changeOverflowResearch((iResearch * 100) / iModifier);
+	}
+}
+
 // bIgnoreEvents of the traits (added by this mod): the player chose to ignore the triggered event. No choice is applied.
 // The trigger counts as fired, as when a choice is applied (a trigger that is not recurring does not come again, a global
 // or team trigger is fired for the others too), without the world news. Called on every computer (ModNetMessage)
@@ -3503,12 +3884,10 @@ void CvPlayer::doExplorationRewards()
 	CvWString szRewards;
 	CvWString szTemp;
 	CvCity* pCapital;
-	TechTypes eCurrentTech;
 	int aiReward[NUM_COMMERCE_TYPES];
 	int iPercent;
 	int iTotal;
 	int iSpending;
-	int iModifier;
 	int iI;
 	int iJ;
 
@@ -3545,17 +3924,7 @@ void CvPlayer::doExplorationRewards()
 
 	if (aiReward[COMMERCE_RESEARCH] > 0)
 	{
-		eCurrentTech = getCurrentResearch();
-		if (eCurrentTech != NO_TECH)
-		{
-			GET_TEAM(getTeam()).changeResearchProgress(eCurrentTech, aiReward[COMMERCE_RESEARCH], getID());
-		}
-		else
-		{
-			// The overflow gets the research modifier when it is used (doResearch), so it is stored without it
-			iModifier = std::max(1, calculateResearchModifier(NO_TECH));
-			changeOverflowResearch((aiReward[COMMERCE_RESEARCH] * 100) / iModifier);
-		}
+		receiveResearch(aiReward[COMMERCE_RESEARCH]);
 	}
 
 	if (aiReward[COMMERCE_CULTURE] > 0)
