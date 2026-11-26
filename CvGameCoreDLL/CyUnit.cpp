@@ -644,6 +644,12 @@ int CyUnit::getBuildingCombatPercent()
 	return m_pUnit ? m_pUnit->getBuildingCombatPercent() : 0;
 }
 
+// Encirclement of the promotions (added by this mod): pCenter is the plot of the defender, pFront the plot of the attacker
+int CyUnit::getEncirclementPercent(CyPlot* pCenter, CyPlot* pFront)
+{
+	return (m_pUnit && pCenter && pFront) ? m_pUnit->getEncirclementPercent(pCenter->getPlot(), pFront->getPlot()) : 0;
+}
+
 bool CyUnit::isFreeEmbark()
 {
 	return m_pUnit ? m_pUnit->isFreeEmbark() : false;

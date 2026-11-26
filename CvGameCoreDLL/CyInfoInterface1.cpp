@@ -223,6 +223,9 @@ void CyInfoPythonInterface1()
 		.def("getBuildingCombatPercent", &CvPromotionInfo::getBuildingCombatPercent, "int (int i)")
 		.def("isBuildingCombatStateReligion", &CvPromotionInfo::isBuildingCombatStateReligion, "bool (int i)")
 		.def("getBuildingCombatMaxPercent", &CvPromotionInfo::getBuildingCombatMaxPercent, "int ()")
+		.def("getEncirclementSidePercent", &CvPromotionInfo::getEncirclementSidePercent, "int ()")
+		.def("getEncirclementRearPercent", &CvPromotionInfo::getEncirclementRearPercent, "int ()")
+		.def("getEncirclementMaxUnitsPerPlot", &CvPromotionInfo::getEncirclementMaxUnitsPerPlot, "int ()")
 
 		.def("getSound", &CvPromotionInfo::getSound, "string ()")
 

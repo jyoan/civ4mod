@@ -343,6 +343,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iRiverNavigationCount = 0;
 	m_iFreeEmbarkCount = 0;
 	m_iBuildingCombatCount = 0;
+	m_iEncirclementCount = 0;
 	m_iNoDamagePenaltyCount = 0;
 	m_iHiddenNationalityCount = 0;
 	m_iExtraCityAttackPercent = 0;
@@ -10136,6 +10137,9 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 			}
 		}
 
+		// Encirclement of the promotions of the attacker: its units around the attacked plot (added by this mod)
+		iTempModifier -= pAttacker->getEncirclementPercent(pAttackedPlot, pAttacker->plot());
+
 		if (pAttackedPlot->isHills())
 		{
 			iExtraModifier = -pAttacker->hillsAttackModifier();
@@ -10223,6 +10227,9 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 
 			// iDefenseCombatPercent of the traits of the owner of this unit, the defender (added by this mod)
 			iTempModifier += GET_PLAYER(getOwnerINLINE()).getTraitDefenseCombatPercent();
+
+			// Encirclement of the promotions of this unit, the defender: its units around itself (added by this mod)
+			iTempModifier += getEncirclementPercent(pAttackedPlot, pAttacker->plot());
 
 			// iRevengeCombatPercent of the traits of both owners (added by this mod)
 			iTempModifier += GET_PLAYER(getOwnerINLINE()).getRevengeCombatModifier(pAttacker->getOwnerINLINE());
@@ -11192,6 +11199,7 @@ void CvUnit::updatePromotionCounts()
 	m_iRiverNavigationCount = countPromotions(&CvPromotionInfo::isRiverNavigation);
 	m_iFreeEmbarkCount = countPromotions(&CvPromotionInfo::isFreeEmbark);
 	m_iBuildingCombatCount = countPromotions(&CvPromotionInfo::isBuildingCombat);
+	m_iEncirclementCount = countPromotions(&CvPromotionInfo::isEncirclement);
 	m_iNoDamagePenaltyCount = countPromotions(&CvPromotionInfo::isNoDamagePenalty);
 	m_iHiddenNationalityCount = countPromotions(&CvPromotionInfo::isHiddenNationality);
 
@@ -11303,6 +11311,129 @@ int CvUnit::getBuildingCombatPercent() const
 	}
 
 	return iPercent;
+}
+
+// Encirclement of the promotions (added by this mod): around pCenter, the units of the team of this unit that can fight,
+// are of the same domain and are not cargo, on each of the 8 plots but pFront (the plot of the enemy unit). The 3 plots on
+// the far side from pFront are the rear, the other 4 the sides. Each unit gives iSidePercent or iRearPercent (added up
+// over the promotions), counting up to iMaxUnitsPerPlot units on each plot (the largest over the promotions; -1: no
+// limit). piSide and piRear, when given, get the two parts. Used for both attacking (pCenter: the defender's plot) and
+// defending (pCenter: the plot of this unit)
+int CvUnit::getEncirclementPercent(const CvPlot* pCenter, const CvPlot* pFront, int* piSide, int* piRear) const
+{
+	CLLNode<IDInfo>* pUnitNode;
+	CvUnit* pLoopUnit;
+	CvPlot* pLoopPlot;
+	DirectionTypes eFront;
+	int iSidePercent = 0;
+	int iRearPercent = 0;
+	int iMaxUnits = 0;
+	bool bNoMaxUnits = false;
+	int iSide = 0;
+	int iRear = 0;
+	int iCount;
+	int iOffset;
+	int iI;
+
+	if (piSide != NULL)
+	{
+		*piSide = 0;
+	}
+	if (piRear != NULL)
+	{
+		*piRear = 0;
+	}
+
+	if (m_iEncirclementCount <= 0 || pCenter == NULL || pFront == NULL)
+	{
+		return 0;
+	}
+
+	if (stepDistance(pCenter->getX_INLINE(), pCenter->getY_INLINE(), pFront->getX_INLINE(), pFront->getY_INLINE()) != 1)
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	{
+		if (!isHasPromotion((PromotionTypes)iI))
+		{
+			continue;
+		}
+
+		CvPromotionInfo& kPromotion = GC.getPromotionInfo((PromotionTypes)iI);
+		if (!kPromotion.isEncirclement())
+		{
+			continue;
+		}
+
+		iSidePercent += kPromotion.getEncirclementSidePercent();
+		iRearPercent += kPromotion.getEncirclementRearPercent();
+		if (kPromotion.getEncirclementMaxUnitsPerPlot() < 0)
+		{
+			bNoMaxUnits = true;
+		}
+		else
+		{
+			iMaxUnits = std::max(iMaxUnits, kPromotion.getEncirclementMaxUnitsPerPlot());
+		}
+	}
+
+	if (!bNoMaxUnits && iMaxUnits <= 0)
+	{
+		return 0;
+	}
+
+	eFront = directionXY(pCenter, pFront);
+
+	for (iI = 0; iI < NUM_DIRECTION_TYPES; iI++)
+	{
+		iOffset = (iI - eFront + NUM_DIRECTION_TYPES) % NUM_DIRECTION_TYPES;
+		if (iOffset == 0)
+		{
+			continue;
+		}
+
+		pLoopPlot = plotDirection(pCenter->getX_INLINE(), pCenter->getY_INLINE(), (DirectionTypes)iI);
+		if (pLoopPlot == NULL)
+		{
+			continue;
+		}
+
+		iCount = 0;
+		pUnitNode = pLoopPlot->headUnitNode();
+		while (pUnitNode != NULL && (bNoMaxUnits || iCount < iMaxUnits))
+		{
+			pLoopUnit = ::getUnit(pUnitNode->m_data);
+			pUnitNode = pLoopPlot->nextUnitNode(pUnitNode);
+
+			if (pLoopUnit != this && pLoopUnit->getTeam() == getTeam() && pLoopUnit->getDomainType() == getDomainType() && pLoopUnit->canFight() && !pLoopUnit->isCargo())
+			{
+				iCount++;
+			}
+		}
+
+		// the 3 plots opposite to pFront (135 and 180 degrees away) are the rear
+		if (iOffset >= 3 && iOffset <= 5)
+		{
+			iRear += iCount * iRearPercent;
+		}
+		else
+		{
+			iSide += iCount * iSidePercent;
+		}
+	}
+
+	if (piSide != NULL)
+	{
+		*piSide = iSide;
+	}
+	if (piRear != NULL)
+	{
+		*piRear = iRear;
+	}
+
+	return (iSide + iRear);
 }
 
 // bChooseGoody of the promotions (added by this mod)
@@ -14187,6 +14318,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		m_iRiverNavigationCount += (GC.getPromotionInfo(eIndex).isRiverNavigation() ? iChange : 0);
 		m_iFreeEmbarkCount += (GC.getPromotionInfo(eIndex).isFreeEmbark() ? iChange : 0);
 		m_iBuildingCombatCount += (GC.getPromotionInfo(eIndex).isBuildingCombat() ? iChange : 0);
+		m_iEncirclementCount += (GC.getPromotionInfo(eIndex).isEncirclement() ? iChange : 0);
 		m_iNoDamagePenaltyCount += (GC.getPromotionInfo(eIndex).isNoDamagePenalty() ? iChange : 0);
 
 		// BonusAffinities (added by this mod)
