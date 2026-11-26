@@ -41,6 +41,7 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getNumStackPromotionSets", &CvTraitInfo::getNumStackPromotionSets, "int ()")
 		.def("getStackPromotionSetNumUnitClasses", &CvTraitInfo::getStackPromotionSetNumUnitClasses, "int (int i)")
 		.def("getStackPromotionSetUnitClass", &CvTraitInfo::getStackPromotionSetUnitClass, "int (int i, int j)")
+		.def("isStackPromotionSetStackUnitsToo", &CvTraitInfo::isStackPromotionSetStackUnitsToo, "bool (int i) - bStackUnitsToo (added by this mod)")
 		.def("getStackPromotionSetNumPromotions", &CvTraitInfo::getStackPromotionSetNumPromotions, "int (int i)")
 		.def("getStackPromotionSetPromotion", &CvTraitInfo::getStackPromotionSetPromotion, "int (int i, int j)")
 		.def("getStackPromotionSetNumUnitCombats", &CvTraitInfo::getStackPromotionSetNumUnitCombats, "int (int i)")

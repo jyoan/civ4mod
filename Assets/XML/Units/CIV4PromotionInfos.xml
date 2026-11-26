@@ -5464,13 +5464,13 @@
 			<bBlitz>0</bBlitz>
 			<bAmphib>0</bAmphib>
 			<bRiver>0</bRiver>
-			<bEnemyRoute>0</bEnemyRoute>
+			<bEnemyRoute>1</bEnemyRoute>
 			<bAlwaysHeal>0</bAlwaysHeal>
 			<bHillsDoubleMove>0</bHillsDoubleMove>
 			<bImmuneToFirstStrikes>0</bImmuneToFirstStrikes>
 			<iVisibilityChange>0</iVisibilityChange>
-			<iMovesChange>0</iMovesChange>
-			<iMoveDiscountChange>0</iMoveDiscountChange>
+			<iMovesChange>1</iMovesChange>
+			<iMoveDiscountChange>1</iMoveDiscountChange>
 			<iAirRangeChange>0</iAirRangeChange>
 			<iInterceptChange>0</iInterceptChange>
 			<iEvasionChange>0</iEvasionChange>

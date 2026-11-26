@@ -296,9 +296,12 @@
   - `<StackUnitClasses>`（省略不可）: `UnitClassType` を何個でも。どれか 1 つの自分のユニットが同じタイルにいれば有効。
   - `<StackPromotionTypes>`（省略不可）: `PromotionType` を何個でも。組の昇進をすべて付ける。
   - `<StackUnitCombats>`（省略可）: `UnitCombatType` を何個でも。付ける対象の兵科。省略すると兵科のあるユニットすべて。
+  - `<bStackUnitsToo>`（省略可。2026-11-26）: `1` なら、組のユニットクラスのユニット自身も、同じタイルに対象のユニット（自分以外の自分のユニット）がいる間、組の昇進を持つ（兵科のない大将軍にも付く。大陸軍で大将軍と部隊の足並みを揃えるため）。説明文の行の後ろに `TXT_KEY_TRAIT_STACK_PROMOTION_UNITS_TOO`（「（大将軍にも付く）」）。Python は `CvTraitInfo.isStackPromotionSetStackUnitsToo(i)`。
 - 対象のユニットは、同じタイルに組のユニットクラスの自分のユニット（自分自身を除く）がいる間その昇進を持ち、いなくなると失う（`CvPlayer::updateStackPromotions`）。
 - 同じ昇進が複数の組にあるときは、どれか 1 つの組が当てはまれば持つ。
 - ユニットがタイルに出入りするたびに、元のタイルと先のタイルを計算し直す（`CvUnit::setXY`。生成・死亡も含む）。志向を得た・失ったときは全ユニットを計算し直す（`CvPlayer::processTrait`）。
+- スタックで動くとき（`CvSelectionGroup::groupMove`）は、全員が動き終わってから元のタイルと先のタイルを計算し直す（`CvPlayer::setStackPromotionsDeferred`。2026-11-26）。ユニットは 1 体ずつ動くので、組のユニット（大将軍など）が先に動くと、残った仲間が昇進を失い、昇進の移動力で動いていたユニットが「動けない」とされてスタックから外れていたため。
+- 移動のコストは移る前に引くので、組のユニットのタイルから出る 1 歩は昇進の効果（移動力・`bEnemyRoute`・`iMoveDiscountChange`）が効き、着いた時点で外れる。組のユニットのタイルに入る 1 歩は効かず、着いてから付く。
 - 昇進はどう得たかを見ずに外すので、この用途だけの状態の昇進（`UnitCombats` が空）を使う。
 - 説明文は組ごとに 1 行 `TXT_KEY_TRAIT_STACK_PROMOTION`（「検証用学派Bと同じタイルにいる白兵戦ユニット: 検証用随行」。ユニットクラスは `TXT_KEY_OR` でつなぐ。兵科の省略時は `TXT_KEY_TRAIT_STACK_PROMOTION_UNITS`「ユニット」）。
 - Python: `CvTraitInfo.getNumStackPromotionSets()`、`getStackPromotionSetNumUnitClasses(i)`・`getStackPromotionSetUnitClass(i, j)`、`getStackPromotionSetNumPromotions(i)`・`getStackPromotionSetPromotion(i, j)`、`getStackPromotionSetNumUnitCombats(i)`・`getStackPromotionSetUnitCombat(i, j)`

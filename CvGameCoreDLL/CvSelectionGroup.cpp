@@ -3095,6 +3095,11 @@ void CvSelectionGroup::groupMove(CvPlot* pPlot, bool bCombat, CvUnit* pCombatUni
 
 	CLLNode<IDInfo>* pUnitNode;
 	CvUnit* pLoopUnit;
+	CvPlot* pOldPlot = plot();	// added by this mod: StackPromotions
+	PlayerTypes eOwner = getOwnerINLINE();	// added by this mod: StackPromotions
+
+	// StackPromotions of the traits (added by this mod): updated after all the units have moved (CvPlayer::setStackPromotionsDeferred)
+	GET_PLAYER(eOwner).setStackPromotionsDeferred(true);
 
 	pUnitNode = headUnitNode();
 
@@ -3113,6 +3118,11 @@ void CvSelectionGroup::groupMove(CvPlot* pPlot, bool bCombat, CvUnit* pCombatUni
 			pLoopUnit->ExecuteMove(((float)(GC.getMissionInfo(MISSION_MOVE_TO).getTime() * gDLL->getMillisecsPerTurn())) / 1000.0f, false);
 		}
 	}
+
+	// StackPromotions of the traits (added by this mod)
+	GET_PLAYER(eOwner).setStackPromotionsDeferred(false);
+	GET_PLAYER(eOwner).updateStackPromotions(pOldPlot);
+	GET_PLAYER(eOwner).updateStackPromotions(pPlot);
 
 	//execute move
 	if(bEndMove || !canAllMove())

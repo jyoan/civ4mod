@@ -484,6 +484,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_bExtendedGame = false;
 	m_bFoundedFirstCity = false;
 	m_bFoundingVassalDone = false;	// FoundingVassal of the traits (added by this mod)
+	m_bStackPromotionsDeferred = false;	// StackPromotions of the traits (added by this mod)
 	m_bFoundingVassal = false;
 	m_eAIHandicap = NO_HANDICAP;
 	m_bStrike = false;

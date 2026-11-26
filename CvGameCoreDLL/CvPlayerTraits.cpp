@@ -2268,10 +2268,20 @@ static bool isStackPromotionSetTarget(const StackPromotionSet& kSet, const CvUni
 	return (kSet.aiUnitCombats.empty() || isInTypeList(kSet.aiUnitCombats, pUnit->getUnitCombatType()));
 }
 
+// StackPromotions of the traits (added by this mod): while a group moves unit by unit (CvSelectionGroup::groupMove), the
+// promotions are not updated, and the plots are updated after all the units have moved. Otherwise the units still on the old
+// plot lose the promotions when the great general (or another unit of a set) moves first, and a unit whose moves come from
+// the promotions cannot move any more and is split from the group
+void CvPlayer::setStackPromotionsDeferred(bool bNewValue)
+{
+	m_bStackPromotionsDeferred = bNewValue;
+}
+
 // StackPromotions of the traits (added by this mod): our units on the plot have the promotions of a set while another unit
 // of ours of one of its classes is on the plot (StackUnitClasses), when they are its targets (StackUnitCombats), and lose
 // them otherwise. Called when a unit enters or leaves the plot (CvUnit::setXY) and when a trait with StackPromotions is
-// gained or lost. The promotions should be used only for this (state promotions without UnitCombats), because they are
+// gained or lost. With bStackUnitsToo, the units of its classes have the promotions too while one of its targets (another unit)
+// is on the plot. The promotions should be used only for this (state promotions without UnitCombats), because they are
 // removed without checking how the unit got them
 void CvPlayer::updateStackPromotions(CvPlot* pPlot)
 {
@@ -2287,7 +2297,7 @@ void CvPlayer::updateStackPromotions(CvPlot* pPlot)
 	int iP;
 	int iS;
 
-	if (pPlot == NULL || !isAnyStackPromotions())
+	if (pPlot == NULL || m_bStackPromotionsDeferred || !isAnyStackPromotions())
 	{
 		return;
 	}
@@ -2332,17 +2342,33 @@ void CvPlayer::updateStackPromotions(CvPlot* pPlot)
 			bHas = false;
 			for (iS = 0; iS < (int)apSets.size() && !bHas; iS++)
 			{
-				if (!isInTypeList(apSets[iS]->aiPromotions, aiPromotions[iP]) || !isStackPromotionSetTarget(*apSets[iS], pLoopUnit))
+				if (!isInTypeList(apSets[iS]->aiPromotions, aiPromotions[iP]))
 				{
 					continue;
 				}
 
-				for (iI = 0; iI < (int)apUnits.size(); iI++)
+				if (isStackPromotionSetTarget(*apSets[iS], pLoopUnit))
 				{
-					if (iI != iK && isInTypeList(apSets[iS]->aiUnitClasses, apUnits[iI]->getUnitClassType()))
+					for (iI = 0; iI < (int)apUnits.size(); iI++)
 					{
-						bHas = true;
-						break;
+						if (iI != iK && isInTypeList(apSets[iS]->aiUnitClasses, apUnits[iI]->getUnitClassType()))
+						{
+							bHas = true;
+							break;
+						}
+					}
+				}
+
+				// bStackUnitsToo (added by this mod): a unit of the classes, while a target is with it
+				if (!bHas && apSets[iS]->bStackUnitsToo && isInTypeList(apSets[iS]->aiUnitClasses, pLoopUnit->getUnitClassType()))
+				{
+					for (iI = 0; iI < (int)apUnits.size(); iI++)
+					{
+						if (iI != iK && isStackPromotionSetTarget(*apSets[iS], apUnits[iI]))
+						{
+							bHas = true;
+							break;
+						}
 					}
 				}
 			}

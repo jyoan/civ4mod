@@ -493,10 +493,12 @@
 	<ElementType name="StackUnitCombats" content="eltOnly">
 		<element type="UnitCombatType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="bStackUnitsToo" content="textOnly" dt:type="boolean"/>
 	<ElementType name="StackPromotion" content="eltOnly">
 		<element type="StackUnitClasses"/>
 		<element type="StackPromotionTypes"/>
 		<element type="StackUnitCombats" minOccurs="0"/>
+		<element type="bStackUnitsToo" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="StackPromotions" content="eltOnly">
 		<element type="StackPromotion" minOccurs="0" maxOccurs="*"/>
