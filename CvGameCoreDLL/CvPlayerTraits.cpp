@@ -2236,6 +2236,36 @@ bool CvPlayer::isUnsettleGreatPeople() const
 	return hasTraitFlag(&CvTraitInfo::isUnsettleGreatPeople);
 }
 
+// GreatPeopleHurry/iGoldPerPoint of the traits (added by this mod): gold per great people point of the purchase from the
+// great people bar of a city. 0 or less: no purchase. See CvCity::hurryGreatPeople
+int CvPlayer::getGreatPeopleHurryGold() const
+{
+	return sumTraitValues(&CvTraitInfo::getGreatPeopleHurryGold);
+}
+
+// GreatPeopleHurry/UnitClassType of the traits (added by this mod): the great person unit of the purchase, the unit of the
+// civilization for the class of the first trait with a purchase and a class. NO_UNIT: by the shares of the city
+UnitTypes CvPlayer::getGreatPeopleHurryUnit() const
+{
+	int iI;
+
+	if (getCivilizationType() == NO_CIVILIZATION || getLeaderType() == NO_LEADER)
+	{
+		return NO_UNIT;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		const CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+		if (kTrait.getGreatPeopleHurryGold() > 0 && kTrait.getGreatPeopleHurryUnitClass() != NO_UNITCLASS && hasTrait((TraitTypes)iI))
+		{
+			return (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(kTrait.getGreatPeopleHurryUnitClass());
+		}
+	}
+
+	return NO_UNIT;
+}
+
 // StackPromotions of the traits (added by this mod)
 bool CvPlayer::isAnyStackPromotions() const
 {

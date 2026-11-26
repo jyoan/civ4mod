@@ -552,6 +552,8 @@ public:
 	bool isLongCountCalendar();	// added by this mod
 	bool isImprovementUpgradeUnworked();	// added by this mod
 	bool isUnsettleGreatPeople();	// added by this mod
+	int getGreatPeopleHurryGold();	// added by this mod
+	int getGreatPeopleHurryUnit();	// added by this mod
 	bool canUnsettleSpecialist(int /*SpecialistTypes*/ eSpecialist);	// added by this mod
 	bool isIgnoreEvents();	// added by this mod
 	int getEventChanceChange();	// added by this mod

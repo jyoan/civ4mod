@@ -131,6 +131,8 @@ m_iLendLeaseResearchPercent(0),
 m_iLendLeaseGoldPercent(0),
 m_iLendLeaseAttitudeChange(0),
 m_iLendLeaseAttitudeLimit(0),
+m_iGreatPeopleHurryGold(0),
+m_iGreatPeopleHurryUnitClass(NO_UNITCLASS),
 m_bNoCultureFlip(false),
 m_bNoRevoltAndNoCultureFlip(false),
 m_bInstantCultureFlip(false),
@@ -1138,6 +1140,21 @@ int CvTraitInfo::getLendLeaseAttitudeChange() const
 int CvTraitInfo::getLendLeaseAttitudeLimit() const
 {
 	return m_iLendLeaseAttitudeLimit;
+}
+
+// GreatPeopleHurry/iGoldPerPoint (added by this mod): clicking the great people bar of a city of the player buys the
+// missing great people points for this much gold per point, and the great person is born at once (CvCity::hurryGreatPeople).
+// 0: no purchase
+int CvTraitInfo::getGreatPeopleHurryGold() const
+{
+	return m_iGreatPeopleHurryGold;
+}
+
+// GreatPeopleHurry/UnitClassType (added by this mod): the great person the purchase gives (the unit of the class of the
+// civilization). NO_UNITCLASS: the points go by the shares of the city, and the great person is chosen as in BtS
+int CvTraitInfo::getGreatPeopleHurryUnitClass() const
+{
+	return m_iGreatPeopleHurryUnitClass;
 }
 
 // CultureFlip/bNoFlip (added by this mod): the cities of the player do not flip to another player by culture. The revolts still
@@ -3137,6 +3154,15 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 		pXML->GetChildXmlValByName(&m_iLendLeaseGoldPercent, "iGoldPercent");
 		pXML->GetChildXmlValByName(&m_iLendLeaseAttitudeChange, "iAttitudeChange");
 		pXML->GetChildXmlValByName(&m_iLendLeaseAttitudeLimit, "iAttitudeLimit");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+	// GreatPeopleHurry: iGoldPerPoint, UnitClassType (the unit classes are loaded before the traits)
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "GreatPeopleHurry"))
+	{
+		CvString szUnitClass;
+		pXML->GetChildXmlValByName(&m_iGreatPeopleHurryGold, "iGoldPerPoint");
+		pXML->GetChildXmlValByName(szUnitClass, "UnitClassType");
+		m_iGreatPeopleHurryUnitClass = szUnitClass.empty() ? NO_UNITCLASS : pXML->FindInInfoClass(szUnitClass);
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 	pXML->GetChildXmlValByName(&m_iRouteMovementModifierInBorders, "iRouteMovementModifierInBorders");

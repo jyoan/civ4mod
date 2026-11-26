@@ -17,5 +17,10 @@ void CyCityPythonInterface2(python::class_<CyCity>& x)
 		.def("canUnsettleGreatPerson", &CyCity::canUnsettleGreatPerson, "bool (int /*SpecialistTypes*/ eSpecialist) - a settled great person can become a unit (bUnsettleGreatPeople of the traits, added by this mod)")
 		.def("isNoAnarchyDisorder", &CyCity::isNoAnarchyDisorder, "bool () - a specialist of the city keeps it working during the anarchy (bNoAnarchyDisorder, added by this mod)")
 		.def("unsettleGreatPerson", &CyCity::unsettleGreatPerson, "bool (int /*SpecialistTypes*/ eSpecialist) - the settled great person becomes a unit in the city; call it on every computer (added by this mod)")
+		.def("getTotalGreatPeopleUnitProgress", &CyCity::getTotalGreatPeopleUnitProgress, "int () - the great people points stored for each great person unit, added up (added by this mod)")
+		.def("getGreatPeopleHurryPoints", &CyCity::getGreatPeopleHurryPoints, "int () - the great people points missing until the next great person (GreatPeopleHurry of the traits, added by this mod)")
+		.def("getGreatPeopleHurryCost", &CyCity::getGreatPeopleHurryCost, "int () - the gold to buy the missing great people points (GreatPeopleHurry of the traits, added by this mod)")
+		.def("canHurryGreatPeople", &CyCity::canHurryGreatPeople, "bool () - the owner can buy the great person of the city now (GreatPeopleHurry of the traits, added by this mod)")
+		.def("hurryGreatPeople", &CyCity::hurryGreatPeople, "bool () - the owner buys the missing points and the great person is born; call it on every computer (GreatPeopleHurry of the traits, added by this mod)")
 		;
 }

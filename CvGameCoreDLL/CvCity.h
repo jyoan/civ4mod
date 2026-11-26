@@ -827,6 +827,14 @@ public:
 	bool hasPrereqOrSettledSpecialists(BuildingTypes eBuilding) const;	// added by this mod
 	bool canUnsettleGreatPerson(SpecialistTypes eSpecialist) const;	// Exposed to Python, added by this mod
 	bool unsettleGreatPerson(SpecialistTypes eSpecialist);	// Exposed to Python, added by this mod
+	int getTotalGreatPeopleUnitProgress() const;	// Exposed to Python, added by this mod
+	int getGreatPeopleHurryPoints() const;	// Exposed to Python, added by this mod
+	int getGreatPeopleHurryCost() const;	// Exposed to Python, added by this mod
+	const char* getGreatPeopleHurryDenial() const;	// added by this mod
+	bool canHurryGreatPeople() const;	// Exposed to Python, added by this mod
+	bool hurryGreatPeople();	// Exposed to Python, added by this mod
+	UnitTypes chooseGreatPeopleUnit();	// added by this mod
+	void createGreatPeopleFromProgress(UnitTypes eGreatPersonUnit);	// added by this mod
 	bool hasPrereqOrBuildingClasses(BuildingTypes eBuilding) const;	// added by this mod
 	bool hasPrereqNotInCityBuildingClasses(BuildingTypes eBuilding) const;	// added by this mod
 	bool hasPrereqOrTerrains(const std::vector<int>& aiTerrains) const;	// added by this mod

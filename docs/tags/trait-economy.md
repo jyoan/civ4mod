@@ -346,6 +346,33 @@
 - 説明文 `TXT_KEY_TRAIT_UNSETTLE_SPECIALISTS`（「ユニットに戻せる定住偉人（都市画面でクリック）: 検証用学派A（定住）, …」。`bUnsettleGreatPeople` があるときは出さない）。
 - Python: `CvTraitInfo.isUnsettleSpecialist(iSpecialist)`、`CyPlayer.canUnsettleSpecialist(eSpecialist)`
 
+## `TraitInfo/GreatPeopleHurry`（`iGoldPerPoint`・`UnitClassType`）
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-26。
+- 書式は `<GreatPeopleHurry><iGoldPerPoint>3</iGoldPerPoint><UnitClassType>UNITCLASS_ARTIST</UnitClassType></GreatPeopleHurry>`（`UnitClassType` は省略可）。
+- 都市画面の偉人のプログレスバー（`CvMainInterface.py` の `GreatPeopleBar`。`WIDGET_HELP_GREAT_PEOPLE`。BtS ではクリックしても何も起きなかった）をクリックすると、確認の画面（`BUTTONPOPUP_PYTHON`。Python は呼ばない。文 `TXT_KEY_POPUP_HURRY_GREAT_PEOPLE`）が出る。
+- 「はい」で、足りない偉人ポイント（閾値 − 今のポイント）を金で買い、**その場で偉人が生まれる**（`CvCity::hurryGreatPeople`）。
+- 値段 = 足りないポイント × `iGoldPerPoint`。必要なポイントは偉人が生まれるたびに増えるので、値段も上がる。ゲーム速度は閾値に入っている。
+- `UnitClassType` を書くと、買ったポイントはすべてそのクラスの文明のユニット（`getCivilizationUnits`。固有の偉人に対応）に入り、必ずその偉人が生まれる。ほかの種類の溜まっていたポイントは、ふだんの誕生と同じく消える。
+- 省略すると（または文明にそのクラスのユニットがないと）、今の種類ごとのポイントの割合で配り（端数は最も多い種類へ）、BtS と同じ抽選（`CvCity::chooseGreatPeopleUnit`。`doGreatPeople` から切り出した）で決まる。
+- 誕生は `CvCity::createGreatPeopleFromProgress`（閾値ぶんを引き、種類ごとのポイントを 0 に戻して `createGreatPeople`。`doGreatPeople` と共通）。
+- 使えないとき（`CvCity::getGreatPeopleHurryDenial`）:
+  - 種類ごとのポイントの合計が 0（割合を計算できない）: `TXT_KEY_GREAT_PEOPLE_HURRY_DENIAL_NO_POINTS`
+  - 金が足りない: `TXT_KEY_GREAT_PEOPLE_HURRY_DENIAL_GOLD`
+- 買うとバーが 0 になるので、次のターンの初めにポイントが入るまで使えない（1 都市につき 1 ターンに 1 回）。セーブには何も足していない。
+- 暴動中の都市でも買える（BtS の誕生は暴動中に止まる）。
+- 偉人バーのマウスオーバーに、値段の行 `TXT_KEY_GREAT_PEOPLE_HURRY_CLICK` か使えない理由を足す。志向を持たない文明では何も出ず、クリックしても何も起きない。
+- 買うとイベントログに `TXT_KEY_GREAT_PEOPLE_HURRY_BOUGHT`（都市・金・ポイント）。
+- 結果は `ModNetMessage`（`MOD_NET_MESSAGE_HURRY_GREAT_PEOPLE` = -20261129。`CvNetModNetMessage::Execute` が DLL で処理）で全員のコンピューターに送るので、マルチプレイでも同期する。
+- `iGoldPerPoint` は志向の合計（0 以下なら使えない）。種類は `iGoldPerPoint` が正でクラスを書いた最初の志向のもの（`CvPlayer::getGreatPeopleHurryUnit`）。
+- AI は使わない。
+- 説明文 `TXT_KEY_TRAIT_GREAT_PEOPLE_HURRY`（1 ポイントあたりの金と、クラスのリンクか `TXT_KEY_GREAT_PEOPLE_HURRY_BY_SHARES`）。
+- Python:
+  - `CvTraitInfo.getGreatPeopleHurryGold()`・`getGreatPeopleHurryUnitClass()`
+  - `CyPlayer.getGreatPeopleHurryGold()`・`getGreatPeopleHurryUnit()`（-1 は割合）
+  - `CyCity.getTotalGreatPeopleUnitProgress()`・`getGreatPeopleHurryPoints()`・`getGreatPeopleHurryCost()`・`canHurryGreatPeople()`・`hurryGreatPeople()`（最後は全員のコンピューターで呼ぶこと）
+
 ## `TraitInfo/GoldenAgeUnitClasses`、`iGoldenAgeUnitsChange`
 
 - ファイル: `CIV4TraitInfos.xml`

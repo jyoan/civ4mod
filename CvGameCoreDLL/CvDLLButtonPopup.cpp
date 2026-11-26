@@ -412,6 +412,16 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 			break;
 		}
 
+		// The confirmation of GreatPeopleHurry of the traits (added by this mod): data1 city ID
+		if (info.getOnClickedPythonCallback() == "claudeHurryGreatPeople")
+		{
+			if (pPopupReturn->getButtonClicked() == 0)
+			{
+				CvMessageControl::getInstance().sendModNetMessage(MOD_NET_MESSAGE_HURRY_GREAT_PEOPLE, GC.getGameINLINE().getActivePlayer(), info.getData1(), 0, 0);
+			}
+			break;
+		}
+
 		// The popup of LendLease of the traits (added by this mod): the flags keep which players the buttons are, in their
 		// order (the last button cancels). The selected units are joined into one group first, as for a move, and the
 		// group of the head unit goes (CvPlayer::lendLease)

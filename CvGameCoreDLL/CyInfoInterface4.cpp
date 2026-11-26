@@ -64,6 +64,8 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getLendLeaseGoldPercent", &CvTraitInfo::getLendLeaseGoldPercent, "int ()")
 		.def("getLendLeaseAttitudeChange", &CvTraitInfo::getLendLeaseAttitudeChange, "int ()")
 		.def("getLendLeaseAttitudeLimit", &CvTraitInfo::getLendLeaseAttitudeLimit, "int ()")
+		.def("getGreatPeopleHurryGold", &CvTraitInfo::getGreatPeopleHurryGold, "int ()")
+		.def("getGreatPeopleHurryUnitClass", &CvTraitInfo::getGreatPeopleHurryUnitClass, "int ()")
 		.def("isNoCultureFlip", &CvTraitInfo::isNoCultureFlip, "bool ()")
 		.def("isNoRevoltAndNoCultureFlip", &CvTraitInfo::isNoRevoltAndNoCultureFlip, "bool ()")
 		.def("isInstantCultureFlip", &CvTraitInfo::isInstantCultureFlip, "bool ()")
