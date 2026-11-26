@@ -140,6 +140,7 @@ BtS の効果はそのままにして足す。
 | `Deals`（`bBuyCities`・`iGoldValueModifier`）、`iInflationModifier` | ダレイオス1世 |
 | `NearbyCityCommerce`（研究・文化、首都 2 倍）、`iMinCityRangeChange`、`HealthyCommercePercents`（金） | パカル2世 |
 | `CultureFlip`（`bInstantFlip`・`iRevoltChance`）、`GreatPeopleHurry`（偉大な芸術家） | エカチェリーナ2世 |
+| 固有の社会制度（国有化の置換、`bNoForcedCivics`、`FreeTraits`）、`LockedImprovements`（工房）、`PyOnImprovementChanged`（小屋系・農地 → 工房） | 毛沢東 |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -228,6 +229,7 @@ BtS の効果はそのままにして足す。
 | クビライ | 大元ウルス（短縮名「元」）: 戦争で相手の首都を占領すると、相手の基本志向のうち持っていないものから 1 つをランダムに得る。相手を滅ぼすと、持っていない基本志向をすべて得る。ジャムチ（駅伝制）— 全都市の交易路 +1（2026-11-26。設計は 2026-11-25。渡るのは基本志向 11 個だけで、文明志向・指導者固有の志向はクセが強いので渡さない。`GainTraitsOnFriendly` は別の文明のために残す） | `bGainTraitOnCapitalCapture`、`bGainTraitsOnElimination`、`iTradeRoutes` 1 | 実装済み `TRAIT_YUAN_ULUS` |
 | パカル2世 | 密集する都市国家（短縮名「邦」）: 都市どうしの最低距離 -1（間に 1 マスで建てられる）。余剰の衛生 2 につき、その都市の金 +1（2026-11-26 に 1 につき +1 から下げた。都市数の維持費を払い、狭い都市圏で余る拡張志向の衛生 +2 を生かす）。3 タイル以内にある自分のほかの都市 1 つにつき、その都市の研究 +1・文化 +1、首都では 2 倍（都市を詰めて建てる動機。2026-11-26。設計は 2026-11-25。数値は仮。バビロニアの `HealthyCommercePercents` は研究なので重複としない） | `iMinCityRangeChange` -1、`HealthyCommercePercents`（金 50）、`NearbyCityCommerce`（`iRange` 3・研究 1・文化 1・`bDoubleInCapital`） | 実装済み `TRAIT_CITY_STATES` |
 | エカチェリーナ2世 | 啓蒙専制（短縮名「啓」）: ポーランド分割 — 文化で上回った他国の都市は反乱が起きやすく（+100%）、1 回目の反乱で寝返る。エルミタージュ — 都市画面の偉人のプログレスバーをクリックすると、足りない偉人ポイントを 1 ポイントあたり 3 ゴールドで買い、その場で偉大な芸術家が生まれる（1 都市につき 1 ターンに 1 回）。金で芸術家を買い、国境の都市で傑作を使って隣の都市を寝返らせる（スターリンは諜報、ピョートルは技術と分ける。2026-11-26。設計は 2026-11-25。数値は仮） | `CultureFlip`（`bInstantFlip` 1・`iRevoltChance` 100）、`GreatPeopleHurry`（`iGoldPerPoint` 3・`UNITCLASS_ARTIST`） | 実装済み `TRAIT_ENLIGHTENED_ABSOLUTISM` |
+| 毛沢東 | 大躍進（短縮名「進」）: 国有化の代わりに固有の社会制度「大躍進」を採用できる。国有化の効果に加えて工房の生産 +1、決議とスパイによる社会制度の強制を受けない。採用している間は人民公社志向（短縮名「公」）を持つ: 小屋・集落・村・町を工房に替えると金（町で大商人の交易任務の平均の 4 分の 1。交易の利益 5 として `(iBaseTrade + iTradeMultiplier × 5) × 速度 / 4`、通常の速度で 375。村 40%・集落 15%・小屋 5%）、農地を工房に替えるとそのタイルの都市に生産（30 × `iTrainPercent`）。工房はほかの施設に変えられず、自分で略奪もできない（敵の略奪は BtS どおり）。都市の将来を売って、いまの工業を買う。共産主義の前は効果がない（承知の上。設計はユーザー、2026-11-25。2026-11-26） | 固有の社会制度 `CIVIC_GREAT_LEAP`（`ReplacedCivic` 国有化、`PrereqOrTraits`、`bNoForcedCivics`、`FreeTraits`）、`LockedImprovements`、`PyOnImprovementChanged` | 実装済み、ゲームで確認済み `TRAIT_GREAT_LEAP`・`TRAIT_PEOPLES_COMMUNE` |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
 - 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%
@@ -277,6 +279,9 @@ BtS の効果はそのままにして足す。
 | `TRAIT_DARIC`（ダレイコス金貨志向、短縮名「貨」） | ダレイオス1世の 3 つ目の志向。`Deals`（`bBuyCities` 1、`iGoldValueModifier` 25）、`iInflationModifier` -50 |
 | `PROMOTION_GOLDEN_EMPIRE`（黄金の帝国） | `iGoldenAgeAdvantageCombatPercent` 20。黄金の帝国志向の `FreePromotionSets` で、航空以外の全戦闘ユニット（偵察・弓兵・騎乗・白兵戦・攻城・銃・装甲・ヘリコプター・海洋）に付く。`UnitCombats` は空でレベルアップでは選べない。アイコンは戦闘Ⅰの流用 |
 | `SPELL_LIANHENG`（連衡） | 張儀だけ。戦争中の文明の都市で、その文明と和平し、張儀は消える |
+| `TRAIT_GREAT_LEAP`（大躍進志向、短縮名「進」） | 毛沢東の 3 つ目の志向。中身はなく、`CIVIC_GREAT_LEAP` の `PrereqOrTraits` の対象（説明文は固有の社会制度の行が出る） |
+| `CIVIC_GREAT_LEAP`（大躍進） | 国有化の複製（共産主義、`ReplacedCivic` 国有化）。工房の産出を食料 +1・生産 +1 に（国有化は食料 +1）。`bNoForcedCivics` 1、`FreeTraits` で人民公社志向 |
+| `TRAIT_PEOPLES_COMMUNE`（人民公社志向、短縮名「公」） | `LockedImprovements`（工房）、`PyOnImprovementChanged`（金・生産とメッセージ `TXT_KEY_PEOPLES_COMMUNE_GOLD`・`_PRODUCTION`。生産は `gainImprovementProduction` で、都市画面の内訳に「施設の転換により」の行）。Help `TXT_KEY_TRAIT_PEOPLES_COMMUNE_HELP` |
 
 ## 確認の記録
 
