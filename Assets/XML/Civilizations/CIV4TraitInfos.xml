@@ -430,6 +430,16 @@
 				<iCommerce>1</iCommerce>
 			</GlobalWorldWonderCommerceChanges>
 			<iEnemyWarWearinessModifier>50</iEnemyWarWearinessModifier>
+			<NearbyCityCommerce>
+				<iRange>3</iRange>
+				<CommerceChanges>
+					<iCommerce>0</iCommerce>
+					<iCommerce>1</iCommerce>
+					<iCommerce>1</iCommerce>
+					<iCommerce>0</iCommerce>
+				</CommerceChanges>
+				<bDoubleInCapital>1</bDoubleInCapital>
+			</NearbyCityCommerce>
 			<NoTechCivics>
 				<CivicType>CIVIC_CASTE_SYSTEM</CivicType>
 				<CivicType>CIVIC_ORGANIZED_RELIGION</CivicType>

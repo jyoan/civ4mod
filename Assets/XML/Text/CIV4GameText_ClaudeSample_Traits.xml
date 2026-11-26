@@ -1101,6 +1101,24 @@
 		<Japanese>[ICON_BULLET]&#21508;&#37117;&#24066;&#12391;&#12289;&#12381;&#12398;&#37117;&#24066;&#12398;&#19990;&#30028;&#36986;&#29987;1&#12388;&#12395;&#12388;&#12365;%D1%F2</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NEARBY_CITY_COMMERCE</Tag>
+		<English>[ICON_BULLET]%D1%F2 in each city for each other city of yours within %d3 tiles</English>
+		<French>[ICON_BULLET]%D1%F2 in each city for each other city of yours within %d3 tiles</French>
+		<German>[ICON_BULLET]%D1%F2 in each city for each other city of yours within %d3 tiles</German>
+		<Italian>[ICON_BULLET]%D1%F2 in each city for each other city of yours within %d3 tiles</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 in each city for each other city of yours within %d3 tiles</Spanish>
+		<Japanese>[ICON_BULLET]&#21508;&#37117;&#24066;&#12391;&#12289;%d3&#12479;&#12452;&#12523;&#20197;&#20869;&#12395;&#12354;&#12427;&#33258;&#20998;&#12398;&#12411;&#12363;&#12398;&#37117;&#24066;1&#12388;&#12395;&#12388;&#12365;%D1%F2</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NEARBY_CITY_COMMERCE_CAPITAL</Tag>
+		<English>[ICON_BULLET]%D1%F2 in each city for each other city of yours within %d3 tiles (doubled in the capital)</English>
+		<French>[ICON_BULLET]%D1%F2 in each city for each other city of yours within %d3 tiles (doubled in the capital)</French>
+		<German>[ICON_BULLET]%D1%F2 in each city for each other city of yours within %d3 tiles (doubled in the capital)</German>
+		<Italian>[ICON_BULLET]%D1%F2 in each city for each other city of yours within %d3 tiles (doubled in the capital)</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 in each city for each other city of yours within %d3 tiles (doubled in the capital)</Spanish>
+		<Japanese>[ICON_BULLET]&#21508;&#37117;&#24066;&#12391;&#12289;%d3&#12479;&#12452;&#12523;&#20197;&#20869;&#12395;&#12354;&#12427;&#33258;&#20998;&#12398;&#12411;&#12363;&#12398;&#37117;&#24066;1&#12388;&#12395;&#12388;&#12365;%D1%F2&#65288;&#39318;&#37117;&#12391;&#12399;2&#20493;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_PER_WORLD_WONDER</Tag>
 		<English>[ICON_BULLET]%D1%F2 in all cities for each World Wonder you own</English>
 		<French>[ICON_BULLET]%D1%F2 in all cities for each World Wonder you own</French>

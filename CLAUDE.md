@@ -2,6 +2,8 @@
 
 Civilization IV: Beyond the Sword 日本語版（CyberFront 版）向けの Mod。公式 SDK の CvGameCoreDLL を改造し、XML / Python も改修する。
 
+**ユーザーへの返答は常に日本語で書く**（ツールの出力やソースが英語でも切り替えない）。コード・ソースのコメント・コミットメッセージは従来どおり英語。
+
 ## トークンを節約する読み方
 
 - `docs/` の大きなファイル（`docs/tags/*`・`test-data*.md`・`test-log*.md`・`civ-design.md`・`civ4_mod_design_handoff.md`）は丸ごと Read しない。Grep で該当箇所を探し、`offset` / `limit` でその付近だけ読む（タグと検証用データは見出し 1 つが 1 項目）

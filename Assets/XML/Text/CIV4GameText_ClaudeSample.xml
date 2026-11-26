@@ -1512,6 +1512,15 @@
 		<Japanese>[ICON_BULLET]&#19990;&#30028;&#36986;&#29987;&#65288;&#24535;&#21521;&#65289;&#12395;&#12424;&#12426;%F2%D1</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_NEARBY_CITY_COMMERCE</Tag>
+		<English>[ICON_BULLET]%D1%F2 from Nearby Cities (trait)</English>
+		<French>[ICON_BULLET]%D1%F2 from Nearby Cities (trait)</French>
+		<German>[ICON_BULLET]%D1%F2 from Nearby Cities (trait)</German>
+		<Italian>[ICON_BULLET]%D1%F2 from Nearby Cities (trait)</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 from Nearby Cities (trait)</Spanish>
+		<Japanese>[ICON_BULLET]&#36817;&#38563;&#12398;&#37117;&#24066;&#65288;&#24535;&#21521;&#65289;&#12395;&#12424;&#12426;%F2%D1</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_MISC_LEARNED_CONQUEST_UNIQUES</Tag>
 		<English>Learned the uniques of %s1: %s2</English>
 		<French>Learned the uniques of %s1: %s2</French>

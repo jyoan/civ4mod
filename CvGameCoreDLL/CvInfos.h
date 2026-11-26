@@ -5086,6 +5086,9 @@ public:
 	int* getWorldWonderCommerceChangeArray() const;	// added by this mod
 	int* getGlobalWorldWonderCommerceChangeArray() const;	// added by this mod
 	int getEnemyWarWearinessModifier() const;	// Exposed to Python (added by this mod)
+	int getNearbyCityRange() const;	// Exposed to Python (added by this mod)
+	int getNearbyCityCommerce(int i) const;	// Exposed to Python (added by this mod)
+	bool isNearbyCityDoubleInCapital() const;	// Exposed to Python (added by this mod)
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(int iSpecialBuilding) const;	// Exposed to Python (added by this mod)
 	bool isNoTechCivic(int i) const;		// Exposed to Python (added by this mod)
@@ -5471,6 +5474,9 @@ protected:
 	int* m_paiWorldWonderCommerceChange;	// added by this mod: [commerce]
 	int* m_paiGlobalWorldWonderCommerceChange;	// added by this mod: [commerce]
 	int m_iEnemyWarWearinessModifier;	// added by this mod
+	int m_iNearbyCityRange;	// added by this mod: NearbyCityCommerce/iRange
+	int* m_paiNearbyCityCommerce;	// added by this mod: NearbyCityCommerce/CommerceChanges [commerce]
+	bool m_bNearbyCityDoubleInCapital;	// added by this mod: NearbyCityCommerce/bDoubleInCapital
 	bool m_bConquestStateReligion;	// added by this mod
 	bool* m_pabConquestReligionBuilding;	// added by this mod: [special building], NULL when not set
 	std::vector<CvString> m_aszConquestReligionBuildingTypes;	// read() keeps the types as strings until readPass3()

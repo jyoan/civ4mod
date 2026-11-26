@@ -14761,6 +14761,15 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 		iBaseCommerceRate += 100 * iWonderCommerce;
 	}
 
+	// NearbyCityCommerce of the traits (added by this mod)
+	int iNearbyCityCommerce = city.getNearbyCityCommerce(eCommerceType);
+	if (0 != iNearbyCityCommerce)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_NEARBY_CITY_COMMERCE", iNearbyCityCommerce, info.getChar()));
+		szBuffer.append(NEWLINE);
+		iBaseCommerceRate += 100 * iNearbyCityCommerce;
+	}
+
 	// AngryCommerceChanges and UnhealthyCommerceChanges (added by this mod)
 	int iAngryCommerce = city.getAngryCommerce(eCommerceType);
 	if (0 != iAngryCommerce)
