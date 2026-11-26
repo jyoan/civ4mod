@@ -63,6 +63,9 @@
 ##                     events), e.g. replacing a farm by a workshop:
 ##                     gainProduction(pPlot.getWorkingCity(), improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP',
 ##                     {'IMPROVEMENT_FARM': scaleBySpeed(30, 'Train')}))
+##   PyOnLastReligionClaimed  pPlayer, eTrait, pCity (the holy city), eReligion: after the player founds a religion by
+##                     bClaimLastReligion (after PyOnReligionFounded), e.g.
+##                     createUnits(pPlayer, 'UNITCLASS_PROPHET', 1, pCity.plot())
 ## Counters: each player has a number per trait for the hooks (CyPlayer.getTraitCounter, saved with the game), e.g.
 ##   countEvery(pPlayer, eTrait, 3) and gainGold(pPlayer, 100)   (every third time)
 ## Temporary traits: gainTraitForTurns(pPlayer, 'TRAIT_X', iTurns) gives a trait for some turns, e.g. from a hook.
@@ -182,3 +185,7 @@ def onImprovementChanged(argsList):
 	pPlayer, eTrait, iX, iY, eOld, eNew = argsList
 	pPlot = CyMap().plot(iX, iY)
 	eval(gc.getTraitInfo(eTrait).getPyOnImprovementChanged())
+
+def onLastReligionClaimed(argsList):
+	pPlayer, eTrait, pCity, eReligion = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnLastReligionClaimed())

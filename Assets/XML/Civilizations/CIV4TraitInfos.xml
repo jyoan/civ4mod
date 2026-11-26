@@ -312,6 +312,7 @@
 			<bRevealWarPlans>1</bRevealWarPlans>
 			<bRevealHiddenAttitude>1</bRevealHiddenAttitude>
 			<bImprovementUpgradeUnworked>1</bImprovementUpgradeUnworked>
+			<bClaimLastReligion>1</bClaimLastReligion>
 			<GreatPeopleHurry>
 				<iGoldPerPoint>3</iGoldPerPoint>
 				<UnitClassType>UNITCLASS_ARTIST</UnitClassType>
@@ -670,6 +671,7 @@
 			<PyOnCivicChanged>(gainTraitForTurns(pPlayer, 'TRAIT_TEST_TEMPORARY', 2), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnCivicChanged', infoDescription('Civic', iOldCivic) + ' -&gt; ' + infoDescription('Civic', eCivic))))</PyOnCivicChanged>
 			<PyOnCircumnavigated>(iOrder == 1 and startGoldenAge(pPlayer), iOrder &gt; 1 and gainCircumnavigationMoves(pPlayer),showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnCircumnavigated', 'iOrder ' + str(iOrder))))</PyOnCircumnavigated>
 			<PyOnPlayerEliminated>(startGoldenAge(pPlayer), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnPlayerEliminated', gc.getPlayer(iEliminatedPlayer).getCivilizationShortDescription(0) + ', golden age turns ' + str(pPlayer.getGoldenAgeTurns()))))</PyOnPlayerEliminated>
+			<PyOnLastReligionClaimed>(createUnits(pPlayer, 'UNITCLASS_PROPHET', 1, pCity.plot()), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnLastReligionClaimed', cityName(pCity) + ', ' + infoDescription('Religion', eReligion))))</PyOnLastReligionClaimed>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>

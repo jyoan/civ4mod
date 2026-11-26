@@ -5043,6 +5043,8 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 	int iValue;
 	int iBestValue;
 	int iI, iJ, iK;
+	PlayerTypes eClaimPlayer = NO_PLAYER;		// bClaimLastReligion of the traits (added by this mod)
+	ReligionTypes eClaimSlot = NO_RELIGION;
 
 	if (eIndex == NO_TECH)
 	{
@@ -5178,9 +5180,18 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 					gDLL->getPythonIFace()->callFunction(PYGameModule, "doHolyCityTech", argsList.makeFunctionArgs(), &lResult);
 					if (lResult != 1)
 					{
+						// bClaimLastReligion of the traits (added by this mod): a player of another team may take the religion
+						// of this tech instead of this team. The slot is reserved now and founded below
+						eClaimPlayer = getLastReligionClaim(eIndex, true, eClaimSlot);
+						if (eClaimPlayer != NO_PLAYER)
+						{
+							GC.getGameINLINE().setReligionSlotTaken(eClaimSlot, true);
+						}
+
 						for (iI = 0; iI < GC.getNumReligionInfos(); iI++)
 						{
-							if (GC.getReligionInfo((ReligionTypes)iI).getTechPrereq() == eIndex)
+							// Not a slot already taken (added by this mod): reserved by bClaimLastReligion
+							if (GC.getReligionInfo((ReligionTypes)iI).getTechPrereq() == eIndex && !GC.getGameINLINE().isReligionSlotTaken((ReligionTypes)iI))
 							{
 								iBestValue = MAX_INT;
 								eBestPlayer = NO_PLAYER;
@@ -5245,6 +5256,17 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 									bReligionFounded = true;
 									bFirstBonus = true;
 								}
+							}
+						}
+
+						// bClaimLastReligion of the traits (added by this mod): after this team founded the second to last
+						// religion, a player of another team takes the last one. The slot is reserved now and founded below
+						if (eClaimPlayer == NO_PLAYER && bReligionFounded)
+						{
+							eClaimPlayer = getLastReligionClaim(eIndex, false, eClaimSlot);
+							if (eClaimPlayer != NO_PLAYER)
+							{
+								GC.getGameINLINE().setReligionSlotTaken(eClaimSlot, true);
 							}
 						}
 
@@ -5379,6 +5401,13 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 						}
 					}
 				}
+			}
+
+			// bClaimLastReligion of the traits (added by this mod): the claimant gets the tech of the reserved slot and founds
+			// the religion, after the first bonuses of this team (the claimant does not share the first to this tech)
+			if (eClaimPlayer != NO_PLAYER)
+			{
+				GET_PLAYER(eClaimPlayer).claimLastReligion(eClaimSlot);
 			}
 
 			if (bAnnounce)
@@ -5520,6 +5549,107 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 	}
 }
 
+
+// bClaimLastReligion of the traits (added by this mod): this team is the first to have eTech (CvTeam::setHasTech). Returns
+// the player of another team with the trait (the first by player number) who takes a religion, and sets eSlotReligion to
+// its slot, or returns NO_PLAYER. Only the religions with a tech count, whose slot is free and whose tech no team has yet:
+// - bBeforeFounding (before the religions of eTech are founded): when one religion of eTech and one other religion are
+//   left, a player of a third team (neither this one nor the claimant's) researches the other tech and should finish it
+//   within a turn, and eTech costs more beakers (base cost) than the other tech, the claimant takes the religion of eTech
+//   instead of this team. The research of the players runs one after another, so this stands for "at the same time"
+// - else (this team founded a religion of eTech): when one religion is left, the claimant takes it
+PlayerTypes CvTeam::getLastReligionClaim(TechTypes eTech, bool bBeforeFounding, ReligionTypes& eSlotReligion) const
+{
+	ReligionTypes eThisSlot = NO_RELIGION;
+	ReligionTypes eOtherSlot = NO_RELIGION;
+	TechTypes eLoopTech;
+	TechTypes eOtherTech;
+	int iNumThis = 0;
+	int iNumOther = 0;
+	int iI;
+	int iJ;
+
+	eSlotReligion = NO_RELIGION;
+
+	if (!GC.getGameINLINE().isFinalInitialized() || gDLL->GetWorldBuilderMode())
+	{
+		return NO_PLAYER;
+	}
+
+	for (iI = 0; iI < GC.getNumReligionInfos(); iI++)
+	{
+		eLoopTech = (TechTypes)GC.getReligionInfo((ReligionTypes)iI).getTechPrereq();
+
+		if (eLoopTech != NO_TECH && !GC.getGameINLINE().isReligionSlotTaken((ReligionTypes)iI))
+		{
+			if (eLoopTech == eTech)
+			{
+				iNumThis++;
+				eThisSlot = (ReligionTypes)iI;
+			}
+			else if (GC.getGameINLINE().countKnownTechNumTeams(eLoopTech) == 0)
+			{
+				iNumOther++;
+				eOtherSlot = (ReligionTypes)iI;
+			}
+		}
+	}
+
+	if (iNumOther != 1 || iNumThis != (bBeforeFounding ? 1 : 0))
+	{
+		return NO_PLAYER;
+	}
+
+	eOtherTech = (TechTypes)GC.getReligionInfo(eOtherSlot).getTechPrereq();
+
+	if (bBeforeFounding && GC.getTechInfo(eTech).getResearchCost() <= GC.getTechInfo(eOtherTech).getResearchCost())
+	{
+		return NO_PLAYER;
+	}
+
+	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		CvPlayer& kClaimant = GET_PLAYER((PlayerTypes)iI);
+
+		if (kClaimant.getTeam() == getID() || !kClaimant.canClaimLastReligion())
+		{
+			continue;
+		}
+
+		if (bBeforeFounding)
+		{
+			for (iJ = 0; iJ < MAX_PLAYERS; iJ++)
+			{
+				CvPlayer& kRival = GET_PLAYER((PlayerTypes)iJ);
+
+				if (kRival.isAlive() && !kRival.isBarbarian() && kRival.getTeam() != getID() && kRival.getTeam() != kClaimant.getTeam())
+				{
+					// getResearchTurnsLeft is 1 also without research (MAX_INT overflows), hence the rate
+					if (kRival.getCurrentResearch() == eOtherTech && kRival.calculateResearchRate(eOtherTech) > 0 && kRival.getResearchTurnsLeft(eOtherTech, true) <= 1)
+					{
+						break;
+					}
+				}
+			}
+
+			if (iJ == MAX_PLAYERS)
+			{
+				// No rival: the same for any other claimant
+				return NO_PLAYER;
+			}
+
+			eSlotReligion = eThisSlot;
+		}
+		else
+		{
+			eSlotReligion = eOtherSlot;
+		}
+
+		return ((PlayerTypes)iI);
+	}
+
+	return NO_PLAYER;
+}
 
 bool CvTeam::isNoTradeTech(TechTypes eIndex) const
 {

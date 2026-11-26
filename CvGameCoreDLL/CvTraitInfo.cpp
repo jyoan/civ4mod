@@ -119,6 +119,7 @@ m_bRevealHiddenAttitude(false),
 m_bLongCountCalendar(false),
 m_bImprovementUpgradeUnworked(false),
 m_bUnsettleGreatPeople(false),
+m_bClaimLastReligion(false),
 m_bIgnoreEvents(false),
 m_iEventChanceChange(0),
 m_bNoFirstEventDelay(false),
@@ -969,6 +970,13 @@ bool CvTraitInfo::isImprovementUpgradeUnworked() const
 bool CvTraitInfo::isUnsettleGreatPeople() const
 {
 	return m_bUnsettleGreatPeople;
+}
+
+// bClaimLastReligion (added by this mod): when another team founds the second to last religion, the player gets the tech of
+// the last one and founds it (CvTeam::getLastReligionClaim, CvPlayer::claimLastReligion)
+bool CvTraitInfo::isClaimLastReligion() const
+{
+	return m_bClaimLastReligion;
 }
 
 // UnsettleSpecialists (added by this mod): like bUnsettleGreatPeople, only for the great people settled as these specialists
@@ -2324,6 +2332,12 @@ const TCHAR* CvTraitInfo::getPyOnImprovementChanged() const
 	return m_aszPythonHook[TRAIT_PYHOOK_IMPROVEMENT_CHANGED];
 }
 
+// PyOnLastReligionClaimed (added by this mod): the player founded a religion by bClaimLastReligion (CvPlayer::claimLastReligion)
+const TCHAR* CvTraitInfo::getPyOnLastReligionClaimed() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_LAST_RELIGION_CLAIMED];
+}
+
 // ConditionalFreeTraits (added by this mod): the traits the player has while the conditions hold
 int CvTraitInfo::getNumConditionalFreeTraits() const
 {
@@ -3123,6 +3137,7 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bLongCountCalendar, "bLongCountCalendar");
 	pXML->GetChildXmlValByName(&m_bImprovementUpgradeUnworked, "bImprovementUpgradeUnworked");
 	pXML->GetChildXmlValByName(&m_bUnsettleGreatPeople, "bUnsettleGreatPeople");
+	pXML->GetChildXmlValByName(&m_bClaimLastReligion, "bClaimLastReligion");
 	readTypeList(pXML, "UnsettleSpecialists", m_aiUnsettleSpecialists);	// specialists are loaded before traits
 	readStackPromotions(pXML, m_aStackPromotionSets);
 	pXML->GetChildXmlValByName(&m_bIgnoreEvents, "bIgnoreEvents");
@@ -3340,6 +3355,7 @@ void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_OTHER_CITY_FOUNDED], "PyOnOtherCityFounded");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_PLAYER_ELIMINATED], "PyOnPlayerEliminated");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_IMPROVEMENT_CHANGED], "PyOnImprovementChanged");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_LAST_RELIGION_CLAIMED], "PyOnLastReligionClaimed");
 }
 
 // The part of read() for ConditionalFreeTraits (added by this mod)

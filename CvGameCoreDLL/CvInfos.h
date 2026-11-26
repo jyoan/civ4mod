@@ -5040,6 +5040,7 @@ public:
 	bool isLongCountCalendar() const;				// Exposed to Python
 	bool isImprovementUpgradeUnworked() const;		// Exposed to Python
 	bool isUnsettleGreatPeople() const;				// Exposed to Python
+	bool isClaimLastReligion() const;				// Exposed to Python
 	bool isUnsettleSpecialist(int iSpecialist) const;				// Exposed to Python (UnsettleSpecialists, added by this mod)
 	const std::vector<int>& getUnsettleSpecialists() const;
 	int getNumStackPromotionSets() const;				// Exposed to Python (StackPromotions, added by this mod)
@@ -5291,6 +5292,7 @@ public:
 	const TCHAR* getPyOnOtherCityFounded() const;	// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnPlayerEliminated() const;	// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnImprovementChanged() const;	// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnLastReligionClaimed() const;	// Exposed to Python (added by this mod)
 	int getNumConditionalFreeTraits() const;		// Exposed to Python
 	int getConditionalFreeTraitType(int i) const;	// Exposed to Python
 	const ConditionalFreeTrait& getConditionalFreeTrait(int i) const;
@@ -5441,6 +5443,7 @@ protected:
 	bool m_bLongCountCalendar;	// added by this mod
 	bool m_bImprovementUpgradeUnworked;	// added by this mod
 	bool m_bUnsettleGreatPeople;	// added by this mod
+	bool m_bClaimLastReligion;	// added by this mod
 	std::vector<int> m_aiUnsettleSpecialists;	// added by this mod
 	std::vector<StackPromotionSet> m_aStackPromotionSets;	// added by this mod
 	bool m_bIgnoreEvents;	// added by this mod

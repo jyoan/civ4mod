@@ -237,3 +237,29 @@
 - そのつど判定するのでセーブデータは変わらない。
 - 説明文 `TXT_KEY_TRAIT_LOCKED_IMPROVEMENTS`（「ほかの施設に変えられず、自分で略奪もできない施設: 工房」）。
 - Python: `CvTraitInfo.isLockedImprovement(iImprovement)`、`CyPlayer.isLockedImprovement(eImprovement)`
+
+## `TraitInfo/bClaimLastReligion`、`PyOnLastReligionClaimed`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-26（アラブの「最後の預言者」の案）。
+- 対象は、技術で創始する宗教のうち、枠が空いていて（`isReligionSlotTaken`）その技術をまだどのチームも持っていないもの。
+- 他のチームが宗教を創始して残りが 1 つになると、志向を持つプレイヤーがその技術を無償で得て、その宗教を創始する。
+- 創始は通常どおり（聖地・無料の宣教師・`PyOnReligionFounded`）で、そのあと `PyOnLastReligionClaimed` を呼ぶ。
+- 割り込み: 残りが 2 つで、他のチームが一方の技術を最初に得たときに判定する（`CvTeam::getLastReligionClaim` の `bBeforeFounding`）。
+  - 第三のチーム（そのチームでも志向の持ち主のチームでもない）のプレイヤーが、もう一方の技術を研究中で 1 ターン以内に終えそうか（`getResearchTurnsLeft` が 1 で研究速度が正）を見る
+  - 終えそうで、いま得た技術の基本の研究費（`getResearchCost`）の方が高ければ、志向の持ち主がその宗教を先に取る
+  - 技術を得たチームは技術だけで宗教は得ない。もう一方の宗教は、研究した文明が通常どおり創始する
+  - 研究費が同じか低ければ割り込まず、通常どおり創始された後に残りの 1 つを取る
+- 研究はプレイヤーの順に処理されるので（`CvPlayer::doTurn` → `doResearch`）、「同時に開発」はこの予測で代える。
+- 予測は外れることがある（技術の取引、偉人の研究、研究の変更）。そのときは割り込みが起きないか、取った後にもう一方が残るだけ。
+- 割り込みでは、`setHasTech` の宗教の処理の前に枠を予約し（`setReligionSlotTaken`）、宗教の処理は予約済みの枠を飛ばす。
+- 実際に与えるのは、そのチームの「最初の発見」のボーナスの後（`CvPlayer::claimLastReligion`）。志向の持ち主は 2 番目に得たことになる。
+- 残りが 1 つになったのが志向の持ち主のチーム自身の創始なら、何もしない。
+- 志向の持ち主が複数いるときは、プレイヤー番号の小さい 1 人だけ。都市のないプレイヤーと蛮族は除く。
+- 「宗教を選択」のオプションでは、枠（技術）で数え、創始する宗教は AI の選び方（`AI_chooseReligion`）で決める。人間にもポップアップを出さない。
+- ゲームの初期化前とワールドビルダーでは何もしない。
+- セーブデータは変わらない（枠と技術の状態から毎回数える）。
+- `PyOnLastReligionClaimed` の名前: `pPlayer`・`eTrait`・`pCity`（聖地）・`eReligion`。
+- 例（聖地に大預言者）: `createUnits(pPlayer, 'UNITCLASS_PROPHET', 1, pCity.plot())`（偉人の誕生に数えないので、次の偉人に必要なポイントは増えない）。
+- 説明文 `TXT_KEY_TRAIT_CLAIM_LAST_RELIGION`。フックの効果は自動で出ないので `Help` に書く。
+- Python: `CvTraitInfo.isClaimLastReligion()`・`getPyOnLastReligionClaimed()`
