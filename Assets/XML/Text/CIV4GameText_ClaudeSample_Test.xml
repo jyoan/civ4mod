@@ -1129,6 +1129,15 @@
 		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#24314;&#36896;&#29289;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_TEST_ENCIRCLE</Tag>
+		<English>Test Promotion (Encirclement)</English>
+		<French>Test Promotion (Encirclement)</French>
+		<German>Test Promotion (Encirclement)</German>
+		<Italian>Test Promotion (Encirclement)</Italian>
+		<Spanish>Test Promotion (Encirclement)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26119;&#36914;&#65288;&#21253;&#22258;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_CLAUDE_TEST_HOOK_LOG</Tag>
 		<English>[Test] %s1: %s2</English>
 		<French>[Test] %s1: %s2</French>

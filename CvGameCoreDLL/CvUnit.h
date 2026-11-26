@@ -427,6 +427,7 @@ public:
 	void changeBonusAffinity(BonusTypes eBonus, int iChange);	// added by this mod
 	int getBonusAffinityStrength() const;	// added by this mod
 	int getBuildingCombatPercent() const;	// added by this mod: BuildingCombatPercents of the promotions, now. Exposed to Python
+	int getEncirclementPercent(const CvPlot* pCenter, const CvPlot* pFront, int* piSide = NULL, int* piRear = NULL) const;	// added by this mod: Encirclement of the promotions. Exposed to Python
 	void doFeatureSpreads();	// added by this mod: FeatureSpreads of the promotions
 	bool isHiddenNationality() const;	// added by this mod: bHiddenNationality of the unit or of its promotions. Exposed to Python
 	bool canEnterImpassablePlot(const CvPlot* pPlot) const;	// added by this mod
@@ -889,6 +890,7 @@ protected:
 	int m_iRiverNavigationCount;	// added by this mod: promotions with bRiverNavigation (not saved)
 	int m_iFreeEmbarkCount;	// added by this mod: promotions with bFreeEmbark (not saved)
 	int m_iBuildingCombatCount;	// added by this mod: promotions with BuildingCombatPercents (not saved)
+	int m_iEncirclementCount;	// added by this mod: promotions with Encirclement (not saved)
 	std::vector<int> m_aiBonusAffinity;	// added by this mod: BonusAffinities of the unit and its promotions, [bonus], empty when none (not saved)
 	int m_iNoDamagePenaltyCount;		// added by this mod: promotions with bNoDamagePenalty (not saved)
 	int m_iHiddenNationalityCount;		// added by this mod: promotions with bHiddenNationality (not saved)

@@ -561,6 +561,14 @@
 		<element type="BuildingCombatPercent" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="iBuildingCombatMaxPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iSidePercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iRearPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iMaxUnitsPerPlot" content="textOnly" dt:type="int"/>
+	<ElementType name="Encirclement" content="eltOnly">
+		<element type="iSidePercent" minOccurs="0"/>
+		<element type="iRearPercent" minOccurs="0"/>
+		<element type="iMaxUnitsPerPlot" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="PyOnCreated" content="textOnly"/>
 	<ElementType name="PyOnDeath" content="textOnly"/>
 	<ElementType name="iStationedAttitudeChange" content="textOnly" dt:type="int"/>
@@ -1048,6 +1056,7 @@
 		<element type="BonusAffinities" minOccurs="0"/>
 		<element type="BuildingCombatPercents" minOccurs="0"/>
 		<element type="iBuildingCombatMaxPercent" minOccurs="0"/>
+		<element type="Encirclement" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

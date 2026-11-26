@@ -1548,6 +1548,24 @@
 		<Japanese>[ICON_BULLET]&#24489;&#35728;&#65288;&#24535;&#21521;&#65289;: %D1%%</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_COMBAT_PLOT_ENCIRCLEMENT_MOD</Tag>
+		<English>[ICON_BULLET]%D1%% Encirclement (sides %d2%%, rear %d3%%)</English>
+		<French>[ICON_BULLET]%D1%% Encirclement (sides %d2%%, rear %d3%%)</French>
+		<German>[ICON_BULLET]%D1%% Encirclement (sides %d2%%, rear %d3%%)</German>
+		<Italian>[ICON_BULLET]%D1%% Encirclement (sides %d2%%, rear %d3%%)</Italian>
+		<Spanish>[ICON_BULLET]%D1%% Encirclement (sides %d2%%, rear %d3%%)</Spanish>
+		<Japanese>[ICON_BULLET]&#21253;&#22258; %D1%%&#65288;&#27178; %d2%%&#12289;&#24460; %d3%%&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_COMBAT_PLOT_SUPPORT_MOD</Tag>
+		<English>[ICON_BULLET]%D1%% Support (sides %d2%%, rear %d3%%)</English>
+		<French>[ICON_BULLET]%D1%% Support (sides %d2%%, rear %d3%%)</French>
+		<German>[ICON_BULLET]%D1%% Support (sides %d2%%, rear %d3%%)</German>
+		<Italian>[ICON_BULLET]%D1%% Support (sides %d2%%, rear %d3%%)</Italian>
+		<Spanish>[ICON_BULLET]%D1%% Support (sides %d2%%, rear %d3%%)</Spanish>
+		<Japanese>[ICON_BULLET]&#25903;&#25588; %D1%%&#65288;&#27178; %d2%%&#12289;&#24460; %d3%%&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_MISC_HELP_YIELD_HAPPY</Tag>
 		<English>[SPACE][SPACE][ICON_BULLET]Extra happiness: %d1%F2</English>
 		<French>[SPACE][SPACE][ICON_BULLET]Extra happiness: %d1%F2</French>

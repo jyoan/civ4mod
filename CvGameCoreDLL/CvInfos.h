@@ -610,6 +610,13 @@ public:
 	bool isBuildingCombatStateReligion(int i) const;	// Exposed to Python
 	int getBuildingCombatMaxPercent() const;			// Exposed to Python
 	bool isBuildingCombat() const;						// has BuildingCombatPercents
+	// Encirclement (added by this mod): combat % for each unit of the team around the enemy unit (attacking) or around
+	// this unit (defending), iSidePercent on the 4 side plots and iRearPercent on the 3 rear plots, counting up to
+	// iMaxUnitsPerPlot units on each plot (-1: no limit)
+	int getEncirclementSidePercent() const;			// Exposed to Python
+	int getEncirclementRearPercent() const;			// Exposed to Python
+	int getEncirclementMaxUnitsPerPlot() const;		// Exposed to Python
+	bool isEncirclement() const;						// has iSidePercent or iRearPercent
 	bool readPass3();					// added by this mod: the bonuses and building classes are loaded after the promotions
 
 	const TCHAR* getSound() const;				// Exposed to Python
@@ -732,6 +739,9 @@ protected:
 	std::vector<CvString> m_aszBuildingCombatBuildingClassTypes;	// as strings until readPass3()
 	std::vector<CvString> m_aszBuildingCombatSpecialBuildingTypes;
 	int m_iBuildingCombatMaxPercent;
+	int m_iEncirclementSidePercent;		// Encirclement (added by this mod)
+	int m_iEncirclementRearPercent;
+	int m_iEncirclementMaxUnitsPerPlot;
 
 	bool m_bLeader;
 	bool m_bBlitz;									

@@ -170,6 +170,23 @@
 - キャッシュの形式: `CvPromotionInfo` `uiFlag=19`。
 - Python は `CvPromotionInfo.getNumBuildingCombatPercents()` / `getBuildingCombatBuildingClass(i)` / `SpecialBuilding(i)` / `Percent(i)` / `isBuildingCombatStateReligion(i)` / `getBuildingCombatMaxPercent()`、`CyUnit.getBuildingCombatPercent()`
 
+### `PromotionInfo/Encirclement`（`iSidePercent`・`iRearPercent`・`iMaxUnitsPerPlot`）
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 2026-11-26。包囲と支援（Civ6 の側面攻撃・支援ボーナスを Civ4 向けにしたもの）。シャカの「牛の角の陣」用。
+- 中心のタイルの周囲 8 タイルのうち、攻撃側のいるタイルを除く 7 タイルにいる、自分と同じチームのユニットを数える。中心は、攻撃するときは守る側のタイル、守るときは自分のタイル。
+- 攻撃側のいるタイルから見て中心の向こう側の 3 タイル（135° と 180°）が背後で、1 体につき `iRearPercent`。残りの 4 タイルが横で、1 体につき `iSidePercent`。
+- 1 タイルで数えるのは `iMaxUnitsPerPlot` 体まで（省略時 -1 = 上限なし）。全体の上限はない（1・2・10 なら横 4 × 10% + 背後 3 × 20% で最大 +100%）。
+- 数えるユニット: 戦闘力が 1 以上（`canFight`）、自分と同じ種類（`DomainType`。陸なら陸、海なら海。航空は数えない）、輸送中でない（`isCargo`）。移動を終えたユニット、要塞化・負傷したユニットも数える。同盟国・属国のユニットは数えない。
+- 攻撃でも防御でも同じ値が効く。攻撃側の値は `CvUnit::maxCombatStr` の攻撃側の補正（未知の守備側への見積もりにも入る）、守る側の値は既知の攻撃側に対する補正に足す。都市への攻撃、都市での防御にも効く。
+- 複数の昇進を持てば % は合計し、1 タイルの体数の上限は最も大きいもの（どれかが -1 なら上限なし）。
+- 数はそのつど数える（`CvUnit::getEncirclementPercent`）。持っている昇進の数（`m_iEncirclementCount`）はセーブせず、`updatePromotionCounts` で数え直す。
+- 戦闘の勝率の内訳に `TXT_KEY_COMBAT_PLOT_ENCIRCLEMENT_MOD`（攻撃側「包囲 +30%（横 10%、後 20%）」）・`TXT_KEY_COMBAT_PLOT_SUPPORT_MOD`（守る側「支援 …」）。昇進の説明文 `TXT_KEY_PROMOTION_ENCIRCLEMENT`・`_MAX`。
+- BtS の `FlankingStrikes`（騎乗ユニットの側面攻撃）とは別物なので、名前を `Encirclement` にした。
+- AI の評価は変えていない（勝率の計算には含まれる）。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=20`。
+- Python は `CvPromotionInfo.getEncirclementSidePercent()` / `getEncirclementRearPercent()` / `getEncirclementMaxUnitsPerPlot()`、`CyUnit.getEncirclementPercent(pCenter, pFront)`（中心のタイルと攻撃側のタイル）
+
 ### `PromotionInfo/ImpassablePlotPassages`
 
 - ファイル: `CIV4PromotionInfos.xml`

@@ -1770,6 +1770,8 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 	CvWString szDefenseOdds;
 	bool bValid;
 	int iModifier;
+	int iEncircleSide;	// Encirclement (added by this mod)
+	int iEncircleRear;
 
 	if (gDLL->getInterfaceIFace()->getLengthSelectionList() == 0)
 	{
@@ -1935,6 +1937,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 			{
 				szString.append(NEWLINE);
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_REVENGE_MOD", iModifier));
+			}
+
+			// Encirclement of the promotions of the attacker (added by this mod)
+			iModifier = pAttacker->getEncirclementPercent(pDefender->plot(), pAttacker->plot(), &iEncircleSide, &iEncircleRear);
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ENCIRCLEMENT_MOD", iModifier, iEncircleSide, iEncircleRear));
 			}
 
 			if (pPlot->isCity(true, pDefender->getTeam()))
@@ -2130,6 +2141,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 			{
 				szString.append(NEWLINE);
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_TRAIT_DEFENSE_MOD", iModifier));
+			}
+
+			// Encirclement of the promotions of the defender (added by this mod)
+			iModifier = pDefender->getEncirclementPercent(pDefender->plot(), pAttacker->plot(), &iEncircleSide, &iEncircleRear);
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_SUPPORT_MOD", iModifier, iEncircleSide, iEncircleRear));
 			}
 
 			// iRevengeCombatPercent of the traits of the defender's owner (added by this mod)
@@ -4736,6 +4756,19 @@ void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, Prom
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_BUILDING_COMBAT_MAX", GC.getPromotionInfo(ePromotion).getBuildingCombatMaxPercent()));
+	}
+
+	// Encirclement (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).isEncirclement())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ENCIRCLEMENT", GC.getPromotionInfo(ePromotion).getEncirclementSidePercent(), GC.getPromotionInfo(ePromotion).getEncirclementRearPercent()));
+
+		if (GC.getPromotionInfo(ePromotion).getEncirclementMaxUnitsPerPlot() >= 0)
+		{
+			szBuffer.append(pcNewline);
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ENCIRCLEMENT_MAX", GC.getPromotionInfo(ePromotion).getEncirclementMaxUnitsPerPlot()));
+		}
 	}
 
 	// bHiddenNationality (added by this mod)

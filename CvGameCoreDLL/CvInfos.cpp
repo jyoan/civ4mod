@@ -1944,6 +1944,9 @@ m_bPillageNoMoveCost(false),
 m_iPillageHealPercent(0),
 m_iPillageExperience(0),
 m_iBuildingCombatMaxPercent(-1),
+m_iEncirclementSidePercent(0),
+m_iEncirclementRearPercent(0),
+m_iEncirclementMaxUnitsPerPlot(-1),
 m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
@@ -2480,6 +2483,29 @@ int CvPromotionInfo::getBuildingCombatMaxPercent() const
 bool CvPromotionInfo::isBuildingCombat() const
 {
 	return !m_aiBuildingCombatPercent.empty();
+}
+
+// Encirclement/iSidePercent (added by this mod): combat % for each unit of the team on the 4 side plots
+int CvPromotionInfo::getEncirclementSidePercent() const
+{
+	return m_iEncirclementSidePercent;
+}
+
+// Encirclement/iRearPercent (added by this mod): combat % for each unit of the team on the 3 rear plots
+int CvPromotionInfo::getEncirclementRearPercent() const
+{
+	return m_iEncirclementRearPercent;
+}
+
+// Encirclement/iMaxUnitsPerPlot (added by this mod): the units counted on each plot (-1: no limit)
+int CvPromotionInfo::getEncirclementMaxUnitsPerPlot() const
+{
+	return m_iEncirclementMaxUnitsPerPlot;
+}
+
+bool CvPromotionInfo::isEncirclement() const
+{
+	return (m_iEncirclementSidePercent != 0 || m_iEncirclementRearPercent != 0);
 }
 
 // BonusAffinities and BuildingCombatPercents: the bonuses, special buildings and building classes are loaded after the
@@ -3095,13 +3121,24 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 		}
 		stream->Read(&m_iBuildingCombatMaxPercent);
 	}
+
+	// uiFlag < 20: cache written before Encirclement existed
+	m_iEncirclementSidePercent = 0;
+	m_iEncirclementRearPercent = 0;
+	m_iEncirclementMaxUnitsPerPlot = -1;
+	if (uiFlag > 19)
+	{
+		stream->Read(&m_iEncirclementSidePercent);
+		stream->Read(&m_iEncirclementRearPercent);
+		stream->Read(&m_iEncirclementMaxUnitsPerPlot);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 19;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience, 19: BuildingCombatPercents, iBuildingCombatMaxPercent (added by this mod)
+	uint uiFlag = 20;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience, 19: BuildingCombatPercents, iBuildingCombatMaxPercent, 20: Encirclement (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -3242,6 +3279,9 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 		stream->Write(m_aiBuildingCombatStateReligion[iBuildingCombat]);
 	}
 	stream->Write(m_iBuildingCombatMaxPercent);
+	stream->Write(m_iEncirclementSidePercent);
+	stream->Write(m_iEncirclementRearPercent);
+	stream->Write(m_iEncirclementMaxUnitsPerPlot);
 }
 
 // Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
@@ -3446,6 +3486,15 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 	pXML->GetChildXmlValByName(&m_iBuildingCombatMaxPercent, "iBuildingCombatMaxPercent", -1);
+
+	// Encirclement (added by this mod): iSidePercent, iRearPercent, iMaxUnitsPerPlot
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Encirclement"))
+	{
+		pXML->GetChildXmlValByName(&m_iEncirclementSidePercent, "iSidePercent");
+		pXML->GetChildXmlValByName(&m_iEncirclementRearPercent, "iRearPercent");
+		pXML->GetChildXmlValByName(&m_iEncirclementMaxUnitsPerPlot, "iMaxUnitsPerPlot", -1);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 
 	// FeatureSpreads (added by this mod): the features are loaded before the promotions
 	m_aiFeatureSpreadFeature.clear();
