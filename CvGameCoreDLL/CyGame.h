@@ -200,6 +200,7 @@ public:
 	int getForceCivicCount(int /*CivicTypes*/ eIndex);
 	bool isForceCivic(int /*CivicTypes*/ eIndex);
 	bool isForceCivicOption(int /*CivicOptionTypes*/ eCivicOption);
+	void changeForceCivicCount(int /*CivicTypes*/ eIndex, int iChange);	// added by this mod
 
 	int getVoteOutcome(int /*VoteTypes*/ eIndex);
 

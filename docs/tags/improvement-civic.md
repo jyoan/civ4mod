@@ -359,3 +359,18 @@
 - プロジェクトは志向・技術より後に読み込まれるので `read()` で番号に変える。
 - キャッシュなし。
 - Mod に `CIV4ProjectInfo.xml` を入れたのはこのとき（末尾に civ-design の目印）
+
+### `CivicInfo/bNoForcedCivics`
+
+- ファイル: `CIV4CivicInfos.xml`
+- 2026-11-26（毛沢東の大躍進の案）。
+- その社会制度を採用しているプレイヤーは、どの区分でも、社会制度の強制を受けない。
+- 国連の決議（`CvPlayer::isForcedCivicOption`。`CvGame::isForceCivicOption` の代わりに `canDoCivics` と枠の数で使う）: 決議中の社会制度に切り替わらず、自由に変更できる。
+- この社会制度自体は、その区分が強制されていても採用できる。
+- 革命の判定（`canRevolution`）は新しい社会制度の組で見るので、この社会制度をやめる革命では、強制されている区分を同時に強制の社会制度にする必要がある。
+- スパイの体制変革（BtS の任務、`bSwitchAnyCivic` の体制転覆）: 対象にできない（`CvPlayer::canForceCivics`）。
+- スパイの任務の一覧に理由の行を出す（`TXT_KEY_ESPIONAGE_NO_FORCED_CIVICS`。社会制度を強制する任務が志向の条件で使える場合だけ）。
+- 国教の強制は対象外。
+- 説明文 `TXT_KEY_CIVIC_NO_FORCED_CIVICS`。
+- キャッシュの形式: `CvCivicInfo` `uiFlag=9`。
+- Python: `CvCivicInfo.isNoForcedCivics()`、`CyPlayer.isNoForcedCivics()`・`isForcedCivicOption(eCivicOption)`、`CyGame.changeForceCivicCount(eCivic, iChange)`（決議と同じく強制する。検証用・シナリオ用）

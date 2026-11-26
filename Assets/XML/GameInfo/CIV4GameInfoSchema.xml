@@ -799,6 +799,7 @@
 	<ElementType name="ReplacedCivic" content="textOnly"/>
 	<ElementType name="PyOnAdopt" content="textOnly"/>
 	<ElementType name="PyOnRevoke" content="textOnly"/>
+	<ElementType name="bNoForcedCivics" content="textOnly" dt:type="boolean"/>
 	<ElementType name="CivicInfo" content="eltOnly">
 		<element type="CivicOptionType"/>
 		<element type="Type"/>
@@ -877,6 +878,7 @@
 		<element type="ReplacedCivic" minOccurs="0"/>
 		<element type="PyOnAdopt" minOccurs="0"/>
 		<element type="PyOnRevoke" minOccurs="0"/>
+		<element type="bNoForcedCivics" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="CivicInfos" content="eltOnly">
 		<element type="CivicInfo" maxOccurs="*"/>

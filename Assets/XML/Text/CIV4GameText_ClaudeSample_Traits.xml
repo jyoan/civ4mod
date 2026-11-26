@@ -1380,6 +1380,15 @@
 		<Japanese>[ICON_BULLET]&#20313;&#21104;&#12398;[ICON_HEALTHY] 1 &#12395;&#12388;&#12365;%F2%s1</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LOCKED_IMPROVEMENTS</Tag>
+		<English>[ICON_BULLET]Cannot replace or pillage your own: </English>
+		<French>[ICON_BULLET]Cannot replace or pillage your own: </French>
+		<German>[ICON_BULLET]Cannot replace or pillage your own: </German>
+		<Italian>[ICON_BULLET]Cannot replace or pillage your own: </Italian>
+		<Spanish>[ICON_BULLET]Cannot replace or pillage your own: </Spanish>
+		<Japanese>[ICON_BULLET]&#12411;&#12363;&#12398;&#26045;&#35373;&#12395;&#22793;&#12360;&#12425;&#12428;&#12378;&#12289;&#33258;&#20998;&#12391;&#30053;&#22890;&#12418;&#12391;&#12365;&#12394;&#12356;&#26045;&#35373;: </Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_REVEAL_BONUSES</Tag>
 		<English>[ICON_BULLET]Reveals without the technology: </English>
 		<French>[ICON_BULLET]Reveals without the technology: </French>

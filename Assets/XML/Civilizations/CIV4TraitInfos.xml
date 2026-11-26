@@ -1400,6 +1400,16 @@
 			<ShortDescription>TXT_KEY_TRAIT_TEST_LONG_COUNT_SHORT</ShortDescription>
 			<bLongCountCalendar>1</bLongCountCalendar>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_TEST_GREAT_LEAP</Type>
+			<Description>TXT_KEY_TRAIT_TEST_GREAT_LEAP</Description>
+			<ShortDescription>TXT_KEY_TRAIT_TEST_GREAT_LEAP_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_TEST_GREAT_LEAP_HELP</Help>
+			<LockedImprovements>
+				<ImprovementType>IMPROVEMENT_WORKSHOP</ImprovementType>
+			</LockedImprovements>
+			<PyOnImprovementChanged>(gainGold(pPlayer, greatMerchantTradeGold(5) * improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP', {'IMPROVEMENT_TOWN': 100, 'IMPROVEMENT_VILLAGE': 40, 'IMPROVEMENT_HAMLET': 15, 'IMPROVEMENT_COTTAGE': 5}) / 400), gainProduction(pPlot.getWorkingCity(), improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP', {'IMPROVEMENT_FARM': scaleBySpeed(30, 'Train')})), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnImprovementChanged', '(' + str(pPlot.getX()) + ', ' + str(pPlot.getY()) + ') ' + infoDescription('Improvement', eOld) + ' -&gt; ' + infoDescription('Improvement', eNew) + ', gold ' + str(greatMerchantTradeGold(5) * improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP', {'IMPROVEMENT_TOWN': 100, 'IMPROVEMENT_VILLAGE': 40, 'IMPROVEMENT_HAMLET': 15, 'IMPROVEMENT_COTTAGE': 5}) / 400) + ', hammers ' + str(improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP', {'IMPROVEMENT_FARM': scaleBySpeed(30, 'Train')})))))</PyOnImprovementChanged>
+		</TraitInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</TraitInfos>
 </Civ4TraitInfos>

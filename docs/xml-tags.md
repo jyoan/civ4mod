@@ -7,7 +7,7 @@
 | `docs/tags/trait-economy.md` | 志向: 産出・商業・幸福・健康・偉人・黄金時代・交易路 |
 | `docs/tags/trait-military.md` | 志向: ユニット・戦闘・征服・昇進・経験値・維持費 |
 | `docs/tags/trait-territory.md` | 志向: 地形・地形の特徴・都市・都市圏・国境・移動・蛮族・資源の発見 |
-| `docs/tags/trait-rules.md` | 志向: 社会制度・技術・陳腐化・固有ユニット・緊急生産・ランダムイベント |
+| `docs/tags/trait-rules.md` | 志向: 社会制度・技術・陳腐化・固有ユニット・緊急生産・ランダムイベント・施設の固定 |
 | `docs/tags/trait-diplomacy.md` | 志向: 外交（属国 `bHumanCanBeVassal`・`FoundingVassal`、情報の公開 `bReveal...`、取引 `Deals`、レンドリース `LendLease`） |
 | `docs/tags/trait-hooks.md` | 志向: Python フック（`Py...`）と `CvHookUtils.py` の共通関数（暦の偉人・優先地域）、`ConditionalFreeTraits`、`bLongCountCalendar` |
 | `docs/tags/espionage.md` | 諜報任務: 志向による使用の制限（`PrereqOrTraits`・`DisableTraits`）、この Mod で足した任務（要人の殺害・誘拐、任意の社会制度を押し付ける体制転覆 `bSwitchAnyCivic`、任意の宗教か国教なしを押し付ける国教転覆 `bSwitchAnyReligion`・`bSwitchNoReligion`） |

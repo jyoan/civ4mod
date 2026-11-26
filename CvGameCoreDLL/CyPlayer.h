@@ -522,6 +522,9 @@ public:
 	int getTraitDefenseCombatPercent();	// added by this mod
 	int getAttitudeCombatCount(int /*AttitudeTypes*/ eAttitude);	// added by this mod
 	int getAttitudeCombatPercent();	// added by this mod
+	bool isNoForcedCivics();	// added by this mod
+	bool isForcedCivicOption(int /*CivicOptionTypes*/ eCivicOption);	// added by this mod
+	bool isLockedImprovement(int /*ImprovementTypes*/ eImprovement);	// added by this mod
 	int getTraitRiverEdgeYieldPercent(int /*YieldTypes*/ eYield);	// added by this mod
 	int getTraitWorldWonderCommerce(int /*CommerceTypes*/ eCommerce);	// added by this mod
 	int getTraitGlobalWorldWonderCommerce(int /*CommerceTypes*/ eCommerce);	// added by this mod

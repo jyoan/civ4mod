@@ -553,6 +553,23 @@ void CvGameTextMgr::parseTraitSpreadAndUnitEffects(CvWStringBuffer& szHelpString
 void CvGameTextMgr::parseTraitTerritoryEffects(CvWStringBuffer& szHelpString, TraitTypes eTrait)
 {
 	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	CvWString szTempBuffer;
+	CvWString szText;
+	bool bFirst;
+	int iI;
+
+	// LockedImprovements (added by this mod): "Cannot replace or pillage your own: Workshop"
+	bFirst = true;
+	for (iI = 0; iI < GC.getNumImprovementInfos(); iI++)
+	{
+		if (kTrait.isLockedImprovement(iI))
+		{
+			szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_LOCKED_IMPROVEMENTS").c_str());
+			szText = getLinkText(GC.getImprovementInfo((ImprovementTypes)iI).getDescription());
+			setListHelp(szHelpString, szTempBuffer.GetCString(), szText.GetCString(), L", ", bFirst);
+			bFirst = false;
+		}
+	}
 
 	// Start bias (added by this mod)
 	CvWString szStartBias = getStartBiasText(kTrait);

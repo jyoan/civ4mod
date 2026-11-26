@@ -223,3 +223,17 @@
 - 毎回計算するので、既存のセーブでも効き、志向を得た・失った時点から変わる。
 - 説明文 `TXT_KEY_TRAIT_INFLATION_MODIFIER`。
 - Python: `CvTraitInfo.getInflationModifier()`（プレイヤーのインフレ率は BtS の `CyPlayer.calculateInflationRate()`）
+
+## `TraitInfo/LockedImprovements`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-26（毛沢東の大躍進の案）。
+- `<ImprovementType>` を何個でも書ける。
+- 志向を持つプレイヤーのタイルでは、その施設をほかの施設で上書きできない（`CvPlot::canBuild`。同じチームの作業員も含めて誰も）。
+- 道路と、地形の特徴を取り除くだけの作業はできる。
+- 持ち主のユニットは、その施設のあるタイルを略奪できない（`CvUnit::canPillage`。道路も略奪できなくなる）。
+- ほかのプレイヤーの略奪は BtS どおり。略奪された後は、また別の施設を建てられる。
+- 社会制度の `FreeTraits` で与えれば、その社会制度をやめると固定もなくなる。
+- そのつど判定するのでセーブデータは変わらない。
+- 説明文 `TXT_KEY_TRAIT_LOCKED_IMPROVEMENTS`（「ほかの施設に変えられず、自分で略奪もできない施設: 工房」）。
+- Python: `CvTraitInfo.isLockedImprovement(iImprovement)`、`CyPlayer.isLockedImprovement(eImprovement)`

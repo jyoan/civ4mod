@@ -58,6 +58,11 @@
 ##   PyOnPlayerEliminated  pPlayer, eTrait, iEliminatedPlayer: after a player whose last city this player conquered is
 ##                     eliminated (not when the last city was razed by someone else or lost by culture), e.g.
 ##                     startGoldenAge(pPlayer)
+##   PyOnImprovementChanged  pPlayer, eTrait, pPlot (CyPlot), eOld, eNew (improvement types, -1 for none): after the
+##                     improvement of a plot of the player changes (built by workers, upgraded like a cottage, pillaged,
+##                     events), e.g. replacing a farm by a workshop:
+##                     gainProduction(pPlot.getWorkingCity(), improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP',
+##                     {'IMPROVEMENT_FARM': scaleBySpeed(30, 'Train')}))
 ## Counters: each player has a number per trait for the hooks (CyPlayer.getTraitCounter, saved with the game), e.g.
 ##   countEvery(pPlayer, eTrait, 3) and gainGold(pPlayer, 100)   (every third time)
 ## Temporary traits: gainTraitForTurns(pPlayer, 'TRAIT_X', iTurns) gives a trait for some turns, e.g. from a hook.
@@ -172,3 +177,8 @@ def onOtherCityFounded(argsList):
 def onPlayerEliminated(argsList):
 	pPlayer, eTrait, iEliminatedPlayer = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnPlayerEliminated())
+
+def onImprovementChanged(argsList):
+	pPlayer, eTrait, iX, iY, eOld, eNew = argsList
+	pPlot = CyMap().plot(iX, iY)
+	eval(gc.getTraitInfo(eTrait).getPyOnImprovementChanged())

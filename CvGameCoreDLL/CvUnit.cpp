@@ -6730,6 +6730,13 @@ bool CvUnit::canPillage(const CvPlot* pPlot) const
 			}
 		}
 
+		// LockedImprovements of the traits of the plot owner (added by this mod): not by the units of the owner. The others
+		// pillage it as in BtS
+		if (pPlot->getOwnerINLINE() == getOwnerINLINE() && pPlot->getImprovementType() != NO_IMPROVEMENT && GET_PLAYER(getOwnerINLINE()).isLockedImprovement(pPlot->getImprovementType()))
+		{
+			return false;
+		}
+
 		// bNoPillageInBorders of the traits of the plot owner (added by this mod): not by the units of other teams
 		if (pPlot->getTeam() != getTeam() && GET_PLAYER(pPlot->getOwnerINLINE()).isNoPillageInBorders())
 		{

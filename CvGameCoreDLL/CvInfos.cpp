@@ -7858,6 +7858,7 @@ m_piTradeYieldModifier(NULL),
 m_piCommerceModifier(NULL),
 m_piCapitalCommerceModifier(NULL),
 m_iReplacedCivic(NO_CIVIC),
+m_bNoForcedCivics(false),
 m_piAngryYieldChange(NULL),
 m_piAngryCommerceChange(NULL),
 m_piUnhealthyYieldChange(NULL),
@@ -8410,6 +8411,13 @@ const TCHAR* CvCivicInfo::getPyOnRevoke() const
 	return m_szPyOnRevoke;
 }
 
+// bNoForcedCivics (added by this mod): a player running the civic is not forced to change civics, in any civic option, by
+// the resolutions (CvPlayer::isForcedCivicOption) or the espionage missions (CvPlayer::canForceCivics)
+bool CvCivicInfo::isNoForcedCivics() const
+{
+	return m_bNoForcedCivics;
+}
+
 void CvCivicInfo::read(FDataStreamBase* stream)
 {
 	CvInfoBase::read(stream);
@@ -8625,13 +8633,20 @@ void CvCivicInfo::read(FDataStreamBase* stream)
 		stream->ReadString(m_szPyOnAdopt);
 		stream->ReadString(m_szPyOnRevoke);
 	}
+
+	// uiFlag < 9: cache written before bNoForcedCivics existed (added by this mod)
+	m_bNoForcedCivics = false;
+	if (uiFlag > 8)
+	{
+		stream->Read(&m_bNoForcedCivics);
+	}
 }
 
 void CvCivicInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=8;	// 5: FreeTraits, 6: changes per angry citizen and per unhealthiness, 7: ReplacedCivic, 8: Python hooks (added by this mod)
+	uint uiFlag=9;	// 5: FreeTraits, 6: changes per angry citizen and per unhealthiness, 7: ReplacedCivic, 8: Python hooks, 9: bNoForcedCivics (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iCivicOptionType);
@@ -8716,6 +8731,7 @@ void CvCivicInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iReplacedCivic);
 	stream->WriteString(m_szPyOnAdopt);
 	stream->WriteString(m_szPyOnRevoke);
+	stream->Write(m_bNoForcedCivics);
 }
 
 // Reads <UpgradeAnywhereUnitCombats> (used by traits, civics and buildings). Each <UpgradeAnywhereUnitCombat>
@@ -8759,6 +8775,7 @@ bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 	// Python hooks (added by this mod)
 	pXML->GetChildXmlValByName(m_szPyOnAdopt, "PyOnAdopt");
 	pXML->GetChildXmlValByName(m_szPyOnRevoke, "PyOnRevoke");
+	pXML->GetChildXmlValByName(&m_bNoForcedCivics, "bNoForcedCivics");
 
 	CvString szTextVal;
 	if (!CvInfoBase::read(pXML))

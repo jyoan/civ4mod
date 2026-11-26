@@ -320,6 +320,8 @@ public:
 	int getTraitImprovedBonusYieldChange(BonusTypes eBonus, YieldTypes eYield) const;
 	// Batch of 2026-11-19 (added by this mod)
 	bool isTraitRevealBonus(BonusTypes eBonus) const;	// Exposed to Python
+	bool isLockedImprovement(ImprovementTypes eImprovement) const;	// Exposed to Python: LockedImprovements of the traits (added by this mod)
+	void doImprovementChangedPythonHook(const CvPlot* pPlot, ImprovementTypes eOldImprovement, ImprovementTypes eNewImprovement);	// PyOnImprovementChanged (added by this mod)
 	bool isNoTechProcess(ProcessTypes eProcess) const;	// Exposed to Python
 	bool isNoConscriptExperiencePenalty() const;		// Exposed to Python
 	void initTraitFreeTechs();
@@ -522,6 +524,8 @@ public:
 	DllExport int getResearchTurnsLeft(TechTypes eTech, bool bOverflow) const;														// Exposed to Python
 
 	bool isCivic(CivicTypes eCivic) const;																																// Exposed to Python
+	bool isNoForcedCivics() const;	// Exposed to Python: bNoForcedCivics of a civic the player runs (added by this mod)
+	bool isForcedCivicOption(CivicOptionTypes eCivicOption) const;	// Exposed to Python: the resolutions force the civic option on this player (added by this mod)
 	bool canDoCivics(CivicTypes eCivic) const;																														// Exposed to Python
 	DllExport bool canRevolution(CivicTypes* paeNewCivics) const;																					// Exposed to Python
 	DllExport void revolution(CivicTypes* paeNewCivics, bool bForce = false);												// Exposed to Python

@@ -2346,6 +2346,29 @@ int CyPlayer::getAttitudeCombatPercent()
 	return m_pPlayer ? m_pPlayer->getAttitudeCombatPercent() : 0;
 }
 
+bool CyPlayer::isNoForcedCivics()
+{
+	return m_pPlayer ? m_pPlayer->isNoForcedCivics() : false;
+}
+
+bool CyPlayer::isForcedCivicOption(int /*CivicOptionTypes*/ eCivicOption)
+{
+	if (m_pPlayer == NULL || eCivicOption < 0 || eCivicOption >= GC.getNumCivicOptionInfos())
+	{
+		return false;
+	}
+	return m_pPlayer->isForcedCivicOption((CivicOptionTypes)eCivicOption);
+}
+
+bool CyPlayer::isLockedImprovement(int /*ImprovementTypes*/ eImprovement)
+{
+	if (m_pPlayer == NULL || eImprovement < 0 || eImprovement >= GC.getNumImprovementInfos())
+	{
+		return false;
+	}
+	return m_pPlayer->isLockedImprovement((ImprovementTypes)eImprovement);
+}
+
 int CyPlayer::getTraitRiverEdgeYieldPercent(int /*YieldTypes*/ eYield)
 {
 	return m_pPlayer ? m_pPlayer->getTraitRiverEdgeYieldPercent((YieldTypes)eYield) : 0;

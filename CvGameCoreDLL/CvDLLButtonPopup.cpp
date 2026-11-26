@@ -1892,7 +1892,44 @@ bool CvDLLButtonPopup::launchDoEspionagePopup(CvPopup* pPopup, CvPopupInfo &info
 		return (false);
 	}
 
-	gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, gDLL->getText("TXT_KEY_CHOOSE_ESPIONAGE_MISSION"));
+	szBuffer = gDLL->getText("TXT_KEY_CHOOSE_ESPIONAGE_MISSION");
+
+	// bNoForcedCivics (added by this mod): why the missions that force civics are missing, when the player has one
+	PlayerTypes eTargetPlayer = pPlot->getOwnerINLINE();
+	if (eTargetPlayer != NO_PLAYER && GET_PLAYER(eTargetPlayer).getTeam() != pUnit->getTeam() && GET_PLAYER(eTargetPlayer).isNoForcedCivics())
+	{
+		bool bHasMission = false;
+		int iMission;
+		for (iMission = 0; iMission < GC.getNumEspionageMissionInfos(); iMission++)
+		{
+			CvEspionageMissionInfo& kMission = GC.getEspionageMissionInfo((EspionageMissionTypes)iMission);
+			if (!kMission.isPassive() && kMission.getSwitchCivicCostFactor() > 0 && kMission.getCost() != -1 && GET_PLAYER(pUnit->getOwnerINLINE()).isEspionageMissionAllowed((EspionageMissionTypes)iMission))
+			{
+				bHasMission = true;
+				break;
+			}
+		}
+
+		CivicTypes eNoForcedCivic = NO_CIVIC;
+		int iEntry;
+		for (iEntry = 0; iEntry < GET_PLAYER(eTargetPlayer).getNumCivicEntries(); iEntry++)
+		{
+			CivicTypes eLoopCivic = GET_PLAYER(eTargetPlayer).getCivicByEntry(iEntry);
+			if (eLoopCivic != NO_CIVIC && GC.getCivicInfo(eLoopCivic).isNoForcedCivics())
+			{
+				eNoForcedCivic = eLoopCivic;
+				break;
+			}
+		}
+
+		if (bHasMission && eNoForcedCivic != NO_CIVIC)
+		{
+			szBuffer += NEWLINE;
+			szBuffer += gDLL->getText("TXT_KEY_ESPIONAGE_NO_FORCED_CIVICS", GET_PLAYER(eTargetPlayer).getNameKey(), GC.getCivicInfo(eNoForcedCivic).getTextKeyWide());
+		}
+	}
+
+	gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, szBuffer);
 
 	for (int iLoop = 0; iLoop < GC.getNumEspionageMissionInfos(); iLoop++)
 	{
