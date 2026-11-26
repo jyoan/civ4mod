@@ -489,6 +489,7 @@
 	<ElementType name="bLongCountCalendar" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bImprovementUpgradeUnworked" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bUnsettleGreatPeople" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bClaimLastReligion" content="textOnly" dt:type="boolean"/>
 	<ElementType name="StackUnitClasses" content="eltOnly">
 		<element type="UnitClassType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -772,6 +773,7 @@
 	<ElementType name="PyOnOtherCityFounded" content="textOnly"/>
 	<ElementType name="PyOnPlayerEliminated" content="textOnly"/>
 	<ElementType name="PyOnImprovementChanged" content="textOnly"/>
+	<ElementType name="PyOnLastReligionClaimed" content="textOnly"/>
 	<ElementType name="iHappinessPerReligion" content="textOnly" dt:type="int"/>
 	<ElementType name="CommercePerReligion" content="eltOnly">
 		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
@@ -1252,6 +1254,7 @@
 		<element type="bLongCountCalendar" minOccurs="0"/>
 		<element type="bImprovementUpgradeUnworked" minOccurs="0"/>
 		<element type="bUnsettleGreatPeople" minOccurs="0"/>
+		<element type="bClaimLastReligion" minOccurs="0"/>
 		<element type="UnsettleSpecialists" minOccurs="0"/>
 		<element type="GreatPeopleHurry" minOccurs="0"/>
 		<element type="StackPromotions" minOccurs="0"/>
@@ -1372,6 +1375,7 @@
 		<element type="PyOnOtherCityFounded" minOccurs="0"/>
 		<element type="PyOnPlayerEliminated" minOccurs="0"/>
 		<element type="PyOnImprovementChanged" minOccurs="0"/>
+		<element type="PyOnLastReligionClaimed" minOccurs="0"/>
 		<element type="ConditionalFreeTraits" minOccurs="0"/>
 		<element type="ExtraYieldThresholds" minOccurs="0"/>
 		<element type="TradeYieldModifiers" minOccurs="0"/>

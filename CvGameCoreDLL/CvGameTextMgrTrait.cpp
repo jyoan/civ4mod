@@ -1612,6 +1612,7 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_LONG_COUNT_CALENDAR", kTrait.isLongCountCalendar());
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_IMPROVEMENT_UPGRADE_UNWORKED", kTrait.isImprovementUpgradeUnworked());
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_UNSETTLE_GREAT_PEOPLE", kTrait.isUnsettleGreatPeople());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_CLAIM_LAST_RELIGION", kTrait.isClaimLastReligion());
 
 	// StackPromotions: "Melee Units on the same plot as Sun Tzu or Great General: Combat I, Drill I", one line for each set
 	for (iI = 0; iI < kTrait.getNumStackPromotionSets(); iI++)

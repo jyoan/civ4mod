@@ -292,6 +292,7 @@ public:
 
 	bool isHasTech(TechTypes eIndex) const;																																			// Exposed to Python
 	void setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, bool bFirst, bool bAnnounce);	// Exposed to Python
+	PlayerTypes getLastReligionClaim(TechTypes eTech, bool bBeforeFounding, ReligionTypes& eSlotReligion) const;	// bClaimLastReligion of the traits (added by this mod)
 
 	bool isNoTradeTech(TechTypes eIndex) const;																														// Exposed to Python
 	void setNoTradeTech(TechTypes eIndex, bool bNewValue);																					// Exposed to Python
