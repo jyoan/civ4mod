@@ -5253,7 +5253,7 @@
 					<bTrait>1</bTrait>
 				</Trait>
 				<Trait>
-					<TraitType>TRAIT_TOLERANCE</TraitType>
+					<TraitType>TRAIT_FOUR_QUARTERS</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -5812,6 +5812,10 @@
 				</Trait>
 				<Trait>
 					<TraitType>TRAIT_FINANCIAL</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
+				<Trait>
+					<TraitType>TRAIT_DARIC</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>

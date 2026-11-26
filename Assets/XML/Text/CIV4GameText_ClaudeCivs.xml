@@ -516,22 +516,22 @@
 		<Japanese>&#36234;</Japanese>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_TRAIT_TOLERANCE</Tag>
-		<English>Tolerance</English>
-		<French>Tolerance</French>
-		<German>Tolerance</German>
-		<Italian>Tolerance</Italian>
-		<Spanish>Tolerance</Spanish>
-		<Japanese>&#23515;&#23481;&#29579;&#24535;&#21521;</Japanese>
+		<Tag>TXT_KEY_TRAIT_FOUR_QUARTERS</Tag>
+		<English>King of the Four Quarters</English>
+		<French>King of the Four Quarters</French>
+		<German>King of the Four Quarters</German>
+		<Italian>King of the Four Quarters</Italian>
+		<Spanish>King of the Four Quarters</Spanish>
+		<Japanese>&#22235;&#26041;&#19990;&#30028;&#12398;&#29579;&#24535;&#21521;</Japanese>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_TRAIT_TOLERANCE_SHORT</Tag>
-		<English>Tol</English>
-		<French>Tol</French>
-		<German>Tol</German>
-		<Italian>Tol</Italian>
-		<Spanish>Tol</Spanish>
-		<Japanese>&#23515;</Japanese>
+		<Tag>TXT_KEY_TRAIT_FOUR_QUARTERS_SHORT</Tag>
+		<English>Fou</English>
+		<French>Fou</French>
+		<German>Fou</German>
+		<Italian>Fou</Italian>
+		<Spanish>Fou</Spanish>
+		<Japanese>&#22235;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_BLOOD_AND_IRON</Tag>
@@ -2179,5 +2179,41 @@
 		<Italian>Yuan</Italian>
 		<Spanish>Yuan</Spanish>
 		<Japanese>&#20803;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOUR_QUARTERS_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Capturing a city (not a barbarian one) starts a golden age of half the usual length (extends one in progress)[NEWLINE][SPACE][SPACE][ICON_BULLET]Eliminating a civilization by capturing its last city starts a golden age of the usual length</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Capturing a city (not a barbarian one) starts a golden age of half the usual length (extends one in progress)[NEWLINE][SPACE][SPACE][ICON_BULLET]Eliminating a civilization by capturing its last city starts a golden age of the usual length</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Capturing a city (not a barbarian one) starts a golden age of half the usual length (extends one in progress)[NEWLINE][SPACE][SPACE][ICON_BULLET]Eliminating a civilization by capturing its last city starts a golden age of the usual length</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Capturing a city (not a barbarian one) starts a golden age of half the usual length (extends one in progress)[NEWLINE][SPACE][SPACE][ICON_BULLET]Eliminating a civilization by capturing its last city starts a golden age of the usual length</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Capturing a city (not a barbarian one) starts a golden age of half the usual length (extends one in progress)[NEWLINE][SPACE][SPACE][ICON_BULLET]Eliminating a civilization by capturing its last city starts a golden age of the usual length</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#37117;&#24066;&#65288;&#34542;&#26063;&#12398;&#37117;&#24066;&#12434;&#38500;&#12367;&#65289;&#12434;&#21344;&#38936;&#12377;&#12427;&#12392;&#12289;&#36890;&#24120;&#12398;&#21322;&#20998;&#12398;&#26399;&#38291;&#12398;&#40644;&#37329;&#26399;&#12364;&#22987;&#12414;&#12427;&#65288;&#40644;&#37329;&#26399;&#12398;&#26368;&#20013;&#12394;&#12425;&#24310;&#12403;&#12427;&#65289;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#26368;&#24460;&#12398;&#37117;&#24066;&#12434;&#21344;&#38936;&#12375;&#12390;&#25991;&#26126;&#12434;&#28357;&#12412;&#12377;&#12392;&#12289;&#36890;&#24120;&#12398;&#26399;&#38291;&#12398;&#40644;&#37329;&#26399;&#12364;&#22987;&#12414;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DARIC</Tag>
+		<English>Daric</English>
+		<French>Daric</French>
+		<German>Daric</German>
+		<Italian>Daric</Italian>
+		<Spanish>Daric</Spanish>
+		<Japanese>&#12480;&#12524;&#12452;&#12467;&#12473;&#37329;&#36008;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DARIC_SHORT</Tag>
+		<English>Dar</English>
+		<French>Dar</French>
+		<German>Dar</German>
+		<Italian>Dar</Italian>
+		<Spanish>Dar</Spanish>
+		<Japanese>&#36008;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_GOLDEN_EMPIRE</Tag>
+		<English>Golden Empire</English>
+		<French>Golden Empire</French>
+		<German>Golden Empire</German>
+		<Italian>Golden Empire</Italian>
+		<Spanish>Golden Empire</Spanish>
+		<Japanese>&#40644;&#37329;&#12398;&#24093;&#22269;</Japanese>
 	</TEXT>
 </Civ4GameText>

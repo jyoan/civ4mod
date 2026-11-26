@@ -2073,12 +2073,12 @@
 			</FreePromotionSets>
 		</TraitInfo>
 		<TraitInfo>
-			<Type>TRAIT_TOLERANCE</Type>
-			<Description>TXT_KEY_TRAIT_TOLERANCE</Description>
-			<ShortDescription>TXT_KEY_TRAIT_TOLERANCE_SHORT</ShortDescription>
-			<Conquest>
-				<bNoPopulationLoss>1</bNoPopulationLoss>
-			</Conquest>
+			<Type>TRAIT_FOUR_QUARTERS</Type>
+			<Description>TXT_KEY_TRAIT_FOUR_QUARTERS</Description>
+			<ShortDescription>TXT_KEY_TRAIT_FOUR_QUARTERS_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_FOUR_QUARTERS_HELP</Help>
+			<PyOnCityAcquired>bConquest and not gc.getPlayer(iOldOwner).isBarbarian() and startGoldenAge(pPlayer, 50)</PyOnCityAcquired>
+			<PyOnPlayerEliminated>startGoldenAge(pPlayer)</PyOnPlayerEliminated>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_BLOOD_AND_IRON</Type>
@@ -2322,18 +2322,70 @@
 			<Description>TXT_KEY_TRAIT_GOLDEN_EMPIRE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_GOLDEN_EMPIRE_SHORT</ShortDescription>
 			<iGoldenAgeLandMovesChange>1</iGoldenAgeLandMovesChange>
+			<iGoldenAgeUnitsChange>-1</iGoldenAgeUnitsChange>
+			<GoldenAgeUnitClasses>
+				<UnitClassType>UNITCLASS_GREAT_GENERAL</UnitClassType>
+			</GoldenAgeUnitClasses>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_GOLDEN_EMPIRE_AGE</TraitType>
 					<bGoldenAge>1</bGoldenAge>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
+			<FreePromotionSets>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_GOLDEN_EMPIRE</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<FreePromotionUnitCombats>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_RECON</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_SIEGE</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_GUN</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_ARMOR</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_HELICOPTER</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_NAVAL</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+					</FreePromotionUnitCombats>
+				</FreePromotionSet>
+			</FreePromotionSets>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_GOLDEN_EMPIRE_AGE</Type>
 			<Description>TXT_KEY_TRAIT_GOLDEN_EMPIRE_AGE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_GOLDEN_EMPIRE_AGE_SHORT</ShortDescription>
-			<iCombatPercent>15</iCombatPercent>
+			<iCombatPercent>10</iCombatPercent>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_SUN_KING</Type>
@@ -3294,6 +3346,16 @@
 			<iTradeRoutes>1</iTradeRoutes>
 			<bGainTraitOnCapitalCapture>1</bGainTraitOnCapitalCapture>
 			<bGainTraitsOnElimination>1</bGainTraitsOnElimination>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_DARIC</Type>
+			<Description>TXT_KEY_TRAIT_DARIC</Description>
+			<ShortDescription>TXT_KEY_TRAIT_DARIC_SHORT</ShortDescription>
+			<Deals>
+				<bBuyCities>1</bBuyCities>
+				<iGoldValueModifier>25</iGoldValueModifier>
+			</Deals>
+			<iInflationModifier>-50</iInflationModifier>
 		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>

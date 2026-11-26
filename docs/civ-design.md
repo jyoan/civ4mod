@@ -84,7 +84,7 @@ BtS の効果はそのままにして足す。
 | フリゲートへの `bHiddenNationality` の昇進 | エリザベス |
 | `bAtWar` + `YieldModifiers` の生産 | チャーチル |
 | 昇進の `ImpassablePlotPassages` の山岳 | ハンニバル |
-| `Conquest/bNoPopulationLoss` | 大キュロス |
+| `PyOnCityAcquired`・`PyOnPlayerEliminated`（`startGoldenAge`。占領で半分・滅亡で全部の黄金期） | 大キュロス |
 | `UnitCombatProductionModifiers` の銃火器・装甲 | ビスマルク |
 | `UpgradeAnywhereUnitCombats` の白兵戦・銃火器 | フリードリッヒ |
 | 昇進の `iOtherReligionCombatPercent`・`iStateReligionCityAttack` | イザベル |
@@ -98,7 +98,7 @@ BtS の効果はそのままにして足す。
 | `iImprovementUpgradeRateModifier`、`bImprovementUpgradeUnworked` | アメリカ |
 | `iDistantTradeRouteModifier` | ハトシェプスト |
 | `iCityRadiusChange` | スーリヤヴァルマン2世 |
-| `iGoldenAgeLandMovesChange`、`bGoldenAge` + `iCombatPercent` | ペルシャ |
+| `iGoldenAgeLandMovesChange`、`bGoldenAge` + `iCombatPercent`、`GoldenAgeUnitClasses`（大将軍）、`iGoldenAgeUnitsChange`、昇進の `iGoldenAgeAdvantageCombatPercent` | ペルシャ |
 | `WorldWonderCommerceChanges` の文化 | ルイ14世 |
 | `RiverEdgeYieldPercents` | シュメール |
 | 偵察ユニットへの `bChooseGoody`・歩哨の昇進、首都の建設時の斥候（`PyOnCityFounded`） | ジョアン2世 |
@@ -137,6 +137,7 @@ BtS の効果はそのままにして足す。
 | 昇進の `Encirclement`（包囲と支援） | シャカ |
 | `AttitudeCombatPercents`（AI の態度ごとの戦闘力）、`StackPromotions` の大将軍（`bStackUnitsToo`） | ナポレオン |
 | `bGainTraitOnCapitalCapture`、`bGainTraitsOnElimination`、`iTradeRoutes` | クビライ |
+| `Deals`（`bBuyCities`・`iGoldValueModifier`）、`iInflationModifier` | ダレイオス1世 |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -170,7 +171,7 @@ BtS の効果はそのままにして足す。
 | エリザベス | 私掠免状: フリゲートが国籍を隠す | 昇進の `bHiddenNationality` | 実装済み `TRAIT_LETTERS_OF_MARQUE` |
 | チャーチル | 最も輝ける時: 戦時は全都市の生産 +15% | `bAtWar` で `TRAIT_FINEST_HOUR_WAR`（`YieldModifiers`） | 実装済み `TRAIT_FINEST_HOUR` |
 | ハンニバル | アルプス越え: 陸上ユニットが山岳に入れる（山岳でターンを迎えると 20% のダメージ） | 昇進の `ImpassablePlotPassages` | 実装済み `TRAIT_ALPS` |
-| 大キュロス | 寛容王: 都市を占領しても人口が減らない | `Conquest/bNoPopulationLoss` | 実装済み `TRAIT_TOLERANCE` |
+| 大キュロス | 四方世界の王（短縮名「四」。2026-11-26 に寛容王（都市を占領しても人口が減らない。サラディンと印象が重なる）から作り直した）: 都市（蛮族を除く）を占領すると、通常の半分の期間の黄金期。最後の都市を占領して文明を滅ぼすと、通常の期間の黄金期（最後の都市では両方起きる）。黄金期の最中なら延び、次に必要な偉人の数は増えない | `PyOnCityAcquired`・`PyOnPlayerEliminated` の `startGoldenAge`（`getGoldenAgeLength` なのでゲーム速度などの補正が乗る）。Help に手で書く | 実装済み `TRAIT_FOUR_QUARTERS` |
 | ビスマルク | 鉄と血: 銃火器・装甲ユニットの生産 +25% | `UnitCombatProductionModifiers` | 実装済み `TRAIT_BLOOD_AND_IRON` |
 | フリードリッヒ | 軍隊を持つ国家: 白兵戦・銃火器ユニットが戦地でアップグレードできる | `UpgradeAnywhereUnitCombats` | 実装済み `TRAIT_ARMY_STATE` |
 | イザベル | レコンキスタ: 異教徒との戦闘力 +25%、国教の広まった都市への攻撃 +25% | 昇進の `iOtherReligionCombatPercent`・`iStateReligionCityAttack` | 実装済み `TRAIT_RECONQUISTA` |
@@ -184,7 +185,8 @@ BtS の効果はそのままにして足す。
 | アメリカ（文明） | ホームステッド法: 小屋などの成長 +50%。文化圏の施設は市民を配置しなくても成長する（2026-11-23 に追加） | `iImprovementUpgradeRateModifier`、`bImprovementUpgradeUnworked` | 実装済み、ゲームで確認済み `TRAIT_HOMESTEAD` |
 | ハトシェプスト | プント遠征: 遠く離れた都市との交易路 +50% | `iDistantTradeRouteModifier` | 実装済み、ゲームで確認済み `TRAIT_PUNT` |
 | スーリヤヴァルマン2世 | アンコール: 文化レベル「洗練」以上の都市は都市圏の半径 +1 | `iCityRadiusChange` + `CityRadiusCultureLevel` | 実装済み、ゲームで確認済み `TRAIT_ANGKOR` |
-| ペルシャ（文明） | 黄金の帝国: 黄金時代は陸上ユニットの移動力 +1、全ユニットの戦闘力 +15% | `iGoldenAgeLandMovesChange`、`bGoldenAge` で `TRAIT_GOLDEN_EMPIRE_AGE`（`iCombatPercent`） | 実装済み、ゲームで確認済み `TRAIT_GOLDEN_EMPIRE` |
+| ペルシャ（文明） | 黄金の帝国（2026-11-26 に作り直した。黄金期を起こしやすく、強くする）: 黄金期は陸上ユニットの移動力 +1、全ユニットの戦闘力 +10%（+15% から下げた）。大将軍でも黄金期を起こせる（偉人とは別の種類）。偉人で起こす黄金期に必要な人数 -1（1・1・2 人…）。自国の黄金期に、黄金期でない文明との戦闘で戦闘力 +20%（戦闘ユニット） | `iGoldenAgeLandMovesChange`、`bGoldenAge` で `TRAIT_GOLDEN_EMPIRE_AGE`（`iCombatPercent` 10）、`GoldenAgeUnitClasses`、`iGoldenAgeUnitsChange` -1、`FreePromotionSets` で `PROMOTION_GOLDEN_EMPIRE`（`iGoldenAgeAdvantageCombatPercent` 20） | 実装済み `TRAIT_GOLDEN_EMPIRE` |
+| ダレイオス1世 | ダレイコス金貨（短縮名「貨」。2026-11-26。金で領土を得る）: 平時でも AI から都市を金で買える。AI はダレイオスの出す金を 1.25 倍に評価する（都市の値段は 8 割）。インフレ率 -50% | `Deals/bBuyCities`、`Deals/iGoldValueModifier` 25、`iInflationModifier` -50 | 実装済み `TRAIT_DARIC` |
 | ルイ14世 | 太陽王: 世界遺産のある都市は、遺産 1 つにつき文化 +3 | `WorldWonderCommerceChanges` | 実装済み、ゲームで確認済み `TRAIT_SUN_KING` |
 | ジョアン2世 | 探検王: 偵察ユニットが部族集落の報酬を選べ、歩哨の昇進も持つ。首都を建設すると斥候 1 体。固有プロジェクト「トルデシリャス条約」（2026-11-24。光学か紙。コスト 300・数値は仮）: 完成時の首都を通る線で地図を東西に分け、選んだ側（AI は陸の多い側）が優先地域。優先地域の他文明の都市 1 つにつき毎ターン金 +1。他文明が優先地域に都市を建てると、建てた側が 25 ×（建てた側の時代 + 1）× 都市の人口（ゲーム速度で変わる）の金を払う・技術を 1 つ渡す・その都市に「教皇の非難」（`BUILDING_TORDESILLAS_VIOLATION`。不満 +3、建設不可、占領されても残る、核で消えない。2026-11-24 に「トルデシリャス条約違反」から改名。条約が教皇の勅書を下敷きにしていたため）が建つ、から選ぶ | `FreePromotionSets`（`bChooseGoody` の昇進 `PROMOTION_EXPLORER_KING`、`PROMOTION_SENTRY`）、`PyOnCityFounded`、`PROJECT_TORDESILLAS`（`PrereqOrTechs`・`PrereqOrTraits`）、`PyOnProjectBuilt` の `chooseTreatyZone`・`PyOnBeginTurn` の `treatyZoneTurn`・`PyOnOtherCityFounded` の `offerTreatyTerms`、`BUILDING_TORDESILLAS_VIOLATION` | 実装済み `TRAIT_EXPLORER_KING` |
 | マンサ・ムサ | 黄金の巡礼: 普通選挙なしで資金による緊急生産ができる（2026-11-19 に「普通選挙を最初から採用できる」から変更）。大商人の代わりにワンガラ商人（移動力 3、交易任務の金 1.5 倍） | `Hurrys`（`HURRY_GOLD`）、`UniqueUnits`（`UNIT_WANGARA_TRADER`） | 実装済み `TRAIT_GOLDEN_PILGRIMAGE` |
@@ -267,6 +269,9 @@ BtS の効果はそのままにして足す。
 | `TRAIT_GRANDE_ARMEE`（大陸軍志向、短縮名「陸」） | ナポレオンの 3 つ目の志向。`AttitudeCombatPercents`（激怒 +20%・いらだち +10%・上限 60）と `StackPromotions`（大将軍と同じタイルの白兵戦・騎乗・攻城・銃兵に `PROMOTION_GRANDE_ARMEE`、`bStackUnitsToo` で大将軍自身にも） |
 | `PROMOTION_GRANDE_ARMEE`（大陸軍） | 移動力 +1。`UnitCombats` は空でレベルアップでは選べない。アイコンは機動力Ⅰの流用 |
 | `TRAIT_YUAN_ULUS`（大元ウルス志向、短縮名「元」） | クビライの 3 つ目の志向。`iTradeRoutes` 1、`bGainTraitOnCapitalCapture` 1、`bGainTraitsOnElimination` 1。Help は書かない（3 つともタグの説明文が出る） |
+| `TRAIT_FOUR_QUARTERS`（四方世界の王志向、短縮名「四」） | 大キュロスの 3 つ目の志向（`TRAIT_TOLERANCE` の置き換え。番号は同じ）。`PyOnCityAcquired`（`bConquest` で蛮族以外なら `startGoldenAge(pPlayer, 50)`）、`PyOnPlayerEliminated`（`startGoldenAge(pPlayer)`）。Help `TXT_KEY_TRAIT_FOUR_QUARTERS_HELP` |
+| `TRAIT_DARIC`（ダレイコス金貨志向、短縮名「貨」） | ダレイオス1世の 3 つ目の志向。`Deals`（`bBuyCities` 1、`iGoldValueModifier` 25）、`iInflationModifier` -50 |
+| `PROMOTION_GOLDEN_EMPIRE`（黄金の帝国） | `iGoldenAgeAdvantageCombatPercent` 20。黄金の帝国志向の `FreePromotionSets` で、航空以外の全戦闘ユニット（偵察・弓兵・騎乗・白兵戦・攻城・銃・装甲・ヘリコプター・海洋）に付く。`UnitCombats` は空でレベルアップでは選べない。アイコンは戦闘Ⅰの流用 |
 | `SPELL_LIANHENG`（連衡） | 張儀だけ。戦争中の文明の都市で、その文明と和平し、張儀は消える |
 
 ## 確認の記録

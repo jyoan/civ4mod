@@ -209,3 +209,4 @@
 - 2026-11-26: ナポレオンの大陸軍志向（`TRAIT_GRANDE_ARMEE`。対仏大同盟の態度ごとの戦闘力、大将軍と同じタイルの昇進「大陸軍」と大将軍自身への付与、説明文）をゲーム内で確認
 - 2026-11-26: クビライの大元ウルス志向（`TRAIT_YUAN_ULUS`。説明文、交易路 +1、首都の占領で基本志向を 1 つ得るメッセージ、滅亡で残りをすべて得ること、自分の攻撃・創造が候補から外れること）をゲーム内で確認
 - 2026-11-26: 志向の `GoldenAgeUnitClasses`（大将軍で黄金期、別の種類としての数え方）・`iGoldenAgeUnitsChange`（1・1・2 人）・`iInflationModifier`（インフレ率半分）、昇進の `iGoldenAgeAdvantageCombatPercent`（自国の黄金期だけ、戦闘の内訳）、志向のフック `PyOnPlayerEliminated` と `startGoldenAge(pPlayer, iPercent)`（占領で半分・滅亡で全部、延長、必要な偉人の数が増えない）、説明文をゲーム内で確認した（検証用志向・検証用昇進）
+- 2026-11-26: better_trait_mod のペルシャ `TRAIT_GOLDEN_EMPIRE` の作り直し（大将軍の黄金期、必要な偉人 -1、昇進 `PROMOTION_GOLDEN_EMPIRE` の +20%、黄金期の +10%）、大キュロス `TRAIT_FOUR_QUARTERS`（占領で半分・滅亡で全部の黄金期、蛮族の都市を除く）、ダレイオス1世 `TRAIT_DARIC`（平時の都市の購入、金の価値 +25、インフレ率 -50%）と説明文をゲーム内で確認した
