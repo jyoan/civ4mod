@@ -294,6 +294,14 @@ def gainTraitForTurns(pPlayer, szTrait, iTurns):
 		return
 	pPlayer.setTraitTurns(eTrait, max(pPlayer.getTraitTurns(eTrait), iTurns))
 
+def gainTrait(pPlayer, szTrait):
+	"The player gets the trait for good (CyPlayer.changeFreeTraitCount), unless the player already has it. Returns True when it was given now (also used by chooseGreatPeopleByCalendar)"
+	eTrait = gc.getInfoTypeForString(szTrait)
+	if eTrait == -1 or pPlayer.hasTrait(eTrait):
+		return False
+	pPlayer.changeFreeTraitCount(eTrait, 1)
+	return True
+
 def addTraitCounter(pPlayer, eTrait, iChange):
 	"Adds iChange to the counter of the trait (CyPlayer.changeTraitCounter; eTrait of the hook, or the name of a trait as a string) and returns the new value"
 	if isinstance(eTrait, str):
@@ -427,16 +435,19 @@ def greatPersonChoices(pPlayer, eTrait):
 		return iAll
 	return iAll & ~iChosen
 
-def chooseGreatPeopleByCalendar(pPlayer, eTrait, szTech, iCycleYears, iCycleEndYear):
+def chooseGreatPeopleByCalendar(pPlayer, eTrait, szTech, iCycleYears, iCycleEndYear, szTechTrait = None):
 	"""For PyOnBeginTurn. Once the team has the tech szTech (None: from the start), each time a calendar cycle ends
 	(calendarCyclesEnded: iCycleYears years, one of them ending in iCycleEndYear), the player chooses a great person who
 	appears in the capital: a human player in a popup, the AI at random. A great person chosen once cannot be chosen
 	again until all of them have been chosen (greatPersonChoices). Uses the counter of the trait. A choice not made yet
 	(no capital, or the game was loaded before the popup was answered) is offered again at the start of the next turn.
-	Returns the number of cycles that ended"""
+	With szTechTrait, the player also gets that trait for good once the team has the tech (gainTrait; e.g. a
+	trait with bLongCountCalendar, so the calendar changes with the same tech). Returns the number of cycles that ended"""
 	iCycles = 0
 	if szTech is None or szTech == '' or gc.getTeam(pPlayer.getTeam()).isHasTech(gc.getInfoTypeForString(szTech)):
 		iCycles = calendarCyclesEnded(iCycleYears, iCycleEndYear)
+		if szTechTrait is not None:
+			gainTrait(pPlayer, szTechTrait)
 	(iChosen, iPending) = greatPersonChoiceState(pPlayer, eTrait)
 	if iCycles > 0:
 		iPending += iCycles

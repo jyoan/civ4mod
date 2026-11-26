@@ -1388,7 +1388,6 @@
 			<Description>TXT_KEY_TRAIT_TEST_CALENDAR</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_CALENDAR_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_TEST_CALENDAR_HELP</Help>
-			<bLongCountCalendar>1</bLongCountCalendar>
 			<UnsettleSpecialists>
 				<SpecialistType>SPECIALIST_TEST_SCHOOL_A</SpecialistType>
 				<SpecialistType>SPECIALIST_TEST_SCHOOL_B</SpecialistType>
@@ -1416,6 +1415,7 @@
 					</StackPromotionTypes>
 				</StackPromotion>
 			</StackPromotions>
+			<PyOnBeginTurn>chooseGreatPeopleByCalendar(pPlayer, eTrait, 'TECH_MYSTICISM', 394, 2012, 'TRAIT_TEST_LONG_COUNT')</PyOnBeginTurn>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_TEST_TREATY</Type>
@@ -1426,6 +1426,12 @@
 			<PyOnCityFounded>pPlayer.isHuman() or chooseTreatyZone(pPlayer, eTrait)</PyOnCityFounded>
 			<PyOnProjectBuilt>eProject == gc.getInfoTypeForString('PROJECT_TEST_TREATY') and chooseTreatyZone(pPlayer, eTrait)</PyOnProjectBuilt>
 			<PyOnOtherCityFounded>showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnOtherCityFounded', cityName(pCity) + ', offerTreatyTerms ' + str(offerTreatyTerms(pPlayer, eTrait, pCity, scaleBySpeed(50, 'Train'), 'BUILDINGCLASS_TEST'))))</PyOnOtherCityFounded>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_TEST_LONG_COUNT</Type>
+			<Description>TXT_KEY_TRAIT_TEST_LONG_COUNT</Description>
+			<ShortDescription>TXT_KEY_TRAIT_TEST_LONG_COUNT_SHORT</ShortDescription>
+			<bLongCountCalendar>1</bLongCountCalendar>
 		</TraitInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 		<TraitInfo>
