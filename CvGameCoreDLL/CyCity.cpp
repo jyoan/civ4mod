@@ -2008,6 +2008,31 @@ bool CyCity::unsettleGreatPerson(int /*SpecialistTypes*/ eSpecialist)
 	return m_pCity ? m_pCity->unsettleGreatPerson((SpecialistTypes)eSpecialist) : false;
 }
 
+int CyCity::getTotalGreatPeopleUnitProgress()
+{
+	return m_pCity ? m_pCity->getTotalGreatPeopleUnitProgress() : 0;
+}
+
+int CyCity::getGreatPeopleHurryPoints()
+{
+	return m_pCity ? m_pCity->getGreatPeopleHurryPoints() : 0;
+}
+
+int CyCity::getGreatPeopleHurryCost()
+{
+	return m_pCity ? m_pCity->getGreatPeopleHurryCost() : 0;
+}
+
+bool CyCity::canHurryGreatPeople()
+{
+	return m_pCity ? m_pCity->canHurryGreatPeople() : false;
+}
+
+bool CyCity::hurryGreatPeople()
+{
+	return m_pCity ? m_pCity->hurryGreatPeople() : false;
+}
+
 void CyCity::changeImprovementFreeSpecialists(int /*ImprovementTypes*/ iIndex, int iChange)
 {
 	if (m_pCity)

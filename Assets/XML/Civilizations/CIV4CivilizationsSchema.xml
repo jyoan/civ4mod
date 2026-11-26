@@ -511,6 +511,11 @@
 	<ElementType name="UnsettleSpecialists" content="eltOnly">
 		<element type="SpecialistType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="iGoldPerPoint" content="textOnly" dt:type="int"/>
+	<ElementType name="GreatPeopleHurry" content="eltOnly">
+		<element type="iGoldPerPoint" minOccurs="0"/>
+		<element type="UnitClassType" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="bIgnoreEvents" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iEventChanceChange" content="textOnly" dt:type="int"/>
 	<ElementType name="bNoFirstEventDelay" content="textOnly" dt:type="boolean"/>
@@ -1244,6 +1249,7 @@
 		<element type="bImprovementUpgradeUnworked" minOccurs="0"/>
 		<element type="bUnsettleGreatPeople" minOccurs="0"/>
 		<element type="UnsettleSpecialists" minOccurs="0"/>
+		<element type="GreatPeopleHurry" minOccurs="0"/>
 		<element type="StackPromotions" minOccurs="0"/>
 		<element type="bIgnoreEvents" minOccurs="0"/>
 		<element type="iEventChanceChange" minOccurs="0"/>

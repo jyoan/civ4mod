@@ -40,6 +40,7 @@ public:
 	void doAction(CvWidgetDataStruct &widgetDataStruct);
 	void doChangeSpecialist(CvWidgetDataStruct &widgetDataStruct);
 	void doUnsettleGreatPerson(CvWidgetDataStruct &widgetDataStruct);	// added by this mod
+	void doHurryGreatPeople();	// added by this mod
 	void doResearch(CvWidgetDataStruct &widgetDataStruct);
 	void doChangePercent(CvWidgetDataStruct &widgetDataStruct);
 	void doCityTab(CvWidgetDataStruct &widgetDataStruct);

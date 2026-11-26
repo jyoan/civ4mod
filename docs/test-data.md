@@ -212,6 +212,7 @@
 - 2026-11-26 の分（ペルシャの案）: 大将軍も黄金期を起こせる（`GoldenAgeUnitClasses`）、黄金期に必要な偉人 -1（`iGoldenAgeUnitsChange`。1・1・2 人）、インフレ率 -50%（`iInflationModifier`）。
 - 都市を占領すると通常の半分の黄金期（`PyOnCityAcquired` の `startGoldenAge(pPlayer, 50)`。蛮族の都市でも起きる）、最後の都市を占領した文明が滅亡すると通常の黄金期（`PyOnPlayerEliminated`）。どちらもイベントログに「[検証] フック名: 都市名か文明名, golden age turns N」。
 - 2026-11-26 の分（`NearbyCityCommerce`）: 3 タイル以内にある自分のほかの都市 1 つにつき研究 +1・文化 +1、首都では 2 倍（`iRange` 3・`bDoubleInCapital` 1）。
+- 2026-11-26 の分（`GreatPeopleHurry`）: 偉人バーのクリックで足りない偉人ポイントを 1 ポイントあたり 3 ゴールドで購入し、その場で偉大な芸術家が生まれる（`iGoldPerPoint` 3・`UnitClassType` `UNITCLASS_ARTIST`）。種類を指定しない版は `TRAIT_TEST_AI`。
 
 ## `TRAIT_TEST_TEMPORARY`（検証用志向（期間））
 
@@ -243,6 +244,7 @@
 - ゲーム開始時に `TECH_TEST_DIPLOMACY` を得る（`FreeTechs`）。
 - 都市は文化で寝返らない（反乱は起きる。`CultureFlip/bNoFlip`）。
 - 反乱も止める確認は一時的に `CultureFlip/bNoRevoltAndNoFlip` に替える
+- 偉人バーのクリックで足りない偉人ポイントを 1 ポイントあたり 2 ゴールドで購入し、都市の偉人ポイントの割合で選ばれる偉人がその場で生まれる（`GreatPeopleHurry/iGoldPerPoint` 2、`UnitClassType` なし。2026-11-26）。確かめるときは検証用 AI 文明（指導者は検証用指導者（要求）。人間が操作するので要求は来ない）でプレイする
 
 ## `TRAIT_TEST_SEA`（検証用志向（海））
 

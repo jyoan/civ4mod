@@ -2496,6 +2496,16 @@ bool CyPlayer::isUnsettleGreatPeople()
 	return m_pPlayer ? m_pPlayer->isUnsettleGreatPeople() : false;
 }
 
+int CyPlayer::getGreatPeopleHurryGold()
+{
+	return m_pPlayer ? m_pPlayer->getGreatPeopleHurryGold() : 0;
+}
+
+int CyPlayer::getGreatPeopleHurryUnit()
+{
+	return m_pPlayer ? (int)m_pPlayer->getGreatPeopleHurryUnit() : (int)NO_UNIT;
+}
+
 bool CyPlayer::canUnsettleSpecialist(int /*SpecialistTypes*/ eSpecialist)
 {
 	return m_pPlayer ? m_pPlayer->canUnsettleSpecialist((SpecialistTypes)eSpecialist) : false;

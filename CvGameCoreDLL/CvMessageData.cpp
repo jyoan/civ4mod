@@ -549,6 +549,20 @@ void CvNetModNetMessage::Execute()
 		return;
 	}
 
+	// GreatPeopleHurry of the traits (added by this mod): player, city ID
+	if (m_iData1 == MOD_NET_MESSAGE_HURRY_GREAT_PEOPLE)
+	{
+		if (m_iData2 >= 0 && m_iData2 < MAX_PLAYERS)
+		{
+			CvCity* pCity = GET_PLAYER((PlayerTypes)m_iData2).getCity(m_iData3);
+			if (pCity != NULL)
+			{
+				pCity->hurryGreatPeople();
+			}
+		}
+		return;
+	}
+
 	// bIgnoreEvents of the traits (added by this mod): player, ID of the triggered data
 	if (m_iData1 == MOD_NET_MESSAGE_IGNORE_EVENT)
 	{

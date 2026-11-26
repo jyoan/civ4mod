@@ -431,6 +431,11 @@ public:
 	bool canUnsettleGreatPerson(int /*SpecialistTypes*/ eSpecialist);	// added by this mod
 	bool isNoAnarchyDisorder();	// added by this mod
 	bool unsettleGreatPerson(int /*SpecialistTypes*/ eSpecialist);	// added by this mod
+	int getTotalGreatPeopleUnitProgress();	// added by this mod
+	int getGreatPeopleHurryPoints();	// added by this mod
+	int getGreatPeopleHurryCost();	// added by this mod
+	bool canHurryGreatPeople();	// added by this mod
+	bool hurryGreatPeople();	// added by this mod
 	int getImprovementFreeSpecialists(int /*ImprovementTypes*/ iIndex);
 	void changeImprovementFreeSpecialists(int /*ImprovementTypes*/ iIndex, int iChange);
 	int getReligionInfluence(int /*ReligionTypes*/ iIndex);

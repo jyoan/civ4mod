@@ -685,6 +685,11 @@ bool CvDLLWidgetData::executeAction( CvWidgetDataStruct &widgetDataStruct )
 		doUnsettleGreatPerson(widgetDataStruct);
 		break;
 
+	// The great people bar of the city screen: GreatPeopleHurry of the traits (added by this mod)
+	case WIDGET_HELP_GREAT_PEOPLE:
+		doHurryGreatPeople();
+		break;
+
 	case WIDGET_DISABLED_CITIZEN:
 		break;
 
@@ -3985,7 +3990,53 @@ void CvDLLWidgetData::parseGreatPeopleHelp(CvWidgetDataStruct &widgetDataStruct,
 	if (NULL != pHeadSelectedCity)
 	{
 		GAMETEXT.parseGreatPeopleHelp(szBuffer, *pHeadSelectedCity);
+
+		// GreatPeopleHurry of the traits (added by this mod): the price, or the reason the purchase is not possible
+		if (pHeadSelectedCity->getOwnerINLINE() == GC.getGameINLINE().getActivePlayer())
+		{
+			const char* szDenial = pHeadSelectedCity->getGreatPeopleHurryDenial();
+			if (szDenial == NULL)
+			{
+				UnitTypes eUnit = GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getGreatPeopleHurryUnit();
+				CvWString szUnit = (eUnit != NO_UNIT) ? CvWString(GC.getUnitInfo(eUnit).getDescription()) : gDLL->getText("TXT_KEY_GREAT_PEOPLE_HURRY_BY_SHARES");
+				szBuffer.append(NEWLINE);
+				szBuffer.append(gDLL->getText("TXT_KEY_GREAT_PEOPLE_HURRY_CLICK", pHeadSelectedCity->getGreatPeopleHurryCost(), pHeadSelectedCity->getGreatPeopleHurryPoints(), szUnit.GetCString()));
+			}
+			else if (szDenial[0] != '\0')
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(gDLL->getText(szDenial, pHeadSelectedCity->getGreatPeopleHurryCost()));
+			}
+		}
 	}
+}
+
+// Clicking the great people bar of the city screen (GreatPeopleHurry of the traits, added by this mod): asks for
+// confirmation, then CvDLLButtonPopup sends MOD_NET_MESSAGE_HURRY_GREAT_PEOPLE. Nothing happens when the purchase is not
+// possible (the help says why)
+void CvDLLWidgetData::doHurryGreatPeople()
+{
+	CvCity* pHeadSelectedCity = gDLL->getInterfaceIFace()->getHeadSelectedCity();
+
+	if (pHeadSelectedCity == NULL || pHeadSelectedCity->getOwnerINLINE() != GC.getGameINLINE().getActivePlayer())
+	{
+		return;
+	}
+
+	if (!pHeadSelectedCity->canHurryGreatPeople())
+	{
+		return;
+	}
+
+	UnitTypes eUnit = GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getGreatPeopleHurryUnit();
+	CvWString szUnit = (eUnit != NO_UNIT) ? CvWString(GC.getUnitInfo(eUnit).getDescription()) : gDLL->getText("TXT_KEY_GREAT_PEOPLE_HURRY_BY_SHARES");
+
+	CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_PYTHON, pHeadSelectedCity->getID());
+	pInfo->setText(gDLL->getText("TXT_KEY_POPUP_HURRY_GREAT_PEOPLE", pHeadSelectedCity->getNameKey(), pHeadSelectedCity->getGreatPeopleHurryPoints(), pHeadSelectedCity->getGreatPeopleHurryCost(), szUnit.GetCString()));
+	pInfo->setOnClickedPythonCallback("claudeHurryGreatPeople");
+	pInfo->addPythonButton(gDLL->getText("TXT_KEY_POPUP_YES"), "");
+	pInfo->addPythonButton(gDLL->getText("TXT_KEY_POPUP_NO"), "");
+	gDLL->getInterfaceIFace()->addPopup(pInfo, GC.getGameINLINE().getActivePlayer(), true);
 }
 
 

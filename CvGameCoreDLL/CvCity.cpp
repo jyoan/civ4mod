@@ -11522,6 +11522,184 @@ bool CvCity::unsettleGreatPerson(SpecialistTypes eSpecialist)
 	return true;
 }
 
+// The great people points stored for each great person unit, added up (added by this mod). The shares of these points
+// choose the great person (chooseGreatPeopleUnit)
+int CvCity::getTotalGreatPeopleUnitProgress() const
+{
+	int iTotal = 0;
+	int iI;
+
+	for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
+	{
+		iTotal += getGreatPeopleUnitProgress((UnitTypes)iI);
+	}
+
+	return iTotal;
+}
+
+// GreatPeopleHurry of the traits (added by this mod): the great people points missing until the next great person
+int CvCity::getGreatPeopleHurryPoints() const
+{
+	return std::max(0, GET_PLAYER(getOwnerINLINE()).greatPeopleThreshold(false) - getGreatPeopleProgress());
+}
+
+// GreatPeopleHurry of the traits (added by this mod): the gold of the purchase, the missing points x iGoldPerPoint
+int CvCity::getGreatPeopleHurryCost() const
+{
+	return getGreatPeopleHurryPoints() * std::max(0, GET_PLAYER(getOwnerINLINE()).getGreatPeopleHurryGold());
+}
+
+// GreatPeopleHurry of the traits (added by this mod): the text key of the reason the owner cannot buy the great person of
+// this city now, or NULL. Without the trait, the empty string (nothing to show)
+const char* CvCity::getGreatPeopleHurryDenial() const
+{
+	const CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+
+	if (kOwner.getGreatPeopleHurryGold() <= 0)
+	{
+		return "";
+	}
+
+	// No stored points: no shares to give the points by. Buying empties the bar, so this also limits the purchase to once
+	// per turn
+	if (getTotalGreatPeopleUnitProgress() <= 0)
+	{
+		return "TXT_KEY_GREAT_PEOPLE_HURRY_DENIAL_NO_POINTS";
+	}
+
+	if (kOwner.getGold() < getGreatPeopleHurryCost())
+	{
+		return "TXT_KEY_GREAT_PEOPLE_HURRY_DENIAL_GOLD";
+	}
+
+	return NULL;
+}
+
+bool CvCity::canHurryGreatPeople() const
+{
+	return (getGreatPeopleHurryDenial() == NULL);
+}
+
+// GreatPeopleHurry of the traits (added by this mod): the owner pays the gold, the missing points fill the bar (all for the
+// unit of UnitClassType, or by the shares of the stored points), and the great person is born at once. Called on every
+// computer (MOD_NET_MESSAGE_HURRY_GREAT_PEOPLE)
+bool CvCity::hurryGreatPeople()
+{
+	UnitTypes eHurryUnit;
+	UnitTypes eLargestUnit;
+	UnitTypes eGreatPeopleUnit;
+	int iPoints;
+	int iTotal;
+	int iGiven;
+	int iChange;
+	int iI;
+
+	if (!canHurryGreatPeople())
+	{
+		return false;
+	}
+
+	CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+	iPoints = getGreatPeopleHurryPoints();
+	eHurryUnit = kOwner.getGreatPeopleHurryUnit();
+
+	CvWString szBuffer = gDLL->getText("TXT_KEY_GREAT_PEOPLE_HURRY_BOUGHT", getNameKey(), getGreatPeopleHurryCost(), iPoints);
+	gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), getX_INLINE(), getY_INLINE());
+
+	kOwner.changeGold(-getGreatPeopleHurryCost());
+	changeGreatPeopleProgress(iPoints);
+
+	if (eHurryUnit != NO_UNIT)
+	{
+		changeGreatPeopleUnitProgress(eHurryUnit, iPoints);
+		eGreatPeopleUnit = eHurryUnit;
+	}
+	else
+	{
+		// By the shares of the stored points; the rest of the rounding goes to the unit with the most points
+		iTotal = getTotalGreatPeopleUnitProgress();
+		iGiven = 0;
+		eLargestUnit = NO_UNIT;
+		for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
+		{
+			if (getGreatPeopleUnitProgress((UnitTypes)iI) > 0)
+			{
+				if (eLargestUnit == NO_UNIT || getGreatPeopleUnitProgress((UnitTypes)iI) > getGreatPeopleUnitProgress(eLargestUnit))
+				{
+					eLargestUnit = (UnitTypes)iI;
+				}
+			}
+		}
+		for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
+		{
+			iChange = (iPoints * getGreatPeopleUnitProgress((UnitTypes)iI)) / iTotal;
+			if (iChange > 0)
+			{
+				changeGreatPeopleUnitProgress((UnitTypes)iI, iChange);
+				iGiven += iChange;
+			}
+		}
+		if (eLargestUnit != NO_UNIT && iPoints > iGiven)
+		{
+			changeGreatPeopleUnitProgress(eLargestUnit, iPoints - iGiven);
+		}
+
+		eGreatPeopleUnit = chooseGreatPeopleUnit();
+	}
+
+	if (eGreatPeopleUnit != NO_UNIT)
+	{
+		createGreatPeopleFromProgress(eGreatPeopleUnit);
+	}
+
+	return true;
+}
+
+// The great person of the stored points, chosen at random by the points of each unit (moved here from doGreatPeople by this
+// mod). NO_UNIT when no points are stored
+UnitTypes CvCity::chooseGreatPeopleUnit()
+{
+	int iTotalGreatPeopleUnitProgress = getTotalGreatPeopleUnitProgress();
+	int iI;
+
+	if (iTotalGreatPeopleUnitProgress <= 0)
+	{
+		return NO_UNIT;
+	}
+
+	int iGreatPeopleUnitRand = GC.getGameINLINE().getSorenRandNum(iTotalGreatPeopleUnitProgress, "Great Person");
+
+	for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
+	{
+		if (iGreatPeopleUnitRand < getGreatPeopleUnitProgress((UnitTypes)iI))
+		{
+			return ((UnitTypes)iI);
+		}
+		else
+		{
+			iGreatPeopleUnitRand -= getGreatPeopleUnitProgress((UnitTypes)iI);
+		}
+	}
+
+	return NO_UNIT;
+}
+
+// The great person is born from the full bar: the threshold leaves the progress, the points of each unit go back to 0
+// (moved here from doGreatPeople by this mod)
+void CvCity::createGreatPeopleFromProgress(UnitTypes eGreatPersonUnit)
+{
+	int iI;
+
+	changeGreatPeopleProgress(-(GET_PLAYER(getOwnerINLINE()).greatPeopleThreshold(false)));
+
+	for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
+	{
+		setGreatPeopleUnitProgress(((UnitTypes)iI), 0);
+	}
+
+	createGreatPeople(eGreatPersonUnit, true, false);
+}
+
 int CvCity::getAddedFreeSpecialistCount(SpecialistTypes eIndex) const
 {
 	int iNumAddedSpecialists = getFreeSpecialistCount(eIndex);
@@ -13761,38 +13939,12 @@ void CvCity::doGreatPeople()
 
 	if (getGreatPeopleProgress() >= GET_PLAYER(getOwnerINLINE()).greatPeopleThreshold(false))
 	{
-		int iTotalGreatPeopleUnitProgress = 0;
-		for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
-		{
-			iTotalGreatPeopleUnitProgress += getGreatPeopleUnitProgress((UnitTypes)iI);
-		}
-
-		int iGreatPeopleUnitRand = GC.getGameINLINE().getSorenRandNum(iTotalGreatPeopleUnitProgress, "Great Person");
-
-		UnitTypes eGreatPeopleUnit = NO_UNIT;
-		for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
-		{
-			if (iGreatPeopleUnitRand < getGreatPeopleUnitProgress((UnitTypes)iI))
-			{
-				eGreatPeopleUnit = ((UnitTypes)iI);
-				break;
-			}
-			else
-			{
-				iGreatPeopleUnitRand -= getGreatPeopleUnitProgress((UnitTypes)iI);
-			}
-		}
+		// The choice and the birth are shared with GreatPeopleHurry of the traits (changed by this mod)
+		UnitTypes eGreatPeopleUnit = chooseGreatPeopleUnit();
 
 		if (eGreatPeopleUnit != NO_UNIT)
 		{
-			changeGreatPeopleProgress(-(GET_PLAYER(getOwnerINLINE()).greatPeopleThreshold(false)));
-
-			for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
-			{
-				setGreatPeopleUnitProgress(((UnitTypes)iI), 0);
-			}
-
-			createGreatPeople(eGreatPeopleUnit, true, false);
+			createGreatPeopleFromProgress(eGreatPeopleUnit);
 		}
 	}
 }

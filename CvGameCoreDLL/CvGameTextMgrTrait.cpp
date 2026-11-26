@@ -1648,6 +1648,22 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 			bFirst = false;
 		}
 	}
+
+	// GreatPeopleHurry: "Click the great people bar of a city to buy the missing points for 3 gold each: Great Artist at
+	// once", or without UnitClassType "...: a great person by the shares of the city"
+	if (kTrait.getGreatPeopleHurryGold() > 0)
+	{
+		if (kTrait.getGreatPeopleHurryUnitClass() != NO_UNITCLASS)
+		{
+			szText = getLinkText(GC.getUnitClassInfo((UnitClassTypes)kTrait.getGreatPeopleHurryUnitClass()).getDescription());
+		}
+		else
+		{
+			szText = gDLL->getText("TXT_KEY_GREAT_PEOPLE_HURRY_BY_SHARES");
+		}
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GREAT_PEOPLE_HURRY", kTrait.getGreatPeopleHurryGold(), szText.GetCString()));
+	}
+
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_IGNORE_EVENTS", kTrait.isIgnoreEvents());
 
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_EVENT_CHANCE_CHANGE", kTrait.getEventChanceChange());

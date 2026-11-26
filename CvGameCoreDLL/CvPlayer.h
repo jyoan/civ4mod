@@ -421,6 +421,8 @@ public:
 	bool isLongCountCalendar() const;				// Exposed to Python
 	bool isImprovementUpgradeUnworked() const;		// Exposed to Python
 	bool isUnsettleGreatPeople() const;				// Exposed to Python
+	int getGreatPeopleHurryGold() const;			// Exposed to Python
+	UnitTypes getGreatPeopleHurryUnit() const;		// Exposed to Python: GreatPeopleHurry of the traits (added by this mod)
 	int getCityRadiusGreatGeneralRateModifier(const CvPlot* pPlot) const;	// added by this mod
 	bool isAnyStackPromotions() const;	// added by this mod
 	void updateStackPromotions(CvPlot* pPlot);	// added by this mod

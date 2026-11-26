@@ -312,6 +312,10 @@
 			<bRevealWarPlans>1</bRevealWarPlans>
 			<bRevealHiddenAttitude>1</bRevealHiddenAttitude>
 			<bImprovementUpgradeUnworked>1</bImprovementUpgradeUnworked>
+			<GreatPeopleHurry>
+				<iGoldPerPoint>3</iGoldPerPoint>
+				<UnitClassType>UNITCLASS_ARTIST</UnitClassType>
+			</GreatPeopleHurry>
 			<CultureFlip>
 				<bInstantFlip>1</bInstantFlip>
 				<iRevoltChance>100</iRevoltChance>
@@ -1303,6 +1307,9 @@
 			<Type>TRAIT_TEST_AI</Type>
 			<Description>TXT_KEY_TRAIT_TEST_AI</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_AI_SHORT</ShortDescription>
+			<GreatPeopleHurry>
+				<iGoldPerPoint>2</iGoldPerPoint>
+			</GreatPeopleHurry>
 			<CultureFlip>
 				<bNoFlip>1</bNoFlip>
 			</CultureFlip>
