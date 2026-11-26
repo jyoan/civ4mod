@@ -277,6 +277,7 @@
 - A は死ぬと首都に斥候が出る（`PyOnDeath`）、B は生まれると戦闘術Ⅰを得る（`PyOnCreated`）。
 - A を B にアップグレードしても、斥候は出ず、B に戦闘術Ⅰは付かない（同じユニットが続くとみなす）
 - A は `iUpgradeDiscount` 100（B へのアップグレードが無料）
+- A は生まれると経験値 +30 と、大将軍が合流したユニットの扱い（`PyOnCreated` の `gainExperience`・`keepExperienceOnUpgrade`）。B にアップグレードしても経験値は 30 のまま（10 に切り捨てられない）
 
 ## `UNIT_TEST_WARRIOR`・`UNIT_TEST_GENERAL`・`UNIT_TEST_SCIENTIST`（検証用戦士・大将軍・大科学者）
 
