@@ -786,6 +786,18 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 		}
 	}
 
+	// NearbyCityCommerce (added by this mod): the values of the XML only, so it also works before the game starts
+	if (kTrait.getNearbyCityRange() > 0)
+	{
+		for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+		{
+			if (kTrait.getNearbyCityCommerce(iI) != 0)
+			{
+				appendTraitLine(szHelpString, gDLL->getText((kTrait.isNearbyCityDoubleInCapital() ? "TXT_KEY_TRAIT_NEARBY_CITY_COMMERCE_CAPITAL" : "TXT_KEY_TRAIT_NEARBY_CITY_COMMERCE"), kTrait.getNearbyCityCommerce(iI), GC.getCommerceInfo((CommerceTypes)iI).getChar(), kTrait.getNearbyCityRange()));
+			}
+		}
+	}
+
 	appendTraitValueLine(szHelpString, "TXT_KEY_BUILDING_ENEMY_WAR_WEAR", kTrait.getEnemyWarWearinessModifier());
 
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_CONQUEST_STATE_RELIGION", kTrait.isConquestStateReligion());

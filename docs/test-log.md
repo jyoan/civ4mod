@@ -183,3 +183,4 @@
 - 2026-11-26: 志向の `AttitudeCombatPercents`（態度ごとの戦闘力、`iMaxPercent` の上限、宣戦直後の数え直し、勝率の内訳の「「態度」の文明より」の行、志向の説明文、セーブとロード）をゲーム内で確認（検証用志向）
 - 2026-11-26: `StackPromotions` のスタックの移動（全員が動いてから計算し直す。置き去りにならない）と `bStackUnitsToo`（組のユニット自身にも付く。騎乗 + 学派B で 3 マス、白兵戦が混ざると 2 マス、学派B だけなら付かない、相手の道路・移動コスト）をゲーム内で確認（検証用志向（暦）・検証用随行）
 - 2026-11-26: 志向の `GoldenAgeUnitClasses`（大将軍で黄金期、別の種類としての数え方）・`iGoldenAgeUnitsChange`（1・1・2 人）・`iInflationModifier`（インフレ率半分）、昇進の `iGoldenAgeAdvantageCombatPercent`（自国の黄金期だけ、戦闘の内訳）、志向のフック `PyOnPlayerEliminated` と `startGoldenAge(pPlayer, iPercent)`（占領で半分・滅亡で全部、延長、必要な偉人の数が増えない）、説明文をゲーム内で確認した（検証用志向・検証用昇進）
+- 2026-11-26: 志向の `NearbyCityCommerce`（3 タイル以内の自分の都市 1 つにつき研究・文化 +1、建設と破壊での増減、首都で 2 倍、遷都、商業の内訳の「近隣の都市（志向）」の行、志向の説明文、セーブとロード）をゲーム内で確認した（検証用志向）

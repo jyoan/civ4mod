@@ -211,6 +211,7 @@
 - 2026-11-26 の分（`AttitudeCombatPercents`）: 自分への態度が激怒している AI の文明 1 つにつき全ユニットの戦闘力 +20%、いらだっている +10%、警戒している +5%（開始直後から確かめられるように）、上限 +60%。
 - 2026-11-26 の分（ペルシャの案）: 大将軍も黄金期を起こせる（`GoldenAgeUnitClasses`）、黄金期に必要な偉人 -1（`iGoldenAgeUnitsChange`。1・1・2 人）、インフレ率 -50%（`iInflationModifier`）。
 - 都市を占領すると通常の半分の黄金期（`PyOnCityAcquired` の `startGoldenAge(pPlayer, 50)`。蛮族の都市でも起きる）、最後の都市を占領した文明が滅亡すると通常の黄金期（`PyOnPlayerEliminated`）。どちらもイベントログに「[検証] フック名: 都市名か文明名, golden age turns N」。
+- 2026-11-26 の分（`NearbyCityCommerce`）: 3 タイル以内にある自分のほかの都市 1 つにつき研究 +1・文化 +1、首都では 2 倍（`iRange` 3・`bDoubleInCapital` 1）。
 
 ## `TRAIT_TEST_TEMPORARY`（検証用志向（期間））
 

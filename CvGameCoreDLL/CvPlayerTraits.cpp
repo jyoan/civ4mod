@@ -3394,6 +3394,83 @@ int CvPlayer::getTraitGlobalWorldWonderCommerce(CommerceTypes eCommerce) const
 	return sumTraitValues(&CvTraitInfo::getGlobalWorldWonderCommerceChange, eCommerce);
 }
 
+// NearbyCityCommerce of the traits (added by this mod): commerce of pCity for the other cities of the player within the
+// range of each trait (CvCity::getNearbyCityCommerce). Each trait counts with its own range, and doubles its own part in
+// the capital with bDoubleInCapital. Counted whenever the commerce is calculated, so nothing is saved; the cities are
+// updated when one is added or removed (updateNearbyCityCommerce), and setCapitalCity updates the old and the new capital
+int CvPlayer::getNearbyCityCommerce(const CvCity* pCity, CommerceTypes eCommerce) const
+{
+	int iCommerce = 0;
+	int iI;
+
+	if (pCity == NULL || sumTraitValues(&CvTraitInfo::getNearbyCityRange) <= 0)
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (!hasTrait((TraitTypes)iI))
+		{
+			continue;
+		}
+
+		CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+		int iChange = kTrait.getNearbyCityCommerce(eCommerce);
+
+		if (iChange == 0 || kTrait.getNearbyCityRange() <= 0)
+		{
+			continue;
+		}
+
+		int iValue = iChange * countNearbyCities(pCity, kTrait.getNearbyCityRange());
+
+		if (kTrait.isNearbyCityDoubleInCapital() && pCity->isCapital())
+		{
+			iValue *= 2;
+		}
+
+		iCommerce += iValue;
+	}
+
+	return iCommerce;
+}
+
+// The other cities of the player within iRange tiles (plotDistance) of pCity, in any area
+int CvPlayer::countNearbyCities(const CvCity* pCity, int iRange) const
+{
+	CvCity* pLoopCity;
+	int iCount = 0;
+	int iLoop;
+
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		if (pLoopCity != pCity && plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE()) <= iRange)
+		{
+			iCount++;
+		}
+	}
+
+	return iCount;
+}
+
+// Called by CvCity::init and CvCity::kill: the number of nearby cities may have changed for every city of the player
+void CvPlayer::updateNearbyCityCommerce()
+{
+	CvCity* pLoopCity;
+	int iLoop;
+
+	if (sumTraitValues(&CvTraitInfo::getNearbyCityRange) <= 0)
+	{
+		return;
+	}
+
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		pLoopCity->updateCommerce();
+	}
+}
+
 // The start bias of the player for a feature or a terrain (added by this mod): StartBiasFeatures / StartBiasTerrains of the
 // civilization and of the traits of the player. The normalization of the starting plots keeps what the player likes
 // (CvGame::normalizeRemovePeaks, normalizeRemoveBadFeatures, normalizeRemoveBadTerrain)

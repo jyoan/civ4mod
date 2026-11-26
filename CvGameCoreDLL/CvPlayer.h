@@ -291,6 +291,9 @@ public:
 	int getTraitDefenseCombatPercent() const;	// Exposed to Python (added by this mod)
 	int getTraitWorldWonderCommerce(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
 	int getTraitGlobalWorldWonderCommerce(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
+	int getNearbyCityCommerce(const CvCity* pCity, CommerceTypes eCommerce) const;	// added by this mod: NearbyCityCommerce of the traits
+	int countNearbyCities(const CvCity* pCity, int iRange) const;	// added by this mod: NearbyCityCommerce of the traits
+	void updateNearbyCityCommerce();	// added by this mod: NearbyCityCommerce of the traits
 	int getStartBiasFeature(FeatureTypes eFeature) const;	// added by this mod: StartBiasFeatures of the civilization and the traits
 	int getStartBiasTerrain(TerrainTypes eTerrain) const;	// added by this mod: StartBiasTerrains of the civilization and the traits
 	bool hasStartBias() const;	// Exposed to Python (added by this mod)

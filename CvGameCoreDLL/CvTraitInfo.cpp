@@ -153,6 +153,9 @@ m_iAttitudeCombatMaxPercent(-1),
 m_paiWorldWonderCommerceChange(NULL),
 m_paiGlobalWorldWonderCommerceChange(NULL),
 m_iEnemyWarWearinessModifier(0),
+m_iNearbyCityRange(0),
+m_paiNearbyCityCommerce(NULL),
+m_bNearbyCityDoubleInCapital(false),
 m_bConquestStateReligion(false),
 m_pabConquestReligionBuilding(NULL),
 m_pabNoTechCivic(NULL),
@@ -311,6 +314,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_paiCommercePerReligion);
 	SAFE_DELETE_ARRAY(m_paiWorldWonderCommerceChange);
 	SAFE_DELETE_ARRAY(m_paiGlobalWorldWonderCommerceChange);
+	SAFE_DELETE_ARRAY(m_paiNearbyCityCommerce);
 }
 
 int CvTraitInfo::getHealth() const									
@@ -1302,6 +1306,26 @@ int* CvTraitInfo::getWorldWonderCommerceChangeArray() const
 int* CvTraitInfo::getGlobalWorldWonderCommerceChangeArray() const
 {
 	return m_paiGlobalWorldWonderCommerceChange;
+}
+
+// NearbyCityCommerce (added by this mod): each city of the player gets CommerceChanges for each other city of the player
+// within iRange tiles (plotDistance, any area), doubled in the capital with bDoubleInCapital. Each trait counts with its
+// own range (CvCity::getNearbyCityCommerce)
+int CvTraitInfo::getNearbyCityRange() const
+{
+	return m_iNearbyCityRange;
+}
+
+int CvTraitInfo::getNearbyCityCommerce(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiNearbyCityCommerce ? m_paiNearbyCityCommerce[i] : 0;
+}
+
+bool CvTraitInfo::isNearbyCityDoubleInCapital() const
+{
+	return m_bNearbyCityDoubleInCapital;
 }
 
 // iEnemyWarWearinessModifier (added by this mod, as the tag of the buildings): war weariness % of the teams at war with the team
@@ -3131,6 +3155,14 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	readCommerceChanges(pXML, "WorldWonderCommerceChanges", &m_paiWorldWonderCommerceChange);
 	readCommerceChanges(pXML, "GlobalWorldWonderCommerceChanges", &m_paiGlobalWorldWonderCommerceChange);
 	pXML->GetChildXmlValByName(&m_iEnemyWarWearinessModifier, "iEnemyWarWearinessModifier");
+	// NearbyCityCommerce: iRange, CommerceChanges, bDoubleInCapital
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "NearbyCityCommerce"))
+	{
+		pXML->GetChildXmlValByName(&m_iNearbyCityRange, "iRange");
+		readCommerceChanges(pXML, "CommerceChanges", &m_paiNearbyCityCommerce);
+		pXML->GetChildXmlValByName(&m_bNearbyCityDoubleInCapital, "bDoubleInCapital");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 	readTypeList(pXML, "NoTechCivics", m_aszNoTechCivicTypes);	// civics are loaded later: readPass3()
 	readCivicOptionExtraSlots(pXML);
 	readExplorationRewards(pXML);

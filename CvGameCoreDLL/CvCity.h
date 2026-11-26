@@ -429,6 +429,7 @@ public:
 	int getTraitReligionHappiness() const;	// added by this mod: iHappinessPerReligion of the traits
 	int getTraitReligionCommerce(CommerceTypes eIndex) const;	// added by this mod: CommercePerReligion of the traits
 	int getTraitWorldWonderCommerce(CommerceTypes eIndex) const;	// added by this mod: (Global)WorldWonderCommerceChanges of the traits
+	int getNearbyCityCommerce(CommerceTypes eIndex) const;	// added by this mod: NearbyCityCommerce of the traits
 	int getSpecialistGoodHappiness() const;	// added by this mod
 	int getSpecialistBadHappiness() const;	// added by this mod
 	int getSpecialistGoodHealth() const;	// added by this mod

@@ -980,6 +980,12 @@
 		<element type="HandicapType" minOccurs="0"/>
 		<element type="iRange" minOccurs="0"/>
 	</ElementType>
+	<ElementType name="bDoubleInCapital" content="textOnly" dt:type="boolean"/>
+	<ElementType name="NearbyCityCommerce" content="eltOnly">
+		<element type="iRange" minOccurs="0"/>
+		<element type="CommerceChanges" minOccurs="0"/>
+		<element type="bDoubleInCapital" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="BonusYieldChange" content="eltOnly">
 		<element type="BonusType"/>
 		<element type="Yields"/>
@@ -1267,6 +1273,7 @@
 		<element type="WorldWonderCommerceChanges" minOccurs="0"/>
 		<element type="GlobalWorldWonderCommerceChanges" minOccurs="0"/>
 		<element type="iEnemyWarWearinessModifier" minOccurs="0"/>
+		<element type="NearbyCityCommerce" minOccurs="0"/>
 		<element type="NoTechCivics" minOccurs="0"/>
 		<element type="CivicOptionExtraSlots" minOccurs="0"/>
 		<element type="ExplorationRewards" minOccurs="0"/>

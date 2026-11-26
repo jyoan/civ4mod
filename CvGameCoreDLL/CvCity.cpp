@@ -332,6 +332,7 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 	updateDynamicBuildingYields();	// YieldChanges of the traits (added by this mod)
 
 	GET_PLAYER(getOwnerINLINE()).updateMaintenance();
+	GET_PLAYER(getOwnerINLINE()).updateNearbyCityCommerce();	// NearbyCityCommerce of the traits (added by this mod)
 
 	GC.getMapINLINE().updateWorkingCity();
 
@@ -941,6 +942,8 @@ void CvCity::kill(bool bUpdatePlotGroups)
 			pPlot->changeAdjacentSight((TeamTypes)iI, GC.getDefineINT("PLOT_VISIBILITY_RANGE"), false, NULL, false);
 		}
 	}
+
+	GET_PLAYER(eOwner).updateNearbyCityCommerce();	// NearbyCityCommerce of the traits (added by this mod)
 
 	GET_PLAYER(eOwner).updateMaintenance();
 
@@ -9445,6 +9448,7 @@ int CvCity::getBaseCommerceRateTimes100(CommerceTypes eIndex) const
 	iBaseCommerceRate += 100 * (getBuildingCommerce(eIndex) + getSpecialistCommerce(eIndex) + getReligionCommerce(eIndex) + getCorporationCommerce(eIndex) + GET_PLAYER(getOwnerINLINE()).getFreeCityCommerce(eIndex));
 	iBaseCommerceRate += 100 * (getAngryCommerce(eIndex) + getUnhealthyCommerce(eIndex));	// added by this mod
 	iBaseCommerceRate += 100 * getTraitWorldWonderCommerce(eIndex);	// added by this mod
+	iBaseCommerceRate += 100 * getNearbyCityCommerce(eIndex);	// NearbyCityCommerce of the traits (added by this mod)
 
 	return iBaseCommerceRate;
 }
@@ -9470,6 +9474,13 @@ int CvCity::getTraitWorldWonderCommerce(CommerceTypes eIndex) const
 	}
 
 	return iCommerce;
+}
+
+// NearbyCityCommerce of the traits of the owner (added by this mod): for each other city of the owner nearby
+// (CvPlayer::getNearbyCityCommerce)
+int CvCity::getNearbyCityCommerce(CommerceTypes eIndex) const
+{
+	return GET_PLAYER(getOwnerINLINE()).getNearbyCityCommerce(this, eIndex);
 }
 
 // SpecialistCommerceChanges of the traits of the owner (added by this mod): for each specialist type, the specialists and

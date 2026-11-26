@@ -362,3 +362,21 @@
 - 偉人を消費しない黄金期（建物・イベント・`startGoldenAge`）は回数に数えない（BtS どおり）。
 - 説明文 `TXT_KEY_TRAIT_GOLDEN_AGE_UNIT_CLASSES`（クラス名をリンクで並べる）・`TXT_KEY_TRAIT_GOLDEN_AGE_UNITS_CHANGE`。
 - Python: `CvTraitInfo.getNumGoldenAgeUnitClasses()`・`getGoldenAgeUnitClass(i)`・`isGoldenAgeUnitClass(iUnitClass)`・`getGoldenAgeUnitsChange()`
+
+## `TraitInfo/NearbyCityCommerce`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-26（パカル2世の案）。
+- 子要素: `iRange`（タイルの範囲）、`CommerceChanges`（`<iCommerce>` は金・研究・文化・諜報の順）、`bDoubleInCapital`。
+- 自分の各都市に、`iRange` タイル以内にある自分のほかの都市 1 つにつき、商業 +N。
+- 距離は `plotDistance`（都市圏と同じ形。範囲 3 なら 37 タイル）。
+- 別の大陸・海の向こうの都市も数える。自分自身は数えない。
+- `bDoubleInCapital` が 1 なら、首都ではその志向の分を 2 倍にする。
+- 複数の志向が持つときは、志向ごとにその範囲で数え、首都の 2 倍も志向ごとにかけてから足す（`sumTraitValues` ではなく志向のループ）。
+- 保存しない。商業の計算のたびに数え直す（`CvPlayer::getNearbyCityCommerce`。`CvCity::getBaseCommerceRateTimes100` で足す）。
+- 都市が増減したら持ち主の全都市の商業を計算し直す（`CvCity::init` と `CvCity::kill` の `CvPlayer::updateNearbyCityCommerce`。占領・譲渡は kill と init なので両方の持ち主）。
+- 遷都は `setCapitalCity` が新旧の首都の商業を計算し直す。志向の変化は `updateTraitDependents`。
+- 既存のセーブでも効く。
+- 都市の商業の内訳の行は「近隣の都市（志向）」（`TXT_KEY_MISC_HELP_NEARBY_CITY_COMMERCE`）。
+- 説明文 `TXT_KEY_TRAIT_NEARBY_CITY_COMMERCE`（首都 2 倍なら `_CAPITAL`）。XML の値だけを使う。
+- Python: `CvTraitInfo.getNearbyCityRange()`・`getNearbyCityCommerce(i)`・`isNearbyCityDoubleInCapital()`
