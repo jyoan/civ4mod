@@ -109,7 +109,7 @@ BtS の効果はそのままにして足す。
 | `iRouteMovementModifierInBorders` | ローマ |
 | 昇進の `iCombatPercentOverseas`、艦船への `iMovesChange` の昇進 | イギリス |
 | 都市のタイルを丘陵にする（`PyOnCityFounded` の `makeCityPlotHills`） | エチオピア |
-| `iFreeExperience` | ズールー |
+| `Conscription` の一式（`iMaxConscript`・`iPopulationModifier`・`iMinCityPopulationChange`・`iMinCulturePercentChange`・`iPopAngerChange`・`iAngerLengthPercent`・`bNoExperiencePenalty`） | ズールー |
 | `GlobalWorldWonderCommerceChanges` の研究 | ヴィクトリア |
 | `iGoldenAgeModifier`、`iGoldenAgeGreatPeopleRateModifier` | ペリクレス |
 | 昇進の `iGoldFromCombat` | ブレヌス |
@@ -192,7 +192,7 @@ BtS の効果はそのままにして足す。
 | アレクサンドロス | オリエンタリズム: 都市を征服すると、奪った相手の文明の固有ユニット・固有建造物を学ぶ（自分の固有がない種類だけ。同じ種類は後に学んだものに替わる）。既存の建物も建て替え（立地の条件は見ない）、作りかけのハンマーも引き継ぐ。今いるユニットはそのまま。ギリシャのファランクス・オデオンは替わらない | `Conquest/bLearnUniqueUnits`、`Conquest/bLearnUniqueBuildings` | 実装済み、ゲームで確認済み `TRAIT_ORIENTALISM` |
 | イギリス（文明） | 日の沈まぬ帝国: 海外（首都と別の地域）で戦うユニットの戦闘力 +15%。艦船の移動力 +1 | 昇進の `iCombatPercentOverseas`（全戦闘ユニット）、BtS の昇進の `iMovesChange`（海洋） | 実装済み、ゲームで確認済み `TRAIT_SUN_NEVER_SETS` |
 | エチオピア（文明） | 高地の王国: 建設した都市のタイルが平原の丘陵になる（2026-11-19 にアドワの戦い（自国の領土の経験値 +50%・戦闘力 +15%）から作り直した。名前は仮） | `PyOnCityFounded` の `makeCityPlotHills` | 実装済み `TRAIT_HIGHLAND_KINGDOM` |
-| ズールー（文明） | アマブト（年齢連隊）: 都市で生産したユニットの経験値 +2 | `iFreeExperience` | 実装済み、ゲームで確認済み `TRAIT_AMABUTHO` |
+| ズールー（文明） | アマブト（年齢連隊）: 社会制度なしで毎ターン 2 体まで徴兵できる（マップの大きさで補正。デュエル・タイニーでも 1 体）。失う人口の計算 -50%（歩兵・機械化歩兵も 1 人）、必要な人口 -2（徴兵の分と合わせて 4）、必要な自国の文化 -10%（0%）、不満 -1 人（2 人）、不満の期間 -25%、徴兵したユニットも都市の経験値を全部得る（イカンダの +3 で昇進 1 つ）。2026-11-26 に `iFreeExperience` +2 から作り直した | `Conscription` の一式 | 実装済み、ゲームで確認済み `TRAIT_AMABUTHO` |
 | ヴィクトリア | 万国博覧会: 持っている世界遺産 1 つにつき、全都市の研究 +1 | `GlobalWorldWonderCommerceChanges` | 実装済み、ゲームで確認済み `TRAIT_GREAT_EXHIBITION` |
 | ペリクレス | ペリクレス時代: 黄金時代の期間 +50%、黄金時代の偉人ポイント +100% | `iGoldenAgeModifier`、`iGoldenAgeGreatPeopleRateModifier` | 実装済み、ゲームで確認済み `TRAIT_AGE_OF_PERICLES` |
 | ブレヌス | 敗者に災いあれ: 戦闘に勝つたびに金 +5 | 昇進の `iGoldFromCombat`（全戦闘ユニット） | 実装済み、ゲームで確認済み `TRAIT_VAE_VICTIS` |

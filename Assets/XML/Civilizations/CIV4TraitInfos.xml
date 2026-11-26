@@ -2558,7 +2558,15 @@
 			<Type>TRAIT_AMABUTHO</Type>
 			<Description>TXT_KEY_TRAIT_AMABUTHO</Description>
 			<ShortDescription>TXT_KEY_TRAIT_AMABUTHO_SHORT</ShortDescription>
-			<iFreeExperience>2</iFreeExperience>
+			<Conscription>
+				<iMaxConscript>2</iMaxConscript>
+				<iPopulationModifier>-50</iPopulationModifier>
+				<iMinCityPopulationChange>-2</iMinCityPopulationChange>
+				<iMinCulturePercentChange>-10</iMinCulturePercentChange>
+				<iPopAngerChange>-1</iPopAngerChange>
+				<iAngerLengthPercent>-25</iAngerLengthPercent>
+				<bNoExperiencePenalty>1</bNoExperiencePenalty>
+			</Conscription>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_GREAT_EXHIBITION</Type>
