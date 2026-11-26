@@ -272,6 +272,8 @@ public:
 	void setOverflowProduction(int iNewValue);
 	int getFeatureProduction();
 	void setFeatureProduction(int iNewValue);
+	int getImprovementProduction();	// added by this mod
+	void changeImprovementProduction(int iChange);	// added by this mod
 	int getMilitaryProductionModifier();
 	int getSpaceProductionModifier();
 	int getExtraTradeRoutes();

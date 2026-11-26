@@ -215,6 +215,7 @@
 - 共通関数:
   - `improvementReplacedValue(eOld, eNew, szNew, dValues)`: 新しい施設が `szNew` なら、辞書 `dValues`（施設の種類 → 数）の古い施設の値。ほかは 0
   - `gainProduction(pCity, iProduction)`: 都市がいま作っているもの（ユニット・建物・プロジェクト）に生産を足す。生産の種類や作るものがないとき、`pCity.isNone()` のときは何もしない
+  - `gainImprovementProduction(pCity, iProduction)`: 伐採の生産と同じく都市に貯め、次の生産に生産の補正込みで足す（生産の種類の間は残る）。都市画面の生産の内訳に「施設の転換により：30」の行を出す（`CvCity::m_iImprovementProduction`、`TXT_KEY_MISC_HELP_PROD_IMPROVEMENTS`。`CvCity` の `uiFlag` を 7 にした。Python は `CyCity.getImprovementProduction()`・`changeImprovementProduction(iChange)`）
   - `greatMerchantTradeGold(iTradeProfit)`: 大商人（`UNITCLASS_MERCHANT` の標準ユニット）の交易任務の金。`(iBaseTrade + iTradeMultiplier × iTradeProfit) × iUnitTradePercent / 100`（`CvUnit::getTradeGold` と同じ）。`iTradeProfit` は行き先の交易の利益の代わりの値（5 で外国の人口 12 程度の都市）
 - 例（農地を工房に替えると、そのタイルの都市に生産 30 × 速度）:
-  - `gainProduction(pPlot.getWorkingCity(), improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP', {'IMPROVEMENT_FARM': scaleBySpeed(30, 'Train')}))`
+  - `gainImprovementProduction(pPlot.getWorkingCity(), improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP', {'IMPROVEMENT_FARM': scaleBySpeed(30, 'Train')}))`

@@ -1205,6 +1205,19 @@ int CyCity::getFeatureProduction()
 	return m_pCity ? m_pCity->getFeatureProduction() : -1;
 }
 
+int CyCity::getImprovementProduction()
+{
+	return m_pCity ? m_pCity->getImprovementProduction() : -1;
+}
+
+void CyCity::changeImprovementProduction(int iChange)
+{
+	if (m_pCity)
+	{
+		m_pCity->changeImprovementProduction(iChange);
+	}
+}
+
 void CyCity::setFeatureProduction(int iNewValue)
 {
 	if (m_pCity)

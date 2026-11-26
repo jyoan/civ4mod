@@ -110,6 +110,11 @@ def gainProduction(pCity, iProduction):
 	if not pCity.isNone() and iProduction != 0:
 		pCity.changeProduction(iProduction)
 
+def gainImprovementProduction(pCity, iProduction):
+	"Like gainProduction, but as the production from chopping a forest: added to the next production of the city with its production modifiers, kept while it runs a process, and shown in the production help as from replacing improvements (CyCity.changeImprovementProduction). For PyOnImprovementChanged, e.g. a farm replaced by a workshop. Nothing when pCity.isNone()"
+	if not pCity.isNone() and iProduction > 0:
+		pCity.changeImprovementProduction(iProduction)
+
 def greatMerchantTradeGold(iTradeProfit):
 	"The gold of a trade mission of the great merchant (the default unit of UNITCLASS_MERCHANT: iBaseTrade + iTradeMultiplier * iTradeProfit, times iUnitTradePercent of the game speed, as CvUnit::getTradeGold). iTradeProfit stands for the trade route profit of the target city, e.g. 5 (about a foreign city of size 12). For gold that follows the game speed, e.g. greatMerchantTradeGold(5) / 4"
 	kUnit = gc.getUnitInfo(gc.getUnitClassInfo(gc.getInfoTypeForString('UNITCLASS_MERCHANT')).getDefaultUnitIndex())
