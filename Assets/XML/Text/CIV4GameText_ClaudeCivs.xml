@@ -1849,12 +1849,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_LONG_COUNT_HELP</Tag>
-		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</English>
-		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</French>
-		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</German>
-		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</Italian>
-		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</Spanish>
-		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#31070;&#23398;&#12434;&#24471;&#12383;&#24460;&#12289;&#12510;&#12516;&#38263;&#26399;&#26278;&#12398;&#21608;&#26399;&#65288;394 &#24180;&#12290;&#35199;&#26278; 830&#12539;1224&#12539;1618&#12539;2012 &#24180;&#65289;&#12364;&#32066;&#12431;&#12427;&#12383;&#12403;&#12395;&#12289;&#20553;&#20154;&#12434; 1 &#20154;&#36984;&#12435;&#12391;&#39318;&#37117;&#12395;&#20986;&#12377;&#65288;&#36984;&#12435;&#12384;&#20553;&#20154;&#12399;&#12289;&#20840;&#21729;&#12434;&#36984;&#12406;&#12414;&#12391;&#36984;&#12409;&#12394;&#12356;&#65289;</Japanese>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen). With Theology, the date at the top right also changes to the Maya Long Count (Maya Calendar)</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen). With Theology, the date at the top right also changes to the Maya Long Count (Maya Calendar)</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen). With Theology, the date at the top right also changes to the Maya Long Count (Maya Calendar)</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen). With Theology, the date at the top right also changes to the Maya Long Count (Maya Calendar)</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Theology, each time a cycle of the Maya Long Count ends (394 years: AD 830, 1224, 1618, 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen). With Theology, the date at the top right also changes to the Maya Long Count (Maya Calendar)</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#31070;&#23398;&#12434;&#24471;&#12383;&#24460;&#12289;&#12510;&#12516;&#38263;&#26399;&#26278;&#12398;&#21608;&#26399;&#65288;394 &#24180;&#12290;&#35199;&#26278; 830&#12539;1224&#12539;1618&#12539;2012 &#24180;&#65289;&#12364;&#32066;&#12431;&#12427;&#12383;&#12403;&#12395;&#12289;&#20553;&#20154;&#12434; 1 &#20154;&#36984;&#12435;&#12391;&#39318;&#37117;&#12395;&#20986;&#12377;&#65288;&#36984;&#12435;&#12384;&#20553;&#20154;&#12399;&#12289;&#20840;&#21729;&#12434;&#36984;&#12406;&#12414;&#12391;&#36984;&#12409;&#12394;&#12356;&#65289;&#12290;&#31070;&#23398;&#12434;&#24471;&#12427;&#12392;&#12289;&#21491;&#19978;&#12398;&#26085;&#20184;&#12418;&#12510;&#12516;&#38263;&#26399;&#26278;&#12395;&#12394;&#12427;&#65288;&#12510;&#12516;&#26278;&#24535;&#21521;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_PROJECT_TORDESILLAS</Tag>
@@ -2215,5 +2215,41 @@
 		<Italian>Golden Empire</Italian>
 		<Spanish>Golden Empire</Spanish>
 		<Japanese>&#40644;&#37329;&#12398;&#24093;&#22269;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CITY_STATES</Tag>
+		<English>Dense City-States</English>
+		<French>Dense City-States</French>
+		<German>Dense City-States</German>
+		<Italian>Dense City-States</Italian>
+		<Spanish>Dense City-States</Spanish>
+		<Japanese>&#23494;&#38598;&#12377;&#12427;&#37117;&#24066;&#22269;&#23478;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_CITY_STATES_SHORT</Tag>
+		<English>Cty</English>
+		<French>Cty</French>
+		<German>Cty</German>
+		<Italian>Cty</Italian>
+		<Spanish>Cty</Spanish>
+		<Japanese>&#37030;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LONG_COUNT_CALENDAR_TRAIT</Tag>
+		<English>Maya Calendar</English>
+		<French>Maya Calendar</French>
+		<German>Maya Calendar</German>
+		<Italian>Maya Calendar</Italian>
+		<Spanish>Maya Calendar</Spanish>
+		<Japanese>&#12510;&#12516;&#26278;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LONG_COUNT_CALENDAR_TRAIT_SHORT</Tag>
+		<English>MCa</English>
+		<French>MCa</French>
+		<German>MCa</German>
+		<Italian>MCa</Italian>
+		<Spanish>MCa</Spanish>
+		<Japanese>&#32000;</Japanese>
 	</TEXT>
 </Civ4GameText>

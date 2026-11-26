@@ -3224,8 +3224,7 @@
 			<Description>TXT_KEY_TRAIT_LONG_COUNT</Description>
 			<ShortDescription>TXT_KEY_TRAIT_LONG_COUNT_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_LONG_COUNT_HELP</Help>
-			<bLongCountCalendar>1</bLongCountCalendar>
-			<PyOnBeginTurn>chooseGreatPeopleByCalendar(pPlayer, eTrait, 'TECH_THEOLOGY', 394, 2012)</PyOnBeginTurn>
+			<PyOnBeginTurn>chooseGreatPeopleByCalendar(pPlayer, eTrait, 'TECH_THEOLOGY', 394, 2012, 'TRAIT_LONG_COUNT_CALENDAR')</PyOnBeginTurn>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_HUNDRED_SCHOOLS</Type>
@@ -3372,6 +3371,31 @@
 				<iGoldValueModifier>25</iGoldValueModifier>
 			</Deals>
 			<iInflationModifier>-50</iInflationModifier>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_CITY_STATES</Type>
+			<Description>TXT_KEY_TRAIT_CITY_STATES</Description>
+			<ShortDescription>TXT_KEY_TRAIT_CITY_STATES_SHORT</ShortDescription>
+			<NearbyCityCommerce>
+				<iRange>3</iRange>
+				<CommerceChanges>
+					<iCommerce>0</iCommerce>
+					<iCommerce>1</iCommerce>
+					<iCommerce>1</iCommerce>
+					<iCommerce>0</iCommerce>
+				</CommerceChanges>
+				<bDoubleInCapital>1</bDoubleInCapital>
+			</NearbyCityCommerce>
+			<iMinCityRangeChange>-1</iMinCityRangeChange>
+			<HealthyCommercePercents>
+				<iCommerce>50</iCommerce>
+			</HealthyCommercePercents>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_LONG_COUNT_CALENDAR</Type>
+			<Description>TXT_KEY_TRAIT_LONG_COUNT_CALENDAR_TRAIT</Description>
+			<ShortDescription>TXT_KEY_TRAIT_LONG_COUNT_CALENDAR_TRAIT_SHORT</ShortDescription>
+			<bLongCountCalendar>1</bLongCountCalendar>
 		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>
