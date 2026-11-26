@@ -141,6 +141,7 @@ BtS の効果はそのままにして足す。
 | `NearbyCityCommerce`（研究・文化、首都 2 倍）、`iMinCityRangeChange`、`HealthyCommercePercents`（金） | パカル2世 |
 | `CultureFlip`（`bInstantFlip`・`iRevoltChance`）、`GreatPeopleHurry`（偉大な芸術家） | エカチェリーナ2世 |
 | 固有の社会制度（国有化の置換、`bNoForcedCivics`、`FreeTraits`）、`LockedImprovements`（工房）、`PyOnImprovementChanged`（小屋系・農地 → 工房） | 毛沢東 |
+| 固有の大将軍（`UniqueUnits`、`UniqueNames` 12 人、`UnitClassUpgrades` で陸上の全軍事ユニットへ、`FreePromotions` で大将軍の昇進）、`PyOnCreated` の `gainExperience`・`keepExperienceOnUpgrade`、昇進の `iFreeXPPerTurn`・`iFreeXPCap` | シャルルマーニュ |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -230,6 +231,7 @@ BtS の効果はそのままにして足す。
 | パカル2世 | 密集する都市国家（短縮名「邦」）: 都市どうしの最低距離 -1（間に 1 マスで建てられる）。余剰の衛生 2 につき、その都市の金 +1（2026-11-26 に 1 につき +1 から下げた。都市数の維持費を払い、狭い都市圏で余る拡張志向の衛生 +2 を生かす）。3 タイル以内にある自分のほかの都市 1 つにつき、その都市の研究 +1・文化 +1、首都では 2 倍（都市を詰めて建てる動機。2026-11-26。設計は 2026-11-25。数値は仮。バビロニアの `HealthyCommercePercents` は研究なので重複としない） | `iMinCityRangeChange` -1、`HealthyCommercePercents`（金 50）、`NearbyCityCommerce`（`iRange` 3・研究 1・文化 1・`bDoubleInCapital`） | 実装済み `TRAIT_CITY_STATES` |
 | エカチェリーナ2世 | 啓蒙専制（短縮名「啓」）: ポーランド分割 — 文化で上回った他国の都市は反乱が起きやすく（+100%）、1 回目の反乱で寝返る。エルミタージュ — 都市画面の偉人のプログレスバーをクリックすると、足りない偉人ポイントを 1 ポイントあたり 3 ゴールドで買い、その場で偉大な芸術家が生まれる（1 都市につき 1 ターンに 1 回）。金で芸術家を買い、国境の都市で傑作を使って隣の都市を寝返らせる（スターリンは諜報、ピョートルは技術と分ける。2026-11-26。設計は 2026-11-25。数値は仮） | `CultureFlip`（`bInstantFlip` 1・`iRevoltChance` 100）、`GreatPeopleHurry`（`iGoldPerPoint` 3・`UNITCLASS_ARTIST`） | 実装済み `TRAIT_ENLIGHTENED_ABSOLUTISM` |
 | 毛沢東 | 大躍進（短縮名「進」）: 国有化の代わりに固有の社会制度「大躍進」を採用できる。国有化の効果に加えて工房の生産 +1、決議とスパイによる社会制度の強制を受けない。採用している間は人民公社志向（短縮名「公」）を持つ: 小屋・集落・村・町を工房に替えると金（町で大商人の交易任務の平均の 4 分の 1。交易の利益 5 として `(iBaseTrade + iTradeMultiplier × 5) × 速度 / 4`、通常の速度で 375。村 40%・集落 15%・小屋 5%）、農地を工房に替えるとそのタイルの都市に生産（30 × `iTrainPercent`）。工房はほかの施設に変えられず、自分で略奪もできない（敵の略奪は BtS どおり）。都市の将来を売って、いまの工業を買う。共産主義の前は効果がない（承知の上。設計はユーザー、2026-11-25。2026-11-26） | 固有の社会制度 `CIVIC_GREAT_LEAP`（`ReplacedCivic` 国有化、`PrereqOrTraits`、`bNoForcedCivics`、`FreeTraits`）、`LockedImprovements`、`PyOnImprovementChanged` | 実装済み、ゲームで確認済み `TRAIT_GREAT_LEAP`・`TRAIT_PEOPLES_COMMUNE` |
+| シャルルマーニュ | 十二聖騎士（短縮名「聖騎士」）: 大将軍の代わりに固有の大将軍「聖騎士」が生まれる。『ローランの歌』『狂えるオルランド』の 12 人（ローラン、オリヴィエ、テュルパン、オジエ、ネーム、ルノー、アストルフォ、ブラダマンテ、ルッジェーロ、マルフィーザ、ブランディマルテ、ドゥドーネ）の名前が付き、13 人目からは名前なし。経験値 30・大将軍の昇進・武勇（毎ターン経験値 +1、100 まで）を持ち、陸上の軍事ユニットに無料でアップグレードできる（名前・経験値・昇進は残り、大将軍の能力は失う）。両方の作品にいる人物はフランス語の名前にした（2026-11-26） | `UniqueUnits`、`UnitClassUpgrades`、`FreePromotions`（大将軍の昇進は BtS で `iUpgradeDiscount` 100 なので無料）、`PyOnCreated`（`gainExperience`・`keepExperienceOnUpgrade`。大将軍が合流したユニットの扱いにして、アップグレードで経験値が 10 に切り捨てられないようにした）、昇進の `iFreeXPPerTurn`・`iFreeXPCap` | 実装済み `TRAIT_TWELVE_PALADINS` |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
 - 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%
@@ -282,6 +284,9 @@ BtS の効果はそのままにして足す。
 | `TRAIT_GREAT_LEAP`（大躍進志向、短縮名「進」） | 毛沢東の 3 つ目の志向。中身はなく、`CIVIC_GREAT_LEAP` の `PrereqOrTraits` の対象（説明文は固有の社会制度の行が出る） |
 | `CIVIC_GREAT_LEAP`（大躍進） | 国有化の複製（共産主義、`ReplacedCivic` 国有化）。工房の産出を食料 +1・生産 +1 に（国有化は食料 +1）。`bNoForcedCivics` 1、`FreeTraits` で人民公社志向 |
 | `TRAIT_PEOPLES_COMMUNE`（人民公社志向、短縮名「公」） | `LockedImprovements`（工房）、`PyOnImprovementChanged`（金・生産とメッセージ `TXT_KEY_PEOPLES_COMMUNE_GOLD`・`_PRODUCTION`。生産は `gainImprovementProduction` で、都市画面の内訳に「施設の転換により」の行）。Help `TXT_KEY_TRAIT_PEOPLES_COMMUNE_HELP` |
+| `TRAIT_TWELVE_PALADINS`（十二聖騎士志向、短縮名「聖騎士」） | シャルルマーニュの 3 つ目の志向。`UniqueUnits` で大将軍を聖騎士に置き換える。`Help` に聖騎士の経験値・アップグレードを書いた |
+| `UNIT_PALADIN`（聖騎士） | 大将軍の複製（合流・定住・陸軍士官学校、グラフィックとボタンも同じ）。`UniqueNames` 12 人（`TXT_KEY_PALADIN_*`）、`UnitClassUpgrades` は陸上で戦闘力と兵科を持つ 36 クラス（偵察・白兵戦・銃・弓兵・騎乗・装甲・ヘリコプター・攻城）、`FreePromotions` 大将軍・武勇、`PyOnCreated` `(gainExperience(pUnit, 30), keepExperienceOnUpgrade(pUnit))` |
+| `PROMOTION_VALOR`（武勇） | `iFreeXPPerTurn` 1、`iFreeXPCap` 100。`UnitCombats` は空でレベルアップでは選べない。アイコンは統率の流用 |
 
 ## 確認の記録
 

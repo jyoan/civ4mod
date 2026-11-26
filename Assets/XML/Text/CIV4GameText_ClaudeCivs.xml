@@ -2360,4 +2360,157 @@
 		<Spanish>Farm replaced by a workshop: +%d2[ICON_PRODUCTION] in %s1_City</Spanish>
 		<Japanese>&#36786;&#22320;&#12434;&#24037;&#25151;&#12395;&#36578;&#25563;: %s1_City &#12391; +%d2[ICON_PRODUCTION]</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TWELVE_PALADINS</Tag>
+		<English>Twelve Paladins</English>
+		<French>Twelve Paladins</French>
+		<German>Twelve Paladins</German>
+		<Italian>Twelve Paladins</Italian>
+		<Spanish>Twelve Paladins</Spanish>
+		<Japanese>&#21313;&#20108;&#32854;&#39438;&#22763;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TWELVE_PALADINS_SHORT</Tag>
+		<English>Pal</English>
+		<French>Pal</French>
+		<German>Pal</German>
+		<Italian>Pal</Italian>
+		<Spanish>Pal</Spanish>
+		<Japanese>&#32854;&#39438;&#22763;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TWELVE_PALADINS_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Paladins start with 30 experience, the Great General promotion and Valor[NEWLINE][SPACE][SPACE][ICON_BULLET]Paladins can upgrade to any land military unit for free, keeping their name and all their experience (they lose the abilities of a great general)</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Paladins start with 30 experience, the Great General promotion and Valor[NEWLINE][SPACE][SPACE][ICON_BULLET]Paladins can upgrade to any land military unit for free, keeping their name and all their experience (they lose the abilities of a great general)</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Paladins start with 30 experience, the Great General promotion and Valor[NEWLINE][SPACE][SPACE][ICON_BULLET]Paladins can upgrade to any land military unit for free, keeping their name and all their experience (they lose the abilities of a great general)</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Paladins start with 30 experience, the Great General promotion and Valor[NEWLINE][SPACE][SPACE][ICON_BULLET]Paladins can upgrade to any land military unit for free, keeping their name and all their experience (they lose the abilities of a great general)</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Paladins start with 30 experience, the Great General promotion and Valor[NEWLINE][SPACE][SPACE][ICON_BULLET]Paladins can upgrade to any land military unit for free, keeping their name and all their experience (they lose the abilities of a great general)</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#32854;&#39438;&#22763;&#12399;&#32076;&#39443;&#20516; 30 &#12392;&#22823;&#23558;&#36557;&#12398;&#26119;&#36914;&#12539;&#27494;&#21191;&#12434;&#25345;&#12387;&#12390;&#29983;&#12414;&#12428;&#12427;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#32854;&#39438;&#22763;&#12399;&#38520;&#19978;&#12398;&#36557;&#20107;&#12518;&#12491;&#12483;&#12488;&#12395;&#28961;&#26009;&#12391;&#12450;&#12483;&#12503;&#12464;&#12524;&#12540;&#12489;&#12391;&#12365;&#12289;&#21517;&#21069;&#12392;&#32076;&#39443;&#20516;&#12399;&#12377;&#12409;&#12390;&#27531;&#12427;&#65288;&#22823;&#23558;&#36557;&#12398;&#33021;&#21147;&#12399;&#22833;&#12358;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_PALADIN</Tag>
+		<English>Paladin</English>
+		<French>Paladin</French>
+		<German>Paladin</German>
+		<Italian>Paladin</Italian>
+		<Spanish>Paladin</Spanish>
+		<Japanese>&#32854;&#39438;&#22763;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_VALOR</Tag>
+		<English>Valor</English>
+		<French>Valor</French>
+		<German>Valor</German>
+		<Italian>Valor</Italian>
+		<Spanish>Valor</Spanish>
+		<Japanese>&#27494;&#21191;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PALADIN_ROLAND</Tag>
+		<English>Roland</English>
+		<French>Roland</French>
+		<German>Roland</German>
+		<Italian>Roland</Italian>
+		<Spanish>Roland</Spanish>
+		<Japanese>&#12525;&#12540;&#12521;&#12531;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PALADIN_OLIVIER</Tag>
+		<English>Oliver</English>
+		<French>Oliver</French>
+		<German>Oliver</German>
+		<Italian>Oliver</Italian>
+		<Spanish>Oliver</Spanish>
+		<Japanese>&#12458;&#12522;&#12532;&#12451;&#12456;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PALADIN_TURPIN</Tag>
+		<English>Turpin</English>
+		<French>Turpin</French>
+		<German>Turpin</German>
+		<Italian>Turpin</Italian>
+		<Spanish>Turpin</Spanish>
+		<Japanese>&#12486;&#12517;&#12523;&#12497;&#12531;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PALADIN_OGIER</Tag>
+		<English>Ogier</English>
+		<French>Ogier</French>
+		<German>Ogier</German>
+		<Italian>Ogier</Italian>
+		<Spanish>Ogier</Spanish>
+		<Japanese>&#12458;&#12472;&#12456;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PALADIN_NAIMES</Tag>
+		<English>Naimes</English>
+		<French>Naimes</French>
+		<German>Naimes</German>
+		<Italian>Naimes</Italian>
+		<Spanish>Naimes</Spanish>
+		<Japanese>&#12493;&#12540;&#12512;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PALADIN_RENAUD</Tag>
+		<English>Renaud</English>
+		<French>Renaud</French>
+		<German>Renaud</German>
+		<Italian>Renaud</Italian>
+		<Spanish>Renaud</Spanish>
+		<Japanese>&#12523;&#12494;&#12540;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PALADIN_ASTOLFO</Tag>
+		<English>Astolfo</English>
+		<French>Astolfo</French>
+		<German>Astolfo</German>
+		<Italian>Astolfo</Italian>
+		<Spanish>Astolfo</Spanish>
+		<Japanese>&#12450;&#12473;&#12488;&#12523;&#12501;&#12457;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PALADIN_BRADAMANTE</Tag>
+		<English>Bradamante</English>
+		<French>Bradamante</French>
+		<German>Bradamante</German>
+		<Italian>Bradamante</Italian>
+		<Spanish>Bradamante</Spanish>
+		<Japanese>&#12502;&#12521;&#12480;&#12510;&#12531;&#12486;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PALADIN_RUGGIERO</Tag>
+		<English>Ruggiero</English>
+		<French>Ruggiero</French>
+		<German>Ruggiero</German>
+		<Italian>Ruggiero</Italian>
+		<Spanish>Ruggiero</Spanish>
+		<Japanese>&#12523;&#12483;&#12472;&#12455;&#12540;&#12525;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PALADIN_MARFISA</Tag>
+		<English>Marfisa</English>
+		<French>Marfisa</French>
+		<German>Marfisa</German>
+		<Italian>Marfisa</Italian>
+		<Spanish>Marfisa</Spanish>
+		<Japanese>&#12510;&#12523;&#12501;&#12451;&#12540;&#12470;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PALADIN_BRANDIMARTE</Tag>
+		<English>Brandimarte</English>
+		<French>Brandimarte</French>
+		<German>Brandimarte</German>
+		<Italian>Brandimarte</Italian>
+		<Spanish>Brandimarte</Spanish>
+		<Japanese>&#12502;&#12521;&#12531;&#12487;&#12451;&#12510;&#12523;&#12486;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PALADIN_DUDONE</Tag>
+		<English>Dudone</English>
+		<French>Dudone</French>
+		<German>Dudone</German>
+		<Italian>Dudone</Italian>
+		<Spanish>Dudone</Spanish>
+		<Japanese>&#12489;&#12453;&#12489;&#12540;&#12493;</Japanese>
+	</TEXT>
 </Civ4GameText>

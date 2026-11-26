@@ -3442,5 +3442,17 @@
 			</LockedImprovements>
 			<PyOnImprovementChanged>(lambda pPlayer, pPlot, eOld, iGold, iHammers: (gainGold(pPlayer, iGold), iGold &gt; 0 and showMessage(pPlayer, 'TXT_KEY_PEOPLES_COMMUNE_GOLD', (infoDescription('Improvement', eOld), iGold)), gainImprovementProduction(pPlot.getWorkingCity(), iHammers), iHammers &gt; 0 and not pPlot.getWorkingCity().isNone() and showMessage(pPlayer, 'TXT_KEY_PEOPLES_COMMUNE_PRODUCTION', (cityName(pPlot.getWorkingCity()), iHammers))))(pPlayer, pPlot, eOld, greatMerchantTradeGold(5) * improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP', {'IMPROVEMENT_TOWN': 100, 'IMPROVEMENT_VILLAGE': 40, 'IMPROVEMENT_HAMLET': 15, 'IMPROVEMENT_COTTAGE': 5}) / 400, improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP', {'IMPROVEMENT_FARM': scaleBySpeed(30, 'Train')}))</PyOnImprovementChanged>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_TWELVE_PALADINS</Type>
+			<Description>TXT_KEY_TRAIT_TWELVE_PALADINS</Description>
+			<ShortDescription>TXT_KEY_TRAIT_TWELVE_PALADINS_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_TWELVE_PALADINS_HELP</Help>
+			<UniqueUnits>
+				<UniqueUnit>
+					<UnitClassType>UNITCLASS_GREAT_GENERAL</UnitClassType>
+					<UnitType>UNIT_PALADIN</UnitType>
+				</UniqueUnit>
+			</UniqueUnits>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>
