@@ -1289,6 +1289,7 @@ public:
 	// the city radius lists PrereqOrTerrains, PrereqOrFeatures, PrereqRawVicinityBonuses, PrereqVicinityBonuses and
 	// PrereqOrImprovements
 	int getStationedAttitudeChange() const;				// Exposed to Python (iStationedAttitudeChange, added by this mod)
+	int getUpgradeDiscount() const;				// Exposed to Python (iUpgradeDiscount, added by this mod)
 	int getPrereqPopulation() const;				// Exposed to Python
 	int getPrereqCultureLevel() const;				// Exposed to Python
 	int getNumPrereqOrTerrains() const;				// Exposed to Python
@@ -1501,6 +1502,7 @@ protected:
 	std::vector<int> m_aiPrereqOrImprovements;	// added by this mod
 	int m_iPrereqPopulation;	// added by this mod
 	int m_iStationedAttitudeChange;	// added by this mod
+	int m_iUpgradeDiscount;	// added by this mod
 	int m_iPrereqCultureLevel;	// added by this mod
 	std::vector<int> m_aiBonusAffinity;	// [bonus], empty when not set (added by this mod)
 	CvString m_szPyOnCreated;	// added by this mod

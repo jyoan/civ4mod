@@ -5012,6 +5012,7 @@ m_iPrereqAndTech(NO_TECH),
 m_iPrereqAndBonus(NO_BONUS),
 m_iPrereqPopulation(0),
 m_iStationedAttitudeChange(0),
+m_iUpgradeDiscount(0),
 m_iPrereqCultureLevel(NO_CULTURELEVEL),
 m_iGroupSize(0),
 m_iGroupDefinitions(0),
@@ -5779,6 +5780,14 @@ int CvUnitInfo::getPrereqPopulation() const
 int CvUnitInfo::getStationedAttitudeChange() const
 {
 	return m_iStationedAttitudeChange;
+}
+
+// iUpgradeDiscount (added by this mod): percent taken off the gold cost of upgrading a unit of this type (100 = free),
+// added to the promotion and UnitCombatUpgradeDiscounts discounts (CvUnit::upgradePrice). Unlike UnitCombatUpgradeDiscounts
+// it also works for units without a unit combat type, such as great people
+int CvUnitInfo::getUpgradeDiscount() const
+{
+	return m_iUpgradeDiscount;
 }
 
 int CvUnitInfo::getPrereqCultureLevel() const
@@ -6909,13 +6918,20 @@ void CvUnitInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iStationedAttitudeChange);
 	}
+
+	// uiFlag < 6: cache written before iUpgradeDiscount existed (added by this mod)
+	m_iUpgradeDiscount = 0;
+	if (uiFlag > 5)
+	{
+		stream->Read(&m_iUpgradeDiscount);
+	}
 }
 
 void CvUnitInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=5;	// 1: PrereqOrTraits, 2: city prerequisites, 3: BonusAffinities, 4: Python hooks, 5: iStationedAttitudeChange (added by this mod)
+	uint uiFlag=6;	// 1: PrereqOrTraits, 2: city prerequisites, 3: BonusAffinities, 4: Python hooks, 5: iStationedAttitudeChange, 6: iUpgradeDiscount (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAIWeight);
@@ -7098,6 +7114,7 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 	stream->WriteString(m_szPyOnCreated);
 	stream->WriteString(m_szPyOnDeath);
 	stream->Write(m_iStationedAttitudeChange);
+	stream->Write(m_iUpgradeDiscount);
 }
 
 //
@@ -7109,6 +7126,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_szPyOnCreated, "PyOnCreated");
 	pXML->GetChildXmlValByName(m_szPyOnDeath, "PyOnDeath");
 	pXML->GetChildXmlValByName(&m_iStationedAttitudeChange, "iStationedAttitudeChange");
+	pXML->GetChildXmlValByName(&m_iUpgradeDiscount, "iUpgradeDiscount");
 
 	CvString szTextVal;
 	if (!CvHotkeyInfo::read(pXML))

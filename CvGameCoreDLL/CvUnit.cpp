@@ -9035,8 +9035,9 @@ int CvUnit::upgradePrice(UnitTypes eUnit) const
 		iPrice /= 100;
 	}
 
-	// Promotion discount + trait/civic UnitCombatUpgradeDiscounts of the unit being upgraded (added together)
-	int iDiscount = getUpgradeDiscount();
+	// Promotion discount + iUpgradeDiscount of the unit type + trait/civic UnitCombatUpgradeDiscounts of the unit being
+	// upgraded (added together)
+	int iDiscount = getUpgradeDiscount() + m_pUnitInfo->getUpgradeDiscount();
 	if (getUnitCombatType() != NO_UNITCOMBAT)
 	{
 		iDiscount += GET_PLAYER(getOwnerINLINE()).getUnitCombatUpgradeDiscount(getUnitCombatType());

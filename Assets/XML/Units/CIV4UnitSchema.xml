@@ -740,6 +740,7 @@
 		<element type="PyOnCreated" minOccurs="0"/>
 		<element type="PyOnDeath" minOccurs="0"/>
 		<element type="iStationedAttitudeChange" minOccurs="0"/>
+		<element type="iUpgradeDiscount" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="UnitInfos" content="eltOnly">
 		<element type="UnitInfo" maxOccurs="*"/>
