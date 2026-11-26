@@ -520,6 +520,8 @@ public:
 	int getHappinessPerReligion();	// added by this mod
 	int getCommercePerReligion(int /*CommerceTypes*/ eCommerce);	// added by this mod
 	int getTraitDefenseCombatPercent();	// added by this mod
+	int getAttitudeCombatCount(int /*AttitudeTypes*/ eAttitude);	// added by this mod
+	int getAttitudeCombatPercent();	// added by this mod
 	int getTraitRiverEdgeYieldPercent(int /*YieldTypes*/ eYield);	// added by this mod
 	int getTraitWorldWonderCommerce(int /*CommerceTypes*/ eCommerce);	// added by this mod
 	int getTraitGlobalWorldWonderCommerce(int /*CommerceTypes*/ eCommerce);	// added by this mod

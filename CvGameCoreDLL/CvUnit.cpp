@@ -13296,6 +13296,9 @@ int CvUnit::getExtraCombatPercent() const
 	// iCombatPercent of the traits of the owner (added by this mod)
 	iPercent += GET_PLAYER(getOwnerINLINE()).getTraitCombatPercent();
 
+	// AttitudeCombatPercents of the traits of the owner (added by this mod)
+	iPercent += GET_PLAYER(getOwnerINLINE()).getAttitudeCombatPercent();
+
 	return iPercent;
 }
 

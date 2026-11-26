@@ -738,6 +738,19 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_DEFENSE_COMBAT_PERCENT", kTrait.getDefenseCombatPercent());
 
+	// AttitudeCombatPercents (added by this mod): from furious to friendly, then the cap
+	for (iI = 0; iI < NUM_ATTITUDE_TYPES; iI++)
+	{
+		if (kTrait.getAttitudeCombatPercent(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ATTITUDE_COMBAT_PERCENT", GC.getAttitudeInfo((AttitudeTypes)iI).getTextKeyWide(), kTrait.getAttitudeCombatPercent(iI)));
+		}
+	}
+	if (kTrait.isAttitudeCombat() && kTrait.getAttitudeCombatMaxPercent() >= 0)
+	{
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_ATTITUDE_COMBAT_MAX_PERCENT", kTrait.getAttitudeCombatMaxPercent()));
+	}
+
 	// WorldWonderCommerceChanges, GlobalWorldWonderCommerceChanges (added by this mod)
 	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
 	{

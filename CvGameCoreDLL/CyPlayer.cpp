@@ -2336,6 +2336,16 @@ int CyPlayer::getTraitDefenseCombatPercent()
 	return m_pPlayer ? m_pPlayer->getTraitDefenseCombatPercent() : 0;
 }
 
+int CyPlayer::getAttitudeCombatCount(int /*AttitudeTypes*/ eAttitude)
+{
+	return m_pPlayer ? m_pPlayer->getAttitudeCombatCount((AttitudeTypes)eAttitude) : 0;
+}
+
+int CyPlayer::getAttitudeCombatPercent()
+{
+	return m_pPlayer ? m_pPlayer->getAttitudeCombatPercent() : 0;
+}
+
 int CyPlayer::getTraitRiverEdgeYieldPercent(int /*YieldTypes*/ eYield)
 {
 	return m_pPlayer ? m_pPlayer->getTraitRiverEdgeYieldPercent((YieldTypes)eYield) : 0;

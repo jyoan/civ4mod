@@ -211,5 +211,7 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("getMaxCivicSlots", &CyPlayer::getMaxCivicSlots, "int () - MAX_CIVIC_SLOTS; civic lists for getCivicAnarchyLength, getCivicUpkeep and sendUpdateCivics have getMaxCivicSlots() * NumCivicOptionInfos entries, slot by slot (added by this mod)")
 		.def("getAIHandicapType", &CyPlayer::getAIHandicapType, "int () - the difficulty of the AI modifiers: the one of the game, or HandicapType of FoundingVassal of the traits (added by this mod)")
 		.def("isFoundingVassal", &CyPlayer::isFoundingVassal, "bool () - joined the team of another player by FoundingVassal of the traits (added by this mod)")
+		.def("getAttitudeCombatCount", &CyPlayer::getAttitudeCombatCount, "int (int eAttitude) - AI players with the attitude toward this player, counted for AttitudeCombatPercents of the traits (added by this mod)")
+		.def("getAttitudeCombatPercent", &CyPlayer::getAttitudeCombatPercent, "int () - combat % of all the units from AttitudeCombatPercents of the traits (added by this mod)")
 		;
 }

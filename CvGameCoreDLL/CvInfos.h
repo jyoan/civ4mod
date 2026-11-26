@@ -5067,6 +5067,9 @@ public:
 	int getHappinessPerReligion() const;		// Exposed to Python (added by this mod)
 	int getCommercePerReligion(int i) const;	// Exposed to Python (added by this mod)
 	int getDefenseCombatPercent() const;		// Exposed to Python (added by this mod)
+	int getAttitudeCombatPercent(int eAttitude) const;	// Exposed to Python (AttitudeCombatPercents, added by this mod)
+	int getAttitudeCombatMaxPercent() const;	// Exposed to Python (AttitudeCombatPercents/iMaxPercent, added by this mod)
+	bool isAttitudeCombat() const;			// has AttitudeCombatPercents (added by this mod)
 	int getWorldWonderCommerceChange(int i) const;	// Exposed to Python (added by this mod)
 	int getGlobalWorldWonderCommerceChange(int i) const;	// Exposed to Python (added by this mod)
 	int* getWorldWonderCommerceChangeArray() const;	// added by this mod
@@ -5448,6 +5451,8 @@ protected:
 	int m_iHappinessPerReligion;	// added by this mod
 	int* m_paiCommercePerReligion;	// added by this mod: [commerce]
 	int m_iDefenseCombatPercent;	// added by this mod
+	std::vector<int> m_aiAttitudeCombatPercent;	// added by this mod: per attitude, empty when not set
+	int m_iAttitudeCombatMaxPercent;	// added by this mod: -1 = no cap
 	int* m_paiWorldWonderCommerceChange;	// added by this mod: [commerce]
 	int* m_paiGlobalWorldWonderCommerceChange;	// added by this mod: [commerce]
 	int m_iEnemyWarWearinessModifier;	// added by this mod

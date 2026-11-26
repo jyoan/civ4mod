@@ -147,6 +147,7 @@ m_iCombatPercent(0),
 m_iHappinessPerReligion(0),
 m_paiCommercePerReligion(NULL),
 m_iDefenseCombatPercent(0),
+m_iAttitudeCombatMaxPercent(-1),
 m_paiWorldWonderCommerceChange(NULL),
 m_paiGlobalWorldWonderCommerceChange(NULL),
 m_iEnemyWarWearinessModifier(0),
@@ -1214,6 +1215,26 @@ int CvTraitInfo::getCommercePerReligion(int i) const
 int CvTraitInfo::getDefenseCombatPercent() const
 {
 	return m_iDefenseCombatPercent;
+}
+
+// AttitudeCombatPercents (added by this mod): combat % of all the units of the player for each AI player (alive, met, not
+// barbarian, not on the team of the player) with this attitude toward the player, counted at the start of the turn of the
+// player and when a war is declared or peace is made (CvPlayer::updateAttitudeCombatCounts, CvPlayer::getAttitudeCombatPercent)
+int CvTraitInfo::getAttitudeCombatPercent(int eAttitude) const
+{
+	return (eAttitude >= 0 && eAttitude < (int)m_aiAttitudeCombatPercent.size()) ? m_aiAttitudeCombatPercent[eAttitude] : 0;
+}
+
+// AttitudeCombatPercents/iMaxPercent (added by this mod): the cap of the total of AttitudeCombatPercents of this trait (-1: no
+// cap)
+int CvTraitInfo::getAttitudeCombatMaxPercent() const
+{
+	return m_iAttitudeCombatMaxPercent;
+}
+
+bool CvTraitInfo::isAttitudeCombat() const
+{
+	return !m_aiAttitudeCombatPercent.empty();
 }
 
 // WorldWonderCommerceChanges and GlobalWorldWonderCommerceChanges (added by this mod, as the tags of the buildings): commerce
@@ -3050,6 +3071,14 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iHappinessPerReligion, "iHappinessPerReligion");
 	readCommerceChanges(pXML, "CommercePerReligion", &m_paiCommercePerReligion);
 	pXML->GetChildXmlValByName(&m_iDefenseCombatPercent, "iDefenseCombatPercent");
+	// AttitudeCombatPercents: any number of AttitudeCombatPercent (AttitudeType, iCombatPercent), then iMaxPercent (-1 when
+	// left out). The attitudes are loaded before the traits
+	readTypeValueList(pXML, "AttitudeCombatPercents", "AttitudeCombatPercent", "AttitudeType", "iCombatPercent", NUM_ATTITUDE_TYPES, m_aiAttitudeCombatPercent);
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "AttitudeCombatPercents"))
+	{
+		pXML->GetChildXmlValByName(&m_iAttitudeCombatMaxPercent, "iMaxPercent", -1);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 	readCommerceChanges(pXML, "WorldWonderCommerceChanges", &m_paiWorldWonderCommerceChange);
 	readCommerceChanges(pXML, "GlobalWorldWonderCommerceChanges", &m_paiGlobalWorldWonderCommerceChange);
 	pXML->GetChildXmlValByName(&m_iEnemyWarWearinessModifier, "iEnemyWarWearinessModifier");

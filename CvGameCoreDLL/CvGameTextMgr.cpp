@@ -42,6 +42,38 @@ static char* szErrorMsg;
 
 // PrereqOrTraits and ReplacedBuild of the builds (added by this mod): the help lists the builds of the active player. Without
 // one (the pedia from the main menu) it lists them all.
+// AttitudeCombatPercents of the traits (added by this mod): for the combat odds, a line for each attitude with AI players
+// ("<attitude> civs: +X%"), and a line for the part over the caps of the traits
+static void appendAttitudeCombatLines(CvWStringBuffer& szString, PlayerTypes eOwner)
+{
+	const CvPlayer& kOwner = GET_PLAYER(eOwner);
+	int iRaw = 0;
+	int iPercent;
+	int iI;
+
+	if (kOwner.getAttitudeCombatPercent() == 0)
+	{
+		return;
+	}
+
+	for (iI = 0; iI < NUM_ATTITUDE_TYPES; iI++)
+	{
+		iPercent = kOwner.getAttitudeCombatPercentOf((AttitudeTypes)iI);
+		if (iPercent != 0)
+		{
+			iRaw += iPercent;
+			szString.append(NEWLINE);
+			szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ATTITUDE_STRENGTH", GC.getAttitudeInfo((AttitudeTypes)iI).getTextKeyWide(), iPercent));
+		}
+	}
+
+	if (kOwner.getAttitudeCombatPercent() != iRaw)
+	{
+		szString.append(NEWLINE);
+		szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ATTITUDE_CAP", kOwner.getAttitudeCombatPercent() - iRaw));
+	}
+}
+
 static bool isBuildForActivePlayer(BuildTypes eBuild)
 {
 	PlayerTypes ePlayer = GC.getGameINLINE().getActivePlayer();
@@ -986,6 +1018,12 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szString, const CvUnit* pUnit, 
 			{
 				szString.append(gDLL->getText("TXT_KEY_UNIT_BUILDING_COMBAT_NOW", pUnit->getBuildingCombatPercent()));
 			}
+
+			// AttitudeCombatPercents of the traits (added by this mod): the part from the attitudes of the AI players
+			if (GET_PLAYER(pUnit->getOwnerINLINE()).getAttitudeCombatPercent() != 0)
+			{
+				szString.append(gDLL->getText("TXT_KEY_UNIT_ATTITUDE_COMBAT_NOW", GET_PLAYER(pUnit->getOwnerINLINE()).getAttitudeCombatPercent()));
+			}
 		}
 
 		// BonusAffinities (added by this mod): per copy, and what the owner has now
@@ -1886,13 +1924,16 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 
 			szString.append(L' ');//XXX
 
-			iModifier = pAttacker->getExtraCombatPercent();
+			// AttitudeCombatPercents of the traits (added by this mod): shown on their own lines
+			iModifier = pAttacker->getExtraCombatPercent() - GET_PLAYER(pAttacker->getOwnerINLINE()).getAttitudeCombatPercent();
 
 			if (iModifier != 0)
 			{
 				szString.append(NEWLINE);
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_EXTRA_STRENGTH", iModifier));
 			}
+
+			appendAttitudeCombatLines(szString, pAttacker->getOwnerINLINE());
 
 			iModifier = pAttacker->unitClassAttackModifier(pDefender->getUnitClassType());
 
@@ -2098,13 +2139,16 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 				}
 			}
 
-			iModifier = pDefender->getExtraCombatPercent();
+			// AttitudeCombatPercents of the traits (added by this mod): shown on their own lines
+			iModifier = pDefender->getExtraCombatPercent() - GET_PLAYER(pDefender->getOwnerINLINE()).getAttitudeCombatPercent();
 
 			if (iModifier != 0)
 			{
 				szString.append(NEWLINE);
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_EXTRA_STRENGTH", iModifier));
 			}
+
+			appendAttitudeCombatLines(szString, pDefender->getOwnerINLINE());
 
 			iModifier = pDefender->unitClassDefenseModifier(pAttacker->getUnitClassType());
 
