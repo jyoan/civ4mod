@@ -246,7 +246,7 @@
 			</Leaders>
 			<Traits>
 				<Trait>
-					<TraitType>TRAIT_BEDOUIN</TraitType>
+					<TraitType>TRAIT_LAST_PROPHET</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>

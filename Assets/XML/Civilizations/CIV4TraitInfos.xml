@@ -3456,5 +3456,13 @@
 				</UniqueUnit>
 			</UniqueUnits>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_LAST_PROPHET</Type>
+			<Description>TXT_KEY_TRAIT_LAST_PROPHET</Description>
+			<ShortDescription>TXT_KEY_TRAIT_LAST_PROPHET_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_LAST_PROPHET_HELP</Help>
+			<bClaimLastReligion>1</bClaimLastReligion>
+			<PyOnLastReligionClaimed>createUnits(pPlayer, 'UNITCLASS_PROPHET', 1, pCity.plot())</PyOnLastReligionClaimed>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>

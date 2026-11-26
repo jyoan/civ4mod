@@ -2513,4 +2513,31 @@
 		<Spanish>Dudone</Spanish>
 		<Japanese>&#12489;&#12453;&#12489;&#12540;&#12493;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LAST_PROPHET</Tag>
+		<English>Last Prophet</English>
+		<French>Last Prophet</French>
+		<German>Last Prophet</German>
+		<Italian>Last Prophet</Italian>
+		<Spanish>Last Prophet</Spanish>
+		<Japanese>&#26368;&#24460;&#12398;&#38928;&#35328;&#32773;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LAST_PROPHET_SHORT</Tag>
+		<English>Pro</English>
+		<French>Pro</French>
+		<German>Pro</German>
+		<Italian>Pro</Italian>
+		<Spanish>Pro</Spanish>
+		<Japanese>&#38928;&#35328;&#32773;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LAST_PROPHET_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]A Great Prophet appears in the holy city of that religion</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]A Great Prophet appears in the holy city of that religion</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]A Great Prophet appears in the holy city of that religion</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]A Great Prophet appears in the holy city of that religion</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A Great Prophet appears in the holy city of that religion</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#12381;&#12398;&#12392;&#12365;&#12289;&#21109;&#22987;&#12375;&#12383;&#23447;&#25945;&#12398;&#32854;&#22320;&#12395;&#22823;&#38928;&#35328;&#32773;&#12364;&#29694;&#12428;&#12427;</Japanese>
+	</TEXT>
 </Civ4GameText>

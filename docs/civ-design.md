@@ -69,6 +69,7 @@ BtS の効果はそのままにして足す。
 | `FeatureRoutes`・`MaintainFeatures` の森 | アメリカ先住民 |
 | `FeatureRoutes`・`MaintainFeatures`・`FeatureHealthChanges`・`FeatureYieldChanges` のジャングル | クメール |
 | 昇進の `TerrainDoubleMoves`・`TerrainDefenses` の砂漠、`StartBias/Terrains` の砂漠、石油の `RevealBonuses`・`StartBias/BonusBiases`・`BonusYieldChanges`、オアシスの `FeatureYieldChanges` | アラブ |
+| `bClaimLastReligion`、`PyOnLastReligionClaimed` | アラブ（2026-11-27 に文明の志向を最後の預言者に替えた。上の行のベドウィンは XML に残るが誰も持たない） |
 | `iHappinessPerReligion`、`CommercePerReligion` | インド |
 | `TerrainYieldChanges`・`StartBias/Terrains` の丘陵・山岳、`TerrainYieldChangesPerEra` の山岳 | インカ |
 | `iCorporationSpreadChange`、幹部への `bRivalTerritory` の昇進、`PyOnCorporationFounded` | オランダ |
@@ -157,7 +158,8 @@ BtS の効果はそのままにして足す。
 | アメリカ先住民（文明） | 森に特化: 自国の領土の森を道路として扱う（移動と交易網）。施設を作っても森が残る | `FeatureRoutes`（森 → `ROUTE_ROAD`）、`MaintainFeatures`（森） | 実装済み `TRAIT_FOREST_PEOPLE` |
 | クメール（文明） | ジャングルに特化: 自国の領土のジャングルを道路として扱う。ジャングルの不衛生がなくなる。ジャングルの食料 +2（BtS の -1 と合わせて +1）。施設を作ってもジャングルが残る | `FeatureRoutes`（ジャングル → `ROUTE_ROAD`）、`FeatureHealthChanges`（ジャングル +25。BtS の -25 と合わせて 0）、`FeatureYieldChanges`（ジャングル 食料 +2）、`MaintainFeatures`（ジャングル） | 実装済み、ゲームで確認済み `TRAIT_JUNGLE_PEOPLE` |
 | サラディン | 共存: 占領した都市に国教が広まり寺院が建つ、建物が残りやすい（+50%） | `Conquest/bStateReligion`、`Conquest/ReligionBuildings`（寺院）、`Conquest/iBuildingSurviveModifier` | 実装済み `TRAIT_COEXISTENCE` |
-| アラブ（文明） | ベドウィン: 騎乗ユニットが砂漠で移動 2 倍・防御 +25%。砂漠のバイアス。2026-11-19 に追加: 石油がゲーム開始時から見え、石油のバイアス（1 つにつき +50%）、石油のタイルの商業 +2、オアシスのタイルの生産 +1・商業 +1（マリの内向きの砂漠経済と分けて、資源とオアシスに寄せた。数値は仮） | 昇進の `TerrainDoubleMoves`・`TerrainDefenses`、`StartBias/Terrains`、`RevealBonuses`・`StartBias/BonusBiases`・`BonusYieldChanges`（石油）、`FeatureYieldChanges`（オアシス） | 実装済み `TRAIT_BEDOUIN` |
+| アラブ（文明） | ベドウィン: 騎乗ユニットが砂漠で移動 2 倍・防御 +25%。砂漠のバイアス。2026-11-19 に追加: 石油がゲーム開始時から見え、石油のバイアス（1 つにつき +50%）、石油のタイルの商業 +2、オアシスのタイルの生産 +1・商業 +1（マリの内向きの砂漠経済と分けて、資源とオアシスに寄せた。数値は仮） | 昇進の `TerrainDoubleMoves`・`TerrainDefenses`、`StartBias/Terrains`、`RevealBonuses`・`StartBias/BonusBiases`・`BonusYieldChanges`（石油）、`FeatureYieldChanges`（オアシス） | 実装済み `TRAIT_BEDOUIN`（2026-11-27 に下の行の最後の預言者に替えた。XML に残るが誰も持たない） |
+| アラブ（文明） | 最後の預言者（短縮名「預言者」。2026-11-27 にベドウィンから替えた）: 他の文明が残り 2 つの宗教の一方を創始すると、最後の宗教の技術を無償で得て創始する。もう一方の技術も 1 ターン以内に第三の文明が終えそうなら、研究費の高い方を先に奪う。創始した聖地に大預言者 | `bClaimLastReligion`、`PyOnLastReligionClaimed` の `createUnits`（大預言者。偉人の誕生に数えない）。Help に大預言者を手で書く | 実装済み `TRAIT_LAST_PROPHET` |
 | インド（文明） | 多宗教の受容: 都市の宗教 1 つにつき幸福 +1・文化 +1 | `iHappinessPerReligion`、`CommercePerReligion` | 実装済み `TRAIT_MULTI_RELIGION` |
 | インカ（文明） | アンデスの民: 丘陵 食料 +1、山岳 食料 +2・生産 +1、時代が 1 つ進むごとに山岳の商業 +1（山岳も働かせられる）。丘陵・山岳のバイアス（2026-11-19 に山岳を食料 +1・生産 +1 から変更） | `TerrainYieldChanges`、`TerrainYieldChangesPerEra`、`StartBias/Terrains` | 実装済み `TRAIT_ANDES` |
 | ワイナ・カパック | カパック・ニャン: 丘陵と山岳が交易網をつなぐ（山岳は通行不能でも交易網を止めない）。自国の領土の山岳にユニットが入れる（ダメージなし。ハンニバルは領土の外でも入れるがダメージを受ける）（2026-11-19） | `TerrainTrades`（`TERRAIN_HILL`・`TERRAIN_PEAK`）、`PassableTerrainsInBorders`（`TERRAIN_PEAK`） | 実装済み `TRAIT_QHAPAQ_NAN` |
@@ -287,6 +289,7 @@ BtS の効果はそのままにして足す。
 | `TRAIT_TWELVE_PALADINS`（十二聖騎士志向、短縮名「聖騎士」） | シャルルマーニュの 3 つ目の志向。`UniqueUnits` で大将軍を聖騎士に置き換える。`Help` に聖騎士の経験値・アップグレードを書いた |
 | `UNIT_PALADIN`（聖騎士） | 大将軍の複製（合流・定住・陸軍士官学校、グラフィックとボタンも同じ）。`UniqueNames` 12 人（`TXT_KEY_PALADIN_*`）、`UnitClassUpgrades` は陸上で戦闘力と兵科を持つ 36 クラス（偵察・白兵戦・銃・弓兵・騎乗・装甲・ヘリコプター・攻城）、`FreePromotions` 大将軍・武勇、`PyOnCreated` `(gainExperience(pUnit, 30), keepExperienceOnUpgrade(pUnit))` |
 | `PROMOTION_VALOR`（武勇） | `iFreeXPPerTurn` 1、`iFreeXPCap` 100。`UnitCombats` は空でレベルアップでは選べない。アイコンは統率の流用 |
+| `TRAIT_LAST_PROPHET`（最後の預言者志向、短縮名「預言者」） | アラブの文明の志向（`TRAIT_BEDOUIN` の置き換え。ベドウィンの志向は XML に残し、誰も持たない）。`bClaimLastReligion` 1、`PyOnLastReligionClaimed` で聖地に大預言者 1 人 |
 
 ## 確認の記録
 
