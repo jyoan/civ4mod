@@ -23434,6 +23434,7 @@
 			<FreePromotions/>
 			<LeaderPromotion>NONE</LeaderPromotion>
 			<iLeaderExperience>0</iLeaderExperience>
+			<PyOnCreated>(gainExperience(pUnit, 30), keepExperienceOnUpgrade(pUnit))</PyOnCreated>
 			<PyOnDeath>createUnits(pPlayer, 'UNITCLASS_SCOUT', 1, capitalPlot(pPlayer))</PyOnDeath>
 			<iUpgradeDiscount>100</iUpgradeDiscount>
 		</UnitInfo>

@@ -343,6 +343,17 @@ def healUnit(pUnit, iPercent):
 	"The unit heals iPercent of its max hit points"
 	pUnit.changeDamage(-(pUnit.maxHitPoints() * iPercent / 100), PlayerTypes.NO_PLAYER)
 
+def gainExperience(pUnit, iExperience):
+	"""The unit gains iExperience experience. Not from combat: no experience modifiers, no great general points and
+	no cap (promotions with iFreeXPCap only stop iFreeXPPerTurn)"""
+	pUnit.changeExperience(iExperience, -1, False, False, False)
+
+def keepExperienceOnUpgrade(pUnit):
+	"""The unit counts as led by a great general of its own type (CyUnit.setLeaderUnitType), the same status as a unit
+	a great general joined: an upgrade keeps all its experience instead of cutting it to MAX_EXPERIENCE_AFTER_UPGRADE,
+	the upgraded unit keeps the status, and all players get the general killed message when it is killed"""
+	pUnit.setLeaderUnitType(pUnit.getUnitType())
+
 # The promotions of createPartisans: the first one at the culture level poor, all six at legendary
 PARTISAN_PROMOTIONS = ['PROMOTION_COMBAT1', 'PROMOTION_COMBAT2', 'PROMOTION_COMBAT3', 'PROMOTION_COMBAT4', 'PROMOTION_COMBAT5', 'PROMOTION_COMBAT6']
 

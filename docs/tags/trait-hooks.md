@@ -219,3 +219,14 @@
   - `greatMerchantTradeGold(iTradeProfit)`: 大商人（`UNITCLASS_MERCHANT` の標準ユニット）の交易任務の金。`(iBaseTrade + iTradeMultiplier × iTradeProfit) × iUnitTradePercent / 100`（`CvUnit::getTradeGold` と同じ）。`iTradeProfit` は行き先の交易の利益の代わりの値（5 で外国の人口 12 程度の都市）
 - 例（農地を工房に替えると、そのタイルの都市に生産 30 × 速度）:
   - `gainImprovementProduction(pPlot.getWorkingCity(), improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP', {'IMPROVEMENT_FARM': scaleBySpeed(30, 'Train')}))`
+
+## `gainExperience(pUnit, iExperience)`、`keepExperienceOnUpgrade(pUnit)`（共通関数）
+
+- ファイル: `CvHookUtils.py`
+- 2026-11-26（シャルルマーニュの聖騎士の案）。ユニットの `PyOnCreated` などから使う。
+- `gainExperience`: ユニットの経験値 +iExperience（`CyUnit.changeExperience`。戦闘の経験値ではないので、経験値の補正・大将軍ポイント・上限なし）。
+- `keepExperienceOnUpgrade`: ユニットを、自分と同じ種類の大将軍が合流したユニットとして扱う（`CyUnit.setLeaderUnitType`）。
+- BtS はアップグレードのとき、大将軍が合流していないユニットの経験値を `MAX_EXPERIENCE_AFTER_UPGRADE`（10）で切り捨てる（`CvUnit::upgrade`）。この関数を使ったユニットは切り捨てられない。
+- アップグレードした後のユニットも同じ扱い（`CvUnit::convert` が引き継ぐ）。
+- 大将軍が合流したユニットと同じく、倒されると全プレイヤーに「将軍が戦死」のメッセージ（`TXT_KEY_MISC_GENERAL_KILLED`）が出て、戦闘の演出と守るユニットの選択（同じ強さなら合流したユニットが後）も変わる。
+- 大将軍の昇進（`PROMOTION_LEADER`）は付けない（必要ならユニットの `FreePromotions` で付ける。BtS の大将軍の昇進は `iUpgradeDiscount` 100 で、アップグレードが無料になる）
