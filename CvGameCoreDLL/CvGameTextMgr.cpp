@@ -1971,6 +1971,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_OTHER_RELIGION_MOD", iModifier));
 			}
 
+			// iGoldenAgeAdvantageCombatPercent (added by this mod)
+			iModifier = pAttacker->getGoldenAgeAdvantageCombatModifier(pDefender->getOwnerINLINE());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_GOLDEN_AGE_ADVANTAGE_MOD", iModifier));
+			}
+
 			// iRevengeCombatPercent of the traits of the attacker's owner (added by this mod)
 			iModifier = GET_PLAYER(pAttacker->getOwnerINLINE()).getRevengeCombatModifier(pDefender->getOwnerINLINE());
 
@@ -2176,6 +2185,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 			{
 				szString.append(NEWLINE);
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_OTHER_RELIGION_MOD", iModifier));
+			}
+
+			// iGoldenAgeAdvantageCombatPercent (added by this mod)
+			iModifier = pDefender->getGoldenAgeAdvantageCombatModifier(pAttacker->getOwnerINLINE());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_GOLDEN_AGE_ADVANTAGE_MOD", iModifier));
 			}
 
 			// iDefenseCombatPercent of the traits of the defender's owner (added by this mod)
@@ -4893,6 +4911,13 @@ void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, Prom
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_OTHER_RELIGION_COMBAT", GC.getPromotionInfo(ePromotion).getOtherReligionCombatPercent()));
+	}
+
+	// iGoldenAgeAdvantageCombatPercent (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getGoldenAgeAdvantageCombatPercent() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_GOLDEN_AGE_ADVANTAGE_COMBAT", GC.getPromotionInfo(ePromotion).getGoldenAgeAdvantageCombatPercent()));
 	}
 
 	if (GC.getPromotionInfo(ePromotion).getStateReligionCityAttack() != 0)

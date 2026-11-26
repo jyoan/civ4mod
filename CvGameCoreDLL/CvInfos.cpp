@@ -1936,6 +1936,7 @@ m_iCombatPromotionStealChance(0),
 m_iCombatPercentInBorders(0),
 m_iCombatPercentOverseas(0),
 m_iOtherReligionCombatPercent(0),
+m_iGoldenAgeAdvantageCombatPercent(0),
 m_iStateReligionCityAttack(0),
 m_bRivalTerritory(false),
 m_bRiverNavigation(false),
@@ -2621,6 +2622,13 @@ int CvPromotionInfo::getOtherReligionCombatPercent() const
 	return m_iOtherReligionCombatPercent;
 }
 
+// iGoldenAgeAdvantageCombatPercent (added by this mod): combat % while the owner is in a golden age, against the units of
+// players not in one (CvUnit::getGoldenAgeAdvantageCombatModifier)
+int CvPromotionInfo::getGoldenAgeAdvantageCombatPercent() const
+{
+	return m_iGoldenAgeAdvantageCombatPercent;
+}
+
 // iStateReligionCityAttack (added by this mod): city attack % against cities with the state religion of the owner
 // (CvUnit::getStateReligionCityAttackModifier)
 int CvPromotionInfo::getStateReligionCityAttack() const
@@ -3132,13 +3140,20 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 		stream->Read(&m_iEncirclementRearPercent);
 		stream->Read(&m_iEncirclementMaxUnitsPerPlot);
 	}
+
+	// uiFlag < 21: cache written before iGoldenAgeAdvantageCombatPercent existed
+	m_iGoldenAgeAdvantageCombatPercent = 0;
+	if (uiFlag > 20)
+	{
+		stream->Read(&m_iGoldenAgeAdvantageCombatPercent);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 20;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience, 19: BuildingCombatPercents, iBuildingCombatMaxPercent, 20: Encirclement (added by this mod)
+	uint uiFlag = 21;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience, 19: BuildingCombatPercents, iBuildingCombatMaxPercent, 20: Encirclement, 21: iGoldenAgeAdvantageCombatPercent (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -3282,6 +3297,7 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iEncirclementSidePercent);
 	stream->Write(m_iEncirclementRearPercent);
 	stream->Write(m_iEncirclementMaxUnitsPerPlot);
+	stream->Write(m_iGoldenAgeAdvantageCombatPercent);
 }
 
 // Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
@@ -3432,6 +3448,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCombatPercentInBorders, "iCombatPercentInBorders");
 	pXML->GetChildXmlValByName(&m_iCombatPercentOverseas, "iCombatPercentOverseas");
 	pXML->GetChildXmlValByName(&m_iOtherReligionCombatPercent, "iOtherReligionCombatPercent");
+	pXML->GetChildXmlValByName(&m_iGoldenAgeAdvantageCombatPercent, "iGoldenAgeAdvantageCombatPercent");
 	pXML->GetChildXmlValByName(&m_iStateReligionCityAttack, "iStateReligionCityAttack");
 	pXML->GetChildXmlValByName(&m_bRivalTerritory, "bRivalTerritory");
 	pXML->GetChildXmlValByName(&m_bRiverNavigation, "bRiverNavigation");

@@ -212,3 +212,14 @@
 - `bNoFirstEventDelay`: その最初の 20 ターンの待ちをなくし、ゲームの開始直後から新しいイベントの判定をする（`doEvents`）。
 - 説明文 `TXT_KEY_TRAIT_IGNORE_EVENTS`・`TXT_KEY_TRAIT_EVENT_CHANCE_CHANGE`・`TXT_KEY_TRAIT_NO_FIRST_EVENT_DELAY`（`FIRST_EVENT_DELAY_TURNS` の値を渡す）。
 - Python: `CvTraitInfo.isIgnoreEvents()`・`getEventChanceChange()`、`CvTraitInfo.isNoFirstEventDelay()`、`CyPlayer.isIgnoreEvents()`・`getEventChanceChange()`・`isNoFirstEventDelay()`・`ignoreEvent(iEventTriggeredId)`（全員のコンピューターで呼ぶこと）
+
+## `TraitInfo/iInflationModifier`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-26（ダレイオス1世の案）。
+- インフレ率の補正 %（`CvPlayer::calculateInflationRate` の `iModifier` に志向の合計を足す。イベントの `iInflationModifier` と同じ足し方）。
+- -50 で半分、-100 でインフレなし。
+- AI の難易度の補正（`iAIInflationPercent`）とは足し算。
+- 毎回計算するので、既存のセーブでも効き、志向を得た・失った時点から変わる。
+- 説明文 `TXT_KEY_TRAIT_INFLATION_MODIFIER`。
+- Python: `CvTraitInfo.getInflationModifier()`（プレイヤーのインフレ率は BtS の `CyPlayer.calculateInflationRate()`）

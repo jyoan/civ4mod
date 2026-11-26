@@ -209,6 +209,8 @@
 - 2026-11-24 の分（`Deals`）: 平時でも AI から首都以外の都市を買える（`bBuyCities`）、取引で得る都市の値段 -50%（`iCityValueModifier`）、AI が出す金の上限 +100%（`iGoldLimitModifier`）、こちらが出す金の AI から見た価値 +50%（`iGoldValueModifier`。AI が求める金は 2/3）
 - 2026-11-26 の分（`LendLease`）: 自国の都市のユニットに行動ボタン「レンドリース」（`bLendLease`）、生産コストの 50% を研究（`iResearchPercent`）・25% を金（`iGoldPercent`）、送るたびに相手の取引の態度 +1（`iAttitudeChange`。上限は省略して 4）。
 - 2026-11-26 の分（`AttitudeCombatPercents`）: 自分への態度が激怒している AI の文明 1 つにつき全ユニットの戦闘力 +20%、いらだっている +10%、警戒している +5%（開始直後から確かめられるように）、上限 +60%。
+- 2026-11-26 の分（ペルシャの案）: 大将軍も黄金期を起こせる（`GoldenAgeUnitClasses`）、黄金期に必要な偉人 -1（`iGoldenAgeUnitsChange`。1・1・2 人）、インフレ率 -50%（`iInflationModifier`）。
+- 都市を占領すると通常の半分の黄金期（`PyOnCityAcquired` の `startGoldenAge(pPlayer, 50)`。蛮族の都市でも起きる）、最後の都市を占領した文明が滅亡すると通常の黄金期（`PyOnPlayerEliminated`）。どちらもイベントログに「[検証] フック名: 都市名か文明名, golden age turns N」。
 
 ## `TRAIT_TEST_TEMPORARY`（検証用志向（期間））
 

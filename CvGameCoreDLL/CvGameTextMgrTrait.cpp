@@ -513,6 +513,24 @@ void CvGameTextMgr::parseTraitSpreadAndUnitEffects(CvWStringBuffer& szHelpString
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_GOLDEN_AGE_LAND_MOVES", kTrait.getGoldenAgeLandMovesChange());
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_GOLDEN_AGE_SEA_MOVES", kTrait.getGoldenAgeSeaMovesChange());
 
+	// GoldenAgeUnitClasses (added by this mod): "Great General can start a golden age"
+	if (kTrait.getNumGoldenAgeUnitClasses() > 0)
+	{
+		szText.clear();
+		for (iI = 0; iI < kTrait.getNumGoldenAgeUnitClasses(); iI++)
+		{
+			if (iI > 0)
+			{
+				szText += L", ";
+			}
+			szText += getLinkText(GC.getUnitClassInfo((UnitClassTypes)kTrait.getGoldenAgeUnitClass(iI)).getDescription());
+		}
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_GOLDEN_AGE_UNIT_CLASSES", szText.GetCString()));
+	}
+
+	// iGoldenAgeUnitsChange (added by this mod)
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_GOLDEN_AGE_UNITS_CHANGE", kTrait.getGoldenAgeUnitsChange());
+
 	// CityFoundedUnits (added by this mod): "Each city founded gets 1 Galley (cities on the coast only)"
 	for (iI = 0; iI < kTrait.getNumCityFoundedUnits(); iI++)
 	{
@@ -1633,6 +1651,9 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_DEAL_CITY_VALUE_MODIFIER", kTrait.getDealCityValueModifier());
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_DEAL_GOLD_LIMIT_MODIFIER", kTrait.getDealGoldLimitModifier());
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_DEAL_GOLD_VALUE_MODIFIER", kTrait.getDealGoldValueModifier());
+
+	// iInflationModifier (added by this mod)
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_INFLATION_MODIFIER", kTrait.getInflationModifier());
 
 	// LendLease
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_LEND_LEASE", kTrait.isLendLease());

@@ -55,6 +55,9 @@
 ##   PyOnOtherCityFounded  pPlayer, eTrait, pCity (CyCity of the founder): after another player (any player alive but this
 ##                     one, the barbarians too) founds a city, e.g. offerTreatyTerms(pPlayer, eTrait, pCity, 100,
 ##                     'BUILDINGCLASS_X')
+##   PyOnPlayerEliminated  pPlayer, eTrait, iEliminatedPlayer: after a player whose last city this player conquered is
+##                     eliminated (not when the last city was razed by someone else or lost by culture), e.g.
+##                     startGoldenAge(pPlayer)
 ## Counters: each player has a number per trait for the hooks (CyPlayer.getTraitCounter, saved with the game), e.g.
 ##   countEvery(pPlayer, eTrait, 3) and gainGold(pPlayer, 100)   (every third time)
 ## Temporary traits: gainTraitForTurns(pPlayer, 'TRAIT_X', iTurns) gives a trait for some turns, e.g. from a hook.
@@ -165,3 +168,7 @@ def onCircumnavigated(argsList):
 def onOtherCityFounded(argsList):
 	pPlayer, eTrait, pCity = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnOtherCityFounded())
+
+def onPlayerEliminated(argsList):
+	pPlayer, eTrait, iEliminatedPlayer = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnPlayerEliminated())

@@ -8028,6 +8028,13 @@ int CvPlayer::calculateInflationRate() const
 	iInflationPerTurnTimes10000 /= 100;
 
 	int iModifier = m_iInflationModifier;
+
+	// iInflationModifier of the traits (added by this mod)
+	if (getLeaderType() != NO_LEADER)
+	{
+		iModifier += sumTraitValues(&CvTraitInfo::getInflationModifier);
+	}
+
 	if (!isHuman() && !isBarbarian())
 	{
 		int iAIModifier = GC.getHandicapInfo(getAIHandicapType()).getAIInflationPercent();
@@ -9147,7 +9154,15 @@ int CvPlayer::getReligionAnarchyLength() const
 
 int CvPlayer::unitsRequiredForGoldenAge() const
 {
-	return (GC.getDefineINT("BASE_GOLDEN_AGE_UNITS") + (getNumUnitGoldenAges() * GC.getDefineINT("GOLDEN_AGE_UNITS_MULTIPLIER")));
+	int iUnits = (GC.getDefineINT("BASE_GOLDEN_AGE_UNITS") + (getNumUnitGoldenAges() * GC.getDefineINT("GOLDEN_AGE_UNITS_MULTIPLIER")));
+
+	// iGoldenAgeUnitsChange of the traits (added by this mod): at least 1
+	if (getLeaderType() != NO_LEADER)
+	{
+		iUnits = std::max(1, iUnits + sumTraitValues(&CvTraitInfo::getGoldenAgeUnitsChange));
+	}
+
+	return iUnits;
 }
 
 
@@ -11443,6 +11458,12 @@ void CvPlayer::setAlive(bool bNewValue)
 				{
 					GET_PLAYER(m_eLastConqueror).gainBasicTraitsOf(getID(), true, "TXT_KEY_MISC_TRAIT_GAINED_BY_ELIMINATION");
 				}
+			}
+
+			// PyOnPlayerEliminated of the traits of the player who conquered our last city (added by this mod)
+			if (m_eLastConqueror != NO_PLAYER && m_eLastConqueror != getID() && GET_PLAYER(m_eLastConqueror).isAlive())
+			{
+				GET_PLAYER(m_eLastConqueror).doTraitPythonHookInts(TRAIT_PYHOOK_PLAYER_ELIMINATED, 1, getID());
 			}
 			m_eLastConqueror = NO_PLAYER;
 		}

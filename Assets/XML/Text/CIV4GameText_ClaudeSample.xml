@@ -1322,6 +1322,15 @@
 		<Japanese>[ICON_BULLET]&#22269;&#25945;&#12364;&#36949;&#12358;&#30456;&#25163;: %D1%%</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_COMBAT_PLOT_GOLDEN_AGE_ADVANTAGE_MOD</Tag>
+		<English>[ICON_BULLET]%D1%% Golden Age vs. Non-Golden Age</English>
+		<French>[ICON_BULLET]%D1%% Golden Age vs. Non-Golden Age</French>
+		<German>[ICON_BULLET]%D1%% Golden Age vs. Non-Golden Age</German>
+		<Italian>[ICON_BULLET]%D1%% Golden Age vs. Non-Golden Age</Italian>
+		<Spanish>[ICON_BULLET]%D1%% Golden Age vs. Non-Golden Age</Spanish>
+		<Japanese>[ICON_BULLET]&#40644;&#37329;&#26399;&#12391;&#12394;&#12356;&#30456;&#25163;&#65288;&#33258;&#22269;&#12399;&#40644;&#37329;&#26399;&#65289;: %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_COMBAT_PLOT_STATE_RELIGION_CITY_MOD</Tag>
 		<English>[ICON_BULLET]%D1%% City Attack (your state religion there)</English>
 		<French>[ICON_BULLET]%D1%% City Attack (your state religion there)</French>

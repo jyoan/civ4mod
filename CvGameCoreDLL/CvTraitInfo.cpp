@@ -69,6 +69,8 @@ m_iReligionSpreadChange(0),
 m_iCorporationSpreadChange(0),
 m_iGoldenAgeLandMovesChange(0),
 m_iGoldenAgeSeaMovesChange(0),
+m_iGoldenAgeUnitsChange(0),
+m_iInflationModifier(0),
 m_bInlandCanals(false),
 m_bBarbarianAlly(false),
 m_bBarbarianVision(false),
@@ -559,6 +561,37 @@ int CvTraitInfo::getGoldenAgeLandMovesChange() const
 int CvTraitInfo::getGoldenAgeSeaMovesChange() const
 {
 	return m_iGoldenAgeSeaMovesChange;
+}
+
+// iGoldenAgeUnitsChange (added by this mod): added to the great people needed for a golden age (at least 1,
+// CvPlayer::unitsRequiredForGoldenAge)
+int CvTraitInfo::getGoldenAgeUnitsChange() const
+{
+	return m_iGoldenAgeUnitsChange;
+}
+
+// GoldenAgeUnitClasses (added by this mod): the units of these classes can start a golden age like great people
+// (CvUnit::isGoldenAge). Each unit type counts as another kind of great person
+int CvTraitInfo::getNumGoldenAgeUnitClasses() const
+{
+	return (int)m_aiGoldenAgeUnitClasses.size();
+}
+
+int CvTraitInfo::getGoldenAgeUnitClass(int i) const
+{
+	return (i > -1 && i < getNumGoldenAgeUnitClasses()) ? m_aiGoldenAgeUnitClasses[i] : NO_UNITCLASS;
+}
+
+bool CvTraitInfo::isGoldenAgeUnitClass(int iUnitClass) const
+{
+	return (std::find(m_aiGoldenAgeUnitClasses.begin(), m_aiGoldenAgeUnitClasses.end(), iUnitClass) != m_aiGoldenAgeUnitClasses.end());
+}
+
+// iInflationModifier (added by this mod): % of the inflation rate of the player, like the event tag (-50: half,
+// CvPlayer::calculateInflationRate)
+int CvTraitInfo::getInflationModifier() const
+{
+	return m_iInflationModifier;
 }
 
 // The ships of the player enter forts and cities that do not touch water (added by this mod)
@@ -2227,6 +2260,12 @@ const TCHAR* CvTraitInfo::getPyOnOtherCityFounded() const
 	return m_aszPythonHook[TRAIT_PYHOOK_OTHER_CITY_FOUNDED];
 }
 
+// PyOnPlayerEliminated (added by this mod): a player whose last city this player conquered was eliminated (CvPlayer::setAlive)
+const TCHAR* CvTraitInfo::getPyOnPlayerEliminated() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_PLAYER_ELIMINATED];
+}
+
 // ConditionalFreeTraits (added by this mod): the traits the player has while the conditions hold
 int CvTraitInfo::getNumConditionalFreeTraits() const
 {
@@ -2702,6 +2741,9 @@ void CvTraitInfo::readModValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCorporationSpreadChange, "iCorporationSpreadChange");
 	pXML->GetChildXmlValByName(&m_iGoldenAgeLandMovesChange, "iGoldenAgeLandMovesChange");
 	pXML->GetChildXmlValByName(&m_iGoldenAgeSeaMovesChange, "iGoldenAgeSeaMovesChange");
+	pXML->GetChildXmlValByName(&m_iGoldenAgeUnitsChange, "iGoldenAgeUnitsChange");
+	readTypeList(pXML, "GoldenAgeUnitClasses", m_aiGoldenAgeUnitClasses);	// the unit classes are loaded before the traits
+	pXML->GetChildXmlValByName(&m_iInflationModifier, "iInflationModifier");
 	pXML->GetChildXmlValByName(&m_bInlandCanals, "bInlandCanals");
 	pXML->GetChildXmlValByName(&m_bBarbarianAlly, "bBarbarianAlly");
 	pXML->GetChildXmlValByName(&m_bBarbarianVision, "bBarbarianVision");
@@ -3218,6 +3260,7 @@ void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CIVIC_CHANGED], "PyOnCivicChanged");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CIRCUMNAVIGATED], "PyOnCircumnavigated");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_OTHER_CITY_FOUNDED], "PyOnOtherCityFounded");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_PLAYER_ELIMINATED], "PyOnPlayerEliminated");
 }
 
 // The part of read() for ConditionalFreeTraits (added by this mod)

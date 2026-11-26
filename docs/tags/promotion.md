@@ -318,6 +318,18 @@
 - キャッシュには文字列で書く。
 - 説明文にはフックの効果を出さないので、`Help` に書く
 
+### `PromotionInfo/iGoldenAgeAdvantageCombatPercent`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 2026-11-26（ペルシャの案）。
+- ユニットの持ち主が黄金期で、戦闘の相手のプレイヤーが黄金期でないときの戦闘力 %（`CvUnit::getGoldenAgeAdvantageCombatModifier`。`iOtherReligionCombatPercent` と同じく、攻撃・防御の両方で `maxCombatStr` に入る）。
+- 蛮族は黄金期にならないので、自分が黄金期なら常に対象。
+- 戦闘のたびに昇進の合計を数える（ユニットに値を持たせず、セーブしない）。
+- 戦闘の内訳に「黄金期でない相手（自国は黄金期）: +N%」（`TXT_KEY_COMBAT_PLOT_GOLDEN_AGE_ADVANTAGE_MOD`）。
+- 説明文 `TXT_KEY_PROMOTION_GOLDEN_AGE_ADVANTAGE_COMBAT`。
+- 昇進のキャッシュの `uiFlag` 21。
+- Python: `CvPromotionInfo.getGoldenAgeAdvantageCombatPercent()`
+
 ## 呪文
 
 ### `SpellInfo` の `PromotionPrereq1` / `PromotionPrereq2`、`UnitPrereq`、`UnitClassPrereq`、`UnitCombatPrereq`、`CivilizationPrereq`、`TechPrereq`、`iCasterMinLevel`、`bInBordersOnly`、`bInCityOnly`、`bHasCasted`、`bIgnoreHasCasted`、`bDisplayWhenDisabled`、`PyRequirement`、`PyResult`（と `Type`・`Description`・`Civilopedia`・`Help`・`Button`・ホットキー）

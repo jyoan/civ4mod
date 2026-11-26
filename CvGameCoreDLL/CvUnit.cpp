@@ -9760,7 +9760,13 @@ bool CvUnit::isGoldenAge() const
 		return false;
 	}
 
-	return m_pUnitInfo->isGoldenAge();
+	if (m_pUnitInfo->isGoldenAge())
+	{
+		return true;
+	}
+
+	// GoldenAgeUnitClasses of the traits of the owner (added by this mod)
+	return GET_PLAYER(getOwnerINLINE()).hasTraitFlag(&CvTraitInfo::isGoldenAgeUnitClass, (int)getUnitClassType());
 }
 
 bool CvUnit::canCoexistWithEnemyUnit(TeamTypes eTeam) const
@@ -10224,6 +10230,10 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 			// iOtherReligionCombatPercent of the promotions of both units (added by this mod)
 			iTempModifier += getOtherReligionCombatModifier(pAttacker->getOwnerINLINE());
 			iTempModifier -= pAttacker->getOtherReligionCombatModifier(getOwnerINLINE());
+
+			// iGoldenAgeAdvantageCombatPercent of the promotions of both units (added by this mod)
+			iTempModifier += getGoldenAgeAdvantageCombatModifier(pAttacker->getOwnerINLINE());
+			iTempModifier -= pAttacker->getGoldenAgeAdvantageCombatModifier(getOwnerINLINE());
 
 			// iDefenseCombatPercent of the traits of the owner of this unit, the defender (added by this mod)
 			iTempModifier += GET_PLAYER(getOwnerINLINE()).getTraitDefenseCombatPercent();
@@ -13232,6 +13242,18 @@ void CvUnit::changeAdjacentTileHeal(int iChange)
 {
 	m_iAdjacentTileHeal += iChange;
 	FAssert(getAdjacentTileHeal() >= 0);
+}
+
+// iGoldenAgeAdvantageCombatPercent of the promotions (added by this mod): against the units of ePlayer, when the owner of this
+// unit is in a golden age and ePlayer is not (barbarians are never in one)
+int CvUnit::getGoldenAgeAdvantageCombatModifier(PlayerTypes ePlayer) const
+{
+	if (ePlayer == NO_PLAYER || !GET_PLAYER(getOwnerINLINE()).isGoldenAge() || GET_PLAYER(ePlayer).isGoldenAge())
+	{
+		return 0;
+	}
+
+	return sumPromotionValues(&CvPromotionInfo::getGoldenAgeAdvantageCombatPercent);
 }
 
 // iOtherReligionCombatPercent of the promotions (added by this mod): against the units of ePlayer, when the owner of this

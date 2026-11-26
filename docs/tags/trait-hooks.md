@@ -77,7 +77,7 @@
 - プレイヤーごとに呼ばれるので、この志向を持つ 2 人のチームでは 2 回得る。
 - 地図の条件は `CvGame::isCircumnavigationMap()` に分け、`circumnavigationAvailable()`（AI が狙うかの判定）は「まだ誰も達成していない」のまま。
 - 変更前のセーブで達成済みのゲームでは、誰が 1 番目か分からないので 2 番目以降は起きない。
-- 共通関数 `startGoldenAge(pPlayer)`: 通常の長さの黄金期を始める（進行中なら延びる。偉人は消費しない）。
+- 共通関数 `startGoldenAge(pPlayer)`: 通常の長さの黄金期を始める（進行中なら延びる。偉人は消費しない。長さの % は `PyOnPlayerEliminated` の項）。
 - 例: `iOrder == 1 and startGoldenAge(pPlayer)`。
 - 共通関数 `isCivicIn(eCivic, ['CIVIC_REPRESENTATION'])` も足した。
 - 共通関数 `showMessage(pPlayer, 'TXT_KEY_X', (引数, ...))`（そのプレイヤーのイベントログにテキストを出す。引数はテキストの %s1, %s2...）・`infoDescription('Tech', eTech)`（Info の名前。-1 なら '-'）・`cityName(pCity)`（都市がなければ '-'）も足した
@@ -184,3 +184,17 @@
 - 説明文 `TXT_KEY_TRAIT_LONG_COUNT_CALENDAR`、日付 `TXT_KEY_TIME_LONG_COUNT`。
 - Python: `CyPlayer.isLongCountCalendar()`、`CvTraitInfo.isLongCountCalendar()`。
 - 偉人の選択（`chooseGreatPeopleByCalendar`）とは別のタグなので、片方だけでも使える
+
+## `TraitInfo/PyOnPlayerEliminated`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-26（大キュロスの案）。
+- そのプレイヤーが最後の都市を占領した相手が滅亡した後（`CvPlayer::setAlive(false)`。`bGainTraitsOnElimination` と同じく `m_eLastConqueror` で判定し、その処理の後）に呼ぶ。
+- 名前は `pPlayer`（志向の持ち主）・`eTrait`・`iEliminatedPlayer`。
+- 占領した相手の最後の都市がほかの理由（文化による寝返り・取引など）で失われたときも、最後に都市を占領したプレイヤーに呼ぶ。
+- 「完全な征服」のオプションでは、ユニットもすべて失って滅亡したときに呼ぶ。
+- 最後の都市の占領では、先に `PyOnCityAcquired` が呼ばれる（両方に書けば両方の効果が起きる）。
+- DLL は `doTraitPythonHookInts(TRAIT_PYHOOK_PLAYER_ELIMINATED, 1, eEliminated)`。
+- 共通関数 `startGoldenAge(pPlayer, iPercent = 100)`（2026-11-26 に `iPercent` を追加）: 通常の長さ（`getGoldenAgeLength`。ゲーム速度などの補正込み）の iPercent % の黄金期を始める。最低 1 ターン。
+- 進行中なら延びる（`PyOnGoldenAgeStart` は呼ばれない）。
+- 偉人を消費した回数に数えないので、次に必要な偉人の数は増えない
