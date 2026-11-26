@@ -139,6 +139,7 @@ BtS の効果はそのままにして足す。
 | `bGainTraitOnCapitalCapture`、`bGainTraitsOnElimination`、`iTradeRoutes` | クビライ |
 | `Deals`（`bBuyCities`・`iGoldValueModifier`）、`iInflationModifier` | ダレイオス1世 |
 | `NearbyCityCommerce`（研究・文化、首都 2 倍）、`iMinCityRangeChange`、`HealthyCommercePercents`（金） | パカル2世 |
+| `CultureFlip`（`bInstantFlip`・`iRevoltChance`）、`GreatPeopleHurry`（偉大な芸術家） | エカチェリーナ2世 |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -226,6 +227,7 @@ BtS の効果はそのままにして足す。
 | ナポレオン | 大陸軍（短縮名「陸」）: 対仏大同盟 — 自分への態度が「激怒している」AI の文明 1 つにつき全ユニットの戦闘力 +20%、「いらだっている」1 つにつき +10%（上限 +60%。人間・自分のチームは数えない。交戦中かどうかは別に数えない）。大陸軍 — ユニットのままの大将軍と同じタイルにいる白兵戦・騎乗・攻城・銃兵ユニットと、その大将軍自身に昇進「大陸軍」（移動力 +1）（2026-11-26。数値は仮。カリスマ志向の態度 +1 と向きが逆なのは演出として残す） | `AttitudeCombatPercents`、`StackPromotions`（`UNITCLASS_GREAT_GENERAL` → `PROMOTION_GRANDE_ARMEE`、`bStackUnitsToo`） | 実装済み `TRAIT_GRANDE_ARMEE` |
 | クビライ | 大元ウルス（短縮名「元」）: 戦争で相手の首都を占領すると、相手の基本志向のうち持っていないものから 1 つをランダムに得る。相手を滅ぼすと、持っていない基本志向をすべて得る。ジャムチ（駅伝制）— 全都市の交易路 +1（2026-11-26。設計は 2026-11-25。渡るのは基本志向 11 個だけで、文明志向・指導者固有の志向はクセが強いので渡さない。`GainTraitsOnFriendly` は別の文明のために残す） | `bGainTraitOnCapitalCapture`、`bGainTraitsOnElimination`、`iTradeRoutes` 1 | 実装済み `TRAIT_YUAN_ULUS` |
 | パカル2世 | 密集する都市国家（短縮名「邦」）: 都市どうしの最低距離 -1（間に 1 マスで建てられる）。余剰の衛生 2 につき、その都市の金 +1（2026-11-26 に 1 につき +1 から下げた。都市数の維持費を払い、狭い都市圏で余る拡張志向の衛生 +2 を生かす）。3 タイル以内にある自分のほかの都市 1 つにつき、その都市の研究 +1・文化 +1、首都では 2 倍（都市を詰めて建てる動機。2026-11-26。設計は 2026-11-25。数値は仮。バビロニアの `HealthyCommercePercents` は研究なので重複としない） | `iMinCityRangeChange` -1、`HealthyCommercePercents`（金 50）、`NearbyCityCommerce`（`iRange` 3・研究 1・文化 1・`bDoubleInCapital`） | 実装済み `TRAIT_CITY_STATES` |
+| エカチェリーナ2世 | 啓蒙専制（短縮名「啓」）: ポーランド分割 — 文化で上回った他国の都市は反乱が起きやすく（+100%）、1 回目の反乱で寝返る。エルミタージュ — 都市画面の偉人のプログレスバーをクリックすると、足りない偉人ポイントを 1 ポイントあたり 3 ゴールドで買い、その場で偉大な芸術家が生まれる（1 都市につき 1 ターンに 1 回）。金で芸術家を買い、国境の都市で傑作を使って隣の都市を寝返らせる（スターリンは諜報、ピョートルは技術と分ける。2026-11-26。設計は 2026-11-25。数値は仮） | `CultureFlip`（`bInstantFlip` 1・`iRevoltChance` 100）、`GreatPeopleHurry`（`iGoldPerPoint` 3・`UNITCLASS_ARTIST`） | 実装済み `TRAIT_ENLIGHTENED_ABSOLUTISM` |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
 - 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%

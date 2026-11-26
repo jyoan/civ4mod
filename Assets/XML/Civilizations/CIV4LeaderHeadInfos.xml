@@ -3605,6 +3605,10 @@
 					<TraitType>TRAIT_IMPERIALIST</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_ENLIGHTENED_ABSOLUTISM</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>

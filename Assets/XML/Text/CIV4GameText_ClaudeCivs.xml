@@ -2252,4 +2252,22 @@
 		<Spanish>MCa</Spanish>
 		<Japanese>&#32000;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ENLIGHTENED_ABSOLUTISM</Tag>
+		<English>Enlightened Absolutism</English>
+		<French>Enlightened Absolutism</French>
+		<German>Enlightened Absolutism</German>
+		<Italian>Enlightened Absolutism</Italian>
+		<Spanish>Enlightened Absolutism</Spanish>
+		<Japanese>&#21843;&#33945;&#23554;&#21046;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_ENLIGHTENED_ABSOLUTISM_SHORT</Tag>
+		<English>Enl</English>
+		<French>Enl</French>
+		<German>Enl</German>
+		<Italian>Enl</Italian>
+		<Spanish>Enl</Spanish>
+		<Japanese>&#21843;</Japanese>
+	</TEXT>
 </Civ4GameText>

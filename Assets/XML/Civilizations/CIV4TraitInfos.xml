@@ -3404,5 +3404,18 @@
 			<ShortDescription>TXT_KEY_TRAIT_LONG_COUNT_CALENDAR_TRAIT_SHORT</ShortDescription>
 			<bLongCountCalendar>1</bLongCountCalendar>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_ENLIGHTENED_ABSOLUTISM</Type>
+			<Description>TXT_KEY_TRAIT_ENLIGHTENED_ABSOLUTISM</Description>
+			<ShortDescription>TXT_KEY_TRAIT_ENLIGHTENED_ABSOLUTISM_SHORT</ShortDescription>
+			<GreatPeopleHurry>
+				<iGoldPerPoint>3</iGoldPerPoint>
+				<UnitClassType>UNITCLASS_ARTIST</UnitClassType>
+			</GreatPeopleHurry>
+			<CultureFlip>
+				<bInstantFlip>1</bInstantFlip>
+				<iRevoltChance>100</iRevoltChance>
+			</CultureFlip>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>
