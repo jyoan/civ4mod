@@ -2162,4 +2162,22 @@
 		<Spanish>Armee</Spanish>
 		<Japanese>&#38520;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_YUAN_ULUS</Tag>
+		<English>Great Yuan Ulus</English>
+		<French>Great Yuan Ulus</French>
+		<German>Great Yuan Ulus</German>
+		<Italian>Great Yuan Ulus</Italian>
+		<Spanish>Great Yuan Ulus</Spanish>
+		<Japanese>&#22823;&#20803;&#12454;&#12523;&#12473;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_YUAN_ULUS_SHORT</Tag>
+		<English>Yuan</English>
+		<French>Yuan</French>
+		<German>Yuan</German>
+		<Italian>Yuan</Italian>
+		<Spanish>Yuan</Spanish>
+		<Japanese>&#20803;</Japanese>
+	</TEXT>
 </Civ4GameText>

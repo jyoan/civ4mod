@@ -3281,5 +3281,13 @@
 				<iMaxPercent>60</iMaxPercent>
 			</AttitudeCombatPercents>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_YUAN_ULUS</Type>
+			<Description>TXT_KEY_TRAIT_YUAN_ULUS</Description>
+			<ShortDescription>TXT_KEY_TRAIT_YUAN_ULUS_SHORT</ShortDescription>
+			<iTradeRoutes>1</iTradeRoutes>
+			<bGainTraitOnCapitalCapture>1</bGainTraitOnCapitalCapture>
+			<bGainTraitsOnElimination>1</bGainTraitsOnElimination>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>

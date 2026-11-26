@@ -136,6 +136,7 @@ BtS の効果はそのままにして足す。
 | `LendLease`（レンドリース） | ルーズヴェルト |
 | 昇進の `Encirclement`（包囲と支援） | シャカ |
 | `AttitudeCombatPercents`（AI の態度ごとの戦闘力）、`StackPromotions` の大将軍（`bStackUnitsToo`） | ナポレオン |
+| `bGainTraitOnCapitalCapture`、`bGainTraitsOnElimination`、`iTradeRoutes` | クビライ |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -220,6 +221,7 @@ BtS の効果はそのままにして足す。
 | ルーズヴェルト | 民主主義の兵器廠（短縮名「廠」）: 自国の都市にいるユニットを、行動ボタン「レンドリース」で平和な文明の首都に送る（積み荷も一緒、UnitAI は既定に戻る）。送ったユニットの生産コストの 50% を研究、25% を金として得る。送るたびに相手の態度（取引）+1、+4 まで（2026-11-26。数値は仮。財政難にさせる抜け道は防がない） | `LendLease`（`iResearchPercent` 50・`iGoldPercent` 25・`iAttitudeChange` 1） | 実装済み `TRAIT_ARSENAL_OF_DEMOCRACY` |
 | シャカ | 牛の角の陣（短縮名「角」）: 陸上の戦闘ユニットが、攻撃するときは相手の、守るときは自分の周囲にいる自軍の陸上ユニット（戦闘力 1 以上）1 体につき戦闘力 +1%、攻撃側の反対側の 3 タイル（背後）では +2%。1 タイル 10 体まで（横 4 タイルで最大 +40%、背後 3 タイルで +60%、計 +100%）。攻撃側のタイルは数えない。都市の攻撃・防御にも効く（2026-11-26。Civ6 の側面攻撃・支援から） | `FreePromotionSets`（`PROMOTION_BULL_HORNS`。昇進の `Encirclement` 1・2・10。陸上の 8 兵科と `DOMAIN_LAND`） | 実装済み、ゲームで確認済み `TRAIT_BULL_HORNS` |
 | ナポレオン | 大陸軍（短縮名「陸」）: 対仏大同盟 — 自分への態度が「激怒している」AI の文明 1 つにつき全ユニットの戦闘力 +20%、「いらだっている」1 つにつき +10%（上限 +60%。人間・自分のチームは数えない。交戦中かどうかは別に数えない）。大陸軍 — ユニットのままの大将軍と同じタイルにいる白兵戦・騎乗・攻城・銃兵ユニットと、その大将軍自身に昇進「大陸軍」（移動力 +1）（2026-11-26。数値は仮。カリスマ志向の態度 +1 と向きが逆なのは演出として残す） | `AttitudeCombatPercents`、`StackPromotions`（`UNITCLASS_GREAT_GENERAL` → `PROMOTION_GRANDE_ARMEE`、`bStackUnitsToo`） | 実装済み `TRAIT_GRANDE_ARMEE` |
+| クビライ | 大元ウルス（短縮名「元」）: 戦争で相手の首都を占領すると、相手の基本志向のうち持っていないものから 1 つをランダムに得る。相手を滅ぼすと、持っていない基本志向をすべて得る。ジャムチ（駅伝制）— 全都市の交易路 +1（2026-11-26。設計は 2026-11-25。渡るのは基本志向 11 個だけで、文明志向・指導者固有の志向はクセが強いので渡さない。`GainTraitsOnFriendly` は別の文明のために残す） | `bGainTraitOnCapitalCapture`、`bGainTraitsOnElimination`、`iTradeRoutes` 1 | 実装済み `TRAIT_YUAN_ULUS` |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
 - 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%
@@ -264,6 +266,7 @@ BtS の効果はそのままにして足す。
 | `PROMOTION_BULL_HORNS`（牛の角の陣） | `Encirclement`: 横 1 体につき +1%、背後 +2%、1 タイル 10 体まで。`UnitCombats` は空でレベルアップでは選べない。アイコンは側面攻撃Ⅱの流用 |
 | `TRAIT_GRANDE_ARMEE`（大陸軍志向、短縮名「陸」） | ナポレオンの 3 つ目の志向。`AttitudeCombatPercents`（激怒 +20%・いらだち +10%・上限 60）と `StackPromotions`（大将軍と同じタイルの白兵戦・騎乗・攻城・銃兵に `PROMOTION_GRANDE_ARMEE`、`bStackUnitsToo` で大将軍自身にも） |
 | `PROMOTION_GRANDE_ARMEE`（大陸軍） | 移動力 +1。`UnitCombats` は空でレベルアップでは選べない。アイコンは機動力Ⅰの流用 |
+| `TRAIT_YUAN_ULUS`（大元ウルス志向、短縮名「元」） | クビライの 3 つ目の志向。`iTradeRoutes` 1、`bGainTraitOnCapitalCapture` 1、`bGainTraitsOnElimination` 1。Help は書かない（3 つともタグの説明文が出る） |
 | `SPELL_LIANHENG`（連衡） | 張儀だけ。戦争中の文明の都市で、その文明と和平し、張儀は消える |
 
 ## 確認の記録
