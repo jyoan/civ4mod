@@ -36,6 +36,7 @@
 - ゲーム中の指導者の説明（`parsePlayerLeaderTraits`）では志向の名前の後に「（残り N ターン）」（`TXT_KEY_TRAIT_TURNS_LEFT`。exe が使う `parseTraits` は引数を変えられないので `parseTraitsWithTurns` を足した）。
 - セーブに保存（`CvPlayer::m_paiTraitTurns`、`uiFlag=12`。古いセーブは期間つきの志向なし）。
 - Python は `CyPlayer.getTraitTurns(eTrait)` / `setTraitTurns(eTrait, iTurns)`、共通関数 `gainTraitForTurns(pPlayer, 'TRAIT_X', iTurns)`（すでに期間つきなら長い方。重ねない。ゲーム速度で変えるなら `scaleBySpeed(iTurns, 'GoldenAge')`）。
+- 永続的に与えるのは `gainTrait(pPlayer, 'TRAIT_X')`（`CyPlayer.changeFreeTraitCount(eTrait, 1)`。すでに持っていれば何もしない。与えたら `True`。2026-11-26）。
 - 共通関数 `makeCityPlotHills(pCity, 'TERRAIN_PLAINS')`（2026-11-19。エチオピアの案）: 都市のタイルをその地形の丘陵にする（`PyOnCityFounded` から。`CyPlot.setPlotType`・`setTerrainType`。残せない地形の特徴は消す）。
 - 共通関数 `buildRouteToCapital(pCity, 'ROUTE_ROAD', iMaxDistance)`（2026-11-23。Civ6 のローマの案）: 首都から陸路 iMaxDistance タイル以内でつながる都市なら、首都までその道を敷く（`PyOnCityFounded` から。技術は問わない）。
 - 経路は同じ陸地の、通行不能でなく、持ち主がいないか自チームのタイルだけを通る、iMaxDistance タイル以内の経路のうち、労働者の経路のようにコストが最小のもの（Python のダイクストラ法。状態は (x, y, タイル数)。`isImprovementPassable` は見ない）。
@@ -120,7 +121,7 @@
 - 志向そのものが条件を変える組み合わせ（例: 都市数で得た志向が都市数を変える）は付け外しを繰り返しうるが、判定するのは上の時点とターンの初めだけなので、止まらなくなることはない。
 - `PyCondition`（Python の式。ほかの条件をすべて満たすときに最後に評価し、真なら満たす。`CvHookInterface.py` の `isConditionTrue` が `pPlayer`・`eTrait`（与える志向）で `eval` する。ゲームを変えてはいけない。判定し直すのは上の時点とターンの初めなので、資金や人口の条件は次のターンに反映）と`PyConditionText`（説明文に出す条件のテキストキー。省略すると `TXT_KEY_CONDITION_PYTHON`「特別な条件」）
 
-## `chooseGreatPeopleByCalendar(pPlayer, eTrait, szTech, iCycleYears, iCycleEndYear)`（`PyOnBeginTurn` に書く共通関数）
+## `chooseGreatPeopleByCalendar(pPlayer, eTrait, szTech, iCycleYears, iCycleEndYear, szTechTrait)`（`PyOnBeginTurn` に書く共通関数）
 
 - ファイル: `CvHookUtils.py`
 - Civ5 のマヤの長期暦（2026-11-23）。
@@ -137,6 +138,8 @@
 - 出したときに本人にメッセージ `TXT_KEY_MISC_CALENDAR_GREAT_PERSON`（首都の位置。偉人の誕生の音）。
 - 画面の文 `TXT_KEY_POPUP_CHOOSE_GREAT_PERSON`。
 - 説明文は自動で出ないので、志向の `Help` に書く。
+- 省略できる `szTechTrait`（2026-11-26）: チームが `szTech` を持っていれば、その志向を永続的に与える（`gainTrait`）。`bLongCountCalendar` の子の志向を書けば、偉人と同じ技術で暦が切り替わる（技術名を 1 か所に書くため。`ConditionalFreeTraits` の `PrereqTech` を使わない）。
+- 与えるのはフックが呼ばれるターンの初めなので、技術を得た次のターンの初めになる。
 - 周期が終わったターンは周期の数を返す（式で `and` につなげられる）
 
 ## `TraitInfo/PyOnOtherCityFounded`
@@ -184,6 +187,7 @@
 - 説明文 `TXT_KEY_TRAIT_LONG_COUNT_CALENDAR`、日付 `TXT_KEY_TIME_LONG_COUNT`。
 - Python: `CyPlayer.isLongCountCalendar()`、`CvTraitInfo.isLongCountCalendar()`。
 - 偉人の選択（`chooseGreatPeopleByCalendar`）とは別のタグなので、片方だけでも使える
+- 偉人の解禁と同じ技術で暦を切り替えるには、このタグを子の志向に持たせ、`chooseGreatPeopleByCalendar` の `szTechTrait` でその志向を与える
 
 ## `TraitInfo/PyOnPlayerEliminated`
 

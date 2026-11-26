@@ -262,8 +262,8 @@
 ## `TRAIT_TEST_CALENDAR`（検証用志向（暦））
 
 - 検証用文明と検証用 AI 文明の文明の志向（2 つ目）。
-- 暦による偉人（`PyOnBeginTurn` の `chooseGreatPeopleByCalendar`）は書いていない（確認済み。ほかの確認の邪魔になるため 2026-11-23 に外した。確かめるときは一時的に `PyOnBeginTurn` に `chooseGreatPeopleByCalendar(pPlayer, eTrait, None, 200, 2012)` を書く。200 年の周期が終わるたびに偉人を 1 人選んで首都に出す）。
-- `bLongCountCalendar` 1（右上の日付が長期暦）。
+- 暦による偉人: `PyOnBeginTurn` に `chooseGreatPeopleByCalendar(pPlayer, eTrait, 'TECH_MYSTICISM', 394, 2012, 'TRAIT_TEST_LONG_COUNT')`（神秘主義の後、394 年の周期が終わるたびに偉人を 1 人選んで首都に出す。2026-11-23 に外し、2026-11-26 に `szTechTrait` の確認のため戻した）。
+- `bLongCountCalendar` は子の `TRAIT_TEST_LONG_COUNT`（検証用志向（長期暦））に移した（2026-11-26）。神秘主義を得た次のターンの初めにその志向を得て、右上の日付が長期暦になる。
 - `UnsettleSpecialists` に検証用学派A・B（定住）（都市画面でクリックするとユニットに戻る。検証用定住偉人などほかの偉人は戻せない）。2026-11-24 に `bUnsettleGreatPeople` 1 から替えた（`bUnsettleGreatPeople` を確かめるときは一時的に戻す）。
 - `StackPromotions`: 検証用学派Bと同じタイルにいる白兵戦・騎乗ユニットに検証用随行（`bStackUnitsToo` 1 で学派B 自身にも付く。2026-11-26）、検証用学派Aと同じタイルにいる兵科のあるユニットすべてに検証用随行
 
@@ -278,3 +278,7 @@
 - 毎ターン、優先地域の他文明の都市 1 つにつき金 +1（イベントログに「検証用プロジェクト（条約）より[金]N を取得。」）。
 - 他文明が優先地域に都市を建てると、建てた側が 50 ゴールド（ゲーム速度で変わる）・技術 1 つ・その都市に検証用建造物（`BUILDINGCLASS_TEST`）から選ぶ（`offerTreatyTerms`。イベントログに「[検証] PyOnOtherCityFounded: 都市名, offerTreatyTerms True/False」）。
 - 人間が建てた側になる確認は、カスタムゲームで AI の枠に検証用 AI 文明を入れ、その優先地域に都市を建てる
+
+## `TRAIT_TEST_LONG_COUNT`（検証用志向（長期暦））
+
+- `bLongCountCalendar` 1 だけ。検証用志向（暦）の `chooseGreatPeopleByCalendar` が、神秘主義を得た後に `szTechTrait` で与える（2026-11-26）。

@@ -1166,12 +1166,30 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_TEST_CALENDAR_HELP</Tag>
-		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Each time a cycle of 200 years ends (one ends in AD 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</English>
-		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Each time a cycle of 200 years ends (one ends in AD 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</French>
-		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Each time a cycle of 200 years ends (one ends in AD 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</German>
-		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Each time a cycle of 200 years ends (one ends in AD 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</Italian>
-		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Each time a cycle of 200 years ends (one ends in AD 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen)</Spanish>
-		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]200 &#24180;&#12398;&#21608;&#26399;&#65288;&#35199;&#26278; 2012 &#24180;&#12395;&#32066;&#12431;&#12427;&#21608;&#26399;&#65289;&#12364;&#32066;&#12431;&#12427;&#12383;&#12403;&#12395;&#12289;&#20553;&#20154;&#12434; 1 &#20154;&#36984;&#12435;&#12391;&#39318;&#37117;&#12395;&#20986;&#12377;&#65288;&#36984;&#12435;&#12384;&#20553;&#20154;&#12399;&#12289;&#20840;&#21729;&#12434;&#36984;&#12406;&#12414;&#12391;&#36984;&#12409;&#12394;&#12356;&#65289;</Japanese>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Mysticism, each time a cycle of 394 years ends (one ends in AD 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen). With Mysticism, also gains Test Trait (Long Count)</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Mysticism, each time a cycle of 394 years ends (one ends in AD 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen). With Mysticism, also gains Test Trait (Long Count)</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Mysticism, each time a cycle of 394 years ends (one ends in AD 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen). With Mysticism, also gains Test Trait (Long Count)</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Mysticism, each time a cycle of 394 years ends (one ends in AD 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen). With Mysticism, also gains Test Trait (Long Count)</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]After Mysticism, each time a cycle of 394 years ends (one ends in AD 2012), choose a great person who appears in the capital (one chosen cannot be chosen again until all of them have been chosen). With Mysticism, also gains Test Trait (Long Count)</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#31070;&#31192;&#20027;&#32681;&#12434;&#24471;&#12383;&#24460;&#12289;394 &#24180;&#12398;&#21608;&#26399;&#65288;&#35199;&#26278; 2012 &#24180;&#12395;&#32066;&#12431;&#12427;&#21608;&#26399;&#65289;&#12364;&#32066;&#12431;&#12427;&#12383;&#12403;&#12395;&#12289;&#20553;&#20154;&#12434; 1 &#20154;&#36984;&#12435;&#12391;&#39318;&#37117;&#12395;&#20986;&#12377;&#65288;&#36984;&#12435;&#12384;&#20553;&#20154;&#12399;&#12289;&#20840;&#21729;&#12434;&#36984;&#12406;&#12414;&#12391;&#36984;&#12409;&#12394;&#12356;&#65289;&#12290;&#31070;&#31192;&#20027;&#32681;&#12434;&#24471;&#12427;&#12392;&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;&#38263;&#26399;&#26278;&#65289;&#12418;&#24471;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_LONG_COUNT</Tag>
+		<English>Test Trait (Long Count)</English>
+		<French>Test Trait (Long Count)</French>
+		<German>Test Trait (Long Count)</German>
+		<Italian>Test Trait (Long Count)</Italian>
+		<Spanish>Test Trait (Long Count)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;&#38263;&#26399;&#26278;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_LONG_COUNT_SHORT</Tag>
+		<English>LCt</English>
+		<French>LCt</French>
+		<German>LCt</German>
+		<Italian>LCt</Italian>
+		<Spanish>LCt</Spanish>
+		<Japanese>&#38263;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_TEST_TREATY</Tag>
