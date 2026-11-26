@@ -1884,6 +1884,15 @@
 		<Japanese>&#12518;&#12491;&#12483;&#12488;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_STACK_PROMOTION_UNITS_TOO</Tag>
+		<English> (%s1 too)</English>
+		<French> (%s1 too)</French>
+		<German> (%s1 too)</German>
+		<Italian> (%s1 too)</Italian>
+		<Spanish> (%s1 too)</Spanish>
+		<Japanese>&#65288;%s1&#12395;&#12418;&#20184;&#12367;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_UNSETTLE_GREAT_PERSON_CLICK</Tag>
 		<English>[COLOR_HIGHLIGHT_TEXT]Click to turn into a %s1 unit[COLOR_REVERT]</English>
 		<French>[COLOR_HIGHLIGHT_TEXT]Click to turn into a %s1 unit[COLOR_REVERT]</French>

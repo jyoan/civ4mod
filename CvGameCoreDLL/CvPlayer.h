@@ -421,6 +421,7 @@ public:
 	int getCityRadiusGreatGeneralRateModifier(const CvPlot* pPlot) const;	// added by this mod
 	bool isAnyStackPromotions() const;	// added by this mod
 	void updateStackPromotions(CvPlot* pPlot);	// added by this mod
+	void setStackPromotionsDeferred(bool bNewValue);	// added by this mod: during CvSelectionGroup::groupMove
 	void updateAllStackPromotions(TraitTypes eTrait, int iChange);	// added by this mod
 	bool canUnsettleSpecialist(SpecialistTypes eSpecialist) const;	// Exposed to Python (bUnsettleGreatPeople or UnsettleSpecialists of the traits, added by this mod)
 	bool isIgnoreEvents() const;					// Exposed to Python
@@ -1457,6 +1458,7 @@ protected:
 	bool m_bPbemNewTurn;
 	bool m_bExtendedGame;
 	bool m_bFoundedFirstCity;
+	bool m_bStackPromotionsDeferred;	// StackPromotions are not updated while a group moves (not saved, added by this mod)
 	bool m_bFoundingVassalDone;	// FoundingVassal of the traits was tried (added by this mod)
 	bool m_bFoundingVassal;		// this player joined the team of another one by FoundingVassal (added by this mod)
 	HandicapTypes m_eAIHandicap;	// the difficulty of the AI modifiers, NO_HANDICAP = the difficulty of the game (added by this mod)

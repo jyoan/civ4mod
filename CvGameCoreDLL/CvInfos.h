@@ -4906,6 +4906,9 @@ struct StackPromotionSet
 	std::vector<int> aiUnitClasses;		// a unit of one of these classes on the plot
 	std::vector<int> aiPromotions;		// the promotions the other units get
 	std::vector<int> aiUnitCombats;		// the units that get them; all units with a unit combat when empty
+	bool bStackUnitsToo;				// the units of aiUnitClasses get them too while a unit that gets them is on the plot
+
+	StackPromotionSet() : bStackUnitsToo(false) {}
 };
 
 class CvTraitInfo :
@@ -5032,6 +5035,7 @@ public:
 	const StackPromotionSet& getStackPromotionSet(int i) const;
 	int getStackPromotionSetNumUnitClasses(int i) const;				// Exposed to Python
 	int getStackPromotionSetUnitClass(int i, int j) const;				// Exposed to Python
+	bool isStackPromotionSetStackUnitsToo(int i) const;				// Exposed to Python
 	int getStackPromotionSetNumPromotions(int i) const;				// Exposed to Python
 	int getStackPromotionSetPromotion(int i, int j) const;				// Exposed to Python
 	int getStackPromotionSetNumUnitCombats(int i) const;				// Exposed to Python

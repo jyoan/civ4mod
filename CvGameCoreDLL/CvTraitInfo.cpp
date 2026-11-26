@@ -965,6 +965,12 @@ int CvTraitInfo::getStackPromotionSetUnitClass(int i, int j) const
 	return getStackPromotionSet(i).aiUnitClasses[j];
 }
 
+// bStackUnitsToo of a set (added by this mod): the units of its classes get its promotions too while a target is with them
+bool CvTraitInfo::isStackPromotionSetStackUnitsToo(int i) const
+{
+	return getStackPromotionSet(i).bStackUnitsToo;
+}
+
 int CvTraitInfo::getStackPromotionSetNumPromotions(int i) const
 {
 	return (int)getStackPromotionSet(i).aiPromotions.size();
@@ -1000,6 +1006,7 @@ static void readStackPromotions(CvXMLLoadUtility* pXML, std::vector<StackPromoti
 				readTypeList(pXML, "StackUnitClasses", kSet.aiUnitClasses);
 				readTypeList(pXML, "StackPromotionTypes", kSet.aiPromotions);
 				readTypeList(pXML, "StackUnitCombats", kSet.aiUnitCombats);
+				pXML->GetChildXmlValByName(&kSet.bStackUnitsToo, "bStackUnitsToo");
 				if (!kSet.aiUnitClasses.empty() && !kSet.aiPromotions.empty())
 				{
 					aSets.push_back(kSet);

@@ -1387,7 +1387,9 @@
 					</StackPromotionTypes>
 					<StackUnitCombats>
 						<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
+						<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
 					</StackUnitCombats>
+					<bStackUnitsToo>1</bStackUnitsToo>
 				</StackPromotion>
 				<StackPromotion>
 					<StackUnitClasses>

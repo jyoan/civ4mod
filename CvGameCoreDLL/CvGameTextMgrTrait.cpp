@@ -1597,7 +1597,13 @@ void CvGameTextMgr::parseTraitRevealAndStartEffects(CvWStringBuffer& szHelpStrin
 			szPromotions += getLinkText(GC.getPromotionInfo((PromotionTypes)kSet.aiPromotions[iJ]).getDescription());
 		}
 
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_STACK_PROMOTION", szClasses.GetCString(), szCombats.GetCString(), szPromotions.GetCString()));
+		CvWString szLine = gDLL->getText("TXT_KEY_TRAIT_STACK_PROMOTION", szClasses.GetCString(), szCombats.GetCString(), szPromotions.GetCString());
+		// bStackUnitsToo: " (Great General too)"
+		if (kSet.bStackUnitsToo)
+		{
+			szLine += gDLL->getText("TXT_KEY_TRAIT_STACK_PROMOTION_UNITS_TOO", szClasses.GetCString());
+		}
+		appendTraitLine(szHelpString, szLine);
 	}
 
 	// UnsettleSpecialists: "Settled great people that can become units again: Confucius (settled)"
