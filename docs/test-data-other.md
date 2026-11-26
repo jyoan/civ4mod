@@ -276,6 +276,7 @@
 - A は検証用資源 1 つにつき戦闘力 +1（`BonusAffinities`）。
 - A は死ぬと首都に斥候が出る（`PyOnDeath`）、B は生まれると戦闘術Ⅰを得る（`PyOnCreated`）。
 - A を B にアップグレードしても、斥候は出ず、B に戦闘術Ⅰは付かない（同じユニットが続くとみなす）
+- A は `iUpgradeDiscount` 100（B へのアップグレードが無料）
 
 ## `UNIT_TEST_WARRIOR`・`UNIT_TEST_GENERAL`・`UNIT_TEST_SCIENTIST`（検証用戦士・大将軍・大科学者）
 

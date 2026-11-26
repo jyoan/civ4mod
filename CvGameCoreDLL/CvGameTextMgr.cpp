@@ -1352,6 +1352,13 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szString, const CvUnit* pUnit, 
 			szString.append(gDLL->getText("TXT_KEY_UNIT_STATIONED_ATTITUDE", pUnit->getUnitInfo().getStationedAttitudeChange()));
 		}
 
+		// iUpgradeDiscount: shown as a cost change, so a 100% discount reads "-100%" (added by this mod)
+		if (pUnit->getUnitInfo().getUpgradeDiscount() != 0)
+		{
+			szString.append(NEWLINE);
+			szString.append(gDLL->getText("TXT_KEY_UNIT_UPGRADE_COST_MODIFIER", -pUnit->getUnitInfo().getUpgradeDiscount()));
+		}
+
 		if (!CvWString(pUnit->getUnitInfo().getHelp()).empty())
 		{
 			szString.append(NEWLINE);
@@ -7253,6 +7260,13 @@ void CvGameTextMgr::setBasicUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit,
 	{
 		szBuffer.append(NEWLINE);
 		szBuffer.append(gDLL->getText("TXT_KEY_UNIT_STATIONED_ATTITUDE", GC.getUnitInfo(eUnit).getStationedAttitudeChange()));
+	}
+
+	// iUpgradeDiscount: shown as a cost change, so a 100% discount reads "-100%" (added by this mod)
+	if (GC.getUnitInfo(eUnit).getUpgradeDiscount() != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_UNIT_UPGRADE_COST_MODIFIER", -GC.getUnitInfo(eUnit).getUpgradeDiscount()));
 	}
 
 	if ((GC.getUnitInfo(eUnit).getFirstStrikes() + GC.getUnitInfo(eUnit).getChanceFirstStrikes()) > 0)

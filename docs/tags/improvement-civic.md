@@ -374,3 +374,15 @@
 - 説明文 `TXT_KEY_CIVIC_NO_FORCED_CIVICS`。
 - キャッシュの形式: `CvCivicInfo` `uiFlag=9`。
 - Python: `CvCivicInfo.isNoForcedCivics()`、`CyPlayer.isNoForcedCivics()`・`isForcedCivicOption(eCivicOption)`、`CyGame.changeForceCivicCount(eCivic, iChange)`（決議と同じく強制する。検証用・シナリオ用）
+
+### `UnitInfo/iUpgradeDiscount`
+
+- ファイル: `CIV4UnitInfos.xml`
+- 2026-11-26（シャルルマーニュの聖騎士の案）。
+- そのユニットからアップグレードするときの費用の割引率 %（100 で無料。マイナスで割増）。
+- 昇進の割引と志向・社会制度の `UnitCombatUpgradeDiscounts` に**足し算**して 1 回で引く（`CvUnit::upgradePrice`）。合計 100% 以上で無料。
+- `UnitCombatUpgradeDiscounts` と違い、兵科のないユニット（偉人など）にも効く。
+- Python の `getUpgradePriceOverride` が値を返したときは、そちらが優先される（BtS どおり）。
+- ユニットの説明（ペディア・生産の候補・マップ上のユニット）に `TXT_KEY_UNIT_UPGRADE_COST_MODIFIER`（「アップグレードに必要な[ICON_GOLD] -100%」）。
+- キャッシュの形式: `CvUnitInfo` `uiFlag=6`。
+- Python: `CvUnitInfo.getUpgradeDiscount()`

@@ -1385,6 +1385,15 @@
 		<Japanese>%D1: &#37117;&#24066;&#12395;&#28382;&#22312;&#12377;&#12427;&#20351;&#31680;&#12395;&#12424;&#12427;&#21360;&#35937;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_UNIT_UPGRADE_COST_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1_percent%% [ICON_GOLD] to Upgrade</English>
+		<French>[ICON_BULLET]%D1_percent%% [ICON_GOLD] to Upgrade</French>
+		<German>[ICON_BULLET]%D1_percent%% [ICON_GOLD] to Upgrade</German>
+		<Italian>[ICON_BULLET]%D1_percent%% [ICON_GOLD] to Upgrade</Italian>
+		<Spanish>[ICON_BULLET]%D1_percent%% [ICON_GOLD] to Upgrade</Spanish>
+		<Japanese>[ICON_BULLET]&#12450;&#12483;&#12503;&#12464;&#12524;&#12540;&#12489;&#12395;&#24517;&#35201;&#12394;[ICON_GOLD] %D1_percent%%</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_UNIT_STATIONED_ATTITUDE</Tag>
 		<English>[ICON_BULLET]While in a city of another civilization, its attitude toward us %D1</English>
 		<French>[ICON_BULLET]While in a city of another civilization, its attitude toward us %D1</French>
