@@ -291,4 +291,4 @@
 - 工房を固定する（`LockedImprovements`）。
 - 施設が変わるたびに「[検証] PyOnImprovementChanged: (x, y) 古い施設 -> 新しい施設, gold 金, hammers 生産」を出す（`PyOnImprovementChanged`）。
 - 工房に置き換えたときの金: 大商人の交易任務（交易の利益 5）の 4 分の 1 を町 100%・村 40%・集落 15%・小屋 5% で（通常の速度で 375・150・56・18）。
-- 農地を工房に置き換えたときの生産: `scaleBySpeed(30, 'Train')`（通常の速度で 30）を、そのタイルの都市に
+- 農地を工房に置き換えたときの生産: `scaleBySpeed(30, 'Train')`（通常の速度で 30）を、そのタイルの都市に（`gainImprovementProduction`。都市画面の生産の内訳に「施設の転換により」の行）

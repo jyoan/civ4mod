@@ -22,5 +22,7 @@ void CyCityPythonInterface2(python::class_<CyCity>& x)
 		.def("getGreatPeopleHurryCost", &CyCity::getGreatPeopleHurryCost, "int () - the gold to buy the missing great people points (GreatPeopleHurry of the traits, added by this mod)")
 		.def("canHurryGreatPeople", &CyCity::canHurryGreatPeople, "bool () - the owner can buy the great person of the city now (GreatPeopleHurry of the traits, added by this mod)")
 		.def("hurryGreatPeople", &CyCity::hurryGreatPeople, "bool () - the owner buys the missing points and the great person is born; call it on every computer (GreatPeopleHurry of the traits, added by this mod)")
+		.def("getImprovementProduction", &CyCity::getImprovementProduction, "int () - production from replacing improvements, spent with the next production like chopping (added by this mod)")
+		.def("changeImprovementProduction", &CyCity::changeImprovementProduction, "void (int iChange) - adds production from replacing improvements (shown in its own line of the production help; added by this mod)")
 		;
 }

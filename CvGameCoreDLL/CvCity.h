@@ -503,6 +503,8 @@ public:
 	int getFeatureProduction()const;																		// Exposed to Python
 	void setFeatureProduction(int iNewValue);											// Exposed to Python
 	void changeFeatureProduction(int iChange);
+	int getImprovementProduction() const;	// Exposed to Python: production from replacing improvements, spent like chopping (added by this mod)
+	void changeImprovementProduction(int iChange);	// Exposed to Python (added by this mod)
 
 	int getMilitaryProductionModifier() const;														// Exposed to Python
 	void changeMilitaryProductionModifier(int iChange);												
@@ -1088,6 +1090,7 @@ protected:
 	int m_iMaxFoodKeptPercent;
 	int m_iOverflowProduction;
 	int m_iFeatureProduction;
+	int m_iImprovementProduction;	// added by this mod
 	int m_iMilitaryProductionModifier;
 	int m_iSpaceProductionModifier;
 	int m_iExtraTradeRoutes;

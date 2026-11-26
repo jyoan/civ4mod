@@ -14188,6 +14188,15 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		szBuffer.append(NEWLINE);
 	}
 
+	// Production from replacing improvements (added by this mod): counted with the chops below
+	int iFromImprovements = (bIsProcess ? 0 : city.getImprovementProduction());
+	if (iFromImprovements != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PROD_IMPROVEMENTS", iFromImprovements));
+		szBuffer.append(NEWLINE);
+		iFromChops += iFromImprovements;
+	}
+
 	if (city.getCurrentProductionDifference(false, true) == 0)
 	{
 		return;

@@ -877,6 +877,15 @@
 		<Japanese>[ICON_BULLET]%s1_Name &#12398;&#20195;&#12431;&#12426;&#12395;&#25505;&#29992;&#12377;&#12427;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_PROD_IMPROVEMENTS</Tag>
+		<English>From replacing improvements: %d1[ICON_PRODUCTION]</English>
+		<French>From replacing improvements: %d1[ICON_PRODUCTION]</French>
+		<German>From replacing improvements: %d1[ICON_PRODUCTION]</German>
+		<Italian>From replacing improvements: %d1[ICON_PRODUCTION]</Italian>
+		<Spanish>From replacing improvements: %d1[ICON_PRODUCTION]</Spanish>
+		<Japanese>&#26045;&#35373;&#12398;&#36578;&#25563;&#12395;&#12424;&#12426;&#65306;%d1[ICON_PRODUCTION]</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_CIVIC_NO_FORCED_CIVICS</Tag>
 		<English>[ICON_BULLET]Not forced to change civics by resolutions or espionage</English>
 		<French>[ICON_BULLET]Not forced to change civics by resolutions or espionage</French>

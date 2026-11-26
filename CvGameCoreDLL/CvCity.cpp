@@ -487,6 +487,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iMaxFoodKeptPercent = 0;
 	m_iOverflowProduction = 0;
 	m_iFeatureProduction = 0;
+	m_iImprovementProduction = 0;
 	m_iMilitaryProductionModifier = 0;
 	m_iSpaceProductionModifier = 0;
 	m_iExtraTradeRoutes = 0;
@@ -3544,7 +3545,7 @@ int CvCity::getProductionDifference(int iProductionNeeded, int iProduction, int 
 
 	int iFoodProduction = ((bFoodProduction) ? std::max(0, (getYieldRate(YIELD_FOOD) - foodConsumption(true))) : 0);
 
-	int iOverflow = ((bOverflow) ? (getOverflowProduction() + getFeatureProduction()) : 0);
+	int iOverflow = ((bOverflow) ? (getOverflowProduction() + getFeatureProduction() + getImprovementProduction()) : 0);	// getImprovementProduction added by this mod
 
 	return (((getBaseYieldRate(YIELD_PRODUCTION) + iOverflow) * getBaseYieldRateModifier(YIELD_PRODUCTION, iProductionModifier)) / 100 + iFoodProduction);
 
@@ -8026,6 +8027,20 @@ void CvCity::setFeatureProduction(int iNewValue)
 void CvCity::changeFeatureProduction(int iChange)													
 {
 	setFeatureProduction(getFeatureProduction() + iChange);
+}
+
+// Production from replacing improvements (added by this mod; CvHookUtils.py gainImprovementProduction, e.g. a farm
+// replaced by a workshop): like the production from chopping, added to the next production with the production
+// modifiers (getProductionDifference), kept while the city runs a process, and shown in its own line of the production
+// help (CvGameTextMgr::setProductionHelp)
+int CvCity::getImprovementProduction() const
+{
+	return m_iImprovementProduction;
+}
+
+void CvCity::changeImprovementProduction(int iChange)
+{
+	m_iImprovementProduction = std::max(0, m_iImprovementProduction + iChange);
 }
 
 
@@ -13768,6 +13783,7 @@ void CvCity::doProduction(bool bAllowNoProduction)
 		changeProduction(getCurrentProductionDifference(false, true));
 		setOverflowProduction(0);
 		setFeatureProduction(0);
+		m_iImprovementProduction = 0;	// added by this mod
 
 		if (getProduction() >= getProductionNeeded())
 		{
@@ -14284,6 +14300,13 @@ void CvCity::read(FDataStreamBase* pStream)
 		pStream->Read((int*)&m_eHurriedUnitHurry);
 	}
 
+	// uiFlag < 7: saved before m_iImprovementProduction existed (added by this mod)
+	m_iImprovementProduction = 0;
+	if (uiFlag > 6)
+	{
+		pStream->Read(&m_iImprovementProduction);
+	}
+
 	// not saved (added by this mod): the wonder in production when the game was saved counts as announced
 	m_eRevealedWonderProduction = getProductionBuilding();
 	if (m_eRevealedWonderProduction != NO_BUILDING && !isWorldWonderClass((BuildingClassTypes)GC.getBuildingInfo(m_eRevealedWonderProduction).getBuildingClassType()))
@@ -14343,7 +14366,7 @@ void CvCity::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=6;	// 1: plot radius, 2: m_aiDynamicBuildingYield, 3: m_paiBuildingChangeSpecialist, 4: m_aiAngryYield, m_aiUnhealthyYield, m_aiAngryCommerce, m_aiUnhealthyCommerce, 5: m_iCultureRange, 6: m_eHurriedUnit, m_eHurriedUnitHurry (added by this mod)
+	uint uiFlag=7;	// 1: plot radius, 2: m_aiDynamicBuildingYield, 3: m_paiBuildingChangeSpecialist, 4: m_aiAngryYield, m_aiUnhealthyYield, m_aiAngryCommerce, m_aiUnhealthyCommerce, 5: m_iCultureRange, 6: m_eHurriedUnit, m_eHurriedUnitHurry, 7: m_iImprovementProduction (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -14569,6 +14592,7 @@ void CvCity::write(FDataStreamBase* pStream)
 	pStream->Write(m_iCultureRange);
 	pStream->Write(m_eHurriedUnit);
 	pStream->Write(m_eHurriedUnitHurry);
+	pStream->Write(m_iImprovementProduction);
 }
 
 
