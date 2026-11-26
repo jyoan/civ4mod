@@ -2135,4 +2135,31 @@
 		<Spanish>Horns</Spanish>
 		<Japanese>&#35282;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_GRANDE_ARMEE</Tag>
+		<English>Grande Armee</English>
+		<French>Grande Armee</French>
+		<German>Grande Armee</German>
+		<Italian>Grande Armee</Italian>
+		<Spanish>Grande Armee</Spanish>
+		<Japanese>&#22823;&#38520;&#36557;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GRANDE_ARMEE</Tag>
+		<English>Grande Armee</English>
+		<French>Grande Armee</French>
+		<German>Grande Armee</German>
+		<Italian>Grande Armee</Italian>
+		<Spanish>Grande Armee</Spanish>
+		<Japanese>&#22823;&#38520;&#36557;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GRANDE_ARMEE_SHORT</Tag>
+		<English>Armee</English>
+		<French>Armee</French>
+		<German>Armee</German>
+		<Italian>Armee</Italian>
+		<Spanish>Armee</Spanish>
+		<Japanese>&#38520;</Japanese>
+	</TEXT>
 </Civ4GameText>

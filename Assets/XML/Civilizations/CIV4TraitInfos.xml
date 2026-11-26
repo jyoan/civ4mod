@@ -3248,5 +3248,38 @@
 				</FreePromotionSet>
 			</FreePromotionSets>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_GRANDE_ARMEE</Type>
+			<Description>TXT_KEY_TRAIT_GRANDE_ARMEE</Description>
+			<ShortDescription>TXT_KEY_TRAIT_GRANDE_ARMEE_SHORT</ShortDescription>
+			<StackPromotions>
+				<StackPromotion>
+					<StackUnitClasses>
+						<UnitClassType>UNITCLASS_GREAT_GENERAL</UnitClassType>
+					</StackUnitClasses>
+					<StackPromotionTypes>
+						<PromotionType>PROMOTION_GRANDE_ARMEE</PromotionType>
+					</StackPromotionTypes>
+					<StackUnitCombats>
+						<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
+						<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
+						<UnitCombatType>UNITCOMBAT_SIEGE</UnitCombatType>
+						<UnitCombatType>UNITCOMBAT_GUN</UnitCombatType>
+					</StackUnitCombats>
+					<bStackUnitsToo>1</bStackUnitsToo>
+				</StackPromotion>
+			</StackPromotions>
+			<AttitudeCombatPercents>
+				<AttitudeCombatPercent>
+					<AttitudeType>ATTITUDE_FURIOUS</AttitudeType>
+					<iCombatPercent>20</iCombatPercent>
+				</AttitudeCombatPercent>
+				<AttitudeCombatPercent>
+					<AttitudeType>ATTITUDE_ANNOYED</AttitudeType>
+					<iCombatPercent>10</iCombatPercent>
+				</AttitudeCombatPercent>
+				<iMaxPercent>60</iMaxPercent>
+			</AttitudeCombatPercents>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>
