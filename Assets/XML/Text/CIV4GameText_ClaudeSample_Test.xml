@@ -1227,4 +1227,58 @@
 		<Spanish>Test Project (Treaty)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#12503;&#12525;&#12472;&#12455;&#12463;&#12488;&#65288;&#26465;&#32004;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_GREAT_LEAP</Tag>
+		<English>Test Trait (Great Leap)</English>
+		<French>Test Trait (Great Leap)</French>
+		<German>Test Trait (Great Leap)</German>
+		<Italian>Test Trait (Great Leap)</Italian>
+		<Spanish>Test Trait (Great Leap)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;&#22823;&#36493;&#36914;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_GREAT_LEAP_SHORT</Tag>
+		<English>GLp</English>
+		<French>GLp</French>
+		<German>GLp</German>
+		<Italian>GLp</Italian>
+		<Spanish>GLp</Spanish>
+		<Japanese>&#36493;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_GREAT_LEAP_HELP</Tag>
+		<English>[ICON_BULLET]Replacing a cottage, hamlet, village or town by a workshop gives gold, a farm gives hammers to the city</English>
+		<French>[ICON_BULLET]Replacing a cottage, hamlet, village or town by a workshop gives gold, a farm gives hammers to the city</French>
+		<German>[ICON_BULLET]Replacing a cottage, hamlet, village or town by a workshop gives gold, a farm gives hammers to the city</German>
+		<Italian>[ICON_BULLET]Replacing a cottage, hamlet, village or town by a workshop gives gold, a farm gives hammers to the city</Italian>
+		<Spanish>[ICON_BULLET]Replacing a cottage, hamlet, village or town by a workshop gives gold, a farm gives hammers to the city</Spanish>
+		<Japanese>[ICON_BULLET]&#23567;&#23627;&#12539;&#38598;&#33853;&#12539;&#26449;&#12539;&#30010;&#12434;&#24037;&#25151;&#12395;&#32622;&#12365;&#25563;&#12360;&#12427;&#12392;&#37329;&#12289;&#36786;&#22320;&#12434;&#24037;&#25151;&#12395;&#32622;&#12365;&#25563;&#12360;&#12427;&#12392;&#37117;&#24066;&#12395;&#29983;&#29987;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIVIC_TEST_NO_FORCED</Tag>
+		<English>Test Civic (No Forced Civics)</English>
+		<French>Test Civic (No Forced Civics)</French>
+		<German>Test Civic (No Forced Civics)</German>
+		<Italian>Test Civic (No Forced Civics)</Italian>
+		<Spanish>Test Civic (No Forced Civics)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#31038;&#20250;&#21046;&#24230;&#65288;&#24375;&#21046;&#12394;&#12375;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_FORCE_CIVICS</Tag>
+		<English>Test Spell (Force Civics)</English>
+		<French>Test Spell (Force Civics)</French>
+		<German>Test Spell (Force Civics)</German>
+		<Italian>Test Spell (Force Civics)</Italian>
+		<Spanish>Test Spell (Force Civics)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#21610;&#25991;&#65288;&#31038;&#20250;&#21046;&#24230;&#12398;&#24375;&#21046;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_TEST_FORCE_CIVICS_HELP</Tag>
+		<English>[ICON_BULLET]Forces Free Speech and Environmentalism as resolutions do, or stops forcing them</English>
+		<French>[ICON_BULLET]Forces Free Speech and Environmentalism as resolutions do, or stops forcing them</French>
+		<German>[ICON_BULLET]Forces Free Speech and Environmentalism as resolutions do, or stops forcing them</German>
+		<Italian>[ICON_BULLET]Forces Free Speech and Environmentalism as resolutions do, or stops forcing them</Italian>
+		<Spanish>[ICON_BULLET]Forces Free Speech and Environmentalism as resolutions do, or stops forcing them</Spanish>
+		<Japanese>[ICON_BULLET]&#35328;&#35542;&#12398;&#33258;&#30001;&#12392;&#29872;&#22659;&#20445;&#35703;&#20027;&#32681;&#12434;&#27770;&#35696;&#12392;&#21516;&#12376;&#12424;&#12358;&#12395;&#24375;&#21046;&#12377;&#12427;&#65288;&#24375;&#21046;&#20013;&#12394;&#12425;&#35299;&#38500;&#12377;&#12427;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

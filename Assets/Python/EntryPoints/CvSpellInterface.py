@@ -73,6 +73,14 @@ def spellForcePeaceWithCityOwner(pCaster):
 	gc.getTeam(pCaster.getTeam()).makePeace(pCaster.plot().getTeam())
 	pCaster.kill(True, -1)
 
+def spellToggleForcedCivics(lszCivics):
+	"Forces the civics as passed resolutions do, or stops forcing them if the first one is forced (for tests of bNoForcedCivics)"
+	iChange = 1
+	if CyGame().isForceCivic(gc.getInfoTypeForString(lszCivics[0])):
+		iChange = -1
+	for szCivic in lszCivics:
+		CyGame().changeForceCivicCount(gc.getInfoTypeForString(szCivic), iChange)
+
 def spellDamageCaster(pCaster, iDamage):
 	"The caster takes damage (it dies at 100, with a delay)"
 	pCaster.changeDamage(iDamage, PlayerTypes.NO_PLAYER)

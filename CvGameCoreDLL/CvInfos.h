@@ -1783,6 +1783,7 @@ public:
 	// Python hooks (added by this mod): Python expressions that EntryPoints/CvHookInterface.py evaluates
 	const TCHAR* getPyOnAdopt() const;	// Exposed to Python
 	const TCHAR* getPyOnRevoke() const;	// Exposed to Python
+	bool isNoForcedCivics() const;	// Exposed to Python: bNoForcedCivics (added by this mod)
 	int getBuildingHappinessChanges(int i) const;				// Exposed to Python
 	int getBuildingHealthChanges(int i) const;				// Exposed to Python
 	int getFeatureHappinessChanges(int i) const;				// Exposed to Python
@@ -1858,6 +1859,7 @@ protected:
 	int m_iReplacedCivic;
 	CvString m_szPyOnAdopt;	// added by this mod
 	CvString m_szPyOnRevoke;	// added by this mod
+	bool m_bNoForcedCivics;	// added by this mod
 	int* m_piCapitalCommerceModifier;
 	int* m_piAngryYieldChange;
 	int* m_piAngryCommerceChange;
@@ -5127,6 +5129,7 @@ public:
 	int* getHealthyCommercePercentArray() const;
 	// Batch of 2026-11-19 (added by this mod)
 	bool isRevealBonus(int iBonus) const;		// Exposed to Python
+	bool isLockedImprovement(int iImprovement) const;	// Exposed to Python: LockedImprovements (added by this mod)
 	bool isNoTechProcess(int iProcess) const;	// Exposed to Python
 	bool isNoConscriptExperiencePenalty() const;	// Exposed to Python
 	bool isFreeTech(int iTech) const;			// Exposed to Python
@@ -5285,6 +5288,7 @@ public:
 	const TCHAR* getPyOnCircumnavigated() const;	// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnOtherCityFounded() const;	// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnPlayerEliminated() const;	// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnImprovementChanged() const;	// Exposed to Python (added by this mod)
 	int getNumConditionalFreeTraits() const;		// Exposed to Python
 	int getConditionalFreeTraitType(int i) const;	// Exposed to Python
 	const ConditionalFreeTrait& getConditionalFreeTrait(int i) const;
@@ -5515,6 +5519,8 @@ protected:
 	int* m_paiHealthyYieldPercent;	// added by this mod: [yield]
 	int* m_paiHealthyCommercePercent;	// added by this mod: [commerce]
 	bool* m_pabRevealBonus;	// added by this mod: RevealBonuses, [bonus], NULL when not set
+	bool* m_pabLockedImprovement;	// added by this mod: LockedImprovements, [improvement], NULL when not set
+	std::vector<CvString> m_aszLockedImprovementTypes;	// as strings until readPass3() (improvements are loaded after traits)
 	std::vector<CvString> m_aszRevealBonusTypes;	// as strings until readPass3() (bonuses are loaded after traits)
 	bool* m_pabNoTechProcess;	// added by this mod: NoTechProcesses, [process], NULL when not set
 	std::vector<CvString> m_aszNoTechProcessTypes;	// kept for readPass4() (processes are loaded with LoadPostMenuGlobals)

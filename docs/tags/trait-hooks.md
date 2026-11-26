@@ -202,3 +202,19 @@
 - 共通関数 `startGoldenAge(pPlayer, iPercent = 100)`（2026-11-26 に `iPercent` を追加）: 通常の長さ（`getGoldenAgeLength`。ゲーム速度などの補正込み）の iPercent % の黄金期を始める。最低 1 ターン。
 - 進行中なら延びる（`PyOnGoldenAgeStart` は呼ばれない）。
 - 偉人を消費した回数に数えないので、次に必要な偉人の数は増えない
+
+## `TraitInfo/PyOnImprovementChanged`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-26（毛沢東の大躍進の案）。
+- そのプレイヤーのタイルの施設が変わった後に呼ぶ（`CvPlot::setImprovementType`。作業員の建設、小屋の成長、略奪、イベントなど）。
+- 持ち主のいないタイルと、ゲームの初期化が終わる前（`isFinalInitialized`）は呼ばない。
+- 古い施設の文化で国境が変わる処理より前に呼ぶので、持ち主は変わる前のプレイヤー。
+- 名前は `pPlayer`・`eTrait`・`pPlot`（`CyPlot`）・`eOld`・`eNew`（施設の番号。なしは -1）。
+- DLL はタイルを座標で渡し、`CvTraitInterface.py` の `onImprovementChanged` が `CyMap().plot` で `pPlot` にする（`CvPlayer::doImprovementChangedPythonHook`）。
+- 共通関数:
+  - `improvementReplacedValue(eOld, eNew, szNew, dValues)`: 新しい施設が `szNew` なら、辞書 `dValues`（施設の種類 → 数）の古い施設の値。ほかは 0
+  - `gainProduction(pCity, iProduction)`: 都市がいま作っているもの（ユニット・建物・プロジェクト）に生産を足す。生産の種類や作るものがないとき、`pCity.isNone()` のときは何もしない
+  - `greatMerchantTradeGold(iTradeProfit)`: 大商人（`UNITCLASS_MERCHANT` の標準ユニット）の交易任務の金。`(iBaseTrade + iTradeMultiplier × iTradeProfit) × iUnitTradePercent / 100`（`CvUnit::getTradeGold` と同じ）。`iTradeProfit` は行き先の交易の利益の代わりの値（5 で外国の人口 12 程度の都市）
+- 例（農地を工房に替えると、そのタイルの都市に生産 30 × 速度）:
+  - `gainProduction(pPlot.getWorkingCity(), improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP', {'IMPROVEMENT_FARM': scaleBySpeed(30, 'Train')}))`

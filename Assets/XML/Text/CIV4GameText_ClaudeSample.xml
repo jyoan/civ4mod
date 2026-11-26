@@ -877,6 +877,24 @@
 		<Japanese>[ICON_BULLET]%s1_Name &#12398;&#20195;&#12431;&#12426;&#12395;&#25505;&#29992;&#12377;&#12427;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_CIVIC_NO_FORCED_CIVICS</Tag>
+		<English>[ICON_BULLET]Not forced to change civics by resolutions or espionage</English>
+		<French>[ICON_BULLET]Not forced to change civics by resolutions or espionage</French>
+		<German>[ICON_BULLET]Not forced to change civics by resolutions or espionage</German>
+		<Italian>[ICON_BULLET]Not forced to change civics by resolutions or espionage</Italian>
+		<Spanish>[ICON_BULLET]Not forced to change civics by resolutions or espionage</Spanish>
+		<Japanese>[ICON_BULLET]&#27770;&#35696;&#12420;&#12473;&#12497;&#12452;&#12395;&#12424;&#12427;&#31038;&#20250;&#21046;&#24230;&#12398;&#24375;&#21046;&#12434;&#21463;&#12369;&#12394;&#12356;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ESPIONAGE_NO_FORCED_CIVICS</Tag>
+		<English>%s1_Name runs %s2_Name: the missions that force civics cannot be used.</English>
+		<French>%s1_Name runs %s2_Name: the missions that force civics cannot be used.</French>
+		<German>%s1_Name runs %s2_Name: the missions that force civics cannot be used.</German>
+		<Italian>%s1_Name runs %s2_Name: the missions that force civics cannot be used.</Italian>
+		<Spanish>%s1_Name runs %s2_Name: the missions that force civics cannot be used.</Spanish>
+		<Japanese>%s1_Name &#12399; %s2_Name &#12434;&#25505;&#29992;&#12375;&#12390;&#12356;&#12427;&#12398;&#12391;&#12289;&#31038;&#20250;&#21046;&#24230;&#12434;&#24375;&#21046;&#12377;&#12427;&#20219;&#21209;&#12399;&#20351;&#12360;&#12394;&#12356;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_IMPROVEMENT_UNIQUE</Tag>
 		<English>[ICON_BULLET]Only one in the world</English>
 		<French>[ICON_BULLET]Only one in the world</French>

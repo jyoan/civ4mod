@@ -8472,6 +8472,30 @@ bool CvPlayer::isCivic(CivicTypes eCivic) const
 }
 
 
+// bNoForcedCivics (added by this mod): the player runs a civic with it
+bool CvPlayer::isNoForcedCivics() const
+{
+	int iI;
+
+	for (iI = 0; iI < getNumCivicEntries(); iI++)
+	{
+		if (getCivicByEntry(iI) != NO_CIVIC && GC.getCivicInfo(getCivicByEntry(iI)).isNoForcedCivics())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// The resolutions force a civic of the civic option on this player (added by this mod): CvGame::isForceCivicOption, unless
+// the player runs a civic with bNoForcedCivics
+bool CvPlayer::isForcedCivicOption(CivicOptionTypes eCivicOption) const
+{
+	return (GC.getGameINLINE().isForceCivicOption(eCivicOption) && !isNoForcedCivics());
+}
+
+
 bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 {
 	PROFILE_FUNC();
@@ -8490,7 +8514,8 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 /* UNOFFICIAL_PATCH                        END                                                  */
 /************************************************************************************************/	
 
-	if (GC.getGameINLINE().isForceCivicOption((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())))
+	// bNoForcedCivics (added by this mod): not for a player running such a civic, and such a civic can always be adopted
+	if (!GC.getCivicInfo(eCivic).isNoForcedCivics() && isForcedCivicOption((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())))
 	{
 		return GC.getGameINLINE().isForceCivic(eCivic);
 	}
@@ -8618,9 +8643,21 @@ bool CvPlayer::canRevolution(CivicTypes* paeNewCivics) const
 			}
 		}
 
+		// bNoForcedCivics (added by this mod): the new civics decide, so a player who stops such a civic takes the forced
+		// civics in the same revolution
+		bool bNoForcedCivics = false;
+		for (iI = 0; iI < getNumCivicEntries(); ++iI)
+		{
+			if (paeNewCivics[iI] != NO_CIVIC && GC.getCivicInfo(paeNewCivics[iI]).isNoForcedCivics())
+			{
+				bNoForcedCivics = true;
+				break;
+			}
+		}
+
 		for (iI = 0; iI < GC.getNumCivicOptionInfos(); ++iI)
 		{
-			if (GC.getGameINLINE().isForceCivicOption((CivicOptionTypes)iI))
+			if (!bNoForcedCivics && GC.getGameINLINE().isForceCivicOption((CivicOptionTypes)iI))
 			{
 				if (paeNewCivics[iI] == NO_CIVIC || !GC.getGameINLINE().isForceCivic(paeNewCivics[iI]))
 				{
@@ -13538,7 +13575,7 @@ void CvPlayer::verifyCivicSlots()
 			{
 				if (iNumSlots < 0)
 				{
-					iNumSlots = GC.getGameINLINE().isForceCivicOption((CivicOptionTypes)iI) ? 1 : getNumCivicSlots((CivicOptionTypes)iI);
+					iNumSlots = isForcedCivicOption((CivicOptionTypes)iI) ? 1 : getNumCivicSlots((CivicOptionTypes)iI);
 				}
 				if (iSlot >= iNumSlots)
 				{
@@ -22846,9 +22883,10 @@ bool CvPlayer::canStealTech(PlayerTypes eTarget, TechTypes eTech) const
 }
 
 // bAnyCivic (added by this mod: bSwitchAnyCivic of the espionage missions): this player need not run eCivic
+// bNoForcedCivics (added by this mod): not on a target running such a civic
 bool CvPlayer::canForceCivics(PlayerTypes eTarget, CivicTypes eCivic, bool bAnyCivic) const
 {
-	return (GET_PLAYER(eTarget).canDoCivics(eCivic) && !GET_PLAYER(eTarget).isCivic(eCivic) && (bAnyCivic || isCivic(eCivic)));
+	return (!GET_PLAYER(eTarget).isNoForcedCivics() && GET_PLAYER(eTarget).canDoCivics(eCivic) && !GET_PLAYER(eTarget).isCivic(eCivic) && (bAnyCivic || isCivic(eCivic)));
 }
 
 // bAnyReligion (added by this mod: bSwitchAnyReligion of the espionage missions): eReligion need not be the state religion

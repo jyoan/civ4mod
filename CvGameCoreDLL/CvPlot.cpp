@@ -2620,6 +2620,12 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 				return false;
 			}
 
+			// LockedImprovements of the traits of the plot owner (added by this mod): nobody replaces the improvement
+			if (isOwned() && GET_PLAYER(getOwnerINLINE()).isLockedImprovement(getImprovementType()))
+			{
+				return false;
+			}
+
 			eFinalImprovementType = finalImprovementUpgrade(getImprovementType());
 
 			if (eFinalImprovementType != NO_IMPROVEMENT)
@@ -6021,6 +6027,13 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 		}
 
 		gDLL->getInterfaceIFace()->setDirty(CitizenButtons_DIRTY_BIT, true);
+
+		// PyOnImprovementChanged of the traits of the plot owner (added by this mod): builds, upgrades, pillage, events.
+		// Before the culture of the old improvement can change the owner
+		if (isOwned() && GC.getGameINLINE().isFinalInitialized())
+		{
+			GET_PLAYER(getOwnerINLINE()).doImprovementChangedPythonHook(this, eOldImprovement, getImprovementType());
+		}
 
 		// iCulture and iCultureRange (added by this mod): the plots only the old improvement kept within the culture range of
 		// the owner may leave the borders. Last, as it can change the owner of this plot too

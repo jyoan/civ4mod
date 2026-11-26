@@ -222,6 +222,15 @@
 			<Button>Art/Interface/Buttons/Process/ProcessResearch.dds</Button>
 		</SpellInfo>
 		-->
+		<SpellInfo>
+			<Type>SPELL_TEST_FORCE_CIVICS</Type>
+			<Description>TXT_KEY_SPELL_TEST_FORCE_CIVICS</Description>
+			<Civilopedia>TXT_KEY_CLAUDE_TEST_PEDIA</Civilopedia>
+			<Help>TXT_KEY_SPELL_TEST_FORCE_CIVICS_HELP</Help>
+			<UnitPrereq>UNIT_TEST_SPY</UnitPrereq>
+			<PyResult>spellToggleForcedCivics(['CIVIC_FREE_SPEECH', 'CIVIC_ENVIRONMENTALISM'])</PyResult>
+			<Button>,Art/Interface/Buttons/Civics/Free_Speech.dds,Art/Interface/Buttons/Civics_Civilizations_Religions_Atlas.dds,2,3</Button>
+		</SpellInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 		<SpellInfo>
 			<Type>SPELL_LIANHENG</Type>

@@ -5710,6 +5710,13 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REPLACES", GC.getCivicInfo((CivicTypes)GC.getCivicInfo(eCivic).getReplacedCivic()).getTextKeyWide()));
 	}
 
+	// bNoForcedCivics (added by this mod)
+	if (GC.getCivicInfo(eCivic).isNoForcedCivics())
+	{
+		szHelpText.append(NEWLINE);
+		szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_NO_FORCED_CIVICS"));
+	}
+
 	// bFavoriteCivic of ConditionalFreeTraits (added by this mod): in the game, for the active player
 	if (bPlayerContext && !bCivilopediaText && GC.getGameINLINE().getActivePlayer() != NO_PLAYER)
 	{

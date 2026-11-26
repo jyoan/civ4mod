@@ -821,6 +821,15 @@ bool CyGame::isForceCivicOption(int /*CivicOptionTypes*/ eCivicOption)
 	return m_pGame ? m_pGame->isForceCivicOption((CivicOptionTypes)eCivicOption) : false;
 }
 
+// Added by this mod: forces the civic as a passed resolution does (count > 0), for scenarios and tests
+void CyGame::changeForceCivicCount(int /*CivicTypes*/ eIndex, int iChange)
+{
+	if (m_pGame != NULL && eIndex >= 0 && eIndex < GC.getNumCivicInfos() && m_pGame->getForceCivicCount((CivicTypes)eIndex) + iChange >= 0)
+	{
+		m_pGame->changeForceCivicCount((CivicTypes)eIndex, iChange);
+	}
+}
+
 int CyGame::getVoteOutcome(int /*VoteTypes*/ eIndex) 
 {
 	return m_pGame ? m_pGame->getVoteOutcome((VoteTypes) eIndex) : NO_PLAYER_VOTE;

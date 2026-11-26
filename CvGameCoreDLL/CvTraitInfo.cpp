@@ -180,6 +180,7 @@ m_paiHappyCommercePercent(NULL),
 m_paiHealthyYieldPercent(NULL),
 m_paiHealthyCommercePercent(NULL),
 m_pabRevealBonus(NULL),
+m_pabLockedImprovement(NULL),
 m_pabNoTechProcess(NULL),
 m_bNoConscriptExperiencePenalty(false),
 m_pabFreeTech(NULL),
@@ -303,6 +304,7 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_paiHealthyYieldPercent);
 	SAFE_DELETE_ARRAY(m_paiHealthyCommercePercent);
 	SAFE_DELETE_ARRAY(m_pabRevealBonus);
+	SAFE_DELETE_ARRAY(m_pabLockedImprovement);
 	SAFE_DELETE_ARRAY(m_pabNoTechProcess);
 	SAFE_DELETE_ARRAY(m_pabFreeTech);
 	SAFE_DELETE_ARRAY(m_paiYieldChange);
@@ -1531,6 +1533,15 @@ bool CvTraitInfo::isRevealBonus(int iBonus) const
 	return m_pabRevealBonus ? m_pabRevealBonus[iBonus] : false;
 }
 
+// LockedImprovements (added by this mod): on the plots of the player, nothing replaces the improvement (CvPlot::canBuild)
+// and the units of the player do not pillage it (CvUnit::canPillage)
+bool CvTraitInfo::isLockedImprovement(int iImprovement) const
+{
+	FAssertMsg(iImprovement < GC.getNumImprovementInfos(), "Index out of bounds");
+	FAssertMsg(iImprovement > -1, "Index out of bounds");
+	return m_pabLockedImprovement ? m_pabLockedImprovement[iImprovement] : false;
+}
+
 // NoTechProcesses (added by this mod): the cities can maintain the process without its tech (CvPlayer::canMaintain)
 bool CvTraitInfo::isNoTechProcess(int iProcess) const
 {
@@ -2305,6 +2316,12 @@ const TCHAR* CvTraitInfo::getPyOnOtherCityFounded() const
 const TCHAR* CvTraitInfo::getPyOnPlayerEliminated() const
 {
 	return m_aszPythonHook[TRAIT_PYHOOK_PLAYER_ELIMINATED];
+}
+
+// PyOnImprovementChanged (added by this mod): the improvement of a plot of the player changed (CvPlot::setImprovementType)
+const TCHAR* CvTraitInfo::getPyOnImprovementChanged() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_IMPROVEMENT_CHANGED];
 }
 
 // ConditionalFreeTraits (added by this mod): the traits the player has while the conditions hold
@@ -3293,6 +3310,9 @@ void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 
+	// LockedImprovements: readPass3()
+	readTypeList(pXML, "LockedImprovements", m_aszLockedImprovementTypes);
+
 	// Python hooks: expressions evaluated in CvTraitInterface.py
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_GAME_START], "PyOnGameStart");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_BEGIN_TURN], "PyOnBeginTurn");
@@ -3319,6 +3339,7 @@ void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_CIRCUMNAVIGATED], "PyOnCircumnavigated");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_OTHER_CITY_FOUNDED], "PyOnOtherCityFounded");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_PLAYER_ELIMINATED], "PyOnPlayerEliminated");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_IMPROVEMENT_CHANGED], "PyOnImprovementChanged");
 }
 
 // The part of read() for ConditionalFreeTraits (added by this mod)
@@ -3961,6 +3982,8 @@ bool CvTraitInfo::readPass3()
 	m_aszConquestReligionBuildingTypes.clear();
 	resolveTypeList("RevealBonuses", m_aszRevealBonusTypes, GC.getNumBonusInfos(), &m_pabRevealBonus);
 	m_aszRevealBonusTypes.clear();
+	resolveTypeList("LockedImprovements", m_aszLockedImprovementTypes, GC.getNumImprovementInfos(), &m_pabLockedImprovement);
+	m_aszLockedImprovementTypes.clear();
 	resolveTypeValueList("BuildingHappinessChanges", m_aszBuildingHappinessChangeTypes, m_aiBuildingHappinessChangeValues, GC.getNumBuildingClassInfos(), m_aiBuildingHappinessChange);
 	resolveTypeValueList("BuildingHealthChanges", m_aszBuildingHealthChangeTypes, m_aiBuildingHealthChangeValues, GC.getNumBuildingClassInfos(), m_aiBuildingHealthChange);
 	resolveTypeValueList("BonusHappinessChanges", m_aszBonusHappinessChangeTypes, m_aiBonusHappinessChangeValues, GC.getNumBonusInfos(), m_aiBonusHappinessChange);

@@ -284,3 +284,11 @@
 ## `TRAIT_TEST_LONG_COUNT`（検証用志向（長期暦））
 
 - `bLongCountCalendar` 1 だけ。検証用志向（暦）の `chooseGreatPeopleByCalendar` が、神秘主義を得た後に `szTechTrait` で与える（2026-11-26）。
+
+## `TRAIT_TEST_GREAT_LEAP`（検証用志向（大躍進））
+
+- 検証用社会制度（`CIVIC_TEST`）を採用している間だけ持つ（`FreeTraits`）。
+- 工房を固定する（`LockedImprovements`）。
+- 施設が変わるたびに「[検証] PyOnImprovementChanged: (x, y) 古い施設 -> 新しい施設, gold 金, hammers 生産」を出す（`PyOnImprovementChanged`）。
+- 工房に置き換えたときの金: 大商人の交易任務（交易の利益 5）の 4 分の 1 を町 100%・村 40%・集落 15%・小屋 5% で（通常の速度で 375・150・56・18）。
+- 農地を工房に置き換えたときの生産: `scaleBySpeed(30, 'Train')`（通常の速度で 30）を、そのタイルの都市に

@@ -189,6 +189,7 @@ void CyGamePythonInterface()
 		.def("getForceCivicCount", &CyGame::getForceCivicCount, "int (CivicTypes eIndex)")
 		.def("isForceCivic", &CyGame::isForceCivic, "bool (CivicTypes eIndex)")
 		.def("isForceCivicOption", &CyGame::isForceCivicOption, "bool (CivicOptionTypes eCivicOption)")
+		.def("changeForceCivicCount", &CyGame::changeForceCivicCount, "void (int eCivic, int iChange) - forces the civic while the count is above 0, as a passed resolution (added by this mod)")
 
 		.def("getVoteOutcome", &CyGame::getVoteOutcome, "int (VoteTypes eIndex)")
 

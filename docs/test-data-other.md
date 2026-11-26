@@ -13,6 +13,8 @@
 - 採用している間、金融志向を得る（`FreeTraits`。検証用志向に金融志向はない）。
 - 怒っている市民 1 人につき商業 +1（`AngryYieldChanges`）、不衛生 1 につき文化 +1（`UnhealthyCommerceChanges`）。
 - 採用すると首都に労働者（`PyOnAdopt`）、やめると資金 +20（`PyOnRevoke`）
+- 採用している間、検証用志向（大躍進）も得る（`FreeTraits`）。
+- 採用している間、決議とスパイによる社会制度の強制を受けない（`bNoForcedCivics`）
 
 ## `CIVIC_TEST_DESPOTISM`・`CIVIC_TEST_HEREDITARY_RULE`（検証用専制政治・検証用世襲統治）
 
@@ -20,6 +22,14 @@
 - 前提の志向 `TRAIT_TEST`、`ReplacedCivic` が元の社会制度。
 - 健康 +1 のほかは元と同じ。
 - 専制政治の方は技術なしで初期の社会制度の置換を、世襲統治の方は技術（君主政治）のある置換を確かめる
+
+## `CIVIC_TEST_NO_FORCED`（検証用社会制度（強制なし））
+
+- 複製元: 地方分権
+- 前提の志向 `TRAIT_TEST_AI`（検証用 AI 文明）、`ReplacedCivic` が地方分権。
+- 検証用 AI 文明は最初からこれを採用する（初期の社会制度の置換）。
+- `bNoForcedCivics` のほかは地方分権と同じ。
+- 人間のスパイが検証用 AI 文明に体制変革を使えないことを確かめる
 
 ## `BUILDING_TEST` / `BUILDINGCLASS_TEST`（検証用建物）
 
@@ -444,6 +454,14 @@
 
 - 2026-11-26 に `CIV4SpellInfos.xml` で項目をすべてコメントアウトした（確認済み。行動ボタンがほかの確認の邪魔になるため）。使うときはコメントの印を外し、キャッシュを消す。
 - 以下の各項目の中身はそのまま残してある。
+- `SPELL_TEST_FORCE_CIVICS`（2026-11-26）だけはコメントの外にあり、有効。
+
+## `SPELL_TEST_FORCE_CIVICS`（検証用呪文（社会制度の強制））
+
+- 検証用スパイ（`UNIT_TEST_SPY`）が使える。
+- 言論の自由と環境保護主義を、国連の決議と同じように強制する。強制中なら解除する（`spellToggleForcedCivics`。`CyGame.changeForceCivicCount`）。
+- 強制されると、`bNoForcedCivics` の社会制度を採用していないプレイヤーは、技術がなくてもすぐにその社会制度になる。
+- ボタンは言論の自由
 
 ## `SPELL_TEST_GOLD`（検証用呪文（資金））
 

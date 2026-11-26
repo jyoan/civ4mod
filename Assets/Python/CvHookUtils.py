@@ -105,6 +105,22 @@ def gainGold(pPlayer, iGold):
 	"The player gains gold (loses it when iGold is negative)"
 	pPlayer.changeGold(iGold)
 
+def gainProduction(pCity, iProduction):
+	"The city adds the production (hammers) to what it builds now: a unit, a building or a project (nothing for a process or nothing to build, or when pCity.isNone(), e.g. pPlot.getWorkingCity() of a plot no city can work)"
+	if not pCity.isNone() and iProduction != 0:
+		pCity.changeProduction(iProduction)
+
+def greatMerchantTradeGold(iTradeProfit):
+	"The gold of a trade mission of the great merchant (the default unit of UNITCLASS_MERCHANT: iBaseTrade + iTradeMultiplier * iTradeProfit, times iUnitTradePercent of the game speed, as CvUnit::getTradeGold). iTradeProfit stands for the trade route profit of the target city, e.g. 5 (about a foreign city of size 12). For gold that follows the game speed, e.g. greatMerchantTradeGold(5) / 4"
+	kUnit = gc.getUnitInfo(gc.getUnitClassInfo(gc.getInfoTypeForString('UNITCLASS_MERCHANT')).getDefaultUnitIndex())
+	return scaleBySpeed(kUnit.getBaseTrade() + kUnit.getTradeMultiplier() * iTradeProfit, 'UnitTrade')
+
+def improvementReplacedValue(eOldImprovement, eNewImprovement, szNewImprovement, dValues):
+	"For PyOnImprovementChanged: when the new improvement is szNewImprovement, the value in dValues (improvement types to numbers) of the old improvement, else 0, e.g. improvementReplacedValue(eOld, eNew, 'IMPROVEMENT_WORKSHOP', {'IMPROVEMENT_FARM': 30})"
+	if eOldImprovement < 0 or eNewImprovement < 0 or eNewImprovement != gc.getInfoTypeForString(szNewImprovement):
+		return 0
+	return dValues.get(gc.getImprovementInfo(eOldImprovement).getType(), 0)
+
 def startGoldenAge(pPlayer, iPercent = 100):
 	"The player starts a golden age of iPercent % of the usual length (at least 1 turn; like a free golden age: longer if one is going on, and the great people needed for the next one stay the same)"
 	pPlayer.changeGoldenAgeTurns(max(1, pPlayer.getGoldenAgeLength() * iPercent / 100))
