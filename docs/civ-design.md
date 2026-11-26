@@ -134,6 +134,7 @@ BtS の効果はそのままにして足す。
 | `CivicOptionExtraSlots`（法律） | ハンムラビ |
 | `chooseGreatPeopleByCalendar`（`PyOnBeginTurn`。暦の周期ごとに選んだ偉人）、`bLongCountCalendar` | マヤ |
 | `LendLease`（レンドリース） | ルーズヴェルト |
+| 昇進の `Encirclement`（包囲と支援） | シャカ |
 
 ### 新しい志向で決まったこと（2026-11-15）
 
@@ -216,6 +217,7 @@ BtS の効果はそのままにして足す。
 | 神聖ローマ（文明） | 帝国諸侯: 最初の都市を建てると、5 タイル以内にドイツ（指導者はフリードリッヒ）が AI の初期ユニットを連れて参加し、永久同盟で同じチームになる。参加した AI の AI 補正は、どの難易度でも開拓者（最弱。生産・成長のコスト 160% など）（2026-11-23。強いので補正を最弱にした） | `FoundingVassal`（`CIVILIZATION_GERMANY`・`LEADER_FREDERICK`・`HANDICAP_SETTLER`・`iRange` 5） | 実装済み `TRAIT_IMPERIAL_ESTATES` |
 | マヤ（文明） | 長期暦: 神学を得た後、マヤ長期暦の周期（394 年。西暦 830・1224・1618・2012 年）が終わるたびに、偉人を 1 人選んで首都に出す（選んだ偉人は、全員を選ぶまで選べない。全員を選ぶとまた全員を選べる）。右上の日付が長期暦になり、マウスを重ねると西暦が出る（Civ5 のマヤ。2026-11-23） | `PyOnBeginTurn` の `chooseGreatPeopleByCalendar(pPlayer, eTrait, 'TECH_THEOLOGY', 394, 2012)`、`bLongCountCalendar` | 実装済み `TRAIT_LONG_COUNT` |
 | ルーズヴェルト | 民主主義の兵器廠（短縮名「廠」）: 自国の都市にいるユニットを、行動ボタン「レンドリース」で平和な文明の首都に送る（積み荷も一緒、UnitAI は既定に戻る）。送ったユニットの生産コストの 50% を研究、25% を金として得る。送るたびに相手の態度（取引）+1、+4 まで（2026-11-26。数値は仮。財政難にさせる抜け道は防がない） | `LendLease`（`iResearchPercent` 50・`iGoldPercent` 25・`iAttitudeChange` 1） | 実装済み `TRAIT_ARSENAL_OF_DEMOCRACY` |
+| シャカ | 牛の角の陣（短縮名「角」）: 陸上の戦闘ユニットが、攻撃するときは相手の、守るときは自分の周囲にいる自軍の陸上ユニット（戦闘力 1 以上）1 体につき戦闘力 +1%、攻撃側の反対側の 3 タイル（背後）では +2%。1 タイル 10 体まで（横 4 タイルで最大 +40%、背後 3 タイルで +60%、計 +100%）。攻撃側のタイルは数えない。都市の攻撃・防御にも効く（2026-11-26。Civ6 の側面攻撃・支援から） | `FreePromotionSets`（`PROMOTION_BULL_HORNS`。昇進の `Encirclement` 1・2・10。陸上の 8 兵科と `DOMAIN_LAND`） | 実装済み、ゲームで確認済み `TRAIT_BULL_HORNS` |
 
 - 2026-11-15 に XML に入れた。文明志向は文明の `Traits`、指導者志向は指導者の `Traits` の 3 つ目。テキストは `CIV4GameText_ClaudeCivs.xml`。昇進は `PROMOTION_FLOWER_WAR`（花の戦争）・`PROMOTION_LONGSHIP`（ロングシップ）・`PROMOTION_SEA_RAIDER`（上陸の心得）・`PROMOTION_RAIDING`（略奪行）。フランスの無政府期間中の志向は `TRAIT_REVOLUTIONARY_FERVOR`（革命の熱狂）
 - 2 回目（2026-11-15）に入れた 34 件の仮の数値: 砂漠の移動 2 倍・防御 +25%、インカ・アラブ・エジプトのバイアス 1 タイルにつき +10%、馬のバイアス +50%、産業化 +10%、首都の建物 +50%、幹部 +50%、サラディンの建物 +50%、森の広がり +40、戦時の生産 +15%、山岳のダメージ 20%、銃火器・装甲 +25%、異教徒 +25%、損耗 10%（50% まで）、防衛 +10%、敵の厭戦感情 +50%
@@ -256,6 +258,8 @@ BtS の効果はそのままにして足す。
 | `UNIT_ZHANG_YI`（張儀（縦横家）） | 筆記。スパイの複製（見えない、諜報任務）。`bInvestigate`（都市の様子）、`iStationedAttitudeChange` 3。定住しない |
 | `PROMOTION_ART_OF_WAR`（孫子の兵法） | 戦闘力 +10%、撤退率 +20%。状態の昇進 |
 | `PROMOTION_MOHIST_DEFENSE`（墨守） | 都市防御 +25%。状態の昇進 |
+| `TRAIT_BULL_HORNS`（牛の角の陣志向、短縮名「角」） | シャカの 3 つ目の志向。`FreePromotionSets` で、陸上の戦闘ユニット（弓兵・白兵戦・騎乗・偵察・銃・攻城・装甲・ヘリコプター。`DOMAIN_LAND` に絞る）に `PROMOTION_BULL_HORNS` |
+| `PROMOTION_BULL_HORNS`（牛の角の陣） | `Encirclement`: 横 1 体につき +1%、背後 +2%、1 タイル 10 体まで。`UnitCombats` は空でレベルアップでは選べない。アイコンは側面攻撃Ⅱの流用 |
 | `SPELL_LIANHENG`（連衡） | 張儀だけ。戦争中の文明の都市で、その文明と和平し、張儀は消える |
 
 ## 確認の記録

@@ -2108,4 +2108,31 @@
 		<Spanish>Arsenal</Spanish>
 		<Japanese>&#24288;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_BULL_HORNS</Tag>
+		<English>Horns of the Buffalo</English>
+		<French>Horns of the Buffalo</French>
+		<German>Horns of the Buffalo</German>
+		<Italian>Horns of the Buffalo</Italian>
+		<Spanish>Horns of the Buffalo</Spanish>
+		<Japanese>&#29275;&#12398;&#35282;&#12398;&#38499;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BULL_HORNS</Tag>
+		<English>Horns of the Buffalo</English>
+		<French>Horns of the Buffalo</French>
+		<German>Horns of the Buffalo</German>
+		<Italian>Horns of the Buffalo</Italian>
+		<Spanish>Horns of the Buffalo</Spanish>
+		<Japanese>&#29275;&#12398;&#35282;&#12398;&#38499;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BULL_HORNS_SHORT</Tag>
+		<English>Horns</English>
+		<French>Horns</French>
+		<German>Horns</German>
+		<Italian>Horns</Italian>
+		<Spanish>Horns</Spanish>
+		<Japanese>&#35282;</Japanese>
+	</TEXT>
 </Civ4GameText>

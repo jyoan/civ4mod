@@ -3179,5 +3179,57 @@
 				<iAttitudeChange>1</iAttitudeChange>
 			</LendLease>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_BULL_HORNS</Type>
+			<Description>TXT_KEY_TRAIT_BULL_HORNS</Description>
+			<ShortDescription>TXT_KEY_TRAIT_BULL_HORNS_SHORT</ShortDescription>
+			<FreePromotionSets>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_BULL_HORNS</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<FreePromotionUnitCombats>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_RECON</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_GUN</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_SIEGE</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_ARMOR</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_HELICOPTER</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+					</FreePromotionUnitCombats>
+					<FreePromotionDomains>
+						<DomainType>DOMAIN_LAND</DomainType>
+					</FreePromotionDomains>
+				</FreePromotionSet>
+			</FreePromotionSets>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>
