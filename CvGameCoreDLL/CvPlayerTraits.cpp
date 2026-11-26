@@ -3240,6 +3240,107 @@ int CvPlayer::getTraitCombatPercent() const
 	return sumTraitValues(&CvTraitInfo::getCombatPercent);
 }
 
+// AttitudeCombatPercents of the traits (added by this mod): counts the AI players (alive, met, not barbarian, not on the team of
+// this player) by their attitude toward this player (AI_getAttitude, as the diplomacy screen shows it). Called at the start of
+// the turn of this player and after a war is declared or peace is made (CvTeam::declareWar, CvTeam::makePeace). The counts are
+// saved, so that the combat % does not change by saving and loading in the middle of a turn
+void CvPlayer::updateAttitudeCombatCounts()
+{
+	AttitudeTypes eAttitude;
+	int iI;
+
+	for (iI = 0; iI < NUM_ATTITUDE_TYPES; iI++)
+	{
+		m_aiAttitudeCombatCount[iI] = 0;
+	}
+
+	if (!isAlive() || getLeaderType() == NO_LEADER || !hasTraitFlag(&CvTraitInfo::isAttitudeCombat))
+	{
+		return;
+	}
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		CvPlayerAI& kLoopPlayer = GET_PLAYER((PlayerTypes)iI);
+		if (!kLoopPlayer.isAlive() || kLoopPlayer.isHuman() || kLoopPlayer.isBarbarian() || kLoopPlayer.getLeaderType() == NO_LEADER)
+		{
+			continue;
+		}
+
+		if (kLoopPlayer.getTeam() == getTeam() || !GET_TEAM(getTeam()).isHasMet(kLoopPlayer.getTeam()))
+		{
+			continue;
+		}
+
+		eAttitude = kLoopPlayer.AI_getAttitude(getID());
+		if (eAttitude >= 0 && eAttitude < NUM_ATTITUDE_TYPES)
+		{
+			m_aiAttitudeCombatCount[eAttitude]++;
+		}
+	}
+}
+
+int CvPlayer::getAttitudeCombatCount(AttitudeTypes eAttitude) const
+{
+	return (eAttitude >= 0 && eAttitude < NUM_ATTITUDE_TYPES) ? m_aiAttitudeCombatCount[eAttitude] : 0;
+}
+
+// AttitudeCombatPercents of the traits (added by this mod): the % of eAttitude of all the traits times the AI players with the
+// attitude, before the caps (for the help texts)
+int CvPlayer::getAttitudeCombatPercentOf(AttitudeTypes eAttitude) const
+{
+	if (getAttitudeCombatCount(eAttitude) == 0)
+	{
+		return 0;
+	}
+
+	return getAttitudeCombatCount(eAttitude) * sumTraitValues(&CvTraitInfo::getAttitudeCombatPercent, (int)eAttitude);
+}
+
+// AttitudeCombatPercents of the traits (added by this mod): combat % of all the units of the player
+// (CvUnit::getExtraCombatPercent). Each trait is capped by its iMaxPercent before the traits are added up
+int CvPlayer::getAttitudeCombatPercent() const
+{
+	int iTotal = 0;
+	int iTraitPercent;
+	int iI;
+	int iJ;
+
+	for (iI = 0; iI < NUM_ATTITUDE_TYPES; iI++)
+	{
+		if (m_aiAttitudeCombatCount[iI] != 0)
+		{
+			break;
+		}
+	}
+	if (iI == NUM_ATTITUDE_TYPES)
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		const CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+		if (!kTrait.isAttitudeCombat() || !hasTrait((TraitTypes)iI))
+		{
+			continue;
+		}
+
+		iTraitPercent = 0;
+		for (iJ = 0; iJ < NUM_ATTITUDE_TYPES; iJ++)
+		{
+			iTraitPercent += m_aiAttitudeCombatCount[iJ] * kTrait.getAttitudeCombatPercent(iJ);
+		}
+		if (kTrait.getAttitudeCombatMaxPercent() >= 0)
+		{
+			iTraitPercent = std::min(iTraitPercent, kTrait.getAttitudeCombatMaxPercent());
+		}
+		iTotal += iTraitPercent;
+	}
+
+	return iTotal;
+}
+
 // iHappinessPerReligion, CommercePerReligion and iDefenseCombatPercent of the traits (added by this mod)
 int CvPlayer::getHappinessPerReligion() const
 {

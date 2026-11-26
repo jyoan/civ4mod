@@ -10,6 +10,8 @@
 void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInfoBase> >& kTraitInfo)
 {
 	kTraitInfo
+		.def("getAttitudeCombatPercent", &CvTraitInfo::getAttitudeCombatPercent, "int (int eAttitude) - AttitudeCombatPercents (added by this mod)")
+		.def("getAttitudeCombatMaxPercent", &CvTraitInfo::getAttitudeCombatMaxPercent, "int () - AttitudeCombatPercents/iMaxPercent, -1 = no cap (added by this mod)")
 		.def("getPyOnCityLost", &CvTraitInfo::getPyOnCityLost, "string ()")
 		.def("getPyOnBuildingBuilt", &CvTraitInfo::getPyOnBuildingBuilt, "string ()")
 		.def("getPyOnReligionFounded", &CvTraitInfo::getPyOnReligionFounded, "string ()")

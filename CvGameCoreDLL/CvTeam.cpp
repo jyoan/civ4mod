@@ -1447,6 +1447,12 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 		CvEventReporter::getInstance().changeWar(true, getID(), eTeam);
 		doWarPeaceTraitPythonHooks(eTeam, true);	// PyOnWarDeclared of the traits (added by this mod)
 
+		// AttitudeCombatPercents of the traits (added by this mod): the memory of the declaration is already added
+		for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+		{
+			GET_PLAYER((PlayerTypes)iI).updateAttitudeCombatCounts();
+		}
+
 		cancelDefensivePacts();
 
 		for (iI = 0; iI < MAX_TEAMS; iI++)
@@ -1624,6 +1630,12 @@ void CvTeam::makePeace(TeamTypes eTeam, bool bBumpUnits)
 
 		CvEventReporter::getInstance().changeWar(false, getID(), eTeam);
 		doWarPeaceTraitPythonHooks(eTeam, false);	// PyOnPeaceMade of the traits (added by this mod)
+
+		// AttitudeCombatPercents of the traits (added by this mod)
+		for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+		{
+			GET_PLAYER((PlayerTypes)iI).updateAttitudeCombatCounts();
+		}
 
 		for (iI = 0; iI < MAX_TEAMS; iI++)
 		{

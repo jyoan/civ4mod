@@ -282,6 +282,10 @@ public:
 	int getAttitudeChange() const;			// Exposed to Python (added by this mod)
 	int getRouteMovementModifierInBorders() const;	// Exposed to Python (added by this mod)
 	int getTraitCombatPercent() const;			// Exposed to Python (added by this mod)
+	void updateAttitudeCombatCounts();			// AttitudeCombatPercents of the traits (added by this mod)
+	int getAttitudeCombatCount(AttitudeTypes eAttitude) const;	// Exposed to Python (added by this mod)
+	int getAttitudeCombatPercent() const;		// Exposed to Python (added by this mod)
+	int getAttitudeCombatPercentOf(AttitudeTypes eAttitude) const;	// added by this mod: before the caps, for the help texts
 	int getHappinessPerReligion() const;	// Exposed to Python (added by this mod)
 	int getCommercePerReligion(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
 	int getTraitDefenseCombatPercent() const;	// Exposed to Python (added by this mod)
@@ -1515,6 +1519,7 @@ protected:
 	bool* m_abFriendlyTraitGainedFrom;		// the AI players whose traits were checked when they became friendly (GainTraitsOnFriendly, added by this mod)
 	int* m_paiRandomBasicTrait;				// 1 for the traits given by RandomBasicTraits now (added by this mod)
 	int m_iRandomBasicTraitTurn;			// game turn of the last change of RandomBasicTraits, -1 if none (added by this mod)
+	int m_aiAttitudeCombatCount[NUM_ATTITUDE_TYPES];	// AI players with each attitude toward this player (AttitudeCombatPercents, added by this mod)
 	int m_aiExploredPlotCount[NUM_EXPLORE_PLOT_TYPES];	// plots revealed during this turn, per kind (ExplorationRewards, added by this mod)
 	int m_aiExplorationRemainder[NUM_EXPLORE_PLOT_TYPES * NUM_COMMERCE_TYPES];	// 1/100 of the rewards carried to the next turn
 	int* m_paiTraitTurns;					// turns left of the temporary traits, 0 if not temporary (added by this mod)

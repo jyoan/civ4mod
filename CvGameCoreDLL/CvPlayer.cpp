@@ -584,6 +584,10 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	{
 		m_aiExploredPlotCount[iI] = 0;
 	}
+	for (iI = 0; iI < NUM_ATTITUDE_TYPES; iI++)
+	{
+		m_aiAttitudeCombatCount[iI] = 0;
+	}
 	for (iI = 0; iI < NUM_EXPLORE_PLOT_TYPES * NUM_COMMERCE_TYPES; iI++)
 	{
 		m_aiExplorationRemainder[iI] = 0;
@@ -3313,6 +3317,7 @@ void CvPlayer::doTurn()
 	doTraitTurns();	// temporary traits (added by this mod)
 	doRandomBasicTraits();	// RandomBasicTraits of the traits (added by this mod)
 	doGainTraitsOnFriendly();	// GainTraitsOnFriendly of the traits (added by this mod)
+	updateAttitudeCombatCounts();	// AttitudeCombatPercents of the traits (added by this mod)
 	doTraitPythonHook(TRAIT_PYHOOK_BEGIN_TURN);	// PyOnBeginTurn (added by this mod)
 	doEnemyAttrition();	// EnemyAttrition/iPercent of the traits (added by this mod)
 
@@ -17931,6 +17936,13 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 		verifyCivicSlots();
 	}
 
+	// AttitudeCombatPercents (added by this mod): count now rather than at the start of the next turn (hasTrait already has
+	// the new state here)
+	if (kTrait.isAttitudeCombat())
+	{
+		updateAttitudeCombatCounts();
+	}
+
 	// StackPromotions (added by this mod): hasTrait already has the new state here
 	if (kTrait.getNumStackPromotionSets() > 0)
 	{
@@ -18549,6 +18561,12 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(GC.getNumTraitInfos(), m_paiTraitCounter);
 	}
+
+	// AttitudeCombatPercents of the traits (uiFlag 20)
+	if (uiFlag > 19)
+	{
+		pStream->Read(NUM_ATTITUDE_TYPES, m_aiAttitudeCombatCount);
+	}
 }
 
 //
@@ -18559,7 +18577,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 19;	// 19: m_paiTraitCounter. 18: m_bFoundingVassalDone, m_bFoundingVassal and m_eAIHandicap. 17: m_aiExploredPlotCount and m_aiExplorationRemainder. 16: the civic slots after slot 0 (m_paeCivics). 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
+	uint uiFlag = 20;	// 20: m_aiAttitudeCombatCount. 19: m_paiTraitCounter. 18: m_bFoundingVassalDone, m_bFoundingVassal and m_eAIHandicap. 17: m_aiExploredPlotCount and m_aiExplorationRemainder. 16: the civic slots after slot 0 (m_paeCivics). 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -19001,6 +19019,9 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(m_bFoundingVassal);
 	pStream->Write(m_eAIHandicap);
 	pStream->Write(GC.getNumTraitInfos(), m_paiTraitCounter);
+
+	// AttitudeCombatPercents of the traits (uiFlag 20, added by this mod)
+	pStream->Write(NUM_ATTITUDE_TYPES, m_aiAttitudeCombatCount);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

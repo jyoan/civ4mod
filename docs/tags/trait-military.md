@@ -302,3 +302,22 @@
 - 昇進はどう得たかを見ずに外すので、この用途だけの状態の昇進（`UnitCombats` が空）を使う。
 - 説明文は組ごとに 1 行 `TXT_KEY_TRAIT_STACK_PROMOTION`（「検証用学派Bと同じタイルにいる白兵戦ユニット: 検証用随行」。ユニットクラスは `TXT_KEY_OR` でつなぐ。兵科の省略時は `TXT_KEY_TRAIT_STACK_PROMOTION_UNITS`「ユニット」）。
 - Python: `CvTraitInfo.getNumStackPromotionSets()`、`getStackPromotionSetNumUnitClasses(i)`・`getStackPromotionSetUnitClass(i, j)`、`getStackPromotionSetNumPromotions(i)`・`getStackPromotionSetPromotion(i, j)`、`getStackPromotionSetNumUnitCombats(i)`・`getStackPromotionSetUnitCombat(i, j)`
+
+## `TraitInfo/AttitudeCombatPercents`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-26。ナポレオンの「対仏大同盟」（嫌われるほど強い）。
+- `<AttitudeCombatPercent>`（`AttitudeType`・`iCombatPercent`）を何個でも書き、最後に `<iMaxPercent>`（省略可。省略すると -1 = 上限なし）を書く。
+- その志向を持つ間、そのプレイヤーの全ユニットの戦闘力が、自分にその態度を持つ AI の文明 1 つにつき ○%（マイナスも可）。攻撃でも防御でも効く。
+- 数えるのは、生きていて出会っている AI の文明。人間・蛮族・自分のチームのメンバーは数えない。態度は外交画面に出るもの（`AI_getAttitude` の既定。属国は友好的になる）。
+- 志向ごとに合計してから `iMaxPercent` で頭打ちにし、志向どうしを足す。
+- 戦闘のたびに計算すると重いので、態度ごとの文明の数を `CvPlayer::m_aiAttitudeCombatCount` に持つ（`CvPlayer::updateAttitudeCombatCounts`）。数え直すのは次のとき:
+  - そのプレイヤーのターンの初め（`CvPlayer::doTurn`）
+  - 宣戦と講和のあと、全プレイヤー（`CvTeam::declareWar`・`makePeace`。宣戦は「宣戦された」の記憶が付いたあとなので、宣戦した直後の攻撃から効く）
+  - その志向を得た・失ったとき（`CvPlayer::processTrait`）
+  - それ以外の態度の変化（要求を断る、宗教・社会制度を変える、新しい文明と出会うなど）は次のターンの初めまで待つ
+- 数はセーブに入る（`CvPlayer` の `uiFlag` 20）。ロードのときに数え直すと、ターンの途中のセーブの前後で戦闘力が変わるため。古いセーブでは次のターンの初めまで 0。
+- `CvUnit::getExtraCombatPercent` に足す（`CvPlayer::getAttitudeCombatPercent`）。ユニットの説明の「戦闘力 +X%」に「（うち AI の態度から+X%）」（`TXT_KEY_UNIT_ATTITUDE_COMBAT_NOW`）。
+- 戦闘の勝率の内訳では「戦闘力により」の行から除き、態度ごとに 1 行「「いらだっている」の文明より: +10%」（`TXT_KEY_COMBAT_PLOT_ATTITUDE_STRENGTH`）。上限で削られた分は「上限を超えた分: -X%」（`TXT_KEY_COMBAT_PLOT_ATTITUDE_CAP`）。
+- 説明文は態度ごとに `TXT_KEY_TRAIT_ATTITUDE_COMBAT_PERCENT`（「激怒している AI の文明 1 つにつき全ユニットの戦闘力+20%」）、上限は `TXT_KEY_TRAIT_ATTITUDE_COMBAT_MAX_PERCENT`（「AI の態度による戦闘力は最大+60%」）。
+- Python: `CvTraitInfo.getAttitudeCombatPercent(eAttitude)`・`getAttitudeCombatMaxPercent()`、`CyPlayer.getAttitudeCombatCount(eAttitude)`・`getAttitudeCombatPercent()`

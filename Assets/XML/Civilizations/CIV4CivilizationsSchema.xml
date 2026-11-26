@@ -763,6 +763,15 @@
 		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="iDefenseCombatPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="AttitudeCombatPercent" content="eltOnly">
+		<element type="AttitudeType"/>
+		<element type="iCombatPercent"/>
+	</ElementType>
+	<ElementType name="iMaxPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="AttitudeCombatPercents" content="eltOnly">
+		<element type="AttitudeCombatPercent" minOccurs="0" maxOccurs="*"/>
+		<element type="iMaxPercent" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="WorldWonderCommerceChanges" content="eltOnly">
 		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
@@ -1246,6 +1255,7 @@
 		<element type="iHappinessPerReligion" minOccurs="0"/>
 		<element type="CommercePerReligion" minOccurs="0"/>
 		<element type="iDefenseCombatPercent" minOccurs="0"/>
+		<element type="AttitudeCombatPercents" minOccurs="0"/>
 		<element type="WorldWonderCommerceChanges" minOccurs="0"/>
 		<element type="GlobalWorldWonderCommerceChanges" minOccurs="0"/>
 		<element type="iEnemyWarWearinessModifier" minOccurs="0"/>
