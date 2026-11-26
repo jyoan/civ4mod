@@ -105,9 +105,9 @@ def gainGold(pPlayer, iGold):
 	"The player gains gold (loses it when iGold is negative)"
 	pPlayer.changeGold(iGold)
 
-def startGoldenAge(pPlayer):
-	"The player starts a golden age of the usual length (like a free golden age: longer if one is going on), without great people"
-	pPlayer.changeGoldenAgeTurns(pPlayer.getGoldenAgeLength())
+def startGoldenAge(pPlayer, iPercent = 100):
+	"The player starts a golden age of iPercent % of the usual length (at least 1 turn; like a free golden age: longer if one is going on, and the great people needed for the next one stay the same)"
+	pPlayer.changeGoldenAgeTurns(max(1, pPlayer.getGoldenAgeLength() * iPercent / 100))
 
 def gainCircumnavigationMoves(pPlayer):
 	"The team of the player gets the bonus moves of the ships of the first circumnavigation (CIRCUMNAVIGATE_FREE_MOVES), with its message. For PyOnCircumnavigated when iOrder > 1 (the first team gets them anyway). Once per player: a team of two players with the trait gets them twice"

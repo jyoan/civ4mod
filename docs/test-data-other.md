@@ -343,6 +343,7 @@
 - 検証用資源 1 つにつき戦闘力 +1（`BonusAffinities`。白兵戦の A は種類の分と合わせて +2）。
 - 海外で戦闘力 +25%（`iCombatPercentOverseas`）。
 - 国教が違う文明との戦闘で戦闘力 +20%（`iOtherReligionCombatPercent`）、自国の国教が広まった都市への攻撃 +30%（`iStateReligionCityAttack`）。
+- 自国が黄金期のとき、黄金期でない文明との戦闘で戦闘力 +20%（`iGoldenAgeAdvantageCombatPercent`。2026-11-26）。
 - 国境を開いていない他国の領土にも入れる（`bRivalTerritory`）
 
 ## `PROMOTION_TEST_STATE1` / `STATE2`（検証用状態Ⅰ・Ⅱ）

@@ -345,6 +345,15 @@
 		<Japanese>[ICON_BULLET]&#22269;&#25945;&#12364;&#36949;&#12358;&#25991;&#26126;&#12392;&#12398;&#25126;&#38360;&#12391;&#25126;&#38360;&#21147;%D1_Bonus%%</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_GOLDEN_AGE_ADVANTAGE_COMBAT</Tag>
+		<English>[ICON_BULLET]%D1_Bonus%% Strength during your golden age against civilizations not in a golden age</English>
+		<French>[ICON_BULLET]%D1_Bonus%% Strength during your golden age against civilizations not in a golden age</French>
+		<German>[ICON_BULLET]%D1_Bonus%% Strength during your golden age against civilizations not in a golden age</German>
+		<Italian>[ICON_BULLET]%D1_Bonus%% Strength during your golden age against civilizations not in a golden age</Italian>
+		<Spanish>[ICON_BULLET]%D1_Bonus%% Strength during your golden age against civilizations not in a golden age</Spanish>
+		<Japanese>[ICON_BULLET]&#33258;&#22269;&#12398;&#40644;&#37329;&#26399;&#12395;&#12289;&#40644;&#37329;&#26399;&#12391;&#12394;&#12356;&#25991;&#26126;&#12392;&#12398;&#25126;&#38360;&#12391;&#25126;&#38360;&#21147;%D1_Bonus%%</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_PROMOTION_STATE_RELIGION_CITY_ATTACK</Tag>
 		<English>[ICON_BULLET]%D1_Bonus%% City Attack against cities with your state religion</English>
 		<French>[ICON_BULLET]%D1_Bonus%% City Attack against cities with your state religion</French>

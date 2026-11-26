@@ -345,3 +345,20 @@
 - 世界ユニット（`iMaxGlobalInstances`）でも戻せる。BtS の上限は「作った数」で数え、減らないので、定住しても作り直せず、戻しても数が増えるだけ。
 - 説明文 `TXT_KEY_TRAIT_UNSETTLE_SPECIALISTS`（「ユニットに戻せる定住偉人（都市画面でクリック）: 検証用学派A（定住）, …」。`bUnsettleGreatPeople` があるときは出さない）。
 - Python: `CvTraitInfo.isUnsettleSpecialist(iSpecialist)`、`CyPlayer.canUnsettleSpecialist(eSpecialist)`
+
+## `TraitInfo/GoldenAgeUnitClasses`、`iGoldenAgeUnitsChange`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-26（ペルシャの案）。
+- 偉人を消費して起こす黄金期の条件。
+- どちらも省略可。
+- `GoldenAgeUnitClasses`（`UnitClassType` の並び）: その志向を持つプレイヤーの、このクラスのユニットも偉人と同じく黄金期を起こせる（`CvUnit::isGoldenAge` が真になる。行動ボタン・必要な人数の判定・一緒に消費する偉人の選び方は BtS のまま）。
+- 違う種類を揃える判定はユニットの型で数えるので、大将軍（`UNIT_GREAT_GENERAL`）は大科学者などと別の 1 種類になる（大将軍 2 人では 2 種類にならない）。
+- 志向を持つプレイヤーのユニットだけで、どれかの志向が持っていれば有効（`hasTraitFlag`）。
+- AI はこのタグを考えない（大将軍を黄金期に使うとは限らない）。
+- `iGoldenAgeUnitsChange`: 黄金期に必要な偉人の数（`CvPlayer::unitsRequiredForGoldenAge`。BtS は `BASE_GOLDEN_AGE_UNITS` 1 + 起こした回数 × `GOLDEN_AGE_UNITS_MULTIPLIER` 1）に志向の合計を足す。最低 1 人。
+- -1 なら 1・1・2・3… 人。
+- 必要な人数は毎回計算するので、既存のセーブでも効く。
+- 偉人を消費しない黄金期（建物・イベント・`startGoldenAge`）は回数に数えない（BtS どおり）。
+- 説明文 `TXT_KEY_TRAIT_GOLDEN_AGE_UNIT_CLASSES`（クラス名をリンクで並べる）・`TXT_KEY_TRAIT_GOLDEN_AGE_UNITS_CHANGE`。
+- Python: `CvTraitInfo.getNumGoldenAgeUnitClasses()`・`getGoldenAgeUnitClass(i)`・`isGoldenAgeUnitClass(iUnitClass)`・`getGoldenAgeUnitsChange()`

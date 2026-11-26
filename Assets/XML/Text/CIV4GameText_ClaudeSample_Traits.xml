@@ -444,6 +444,24 @@
 		<Japanese>[ICON_BULLET]&#40644;&#37329;&#26399;&#12398;&#38291;&#12289;&#33382;&#33337;&#12398;&#31227;&#21205;&#21147;%D1_Num[ICON_MOVES]</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_AGE_UNIT_CLASSES</Tag>
+		<English>[ICON_BULLET]%s1 can start a golden age like great people (each counts as another kind)</English>
+		<French>[ICON_BULLET]%s1 can start a golden age like great people (each counts as another kind)</French>
+		<German>[ICON_BULLET]%s1 can start a golden age like great people (each counts as another kind)</German>
+		<Italian>[ICON_BULLET]%s1 can start a golden age like great people (each counts as another kind)</Italian>
+		<Spanish>[ICON_BULLET]%s1 can start a golden age like great people (each counts as another kind)</Spanish>
+		<Japanese>[ICON_BULLET]%s1 &#12418;&#20553;&#20154;&#12392;&#21516;&#12376;&#12367;&#40644;&#37329;&#26399;&#12434;&#22987;&#12417;&#12425;&#12428;&#12427;&#65288;&#12381;&#12428;&#12382;&#12428;&#21029;&#12398;&#31278;&#39006;&#12392;&#12375;&#12390;&#25968;&#12360;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GOLDEN_AGE_UNITS_CHANGE</Tag>
+		<English>[ICON_BULLET]%D1_Num great people needed for a golden age (at least 1)</English>
+		<French>[ICON_BULLET]%D1_Num great people needed for a golden age (at least 1)</French>
+		<German>[ICON_BULLET]%D1_Num great people needed for a golden age (at least 1)</German>
+		<Italian>[ICON_BULLET]%D1_Num great people needed for a golden age (at least 1)</Italian>
+		<Spanish>[ICON_BULLET]%D1_Num great people needed for a golden age (at least 1)</Spanish>
+		<Japanese>[ICON_BULLET]&#40644;&#37329;&#26399;&#12395;&#24517;&#35201;&#12394;&#20553;&#20154;&#12398;&#25968; %D1_Num&#65288;&#26368;&#20302; 1 &#20154;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_INLAND_CANALS</Tag>
 		<English>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</English>
 		<French>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</French>
@@ -1972,6 +1990,15 @@
 		<Italian>[ICON_BULLET]%D1%% to the value AI civilizations put on the gold you give in deals</Italian>
 		<Spanish>[ICON_BULLET]%D1%% to the value AI civilizations put on the gold you give in deals</Spanish>
 		<Japanese>[ICON_BULLET]&#21462;&#24341;&#12391;&#25903;&#25173;&#12358;&#37329;&#12398;&#12289;AI &#12363;&#12425;&#35211;&#12383;&#20385;&#20516; %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INFLATION_MODIFIER</Tag>
+		<English>[ICON_BULLET]%D1%% inflation rate</English>
+		<French>[ICON_BULLET]%D1%% inflation rate</French>
+		<German>[ICON_BULLET]%D1%% inflation rate</German>
+		<Italian>[ICON_BULLET]%D1%% inflation rate</Italian>
+		<Spanish>[ICON_BULLET]%D1%% inflation rate</Spanish>
+		<Japanese>[ICON_BULLET]&#12452;&#12531;&#12501;&#12524;&#29575; %D1%%</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_POPUP_IGNORE_EVENT</Tag>

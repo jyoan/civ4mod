@@ -533,6 +533,11 @@
 			<iCorporationSpreadChange>100</iCorporationSpreadChange>
 			<iGoldenAgeLandMovesChange>1</iGoldenAgeLandMovesChange>
 			<iGoldenAgeSeaMovesChange>2</iGoldenAgeSeaMovesChange>
+			<iGoldenAgeUnitsChange>-1</iGoldenAgeUnitsChange>
+			<GoldenAgeUnitClasses>
+				<UnitClassType>UNITCLASS_GREAT_GENERAL</UnitClassType>
+			</GoldenAgeUnitClasses>
+			<iInflationModifier>-50</iInflationModifier>
 			<bInlandCanals>1</bInlandCanals>
 			<PassableTerrainsInBorders>
 				<TerrainType>TERRAIN_PEAK</TerrainType>
@@ -632,7 +637,7 @@
 			<PyOnGameStart>gainGold(pPlayer, scaleBySpeed(100 + 50 * startEra(), 'Train'))</PyOnGameStart>
 			<PyOnBeginTurn>isEveryTurns(5) and createUnits(pPlayer, 'UNITCLASS_WARRIOR', 1, capitalPlot(pPlayer))</PyOnBeginTurn>
 			<PyOnCityFounded>(addBuilding(pCity, 'BUILDINGCLASS_WALLS'), gainTraitForTurns(pPlayer, 'TRAIT_TEST_TEMPORARY', 3), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('buildRouteToCapital', str(buildRouteToCapital(pCity, 'ROUTE_ROAD', 6)))))</PyOnCityFounded>
-			<PyOnCityAcquired>addBuilding(pCity, 'BUILDINGCLASS_BARRACKS')</PyOnCityAcquired>
+			<PyOnCityAcquired>(addBuilding(pCity, 'BUILDINGCLASS_BARRACKS'), bConquest and startGoldenAge(pPlayer, 50), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnCityAcquired', cityName(pCity) + ', bConquest ' + str(bConquest) + ', golden age turns ' + str(pPlayer.getGoldenAgeTurns()))))</PyOnCityAcquired>
 			<PyOnCorporationFounded>createExecutives(pPlayer, eCorporation, 3, pCity)</PyOnCorporationFounded>
 			<PyOnCityLost>bConquest and createPartisans(pPlayer, pCity, 2 + iPopulation, iCultureLevel)</PyOnCityLost>
 			<PyOnBuildingBuilt>isBuildingClassIn(eBuilding, ['BUILDINGCLASS_GRANARY', 'BUILDINGCLASS_TEST']) and pCity.changePopulation(1)</PyOnBuildingBuilt>
@@ -650,6 +655,7 @@
 			<PyOnReligionSpread>(gainGold(pPlayer, 10), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnReligionSpread', cityName(pCity) + ', ' + infoDescription('Religion', eReligion))))</PyOnReligionSpread>
 			<PyOnCivicChanged>(gainTraitForTurns(pPlayer, 'TRAIT_TEST_TEMPORARY', 2), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnCivicChanged', infoDescription('Civic', iOldCivic) + ' -&gt; ' + infoDescription('Civic', eCivic))))</PyOnCivicChanged>
 			<PyOnCircumnavigated>(iOrder == 1 and startGoldenAge(pPlayer), iOrder &gt; 1 and gainCircumnavigationMoves(pPlayer),showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnCircumnavigated', 'iOrder ' + str(iOrder))))</PyOnCircumnavigated>
+			<PyOnPlayerEliminated>(startGoldenAge(pPlayer), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnPlayerEliminated', gc.getPlayer(iEliminatedPlayer).getCivilizationShortDescription(0) + ', golden age turns ' + str(pPlayer.getGoldenAgeTurns()))))</PyOnPlayerEliminated>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>

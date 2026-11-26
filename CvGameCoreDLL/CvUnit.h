@@ -637,6 +637,7 @@ public:
 																																														
 	int getExtraCombatPercent() const;																							// Exposed to Python					
 	int getOtherReligionCombatModifier(PlayerTypes ePlayer) const;	// added by this mod
+	int getGoldenAgeAdvantageCombatModifier(PlayerTypes ePlayer) const;	// added by this mod
 	int getStateReligionCityAttackModifier(const CvCity* pCity) const;	// added by this mod
 	void changeExtraCombatPercent(int iChange);
 

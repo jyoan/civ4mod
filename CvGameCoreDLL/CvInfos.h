@@ -570,6 +570,7 @@ public:
 	int getCombatPercentInBorders() const;			// Exposed to Python
 	int getCombatPercentOverseas() const;			// Exposed to Python (added by this mod)
 	int getOtherReligionCombatPercent() const;			// Exposed to Python (added by this mod)
+	int getGoldenAgeAdvantageCombatPercent() const;	// Exposed to Python (added by this mod)
 	int getStateReligionCityAttack() const;			// Exposed to Python (added by this mod)
 	bool isRivalTerritory() const;			// Exposed to Python (added by this mod)
 	bool isRiverNavigation() const;			// Exposed to Python (added by this mod)
@@ -701,6 +702,7 @@ protected:
 	int m_iCombatPercentInBorders;
 	int m_iCombatPercentOverseas;	// added by this mod
 	int m_iOtherReligionCombatPercent;	// added by this mod
+	int m_iGoldenAgeAdvantageCombatPercent;	// added by this mod
 	int m_iStateReligionCityAttack;	// added by this mod
 	bool m_bRivalTerritory;	// added by this mod
 	bool m_bRiverNavigation;	// added by this mod
@@ -4965,6 +4967,11 @@ public:
 	int getCorporationSpreadChange() const;		// Exposed to Python
 	int getGoldenAgeLandMovesChange() const;		// Exposed to Python
 	int getGoldenAgeSeaMovesChange() const;		// Exposed to Python
+	int getGoldenAgeUnitsChange() const;			// Exposed to Python (added by this mod)
+	int getNumGoldenAgeUnitClasses() const;		// Exposed to Python (added by this mod)
+	int getGoldenAgeUnitClass(int i) const;		// Exposed to Python (added by this mod)
+	bool isGoldenAgeUnitClass(int iUnitClass) const;	// Exposed to Python (added by this mod)
+	int getInflationModifier() const;				// Exposed to Python (added by this mod)
 	bool isInlandCanals() const;					// Exposed to Python
 	bool isBarbarianAlly() const;				// Exposed to Python
 	bool isBarbarianVision() const;				// Exposed to Python (added by this mod)
@@ -5272,6 +5279,7 @@ public:
 	const TCHAR* getPyOnCivicChanged() const;		// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnCircumnavigated() const;	// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnOtherCityFounded() const;	// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnPlayerEliminated() const;	// Exposed to Python (added by this mod)
 	int getNumConditionalFreeTraits() const;		// Exposed to Python
 	int getConditionalFreeTraitType(int i) const;	// Exposed to Python
 	const ConditionalFreeTrait& getConditionalFreeTrait(int i) const;
@@ -5353,6 +5361,9 @@ protected:
 	int m_iCorporationSpreadChange;
 	int m_iGoldenAgeLandMovesChange;
 	int m_iGoldenAgeSeaMovesChange;
+	int m_iGoldenAgeUnitsChange;	// added by this mod
+	std::vector<int> m_aiGoldenAgeUnitClasses;	// added by this mod
+	int m_iInflationModifier;	// added by this mod
 	bool m_bInlandCanals;
 	bool m_bBarbarianAlly;
 	bool m_bBarbarianVision;

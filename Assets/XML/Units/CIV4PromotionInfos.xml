@@ -4545,6 +4545,7 @@
 			<iCombatPercentInBorders>15</iCombatPercentInBorders>
 			<iCombatPercentOverseas>25</iCombatPercentOverseas>
 			<iOtherReligionCombatPercent>20</iOtherReligionCombatPercent>
+			<iGoldenAgeAdvantageCombatPercent>20</iGoldenAgeAdvantageCombatPercent>
 			<iStateReligionCityAttack>30</iStateReligionCityAttack>
 			<bRivalTerritory>1</bRivalTerritory>
 			<BonusAffinities>
