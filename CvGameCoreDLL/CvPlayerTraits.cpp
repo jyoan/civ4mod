@@ -3092,6 +3092,56 @@ bool CvPlayer::isMaxCitiesReached() const
 	return (iMaxCities >= 0 && getNumCities() >= iMaxCities);
 }
 
+// TerritoryRoutes of the traits (added by this mod): the best route (iValue) for pPlot, NO_ROUTE if none. A peak counts as
+// TERRAIN_PEAK (not its terrain), hills as their terrain and TERRAIN_HILL
+RouteTypes CvPlayer::getTerritoryRouteType(const CvPlot* pPlot) const
+{
+	RouteTypes eBestRoute = NO_ROUTE;
+	RouteTypes eRoute;
+	TerrainTypes aeTerrains[2];
+	int iNumTerrains;
+	int iI;
+	int iJ;
+
+	if (pPlot == NULL || pPlot->isWater())
+	{
+		return NO_ROUTE;
+	}
+
+	iNumTerrains = 0;
+	if (pPlot->isPeak())
+	{
+		aeTerrains[iNumTerrains++] = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_PEAK", true);
+	}
+	else
+	{
+		aeTerrains[iNumTerrains++] = pPlot->getTerrainType();
+		if (pPlot->isHills())
+		{
+			aeTerrains[iNumTerrains++] = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_HILL", true);
+		}
+	}
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (!hasTrait((TraitTypes)iI))
+		{
+			continue;
+		}
+
+		for (iJ = 0; iJ < iNumTerrains; iJ++)
+		{
+			eRoute = (RouteTypes)GC.getTraitInfo((TraitTypes)iI).getTerritoryRouteType(aeTerrains[iJ]);
+			if (eRoute != NO_ROUTE && (eBestRoute == NO_ROUTE || GC.getRouteInfo(eRoute).getValue() > GC.getRouteInfo(eBestRoute).getValue()))
+			{
+				eBestRoute = eRoute;
+			}
+		}
+	}
+
+	return eBestRoute;
+}
+
 RouteTypes CvPlayer::getFeatureRouteType(FeatureTypes eFeature) const
 {
 	RouteTypes eBestRoute = NO_ROUTE;

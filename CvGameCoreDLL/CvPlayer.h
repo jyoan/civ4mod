@@ -470,6 +470,7 @@ public:
 	bool isObsoleteBuilding(BuildingTypes eBuilding) const;				// Exposed to Python
 	// The route a feature counts as in the territory of this player (traits; the best one, added by this mod)
 	RouteTypes getFeatureRouteType(FeatureTypes eFeature) const;		// Exposed to Python
+	RouteTypes getTerritoryRouteType(const CvPlot* pPlot) const;		// added by this mod: TerritoryRoutes of the traits
 	// Civ5 abilities (added by this mod): traits (and buildings in any city for NewCityCultureLevel), on each call
 	int getGoldenAgeGreatPeopleRateModifier() const;		// Exposed to Python
 	int getTraitBonusYieldChange(BonusTypes eBonus, YieldTypes eYield) const;

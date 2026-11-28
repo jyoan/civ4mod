@@ -345,6 +345,8 @@ public:
 	bool isNoCapture() const;																							// Exposed to Python 
 	bool isRivalTerritory() const;																				// Exposed to Python 
 	bool isRiverNavigation() const;		// Exposed to Python (added by this mod)
+	bool isRiverAttack() const;			// Exposed to Python (added by this mod)
+	bool canEnterForeignCanalFort(const CvPlot* pPlot) const;	// added by this mod: bInlandCanals, forts outside our territory
 	bool canSailOnRiver(const CvPlot* pPlot) const;	// added by this mod
 	bool isFreeEmbark() const;			// Exposed to Python (added by this mod)
 	bool isMilitaryHappiness() const;																			// Exposed to Python
@@ -893,6 +895,7 @@ protected:
 	int m_iStateReligionCityAttack;	// added by this mod: of the promotions (not saved)
 	int m_iRivalTerritoryCount;	// added by this mod: promotions with bRivalTerritory (not saved)
 	int m_iRiverNavigationCount;	// added by this mod: promotions with bRiverNavigation (not saved)
+	int m_iRiverAttackCount;	// added by this mod: promotions with bRiverAttack (not saved)
 	int m_iFreeEmbarkCount;	// added by this mod: promotions with bFreeEmbark (not saved)
 	int m_iBuildingCombatCount;	// added by this mod: promotions with BuildingCombatPercents (not saved)
 	int m_iEncirclementCount;	// added by this mod: promotions with Encirclement (not saved)

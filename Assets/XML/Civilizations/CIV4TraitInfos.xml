@@ -652,6 +652,12 @@
 					<bMaintain>1</bMaintain>
 				</MaintainFeature>
 			</MaintainFeatures>
+			<TerritoryRoutes>
+				<TerritoryRoute>
+					<TerrainType>TERRAIN_HILL</TerrainType>
+					<RouteType>ROUTE_ROAD</RouteType>
+				</TerritoryRoute>
+			</TerritoryRoutes>
 			<UniqueUnits>
 				<UniqueUnit>
 					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>

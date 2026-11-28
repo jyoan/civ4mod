@@ -634,6 +634,10 @@ public:
 	int getWarWearinessCombatMaxPercent() const;			// Exposed to Python
 	// iStrongerEnemyCombatPercent (added by this mod): combat % against the players with more power (CvPlayer::getPower)
 	int getStrongerEnemyCombatPercent() const;				// Exposed to Python
+	// iCombatGoldPerStrength (added by this mod): gold for a win, a % of the base strength of the loser's unit type
+	int getCombatGoldPerStrength() const;					// Exposed to Python
+	// bRiverAttack (added by this mod): a ship with bRiverNavigation may attack (and capture) land units on river plots
+	bool isRiverAttack() const;								// Exposed to Python
 	bool readPass3();					// added by this mod: the bonuses and building classes are loaded after the promotions
 
 	const TCHAR* getSound() const;				// Exposed to Python
@@ -769,6 +773,8 @@ protected:
 	int m_iWarWearinessCombatPercent;		// added by this mod
 	int m_iWarWearinessCombatMaxPercent;	// added by this mod
 	int m_iStrongerEnemyCombatPercent;		// added by this mod
+	int m_iCombatGoldPerStrength;			// added by this mod
+	bool m_bRiverAttack;					// added by this mod
 
 	bool m_bLeader;
 	bool m_bBlitz;									
@@ -5284,6 +5290,7 @@ public:
 	int isFreePromotion(int i) const;				// Exposed to Python
 	bool isMaintainFeatures(int i) const;			// Exposed to Python
 	int getFeatureRouteType(int i) const;			// Exposed to Python
+	int getTerritoryRouteType(int iTerrain) const;	// Exposed to Python (added by this mod): TerritoryRoutes, NO_ROUTE if none
 	bool isIgnoreBuildingObsolescence() const;		// Exposed to Python
 	bool isNoObsoleteBuildingClass(int i) const;	// Exposed to Python
 	bool isNoObsoleteSpecialBuilding(int i) const;	// Exposed to Python
@@ -5673,6 +5680,9 @@ protected:
 	int* m_paiFeatureRoute;							// FeatureRoutes: the route type of each feature (NO_ROUTE: none)
 	std::vector<int> m_aiFeatureRouteFeatures;		// read() keeps the route types as strings until readPass3()
 	std::vector<CvString> m_aszFeatureRouteTypes;
+	std::vector<int> m_aiTerritoryRoute;			// TerritoryRoutes: the route type of each terrain, empty when none (added by this mod)
+	std::vector<int> m_aiTerritoryRouteTerrains;	// read() keeps the route types as strings until readPass3()
+	std::vector<CvString> m_aszTerritoryRouteTypes;
 	bool m_bIgnoreBuildingObsolescence;
 	bool* m_pabNoObsoleteBuildingClass;				// NULL when not set
 	bool* m_pabNoObsoleteSpecialBuilding;			// NULL when not set

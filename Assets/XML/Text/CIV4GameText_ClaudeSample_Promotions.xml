@@ -533,4 +533,22 @@
 		<Spanish>[ICON_BULLET]%D1%%[ICON_STRENGTH] against civilizations with more military power</Spanish>
 		<Japanese>[ICON_BULLET]&#36557;&#20107;&#21147;&#12364;&#33258;&#22269;&#12424;&#12426;&#19978;&#12398;&#25991;&#26126;&#12392;&#12398;&#25126;&#38360;&#12391;[ICON_STRENGTH] %D1%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_RIVER_ATTACK</Tag>
+		<English>[ICON_BULLET]Can attack and capture land units on river plots</English>
+		<French>[ICON_BULLET]Can attack and capture land units on river plots</French>
+		<German>[ICON_BULLET]Can attack and capture land units on river plots</German>
+		<Italian>[ICON_BULLET]Can attack and capture land units on river plots</Italian>
+		<Spanish>[ICON_BULLET]Can attack and capture land units on river plots</Spanish>
+		<Japanese>[ICON_BULLET]&#24029;&#12398;&#38520;&#12398;&#12479;&#12452;&#12523;&#12395;&#12356;&#12427;&#38520;&#12398;&#12518;&#12491;&#12483;&#12488;&#12434;&#25915;&#25731;&#12539;&#25429;&#29554;&#12391;&#12365;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_COMBAT_GOLD_PER_STRENGTH</Tag>
+		<English>[ICON_BULLET]Each victory gives [ICON_GOLD] %d1%% of the base [ICON_STRENGTH] of the defeated unit (scaled by game speed)</English>
+		<French>[ICON_BULLET]Each victory gives [ICON_GOLD] %d1%% of the base [ICON_STRENGTH] of the defeated unit (scaled by game speed)</French>
+		<German>[ICON_BULLET]Each victory gives [ICON_GOLD] %d1%% of the base [ICON_STRENGTH] of the defeated unit (scaled by game speed)</German>
+		<Italian>[ICON_BULLET]Each victory gives [ICON_GOLD] %d1%% of the base [ICON_STRENGTH] of the defeated unit (scaled by game speed)</Italian>
+		<Spanish>[ICON_BULLET]Each victory gives [ICON_GOLD] %d1%% of the base [ICON_STRENGTH] of the defeated unit (scaled by game speed)</Spanish>
+		<Japanese>[ICON_BULLET]&#21213;&#12388;&#12383;&#12403;&#12395;&#12289;&#20498;&#12375;&#12383;&#12518;&#12491;&#12483;&#12488;&#12398;&#22522;&#26412;&#12398;[ICON_STRENGTH]&#12398; %d1%% &#12398;[ICON_GOLD]&#65288;&#12466;&#12540;&#12512;&#12398;&#36895;&#24230;&#12391;&#22793;&#12431;&#12427;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

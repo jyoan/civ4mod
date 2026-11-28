@@ -5229,6 +5229,14 @@ void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotG
 				}
 
 				updatePlotGroupBonus(true);
+
+				// TerritoryRoutes of the traits of the new owner (added by this mod): a route, once, when the plot becomes ours
+				// (no tech needed; a pillaged route is not rebuilt). A better route stays
+				RouteTypes eTerritoryRoute = GET_PLAYER(getOwnerINLINE()).getTerritoryRouteType(this);
+				if (eTerritoryRoute != NO_ROUTE && (getRouteType() == NO_ROUTE || GC.getRouteInfo(getRouteType()).getValue() < GC.getRouteInfo(eTerritoryRoute).getValue()))
+				{
+					setRouteType(eTerritoryRoute, false);
+				}
 			}
 
 			pUnitNode = headUnitNode();
