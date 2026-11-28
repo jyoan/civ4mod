@@ -2176,6 +2176,7 @@
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
+			<iStartBiasCoastal>100</iStartBiasCoastal>
 			<DerivativeCiv>CIVILIZATION_KOREA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_JAPAN_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_JAPAN_ORDER</CivilizationActionSound>
@@ -2957,6 +2958,7 @@
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
+			<iStartBiasCoastal>100</iStartBiasCoastal>
 			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_NETHERLANDS_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_NETHERLANDS_ORDER</CivilizationActionSound>
@@ -3327,6 +3329,7 @@
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
+			<iStartBiasCoastal>100</iStartBiasCoastal>
 			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_PORTUGAL_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_PORTUGAL_ORDER</CivilizationActionSound>
@@ -3689,6 +3692,7 @@
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
+			<iStartBiasCoastal>100</iStartBiasCoastal>
 			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_SPAIN_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_SPAIN_ORDER</CivilizationActionSound>
@@ -3910,6 +3914,7 @@
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
+			<iStartBiasCoastal>100</iStartBiasCoastal>
 			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_VIKING_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_VIKING_ORDER</CivilizationActionSound>
