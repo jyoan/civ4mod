@@ -418,6 +418,24 @@
 		<Japanese>[COLOR_POSITIVE_TEXT]%s1_FeatName&#12399;&#27531;&#12426;&#12414;&#12377;[COLOR_REVERT]</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_ACTION_DIG_RIVER</Tag>
+		<English>Digs a river along this edge (fresh water, river trade and yields)</English>
+		<French>Digs a river along this edge (fresh water, river trade and yields)</French>
+		<German>Digs a river along this edge (fresh water, river trade and yields)</German>
+		<Italian>Digs a river along this edge (fresh water, river trade and yields)</Italian>
+		<Spanish>Digs a river along this edge (fresh water, river trade and yields)</Spanish>
+		<Japanese>&#12371;&#12398;&#36794;&#12395;&#24029;&#12434;&#25496;&#12427;&#65288;&#30495;&#27700;&#12289;&#24029;&#12398;&#20132;&#26131;&#12392;&#29987;&#20986;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_ACTION_DIG_RIVER_FEATURE</Tag>
+		<English>Your plots along it may become %s1_FeatName</English>
+		<French>Your plots along it may become %s1_FeatName</French>
+		<German>Your plots along it may become %s1_FeatName</German>
+		<Italian>Your plots along it may become %s1_FeatName</Italian>
+		<Spanish>Your plots along it may become %s1_FeatName</Spanish>
+		<Japanese>&#27839;&#12387;&#12383;&#33258;&#22269;&#12398;&#12479;&#12452;&#12523;&#12399;%s1_FeatName&#12395;&#12394;&#12427;&#12371;&#12392;&#12364;&#12354;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_SETTLED_SPECIALIST_NUM</Tag>
 		<English>%d2_Num settled %s1_Specialist</English>
 		<French>%d2_Num settled %s1_Specialist</French>

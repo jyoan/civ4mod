@@ -3279,6 +3279,10 @@ public:
 	int getUnitsFromBuild() const;				// Exposed to Python
 	bool isCivilizationUnique() const;			// a civilization has it in UniqueBuilds (added by this mod)
 	void setCivilizationUnique(bool bNewValue);
+	// RiverEdge, RiverFeature and iMaxPlotRiverEdges (added by this mod): the build digs a river (canal)
+	int getRiverEdge() const;				// Exposed to Python
+	int getRiverFeature() const;				// Exposed to Python
+	int getMaxPlotRiverEdges() const;				// Exposed to Python
 
 	// Arrays
 
@@ -3308,6 +3312,9 @@ protected:
 	int m_iUnitsFromBuild;
 	bool m_bCivilizationUnique;
 	std::vector<int> m_aiPrereqOrTraits;
+	int m_iRiverEdge;
+	int m_iRiverFeature;
+	int m_iMaxPlotRiverEdges;
 
 	// Arrays
 

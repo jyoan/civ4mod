@@ -116,6 +116,10 @@ public:
 	bool isRiverConnection(DirectionTypes eDirection) const;																		// Exposed to Python
 	bool isRiverPassage(const CvPlot* pFromPlot) const;	// added by this mod: a ship on a river may come here from pFromPlot
 	int getRiverEdgeCount() const;	// Exposed to Python (added by this mod): the edges with a river, 0 to 4
+	// Digging rivers (RiverEdge of a build, added by this mod)
+	bool isRiverEdge(DirectionTypes eEdge) const;	// Exposed to Python
+	bool canDigRiver(BuildTypes eBuild, TeamTypes eTeam) const;
+	void digRiver(BuildTypes eBuild, TeamTypes eTeam);
 
 	CvPlot* getNearestLandPlotInternal(int iDistance) const;
 	int getNearestLandArea() const;																															// Exposed to Python

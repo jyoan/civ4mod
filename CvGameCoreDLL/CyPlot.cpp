@@ -124,6 +124,11 @@ int CyPlot::getRiverEdgeCount()
 	return m_pPlot ? m_pPlot->getRiverEdgeCount() : 0;
 }
 
+bool CyPlot::isRiverEdge(int /*DirectionTypes*/ eEdge)
+{
+	return m_pPlot ? m_pPlot->isRiverEdge((DirectionTypes)eEdge) : false;
+}
+
 bool CyPlot::isOverseas(int /*PlayerTypes*/ ePlayer)
 {
 	return m_pPlot ? m_pPlot->isOverseas((PlayerTypes)ePlayer) : false;
