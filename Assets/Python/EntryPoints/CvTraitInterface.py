@@ -66,6 +66,9 @@
 ##   PyOnLastReligionClaimed  pPlayer, eTrait, pCity (the holy city), eReligion: after the player founds a religion by
 ##                     bClaimLastReligion (after PyOnReligionFounded), e.g.
 ##                     createUnits(pPlayer, 'UNITCLASS_PROPHET', 1, pCity.plot())
+##   PyOnOtherReligionFounded  pPlayer, eTrait, pCity (the holy city, of the founder), eReligion, iFounder: after another
+##                     player alive founds the religion (after its own PyOnReligionFounded and after bOtherReligionsToCapital
+##                     spread it to our capital), e.g. createMissionaries(pPlayer, eReligion, 1, pPlayer.getCapitalCity())
 ## Counters: each player has a number per trait for the hooks (CyPlayer.getTraitCounter, saved with the game), e.g.
 ##   countEvery(pPlayer, eTrait, 3) and gainGold(pPlayer, 100)   (every third time)
 ## Temporary traits: gainTraitForTurns(pPlayer, 'TRAIT_X', iTurns) gives a trait for some turns, e.g. from a hook.
@@ -189,3 +192,7 @@ def onImprovementChanged(argsList):
 def onLastReligionClaimed(argsList):
 	pPlayer, eTrait, pCity, eReligion = argsList
 	eval(gc.getTraitInfo(eTrait).getPyOnLastReligionClaimed())
+
+def onOtherReligionFounded(argsList):
+	pPlayer, eTrait, pCity, eReligion, iFounder = argsList
+	eval(gc.getTraitInfo(eTrait).getPyOnOtherReligionFounded())

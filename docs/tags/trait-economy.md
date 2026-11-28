@@ -152,17 +152,6 @@
 - 資源は志向より後に読み込まれるので、`readPass3()` で番号に変える。
 - 説明文は地形・地形の特徴・施設と同じ行にまとめる
 
-## `TraitInfo/iHappinessPerReligion`、`CommercePerReligion`
-
-- ファイル: `CIV4TraitInfos.xml`
-- 都市にある宗教 1 つにつき、その都市の幸福（マイナスなら不満）と商業（`<iCommerce>` は金・研究・文化・諜報の順）を足す（インドの「多宗教の受容」）。
-- 幸福はその都度数える（`CvCity::getTraitReligionHappiness`。`happyLevel`・`unhappyLevel`、都市の幸福の内訳に「都市の宗教の数により」の行 `TXT_KEY_HAPPY_TRAIT_RELIGIONS` / `TXT_KEY_ANGER_TRAIT_RELIGIONS`）。
-- 商業は BtS の宗教の商業（聖都の聖堂など）の合計に足す（`CvCity::getTraitReligionCommerce`、`updateReligionCommerce`）ので、宗教が広まった・消えたときに計算し直され、都市画面の内訳では宗教の分に入る。
-- 志向が変わったときは `updateTraitDependents` が全都市の宗教の商業を計算し直す。
-- 志向の値の合計（`CvPlayer::getHappinessPerReligion` / `getCommercePerReligion`）。
-- 説明文 `TXT_KEY_TRAIT_HAPPINESS_PER_RELIGION`・`TXT_KEY_TRAIT_COMMERCE_PER_RELIGION`（「都市の宗教1つにつき+1[文化]」）。
-- Python は `CyPlayer` / `CvTraitInfo` の同名の関数
-
 ## `TraitInfo/WorldWonderCommerceChanges`、`GlobalWorldWonderCommerceChanges`
 
 - ファイル: `CIV4TraitInfos.xml`

@@ -288,6 +288,11 @@ public:
 	int getAttitudeCombatPercentOf(AttitudeTypes eAttitude) const;	// added by this mod: before the caps, for the help texts
 	int getHappinessPerReligion() const;	// Exposed to Python (added by this mod)
 	int getCommercePerReligion(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
+	int getCommercePercentPerReligion(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
+	int getExperiencePerReligion() const;	// Exposed to Python (added by this mod)
+	int getGreatPeopleRatePerReligion() const;	// Exposed to Python (added by this mod)
+	bool isOtherReligionsToCapital() const;	// Exposed to Python (added by this mod)
+	bool isNoForeignCultureAnger() const;	// Exposed to Python (added by this mod)
 	int getTraitDefenseCombatPercent() const;	// Exposed to Python (added by this mod)
 	int getTraitWorldWonderCommerce(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
 	int getTraitGlobalWorldWonderCommerce(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)

@@ -849,6 +849,11 @@ void CvPlayer::doTraitPythonHook(TraitPythonHookTypes eHook, CvCity* pCity, Play
 	{
 		aiArgs.push_back((int)eReligion);
 	}
+	else if (eHook == TRAIT_PYHOOK_OTHER_RELIGION_FOUNDED)
+	{
+		aiArgs.push_back((int)eReligion);
+		aiArgs.push_back((int)eOldOwner);	// the founder
+	}
 
 	callTraitPythonHook(eHook, NULL, pCity, aiArgs);
 }
@@ -883,7 +888,7 @@ void CvPlayer::callTraitPythonHook(TraitPythonHookTypes eHook, CvUnit* pUnit, Cv
 		return;
 	}
 
-	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onBuildingBuilt", "onReligionFounded", "onGained", "onLost", "onTechAcquired", "onGreatPersonBorn", "onGoldenAgeStart", "onGoldenAgeEnd", "onWarDeclared", "onPeaceMade", "onEraChanged", "onFirstContact", "onProjectBuilt", "onVassalGained", "onReligionSpread", "onCivicChanged", "onCircumnavigated", "onOtherCityFounded", "onPlayerEliminated", "onImprovementChanged", "onLastReligionClaimed" };	// onGained and onLost: doTraitGainedPythonHook
+	static const char* aszFunctions[NUM_TRAIT_PYHOOK_TYPES] = { "onGameStart", "onBeginTurn", "onCityFounded", "onCityAcquired", "onCorporationFounded", "onCityLost", "onBuildingBuilt", "onReligionFounded", "onGained", "onLost", "onTechAcquired", "onGreatPersonBorn", "onGoldenAgeStart", "onGoldenAgeEnd", "onWarDeclared", "onPeaceMade", "onEraChanged", "onFirstContact", "onProjectBuilt", "onVassalGained", "onReligionSpread", "onCivicChanged", "onCircumnavigated", "onOtherCityFounded", "onPlayerEliminated", "onImprovementChanged", "onLastReligionClaimed", "onOtherReligionFounded" };	// onGained and onLost: doTraitGainedPythonHook
 	bool bHasUnit = (eHook == TRAIT_PYHOOK_GREAT_PERSON_BORN);
 	bool bHasCity = (pCity != NULL || eHook == TRAIT_PYHOOK_GREAT_PERSON_BORN);
 	CyPlayer* pyPlayer;
@@ -3504,6 +3509,33 @@ int CvPlayer::getHappinessPerReligion() const
 int CvPlayer::getCommercePerReligion(CommerceTypes eCommerce) const
 {
 	return sumTraitValues(&CvTraitInfo::getCommercePerReligion, eCommerce);
+}
+
+// CommercePercentPerReligion, iExperiencePerReligion, iGreatPeopleRatePerReligion, bOtherReligionsToCapital and
+// bNoForeignCultureAnger of the traits (added by this mod)
+int CvPlayer::getCommercePercentPerReligion(CommerceTypes eCommerce) const
+{
+	return sumTraitValues(&CvTraitInfo::getCommercePercentPerReligion, eCommerce);
+}
+
+int CvPlayer::getExperiencePerReligion() const
+{
+	return sumTraitValues(&CvTraitInfo::getExperiencePerReligion);
+}
+
+int CvPlayer::getGreatPeopleRatePerReligion() const
+{
+	return sumTraitValues(&CvTraitInfo::getGreatPeopleRatePerReligion);
+}
+
+bool CvPlayer::isOtherReligionsToCapital() const
+{
+	return hasTraitFlag(&CvTraitInfo::isOtherReligionsToCapital);
+}
+
+bool CvPlayer::isNoForeignCultureAnger() const
+{
+	return hasTraitFlag(&CvTraitInfo::isNoForeignCultureAnger);
 }
 
 int CvPlayer::getTraitDefenseCombatPercent() const

@@ -5115,6 +5115,12 @@ public:
 	int getCombatPercent() const;			// Exposed to Python (added by this mod)
 	int getHappinessPerReligion() const;		// Exposed to Python (added by this mod)
 	int getCommercePerReligion(int i) const;	// Exposed to Python (added by this mod)
+	int getCommercePercentPerReligion(int i) const;	// Exposed to Python (added by this mod)
+	int getExperiencePerReligion() const;		// Exposed to Python (added by this mod)
+	int getGreatPeopleRatePerReligion() const;	// Exposed to Python (added by this mod)
+	bool isSpecialBuildingNotRequired(int i) const;	// Exposed to Python (added by this mod), as the civics
+	bool isOtherReligionsToCapital() const;		// Exposed to Python (added by this mod)
+	bool isNoForeignCultureAnger() const;		// Exposed to Python (added by this mod)
 	int getDefenseCombatPercent() const;		// Exposed to Python (added by this mod)
 	int getAttitudeCombatPercent(int eAttitude) const;	// Exposed to Python (AttitudeCombatPercents, added by this mod)
 	int getAttitudeCombatMaxPercent() const;	// Exposed to Python (AttitudeCombatPercents/iMaxPercent, added by this mod)
@@ -5325,6 +5331,7 @@ public:
 	const TCHAR* getPyOnPlayerEliminated() const;	// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnImprovementChanged() const;	// Exposed to Python (added by this mod)
 	const TCHAR* getPyOnLastReligionClaimed() const;	// Exposed to Python (added by this mod)
+	const TCHAR* getPyOnOtherReligionFounded() const;	// Exposed to Python (added by this mod)
 	int getNumConditionalFreeTraits() const;		// Exposed to Python
 	int getConditionalFreeTraitType(int i) const;	// Exposed to Python
 	const ConditionalFreeTrait& getConditionalFreeTrait(int i) const;
@@ -5514,6 +5521,14 @@ protected:
 	int m_iCombatPercent;	// added by this mod
 	int m_iHappinessPerReligion;	// added by this mod
 	int* m_paiCommercePerReligion;	// added by this mod: [commerce]
+	int* m_paiCommercePercentPerReligion;	// added by this mod: [commerce]
+	int m_iExperiencePerReligion;	// added by this mod
+	int m_iGreatPeopleRatePerReligion;	// added by this mod
+	bool* m_pabSpecialBuildingNotRequired;	// added by this mod: [special building], NULL when not set
+	std::vector<CvString> m_aszSpecialBuildingNotRequiredTypes;	// as strings until readPass3()
+	std::vector<int> m_aiSpecialBuildingNotRequiredValues;
+	bool m_bOtherReligionsToCapital;	// added by this mod
+	bool m_bNoForeignCultureAnger;	// added by this mod
 	int m_iDefenseCombatPercent;	// added by this mod
 	std::vector<int> m_aiAttitudeCombatPercent;	// added by this mod: per attitude, empty when not set
 	int m_iAttitudeCombatMaxPercent;	// added by this mod: -1 = no cap

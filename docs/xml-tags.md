@@ -7,6 +7,7 @@
 | `docs/tags/trait-economy.md` | 志向: 産出・商業・幸福・健康・偉人・黄金時代・交易路 |
 | `docs/tags/trait-military.md` | 志向: ユニット・戦闘・征服・昇進・経験値・維持費 |
 | `docs/tags/trait-territory.md` | 志向: 地形・地形の特徴・国境・移動・運河・道・蛮族・資源の発見 |
+| `docs/tags/trait-religion.md` | 志向: 宗教の数による効果、宣教師、宗教の伝播（`PyOnOtherReligionFounded` も）、文化による不満 |
 | `docs/tags/trait-cities.md` | 志向: 都市・都市圏・都市の数・文化圏・新しい都市・文化による反乱 |
 | `docs/tags/trait-rules.md` | 志向: 社会制度・技術・陳腐化・固有ユニット・緊急生産・ランダムイベント・施設の固定 |
 | `docs/tags/trait-diplomacy.md` | 志向: 外交（属国 `bHumanCanBeVassal`・`FoundingVassal`、情報の公開 `bReveal...`、取引 `Deals`、レンドリース `LendLease`） |

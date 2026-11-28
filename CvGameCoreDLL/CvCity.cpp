@@ -2703,6 +2703,9 @@ int CvCity::getProductionExperience(UnitTypes eUnit)
 		}
 	}
 
+	// iExperiencePerReligion of the traits of the owner (added by this mod): for each religion in the city
+	iExperience += GET_PLAYER(getOwnerINLINE()).getExperiencePerReligion() * getReligionCount();
+
 	return std::max(0, iExperience);
 }
 
@@ -4687,6 +4690,12 @@ int CvCity::getCulturePercentAnger() const
 	int iCulture;
 	int iI;
 
+	// bNoForeignCultureAnger of the traits of the owner (added by this mod)
+	if (GET_PLAYER(getOwnerINLINE()).isNoForeignCultureAnger())
+	{
+		return 0;
+	}
+
 	iTotalCulture = plot()->countTotalCulture();
 
 	if (iTotalCulture == 0)
@@ -6178,6 +6187,9 @@ int CvCity::getTotalGreatPeopleRateModifier() const
 	iModifier = getGreatPeopleRateModifier();
 
 	iModifier += GET_PLAYER(getOwnerINLINE()).getGreatPeopleRateModifier();
+
+	// iGreatPeopleRatePerReligion of the traits of the owner (added by this mod): for each religion in the city
+	iModifier += GET_PLAYER(getOwnerINLINE()).getGreatPeopleRatePerReligion() * getReligionCount();
 
 	if (GET_PLAYER(getOwnerINLINE()).getStateReligion() != NO_RELIGION)
 	{
@@ -9537,7 +9549,10 @@ int CvCity::getSpecialistTypeExtraCommerce(CommerceTypes eIndex) const
 
 int CvCity::getTotalCommerceRateModifier(CommerceTypes eIndex) const
 {
-	return std::max(0, (getCommerceRateModifier(eIndex) + GET_PLAYER(getOwnerINLINE()).getCommerceRateModifier(eIndex) + ((isCapital()) ? GET_PLAYER(getOwnerINLINE()).getCapitalCommerceRateModifier(eIndex) : 0) + 100));
+	// CommercePercentPerReligion of the traits of the owner (added by this mod): for each religion in the city
+	int iReligionModifier = GET_PLAYER(getOwnerINLINE()).getCommercePercentPerReligion(eIndex) * getReligionCount();
+
+	return std::max(0, (getCommerceRateModifier(eIndex) + GET_PLAYER(getOwnerINLINE()).getCommerceRateModifier(eIndex) + ((isCapital()) ? GET_PLAYER(getOwnerINLINE()).getCapitalCommerceRateModifier(eIndex) : 0) + iReligionModifier + 100));
 }
 
 

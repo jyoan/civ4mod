@@ -8983,6 +8983,29 @@ void CvPlayer::foundReligion(ReligionTypes eReligion, ReligionTypes eSlotReligio
 		if (GC.getGameINLINE().isFinalInitialized() && !gDLL->GetWorldBuilderMode())
 		{
 			doTraitPythonHook(TRAIT_PYHOOK_RELIGION_FOUNDED, pBestCity, NO_PLAYER, false, false, NO_CORPORATION, 0, NO_CULTURELEVEL, NO_BUILDING, eReligion);
+
+			// bOtherReligionsToCapital and PyOnOtherReligionFounded of the traits of the other players alive (added by this
+			// mod): the religion spreads to their capital (not for the religions founded before), then the hook with the
+			// holy city, the religion and the founder
+			for (int iOther = 0; iOther < MAX_PLAYERS; iOther++)
+			{
+				CvPlayer& kOther = GET_PLAYER((PlayerTypes)iOther);
+				if (iOther == getID() || !kOther.isAlive())
+				{
+					continue;
+				}
+
+				if (kOther.isOtherReligionsToCapital())
+				{
+					CvCity* pOtherCapital = kOther.getCapitalCity();
+					if (pOtherCapital != NULL && !pOtherCapital->isHasReligion(eReligion))
+					{
+						pOtherCapital->setHasReligion(eReligion, true, true, true);
+					}
+				}
+
+				kOther.doTraitPythonHook(TRAIT_PYHOOK_OTHER_RELIGION_FOUNDED, pBestCity, getID(), false, false, NO_CORPORATION, 0, NO_CULTURELEVEL, NO_BUILDING, eReligion);
+			}
 		}
 	}
 }
@@ -13125,7 +13148,8 @@ int CvPlayer::getSpecialBuildingNotRequiredCount(SpecialBuildingTypes eIndex) co
 
 bool CvPlayer::isSpecialBuildingNotRequired(SpecialBuildingTypes eIndex) const
 {
-	return (getSpecialBuildingNotRequiredCount(eIndex) > 0);
+	// Also SpecialBuildingNotRequireds of the traits (added by this mod)
+	return (getSpecialBuildingNotRequiredCount(eIndex) > 0 || hasTraitFlag(&CvTraitInfo::isSpecialBuildingNotRequired, (int)eIndex));
 }
 
 

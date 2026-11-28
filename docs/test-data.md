@@ -215,6 +215,7 @@
 - 2026-11-26 の分（`NearbyCityCommerce`）: 3 タイル以内にある自分のほかの都市 1 つにつき研究 +1・文化 +1、首都では 2 倍（`iRange` 3・`bDoubleInCapital` 1）。
 - 2026-11-26 の分（`GreatPeopleHurry`）: 偉人バーのクリックで足りない偉人ポイントを 1 ポイントあたり 3 ゴールドで購入し、その場で偉大な芸術家が生まれる（`iGoldPerPoint` 3・`UnitClassType` `UNITCLASS_ARTIST`）。種類を指定しない版は `TRAIT_TEST_AI`。
 - 2026-11-26 の分（`bClaimLastReligion`）: 他の文明が最後から 2 番目の宗教を創始すると、最後の宗教の技術を得て創始する。創始すると聖地に大預言者を出し、イベントログに「[検証] PyOnLastReligionClaimed: 都市名, 宗教名」（`PyOnLastReligionClaimed`）。
+- 2026-11-28 の分（インド・ザラ・ヤコブ・スレイマンの案）: 都市の宗教 1 つにつき研究 +5%（`CommercePercentPerReligion`）・その都市で作ったユニットの経験値 +1（`iExperiencePerReligion`）・偉人率 +10%（`iGreatPeopleRatePerReligion`）、僧院なしで宣教師を作れる（`SpecialBuildingNotRequireds`）、ほかの文明が宗教を創始すると首都に広まる（`bOtherReligionsToCapital`）、他国の文化による不満なし（`bNoForeignCultureAnger`）。ほかの文明が宗教を創始すると、イベントログに「[検証] PyOnOtherReligionFounded: 聖地の都市名, 宗教名, 創始した文明」（`PyOnOtherReligionFounded`）。
 - 確かめ方: 中世の時代で始めると、古代と古典時代の技術の宗教 5 つは 5 ターン経過後にまとめて創始され（`CvGame::doHolyCity`）、キリスト教（神学 500）とイスラム教（神授王権 1200）が残る。自分では両方を研究しない。
 
 ## `TRAIT_TEST_TEMPORARY`（検証用志向（期間））

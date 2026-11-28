@@ -2153,4 +2153,58 @@
 		<Spanish>[ICON_BULLET]Builds %s1 on the plots that become yours: </Spanish>
 		<Japanese>[ICON_BULLET]&#38936;&#22303;&#12395;&#12394;&#12387;&#12383;&#12479;&#12452;&#12523;&#12395;%s1&#12434;&#25975;&#12367;: </Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_COMMERCE_PERCENT_PER_RELIGION</Tag>
+		<English>[ICON_BULLET]%D1%%%F2 in each city for each religion in it</English>
+		<French>[ICON_BULLET]%D1%%%F2 in each city for each religion in it</French>
+		<German>[ICON_BULLET]%D1%%%F2 in each city for each religion in it</German>
+		<Italian>[ICON_BULLET]%D1%%%F2 in each city for each religion in it</Italian>
+		<Spanish>[ICON_BULLET]%D1%%%F2 in each city for each religion in it</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12398;&#23447;&#25945; 1 &#12388;&#12395;&#12388;&#12365;&#12289;&#12381;&#12398;&#37117;&#24066;&#12398;%F2%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_EXPERIENCE_PER_RELIGION</Tag>
+		<English>[ICON_BULLET]Units built in a city get %D1 experience for each religion in it</English>
+		<French>[ICON_BULLET]Units built in a city get %D1 experience for each religion in it</French>
+		<German>[ICON_BULLET]Units built in a city get %D1 experience for each religion in it</German>
+		<Italian>[ICON_BULLET]Units built in a city get %D1 experience for each religion in it</Italian>
+		<Spanish>[ICON_BULLET]Units built in a city get %D1 experience for each religion in it</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12398;&#23447;&#25945; 1 &#12388;&#12395;&#12388;&#12365;&#12289;&#12381;&#12398;&#37117;&#24066;&#12391;&#20316;&#12387;&#12383;&#12518;&#12491;&#12483;&#12488;&#12398;&#32076;&#39443;&#20516;%D1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GREAT_PEOPLE_RATE_PER_RELIGION</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] in each city for each religion in it</English>
+		<French>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] in each city for each religion in it</French>
+		<German>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] in each city for each religion in it</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] in each city for each religion in it</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] in each city for each religion in it</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12398;&#23447;&#25945; 1 &#12388;&#12395;&#12388;&#12365;&#12289;&#12381;&#12398;&#37117;&#24066;&#12398;[ICON_GREATPEOPLE]%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_SPECIAL_BUILDING_NOT_REQUIRED</Tag>
+		<English>[ICON_BULLET]Can train missionaries without a %s1_Building</English>
+		<French>[ICON_BULLET]Can train missionaries without a %s1_Building</French>
+		<German>[ICON_BULLET]Can train missionaries without a %s1_Building</German>
+		<Italian>[ICON_BULLET]Can train missionaries without a %s1_Building</Italian>
+		<Spanish>[ICON_BULLET]Can train missionaries without a %s1_Building</Spanish>
+		<Japanese>[ICON_BULLET]%s1_Building&#12364;&#12394;&#12367;&#12390;&#12418;&#23459;&#25945;&#24107;&#12434;&#20316;&#12428;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_OTHER_RELIGIONS_TO_CAPITAL</Tag>
+		<English>[ICON_BULLET]A religion founded by another civilization spreads to your capital</English>
+		<French>[ICON_BULLET]A religion founded by another civilization spreads to your capital</French>
+		<German>[ICON_BULLET]A religion founded by another civilization spreads to your capital</German>
+		<Italian>[ICON_BULLET]A religion founded by another civilization spreads to your capital</Italian>
+		<Spanish>[ICON_BULLET]A religion founded by another civilization spreads to your capital</Spanish>
+		<Japanese>[ICON_BULLET]&#12411;&#12363;&#12398;&#25991;&#26126;&#12364;&#23447;&#25945;&#12434;&#21109;&#22987;&#12377;&#12427;&#12392;&#12289;&#39318;&#37117;&#12395;&#12381;&#12398;&#23447;&#25945;&#12364;&#24195;&#12414;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_NO_FOREIGN_CULTURE_ANGER</Tag>
+		<English>[ICON_BULLET]No unhappiness from the culture of other civilizations</English>
+		<French>[ICON_BULLET]No unhappiness from the culture of other civilizations</French>
+		<German>[ICON_BULLET]No unhappiness from the culture of other civilizations</German>
+		<Italian>[ICON_BULLET]No unhappiness from the culture of other civilizations</Italian>
+		<Spanish>[ICON_BULLET]No unhappiness from the culture of other civilizations</Spanish>
+		<Japanese>[ICON_BULLET]&#20182;&#22269;&#12398;&#25991;&#21270;&#12395;&#12424;&#12427;&#19981;&#28288;&#12364;&#12394;&#12356;</Japanese>
+	</TEXT>
 </Civ4GameText>
