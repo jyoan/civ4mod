@@ -99,10 +99,12 @@ BtS の効果はそのままにして足す。
 | `NoObsolescence/BuildingClasses` の世界遺産 | ラムセス２世 |
 | `PrereqTech` + `iFreeSpecialist` | リンカーン |
 | `iImprovementUpgradeRateModifier`、`bImprovementUpgradeUnworked` | アメリカ |
-| `iDistantTradeRouteModifier` | ハトシェプスト |
-| `iCityRadiusChange` | スーリヤヴァルマン2世 |
+| `iDistantTradeRouteModifier` | 誰も持たない（2026-11-28 にハトシェプストを `iForeignTradeRouteModifier`・`TradeYieldModifiers` の食料・生産に替えた） |
+| `iCityRadiusChange` | スーリヤヴァルマン2世（アンコールは 2026-11-28 にロシアへ移した）。ロシア |
+| `CityPlotBuildingProductionModifiers` のジャングル・世界遺産、`FeatureConversions`（森 → ジャングル）、`StartBias/Features` のジャングル | スーリヤヴァルマン2世 |
+| `CityPlotBuildingProductionModifiers` の丘陵・宗教建築 | エチオピア |
 | `iGoldenAgeLandMovesChange`、`bGoldenAge` + `iCombatPercent`、`GoldenAgeUnitClasses`（大将軍）、`iGoldenAgeUnitsChange`、昇進の `iGoldenAgeAdvantageCombatPercent` | ペルシャ |
-| `WorldWonderCommerceChanges` の文化 | ルイ14世 |
+| `WorldWonderCommerceChanges` の文化、`iWonderProductionCulturePercent` | ルイ14世 |
 | `RiverEdgeYieldPercents` | シュメール |
 | 偵察ユニットへの `bChooseGoody`・歩哨の昇進、首都の建設時の斥候（`PyOnCityFounded`） | ジョアン2世 |
 | `Hurrys` の資金（制限なし）、大商人の `UniqueUnits` | マンサ・ムサ |
@@ -113,7 +115,7 @@ BtS の効果はそのままにして足す。
 | 昇進の `iCombatPercentOverseas`、艦船への `iMovesChange` の昇進と戦闘術Ⅰ、`UnitCombatProductionModifiers` の海洋 | イギリス |
 | 都市のタイルを丘陵にする（`PyOnCityFounded` の `makeCityPlotHills`） | エチオピア |
 | `Conscription` の一式（`iMaxConscript`・`iPopulationModifier`・`iMinCityPopulationChange`・`iMinCulturePercentChange`・`iPopAngerChange`・`iAngerLengthPercent`・`bNoExperiencePenalty`） | ズールー |
-| `GlobalWorldWonderCommerceChanges` の研究 | ヴィクトリア |
+| `GlobalWorldWonderCommerceChanges` の研究、`iWonderGreatPeopleTurns` | ヴィクトリア |
 | `iGoldenAgeModifier`、`iGoldenAgeGreatPeopleRateModifier`、`PyOnGreatPersonBorn` の `extendGoldenAge`、`bGoldenAge` + `CommerceModifiers` の文化 | ペリクレス |
 | 昇進の `iCombatGoldStealPercent`・`iCombatGoldPerStrength`（2026-11-28 に `iGoldFromCombat` から替えた） | ブレヌス |
 | `NoObsolescence/SpecialBuildings` の僧院、`PyOnReligionFounded`、`PyOnBuildingBuilt` の僧院で宣教師、`SpecialBuildingProductionModifiers` の大聖堂 | ユスティニアヌス1世 |
@@ -193,11 +195,12 @@ BtS の効果はそのままにして足す。
 | ラムセス２世 | 我が名はオジマンディアス（2026-11-28 に「永遠の記念碑」から改名。短縮名「王」）: すべての世界遺産が陳腐化しない（BtS で陳腐化する 13 個を並べた） | `NoObsolescence/BuildingClasses` | 実装済み `TRAIT_ETERNAL_MONUMENTS` |
 | リンカーン | 奴隷解放: 自由主義を得ると全都市に無償の専門家 +1 | `PrereqTech` で `TRAIT_EMANCIPATION_ACT`（`iFreeSpecialist`） | 実装済み、ゲームで確認済み `TRAIT_EMANCIPATION` |
 | アメリカ（文明） | ホームステッド法: 小屋などの成長 +50%。文化圏の施設は市民を配置しなくても成長する（2026-11-23 に追加） | `iImprovementUpgradeRateModifier`、`bImprovementUpgradeUnworked` | 実装済み、ゲームで確認済み `TRAIT_HOMESTEAD` |
-| ハトシェプスト | プント遠征: 遠く離れた都市との交易路 +50% | `iDistantTradeRouteModifier` | 実装済み、ゲームで確認済み `TRAIT_PUNT` |
-| スーリヤヴァルマン2世 | アンコール: 文化レベル「洗練」以上の都市は都市圏の半径 +1 | `iCityRadiusChange` + `CityRadiusCultureLevel` | 実装済み、ゲームで確認済み `TRAIT_ANGKOR` |
+| ハトシェプスト | プント遠征: 他国との交易路 +50%。交易路の収入の 25% を食料に、25% を生産にも（2026-11-28 に「遠く離れた都市との交易路 +50%」から替えた） | `iForeignTradeRouteModifier`、`TradeYieldModifiers`（食料 25・生産 25） | 実装済み、ゲームで確認済み `TRAIT_PUNT` |
+| スーリヤヴァルマン2世 | アンコール: 文化レベル「洗練」以上の都市は都市圏の半径 +1（2026-11-28 に外した。効果はロシアの文明の志向へ。データは残し、誰も持たない） | `iCityRadiusChange` + `CityRadiusCultureLevel` | 実装済み、ゲームで確認済み `TRAIT_ANGKOR` |
+| スーリヤヴァルマン2世 | 大寺院（短縮名「寺」。2026-11-28）: 都市圏のジャングル 1 つにつき世界遺産の生産 +5%（自国の領土、施設の下のジャングルも数える）。自国の領土の森が毎ターン 1% でジャングルになる（草原だけ）。開始位置のバイアス ジャングル 1 タイルにつき +10%（文明と合わせて +20%） | `CityPlotBuildingProductionModifiers`（`FEATURE_JUNGLE`・`bWorldWonders`・5）、`FeatureConversions`（森 → ジャングル 100）、`StartBias/Features` | 実装済み、ゲームで確認済み `TRAIT_GREAT_TEMPLE` |
 | ペルシャ（文明） | 黄金の帝国（2026-11-26 に作り直した。黄金期を起こしやすく、強くする）: 黄金期は陸上ユニットの移動力 +1、全ユニットの戦闘力 +10%（+15% から下げた）。大将軍でも黄金期を起こせる（偉人とは別の種類）。偉人で起こす黄金期に必要な人数 -1（1・1・2 人…）。自国の黄金期に、黄金期でない文明との戦闘で戦闘力 +20%（戦闘ユニット） | `iGoldenAgeLandMovesChange`、`bGoldenAge` で `TRAIT_GOLDEN_EMPIRE_AGE`（`iCombatPercent` 10）、`GoldenAgeUnitClasses`、`iGoldenAgeUnitsChange` -1、`FreePromotionSets` で `PROMOTION_GOLDEN_EMPIRE`（`iGoldenAgeAdvantageCombatPercent` 20） | 実装済み `TRAIT_GOLDEN_EMPIRE` |
 | ダレイオス1世 | ダレイコス金貨（短縮名「貨」。2026-11-26。金で領土を得る）: 平時でも AI から都市を金で買える。AI はダレイオスの出す金を 1.25 倍に評価する（都市の値段は 8 割）。インフレ率 -50% | `Deals/bBuyCities`、`Deals/iGoldValueModifier` 25、`iInflationModifier` -50 | 実装済み `TRAIT_DARIC` |
-| ルイ14世 | 太陽王: 世界遺産のある都市は、遺産 1 つにつき文化 +3 | `WorldWonderCommerceChanges` | 実装済み、ゲームで確認済み `TRAIT_SUN_KING` |
+| ルイ14世 | 太陽王: 世界遺産のある都市は、遺産 1 つにつき文化 +3。世界遺産を生産で完成させると、生産コストの 50% をその都市の文化に足す（2026-11-28） | `WorldWonderCommerceChanges`、`iWonderProductionCulturePercent` 50 | 実装済み、ゲームで確認済み `TRAIT_SUN_KING` |
 | ジョアン2世 | 探検王: 偵察ユニットが部族集落の報酬を選べ、歩哨の昇進も持つ。首都を建設すると斥候 1 体。固有プロジェクト「トルデシリャス条約」（2026-11-24。光学か紙。コスト 300・数値は仮）: 完成時の首都を通る線で地図を東西に分け、選んだ側（AI は陸の多い側）が優先地域。優先地域の他文明の都市 1 つにつき毎ターン金 +1。他文明が優先地域に都市を建てると、建てた側が 25 ×（建てた側の時代 + 1）× 都市の人口（ゲーム速度で変わる）の金を払う・技術を 1 つ渡す・その都市に「教皇の非難」（`BUILDING_TORDESILLAS_VIOLATION`。不満 +3、建設不可、占領されても残る、核で消えない。2026-11-24 に「トルデシリャス条約違反」から改名。条約が教皇の勅書を下敷きにしていたため）が建つ、から選ぶ | `FreePromotionSets`（`bChooseGoody` の昇進 `PROMOTION_EXPLORER_KING`、`PROMOTION_SENTRY`）、`PyOnCityFounded`、`PROJECT_TORDESILLAS`（`PrereqOrTechs`・`PrereqOrTraits`）、`PyOnProjectBuilt` の `chooseTreatyZone`・`PyOnBeginTurn` の `treatyZoneTurn`・`PyOnOtherCityFounded` の `offerTreatyTerms`、`BUILDING_TORDESILLAS_VIOLATION` | 実装済み `TRAIT_EXPLORER_KING` |
 | マンサ・ムサ | 黄金の巡礼: 普通選挙なしで資金による緊急生産ができる（2026-11-19 に「普通選挙を最初から採用できる」から変更）。大商人の代わりにワンガラ商人（移動力 3、交易任務の金 1.5 倍） | `Hurrys`（`HURRY_GOLD`）、`UniqueUnits`（`UNIT_WANGARA_TRADER`） | 実装済み `TRAIT_GOLDEN_PILGRIMAGE` |
 | オスマン（文明） | デヴシルメ: 都市を征服すると、その都市で徴兵できるユニットが 1 体と、その都市の国教以外の宗教 1 つにつき 1 体加わる（国教がなければすべての宗教を数える。2026-11-28） | `PyOnCityAcquired`（`createConscripts`・`countCityReligions`） | 実装済み `TRAIT_DEVSHIRME` |
@@ -206,9 +209,9 @@ BtS の効果はそのままにして足す。
 | シュメール（文明） | 両河の間: タイルの川の辺 1 本につき商業 +1、3 本で食料 +1。開始位置のバイアス 川沿い +100%（文明に直接） | `RiverEdgeYieldPercents`（商業 100・食料 34）、文明の `iStartBiasRiver` | 実装済み `TRAIT_MESOPOTAMIA`（バイアスはゲームで確認済み） |
 | アレクサンドロス | オリエンタリズム: 都市を征服すると、奪った相手の文明の固有ユニット・固有建造物を学ぶ（自分の固有がない種類だけ。同じ種類は後に学んだものに替わる）。既存の建物も建て替え（立地の条件は見ない）、作りかけのハンマーも引き継ぐ。今いるユニットはそのまま。ギリシャのファランクス・オデオンは替わらない | `Conquest/bLearnUniqueUnits`、`Conquest/bLearnUniqueBuildings` | 実装済み、ゲームで確認済み `TRAIT_ORIENTALISM` |
 | イギリス（文明） | 日の沈まぬ帝国: 海外（首都と別の地域）で戦うユニットの戦闘力 +15%。艦船の移動力 +1。艦船の生産 +25%、艦船に戦闘術Ⅰ（2026-11-28。作業船は兵科がないので対象外） | 昇進の `iCombatPercentOverseas`（全戦闘ユニット）、BtS の昇進の `iMovesChange`（海洋）、`UnitCombatProductionModifiers`（海洋）、`FreePromotionSets`（`PROMOTION_COMBAT1`） | 実装済み、ゲームで確認済み `TRAIT_SUN_NEVER_SETS` |
-| エチオピア（文明） | 高地の王国: 建設した都市のタイルが平原の丘陵になる（2026-11-19 にアドワの戦い（自国の領土の経験値 +50%・戦闘力 +15%）から作り直した。名前は仮） | `PyOnCityFounded` の `makeCityPlotHills` | 実装済み `TRAIT_HIGHLAND_KINGDOM` |
+| エチオピア（文明） | 高地の王国: 建設した都市のタイルが平原の丘陵になる（2026-11-19 にアドワの戦い（自国の領土の経験値 +50%・戦闘力 +15%）から作り直した。名前は仮）。岩窟教会: 都市圏の丘陵 1 つにつき宗教建築の生産 +10%（都市のタイルは数えない。2026-11-28） | `PyOnCityFounded` の `makeCityPlotHills`、`CityPlotBuildingProductionModifiers`（`TERRAIN_HILL`・`bReligiousBuildings`・10） | 実装済み `TRAIT_HIGHLAND_KINGDOM` |
 | ズールー（文明） | アマブト（年齢連隊）: 社会制度なしで毎ターン 2 体まで徴兵できる（マップの大きさで補正。デュエル・タイニーでも 1 体）。失う人口の計算 -50%（歩兵・機械化歩兵も 1 人）、必要な人口 -2（徴兵の分と合わせて 4）、必要な自国の文化 -10%（0%）、不満 -1 人（2 人）、不満の期間 -25%、徴兵したユニットも都市の経験値を全部得る（イカンダの +3 で昇進 1 つ）。2026-11-26 に `iFreeExperience` +2 から作り直した | `Conscription` の一式 | 実装済み、ゲームで確認済み `TRAIT_AMABUTHO` |
-| ヴィクトリア | 万国博覧会: 持っている世界遺産 1 つにつき、全都市の研究 +1 | `GlobalWorldWonderCommerceChanges` | 実装済み、ゲームで確認済み `TRAIT_GREAT_EXHIBITION` |
+| ヴィクトリア | 万国博覧会: 持っている世界遺産 1 つにつき、全都市の研究 +1。世界遺産を生産で完成させると、その都市に遺産の偉人ポイント 10 ターン分（ゲームの速度で調整。2026-11-28） | `GlobalWorldWonderCommerceChanges`、`iWonderGreatPeopleTurns` 10 | 実装済み、ゲームで確認済み `TRAIT_GREAT_EXHIBITION` |
 | ペリクレス | ペリクレス時代: 黄金時代の期間 +50%、黄金時代の偉人ポイント +100%。黄金時代中に偉人（大将軍を除く）が生まれると黄金時代が 2 ターン延びる（ゲームの速度で調整。1 回の黄金時代で通常の長さまで）。黄金時代中は文化 +25%（2026-11-28） | `iGoldenAgeModifier`、`iGoldenAgeGreatPeopleRateModifier`、`PyOnGreatPersonBorn`（`extendGoldenAge`）・`PyOnGoldenAgeStart`（カウンターを 0 に）、`bGoldenAge` で `TRAIT_AGE_OF_PERICLES_GOLDEN`（`CommerceModifiers`）、`Help` | 実装済み、ゲームで確認済み `TRAIT_AGE_OF_PERICLES` |
 | ブレヌス | 敗者に災いあれ: 戦闘に勝つたびに、負けた側の国庫の 5% を奪い、倒したユニットの基本の戦闘力 × 2 の金を得る（生産の速度で調整。2026-11-28 に金 +5 から替えた） | 昇進の `iCombatGoldStealPercent`（上限なし）・`iCombatGoldPerStrength` 200（全戦闘ユニット） | 実装済み、ゲームで確認済み `TRAIT_VAE_VICTIS` |
 | ユスティニアヌス1世 | ハギア・ソフィア: 僧院が陳腐化しない。宗教を創始すると、聖都にその宗教の宣教師 +2 体（BtS の 1 体と合わせて 3 体。2026-11-22 に追加）。僧院を生産（購入を含む）で建てると、その都市にその宗教の宣教師が 1 体（上限を無視）。大聖堂の生産 +100%（2026-11-28） | `NoObsolescence/SpecialBuildings`（`SPECIALBUILDING_MONASTERY`）、`PyOnReligionFounded`（`createMissionaries(pPlayer, eReligion, 2, pCity)`）、`PyOnBuildingBuilt`（`isSpecialBuildingIn`・`createMissionaries`）、`SpecialBuildingProductionModifiers`（大聖堂）、`Help` | 実装済み `TRAIT_HAGIA_SOPHIA`（僧院はゲームで確認済み） |
@@ -299,7 +302,7 @@ civfanatics での公開（`master` を枠組み、この Mod をその使用例
 
 計算の 1 か所に入るもの。近いものをまとめて作る。
 
-2026-11-28: 戦闘力の 4 件を実装し、ゲームで確認した（master `2dd37b9`）。戦闘の結果と移動の 5 件（戦利品・略奪の経験値・川の攻撃・運河・道）も実装し、確認した（master `f055185`）。都市と宗教の 5 件（インドの 3 つ・宣教師・ザラ・ヤコブ・スレイマン）も実装し、確認した（master `83a39a8`。未使用のフック `PyOnOtherReligionFounded` も作った）。厭戦感情と軍事力は志向のタグではなく昇進のタグにし、志向が `bFreePromotionAllUnitCombats`（全戦闘ユニット）で配る形にした。
+2026-11-28: 戦闘力の 4 件を実装し、ゲームで確認した（master `2dd37b9`）。戦闘の結果と移動の 5 件（戦利品・略奪の経験値・川の攻撃・運河・道）も実装し、確認した（master `f055185`）。都市と宗教の 5 件（インドの 3 つ・宣教師・ザラ・ヤコブ・スレイマン）も実装し、確認した（master `83a39a8`。未使用のフック `PyOnOtherReligionFounded` も作った）。生産・世界遺産・企業の分（エチオピア・クメール・ヴィクトリア・ルイ14世・企業の `PrereqOrTraits`）も実装し、確認した（master `da2e41e`。クメールの森のジャングル化 `FeatureConversions` も足した）。ハトシェプストは既存のタグで書いた。これで段階 2 は終わり。厭戦感情と軍事力は志向のタグではなく昇進のタグにし、志向が `bFreePromotionAllUnitCombats`（全戦闘ユニット）で配る形にした。
 
 - 戦闘力（`CvUnit::maxCombatStr` の周り）
   - 攻撃する側のいる地形・地形の特徴による攻撃ボーナス（昇進。ハンニバル）

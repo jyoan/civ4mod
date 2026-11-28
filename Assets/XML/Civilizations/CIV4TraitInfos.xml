@@ -2435,7 +2435,12 @@
 			<Type>TRAIT_PUNT</Type>
 			<Description>TXT_KEY_TRAIT_PUNT</Description>
 			<ShortDescription>TXT_KEY_TRAIT_PUNT_SHORT</ShortDescription>
-			<iDistantTradeRouteModifier>50</iDistantTradeRouteModifier>
+			<iForeignTradeRouteModifier>50</iForeignTradeRouteModifier>
+			<TradeYieldModifiers>
+				<iYield>25</iYield>
+				<iYield>25</iYield>
+				<iYield>0</iYield>
+			</TradeYieldModifiers>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_ANGKOR</Type>
@@ -2518,6 +2523,7 @@
 			<Type>TRAIT_SUN_KING</Type>
 			<Description>TXT_KEY_TRAIT_SUN_KING</Description>
 			<ShortDescription>TXT_KEY_TRAIT_SUN_KING_SHORT</ShortDescription>
+			<iWonderProductionCulturePercent>50</iWonderProductionCulturePercent>
 			<WorldWonderCommerceChanges>
 				<iCommerce>0</iCommerce>
 				<iCommerce>0</iCommerce>
@@ -2810,6 +2816,13 @@
 			<Description>TXT_KEY_TRAIT_HIGHLAND_KINGDOM</Description>
 			<ShortDescription>TXT_KEY_TRAIT_HIGHLAND_KINGDOM_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_HIGHLAND_KINGDOM_HELP</Help>
+			<CityPlotBuildingProductionModifiers>
+				<CityPlotBuildingProductionModifier>
+					<TerrainType>TERRAIN_HILL</TerrainType>
+					<bReligiousBuildings>1</bReligiousBuildings>
+					<iProductionModifier>10</iProductionModifier>
+				</CityPlotBuildingProductionModifier>
+			</CityPlotBuildingProductionModifiers>
 			<PyOnCityFounded>makeCityPlotHills(pCity, 'TERRAIN_PLAINS')</PyOnCityFounded>
 		</TraitInfo>
 		<TraitInfo>
@@ -2830,6 +2843,7 @@
 			<Type>TRAIT_GREAT_EXHIBITION</Type>
 			<Description>TXT_KEY_TRAIT_GREAT_EXHIBITION</Description>
 			<ShortDescription>TXT_KEY_TRAIT_GREAT_EXHIBITION_SHORT</ShortDescription>
+			<iWonderGreatPeopleTurns>10</iWonderGreatPeopleTurns>
 			<GlobalWorldWonderCommerceChanges>
 				<iCommerce>0</iCommerce>
 				<iCommerce>1</iCommerce>
@@ -3712,6 +3726,33 @@
 					<bFreePromotionAllUnitCombats>1</bFreePromotionAllUnitCombats>
 				</FreePromotionSet>
 			</FreePromotionSets>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_GREAT_TEMPLE</Type>
+			<Description>TXT_KEY_TRAIT_GREAT_TEMPLE</Description>
+			<ShortDescription>TXT_KEY_TRAIT_GREAT_TEMPLE_SHORT</ShortDescription>
+			<CityPlotBuildingProductionModifiers>
+				<CityPlotBuildingProductionModifier>
+					<FeatureType>FEATURE_JUNGLE</FeatureType>
+					<bWorldWonders>1</bWorldWonders>
+					<iProductionModifier>5</iProductionModifier>
+				</CityPlotBuildingProductionModifier>
+			</CityPlotBuildingProductionModifiers>
+			<FeatureConversions>
+				<FeatureConversion>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<ConvertFeatureType>FEATURE_JUNGLE</ConvertFeatureType>
+					<iConversionChance>100</iConversionChance>
+				</FeatureConversion>
+			</FeatureConversions>
+			<StartBias>
+				<Features>
+					<StartBiasFeature>
+						<FeatureType>FEATURE_JUNGLE</FeatureType>
+						<iStartBias>10</iStartBias>
+					</StartBiasFeature>
+				</Features>
+			</StartBias>
 		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>

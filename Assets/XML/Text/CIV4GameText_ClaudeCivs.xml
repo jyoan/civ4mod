@@ -2720,4 +2720,22 @@
 		<Spanish>Miracle of the House of Brandenburg</Spanish>
 		<Japanese>&#12502;&#12521;&#12531;&#12487;&#12531;&#12502;&#12523;&#12463;&#12398;&#22855;&#36321;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GREAT_TEMPLE</Tag>
+		<English>Great Temple</English>
+		<French>Great Temple</French>
+		<German>Great Temple</German>
+		<Italian>Great Temple</Italian>
+		<Spanish>Great Temple</Spanish>
+		<Japanese>&#22823;&#23546;&#38498;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_GREAT_TEMPLE_SHORT</Tag>
+		<English>Tem</English>
+		<French>Tem</French>
+		<German>Tem</German>
+		<Italian>Tem</Italian>
+		<Spanish>Tem</Spanish>
+		<Japanese>&#23546;</Japanese>
+	</TEXT>
 </Civ4GameText>
