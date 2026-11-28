@@ -84,10 +84,12 @@ BtS の効果はそのままにして足す。
 | `FeatureGrowthChanges` の森、陸の非戦闘ユニットへのウッドマンⅡ（`FreePromotionSets` の `bFreePromotionNoUnitCombat`） | シッティング・ブル |
 | 外洋艦への目印の昇進と、`bHiddenNationality` の昇進を付け外しする呪文（`PromotionPrereq1`・`AddPromotionType1`・`RemovePromotionType1`・`PyResult`） | エリザベス |
 | `bAtWar` + `YieldModifiers` の生産 | チャーチル |
-| 昇進の `ImpassablePlotPassages` の山岳・`iEnemyHealChange` | ハンニバル |
+| 昇進の `ImpassablePlotPassages` の山岳・`iEnemyHealChange`・`AttackFromTerrains` の山岳 | ハンニバル |
 | `PyOnCityAcquired`・`PyOnPlayerEliminated`（`startGoldenAge`。占領で半分・滅亡で全部の黄金期） | 大キュロス |
 | `UnitCombatProductionModifiers` の銃火器・装甲 | ビスマルク |
-| `UpgradeAnywhereUnitCombats` の白兵戦・銃火器 | 誰も持たない（2026-11-28 にフリードリッヒから外した） |
+| `UpgradeAnywhereUnitCombats` の白兵戦・銃火器 | 誰も持たない（2026-11-28 にフリードリッヒから外した） |
+| 全戦闘ユニットへの `iStrongerEnemyCombatPercent` の昇進 | フリードリッヒ |
+| 騎乗ユニットへの `BonusCombatPercents`（馬）の昇進 | モンゴル |
 | 昇進の `iOtherReligionCombatPercent`・`iStateReligionCityAttack` | イザベル |
 | `NoObsolescence/BuildingClasses` の城壁・城 | ギルガメッシュ |
 | `bNewCityStateReligion` | ザラ・ヤコブ |
@@ -119,7 +121,7 @@ BtS の効果はそのままにして足す。
 | `iStateReligionHappiness`、`iStateReligionHealth` | アショーカ |
 | `GreatPeopleClassRateModifiers` の大技術者、`CultureFlip/bNoRevoltAndNoFlip` | スレイマン |
 | `iEnemyMoveCostInBorders` | オラニエ公ヴィレム1世 |
-| `iRevengeCombatPercent`、`iWarWearinessModifier` -100 | ブーディカ |
+| `iRevengeCombatPercent`、`iWarWearinessModifier` -100、全戦闘ユニットへの `iWarWearinessCombatPercent` の昇進 | ブーディカ |
 | `KnownTechCost` | ピョートル |
 | `Conquest/bHeal` | ユリウス・カエサル |
 | `CapitalTerrainYieldPercents`、`TerrainTrades` の砂漠 | マリ |
@@ -168,7 +170,7 @@ BtS の効果はそのままにして足す。
 | ドイツ（文明） | 産業化: 鉄があれば全都市の生産 +5%、石炭 +10%、石油 +10%（2026-11-28 に「産業主義で +10%」から替えた。`TRAIT_INDUSTRIAL_POWER` は誰も持たない） | `ConditionalFreeTraits` の `PrereqBonus` で `TRAIT_INDUSTRY_IRON`・`_COAL`・`_OIL`（`YieldModifiers`） | 実装済み、ゲームで確認済み `TRAIT_INDUSTRIALIZATION` |
 | エジプト（文明） | ナイルの賜物: 氾濫原 生産 +1、不衛生なし。氾濫原のバイアス | `FeatureYieldChanges`、`FeatureHealthChanges`、`StartBias/Features` | 実装済み `TRAIT_NILE` |
 | ロシア（文明） | 広大な大地: 都市圏の半径 +1（3。文化レベルの条件なし）、ツンドラ・雪原の食料 +1（2026-11-28 に文化圏 +1 から替えた。アンコールの効果を移した） | `iCityRadiusChange`、`TerrainYieldChanges` | 実装済み、ゲームで確認済み `TRAIT_VAST_LAND` |
-| モンゴル（文明） | 騎馬の民: 牧草地 食料 +1、騎乗ユニットの経験値 +2。馬のバイアス | `ImprovementYieldChanges`、`UnitCombatFreeExperiences`、`StartBias/BonusBiases` | 実装済み `TRAIT_HORSE_PEOPLE` |
+| モンゴル（文明） | 騎馬の民: 牧草地 食料 +1、騎乗ユニットの経験値 +2。馬のバイアス。騎乗ユニットに昇進「駿馬」: 馬 1 つにつき戦闘力 +10%（輸入した馬も数える。上限 +50%）（2026-11-28） | `ImprovementYieldChanges`、`UnitCombatFreeExperiences`、`StartBias/BonusBiases`、`FreePromotionSets`（`PROMOTION_FINE_HORSES`。`BonusCombatPercents`・`iBonusCombatMaxPercent`） | 実装済み `TRAIT_HORSE_PEOPLE` |
 | ローマ（文明） | アッピア街道: 自国の領土の道路・鉄道の移動コスト -50%（道路で 2 倍進める）。都市を建設すると、陸路 6 タイル以内で首都とつながるなら首都までの道路が最初から敷かれる（技術は不要。Civ6 のローマの能力から。2026-11-23） | `iRouteMovementModifierInBorders`、`PyOnCityFounded` の `buildRouteToCapital(pCity, 'ROUTE_ROAD', 6)` | 実装済み `TRAIT_APPIAN_WAY` |
 | アウグストゥス | パクス・ロマーナ: 首都にある建物を他の都市で建てるとき生産 +50%（2026-11-17 にローマの文明志向から移した） | `iCapitalBuildingProductionModifier` | 実装済み `TRAIT_PAX_ROMANA` |
 | ポルトガル（文明） | 大航海時代: そのターンに初めて見えた海外の陸地 1 タイルにつき、旧世界なら金 +1・研究 +1、新世界なら金 +2・研究 +2（ターンの終わりにまとめて。端数は持ち越し）。艦船に歩哨（2026-11-22 に作り直した。歩哨のほかの前の内容はスペインへ移した。地図によって弱く、外洋に出られるのも遅いので数値は大きめ。数値は仮） | `ExplorationRewards`（`EXPLORE_PLOT_OVERSEAS_OLD_WORLD` 金・研究 100、`EXPLORE_PLOT_OVERSEAS_NEW_WORLD` 金・研究 200）、`FreePromotionSets`（`PROMOTION_SENTRY`） | 実装済み `TRAIT_AGE_OF_DISCOVERY` |
@@ -176,10 +178,11 @@ BtS の効果はそのままにして足す。
 | シッティング・ブル | 森を育む: 領土の森が広がりやすい。陸の非戦闘ユニットにウッドマンⅡ（2026-11-28） | `FeatureGrowthChanges`、`FreePromotionSets`（`PROMOTION_WOODSMAN2`） | 実装済み `TRAIT_FOREST_KEEPER` |
 | エリザベス | 私掠免状: 外洋に出られる艦（キャラベル船以降。私掠船を除く）が、行動「私掠免状を交付」「私掠免状を返上」で国籍を隠す・戻す（どちらも移動力をすべて使い、1 ターンに 1 回）（2026-11-28 に「フリゲートが国籍を隠す」から替えた） | `FreePromotionSets` で目印の昇進 `PROMOTION_BLUE_WATER`（外洋艦隊）を 12 の艦船のクラスに配る。呪文 `SPELL_ISSUE_LETTERS_OF_MARQUE`（条件は外洋艦隊と `reqNotHasPromotion`）・`SPELL_RETURN_LETTERS_OF_MARQUE` が `PROMOTION_LETTERS_OF_MARQUE`（`bHiddenNationality`）を付け外しし、`PyResult` で `finishMoves`。`Help` | 実装済み、ゲームで確認済み `TRAIT_LETTERS_OF_MARQUE` |
 | チャーチル | ネバーサレンダー（2026-11-28 に「最も輝ける時」から改名。短縮名「不屈」。効果の変更は段階 3）: 戦時は全都市の生産 +15% | `bAtWar` で `TRAIT_FINEST_HOUR_WAR`（`YieldModifiers`） | 実装済み `TRAIT_FINEST_HOUR` |
-| ハンニバル | アルプス越え: 陸上ユニットが山岳に入れる（山岳でターンを迎えると 20% のダメージ）。敵の領土での回復 +10（2026-11-28） | 昇進の `ImpassablePlotPassages`・`iEnemyHealChange` | 実装済み `TRAIT_ALPS` |
+| ハンニバル | アルプス越え: 陸上ユニットが山岳に入れる（山岳でターンを迎えると 20% のダメージ）。敵の領土での回復 +10。山岳のタイルから攻撃すると戦闘力 +50%（奇襲。2026-11-28） | 昇進の `ImpassablePlotPassages`・`iEnemyHealChange`・`AttackFromTerrains`（`TERRAIN_PEAK`） | 実装済み `TRAIT_ALPS` |
 | 大キュロス | 四方世界の王（短縮名「四」。2026-11-26 に寛容王（都市を占領しても人口が減らない。サラディンと印象が重なる）から作り直した）: 都市（蛮族を除く）を占領すると、通常の半分の期間の黄金期。最後の都市を占領して文明を滅ぼすと、通常の期間の黄金期（最後の都市では両方起きる）。黄金期の最中なら延び、次に必要な偉人の数は増えない | `PyOnCityAcquired`・`PyOnPlayerEliminated` の `startGoldenAge`（`getGoldenAgeLength` なのでゲーム速度などの補正が乗る）。Help に手で書く | 実装済み `TRAIT_FOUR_QUARTERS` |
 | ビスマルク | 鉄と血: 銃火器・装甲ユニットの生産 +25% | `UnitCombatProductionModifiers` | 実装済み `TRAIT_BLOOD_AND_IRON` |
-| フリードリッヒ | 軍隊を持つ国家: 白兵戦・銃火器ユニットが戦地でアップグレードできる（2026-11-28 に外した。データは残し、誰も持たない。新しい志向は段階 2） | `UpgradeAnywhereUnitCombats` | 実装済み `TRAIT_ARMY_STATE` |
+| フリードリッヒ | 軍隊を持つ国家: 白兵戦・銃火器ユニットが戦地でアップグレードできる（2026-11-28 に外した。データは残し、誰も持たない） | `UpgradeAnywhereUnitCombats` | 実装済み `TRAIT_ARMY_STATE` |
+| フリードリッヒ | ブランデンブルクの奇跡（短縮名「奇跡」。2026-11-28）: 軍事力が自分より上の文明との戦闘力 +20% | `FreePromotionSets`（`bFreePromotionAllUnitCombats`）で昇進 `PROMOTION_BRANDENBURG_MIRACLE`（`iStrongerEnemyCombatPercent`） | 実装済み、ゲームで確認済み `TRAIT_BRANDENBURG_MIRACLE` |
 | イザベル | レコンキスタ: 異教徒との戦闘力 +25%、国教の広まった都市への攻撃 +25% | 昇進の `iOtherReligionCombatPercent`・`iStateReligionCityAttack` | 実装済み `TRAIT_RECONQUISTA` |
 | ギルガメッシュ | ウルクの城壁: 城壁と城が陳腐化しない | `NoObsolescence/BuildingClasses` | 実装済み `TRAIT_WALLS_OF_URUK` |
 | ザラ・ヤコブ | 信仰の王: 新しい都市に国教が広まる | `bNewCityStateReligion` | 実装済み `TRAIT_KING_OF_FAITH` |
@@ -212,7 +215,7 @@ BtS の効果はそのままにして足す。
 | アショーカ | ダルマの勅令: 国教の広まった都市の幸福 +1・衛生 +1 | `iStateReligionHappiness`、`iStateReligionHealth` | 実装済み、ゲームで確認済み `TRAIT_DHAMMA` |
 | スレイマン | 立法者（2026-11-28 に「大建築家スィナン」から改名。短縮名「立法」）: 大技術者の偉人ポイント +100%。自国の都市が文化で反乱・寝返りを起こさない（2026-11-28。他国の文化による不満なしは段階 2） | `GreatPeopleClassRateModifiers`（大技術者）、`CultureFlip/bNoRevoltAndNoFlip` | 実装済み、ゲームで確認済み `TRAIT_SINAN` |
 | オラニエ公ヴィレム1世 | 洪水線: 自国の領土では、交戦中の敵の陸上ユニットの移動コスト +1。自国の領土にいる交戦中の敵が毎ターン最大 HP の 10% を失う（50% まで） | `iEnemyMoveCostInBorders`、`EnemyAttrition` | 実装済み `TRAIT_RELIEF_OF_LEIDEN`（移動コストはゲームで確認済み。2026-11-22 に「ライデンの解放」から改名し、損耗をスターリンから移した） |
-| ブーディカ | 復讐の女王: 自分の都市を一度でも征服した文明との戦闘力 +25%。厭戦感情による不満がない（2026-11-28。厭戦感情に比例した戦闘力は段階 2） | `iRevengeCombatPercent`、`iWarWearinessModifier` -100 | 実装済み、ゲームで確認済み `TRAIT_REVENGE_QUEEN` |
+| ブーディカ | 復讐の女王: 自分の都市を一度でも征服した文明との戦闘力 +25%。厭戦感情による不満がない。その相手との厭戦感情が生むはずの不満の割合 1% につき戦闘力 +1%（上限 +50%）（2026-11-28） | `iRevengeCombatPercent`、`iWarWearinessModifier` -100、`FreePromotionSets`（`bFreePromotionAllUnitCombats`）で昇進 `PROMOTION_REVENGE_QUEEN`（`iWarWearinessCombatPercent` 100・`iWarWearinessCombatMaxPercent` 50） | 実装済み、ゲームで確認済み `TRAIT_REVENGE_QUEEN` |
 | ピョートル | 大使節団: その技術を持つ既知の文明 1 つにつき研究費 -10%（-75% まで） | `KnownTechCost` | 実装済み、ゲームで確認済み `TRAIT_GRAND_EMBASSY` |
 | ユリウス・カエサル | 来た、見た、勝った: 都市を征服すると全ユニットが全回復 | `Conquest/bHeal` | 実装済み、ゲームで確認済み `TRAIT_VENI_VIDI_VICI` |
 | マリ（文明） | サハラ交易: 首都の都市圏の砂漠 1 タイルにつき、首都の食料 +0.5・商業 +1（砂漠のタイルそのものは変わらない）。砂漠が交易網をつなぐ。砂漠のバイアス | `CapitalTerrainYieldPercents`（砂漠 食料 50・商業 100）、`TerrainTrades`（砂漠）、`StartBias/Terrains`（砂漠 10） | 実装済み `TRAIT_TRANS_SAHARAN` |
@@ -295,6 +298,8 @@ civfanatics での公開（`master` を枠組み、この Mod をその使用例
 
 計算の 1 か所に入るもの。近いものをまとめて作る。
 
+2026-11-28: 戦闘力の 4 件を実装し、ゲームで確認した（master `2dd37b9`）。厭戦感情と軍事力は志向のタグではなく昇進のタグにし、志向が `bFreePromotionAllUnitCombats`（全戦闘ユニット）で配る形にした。
+
 - 戦闘力（`CvUnit::maxCombatStr` の周り）
   - 攻撃する側のいる地形・地形の特徴による攻撃ボーナス（昇進。ハンニバル）
   - 厭戦感情の値に比例した戦闘力（志向。ブーディカ）
@@ -333,6 +338,7 @@ civfanatics での公開（`master` を枠組み、この Mod をその使用例
 
 #### そのあと
 
+- 既存の志向の戦闘のタグ（`iRevengeCombatPercent`・`AttitudeCombatPercents`・`iCombatPercent`・`iDefenseCombatPercent` など）を、昇進のタグにして志向が `FreePromotionSets` で配る形に移す（2026-11-28 に方針を決定。兵科・領域で絞れ、ほかの Info からも配れる）。兵科を並べて全戦闘ユニットに配っている志向（ブレヌス・ハンニバルなど）も `bFreePromotionAllUnitCombats` に書き換える
 - AI への対応。判断コードが要るもの: アステカの生贄と強制労働、アメリカの独立、インドのほかの宗教の宣教師、オランダの海上の重役
 - ゲームバランス、英語版（`CYBERFRONT` なしの DLL、英語版をもとにした Python）、配布の準備（検証用データを外す）
 

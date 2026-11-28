@@ -2675,4 +2675,49 @@
 		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Ships of the Blue Water Navy can take or return Letters of Marque (hidden nationality) with an action, using all their moves</Spanish>
 		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#22806;&#27915;&#33382;&#38538;&#12398;&#33382;&#12399;&#12289;&#34892;&#21205;&#12391;&#31169;&#25504;&#20813;&#29366;&#65288;&#22269;&#31821;&#12434;&#38560;&#12377;&#65289;&#12434;&#20132;&#20184;&#12539;&#36820;&#19978;&#12391;&#12365;&#12427;&#65288;&#33382;&#12398;&#31227;&#21205;&#21147;&#12434;&#12377;&#12409;&#12390;&#20351;&#12358;&#65289;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BRANDENBURG_MIRACLE</Tag>
+		<English>Miracle of the House of Brandenburg</English>
+		<French>Miracle of the House of Brandenburg</French>
+		<German>Miracle of the House of Brandenburg</German>
+		<Italian>Miracle of the House of Brandenburg</Italian>
+		<Spanish>Miracle of the House of Brandenburg</Spanish>
+		<Japanese>&#12502;&#12521;&#12531;&#12487;&#12531;&#12502;&#12523;&#12463;&#12398;&#22855;&#36321;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_BRANDENBURG_MIRACLE_SHORT</Tag>
+		<English>Mir</English>
+		<French>Mir</French>
+		<German>Mir</German>
+		<Italian>Mir</Italian>
+		<Spanish>Mir</Spanish>
+		<Japanese>&#22855;&#36321;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FINE_HORSES</Tag>
+		<English>Fine Horses</English>
+		<French>Fine Horses</French>
+		<German>Fine Horses</German>
+		<Italian>Fine Horses</Italian>
+		<Spanish>Fine Horses</Spanish>
+		<Japanese>&#39423;&#39340;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_REVENGE_QUEEN</Tag>
+		<English>Queen of Revenge</English>
+		<French>Queen of Revenge</French>
+		<German>Queen of Revenge</German>
+		<Italian>Queen of Revenge</Italian>
+		<Spanish>Queen of Revenge</Spanish>
+		<Japanese>&#24489;&#35728;&#12398;&#22899;&#29579;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_BRANDENBURG_MIRACLE</Tag>
+		<English>Miracle of the House of Brandenburg</English>
+		<French>Miracle of the House of Brandenburg</French>
+		<German>Miracle of the House of Brandenburg</German>
+		<Italian>Miracle of the House of Brandenburg</Italian>
+		<Spanish>Miracle of the House of Brandenburg</Spanish>
+		<Japanese>&#12502;&#12521;&#12531;&#12487;&#12531;&#12502;&#12523;&#12463;&#12398;&#22855;&#36321;</Japanese>
+	</TEXT>
 </Civ4GameText>

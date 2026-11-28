@@ -7494,6 +7494,10 @@
 					<TraitType>TRAIT_ORGANIZED</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
+				<Trait>
+					<TraitType>TRAIT_BRANDENBURG_MIRACLE</TraitType>
+					<bTrait>1</bTrait>
+				</Trait>
 			</Traits>
 			<Flavors>
 				<Flavor>
