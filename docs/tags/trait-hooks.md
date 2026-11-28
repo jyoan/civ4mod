@@ -45,6 +45,11 @@
 - 道を敷いたタイル数を返す（経路がなければ -1）。
 - 例: `buildRouteToCapital(pCity, 'ROUTE_ROAD', 15)`。
 - 共通関数 `createCityConscripts(pPlayer, iMinPopulation)`（2026-11-19）: 首都と人口 iMinPopulation 以上の都市に、その都市で今徴兵できるユニットを 1 体ずつ出し、本人に数のメッセージ（`TXT_KEY_MISC_CITY_CONSCRIPTS_CREATED`）。
+- 共通関数 `createConscripts(pPlayer, pCity, iNum)`（2026-11-28。オスマンのデヴシルメ）: その都市で今徴兵できるユニットを都市に iNum 体出す（メッセージなし）。出した数を返す（徴兵できるユニットがなければ 0）。
+- 共通関数 `countCityReligions(pCity, eExceptReligion)`（2026-11-28）: 都市にある宗教の数。`eExceptReligion` は数えない（省略か -1 ならすべて数える。`pPlayer.getStateReligion()` を渡すと、国教がないときはすべて数える）。
+- 例: `bConquest and createConscripts(pPlayer, pCity, 1 + countCityReligions(pCity, pPlayer.getStateReligion()))`。
+- 共通関数 `isSpecialBuildingIn(eBuilding, ['SPECIALBUILDING_MONASTERY'])`（2026-11-28。ユスティニアヌス1世）: その建物の特別な分類が一覧のどれか（すべての宗教の僧院など）。宗教は `gc.getBuildingInfo(eBuilding).getReligionType()`。
+- 共通関数 `extendGoldenAge(pPlayer, eTrait, iTurns)`（2026-11-28。ペリクレス）: 黄金時代のあいだなら iTurns ターン延ばす。1 回の黄金時代で延ばす合計は通常の黄金時代の長さ（`CyPlayer.getGoldenAgeLength`）まで。延ばした合計は志向のカウンターに入れるので、`<PyOnGoldenAgeStart>pPlayer.setTraitCounter(eTrait, 0)</PyOnGoldenAgeStart>` で 0 に戻す。延ばしたら本人にメッセージ（`TXT_KEY_MISC_GOLDEN_AGE_EXTENDED`。延びたターン数。都市の偉人はプレイヤーのターンの終わりの、黄金時代の残りを 1 減らす前に生まれるので、画面の残りターンは減らずに同じ数のままになる）。延ばしたターン数を返す。
 - 1 つのフックで 2 つのことをするには、タプルで書く（`(addBuilding(pCity, 'BUILDINGCLASS_WALLS'), gainTraitForTurns(pPlayer, 'TRAIT_X', 3))`）。
 - どれも `CvEventManager` のイベントと同じく全マシンで呼ばれるので、乱数は `getSorenRandNum`。
 - `CvTraitInterface.py` の共通関数: 値 `scaleBySpeed(iValue, 'Train')`（ゲーム速度の `iTrainPercent` などで掛ける）・`startEra()`・`isEveryTurns(iTurns)`・`capitalPlot(pPlayer)`、効果 `gainGold`・`createUnits(pPlayer, 'UNITCLASS_X', iNum, pPlot)`（文明のユニット）・`addBuilding(pCity, 'BUILDINGCLASS_X')`（文明の建物）。

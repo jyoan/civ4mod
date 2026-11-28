@@ -337,7 +337,7 @@
 		<Japanese>[ICON_BULLET]&#24535;&#21521;&#12395;&#12424;&#12426;%F2%D1%%</Japanese>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_MISC_HELP_YIELD_BUILDINGS</Tag>
+		<Tag>TXT_KEY_MISC_HELP_YIELD_FROM_BUILDINGS</Tag>
 		<English>[SPACE][SPACE][ICON_BULLET]Buildings: %d1%F2</English>
 		<French>[SPACE][SPACE][ICON_BULLET]Buildings: %d1%F2</French>
 		<German>[SPACE][SPACE][ICON_BULLET]Buildings: %d1%F2</German>
@@ -1825,6 +1825,15 @@
 		<Italian>%d1 units have rallied in your cities!</Italian>
 		<Spanish>%d1 units have rallied in your cities!</Spanish>
 		<Japanese>&#37117;&#24066;&#12395; %d1 &#20307;&#12398;&#20853;&#12364;&#38598;&#12414;&#12426;&#12414;&#12375;&#12383;&#65281;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_GOLDEN_AGE_EXTENDED</Tag>
+		<English>The golden age lasts %d1 more turns</English>
+		<French>The golden age lasts %d1 more turns</French>
+		<German>The golden age lasts %d1 more turns</German>
+		<Italian>The golden age lasts %d1 more turns</Italian>
+		<Spanish>The golden age lasts %d1 more turns</Spanish>
+		<Japanese>&#40644;&#37329;&#26178;&#20195;&#12364; %d1 &#12479;&#12540;&#12531;&#24310;&#12403;&#12383;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_ESPIONAGE_KILL_GREAT_PERSON</Tag>

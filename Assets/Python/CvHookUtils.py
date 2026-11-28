@@ -56,6 +56,22 @@ def isBuildingClassIn(eBuilding, lszBuildingClasses):
 			return True
 	return False
 
+def isSpecialBuildingIn(eBuilding, lszSpecialBuildings):
+	"True if the building is of one of the special buildings (['SPECIALBUILDING_MONASTERY', 'SPECIALBUILDING_CATHEDRAL']): the monasteries of all religions, etc."
+	iSpecialBuilding = gc.getBuildingInfo(eBuilding).getSpecialBuildingType()
+	for szSpecialBuilding in lszSpecialBuildings:
+		if iSpecialBuilding == gc.getInfoTypeForString(szSpecialBuilding):
+			return True
+	return False
+
+def countCityReligions(pCity, eExceptReligion = -1):
+	"The number of religions in the city, without eExceptReligion (e.g. pPlayer.getStateReligion(): -1 without a state religion, then all count)"
+	iNum = 0
+	for eReligion in range(gc.getNumReligionInfos()):
+		if eReligion != eExceptReligion and pCity.isHasReligion(eReligion):
+			iNum += 1
+	return iNum
+
 def isUnitClassIn(pUnit, lszUnitClasses):
 	"True if the unit is of one of the unit classes (['UNITCLASS_GREAT_GENERAL', 'UNITCLASS_ENGINEER']), unique units too"
 	iUnitClass = pUnit.getUnitClassType()
@@ -130,6 +146,23 @@ def startGoldenAge(pPlayer, iPercent = 100):
 	"The player starts a golden age of iPercent % of the usual length (at least 1 turn; like a free golden age: longer if one is going on, and the great people needed for the next one stay the same)"
 	pPlayer.changeGoldenAgeTurns(max(1, pPlayer.getGoldenAgeLength() * iPercent / 100))
 
+def extendGoldenAge(pPlayer, eTrait, iTurns):
+	"""During a golden age of the player, makes it iTurns turns longer, up to the usual length of a golden age in all
+	(CyPlayer.getGoldenAgeLength) for one golden age. The turns already added are kept in the counter of the trait: reset
+	it when a golden age starts, <PyOnGoldenAgeStart>pPlayer.setTraitCounter(eTrait, 0)</PyOnGoldenAgeStart>.
+	The player gets a message with the turns added (not the turns left: a great person is born before the turn of the golden age is counted down). Returns the number of turns added"""
+	if isinstance(eTrait, str):
+		eTrait = gc.getInfoTypeForString(eTrait)
+	if not pPlayer.isGoldenAge():
+		return 0
+	iTurns = min(iTurns, pPlayer.getGoldenAgeLength() - pPlayer.getTraitCounter(eTrait))
+	if iTurns <= 0:
+		return 0
+	pPlayer.changeGoldenAgeTurns(iTurns)
+	pPlayer.changeTraitCounter(eTrait, iTurns)
+	showMessage(pPlayer, 'TXT_KEY_MISC_GOLDEN_AGE_EXTENDED', (iTurns, ))
+	return iTurns
+
 def gainCircumnavigationMoves(pPlayer):
 	"The team of the player gets the bonus moves of the ships of the first circumnavigation (CIRCUMNAVIGATE_FREE_MOVES), with its message. For PyOnCircumnavigated when iOrder > 1 (the first team gets them anyway). Once per player: a team of two players with the trait gets them twice"
 	iMoves = gc.getDefineINT("CIRCUMNAVIGATE_FREE_MOVES")
@@ -174,6 +207,15 @@ def addCulture(pCity, iCulture):
 def addPromotion(pUnit, szPromotion):
 	"The unit gains the promotion"
 	pUnit.setHasPromotion(gc.getInfoTypeForString(szPromotion), True)
+
+def createConscripts(pPlayer, pCity, iNum):
+	"Creates iNum units of what the city can conscript now (CyCity.getConscriptUnit) in the city. Returns the number of units"
+	eUnit = pCity.getConscriptUnit()
+	if eUnit == -1:
+		return 0
+	for i in range(iNum):
+		pPlayer.initUnit(eUnit, pCity.getX(), pCity.getY(), UnitAITypes.NO_UNITAI, DirectionTypes.DIRECTION_SOUTH)
+	return iNum
 
 def createCityConscripts(pPlayer, iMinPopulation):
 	"""In the capital and in each city of at least iMinPopulation, one unit of what that city can conscript now
