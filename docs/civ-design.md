@@ -70,7 +70,7 @@ BtS の効果はそのままにして足す。
 | `FeatureRoutes`・`MaintainFeatures`・`FeatureHealthChanges`・`FeatureYieldChanges` のジャングル | クメール |
 | 昇進の `TerrainDoubleMoves`・`TerrainDefenses` の砂漠、`StartBias/Terrains` の砂漠、石油の `RevealBonuses`・`StartBias/BonusBiases`・`BonusYieldChanges`、オアシスの `FeatureYieldChanges` | アラブ |
 | `bClaimLastReligion`、`PyOnLastReligionClaimed` | アラブ（2026-11-27 に文明の志向を最後の預言者に替えた。上の行のベドウィンは XML に残るが誰も持たない） |
-| `iHappinessPerReligion`、`CommercePerReligion` | インド |
+| `iHappinessPerReligion`、`CommercePerReligion`、`CommercePercentPerReligion`、`SpecialBuildingNotRequireds` | インド |
 | `TerrainYieldChanges`・`StartBias/Terrains` の丘陵・山岳、`TerrainYieldChangesPerEra` の山岳 | インカ |
 | `iCorporationSpreadChange`、幹部への `bRivalTerritory` の昇進、`PyOnCorporationFounded` | オランダ |
 | `PrereqBonus`（鉄・石炭・石油）+ `YieldModifiers` の生産 | ドイツ（2026-11-28 に `PrereqTech` から替えた） |
@@ -92,10 +92,10 @@ BtS の効果はそのままにして足す。
 | 騎乗ユニットへの `BonusCombatPercents`（馬）の昇進 | モンゴル |
 | 昇進の `iOtherReligionCombatPercent`・`iStateReligionCityAttack` | イザベル |
 | `NoObsolescence/BuildingClasses` の城壁・城 | ギルガメッシュ |
-| `bNewCityStateReligion` | ザラ・ヤコブ |
+| `bNewCityStateReligion`、`bOtherReligionsToCapital` | ザラ・ヤコブ |
 | `bBarbarianAlly`、`PrereqTech`（騎乗）+ `bBarbarianVision` | チンギス・ハーン |
 | `EnemyAttrition` | オラニエ公ヴィレム1世 |
-| `iEnemyWarWearinessModifier` | ガンジー（`iDefenseCombatPercent` は 2026-11-28 に外した） |
+| `iEnemyWarWearinessModifier`、`iGreatPeopleRatePerReligion` | ガンジー（`iDefenseCombatPercent` は 2026-11-28 に外した） |
 | `NoObsolescence/BuildingClasses` の世界遺産 | ラムセス２世 |
 | `PrereqTech` + `iFreeSpecialist` | リンカーン |
 | `iImprovementUpgradeRateModifier`、`bImprovementUpgradeUnworked` | アメリカ |
@@ -118,8 +118,9 @@ BtS の効果はそのままにして足す。
 | 昇進の `iCombatGoldStealPercent`・`iCombatGoldPerStrength`（2026-11-28 に `iGoldFromCombat` から替えた） | ブレヌス |
 | `NoObsolescence/SpecialBuildings` の僧院、`PyOnReligionFounded`、`PyOnBuildingBuilt` の僧院で宣教師、`SpecialBuildingProductionModifiers` の大聖堂 | ユスティニアヌス1世 |
 | 昇進の `BuildingCombatPercents`（国教の僧院・寺院・大聖堂・聖地） | ビザンチン |
-| `iStateReligionHappiness`、`iStateReligionHealth` | アショーカ |
-| `GreatPeopleClassRateModifiers` の大技術者、`CultureFlip/bNoRevoltAndNoFlip` | スレイマン |
+| `iStateReligionHappiness`、`iStateReligionHealth` | 誰も持たない（2026-11-28 にアショーカから外した） |
+| `iExperiencePerReligion` | アショーカ |
+| `GreatPeopleClassRateModifiers` の大技術者、`CultureFlip/bNoRevoltAndNoFlip`、`bNoForeignCultureAnger` | スレイマン |
 | `iEnemyMoveCostInBorders` | オラニエ公ヴィレム1世 |
 | `iRevengeCombatPercent`、`iWarWearinessModifier` -100、全戦闘ユニットへの `iWarWearinessCombatPercent` の昇進 | ブーディカ |
 | `KnownTechCost` | ピョートル |
@@ -162,7 +163,7 @@ BtS の効果はそのままにして足す。
 | サラディン | 共存: 占領した都市に国教が広まり寺院が建つ、建物が残りやすい（+50%）。占領しても人口が減らない（2026-11-28） | `Conquest/bStateReligion`、`Conquest/ReligionBuildings`（寺院）、`Conquest/iBuildingSurviveModifier`、`Conquest/bNoPopulationLoss` | 実装済み `TRAIT_COEXISTENCE` |
 | アラブ（文明） | ベドウィン: 騎乗ユニットが砂漠で移動 2 倍・防御 +25%。砂漠のバイアス。2026-11-19 に追加: 石油がゲーム開始時から見え、石油のバイアス（1 つにつき +50%）、石油のタイルの商業 +2、オアシスのタイルの生産 +1・商業 +1（マリの内向きの砂漠経済と分けて、資源とオアシスに寄せた。数値は仮） | 昇進の `TerrainDoubleMoves`・`TerrainDefenses`、`StartBias/Terrains`、`RevealBonuses`・`StartBias/BonusBiases`・`BonusYieldChanges`（石油）、`FeatureYieldChanges`（オアシス） | 実装済み `TRAIT_BEDOUIN`（2026-11-27 に下の行の最後の預言者に替えた。XML に残るが誰も持たない） |
 | アラブ（文明） | 最後の預言者（短縮名「預言者」。2026-11-27 にベドウィンから替えた）: 他の文明が残り 2 つの宗教の一方を創始すると、最後の宗教の技術を無償で得て創始する。もう一方の技術も 1 ターン以内に第三の文明が終えそうなら、研究費の高い方を先に奪う。創始した聖地に大預言者 | `bClaimLastReligion`、`PyOnLastReligionClaimed` の `createUnits`（大預言者。偉人の誕生に数えない）。Help に大預言者を手で書く | 実装済み `TRAIT_LAST_PROPHET` |
-| インド（文明） | 多宗教の受容: 都市の宗教 1 つにつき幸福 +1・文化 +1 | `iHappinessPerReligion`、`CommercePerReligion` | 実装済み `TRAIT_MULTI_RELIGION` |
+| インド（文明） | 多宗教の受容: 都市の宗教 1 つにつき幸福 +1・文化 +1・研究 +5%。僧院なしで宣教師を作れる（どの宗教でも。2026-11-28） | `iHappinessPerReligion`、`CommercePerReligion`、`CommercePercentPerReligion`、`SpecialBuildingNotRequireds`（僧院） | 実装済み `TRAIT_MULTI_RELIGION` |
 | インカ（文明） | アンデスの民: 丘陵 食料 +1、山岳 食料 +2・生産 +1、時代が 1 つ進むごとに山岳の商業 +1（山岳も働かせられる）。丘陵・山岳のバイアス（2026-11-19 に山岳を食料 +1・生産 +1 から変更） | `TerrainYieldChanges`、`TerrainYieldChangesPerEra`、`StartBias/Terrains` | 実装済み `TRAIT_ANDES` |
 | ワイナ・カパック | カパック・ニャン: 丘陵と山岳が交易網をつなぐ（山岳は通行不能でも交易網を止めない）。自国の領土の山岳にユニットが入れる（ダメージなし。ハンニバルは領土の外でも入れるがダメージを受ける）（2026-11-19）。陸の非戦闘ユニットにゲリラⅡ。丘陵のタイルが領土になると道路を敷く（技術不要、1 回だけ）（2026-11-28） | `TerrainTrades`（`TERRAIN_HILL`・`TERRAIN_PEAK`）、`PassableTerrainsInBorders`（`TERRAIN_PEAK`）、`FreePromotionSets`（`PROMOTION_GUERILLA2`）、`TerritoryRoutes`（`TERRAIN_HILL` → `ROUTE_ROAD`） | 実装済み `TRAIT_QHAPAQ_NAN` |
 | ケルト（文明） | ドルイドの森: 全陸上ユニットが森で移動 2 倍・防御 +25%、森にいるユニットの回復 +20%、都市圏の森 1 つにつき幸福 +1、森のバイアス（2026-11-19。数値は仮。丘陵は固有ユニット・固有建造物に任せる） | `FreePromotionSets`（`PROMOTION_DRUID_FOREST`: `FeatureDoubleMoves`・`FeatureDefenses`）、`FeatureHappinessChanges`、`StartBias/Features`、`FeatureHealChanges` | 実装済み `TRAIT_DRUID_FOREST` |
@@ -185,10 +186,10 @@ BtS の効果はそのままにして足す。
 | フリードリッヒ | ブランデンブルクの奇跡（短縮名「奇跡」。2026-11-28）: 軍事力が自分より上の文明との戦闘力 +20% | `FreePromotionSets`（`bFreePromotionAllUnitCombats`）で昇進 `PROMOTION_BRANDENBURG_MIRACLE`（`iStrongerEnemyCombatPercent`） | 実装済み、ゲームで確認済み `TRAIT_BRANDENBURG_MIRACLE` |
 | イザベル | レコンキスタ: 異教徒との戦闘力 +25%、国教の広まった都市への攻撃 +25% | 昇進の `iOtherReligionCombatPercent`・`iStateReligionCityAttack` | 実装済み `TRAIT_RECONQUISTA` |
 | ギルガメッシュ | ウルクの城壁: 城壁と城が陳腐化しない | `NoObsolescence/BuildingClasses` | 実装済み `TRAIT_WALLS_OF_URUK` |
-| ザラ・ヤコブ | 信仰の王: 新しい都市に国教が広まる | `bNewCityStateReligion` | 実装済み `TRAIT_KING_OF_FAITH` |
+| ザラ・ヤコブ | 信仰の王: 新しい都市に国教が広まる。ほかの文明が宗教を創始すると、首都にその宗教が広まる（さかのぼらない。2026-11-28） | `bNewCityStateReligion`、`bOtherReligionsToCapital` | 実装済み `TRAIT_KING_OF_FAITH` |
 | チンギス・ハーン | 草原の統一: 蛮族と平和。騎乗を得ると蛮族の視界を共有する（蛮族のユニット・動物・都市が見ているタイルが見える。2026-11-19 に追加。視界は強力なので騎乗を条件にした） | `bBarbarianAlly`、`ConditionalFreeTraits` の `PrereqTech`（`TECH_HORSEBACK_RIDING`）で `TRAIT_STEPPE_UNITY_VISION`（`bBarbarianVision`） | 実装済み `TRAIT_STEPPE_UNITY` |
 | スターリン | チェカ: 最初から生産「諜報」（ハンマーを諜報ポイントに）を選べる。固有ユニット「チェキスト」（スパイ。移動力 2、コスト 30）。諜報ポイント +25%。諜報任務「要人の殺害」「要人の誘拐」「体制転覆」（相手が採用できる社会制度を何でも押し付ける）「国教転覆」（自分の国教でない宗教か国教なしを押し付ける）を使える（ほかの文明は使えない。後の 2 つは 2026-11-23 に追加）。水源への毒混入・不満を煽るの値が 8 → 12 | 生産の `PrereqOrTraits`（`PROCESS_ESPIONAGE`）、`UniqueUnits`（`UNIT_CHEKIST`）、`CommerceModifiers`、諜報任務の `PrereqOrTraits`・`DisableTraits`（`ESPIONAGEMISSION_CHEKA_CITY_POISON_WATER`・`_UNHAPPINESS`） | 実装済み `TRAIT_CHEKA`（2026-11-22。焦土 `TRAIT_SCORCHED_EARTH` は同日に削除し、`EnemyAttrition` はヴィレムへ移した） |
-| ガンジー | 非暴力不服従: 敵の厭戦感情 +100%（2026-11-28 に防衛時の戦闘力 +10% を外し、+50% から上げた。非難は段階 3） | `iEnemyWarWearinessModifier` | 実装済み `TRAIT_SATYAGRAHA` |
+| ガンジー | 非暴力不服従: 敵の厭戦感情 +100%。都市の宗教 1 つにつき偉人率 +10%（2026-11-28 に防衛時の戦闘力 +10% を外し、+50% から上げた。非難は段階 3） | `iEnemyWarWearinessModifier`、`iGreatPeopleRatePerReligion` | 実装済み `TRAIT_SATYAGRAHA` |
 | ラムセス２世 | 我が名はオジマンディアス（2026-11-28 に「永遠の記念碑」から改名。短縮名「王」）: すべての世界遺産が陳腐化しない（BtS で陳腐化する 13 個を並べた） | `NoObsolescence/BuildingClasses` | 実装済み `TRAIT_ETERNAL_MONUMENTS` |
 | リンカーン | 奴隷解放: 自由主義を得ると全都市に無償の専門家 +1 | `PrereqTech` で `TRAIT_EMANCIPATION_ACT`（`iFreeSpecialist`） | 実装済み、ゲームで確認済み `TRAIT_EMANCIPATION` |
 | アメリカ（文明） | ホームステッド法: 小屋などの成長 +50%。文化圏の施設は市民を配置しなくても成長する（2026-11-23 に追加） | `iImprovementUpgradeRateModifier`、`bImprovementUpgradeUnworked` | 実装済み、ゲームで確認済み `TRAIT_HOMESTEAD` |
@@ -212,8 +213,8 @@ BtS の効果はそのままにして足す。
 | ブレヌス | 敗者に災いあれ: 戦闘に勝つたびに、負けた側の国庫の 5% を奪い、倒したユニットの基本の戦闘力 × 2 の金を得る（生産の速度で調整。2026-11-28 に金 +5 から替えた） | 昇進の `iCombatGoldStealPercent`（上限なし）・`iCombatGoldPerStrength` 200（全戦闘ユニット） | 実装済み、ゲームで確認済み `TRAIT_VAE_VICTIS` |
 | ユスティニアヌス1世 | ハギア・ソフィア: 僧院が陳腐化しない。宗教を創始すると、聖都にその宗教の宣教師 +2 体（BtS の 1 体と合わせて 3 体。2026-11-22 に追加）。僧院を生産（購入を含む）で建てると、その都市にその宗教の宣教師が 1 体（上限を無視）。大聖堂の生産 +100%（2026-11-28） | `NoObsolescence/SpecialBuildings`（`SPECIALBUILDING_MONASTERY`）、`PyOnReligionFounded`（`createMissionaries(pPlayer, eReligion, 2, pCity)`）、`PyOnBuildingBuilt`（`isSpecialBuildingIn`・`createMissionaries`）、`SpecialBuildingProductionModifiers`（大聖堂）、`Help` | 実装済み `TRAIT_HAGIA_SOPHIA`（僧院はゲームで確認済み） |
 | ビザンチン（文明） | 位階（Civ6 の位階から）: 航空以外の全戦闘ユニットが、国教の僧院 1 つにつき戦闘力 +2%、寺院 +3%、大聖堂 +5%、聖地 +10%（合計の上限 +50%）。陳腐化した僧院は数えないが、ユスティニアヌス1世なら僧院が陳腐化しないので残る | `FreePromotionSets`（`PROMOTION_RANKS`。昇進の `BuildingCombatPercents` の `bStateReligion`、聖地は 7 宗教の建物クラスを 1 つずつ、`iBuildingCombatMaxPercent` 50） | 実装済み `TRAIT_RANKS` |
-| アショーカ | ダルマの勅令: 国教の広まった都市の幸福 +1・衛生 +1 | `iStateReligionHappiness`、`iStateReligionHealth` | 実装済み、ゲームで確認済み `TRAIT_DHAMMA` |
-| スレイマン | 立法者（2026-11-28 に「大建築家スィナン」から改名。短縮名「立法」）: 大技術者の偉人ポイント +100%。自国の都市が文化で反乱・寝返りを起こさない（2026-11-28。他国の文化による不満なしは段階 2） | `GreatPeopleClassRateModifiers`（大技術者）、`CultureFlip/bNoRevoltAndNoFlip` | 実装済み、ゲームで確認済み `TRAIT_SINAN` |
+| アショーカ | ダルマの勅令: 都市の宗教 1 つにつき、その都市で作ったユニットの経験値 +1（2026-11-28 に「国教の都市の幸福 +1・衛生 +1」から替えた） | `iExperiencePerReligion` | 実装済み、ゲームで確認済み `TRAIT_DHAMMA` |
+| スレイマン | 立法者（2026-11-28 に「大建築家スィナン」から改名。短縮名「立法」）: 大技術者の偉人ポイント +100%。自国の都市が文化で反乱・寝返りを起こさない。他国の文化による不満がない（2026-11-28） | `GreatPeopleClassRateModifiers`（大技術者）、`CultureFlip/bNoRevoltAndNoFlip`、`bNoForeignCultureAnger` | 実装済み、ゲームで確認済み `TRAIT_SINAN` |
 | オラニエ公ヴィレム1世 | 洪水線: 自国の領土では、交戦中の敵の陸上ユニットの移動コスト +1。自国の領土にいる交戦中の敵が毎ターン最大 HP の 10% を失う（50% まで） | `iEnemyMoveCostInBorders`、`EnemyAttrition` | 実装済み `TRAIT_RELIEF_OF_LEIDEN`（移動コストはゲームで確認済み。2026-11-22 に「ライデンの解放」から改名し、損耗をスターリンから移した） |
 | ブーディカ | 復讐の女王: 自分の都市を一度でも征服した文明との戦闘力 +25%。厭戦感情による不満がない。その相手との厭戦感情が生むはずの不満の割合 1% につき戦闘力 +1%（上限 +50%）（2026-11-28） | `iRevengeCombatPercent`、`iWarWearinessModifier` -100、`FreePromotionSets`（`bFreePromotionAllUnitCombats`）で昇進 `PROMOTION_REVENGE_QUEEN`（`iWarWearinessCombatPercent` 100・`iWarWearinessCombatMaxPercent` 50） | 実装済み、ゲームで確認済み `TRAIT_REVENGE_QUEEN` |
 | ピョートル | 大使節団: その技術を持つ既知の文明 1 つにつき研究費 -10%（-75% まで） | `KnownTechCost` | 実装済み、ゲームで確認済み `TRAIT_GRAND_EMBASSY` |
@@ -298,7 +299,7 @@ civfanatics での公開（`master` を枠組み、この Mod をその使用例
 
 計算の 1 か所に入るもの。近いものをまとめて作る。
 
-2026-11-28: 戦闘力の 4 件を実装し、ゲームで確認した（master `2dd37b9`）。戦闘の結果と移動の 5 件（戦利品・略奪の経験値・川の攻撃・運河・道）も実装し、確認した（master `f055185`）。厭戦感情と軍事力は志向のタグではなく昇進のタグにし、志向が `bFreePromotionAllUnitCombats`（全戦闘ユニット）で配る形にした。
+2026-11-28: 戦闘力の 4 件を実装し、ゲームで確認した（master `2dd37b9`）。戦闘の結果と移動の 5 件（戦利品・略奪の経験値・川の攻撃・運河・道）も実装し、確認した（master `f055185`）。都市と宗教の 5 件（インドの 3 つ・宣教師・ザラ・ヤコブ・スレイマン）も実装し、確認した（master `83a39a8`。未使用のフック `PyOnOtherReligionFounded` も作った）。厭戦感情と軍事力は志向のタグではなく昇進のタグにし、志向が `bFreePromotionAllUnitCombats`（全戦闘ユニット）で配る形にした。
 
 - 戦闘力（`CvUnit::maxCombatStr` の周り）
   - 攻撃する側のいる地形・地形の特徴による攻撃ボーナス（昇進。ハンニバル）

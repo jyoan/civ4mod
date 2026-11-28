@@ -2274,6 +2274,7 @@
 			<Description>TXT_KEY_TRAIT_KING_OF_FAITH</Description>
 			<ShortDescription>TXT_KEY_TRAIT_KING_OF_FAITH_SHORT</ShortDescription>
 			<bNewCityStateReligion>1</bNewCityStateReligion>
+			<bOtherReligionsToCapital>1</bOtherReligionsToCapital>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_STEPPE_UNITY</Type>
@@ -2298,11 +2299,22 @@
 				<iCommerce>1</iCommerce>
 				<iCommerce>0</iCommerce>
 			</CommercePerReligion>
+			<CommercePercentPerReligion>
+				<iCommerce>0</iCommerce>
+				<iCommerce>5</iCommerce>
+			</CommercePercentPerReligion>
+			<SpecialBuildingNotRequireds>
+				<SpecialBuildingNotRequired>
+					<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
+					<bNotRequired>1</bNotRequired>
+				</SpecialBuildingNotRequired>
+			</SpecialBuildingNotRequireds>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_SATYAGRAHA</Type>
 			<Description>TXT_KEY_TRAIT_SATYAGRAHA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_SATYAGRAHA_SHORT</ShortDescription>
+			<iGreatPeopleRatePerReligion>10</iGreatPeopleRatePerReligion>
 			<iEnemyWarWearinessModifier>100</iEnemyWarWearinessModifier>
 		</TraitInfo>
 		<TraitInfo>
@@ -2896,8 +2908,7 @@
 			<Type>TRAIT_DHAMMA</Type>
 			<Description>TXT_KEY_TRAIT_DHAMMA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_DHAMMA_SHORT</ShortDescription>
-			<iStateReligionHappiness>1</iStateReligionHappiness>
-			<iStateReligionHealth>1</iStateReligionHealth>
+			<iExperiencePerReligion>1</iExperiencePerReligion>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_SINAN</Type>
@@ -2912,6 +2923,7 @@
 			<CultureFlip>
 				<bNoRevoltAndNoFlip>1</bNoRevoltAndNoFlip>
 			</CultureFlip>
+			<bNoForeignCultureAnger>1</bNoForeignCultureAnger>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_RELIEF_OF_LEIDEN</Type>
