@@ -1606,6 +1606,9 @@
 						<UnitClassType>UNITCLASS_WORKBOAT</UnitClassType>
 						<UnitClassType>UNITCLASS_GALLEY</UnitClassType>
 						<UnitClassType>UNITCLASS_TRIREME</UnitClassType>
+						<UnitClassType>UNITCLASS_CARAVEL</UnitClassType>
+						<UnitClassType>UNITCLASS_GALLEON</UnitClassType>
+						<UnitClassType>UNITCLASS_PRIVATEER</UnitClassType>
 					</FreePromotionUnitClasses>
 				</FreePromotionSet>
 				<FreePromotionSet>
@@ -1884,8 +1887,16 @@
 			<ShortDescription>TXT_KEY_TRAIT_INDUSTRIALIZATION_SHORT</ShortDescription>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
-					<TraitType>TRAIT_INDUSTRIAL_POWER</TraitType>
-					<PrereqTech>TECH_INDUSTRIALISM</PrereqTech>
+					<TraitType>TRAIT_INDUSTRY_IRON</TraitType>
+					<PrereqBonus>BONUS_IRON</PrereqBonus>
+				</ConditionalFreeTrait>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_INDUSTRY_COAL</TraitType>
+					<PrereqBonus>BONUS_COAL</PrereqBonus>
+				</ConditionalFreeTrait>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_INDUSTRY_OIL</TraitType>
+					<PrereqBonus>BONUS_OIL</PrereqBonus>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
 		</TraitInfo>
@@ -1932,7 +1943,25 @@
 			<Type>TRAIT_VAST_LAND</Type>
 			<Description>TXT_KEY_TRAIT_VAST_LAND</Description>
 			<ShortDescription>TXT_KEY_TRAIT_VAST_LAND_SHORT</ShortDescription>
-			<iCultureRangeChange>1</iCultureRangeChange>
+			<iCityRadiusChange>1</iCityRadiusChange>
+			<TerrainYieldChanges>
+				<TerrainYieldChange>
+					<TerrainType>TERRAIN_TUNDRA</TerrainType>
+					<Yields>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</TerrainYieldChange>
+				<TerrainYieldChange>
+					<TerrainType>TERRAIN_SNOW</TerrainType>
+					<Yields>
+						<iYield>1</iYield>
+						<iYield>0</iYield>
+						<iYield>0</iYield>
+					</Yields>
+				</TerrainYieldChange>
+			</TerrainYieldChanges>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_HORSE_PEOPLE</Type>
@@ -2002,6 +2031,7 @@
 			<ShortDescription>TXT_KEY_TRAIT_COEXISTENCE_SHORT</ShortDescription>
 			<Conquest>
 				<iBuildingSurviveModifier>50</iBuildingSurviveModifier>
+				<bNoPopulationLoss>1</bNoPopulationLoss>
 				<bStateReligion>1</bStateReligion>
 				<ReligionBuildings>
 					<SpecialBuildingType>SPECIALBUILDING_TEMPLE</SpecialBuildingType>
@@ -2018,6 +2048,20 @@
 					<iGrowthChange>40</iGrowthChange>
 				</FeatureGrowthChange>
 			</FeatureGrowthChanges>
+			<FreePromotionSets>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_WOODSMAN2</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<bFreePromotionNoUnitCombat>1</bFreePromotionNoUnitCombat>
+					<FreePromotionDomains>
+						<DomainType>DOMAIN_LAND</DomainType>
+					</FreePromotionDomains>
+				</FreePromotionSet>
+			</FreePromotionSets>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_LETTERS_OF_MARQUE</Type>
@@ -2243,8 +2287,7 @@
 			<Type>TRAIT_SATYAGRAHA</Type>
 			<Description>TXT_KEY_TRAIT_SATYAGRAHA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_SATYAGRAHA_SHORT</ShortDescription>
-			<iDefenseCombatPercent>10</iDefenseCombatPercent>
-			<iEnemyWarWearinessModifier>50</iEnemyWarWearinessModifier>
+			<iEnemyWarWearinessModifier>100</iEnemyWarWearinessModifier>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_AGE_OF_DISCOVERY</Type>
@@ -2494,7 +2537,7 @@
 			<Description>TXT_KEY_TRAIT_DEVSHIRME</Description>
 			<ShortDescription>TXT_KEY_TRAIT_DEVSHIRME_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_DEVSHIRME_HELP</Help>
-			<PyOnCityAcquired>bConquest and pCity.getConscriptUnit() != -1 and pPlayer.initUnit(pCity.getConscriptUnit(), pCity.getX(), pCity.getY(), UnitAITypes.NO_UNITAI, DirectionTypes.DIRECTION_SOUTH)</PyOnCityAcquired>
+			<PyOnCityAcquired>bConquest and createConscripts(pPlayer, pCity, 1 + countCityReligions(pCity, pPlayer.getStateReligion()))</PyOnCityAcquired>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_AGORA</Type>
@@ -2640,6 +2683,12 @@
 			<Type>TRAIT_SUN_NEVER_SETS</Type>
 			<Description>TXT_KEY_TRAIT_SUN_NEVER_SETS</Description>
 			<ShortDescription>TXT_KEY_TRAIT_SUN_NEVER_SETS_SHORT</ShortDescription>
+			<UnitCombatProductionModifiers>
+				<UnitCombatProductionModifier>
+					<UnitCombatType>UNITCOMBAT_NAVAL</UnitCombatType>
+					<iProductionModifier>25</iProductionModifier>
+				</UnitCombatProductionModifier>
+			</UnitCombatProductionModifiers>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
@@ -2693,6 +2742,10 @@
 							<PromotionType>PROMOTION_ROYAL_NAVY</PromotionType>
 							<bFreePromotion>1</bFreePromotion>
 						</FreePromotion>
+						<FreePromotion>
+							<PromotionType>PROMOTION_COMBAT1</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
 					</FreePromotions>
 					<FreePromotionUnitCombats>
 						<FreePromotionUnitCombat>
@@ -2739,8 +2792,17 @@
 			<Type>TRAIT_AGE_OF_PERICLES</Type>
 			<Description>TXT_KEY_TRAIT_AGE_OF_PERICLES</Description>
 			<ShortDescription>TXT_KEY_TRAIT_AGE_OF_PERICLES_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_AGE_OF_PERICLES_HELP</Help>
 			<iGoldenAgeModifier>50</iGoldenAgeModifier>
 			<iGoldenAgeGreatPeopleRateModifier>100</iGoldenAgeGreatPeopleRateModifier>
+			<PyOnGreatPersonBorn>not isUnitClassIn(pUnit, ['UNITCLASS_GREAT_GENERAL']) and extendGoldenAge(pPlayer, eTrait, scaleBySpeed(2, 'GoldenAge'))</PyOnGreatPersonBorn>
+			<PyOnGoldenAgeStart>pPlayer.setTraitCounter(eTrait, 0)</PyOnGoldenAgeStart>
+			<ConditionalFreeTraits>
+				<ConditionalFreeTrait>
+					<TraitType>TRAIT_AGE_OF_PERICLES_GOLDEN</TraitType>
+					<bGoldenAge>1</bGoldenAge>
+				</ConditionalFreeTrait>
+			</ConditionalFreeTraits>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_VAE_VICTIS</Type>
@@ -2800,11 +2862,18 @@
 			<Description>TXT_KEY_TRAIT_HAGIA_SOPHIA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_HAGIA_SOPHIA_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_HAGIA_SOPHIA_HELP</Help>
+			<SpecialBuildingProductionModifiers>
+				<SpecialBuildingProductionModifier>
+					<SpecialBuildingType>SPECIALBUILDING_CATHEDRAL</SpecialBuildingType>
+					<iProductionModifier>100</iProductionModifier>
+				</SpecialBuildingProductionModifier>
+			</SpecialBuildingProductionModifiers>
 			<NoObsolescence>
 				<SpecialBuildings>
 					<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
 				</SpecialBuildings>
 			</NoObsolescence>
+			<PyOnBuildingBuilt>isSpecialBuildingIn(eBuilding, ['SPECIALBUILDING_MONASTERY']) and createMissionaries(pPlayer, gc.getBuildingInfo(eBuilding).getReligionType(), 1, pCity)</PyOnBuildingBuilt>
 			<PyOnReligionFounded>createMissionaries(pPlayer, eReligion, 2, pCity)</PyOnReligionFounded>
 		</TraitInfo>
 		<TraitInfo>
@@ -2824,6 +2893,9 @@
 					<iGreatPeopleRateModifier>100</iGreatPeopleRateModifier>
 				</GreatPeopleClassRateModifier>
 			</GreatPeopleClassRateModifiers>
+			<CultureFlip>
+				<bNoRevoltAndNoFlip>1</bNoRevoltAndNoFlip>
+			</CultureFlip>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_RELIEF_OF_LEIDEN</Type>
@@ -2839,6 +2911,7 @@
 			<Type>TRAIT_REVENGE_QUEEN</Type>
 			<Description>TXT_KEY_TRAIT_REVENGE_QUEEN</Description>
 			<ShortDescription>TXT_KEY_TRAIT_REVENGE_QUEEN_SHORT</ShortDescription>
+			<iWarWearinessModifier>-100</iWarWearinessModifier>
 			<iRevengeCombatPercent>25</iRevengeCombatPercent>
 		</TraitInfo>
 		<TraitInfo>
@@ -2905,13 +2978,53 @@
 					<bAtWar>1</bAtWar>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
+			<FreePromotionSets>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_DELAWARE</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<FreePromotionUnitCombats>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_RECON</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_SIEGE</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_GUN</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_ARMOR</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+					</FreePromotionUnitCombats>
+				</FreePromotionSet>
+			</FreePromotionSets>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_MINUTEMEN_WAR</Type>
 			<Description>TXT_KEY_TRAIT_MINUTEMEN_WAR</Description>
 			<ShortDescription>TXT_KEY_TRAIT_MINUTEMEN_WAR_SHORT</ShortDescription>
 			<Help>TXT_KEY_TRAIT_MINUTEMEN_WAR_HELP</Help>
-			<PyOnGained>createCityConscripts(pPlayer, 5)</PyOnGained>
+			<PyOnGained>createCityConscripts(pPlayer, 3)</PyOnGained>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_PAX_TOKUGAWA</Type>
@@ -3047,6 +3160,20 @@
 			<PassableTerrainsInBorders>
 				<TerrainType>TERRAIN_PEAK</TerrainType>
 			</PassableTerrainsInBorders>
+			<FreePromotionSets>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_GUERILLA2</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<bFreePromotionNoUnitCombat>1</bFreePromotionNoUnitCombat>
+					<FreePromotionDomains>
+						<DomainType>DOMAIN_LAND</DomainType>
+					</FreePromotionDomains>
+				</FreePromotionSet>
+			</FreePromotionSets>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_YANGBAN</Type>
@@ -3463,6 +3590,46 @@
 			<Help>TXT_KEY_TRAIT_LAST_PROPHET_HELP</Help>
 			<bClaimLastReligion>1</bClaimLastReligion>
 			<PyOnLastReligionClaimed>createUnits(pPlayer, 'UNITCLASS_PROPHET', 1, pCity.plot())</PyOnLastReligionClaimed>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_INDUSTRY_IRON</Type>
+			<Description>TXT_KEY_TRAIT_INDUSTRY_IRON</Description>
+			<ShortDescription>TXT_KEY_TRAIT_INDUSTRY_IRON_SHORT</ShortDescription>
+			<YieldModifiers>
+				<iYield>0</iYield>
+				<iYield>5</iYield>
+				<iYield>0</iYield>
+			</YieldModifiers>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_INDUSTRY_COAL</Type>
+			<Description>TXT_KEY_TRAIT_INDUSTRY_COAL</Description>
+			<ShortDescription>TXT_KEY_TRAIT_INDUSTRY_COAL_SHORT</ShortDescription>
+			<YieldModifiers>
+				<iYield>0</iYield>
+				<iYield>10</iYield>
+				<iYield>0</iYield>
+			</YieldModifiers>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_INDUSTRY_OIL</Type>
+			<Description>TXT_KEY_TRAIT_INDUSTRY_OIL</Description>
+			<ShortDescription>TXT_KEY_TRAIT_INDUSTRY_OIL_SHORT</ShortDescription>
+			<YieldModifiers>
+				<iYield>0</iYield>
+				<iYield>10</iYield>
+				<iYield>0</iYield>
+			</YieldModifiers>
+		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_AGE_OF_PERICLES_GOLDEN</Type>
+			<Description>TXT_KEY_TRAIT_AGE_OF_PERICLES_GOLDEN</Description>
+			<ShortDescription>TXT_KEY_TRAIT_AGE_OF_PERICLES_GOLDEN_SHORT</ShortDescription>
+			<CommerceModifiers>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>25</iCommerce>
+			</CommerceModifiers>
 		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>

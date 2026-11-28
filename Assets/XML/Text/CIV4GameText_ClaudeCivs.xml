@@ -463,21 +463,21 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_FINEST_HOUR</Tag>
-		<English>Finest Hour</English>
-		<French>Finest Hour</French>
-		<German>Finest Hour</German>
-		<Italian>Finest Hour</Italian>
-		<Spanish>Finest Hour</Spanish>
-		<Japanese>&#26368;&#12418;&#36637;&#12369;&#12427;&#26178;&#24535;&#21521;</Japanese>
+		<English>Never Surrender</English>
+		<French>Never Surrender</French>
+		<German>Never Surrender</German>
+		<Italian>Never Surrender</Italian>
+		<Spanish>Never Surrender</Spanish>
+		<Japanese>&#12493;&#12496;&#12540;&#12469;&#12524;&#12531;&#12480;&#12540;&#24535;&#21521;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_FINEST_HOUR_SHORT</Tag>
-		<English>Fin</English>
-		<French>Fin</French>
-		<German>Fin</German>
-		<Italian>Fin</Italian>
-		<Spanish>Fin</Spanish>
-		<Japanese>&#36637;</Japanese>
+		<English>Nev</English>
+		<French>Nev</French>
+		<German>Nev</German>
+		<Italian>Nev</Italian>
+		<Spanish>Nev</Spanish>
+		<Japanese>&#19981;&#23624;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_FINEST_HOUR_WAR</Tag>
@@ -751,21 +751,21 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_ETERNAL_MONUMENTS</Tag>
-		<English>Eternal Monuments</English>
-		<French>Eternal Monuments</French>
-		<German>Eternal Monuments</German>
-		<Italian>Eternal Monuments</Italian>
-		<Spanish>Eternal Monuments</Spanish>
-		<Japanese>&#27704;&#36960;&#12398;&#35352;&#24565;&#30865;&#24535;&#21521;</Japanese>
+		<English>My Name Is Ozymandias</English>
+		<French>My Name Is Ozymandias</French>
+		<German>My Name Is Ozymandias</German>
+		<Italian>My Name Is Ozymandias</Italian>
+		<Spanish>My Name Is Ozymandias</Spanish>
+		<Japanese>&#25105;&#12364;&#21517;&#12399;&#12458;&#12472;&#12510;&#12531;&#12487;&#12451;&#12450;&#12473;&#24535;&#21521;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_ETERNAL_MONUMENTS_SHORT</Tag>
-		<English>Ete</English>
-		<French>Ete</French>
-		<German>Ete</German>
-		<Italian>Ete</Italian>
-		<Spanish>Ete</Spanish>
-		<Japanese>&#30865;</Japanese>
+		<English>Ozy</English>
+		<French>Ozy</French>
+		<German>Ozy</German>
+		<Italian>Ozy</Italian>
+		<Spanish>Ozy</Spanish>
+		<Japanese>&#29579;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_EMANCIPATION</Tag>
@@ -1012,12 +1012,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_DEVSHIRME_HELP</Tag>
-		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript</English>
-		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript</French>
-		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript</German>
-		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript</Italian>
-		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript</Spanish>
-		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#37117;&#24066;&#12434;&#24449;&#26381;&#12377;&#12427;&#12392;&#12289;&#12381;&#12398;&#37117;&#24066;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12364;1&#20307;&#21152;&#12431;&#12427;</Japanese>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript, and one more for each religion in the city other than your state religion (all religions without a state religion)</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript, and one more for each religion in the city other than your state religion (all religions without a state religion)</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript, and one more for each religion in the city other than your state religion (all religions without a state religion)</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript, and one more for each religion in the city other than your state religion (all religions without a state religion)</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Conquering a city gives the best unit it can conscript, and one more for each religion in the city other than your state religion (all religions without a state religion)</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#37117;&#24066;&#12434;&#24449;&#26381;&#12377;&#12427;&#12392;&#12289;&#12381;&#12398;&#37117;&#24066;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12364; 1 &#20307;&#12392;&#12289;&#12381;&#12398;&#37117;&#24066;&#12395;&#12354;&#12427;&#22269;&#25945;&#20197;&#22806;&#12398;&#23447;&#25945; 1 &#12388;&#12395;&#12388;&#12365; 1 &#20307;&#21152;&#12431;&#12427;&#65288;&#22269;&#25945;&#12364;&#12394;&#12369;&#12428;&#12400;&#12377;&#12409;&#12390;&#12398;&#23447;&#25945;&#12434;&#25968;&#12360;&#12427;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_MESOPOTAMIA</Tag>
@@ -1192,12 +1192,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_HAGIA_SOPHIA_HELP</Tag>
-		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city</English>
-		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city</French>
-		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city</German>
-		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city</Italian>
-		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city</Spanish>
-		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#23447;&#25945;&#12434;&#21109;&#22987;&#12377;&#12427;&#12392;&#12289;&#32854;&#37117;&#12395;&#12381;&#12398;&#23447;&#25945;&#12398;&#23459;&#25945;&#24107;&#12364;2&#20307;&#21152;&#12431;&#12427;</Japanese>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city[NEWLINE][SPACE][SPACE][ICON_BULLET]Building a monastery by production gives 1 missionary of its religion in the city (beyond the limit of missionaries)</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city[NEWLINE][SPACE][SPACE][ICON_BULLET]Building a monastery by production gives 1 missionary of its religion in the city (beyond the limit of missionaries)</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city[NEWLINE][SPACE][SPACE][ICON_BULLET]Building a monastery by production gives 1 missionary of its religion in the city (beyond the limit of missionaries)</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city[NEWLINE][SPACE][SPACE][ICON_BULLET]Building a monastery by production gives 1 missionary of its religion in the city (beyond the limit of missionaries)</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Founding a religion gives 2 more of its missionaries in the holy city[NEWLINE][SPACE][SPACE][ICON_BULLET]Building a monastery by production gives 1 missionary of its religion in the city (beyond the limit of missionaries)</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#23447;&#25945;&#12434;&#21109;&#22987;&#12377;&#12427;&#12392;&#12289;&#32854;&#37117;&#12395;&#12381;&#12398;&#23447;&#25945;&#12398;&#23459;&#25945;&#24107;&#12364;2&#20307;&#21152;&#12431;&#12427;[NEWLINE][SPACE][SPACE][ICON_BULLET]&#20711;&#38498;&#12434;&#29983;&#29987;&#12391;&#24314;&#12390;&#12427;&#12392;&#12289;&#12381;&#12398;&#37117;&#24066;&#12395;&#12381;&#12398;&#20711;&#38498;&#12398;&#23447;&#25945;&#12398;&#23459;&#25945;&#24107;&#12364; 1 &#20307;&#21152;&#12431;&#12427;&#65288;&#23459;&#25945;&#24107;&#12398;&#19978;&#38480;&#12434;&#36229;&#12360;&#12390;&#12418;&#21152;&#12431;&#12427;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_PROMOTION_SUN_NEVER_SETS</Tag>
@@ -1246,21 +1246,21 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_SINAN</Tag>
-		<English>Mimar Sinan</English>
-		<French>Mimar Sinan</French>
-		<German>Mimar Sinan</German>
-		<Italian>Mimar Sinan</Italian>
-		<Spanish>Mimar Sinan</Spanish>
-		<Japanese>&#22823;&#24314;&#31689;&#23478;&#12473;&#12451;&#12490;&#12531;&#24535;&#21521;</Japanese>
+		<English>Kanuni</English>
+		<French>Kanuni</French>
+		<German>Kanuni</German>
+		<Italian>Kanuni</Italian>
+		<Spanish>Kanuni</Spanish>
+		<Japanese>&#31435;&#27861;&#32773;&#24535;&#21521;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_SINAN_SHORT</Tag>
-		<English>Sin</English>
-		<French>Sin</French>
-		<German>Sin</German>
-		<Italian>Sin</Italian>
-		<Spanish>Sin</Spanish>
-		<Japanese>&#21280;</Japanese>
+		<English>Kan</English>
+		<French>Kan</French>
+		<German>Kan</German>
+		<Italian>Kan</Italian>
+		<Spanish>Kan</Spanish>
+		<Japanese>&#31435;&#27861;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_RELIEF_OF_LEIDEN</Tag>
@@ -1399,12 +1399,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_MINUTEMEN_HELP</Tag>
-		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 5 or more</English>
-		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 5 or more</French>
-		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 5 or more</German>
-		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 5 or more</Italian>
-		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 5 or more</Spanish>
-		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#25126;&#20105;&#12364;&#22987;&#12414;&#12427;&#12392;&#65288;&#20132;&#25126;&#30456;&#25163;&#12364;&#12356;&#12394;&#12356;&#29366;&#24907;&#12363;&#12425;&#65289;&#12289;&#39318;&#37117;&#12392;&#20154;&#21475; 5 &#20197;&#19978;&#12398;&#37117;&#24066;&#12395;&#12289;&#12381;&#12398;&#37117;&#24066;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12364; 1 &#20307;&#12378;&#12388;&#29694;&#12428;&#12427;</Japanese>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 3 or more</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 3 or more</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 3 or more</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 3 or more</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a war starts (from no war), a unit the city can conscript appears in the capital and in each city of size 3 or more</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#25126;&#20105;&#12364;&#22987;&#12414;&#12427;&#12392;&#65288;&#20132;&#25126;&#30456;&#25163;&#12364;&#12356;&#12394;&#12356;&#29366;&#24907;&#12363;&#12425;&#65289;&#12289;&#39318;&#37117;&#12392;&#20154;&#21475; 3 &#20197;&#19978;&#12398;&#37117;&#24066;&#12395;&#12289;&#12381;&#12398;&#37117;&#24066;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12364; 1 &#20307;&#12378;&#12388;&#29694;&#12428;&#12427;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_MINUTEMEN_WAR</Tag>
@@ -1426,12 +1426,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_MINUTEMEN_WAR_HELP</Tag>
-		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 5 or more</English>
-		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 5 or more</French>
-		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 5 or more</German>
-		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 5 or more</Italian>
-		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 5 or more</Spanish>
-		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#24471;&#12383;&#12392;&#12365;&#12289;&#39318;&#37117;&#12392;&#20154;&#21475; 5 &#20197;&#19978;&#12398;&#37117;&#24066;&#12395;&#12289;&#12381;&#12398;&#37117;&#24066;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12364; 1 &#20307;&#12378;&#12388;&#29694;&#12428;&#12427;</Japanese>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 3 or more</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 3 or more</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 3 or more</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 3 or more</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]When gained, a unit the city can conscript appears in the capital and in each city of size 3 or more</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#24471;&#12383;&#12392;&#12365;&#12289;&#39318;&#37117;&#12392;&#20154;&#21475; 3 &#20197;&#19978;&#12398;&#37117;&#24066;&#12395;&#12289;&#12381;&#12398;&#37117;&#24066;&#12391;&#24500;&#20853;&#12391;&#12365;&#12427;&#12518;&#12491;&#12483;&#12488;&#12364; 1 &#20307;&#12378;&#12388;&#29694;&#12428;&#12427;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_PAX_TOKUGAWA</Tag>
@@ -2539,5 +2539,95 @@
 		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]A Great Prophet appears in the holy city of that religion</Italian>
 		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]A Great Prophet appears in the holy city of that religion</Spanish>
 		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#12381;&#12398;&#12392;&#12365;&#12289;&#21109;&#22987;&#12375;&#12383;&#23447;&#25945;&#12398;&#32854;&#22320;&#12395;&#22823;&#38928;&#35328;&#32773;&#12364;&#29694;&#12428;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_DELAWARE</Tag>
+		<English>Crossing of the Delaware</English>
+		<French>Crossing of the Delaware</French>
+		<German>Crossing of the Delaware</German>
+		<Italian>Crossing of the Delaware</Italian>
+		<Spanish>Crossing of the Delaware</Spanish>
+		<Japanese>&#12487;&#12521;&#12454;&#12455;&#12450;&#28193;&#27827;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_AGE_OF_PERICLES_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a great person (not a great general) is born during a golden age, the golden age lasts 2 more turns (at normal speed). In all, one golden age gets at most as many more turns as a golden age lasts</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a great person (not a great general) is born during a golden age, the golden age lasts 2 more turns (at normal speed). In all, one golden age gets at most as many more turns as a golden age lasts</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a great person (not a great general) is born during a golden age, the golden age lasts 2 more turns (at normal speed). In all, one golden age gets at most as many more turns as a golden age lasts</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a great person (not a great general) is born during a golden age, the golden age lasts 2 more turns (at normal speed). In all, one golden age gets at most as many more turns as a golden age lasts</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a great person (not a great general) is born during a golden age, the golden age lasts 2 more turns (at normal speed). In all, one golden age gets at most as many more turns as a golden age lasts</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#40644;&#37329;&#26178;&#20195;&#12398;&#12354;&#12356;&#12384;&#12395;&#20553;&#20154;&#65288;&#22823;&#23558;&#36557;&#12434;&#38500;&#12367;&#65289;&#12364;&#29983;&#12414;&#12428;&#12427;&#12392;&#12289;&#40644;&#37329;&#26178;&#20195;&#12364; 2 &#12479;&#12540;&#12531;&#24310;&#12403;&#12427;&#65288;&#36890;&#24120;&#12398;&#36895;&#24230;&#12398;&#12392;&#12365;&#65289;&#12290;1 &#22238;&#12398;&#40644;&#37329;&#26178;&#20195;&#12391;&#24310;&#12403;&#12427;&#21512;&#35336;&#12399;&#12289;&#40644;&#37329;&#26178;&#20195;&#12398;&#36890;&#24120;&#12398;&#38263;&#12373;&#12414;&#12391;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDUSTRY_IRON</Tag>
+		<English>Industrialization (Iron)</English>
+		<French>Industrialization (Iron)</French>
+		<German>Industrialization (Iron)</German>
+		<Italian>Industrialization (Iron)</Italian>
+		<Spanish>Industrialization (Iron)</Spanish>
+		<Japanese>&#29987;&#26989;&#21270;&#65288;&#37444;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDUSTRY_IRON_SHORT</Tag>
+		<English>Ind</English>
+		<French>Ind</French>
+		<German>Ind</German>
+		<Italian>Ind</Italian>
+		<Spanish>Ind</Spanish>
+		<Japanese>&#24037;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDUSTRY_COAL</Tag>
+		<English>Industrialization (Coal)</English>
+		<French>Industrialization (Coal)</French>
+		<German>Industrialization (Coal)</German>
+		<Italian>Industrialization (Coal)</Italian>
+		<Spanish>Industrialization (Coal)</Spanish>
+		<Japanese>&#29987;&#26989;&#21270;&#65288;&#30707;&#28845;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDUSTRY_COAL_SHORT</Tag>
+		<English>Ind</English>
+		<French>Ind</French>
+		<German>Ind</German>
+		<Italian>Ind</Italian>
+		<Spanish>Ind</Spanish>
+		<Japanese>&#24037;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDUSTRY_OIL</Tag>
+		<English>Industrialization (Oil)</English>
+		<French>Industrialization (Oil)</French>
+		<German>Industrialization (Oil)</German>
+		<Italian>Industrialization (Oil)</Italian>
+		<Spanish>Industrialization (Oil)</Spanish>
+		<Japanese>&#29987;&#26989;&#21270;&#65288;&#30707;&#27833;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDUSTRY_OIL_SHORT</Tag>
+		<English>Ind</English>
+		<French>Ind</French>
+		<German>Ind</German>
+		<Italian>Ind</Italian>
+		<Spanish>Ind</Spanish>
+		<Japanese>&#24037;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_AGE_OF_PERICLES_GOLDEN</Tag>
+		<English>Age of Pericles (Golden Age)</English>
+		<French>Age of Pericles (Golden Age)</French>
+		<German>Age of Pericles (Golden Age)</German>
+		<Italian>Age of Pericles (Golden Age)</Italian>
+		<Spanish>Age of Pericles (Golden Age)</Spanish>
+		<Japanese>&#12506;&#12522;&#12463;&#12524;&#12473;&#26178;&#20195;&#65288;&#40644;&#37329;&#26178;&#20195;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_AGE_OF_PERICLES_GOLDEN_SHORT</Tag>
+		<English>Age</English>
+		<French>Age</French>
+		<German>Age</German>
+		<Italian>Age</Italian>
+		<Spanish>Age</Spanish>
+		<Japanese>&#26178;</Japanese>
 	</TEXT>
 </Civ4GameText>
