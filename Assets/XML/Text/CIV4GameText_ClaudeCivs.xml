@@ -336,6 +336,42 @@
 		<Japanese>&#27710;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_BUILD_NILE_CANAL_NORTH</Tag>
+		<English>Canal (North Edge)</English>
+		<French>Canal (North Edge)</French>
+		<German>Canal (North Edge)</German>
+		<Italian>Canal (North Edge)</Italian>
+		<Spanish>Canal (North Edge)</Spanish>
+		<Japanese>&#36939;&#27827;&#65288;&#21271;&#12398;&#36794;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_NILE_CANAL_EAST</Tag>
+		<English>Canal (East Edge)</English>
+		<French>Canal (East Edge)</French>
+		<German>Canal (East Edge)</German>
+		<Italian>Canal (East Edge)</Italian>
+		<Spanish>Canal (East Edge)</Spanish>
+		<Japanese>&#36939;&#27827;&#65288;&#26481;&#12398;&#36794;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_NILE_CANAL_SOUTH</Tag>
+		<English>Canal (South Edge)</English>
+		<French>Canal (South Edge)</French>
+		<German>Canal (South Edge)</German>
+		<Italian>Canal (South Edge)</Italian>
+		<Spanish>Canal (South Edge)</Spanish>
+		<Japanese>&#36939;&#27827;&#65288;&#21335;&#12398;&#36794;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_NILE_CANAL_WEST</Tag>
+		<English>Canal (West Edge)</English>
+		<French>Canal (West Edge)</French>
+		<German>Canal (West Edge)</German>
+		<Italian>Canal (West Edge)</Italian>
+		<Spanish>Canal (West Edge)</Spanish>
+		<Japanese>&#36939;&#27827;&#65288;&#35199;&#12398;&#36794;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_VAST_LAND</Tag>
 		<English>Vast Land</English>
 		<French>Vast Land</French>

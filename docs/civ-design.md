@@ -171,7 +171,7 @@ BtS の効果はそのままにして足す。
 | ケルト（文明） | ドルイドの森: 全陸上ユニットが森で移動 2 倍・防御 +25%、森にいるユニットの回復 +20%、都市圏の森 1 つにつき幸福 +1、森のバイアス（2026-11-19。数値は仮。丘陵は固有ユニット・固有建造物に任せる） | `FreePromotionSets`（`PROMOTION_DRUID_FOREST`: `FeatureDoubleMoves`・`FeatureDefenses`）、`FeatureHappinessChanges`、`StartBias/Features`、`FeatureHealChanges` | 実装済み `TRAIT_DRUID_FOREST` |
 | オランダ（文明） | 東インド会社: 幹部の成功率 +50%、幹部が国境を閉じた国にも入れる、企業を設立すると本社に幹部 3 体 | `iCorporationSpreadChange`、昇進の `bRivalTerritory`、`PyOnCorporationFounded` | 実装済み `TRAIT_VOC` |
 | ドイツ（文明） | 産業化: 鉄があれば全都市の生産 +5%、石炭 +10%、石油 +10%（2026-11-28 に「産業主義で +10%」から替えた。`TRAIT_INDUSTRIAL_POWER` は誰も持たない） | `ConditionalFreeTraits` の `PrereqBonus` で `TRAIT_INDUSTRY_IRON`・`_COAL`・`_OIL`（`YieldModifiers`） | 実装済み、ゲームで確認済み `TRAIT_INDUSTRIALIZATION` |
-| エジプト（文明） | ナイルの賜物: 氾濫原 生産 +1、不衛生なし。氾濫原のバイアス | `FeatureYieldChanges`、`FeatureHealthChanges`、`StartBias/Features` | 実装済み `TRAIT_NILE` |
+| エジプト（文明） | ナイルの賜物: 氾濫原 生産 +1、不衛生なし。氾濫原のバイアス。工学で労働者が運河を掘れる（自国の領土で、川か湖につながる辺。沿った平地の砂漠は氾濫原に。どのタイルも川の辺は 3 本まで） | `FeatureYieldChanges`、`FeatureHealthChanges`、`StartBias/Features`、作業 `BUILD_NILE_CANAL_*`（`RiverEdge`・`RiverFeature`・`iMaxPlotRiverEdges` 3、`iTime` 1000） | 実装済み `TRAIT_NILE`。運河のボタンは仮（農場） |
 | ロシア（文明） | 広大な大地: 都市圏の半径 +1（3。文化レベルの条件なし）、ツンドラ・雪原の食料 +1（2026-11-28 に文化圏 +1 から替えた。アンコールの効果を移した） | `iCityRadiusChange`、`TerrainYieldChanges` | 実装済み、ゲームで確認済み `TRAIT_VAST_LAND` |
 | モンゴル（文明） | 騎馬の民: 牧草地 食料 +1、騎乗ユニットの経験値 +2。馬のバイアス。騎乗ユニットに昇進「駿馬」: 馬 1 つにつき戦闘力 +10%（輸入した馬も数える。上限 +50%）（2026-11-28） | `ImprovementYieldChanges`、`UnitCombatFreeExperiences`、`StartBias/BonusBiases`、`FreePromotionSets`（`PROMOTION_FINE_HORSES`。`BonusCombatPercents`・`iBonusCombatMaxPercent`） | 実装済み `TRAIT_HORSE_PEOPLE` |
 | ローマ（文明） | アッピア街道: 自国の領土の道路・鉄道の移動コスト -50%（道路で 2 倍進める）。都市を建設すると、陸路 6 タイル以内で首都とつながるなら首都までの道路が最初から敷かれる（技術は不要。Civ6 のローマの能力から。2026-11-23） | `iRouteMovementModifierInBorders`、`PyOnCityFounded` の `buildRouteToCapital(pCity, 'ROUTE_ROAD', 6)` | 実装済み `TRAIT_APPIAN_WAY` |
@@ -337,6 +337,7 @@ civfanatics での公開（`master` を枠組み、この Mod をその使用例
 
 2026-11-28: アステカを作った（master `7cbe66d` 昇進の `bForcedLabor`・ユニットの `iGreatWorkOccupationTurns`。civ-design で人身供犠志向とマセワリ）。
 2026-11-28: アメリカを作った（master `b304722` 志向の `FoundingOverlord`・`iTributeDemandTurns`。civ-design で独立宣言志向と宗主国の「本国」）。
+2026-11-28: エジプトを作った（master `e33e8fb` 作業の `RiverEdge`・`RiverFeature`・`iMaxPlotRiverEdges`。都市を堀で囲めないよう、どのタイルも川の辺は 3 本まで。civ-design でナイルの賜物に運河の作業 4 つ）。
 
 - アステカ: 労働者の小さな偉人化と強制労働
 - アメリカ: 宗主国のダミー文明と独立戦争の黄金期
@@ -349,6 +350,7 @@ civfanatics での公開（`master` を枠組み、この Mod をその使用例
 
 - 昇進の XML で、使わない項目（値 0 や NONE）も書かないといけないのを、省略できるようにする（Schema の `minOccurs="0"` と読み込みの既定値。2026-11-28 にユーザーの要望）
 - 既存の志向の戦闘のタグ（`iRevengeCombatPercent`・`AttitudeCombatPercents`・`iCombatPercent`・`iDefenseCombatPercent` など）を、昇進のタグにして志向が `FreePromotionSets` で配る形に移す（2026-11-28 に方針を決定。兵科・領域で絞れ、ほかの Info からも配れる）。兵科を並べて全戦闘ユニットに配っている志向（ブレヌス・ハンニバルなど）も `bFreePromotionAllUnitCombats` に書き換える
+- 運河の作業の進み具合を、同じ辺を掟んだ 2 つのタイルで合算するか検討する（今はタイルごとに別々。北・西の辺を隣のタイルの南・東の辺に読み替える。AI の労働者に掘らせるときに一緒に。ユーザーが検討する予定、2026-11-28）
 - AI への対応。判断コードが要るもの: アステカの生贄と強制労働、アメリカの独立、インドのほかの宗教の宣教師、オランダの海上の重役
 - ゲームバランス、英語版（`CYBERFRONT` なしの DLL、英語版をもとにした Python）、配布の準備（検証用データを外す）
 
