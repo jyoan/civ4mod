@@ -1955,6 +1955,7 @@ m_iStrongerEnemyCombatPercent(0),
 m_iCombatGoldPerStrength(0),
 m_iFormerMasterCombatPercent(0),
 m_bRiverAttack(false),
+m_bForcedLabor(false),
 m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
@@ -2584,6 +2585,12 @@ int CvPromotionInfo::getCombatGoldPerStrength() const
 bool CvPromotionInfo::isRiverAttack() const
 {
 	return m_bRiverAttack;
+}
+
+// bForcedLabor (added by this mod): see CvUnit::build
+bool CvPromotionInfo::isForcedLabor() const
+{
+	return m_bForcedLabor;
 }
 
 // BonusAffinities and BuildingCombatPercents: the bonuses, special buildings and building classes are loaded after the
@@ -3287,13 +3294,20 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iFormerMasterCombatPercent);
 	}
+
+	// uiFlag < 25: cache written before bForcedLabor existed
+	m_bForcedLabor = false;
+	if (uiFlag > 24)
+	{
+		stream->Read(&m_bForcedLabor);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 24;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience, 19: BuildingCombatPercents, iBuildingCombatMaxPercent, 20: Encirclement, 21: iGoldenAgeAdvantageCombatPercent, 22: AttackFromTerrains, AttackFromFeatures, BonusCombatPercents, iBonusCombatMaxPercent, iWarWearinessCombatPercent, iWarWearinessCombatMaxPercent, iStrongerEnemyCombatPercent, 23: iCombatGoldPerStrength, bRiverAttack, 24: iFormerMasterCombatPercent (added by this mod)
+	uint uiFlag = 25;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience, 19: BuildingCombatPercents, iBuildingCombatMaxPercent, 20: Encirclement, 21: iGoldenAgeAdvantageCombatPercent, 22: AttackFromTerrains, AttackFromFeatures, BonusCombatPercents, iBonusCombatMaxPercent, iWarWearinessCombatPercent, iWarWearinessCombatMaxPercent, iStrongerEnemyCombatPercent, 23: iCombatGoldPerStrength, bRiverAttack, 24: iFormerMasterCombatPercent, 25: bForcedLabor (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -3448,6 +3462,7 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iCombatGoldPerStrength);
 	stream->Write(m_bRiverAttack);
 	stream->Write(m_iFormerMasterCombatPercent);
+	stream->Write(m_bForcedLabor);
 }
 
 // Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
@@ -3627,6 +3642,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iFormerMasterCombatPercent, "iFormerMasterCombatPercent");
 	pXML->GetChildXmlValByName(&m_iCombatGoldPerStrength, "iCombatGoldPerStrength");
 	pXML->GetChildXmlValByName(&m_bRiverAttack, "bRiverAttack");
+	pXML->GetChildXmlValByName(&m_bForcedLabor, "bForcedLabor");
 
 	// BuildingCombatPercents (added by this mod): the building classes and special buildings are resolved in readPass3()
 	m_aiBuildingCombatBuildingClass.clear();
@@ -5177,6 +5193,7 @@ m_iPrereqAndBonus(NO_BONUS),
 m_iPrereqPopulation(0),
 m_iStationedAttitudeChange(0),
 m_iUpgradeDiscount(0),
+m_iGreatWorkOccupationTurns(0),
 m_iPrereqCultureLevel(NO_CULTURELEVEL),
 m_iGroupSize(0),
 m_iGroupDefinitions(0),
@@ -5952,6 +5969,13 @@ int CvUnitInfo::getStationedAttitudeChange() const
 int CvUnitInfo::getUpgradeDiscount() const
 {
 	return m_iUpgradeDiscount;
+}
+
+// iGreatWorkOccupationTurns (added by this mod): 0 = the great work ends the revolt (occupation) of the city as in BtS,
+// N > 0 = it only shortens the revolt by N turns (CvUnit::greatWork)
+int CvUnitInfo::getGreatWorkOccupationTurns() const
+{
+	return m_iGreatWorkOccupationTurns;
 }
 
 int CvUnitInfo::getPrereqCultureLevel() const
@@ -7089,13 +7113,20 @@ void CvUnitInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iUpgradeDiscount);
 	}
+
+	// uiFlag < 7: cache written before iGreatWorkOccupationTurns existed (added by this mod)
+	m_iGreatWorkOccupationTurns = 0;
+	if (uiFlag > 6)
+	{
+		stream->Read(&m_iGreatWorkOccupationTurns);
+	}
 }
 
 void CvUnitInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag=6;	// 1: PrereqOrTraits, 2: city prerequisites, 3: BonusAffinities, 4: Python hooks, 5: iStationedAttitudeChange, 6: iUpgradeDiscount (added by this mod)
+	uint uiFlag=7;	// 1: PrereqOrTraits, 2: city prerequisites, 3: BonusAffinities, 4: Python hooks, 5: iStationedAttitudeChange, 6: iUpgradeDiscount, 7: iGreatWorkOccupationTurns (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iAIWeight);
@@ -7279,7 +7310,9 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 	stream->WriteString(m_szPyOnDeath);
 	stream->Write(m_iStationedAttitudeChange);
 	stream->Write(m_iUpgradeDiscount);
+	stream->Write(m_iGreatWorkOccupationTurns);
 }
+
 
 //
 // read from xml
@@ -7291,6 +7324,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_szPyOnDeath, "PyOnDeath");
 	pXML->GetChildXmlValByName(&m_iStationedAttitudeChange, "iStationedAttitudeChange");
 	pXML->GetChildXmlValByName(&m_iUpgradeDiscount, "iUpgradeDiscount");
+	pXML->GetChildXmlValByName(&m_iGreatWorkOccupationTurns, "iGreatWorkOccupationTurns");
 
 	CvString szTextVal;
 	if (!CvHotkeyInfo::read(pXML))

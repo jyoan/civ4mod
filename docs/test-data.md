@@ -7,7 +7,8 @@
 - 複製元: 日本
 - プレイ可・**AI は選ばない**（`bAIPlayable=0`）。
 - 色 `PLAYERCOLOR_GOLD_AND_BLACK`。
-- 固有ユニット・固有建物なし。
+- 固有ユニットは検証用労働者（`UNITCLASS_WORKER`。2026-11-28）、固有建物なし。
+- 開始ユニットに労働者 2 体（強制労働のスタックの確認用）。
 - 文明の志向 `TRAIT_TEST`、首都に `BUILDING_TEST` が無料、開始ユニットに `UNIT_TEST_A`。
 - 初期の社会制度は他の文明と同じ（専制政治など）で、`CIVIC_TEST` は革命で採用する（無政府 1 ターン）。
 - 開始位置の好み: 沿岸 +200%（`iStartBiasCoastal`）

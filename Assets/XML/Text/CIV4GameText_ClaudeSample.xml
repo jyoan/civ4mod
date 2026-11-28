@@ -1403,6 +1403,15 @@
 		<Japanese>[ICON_BULLET]&#12450;&#12483;&#12503;&#12464;&#12524;&#12540;&#12489;&#12395;&#24517;&#35201;&#12394;[ICON_GOLD] %D1_percent%%</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_UNIT_GREAT_WORK_OCCUPATION</Tag>
+		<English>[ICON_BULLET]The great work shortens the revolt by %d1 turns instead of ending it</English>
+		<French>[ICON_BULLET]The great work shortens the revolt by %d1 turns instead of ending it</French>
+		<German>[ICON_BULLET]The great work shortens the revolt by %d1 turns instead of ending it</German>
+		<Italian>[ICON_BULLET]The great work shortens the revolt by %d1 turns instead of ending it</Italian>
+		<Spanish>[ICON_BULLET]The great work shortens the revolt by %d1 turns instead of ending it</Spanish>
+		<Japanese>[ICON_BULLET]&#22823;&#20316;&#12399;&#21453;&#20081;&#12434;&#32066;&#12431;&#12425;&#12379;&#12378;&#12289;&#21453;&#20081;&#12398;&#26399;&#38291;&#12434; %d1 &#12479;&#12540;&#12531;&#30701;&#12367;&#12377;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_UNIT_STATIONED_ATTITUDE</Tag>
 		<English>[ICON_BULLET]While in a city of another civilization, its attitude toward us %D1</English>
 		<French>[ICON_BULLET]While in a city of another civilization, its attitude toward us %D1</French>

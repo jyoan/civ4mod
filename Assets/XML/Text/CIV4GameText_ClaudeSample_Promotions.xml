@@ -552,6 +552,15 @@
 		<Japanese>[ICON_BULLET]&#24029;&#12398;&#38520;&#12398;&#12479;&#12452;&#12523;&#12395;&#12356;&#12427;&#38520;&#12398;&#12518;&#12491;&#12483;&#12488;&#12434;&#25915;&#25731;&#12539;&#25429;&#29554;&#12391;&#12365;&#12427;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FORCED_LABOR</Tag>
+		<English>[ICON_BULLET]Builds finish at once, and the workers cannot move for the turns the build would have taken</English>
+		<French>[ICON_BULLET]Builds finish at once, and the workers cannot move for the turns the build would have taken</French>
+		<German>[ICON_BULLET]Builds finish at once, and the workers cannot move for the turns the build would have taken</German>
+		<Italian>[ICON_BULLET]Builds finish at once, and the workers cannot move for the turns the build would have taken</Italian>
+		<Spanish>[ICON_BULLET]Builds finish at once, and the workers cannot move for the turns the build would have taken</Spanish>
+		<Japanese>[ICON_BULLET]&#20316;&#26989;&#12364;&#12377;&#12368;&#12395;&#32066;&#12431;&#12426;&#12289;&#26412;&#26469;&#12363;&#12363;&#12387;&#12383;&#12479;&#12540;&#12531;&#25968;&#12384;&#12369;&#21205;&#12369;&#12394;&#12367;&#12394;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_PROMOTION_COMBAT_GOLD_PER_STRENGTH</Tag>
 		<English>[ICON_BULLET]Each victory gives [ICON_GOLD] %d1%% of the base [ICON_STRENGTH] of the defeated unit (scaled by game speed)</English>
 		<French>[ICON_BULLET]Each victory gives [ICON_GOLD] %d1%% of the base [ICON_STRENGTH] of the defeated unit (scaled by game speed)</French>

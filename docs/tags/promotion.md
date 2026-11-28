@@ -274,3 +274,16 @@
 - 説明文 `TXT_KEY_PROMOTION_RIVER_ATTACK`。
 - Python は `CvPromotionInfo.isRiverAttack()`、`CyUnit.isRiverAttack()`。
 - キャッシュの形式: `CvPromotionInfo` `uiFlag=23`
+
+### `PromotionInfo/bForcedLabor`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 2026-11-28（アステカの強制労働）。
+- この昇進を持つユニットが作業（施設・道・森の伐採など、すべての作業）をすると、その作業はすぐに終わる（`CvUnit::forcedLaborBuild`）。
+- 同じタイルで同じ作業をしている、同じ持ち主の `bForcedLabor` のユニット（動けないものを除く）の作業量の合計から、本来かかったターン数 T を出す。
+- 作業したユニットはこのターンの移動を終え、タイマーに T を入れる（BtS の移動できないタイマー。自分のターンの終わりに 1 減る）。完成が早いだけで、再び動けるのは強制労働なしと同じターン（前借り）。例: 2 ターンの小屋は 1 ターン目に完成し、2 ターン目は動けず、3 ターン目から動ける。
+- スタックなら全員が同じターン数になる（均等に分ける）。ユニットのマウスオーバーに残りターンが出る。
+- 作業の費用（金）は BtS どおり。
+- 兵科のない労働者には、ユニットの `FreePromotions` か、志向の `FreePromotionSets`（`FreePromotionUnitClasses`）で配る。昇進の選択の画面には出ない（兵科がないので取れない）。
+- 昇進の説明に `TXT_KEY_PROMOTION_FORCED_LABOR`。
+- セーブしない数（`CvUnit::m_iForcedLaborCount`。`updatePromotionCounts` で数え直す）。

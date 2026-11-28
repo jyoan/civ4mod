@@ -324,6 +324,15 @@
 - 2026-11-24。状態の昇進（`UnitCombats` は空）、戦闘力 +25%、移動力 +1・敵の道路を使える・移動コスト -1（2026-11-26。スタックで動くときの移動力の確認用）。
 - 検証用志向（暦）の `StackPromotions` で、検証用学派Bと同じタイルにいる白兵戦・騎乗ユニット（と学派B 自身。`bStackUnitsToo`）と、検証用学派Aと同じタイルにいる兵科のあるユニットに付く
 
+## `UNIT_TEST_WORKER`（検証用労働者）
+
+- 複製元: 労働者（2026-11-28）
+- 検証用文明の `UNITCLASS_WORKER` を置き換える（固有ユニット）。検証用文明は開始時に 2 体持つ。
+- 偉人の任務: 生産の加速 20 + 1×人口、交易任務 20 + 5×交易の利益、傑作 文化 30。
+- `iGreatWorkOccupationTurns` 1（傑作で反乱の期間を 1 ターン短くするだけ）。
+- `FreePromotions` に `PROMOTION_TEST_FORCED_LABOR`。
+- ペディアは `TXT_KEY_CLAUDE_TEST_PEDIA`
+
 ## `UNIT_TEST_PREREQ` / `UNITCLASS_TEST_PREREQ`（検証用ユニット（前提））
 
 - 複製元: 検証用ユニット A
@@ -455,6 +464,13 @@
 - 現在・かつての宗主国との戦闘力 +25%（`iFormerMasterCombatPercent`。2026-11-28）。
 - 検証用志向の昇進の組で、陸上と海洋のユニット（全兵科と海洋）に付く。
 - ボタンは側面攻撃Ⅰ
+
+## `PROMOTION_TEST_FORCED_LABOR`（検証用昇進（強制労働））
+
+- 複製元: 検証用昇進（包囲）（2026-11-28）
+- `bForcedLabor` 1。ほかの効果なし。
+- 検証用労働者の `FreePromotions` で付く。
+- ボタンは側面攻撃Ⅰ（複製元のまま）
 
 ## 検証用呪文（`SPELL_TEST_*`）は無効
 

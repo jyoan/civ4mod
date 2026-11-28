@@ -342,6 +342,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iRivalTerritoryCount = 0;
 	m_iRiverNavigationCount = 0;
 	m_iRiverAttackCount = 0;
+	m_iForcedLaborCount = 0;
 	m_iFreeEmbarkCount = 0;
 	m_iBuildingCombatCount = 0;
 	m_iEncirclementCount = 0;
@@ -8335,7 +8336,17 @@ bool CvUnit::greatWork()
 	if (pCity != NULL)
 	{
 		pCity->setCultureUpdateTimer(0);
-		pCity->setOccupationTimer(0);
+
+		// iGreatWorkOccupationTurns of the unit type (added by this mod): 0 ends the revolt as in BtS, N > 0 shortens it by N turns
+		if (m_pUnitInfo->getGreatWorkOccupationTurns() > 0)
+		{
+			pCity->setOccupationTimer(std::max(0, pCity->getOccupationTimer() - m_pUnitInfo->getGreatWorkOccupationTurns()));
+		}
+		else
+		{
+			pCity->setOccupationTimer(0);
+		}
+
 
 		int iCultureToAdd = 100 * getGreatWorkCulture(plot());
 		int iNumTurnsApplied = (GC.getDefineINT("GREAT_WORKS_CULTURE_TURNS") * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getUnitGreatWorkPercent()) / 100;
@@ -8756,7 +8767,15 @@ bool CvUnit::build(BuildTypes eBuild)
 
 	GET_PLAYER(getOwnerINLINE()).changeGold(-(GET_PLAYER(getOwnerINLINE()).getBuildCost(plot(), eBuild)));
 
-	bFinished = plot()->changeBuildProgress(eBuild, workRate(false), getTeam());
+	// bForcedLabor of the promotions (added by this mod)
+	if (isForcedLabor())
+	{
+		bFinished = forcedLaborBuild(eBuild);
+	}
+	else
+	{
+		bFinished = plot()->changeBuildProgress(eBuild, workRate(false), getTeam());
+	}
 
 	finishMoves(); // needs to be at bottom because movesLeft() can affect workRate()...
 
@@ -8770,6 +8789,63 @@ bool CvUnit::build(BuildTypes eBuild)
 
 	// Python Event
 	CvEventReporter::getInstance().unitBuildImprovement(this, eBuild, bFinished);
+
+	return bFinished;
+}
+
+
+// bForcedLabor of the promotions (added by this mod): the build finishes at once. This unit and the other units of the owner
+// on the plot with bForcedLabor that work on the same build stay immobile for the turns the build would still have taken
+// at their combined work rate (this turn counts as one), so a stack shares the turns evenly and moves again on the same turn
+// as without forced labor
+bool CvUnit::forcedLaborBuild(BuildTypes eBuild)
+{
+	std::vector<CvUnit*> apWorkers;
+	CLLNode<IDInfo>* pUnitNode;
+	CvUnit* pLoopUnit;
+	bool bFinished;
+	int iRate;
+	int iBuildLeft;
+	int iTurns;
+	uint uiI;
+
+	iRate = 0;
+
+	pUnitNode = plot()->headUnitNode();
+
+	while (pUnitNode != NULL)
+	{
+		pLoopUnit = ::getUnit(pUnitNode->m_data);
+		pUnitNode = plot()->nextUnitNode(pUnitNode);
+
+		if (pLoopUnit == this || (pLoopUnit->getOwnerINLINE() == getOwnerINLINE() && pLoopUnit->isForcedLabor() && pLoopUnit->getImmobileTimer() == 0 && pLoopUnit->getBuildType() == eBuild))
+		{
+			apWorkers.push_back(pLoopUnit);
+			iRate += pLoopUnit->workRate(true);
+		}
+	}
+
+	iBuildLeft = plot()->getBuildTime(eBuild) - plot()->getBuildProgress(eBuild);
+
+	if (iRate <= 0 || iBuildLeft <= 0 || workRate(false) <= 0)
+	{
+		return plot()->changeBuildProgress(eBuild, workRate(false), getTeam());
+	}
+
+	iTurns = (iBuildLeft + iRate - 1) / iRate;
+
+	bFinished = plot()->changeBuildProgress(eBuild, iBuildLeft, getTeam());
+
+	for (uiI = 0; uiI < apWorkers.size(); uiI++)
+	{
+		if (apWorkers[uiI] != this)
+		{
+			apWorkers[uiI]->finishMoves();
+		}
+
+		// The timer drops by one at the end of this turn, so the units move again on the turn after the build would have finished
+		apWorkers[uiI]->changeImmobileTimer(iTurns);
+	}
 
 	return bFinished;
 }
@@ -9738,6 +9814,12 @@ bool CvUnit::isRiverNavigation() const
 bool CvUnit::isRiverAttack() const
 {
 	return (m_iRiverAttackCount > 0);
+}
+
+// With bForcedLabor of the promotions (added by this mod)
+bool CvUnit::isForcedLabor() const
+{
+	return (m_iForcedLaborCount > 0);
 }
 
 // bInlandCanals of the traits of the owner (added by this mod): this ship may enter a fort (bActsAsCity) outside the territory
@@ -11284,6 +11366,7 @@ void CvUnit::updatePromotionCounts()
 	m_iRivalTerritoryCount = countPromotions(&CvPromotionInfo::isRivalTerritory);
 	m_iRiverNavigationCount = countPromotions(&CvPromotionInfo::isRiverNavigation);
 	m_iRiverAttackCount = countPromotions(&CvPromotionInfo::isRiverAttack);
+	m_iForcedLaborCount = countPromotions(&CvPromotionInfo::isForcedLabor);
 	m_iFreeEmbarkCount = countPromotions(&CvPromotionInfo::isFreeEmbark);
 	m_iBuildingCombatCount = countPromotions(&CvPromotionInfo::isBuildingCombat);
 	m_iEncirclementCount = countPromotions(&CvPromotionInfo::isEncirclement);
@@ -14580,6 +14663,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		m_iRivalTerritoryCount += (GC.getPromotionInfo(eIndex).isRivalTerritory() ? iChange : 0);
 		m_iRiverNavigationCount += (GC.getPromotionInfo(eIndex).isRiverNavigation() ? iChange : 0);
 		m_iRiverAttackCount += (GC.getPromotionInfo(eIndex).isRiverAttack() ? iChange : 0);
+		m_iForcedLaborCount += (GC.getPromotionInfo(eIndex).isForcedLabor() ? iChange : 0);
 		m_iFreeEmbarkCount += (GC.getPromotionInfo(eIndex).isFreeEmbark() ? iChange : 0);
 		m_iBuildingCombatCount += (GC.getPromotionInfo(eIndex).isBuildingCombat() ? iChange : 0);
 		m_iEncirclementCount += (GC.getPromotionInfo(eIndex).isEncirclement() ? iChange : 0);

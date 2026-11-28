@@ -4928,7 +4928,12 @@
 				<City>TXT_KEY_CITY_NAME_NAHA</City>
 			</Cities>
 			<Buildings/>
-			<Units/>
+			<Units>
+				<Unit>
+					<UnitClassType>UNITCLASS_WORKER</UnitClassType>
+					<UnitType>UNIT_TEST_WORKER</UnitType>
+				</Unit>
+			</Units>
 			<FreeUnitClasses>
 				<FreeUnitClass>
 					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
@@ -4938,7 +4943,12 @@
 					<UnitClassType>UNITCLASS_TEST_A</UnitClassType>
 					<iFreeUnits>1</iFreeUnits>
 				</FreeUnitClass>
+				<FreeUnitClass>
+					<UnitClassType>UNITCLASS_WORKER</UnitClassType>
+					<iFreeUnits>2</iFreeUnits>
+				</FreeUnitClass>
 			</FreeUnitClasses>
+
 			<FreeBuildingClasses>
 				<FreeBuildingClass>
 					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
