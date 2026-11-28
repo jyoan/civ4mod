@@ -1385,6 +1385,15 @@
 		<Japanese>%D1: &#37117;&#24066;&#12395;&#28382;&#22312;&#12377;&#12427;&#20351;&#31680;&#12395;&#12424;&#12427;&#21360;&#35937;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_MISC_ATTITUDE_DENOUNCED</Tag>
+		<English>%D1: They declared a war we condemn</English>
+		<French>%D1: They declared a war we condemn</French>
+		<German>%D1: They declared a war we condemn</German>
+		<Italian>%D1: They declared a war we condemn</Italian>
+		<Spanish>%D1: They declared a war we condemn</Spanish>
+		<Japanese>%D1: &#23459;&#25126;&#12375;&#12383;&#25126;&#20105;&#12408;&#12398;&#38750;&#38627;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_UNIT_UPGRADE_COST_MODIFIER</Tag>
 		<English>[ICON_BULLET]%D1_percent%% [ICON_GOLD] to Upgrade</English>
 		<French>[ICON_BULLET]%D1_percent%% [ICON_GOLD] to Upgrade</French>
@@ -2338,6 +2347,15 @@
 		<Italian>[ICON_BULLET]%D1%% Stronger Enemy</Italian>
 		<Spanish>[ICON_BULLET]%D1%% Stronger Enemy</Spanish>
 		<Japanese>[ICON_BULLET]&#36557;&#20107;&#21147;&#12364;&#19978;&#12398;&#30456;&#25163;: %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_COMBAT_PLOT_FORMER_MASTER_MOD</Tag>
+		<English>[ICON_BULLET]%D1%% Former Master</English>
+		<French>[ICON_BULLET]%D1%% Former Master</French>
+		<German>[ICON_BULLET]%D1%% Former Master</German>
+		<Italian>[ICON_BULLET]%D1%% Former Master</Italian>
+		<Spanish>[ICON_BULLET]%D1%% Former Master</Spanish>
+		<Japanese>[ICON_BULLET]&#12363;&#12388;&#12390;&#12398;&#23447;&#20027;&#22269;: %D1%%</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_COMBAT_PLOT_ATTACK_FROM_MOD</Tag>

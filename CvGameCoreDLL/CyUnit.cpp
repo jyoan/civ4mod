@@ -669,6 +669,11 @@ int CyUnit::getStrongerEnemyCombatModifier(int ePlayer)
 	return m_pUnit ? m_pUnit->getStrongerEnemyCombatModifier((PlayerTypes)ePlayer) : 0;
 }
 
+int CyUnit::getFormerMasterCombatModifier(int ePlayer)
+{
+	return m_pUnit ? m_pUnit->getFormerMasterCombatModifier((PlayerTypes)ePlayer) : 0;
+}
+
 // Encirclement of the promotions (added by this mod): pCenter is the plot of the defender, pFront the plot of the attacker
 int CyUnit::getEncirclementPercent(CyPlot* pCenter, CyPlot* pFront)
 {

@@ -433,6 +433,7 @@ public:
 	int getAttackFromPlotPercent(const CvPlot* pPlot) const;	// added by this mod: AttackFromTerrains/Features of the promotions. Exposed to Python
 	int getWarWearinessCombatModifier(PlayerTypes ePlayer) const;	// added by this mod: iWarWearinessCombatPercent of the promotions. Exposed to Python
 	int getStrongerEnemyCombatModifier(PlayerTypes ePlayer) const;	// added by this mod: iStrongerEnemyCombatPercent of the promotions. Exposed to Python
+	int getFormerMasterCombatModifier(PlayerTypes ePlayer) const;	// added by this mod: iFormerMasterCombatPercent of the promotions. Exposed to Python
 	int getEncirclementPercent(const CvPlot* pCenter, const CvPlot* pFront, int* piSide = NULL, int* piRear = NULL) const;	// added by this mod: Encirclement of the promotions. Exposed to Python
 	void doFeatureSpreads();	// added by this mod: FeatureSpreads of the promotions
 	bool isHiddenNationality() const;	// added by this mod: bHiddenNationality of the unit or of its promotions. Exposed to Python
@@ -904,6 +905,7 @@ protected:
 	int m_iWarWearinessCombatPercent;		// added by this mod: sum over the promotions (not saved)
 	int m_iWarWearinessCombatMaxPercent;	// added by this mod: sum over the promotions (not saved)
 	int m_iStrongerEnemyCombatPercent;		// added by this mod: sum over the promotions (not saved)
+	int m_iFormerMasterCombatPercent;		// added by this mod: sum over the promotions (not saved)
 	std::vector<int> m_aiBonusAffinity;	// added by this mod: BonusAffinities of the unit and its promotions, [bonus], empty when none (not saved)
 	int m_iNoDamagePenaltyCount;		// added by this mod: promotions with bNoDamagePenalty (not saved)
 	int m_iHiddenNationalityCount;		// added by this mod: promotions with bHiddenNationality (not saved)

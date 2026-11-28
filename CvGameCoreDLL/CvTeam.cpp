@@ -22,6 +22,9 @@
 #include "CyArgsList.h"
 #include "FProfiler.h"
 
+// added by this mod: a defensive pact is making a team join a war (CvTeam::declareWar), so that team is not the declaring side
+static bool s_bDefensivePactJoin = false;
+
 // Public Functions...
 
 CvTeam::CvTeam()
@@ -43,6 +46,8 @@ CvTeam::CvTeam()
 	m_abDefensivePact = new bool[MAX_TEAMS];
 	m_abForcePeace = new bool[MAX_TEAMS];
 	m_abVassal = new bool[MAX_TEAMS];
+	m_abWarDeclaredOn = new bool[MAX_TEAMS];	// added by this mod
+	m_abFormerMaster = new bool[MAX_TEAMS];		// added by this mod
 	m_abCanLaunch = NULL;
 
 	m_paiRouteChange = NULL;
@@ -87,6 +92,8 @@ CvTeam::~CvTeam()
 	SAFE_DELETE_ARRAY(m_abDefensivePact);
 	SAFE_DELETE_ARRAY(m_abForcePeace);
 	SAFE_DELETE_ARRAY(m_abVassal);
+	SAFE_DELETE_ARRAY(m_abWarDeclaredOn);	// added by this mod
+	SAFE_DELETE_ARRAY(m_abFormerMaster);	// added by this mod
 }
 
 
@@ -195,6 +202,8 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 		m_abDefensivePact[iI] = false;
 		m_abForcePeace[iI] = false;
 		m_abVassal[iI] = false;
+		m_abWarDeclaredOn[iI] = false;	// added by this mod
+		m_abFormerMaster[iI] = false;	// added by this mod
 
 		if (!bConstructorCall && getID() != NO_TEAM)
 		{
@@ -212,6 +221,8 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 			kLoopTeam.m_abDefensivePact[getID()] = false;
 			kLoopTeam.m_abForcePeace[getID()] = false;
 			kLoopTeam.m_abVassal[getID()] = false;
+			kLoopTeam.m_abWarDeclaredOn[getID()] = false;	// added by this mod
+			kLoopTeam.m_abFormerMaster[getID()] = false;	// added by this mod
 		}
 	}
 
@@ -439,13 +450,19 @@ void CvTeam::addTeam(TeamTypes eTeam)
 		{
 			if (GET_TEAM((TeamTypes)iI).isAlive())
 			{
+				// The side that declared the war is copied from the team whose war is joined (added by this mod)
 				if (GET_TEAM(eTeam).isAtWar((TeamTypes)iI))
 				{
-					declareWar(((TeamTypes)iI), false, GET_TEAM(eTeam).AI_getWarPlan((TeamTypes)iI));
+					if (!isAtWar((TeamTypes)iI))
+					{
+						declareWar(((TeamTypes)iI), false, GET_TEAM(eTeam).AI_getWarPlan((TeamTypes)iI));
+						setWarDeclaration((TeamTypes)iI, GET_TEAM(eTeam).isWarDeclaredOn((TeamTypes)iI), GET_TEAM((TeamTypes)iI).isWarDeclaredOn(eTeam));
+					}
 				}
 				else if (isAtWar((TeamTypes)iI))
 				{
 					GET_TEAM(eTeam).declareWar(((TeamTypes)iI), false, AI_getWarPlan((TeamTypes)iI));
+					GET_TEAM(eTeam).setWarDeclaration((TeamTypes)iI, isWarDeclaredOn((TeamTypes)iI), GET_TEAM((TeamTypes)iI).isWarDeclaredOn(getID()));
 				}
 			}
 		}
@@ -1191,6 +1208,12 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 		}
 
 		FAssertMsg(eTeam != getID(), "eTeam is not expected to be equal with getID()");
+
+		// The side that declared the war (added by this mod), before setAtWar updates the ConditionalFreeTraits. A team that
+		// joins a war by a defensive pact (and the wars that follow from it) is not the declaring side
+		m_abWarDeclaredOn[eTeam] = !s_bDefensivePactJoin;
+		GET_TEAM(eTeam).m_abWarDeclaredOn[getID()] = false;
+
 		setAtWar(eTeam, true);
 		GET_TEAM(eTeam).setAtWar(getID(), true);
 
@@ -1461,7 +1484,10 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 			{
 				if (GET_TEAM((TeamTypes)iI).isDefensivePact(eTeam))
 				{
+					bool bWasDefensivePactJoin = s_bDefensivePactJoin;	// added by this mod
+					s_bDefensivePactJoin = true;
 					GET_TEAM((TeamTypes)iI).declareWar(getID(), bNewDiplo, WARPLAN_DOGPILE);
+					s_bDefensivePactJoin = bWasDefensivePactJoin;
 				}
 			}
 		}
@@ -3409,6 +3435,85 @@ int CvTeam::getCircumnavigatedOrder() const
 	return m_iCircumnavigatedOrder;
 }
 
+// The side that declared the war (added by this mod): this team declared the current war with eTeam. Set by declareWar
+// (false for a team that joins by a defensive pact), copied from the team whose war a team joins (a permanent alliance, a new
+// vassal or master), cleared by setAtWar (peace). Both sides are false for a war that no one declared (the start of the game)
+bool CvTeam::isWarDeclaredOn(TeamTypes eTeam) const
+{
+	FAssertMsg(eTeam >= 0, "eTeam is expected to be non-negative (invalid Index)");
+	FAssertMsg(eTeam < MAX_TEAMS, "eTeam is expected to be within maximum bounds (invalid Index)");
+	return m_abWarDeclaredOn[eTeam];
+}
+
+// bDefensiveWar of ConditionalFreeTraits (added by this mod): at war with a team (not a minor civilization nor the
+// barbarians) that declared that war on this team
+bool CvTeam::isAtDefensiveWar() const
+{
+	int iI;
+
+	for (iI = 0; iI < MAX_CIV_TEAMS; iI++)
+	{
+		if (iI != getID() && GET_TEAM((TeamTypes)iI).isAlive() && !GET_TEAM((TeamTypes)iI).isMinorCiv())
+		{
+			if (isAtWar((TeamTypes)iI) && GET_TEAM((TeamTypes)iI).isWarDeclaredOn(getID()))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+// The former masters (added by this mod): this team was a vassal of eTeam and the vassal state has ended (CvTeam::setVassal).
+// Kept after a new vassal state with the same team (isMasterOrFormerMaster counts both). Used by iFormerMasterCombatPercent
+// of the promotions
+bool CvTeam::isFormerMaster(TeamTypes eTeam) const
+{
+	FAssertMsg(eTeam >= 0, "eTeam is expected to be non-negative (invalid Index)");
+	FAssertMsg(eTeam < MAX_TEAMS, "eTeam is expected to be within maximum bounds (invalid Index)");
+	return m_abFormerMaster[eTeam];
+}
+
+bool CvTeam::isMasterOrFormerMaster(TeamTypes eTeam) const
+{
+	if (eTeam == NO_TEAM || eTeam == getID())
+	{
+		return false;
+	}
+
+	return (isVassal(eTeam) || isFormerMaster(eTeam));
+}
+
+// The side that declared the war with eEnemy (added by this mod), for both teams. Updates the ConditionalFreeTraits of their
+// players when it changes
+void CvTeam::setWarDeclaration(TeamTypes eEnemy, bool bThisDeclared, bool bEnemyDeclared)
+{
+	int iI;
+
+	if (eEnemy == NO_TEAM || eEnemy == getID())
+	{
+		return;
+	}
+
+	if (m_abWarDeclaredOn[eEnemy] == bThisDeclared && GET_TEAM(eEnemy).m_abWarDeclaredOn[getID()] == bEnemyDeclared)
+	{
+		return;
+	}
+
+	m_abWarDeclaredOn[eEnemy] = bThisDeclared;
+	GET_TEAM(eEnemy).m_abWarDeclaredOn[getID()] = bEnemyDeclared;
+
+	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	{
+		CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iI);
+		if (kLoopPlayer.isAlive() && (kLoopPlayer.getTeam() == getID() || kLoopPlayer.getTeam() == eEnemy))
+		{
+			kLoopPlayer.updateConditionalTraits();
+		}
+	}
+}
+
 bool CvTeam::isMapCentering() const
 {
 	return m_bMapCentering;
@@ -3752,6 +3857,11 @@ void CvTeam::setAtWar(TeamTypes eIndex, bool bNewValue)
 	{
 		m_abAtWar[eIndex] = bNewValue;
 
+		if (!bNewValue)
+		{
+			m_abWarDeclaredOn[eIndex] = false;	// added by this mod: the war is over
+		}
+
 		// ConditionalFreeTraits (bAtWar, bAtPeace) of the players of the team (added by this mod)
 		for (iI = 0; iI < MAX_PLAYERS; iI++)
 		{
@@ -3966,6 +4076,13 @@ void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 
 		m_abVassal[eIndex] = bNewValue;
 
+		// The former masters (added by this mod): any end of the vassal state (independence, a broken capitulation, a freed
+		// vassal) except a team that is reset
+		if (!bNewValue)
+		{
+			m_abFormerMaster[eIndex] = true;
+		}
+
 		for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
 		{
 			CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
@@ -4071,9 +4188,14 @@ void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 							GET_TEAM(eIndex).meet((TeamTypes)iI, true);
 						}
 
+						// The side that declared the war is copied from the team whose war is joined (added by this mod)
 						if (GET_TEAM(eIndex).isAtWar((TeamTypes)iI))
 						{
-							declareWar(((TeamTypes)iI), false, WARPLAN_DOGPILE);
+							if (!isAtWar((TeamTypes)iI))
+							{
+								declareWar(((TeamTypes)iI), false, WARPLAN_DOGPILE);
+								setWarDeclaration((TeamTypes)iI, GET_TEAM(eIndex).isWarDeclaredOn((TeamTypes)iI), GET_TEAM((TeamTypes)iI).isWarDeclaredOn(eIndex));
+							}
 						}
 						else if (isAtWar((TeamTypes)iI))
 						{
@@ -4084,6 +4206,7 @@ void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 							else
 							{
 								GET_TEAM(eIndex).declareWar((TeamTypes)iI, false, WARPLAN_DOGPILE);
+								GET_TEAM(eIndex).setWarDeclaration((TeamTypes)iI, isWarDeclaredOn((TeamTypes)iI), GET_TEAM((TeamTypes)iI).isWarDeclaredOn(getID()));
 							}
 						}
 					}
@@ -6589,6 +6712,14 @@ void CvTeam::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(&m_iCircumnavigatedOrder);
 	}
+	if (uiFlag > 1)
+	{
+		pStream->Read(MAX_TEAMS, m_abWarDeclaredOn);
+	}
+	if (uiFlag > 2)
+	{
+		pStream->Read(MAX_TEAMS, m_abFormerMaster);
+	}
 }
 
 
@@ -6596,7 +6727,7 @@ void CvTeam::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 1;	// 1: m_iCircumnavigatedOrder (added by this mod)
+	uint uiFlag = 3;	// 1: m_iCircumnavigatedOrder, 2: m_abWarDeclaredOn, 3: m_abFormerMaster (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iNumMembers);
@@ -6683,6 +6814,8 @@ void CvTeam::write(FDataStreamBase* pStream)
 	}
 
 	pStream->Write(m_iCircumnavigatedOrder);	// added by this mod
+	pStream->Write(MAX_TEAMS, m_abWarDeclaredOn);	// added by this mod
+	pStream->Write(MAX_TEAMS, m_abFormerMaster);	// added by this mod
 }
 
 // CACHE: cache frequently used values

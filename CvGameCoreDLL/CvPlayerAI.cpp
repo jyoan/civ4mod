@@ -5020,8 +5020,40 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 	iAttitude += AI_getAttitudeExtra(ePlayer);
 	iAttitude += GET_PLAYER(ePlayer).getAttitudeChange();	// iAttitudeChange of the traits of ePlayer (added by this mod)
 	iAttitude += AI_getStationedUnitAttitude(ePlayer);	// iStationedAttitudeChange of the units (added by this mod)
+	iAttitude += AI_getDenounceAttitude(ePlayer);	// iDenounceAttitudeChange of the traits (added by this mod)
 
 	return range(iAttitude, -100, 100);
+}
+
+// iDenounceAttitudeChange of the traits (added by this mod): for each player of another team with the tag that the team of
+// ePlayer declared the current war on (CvTeam::isWarDeclaredOn), while that war lasts. Not for the players of that team
+// (they have the memory of the declaration) nor of the team of ePlayer, and only if this team has met that team
+int CvPlayerAI::AI_getDenounceAttitude(PlayerTypes ePlayer) const
+{
+	TeamTypes eTeam = GET_PLAYER(ePlayer).getTeam();
+	int iAttitude = 0;
+	int iI;
+
+	if (eTeam == getTeam())
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		const CvPlayer& kVictim = GET_PLAYER((PlayerTypes)iI);
+		if (!kVictim.isAlive() || kVictim.getTeam() == getTeam() || kVictim.getTeam() == eTeam)
+		{
+			continue;
+		}
+
+		if (GET_TEAM(eTeam).isAtWar(kVictim.getTeam()) && GET_TEAM(eTeam).isWarDeclaredOn(kVictim.getTeam()) && GET_TEAM(getTeam()).isHasMet(kVictim.getTeam()))
+		{
+			iAttitude += kVictim.getDenounceAttitudeChange();
+		}
+	}
+
+	return iAttitude;
 }
 
 // iStationedAttitudeChange of the units of ePlayer on the city plots of this player (added by this mod): an envoy staying in

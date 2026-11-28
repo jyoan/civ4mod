@@ -129,7 +129,7 @@ AI の態度・情報の公開・属国・取引・ユニットの贈与（レ�
 - ファイル: `CIV4TraitInfos.xml`
 - 2026-11-23。
 - 最初の都市を建てると、AI の文明がその近くでゲームに参加し、永久同盟としてチームに加わる。
-- `<FoundingVassal>` に `CivilizationType`・`LeaderType`・`HandicapType`・`iRange` を書く（すべて省略可。タグを書けば有効）。
+- `<FoundingVassal>` に `CivilizationType`・`LeaderType`・`HandicapType`・`iRange`・`CivilizationTypes` を書く（すべて省略可。タグを書けば有効）。
 - **発動**: `CvPlayer::found` の最後（`PyOnCityFounded`・`CityFoundedUnits` の後）の `doFoundingVassal`。
 - 1 プレイヤーにつき 1 回だけ（`m_bFoundingVassalDone`。都市をすべて失って建て直しても発動しない。何も起きなかったときも済みになる）。
 - 複数の志向が持つときは番号の小さい志向。
@@ -139,6 +139,8 @@ AI の態度・情報の公開・属国・取引・ユニットの贈与（レ�
 - 空きがなければ何も起きない。
 - **文明と指導者**: タグの値（組み合わせは自由）。
 - すでに参加した（`isEverAlive`）プレイヤーが使っている、蛮族、`NONE`、省略のときは自動。
+- **候補の文明** `CivilizationTypes`（`CivilizationType` を並べる。2026-11-28、神聖ローマの諸侯用）: `CivilizationType` が使えないか省略のとき、候補のうち使われていない文明からランダムに選ぶ（`bAIPlayable` は見ないので、選べない文明も候補にできる）。候補がすべて使われていれば自動。説明文は「A, B のどれか（ランダム）」（`TXT_KEY_TRAIT_FOUNDING_VASSAL_ONE_OF`）。Python は `CvTraitInfo.getNumFoundingVassalCivilizations()`・`getFoundingVassalCivilizations(i)`。
+- 参加した AI の指導者が `RandomBasicTraits` の志向を持てば、参加したときにすぐ基本志向を得る（`iTurns` 0 で「1 つだけランダムに得て入れ替えない」。神聖ローマの諸侯の指導者用）。
 - 文明の自動は植民地の分離と同じ（`getSplitEmpireLeaders`: 自分以外の、未使用で AI がプレイできる文明。`DerivativeCiv` を優先し、あとは乱数）。
 - 指導者の自動は、その文明の指導者（「どの文明の指導者にも」オプションなら全員）→ 全指導者、の順に未使用のものから乱数。
 - **場所**: 最初の都市から `iRange`（省略時 5、最小 1）タイル以内で 3 タイル以上（`iRange` が 3 未満ならその値以上）離れた、同じ大陸の陸地。
@@ -165,3 +167,22 @@ AI の態度・情報の公開・属国・取引・ユニットの贈与（レ�
 - セーブは `CvPlayer` の `uiFlag=18`（`m_bFoundingVassalDone`・`m_bFoundingVassal`・`m_eAIHandicap`）。
 - 説明文: `TXT_KEY_TRAIT_FOUNDING_VASSAL`（文明・指導者は `_ANY_CIV`・`_LED_BY`、難易度は `_HANDICAP`）。
 - Python: `CvTraitInfo.isFoundingVassal`・`getFoundingVassalCivilization`・`getFoundingVassalLeader`・`getFoundingVassalHandicap`・`getFoundingVassalRange`、`CyPlayer.getAIHandicapType`・`isFoundingVassal`
+
+## `TraitInfo/iDenounceAttitudeChange`（と宣戦した側の記録）
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-28。ガンディーの非難用。
+- この志向を持つプレイヤーに宣戦したチームのプレイヤーへの、ほかのプレイヤー（AI）の態度が ○ 変わる（負の値で下がる）。その戦争が続く間だけ（講和で消える。記憶ではない）。
+- 数えないもの: その志向を持つプレイヤーのチーム自身（BtS の「宣戦された」の記憶があるため）、宣戦したチーム自身、その志向を持つチームと出会っていないチーム。
+- 複数のチームに宣戦していれば、その分を合計する（`CvPlayerAI::AI_getDenounceAttitude`。`AI_getAttitudeVal` に足す）。
+- 外交の態度の内訳に「-2: 宣戦した戦争への非難」（`TXT_KEY_MISC_ATTITUDE_DENOUNCED`）を出す。
+- 説明文: `TXT_KEY_TRAIT_DENOUNCE_ATTITUDE`。
+- Python: `CvTraitInfo.getDenounceAttitudeChange()`、`CyPlayer.getDenounceAttitudeChange()`。
+- **宣戦した側の記録**: チームごとに「今の戦争を自分が宣戦したか」を持つ（`CvTeam::m_abWarDeclaredOn`、`isWarDeclaredOn(eTeam)`。セーブに保存、`CvTeam` の `uiFlag=2`。古いセーブの戦争はどちらも宣戦していない扱い）。
+  - `CvTeam::declareWar` で宣戦した側を記録（`setAtWar` の前なので、`ConditionalFreeTraits` の更新に間に合う）。講和（`setAtWar` が false）で消える。
+  - 防衛協定で参戦したチームは宣戦した側にしない（そこから続けて起きる参戦も同じ）。
+  - 宣戦した側の属国が付き合って宣戦した場合は、属国も宣戦した側。宣戦された側の属国・宗主国に宣戦した場合も、宣戦した側。
+  - 戦争中に加わったチーム（永久同盟の合流 `addTeam`、属国になった・属国を得た `setVassal`）は、加わった先のチームの記録を写す（`CvTeam::setWarDeclaration`）。
+  - ゲーム開始時からの戦争（蛮族、シナリオ）は、どちらも宣戦した側ではない。
+  - `CvTeam::isAtDefensiveWar`: 自分のチームに宣戦した、蛮族・小文明以外のチームと交戦中（`ConditionalFreeTraits` の `bDefensiveWar`）。
+  - Python: `CyTeam.isWarDeclaredOn(eTeam)`・`isAtDefensiveWar()`。

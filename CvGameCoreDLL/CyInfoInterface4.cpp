@@ -89,6 +89,7 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getLendLeaseResearchPercent", &CvTraitInfo::getLendLeaseResearchPercent, "int ()")
 		.def("getLendLeaseGoldPercent", &CvTraitInfo::getLendLeaseGoldPercent, "int ()")
 		.def("getLendLeaseAttitudeChange", &CvTraitInfo::getLendLeaseAttitudeChange, "int ()")
+		.def("getDenounceAttitudeChange", &CvTraitInfo::getDenounceAttitudeChange, "int ()")
 		.def("getLendLeaseAttitudeLimit", &CvTraitInfo::getLendLeaseAttitudeLimit, "int ()")
 		.def("getGreatPeopleHurryGold", &CvTraitInfo::getGreatPeopleHurryGold, "int ()")
 		.def("getGreatPeopleHurryUnitClass", &CvTraitInfo::getGreatPeopleHurryUnitClass, "int ()")
@@ -197,6 +198,8 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getFoundingVassalLeader", &CvTraitInfo::getFoundingVassalLeader, "int ()")
 		.def("getFoundingVassalHandicap", &CvTraitInfo::getFoundingVassalHandicap, "int ()")
 		.def("getFoundingVassalRange", &CvTraitInfo::getFoundingVassalRange, "int ()")
+		.def("getNumFoundingVassalCivilizations", &CvTraitInfo::getNumFoundingVassalCivilizations, "int ()")
+		.def("getFoundingVassalCivilizations", &CvTraitInfo::getFoundingVassalCivilizations, "int (int i)")
 		;
 }
 

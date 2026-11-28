@@ -333,7 +333,7 @@ void CvPlayer::doRandomBasicTraits()
 	}
 
 	eSource = NO_TRAIT;
-	iTurns = 0;
+	iTurns = 0;		// the shortest iTurns above 0; 0 when every trait has iTurns 0 (the traits are given once and kept)
 	iCount = 0;
 
 	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
@@ -344,11 +344,11 @@ void CvPlayer::doRandomBasicTraits()
 			if (eSource == NO_TRAIT)
 			{
 				eSource = (TraitTypes)iI;
-				iTurns = kTrait.getRandomBasicTraitTurns();
 			}
-			else
+
+			if (kTrait.getRandomBasicTraitTurns() > 0)
 			{
-				iTurns = std::min(iTurns, kTrait.getRandomBasicTraitTurns());
+				iTurns = ((iTurns > 0) ? std::min(iTurns, kTrait.getRandomBasicTraitTurns()) : kTrait.getRandomBasicTraitTurns());
 			}
 			iCount += kTrait.getRandomBasicTraitCount();
 		}
@@ -368,7 +368,7 @@ void CvPlayer::doRandomBasicTraits()
 		return;
 	}
 
-	if (m_iRandomBasicTraitTurn >= 0 && (GC.getGameINLINE().getGameTurn() - m_iRandomBasicTraitTurn) < getRandomBasicTraitTurnsForSpeed(iTurns))
+	if (m_iRandomBasicTraitTurn >= 0 && (iTurns <= 0 || (GC.getGameINLINE().getGameTurn() - m_iRandomBasicTraitTurn) < getRandomBasicTraitTurnsForSpeed(iTurns)))
 	{
 		return;
 	}
@@ -467,6 +467,12 @@ bool CvPlayer::isConditionalFreeTraitActive(const ConditionalFreeTrait& kConditi
 	bool bAtWar = (GET_TEAM(getTeam()).getAtWarCount(true) > 0);
 
 	if ((kCondition.bAtWar && !bAtWar) || (kCondition.bAtPeace && bAtWar))
+	{
+		return false;
+	}
+
+	// bDefensiveWar (added by this mod)
+	if (kCondition.bDefensiveWar && !GET_TEAM(getTeam()).isAtDefensiveWar())
 	{
 		return false;
 	}
@@ -3385,6 +3391,12 @@ int CvPlayer::getTechCostModifier() const
 int CvPlayer::getAttitudeChange() const
 {
 	return sumTraitValues(&CvTraitInfo::getAttitudeChange);
+}
+
+// iDenounceAttitudeChange of the traits (added by this mod): see CvPlayerAI::AI_getDenounceAttitude
+int CvPlayer::getDenounceAttitudeChange() const
+{
+	return sumTraitValues(&CvTraitInfo::getDenounceAttitudeChange);
 }
 
 // iRouteMovementModifierInBorders of the traits (added by this mod): see CvPlot::movementCost

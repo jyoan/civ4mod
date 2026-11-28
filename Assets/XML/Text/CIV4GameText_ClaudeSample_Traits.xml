@@ -219,6 +219,15 @@
 		<Japanese>&#24179;&#26178;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_CONDITION_DEFENSIVE_WAR</Tag>
+		<English>at war with a civilization that declared it on us</English>
+		<French>at war with a civilization that declared it on us</French>
+		<German>at war with a civilization that declared it on us</German>
+		<Italian>at war with a civilization that declared it on us</Italian>
+		<Spanish>at war with a civilization that declared it on us</Spanish>
+		<Japanese>&#23459;&#25126;&#12375;&#12390;&#12365;&#12383;&#25991;&#26126;&#12392;&#20132;&#25126;&#20013;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_CONDITION_STATE_RELIGION</Tag>
 		<English>%s1_Religion is the state religion</English>
 		<French>%s1_Religion is the state religion</French>
@@ -811,6 +820,15 @@
 		<Italian>[ICON_BULLET]%D1 attitude of the other civilizations</Italian>
 		<Spanish>[ICON_BULLET]%D1 attitude of the other civilizations</Spanish>
 		<Japanese>[ICON_BULLET]&#12411;&#12363;&#12398;&#25991;&#26126;&#12363;&#12425;&#12398;&#24907;&#24230; %D1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DENOUNCE_ATTITUDE</Tag>
+		<English>[ICON_BULLET]%D1 attitude of the other civilizations toward a civilization that declares war on this one, while that war lasts</English>
+		<French>[ICON_BULLET]%D1 attitude of the other civilizations toward a civilization that declares war on this one, while that war lasts</French>
+		<German>[ICON_BULLET]%D1 attitude of the other civilizations toward a civilization that declares war on this one, while that war lasts</German>
+		<Italian>[ICON_BULLET]%D1 attitude of the other civilizations toward a civilization that declares war on this one, while that war lasts</Italian>
+		<Spanish>[ICON_BULLET]%D1 attitude of the other civilizations toward a civilization that declares war on this one, while that war lasts</Spanish>
+		<Japanese>[ICON_BULLET]&#12371;&#12398;&#25991;&#26126;&#12395;&#23459;&#25126;&#12375;&#12383;&#25991;&#26126;&#12408;&#12398;&#12289;&#12411;&#12363;&#12398;&#25991;&#26126;&#12363;&#12425;&#12398;&#24907;&#24230; %D1&#65288;&#12381;&#12398;&#25126;&#20105;&#12364;&#32154;&#12367;&#38291;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_NO_TECH_CIVICS</Tag>
@@ -1731,6 +1749,15 @@
 		<Japanese>[ICON_BULLET]%d1 &#12479;&#12540;&#12531;&#12372;&#12392;&#12395;&#12289;&#22522;&#26412;&#24535;&#21521;&#12434; %d2 &#20491;&#12521;&#12531;&#12480;&#12512;&#12395;&#24471;&#12427;&#65288;&#21069;&#22238;&#24471;&#12383;&#24535;&#21521;&#12392;&#20837;&#12428;&#26367;&#12431;&#12427;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_RANDOM_BASIC_TRAITS_ONCE</Tag>
+		<English>[ICON_BULLET]Gains %d1 random basic traits (they do not change)</English>
+		<French>[ICON_BULLET]Gains %d1 random basic traits (they do not change)</French>
+		<German>[ICON_BULLET]Gains %d1 random basic traits (they do not change)</German>
+		<Italian>[ICON_BULLET]Gains %d1 random basic traits (they do not change)</Italian>
+		<Spanish>[ICON_BULLET]Gains %d1 random basic traits (they do not change)</Spanish>
+		<Japanese>[ICON_BULLET]&#22522;&#26412;&#24535;&#21521;&#12434; %d1 &#20491;&#12521;&#12531;&#12480;&#12512;&#12395;&#24471;&#12427;&#65288;&#20837;&#12428;&#26367;&#12431;&#12425;&#12394;&#12356;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_SEA_START</Tag>
 		<English>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on %s1_Unit (no start bias)</English>
 		<French>[ICON_BULLET]Starts at sea, in the ocean (on the coast without an ocean), with the starting units on %s1_Unit (no start bias)</French>
@@ -1774,6 +1801,15 @@
 		<Italian>%s1 led by %s2</Italian>
 		<Spanish>%s1 led by %s2</Spanish>
 		<Japanese>%s2&#12364;&#29575;&#12356;&#12427;%s1</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOUNDING_VASSAL_ONE_OF</Tag>
+		<English>one of %s1 (at random)</English>
+		<French>one of %s1 (at random)</French>
+		<German>one of %s1 (at random)</German>
+		<Italian>one of %s1 (at random)</Italian>
+		<Spanish>one of %s1 (at random)</Spanish>
+		<Japanese>%s1&#12398;&#12393;&#12428;&#12363;&#65288;&#12521;&#12531;&#12480;&#12512;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_FOUNDING_VASSAL_HANDICAP</Tag>

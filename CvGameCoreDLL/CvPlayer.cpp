@@ -6565,6 +6565,25 @@ void CvPlayer::doFoundingVassal(CvCity* pCity)
 		eCiv = NO_CIVILIZATION;
 	}
 
+	// CivilizationTypes: one of the candidates no player uses, at random
+	if (eCiv == NO_CIVILIZATION && kTrait.getNumFoundingVassalCivilizations() > 0)
+	{
+		std::vector<CivilizationTypes> aeCandidates;
+		for (iI = 0; iI < kTrait.getNumFoundingVassalCivilizations(); iI++)
+		{
+			CivilizationTypes eLoopCiv = (CivilizationTypes)kTrait.getFoundingVassalCivilizations(iI);
+			if (eLoopCiv != GC.getDefineINT("BARBARIAN_CIVILIZATION") && !isCivilizationInGame(eLoopCiv))
+			{
+				aeCandidates.push_back(eLoopCiv);
+			}
+		}
+
+		if (!aeCandidates.empty())
+		{
+			eCiv = aeCandidates[GC.getGameINLINE().getSorenRandNum((int)aeCandidates.size(), "FoundingVassal civilization candidate")];
+		}
+	}
+
 	eLeader = (LeaderHeadTypes)kTrait.getFoundingVassalLeader();
 	if (eLeader != NO_LEADER && (eLeader == GC.getDefineINT("BARBARIAN_LEADER") || isLeaderInGame(eLeader)))
 	{
@@ -6674,6 +6693,9 @@ void CvPlayer::doFoundingVassal(CvCity* pCity)
 	// The units, with the techs of the team: all the starting units of an AI at the difficulty of its AI modifiers (the free
 	// units of the civilization, defenders, workers, explorers), as at the start of the game without Advanced Start
 	kNewPlayer.addStartingUnits();
+
+	// RandomBasicTraits of its leader (the random basic trait of a vassal of the Holy Roman Empire) at once, not at its next turn
+	kNewPlayer.doRandomBasicTraits();
 
 	// The message, to the players that know this team (as CvPlayer::splitEmpire)
 	CvWString szMessage = gDLL->getText("TXT_KEY_MISC_FOUNDING_VASSAL_JOINED", GC.getLeaderHeadInfo(eLeader).getTextKeyWide(), GC.getCivilizationInfo(eCiv).getShortDescriptionKey(), getNameKey());

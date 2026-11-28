@@ -134,6 +134,7 @@ public:
 	int AI_getShareWarAttitude(PlayerTypes ePlayer) const;
 	int AI_getFavoriteCivicAttitude(PlayerTypes ePlayer) const;
 	int AI_getStationedUnitAttitude(PlayerTypes ePlayer) const;	// added by this mod
+	int AI_getDenounceAttitude(PlayerTypes ePlayer) const;		// added by this mod
 	int AI_getTradeAttitude(PlayerTypes ePlayer) const;
 	int AI_getRivalTradeAttitude(PlayerTypes ePlayer) const;
 	int AI_getMemoryAttitude(PlayerTypes ePlayer, MemoryTypes eMemory) const;

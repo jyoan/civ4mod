@@ -534,6 +534,15 @@
 		<Japanese>[ICON_BULLET]&#36557;&#20107;&#21147;&#12364;&#33258;&#22269;&#12424;&#12426;&#19978;&#12398;&#25991;&#26126;&#12392;&#12398;&#25126;&#38360;&#12391;[ICON_STRENGTH] %D1%%</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FORMER_MASTER_COMBAT</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_STRENGTH] against the current and former masters</English>
+		<French>[ICON_BULLET]%D1%%[ICON_STRENGTH] against the current and former masters</French>
+		<German>[ICON_BULLET]%D1%%[ICON_STRENGTH] against the current and former masters</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_STRENGTH] against the current and former masters</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_STRENGTH] against the current and former masters</Spanish>
+		<Japanese>[ICON_BULLET]&#29694;&#22312;&#12539;&#12363;&#12388;&#12390;&#12398;&#23447;&#20027;&#22269;&#12392;&#12398;&#25126;&#38360;&#12391;[ICON_STRENGTH] %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_PROMOTION_RIVER_ATTACK</Tag>
 		<English>[ICON_BULLET]Can attack and capture land units on river plots</English>
 		<French>[ICON_BULLET]Can attack and capture land units on river plots</French>

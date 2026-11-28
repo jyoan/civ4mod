@@ -179,6 +179,7 @@ public:
 	int getAttackFromPlotPercent(CyPlot* pPlot);	// added by this mod
 	int getWarWearinessCombatModifier(int ePlayer);	// added by this mod
 	int getStrongerEnemyCombatModifier(int ePlayer);	// added by this mod
+	int getFormerMasterCombatModifier(int ePlayer);	// added by this mod
 	int getEncirclementPercent(CyPlot* pCenter, CyPlot* pFront);	// added by this mod
 	bool isFreeEmbark();	// added by this mod
 	bool isMilitaryHappiness();

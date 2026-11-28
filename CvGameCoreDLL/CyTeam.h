@@ -135,6 +135,10 @@ public:
 	void changeEnemyWarWearinessModifier(int iChange);
 
 	int getCircumnavigatedOrder();		// added by this mod
+	bool isWarDeclaredOn(int /*TeamTypes*/ eTeam);	// added by this mod
+	bool isAtDefensiveWar();	// added by this mod
+	bool isFormerMaster(int /*TeamTypes*/ eTeam);	// added by this mod
+	bool isMasterOrFormerMaster(int /*TeamTypes*/ eTeam);	// added by this mod
 	bool isMapCentering();
 	void setMapCentering(bool bNewValue);
 

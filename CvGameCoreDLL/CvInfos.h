@@ -634,6 +634,8 @@ public:
 	int getWarWearinessCombatMaxPercent() const;			// Exposed to Python
 	// iStrongerEnemyCombatPercent (added by this mod): combat % against the players with more power (CvPlayer::getPower)
 	int getStrongerEnemyCombatPercent() const;				// Exposed to Python
+	// iFormerMasterCombatPercent (added by this mod): combat % against the current and former masters of the team
+	int getFormerMasterCombatPercent() const;				// Exposed to Python
 	// iCombatGoldPerStrength (added by this mod): gold for a win, a % of the base strength of the loser's unit type
 	int getCombatGoldPerStrength() const;					// Exposed to Python
 	// bRiverAttack (added by this mod): a ship with bRiverNavigation may attack (and capture) land units on river plots
@@ -774,6 +776,7 @@ protected:
 	int m_iWarWearinessCombatMaxPercent;	// added by this mod
 	int m_iStrongerEnemyCombatPercent;		// added by this mod
 	int m_iCombatGoldPerStrength;			// added by this mod
+	int m_iFormerMasterCombatPercent;		// added by this mod
 	bool m_bRiverAttack;					// added by this mod
 
 	bool m_bLeader;
@@ -4894,6 +4897,7 @@ struct ConditionalFreeTrait
 	int iTrait;
 	bool bAtWar;				// at war with a team that is not a minor civilization or the barbarians
 	bool bAtPeace;			// not at war (as bAtWar)
+	bool bDefensiveWar;		// at war with a team that declared that war on the team of the player (as bAtWar, added by this mod)
 	int iStateReligion;		// NO_RELIGION: any
 	bool bNoStateReligion;
 	int iEraMin;			// NO_ERA: no limit (the current era of the player)
@@ -5037,6 +5041,8 @@ public:
 	int getFoundingVassalLeader() const;			// Exposed to Python: NO_LEADER = chosen by the game
 	int getFoundingVassalHandicap() const;			// Exposed to Python: NO_HANDICAP = the difficulty of the game
 	int getFoundingVassalRange() const;				// Exposed to Python
+	int getNumFoundingVassalCivilizations() const;	// Exposed to Python: FoundingVassal/CivilizationTypes, the candidates
+	int getFoundingVassalCivilizations(int i) const;	// Exposed to Python
 	int getGoldInterestPercent() const;				// Exposed to Python
 	int getGoldInterestMax() const;					// Exposed to Python
 	int getPeaceAngerPerTurn() const;				// Exposed to Python
@@ -5117,6 +5123,7 @@ public:
 	int getAnarchyGoldenAgePercent() const;			// Exposed to Python (added by this mod)
 	int getTechCostModifier() const;			// Exposed to Python (added by this mod)
 	int getAttitudeChange() const;			// Exposed to Python (added by this mod)
+	int getDenounceAttitudeChange() const;	// Exposed to Python (added by this mod)
 	int getRouteMovementModifierInBorders() const;	// Exposed to Python (added by this mod)
 	int getCombatPercent() const;			// Exposed to Python (added by this mod)
 	int getHappinessPerReligion() const;		// Exposed to Python (added by this mod)
@@ -5469,6 +5476,8 @@ protected:
 	CvString m_szFoundingVassalCivilization;	// read() keeps the types as strings until readPass3() (loaded after the traits)
 	CvString m_szFoundingVassalLeader;
 	CvString m_szFoundingVassalHandicap;
+	std::vector<CvString> m_aszFoundingVassalCivilizations;	// FoundingVassal/CivilizationTypes, strings until readFoundingVassalTypes()
+	std::vector<int> m_aiFoundingVassalCivilizations;
 	int m_iGoldInterestPercent;
 	int m_iGoldInterestMax;
 	int m_iPeaceAngerPerTurn;
@@ -5542,6 +5551,7 @@ protected:
 	int m_iAnarchyGoldenAgePercent;	// added by this mod
 	int m_iTechCostModifier;	// added by this mod
 	int m_iAttitudeChange;	// added by this mod
+	int m_iDenounceAttitudeChange;	// added by this mod
 	int m_iRouteMovementModifierInBorders;	// added by this mod
 	int m_iCombatPercent;	// added by this mod
 	int m_iHappinessPerReligion;	// added by this mod

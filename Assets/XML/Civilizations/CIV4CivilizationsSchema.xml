@@ -598,6 +598,7 @@
 	<ElementType name="iAnarchyGoldenAgePercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iTechCostModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iAttitudeChange" content="textOnly" dt:type="int"/>
+	<ElementType name="iDenounceAttitudeChange" content="textOnly" dt:type="int"/>
 	<ElementType name="bBuyCities" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iCityValueModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldLimitModifier" content="textOnly" dt:type="int"/>
@@ -848,6 +849,7 @@
 	<ElementType name="iEnemyWarWearinessModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="bAtWar" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bAtPeace" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bDefensiveWar" content="textOnly" dt:type="boolean"/>
 	<ElementType name="StateReligion" content="textOnly"/>
 	<ElementType name="bNoStateReligion" content="textOnly" dt:type="boolean"/>
 	<ElementType name="EraMin" content="textOnly"/>
@@ -873,6 +875,7 @@
 		<element type="TraitType"/>
 		<element type="bAtWar" minOccurs="0"/>
 		<element type="bAtPeace" minOccurs="0"/>
+		<element type="bDefensiveWar" minOccurs="0"/>
 		<element type="StateReligion" minOccurs="0"/>
 		<element type="bNoStateReligion" minOccurs="0"/>
 		<element type="EraMin" minOccurs="0"/>
@@ -1033,11 +1036,15 @@
 	<ElementType name="LeaderType" content="textOnly"/>
 	<ElementType name="HandicapType" content="textOnly"/>
 	<ElementType name="iRange" content="textOnly" dt:type="int"/>
+	<ElementType name="CivilizationTypes" content="eltOnly">
+		<element type="CivilizationType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="FoundingVassal" content="eltOnly">
 		<element type="CivilizationType" minOccurs="0"/>
 		<element type="LeaderType" minOccurs="0"/>
 		<element type="HandicapType" minOccurs="0"/>
 		<element type="iRange" minOccurs="0"/>
+		<element type="CivilizationTypes" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="bDoubleInCapital" content="textOnly" dt:type="boolean"/>
 	<ElementType name="NearbyCityCommerce" content="eltOnly">
@@ -1325,6 +1332,7 @@
 		<element type="iAnarchyGoldenAgePercent" minOccurs="0"/>
 		<element type="iTechCostModifier" minOccurs="0"/>
 		<element type="iAttitudeChange" minOccurs="0"/>
+		<element type="iDenounceAttitudeChange" minOccurs="0"/>
 		<element type="Deals" minOccurs="0"/>
 		<element type="LendLease" minOccurs="0"/>
 		<element type="iRouteMovementModifierInBorders" minOccurs="0"/>
