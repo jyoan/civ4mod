@@ -24,6 +24,14 @@
 
 // added by this mod: a defensive pact is making a team join a war (CvTeam::declareWar), so that team is not the declaring side
 static bool s_bDefensivePactJoin = false;
+// declareWar is cancelling the deals between the two teams (added by this mod): the end of a vassal agreement there does not
+// make the master of FoundingOverlord declare a second war (CvDeal::kill, CvPlayer::checkIndependenceWar)
+static bool s_bCancellingWarDeals = false;
+
+bool CvTeam::isCancellingWarDeals()
+{
+	return s_bCancellingWarDeals;
+}
 
 // Public Functions...
 
@@ -1075,12 +1083,14 @@ bool CvTeam::canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal) const
 		}
 	}
 
-	if (isAVassal())
+	// FoundingOverlord of the traits (added by this mod): a vassal may still declare the war of independence on its master
+	if (isAVassal() && !canDeclareIndependenceWar(eTeam))
 	{
 		return false;
 	}
 
 	if (bAllowVassal)
+
 	{
 		if (GET_TEAM(eTeam).isVassal(getID()))
 		{
@@ -1096,6 +1106,29 @@ bool CvTeam::canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal) const
 	}
 
 	return true;
+}
+
+
+// FoundingOverlord of the traits (added by this mod): a member of this team became the vassal of eMaster by it and may declare
+// the war of independence now (CvPlayer::canDeclareIndependenceWar). A vassal can declare no other war
+bool CvTeam::canDeclareIndependenceWar(TeamTypes eMaster) const
+{
+	int iI;
+
+	if (!isVassal(eMaster))
+	{
+		return false;
+	}
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_PLAYER((PlayerTypes)iI).getTeam() == getID() && GET_PLAYER((PlayerTypes)iI).canDeclareIndependenceWar())
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 
@@ -1190,6 +1223,8 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 	{
 		//FAssertMsg((isHuman() || isMinorCiv() || GET_TEAM(eTeam).isMinorCiv() || isBarbarian() || GET_TEAM(eTeam).isBarbarian() || AI_isSneakAttackReady(eTeam) || (GET_TEAM(eTeam).getAtWarCount(true) > 0) || !(GC.getGameINLINE().isFinalInitialized()) || gDLL->GetWorldBuilderMode() || getVassalCount() > 0  || isAVassal() || GET_TEAM(eTeam).getVassalCount() > 0  || GET_TEAM(eTeam).isAVassal() || getDefensivePactCount() > 0), "Possibly accidental AI war!!!");
 
+		bool bWasCancellingWarDeals = s_bCancellingWarDeals;	// added by this mod
+		s_bCancellingWarDeals = true;
 		for (pLoopDeal = GC.getGameINLINE().firstDeal(&iLoop); pLoopDeal != NULL; pLoopDeal = GC.getGameINLINE().nextDeal(&iLoop))
 		{
 			if (((GET_PLAYER(pLoopDeal->getFirstPlayer()).getTeam() == getID()) && (GET_PLAYER(pLoopDeal->getSecondPlayer()).getTeam() == eTeam)) ||
@@ -1198,6 +1233,7 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 				pLoopDeal->kill();
 			}
 		}
+		s_bCancellingWarDeals = bWasCancellingWarDeals;
 
 		for (iI = 0; iI < MAX_PLAYERS; iI++)
 		{
@@ -1216,6 +1252,19 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 
 		setAtWar(eTeam, true);
 		GET_TEAM(eTeam).setAtWar(getID(), true);
+
+		// FoundingOverlord of the traits (added by this mod): the war of independence begins
+		for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+		{
+			if (GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
+			{
+				GET_PLAYER((PlayerTypes)iI).startIndependenceWar(eTeam);
+			}
+			else if (GET_PLAYER((PlayerTypes)iI).getTeam() == eTeam)
+			{
+				GET_PLAYER((PlayerTypes)iI).startIndependenceWar(getID());
+			}
+		}
 
 		for (iI = 0; iI < MAX_PLAYERS; iI++)
 		{
@@ -1554,6 +1603,20 @@ void CvTeam::makePeace(TeamTypes eTeam, bool bBumpUnits)
 
 	if (isAtWar(eTeam))
 	{
+		// FoundingOverlord of the traits (added by this mod): the war of independence ends, judged before the war success is
+		// reset below
+		for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+		{
+			if (GET_PLAYER((PlayerTypes)iI).getTeam() == getID())
+			{
+				GET_PLAYER((PlayerTypes)iI).endIndependenceWar(eTeam, false);
+			}
+			else if (GET_PLAYER((PlayerTypes)iI).getTeam() == eTeam)
+			{
+				GET_PLAYER((PlayerTypes)iI).endIndependenceWar(getID(), false);
+			}
+		}
+
 		for (iI = 0; iI < MAX_PLAYERS; iI++)
 		{
 			if ((GET_PLAYER((PlayerTypes)iI).getTeam() == getID()) || (GET_PLAYER((PlayerTypes)iI).getTeam() == eTeam))
@@ -1564,6 +1627,7 @@ void CvTeam::makePeace(TeamTypes eTeam, bool bBumpUnits)
 
 		FAssertMsg(eTeam != getID(), "eTeam is not expected to be equal with getID()");
 		setAtWar(eTeam, false);
+
 		GET_TEAM(eTeam).setAtWar(getID(), false);
 
 		for (iI = 0; iI < MAX_PLAYERS; iI++)

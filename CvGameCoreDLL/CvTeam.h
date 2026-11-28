@@ -38,8 +38,10 @@ public:
 	void updateCommerce();
 
 	bool canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal = false) const;																			// Exposed to Python
+	bool canDeclareIndependenceWar(TeamTypes eMaster) const;	// added by this mod: FoundingOverlord of the traits
 	DllExport bool canDeclareWar(TeamTypes eTeam) const;																// Exposed to Python
 	DllExport void declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan);										// Exposed to Python
+	static bool isCancellingWarDeals();	// added by this mod: declareWar is cancelling the deals between the two teams
 	DllExport void makePeace(TeamTypes eTeam, bool bBumpUnits = true);																		// Exposed to Python
 	void doWarPeaceTraitPythonHooks(TeamTypes eTeam, bool bWar);	// added by this mod: PyOnWarDeclared / PyOnPeaceMade
 	bool canContact(TeamTypes eTeam) const;																							// Exposed to Python

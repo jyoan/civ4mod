@@ -200,7 +200,18 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getFoundingVassalRange", &CvTraitInfo::getFoundingVassalRange, "int ()")
 		.def("getNumFoundingVassalCivilizations", &CvTraitInfo::getNumFoundingVassalCivilizations, "int ()")
 		.def("getFoundingVassalCivilizations", &CvTraitInfo::getFoundingVassalCivilizations, "int (int i)")
+		.def("isFoundingOverlord", &CvTraitInfo::isFoundingOverlord, "bool () - FoundingOverlord (added by this mod)")
+		.def("getFoundingOverlordCivilization", &CvTraitInfo::getFoundingOverlordCivilization, "int ()")
+		.def("getFoundingOverlordLeader", &CvTraitInfo::getFoundingOverlordLeader, "int ()")
+		.def("getFoundingOverlordHandicap", &CvTraitInfo::getFoundingOverlordHandicap, "int ()")
+		.def("getNumFoundingOverlordCivilizations", &CvTraitInfo::getNumFoundingOverlordCivilizations, "int ()")
+		.def("getFoundingOverlordCivilizations", &CvTraitInfo::getFoundingOverlordCivilizations, "int (int i)")
+		.def("getIndependencePeaceGoldenAgePercent", &CvTraitInfo::getIndependencePeaceGoldenAgePercent, "int ()")
+		.def("getIndependenceCityGoldenAgePercent", &CvTraitInfo::getIndependenceCityGoldenAgePercent, "int ()")
+		.def("getIndependenceEliminateGoldenAgePercent", &CvTraitInfo::getIndependenceEliminateGoldenAgePercent, "int ()")
+		.def("getTributeDemandTurns", &CvTraitInfo::getTributeDemandTurns, "int () - iTributeDemandTurns (added by this mod)")
 		;
+
 }
 
 // The getters of CvProjectInfo added by this mod. Called from CyInfoPythonInterface3 with the class

@@ -11681,7 +11681,8 @@ void CvPlayerAI::AI_doDiplo()
 								FAssertMsg(!(GET_PLAYER((PlayerTypes)iI).isBarbarian()), "(GET_PLAYER((PlayerTypes)iI).isBarbarian()) did not return false as expected");
 								FAssertMsg(iI != getID(), "iI is not expected to be equal with getID()");
 
-								if (GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam()).isVassal(getTeam()))
+								// iTributeDemandTurns of the traits of the vassal (added by this mod): no demand while it waits
+								if (GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam()).isVassal(getTeam()) && !GET_PLAYER((PlayerTypes)iI).isTributeDemandWaiting())
 								{
 									iBestValue = 0;
 									eBestGiveBonus = NO_BONUS;
@@ -11721,13 +11722,16 @@ void CvPlayerAI::AI_doDiplo()
 												{
 													gDLL->getInterfaceIFace()->addPopup(pInfo, (PlayerTypes)iI);
 													abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
+													GET_PLAYER((PlayerTypes)iI).setTributeDemanded();	// added by this mod
 												}
 											}
 										}
 										else
 										{
 											GC.getGameINLINE().implementDeal(getID(), ((PlayerTypes)iI), &ourList, &theirList);
+											GET_PLAYER((PlayerTypes)iI).setTributeDemanded();	// added by this mod
 										}
+
 									}
 								}
 

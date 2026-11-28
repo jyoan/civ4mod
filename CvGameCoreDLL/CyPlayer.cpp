@@ -3060,6 +3060,34 @@ bool CyPlayer::isFoundingVassal()
 	return m_pPlayer ? m_pPlayer->isFoundingVassal() : false;
 }
 
+// FoundingOverlord and iTributeDemandTurns of the traits (added by this mod)
+int CyPlayer::getFoundingOverlord()
+{
+	return m_pPlayer ? (int)m_pPlayer->getFoundingOverlord() : (int)NO_PLAYER;
+}
+
+int CyPlayer::getIndependenceState()
+{
+	return m_pPlayer ? m_pPlayer->getIndependenceState() : 0;
+}
+
+bool CyPlayer::canDeclareIndependenceWar()
+{
+	return m_pPlayer ? m_pPlayer->canDeclareIndependenceWar() : false;
+}
+
+
+int CyPlayer::getTributeDemandTurns()
+{
+	return m_pPlayer ? m_pPlayer->getTributeDemandTurns() : 0;
+}
+
+bool CyPlayer::isTributeDemandWaiting()
+{
+	return m_pPlayer ? m_pPlayer->isTributeDemandWaiting() : false;
+}
+
+
 // ExplorationRewards of the traits (added by this mod)
 int CyPlayer::getExploredPlotCount(int /*ExplorePlotTypes*/ eExplorePlot)
 {

@@ -1830,6 +1830,114 @@
 		<Japanese>[COLOR_HIGHLIGHT_TEXT]%s2_civ&#12398;%s1_leader&#12364;%s3_leader&#12392;&#27704;&#20037;&#21516;&#30431;&#12434;&#32080;&#12403;&#12289;&#12466;&#12540;&#12512;&#12395;&#21442;&#21152;[COLOR_REVERT]</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_FOUNDING_OVERLORD</Tag>
+		<English>[ICON_BULLET]When founding the first city, %s1 joins the game far away (on another continent if possible) with the starting units of an AI, and this civilization becomes its vassal by a vassal agreement (if a player slot is free and vassal states are allowed)</English>
+		<French>[ICON_BULLET]When founding the first city, %s1 joins the game far away (on another continent if possible) with the starting units of an AI, and this civilization becomes its vassal by a vassal agreement (if a player slot is free and vassal states are allowed)</French>
+		<German>[ICON_BULLET]When founding the first city, %s1 joins the game far away (on another continent if possible) with the starting units of an AI, and this civilization becomes its vassal by a vassal agreement (if a player slot is free and vassal states are allowed)</German>
+		<Italian>[ICON_BULLET]When founding the first city, %s1 joins the game far away (on another continent if possible) with the starting units of an AI, and this civilization becomes its vassal by a vassal agreement (if a player slot is free and vassal states are allowed)</Italian>
+		<Spanish>[ICON_BULLET]When founding the first city, %s1 joins the game far away (on another continent if possible) with the starting units of an AI, and this civilization becomes its vassal by a vassal agreement (if a player slot is free and vassal states are allowed)</Spanish>
+		<Japanese>[ICON_BULLET]&#26368;&#21021;&#12398;&#37117;&#24066;&#12434;&#24314;&#12390;&#12427;&#12392;&#12289;%s1&#12364;&#36960;&#12367;&#65288;&#12391;&#12365;&#12428;&#12400;&#21029;&#12398;&#22823;&#38520;&#65289;&#12395; AI &#12398;&#21021;&#26399;&#12518;&#12491;&#12483;&#12488;&#12434;&#36899;&#12428;&#12390;&#21442;&#21152;&#12375;&#12289;&#12371;&#12398;&#25991;&#26126;&#12399;&#12381;&#12398;&#23646;&#22269;&#12395;&#12394;&#12427;&#65288;&#23646;&#22269;&#12398;&#21462;&#24341;&#12290;&#31354;&#12365;&#12398;&#26528;&#12364;&#12354;&#12426;&#12289;&#23646;&#22269;&#12364;&#26377;&#21177;&#12394;&#12392;&#12365;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDEPENDENCE_WAR</Tag>
+		<English>Leaving the vassal state in any way means war with the master (the war of independence). The vassal may also declare it once the agreement can be cancelled. Winning it gives a golden age once:</English>
+		<French>Leaving the vassal state in any way means war with the master (the war of independence). The vassal may also declare it once the agreement can be cancelled. Winning it gives a golden age once:</French>
+		<German>Leaving the vassal state in any way means war with the master (the war of independence). The vassal may also declare it once the agreement can be cancelled. Winning it gives a golden age once:</German>
+		<Italian>Leaving the vassal state in any way means war with the master (the war of independence). The vassal may also declare it once the agreement can be cancelled. Winning it gives a golden age once:</Italian>
+		<Spanish>Leaving the vassal state in any way means war with the master (the war of independence). The vassal may also declare it once the agreement can be cancelled. Winning it gives a golden age once:</Spanish>
+		<Japanese>&#12393;&#12398;&#24418;&#12391;&#23646;&#22269;&#12434;&#25244;&#12369;&#12390;&#12418;&#23447;&#20027;&#22269;&#12392;&#25126;&#20105;&#12395;&#12394;&#12427;&#65288;&#29420;&#31435;&#25126;&#20105;&#65289;&#12290;&#23646;&#22269;&#12398;&#21462;&#24341;&#12434;&#35299;&#28040;&#12391;&#12365;&#12427;&#12424;&#12358;&#12395;&#12394;&#12428;&#12400;&#12289;&#33258;&#20998;&#12363;&#12425;&#23459;&#25126;&#12418;&#12391;&#12365;&#12427;&#12290;&#21213;&#12388;&#12392; 1 &#22238;&#12384;&#12369;&#40644;&#37329;&#26399;:</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDEPENDENCE_ELIMINATE</Tag>
+		<English>The master destroyed without peace: %d1%% of the normal length</English>
+		<French>The master destroyed without peace: %d1%% of the normal length</French>
+		<German>The master destroyed without peace: %d1%% of the normal length</German>
+		<Italian>The master destroyed without peace: %d1%% of the normal length</Italian>
+		<Spanish>The master destroyed without peace: %d1%% of the normal length</Spanish>
+		<Japanese>&#35611;&#21644;&#12379;&#12378;&#12395;&#23447;&#20027;&#22269;&#12434;&#28357;&#12412;&#12377;: &#36890;&#24120;&#12398;&#38263;&#12373;&#12398; %d1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDEPENDENCE_CITY</Tag>
+		<English>Peace while holding a city taken from the master in that war: %d1%%</English>
+		<French>Peace while holding a city taken from the master in that war: %d1%%</French>
+		<German>Peace while holding a city taken from the master in that war: %d1%%</German>
+		<Italian>Peace while holding a city taken from the master in that war: %d1%%</Italian>
+		<Spanish>Peace while holding a city taken from the master in that war: %d1%%</Spanish>
+		<Japanese>&#12381;&#12398;&#25126;&#20105;&#12391;&#23447;&#20027;&#22269;&#12363;&#12425;&#22890;&#12387;&#12383;&#37117;&#24066;&#12434;&#25345;&#12387;&#12390;&#35611;&#21644;: %d1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_INDEPENDENCE_PEACE</Tag>
+		<English>Peace with a higher war success than the master: %d1%%</English>
+		<French>Peace with a higher war success than the master: %d1%%</French>
+		<German>Peace with a higher war success than the master: %d1%%</German>
+		<Italian>Peace with a higher war success than the master: %d1%%</Italian>
+		<Spanish>Peace with a higher war success than the master: %d1%%</Spanish>
+		<Japanese>&#25126;&#26524;&#12364;&#23447;&#20027;&#22269;&#12424;&#12426;&#22810;&#12356;&#29366;&#24907;&#12391;&#35611;&#21644;: %d1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TRIBUTE_DEMAND_TURNS</Tag>
+		<English>[ICON_BULLET]An AI master demands resources at most once every %d1 turns (scaled by game speed)</English>
+		<French>[ICON_BULLET]An AI master demands resources at most once every %d1 turns (scaled by game speed)</French>
+		<German>[ICON_BULLET]An AI master demands resources at most once every %d1 turns (scaled by game speed)</German>
+		<Italian>[ICON_BULLET]An AI master demands resources at most once every %d1 turns (scaled by game speed)</Italian>
+		<Spanish>[ICON_BULLET]An AI master demands resources at most once every %d1 turns (scaled by game speed)</Spanish>
+		<Japanese>[ICON_BULLET]AI &#12398;&#23447;&#20027;&#22269;&#12364;&#36039;&#28304;&#12434;&#35201;&#27714;&#12377;&#12427;&#12398;&#12399; %d1 &#12479;&#12540;&#12531;&#12395; 1 &#22238;&#12414;&#12391;&#65288;&#12466;&#12540;&#12512;&#12398;&#36895;&#24230;&#12391;&#22793;&#12431;&#12427;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_FOUNDING_OVERLORD_JOINED</Tag>
+		<English>[COLOR_HIGHLIGHT_TEXT]%s1_leader of %s2_civ has joined the game, and %s3_leader has become its vassal[COLOR_REVERT]</English>
+		<French>[COLOR_HIGHLIGHT_TEXT]%s1_leader of %s2_civ has joined the game, and %s3_leader has become its vassal[COLOR_REVERT]</French>
+		<German>[COLOR_HIGHLIGHT_TEXT]%s1_leader of %s2_civ has joined the game, and %s3_leader has become its vassal[COLOR_REVERT]</German>
+		<Italian>[COLOR_HIGHLIGHT_TEXT]%s1_leader of %s2_civ has joined the game, and %s3_leader has become its vassal[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_HIGHLIGHT_TEXT]%s1_leader of %s2_civ has joined the game, and %s3_leader has become its vassal[COLOR_REVERT]</Spanish>
+		<Japanese>[COLOR_HIGHLIGHT_TEXT]%s2_civ&#12398;%s1_leader&#12364;&#12466;&#12540;&#12512;&#12395;&#21442;&#21152;&#12375;&#12289;%s3_leader&#12399;&#12381;&#12398;&#23646;&#22269;&#12395;&#12394;&#12387;&#12383;[COLOR_REVERT]</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_INDEPENDENCE_WAR_BEGINS</Tag>
+		<English>The war of independence against %s1_civ has begun</English>
+		<French>The war of independence against %s1_civ has begun</French>
+		<German>The war of independence against %s1_civ has begun</German>
+		<Italian>The war of independence against %s1_civ has begun</Italian>
+		<Spanish>The war of independence against %s1_civ has begun</Spanish>
+		<Japanese>%s1_civ&#12392;&#12398;&#29420;&#31435;&#25126;&#20105;&#12364;&#22987;&#12414;&#12387;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_INDEPENDENCE_ELIMINATE</Tag>
+		<English>The war of independence is won: the former master is destroyed. A golden age (%d1%% of the normal length)</English>
+		<French>The war of independence is won: the former master is destroyed. A golden age (%d1%% of the normal length)</French>
+		<German>The war of independence is won: the former master is destroyed. A golden age (%d1%% of the normal length)</German>
+		<Italian>The war of independence is won: the former master is destroyed. A golden age (%d1%% of the normal length)</Italian>
+		<Spanish>The war of independence is won: the former master is destroyed. A golden age (%d1%% of the normal length)</Spanish>
+		<Japanese>&#29420;&#31435;&#25126;&#20105;&#12395;&#21213;&#21033;: &#12363;&#12388;&#12390;&#12398;&#23447;&#20027;&#22269;&#12434;&#28357;&#12412;&#12375;&#12383;&#12290;&#40644;&#37329;&#26399;&#65288;&#36890;&#24120;&#12398;&#38263;&#12373;&#12398; %d1%%&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_INDEPENDENCE_CITY</Tag>
+		<English>The war of independence is won: peace while holding a city of the former master. A golden age (%d1%% of the normal length)</English>
+		<French>The war of independence is won: peace while holding a city of the former master. A golden age (%d1%% of the normal length)</French>
+		<German>The war of independence is won: peace while holding a city of the former master. A golden age (%d1%% of the normal length)</German>
+		<Italian>The war of independence is won: peace while holding a city of the former master. A golden age (%d1%% of the normal length)</Italian>
+		<Spanish>The war of independence is won: peace while holding a city of the former master. A golden age (%d1%% of the normal length)</Spanish>
+		<Japanese>&#29420;&#31435;&#25126;&#20105;&#12395;&#21213;&#21033;: &#12363;&#12388;&#12390;&#12398;&#23447;&#20027;&#22269;&#12398;&#37117;&#24066;&#12434;&#25345;&#12387;&#12390;&#35611;&#21644;&#12375;&#12383;&#12290;&#40644;&#37329;&#26399;&#65288;&#36890;&#24120;&#12398;&#38263;&#12373;&#12398; %d1%%&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_INDEPENDENCE_PEACE</Tag>
+		<English>The war of independence is won: peace on favorable terms. A golden age (%d1%% of the normal length)</English>
+		<French>The war of independence is won: peace on favorable terms. A golden age (%d1%% of the normal length)</French>
+		<German>The war of independence is won: peace on favorable terms. A golden age (%d1%% of the normal length)</German>
+		<Italian>The war of independence is won: peace on favorable terms. A golden age (%d1%% of the normal length)</Italian>
+		<Spanish>The war of independence is won: peace on favorable terms. A golden age (%d1%% of the normal length)</Spanish>
+		<Japanese>&#29420;&#31435;&#25126;&#20105;&#12395;&#21213;&#21033;: &#26377;&#21033;&#12394;&#26465;&#20214;&#12391;&#35611;&#21644;&#12375;&#12383;&#12290;&#40644;&#37329;&#26399;&#65288;&#36890;&#24120;&#12398;&#38263;&#12373;&#12398; %d1%%&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_INDEPENDENCE_NO_GOLDEN_AGE</Tag>
+		<English>The war of independence is over without a golden age</English>
+		<French>The war of independence is over without a golden age</French>
+		<German>The war of independence is over without a golden age</German>
+		<Italian>The war of independence is over without a golden age</Italian>
+		<Spanish>The war of independence is over without a golden age</Spanish>
+		<Japanese>&#29420;&#31435;&#25126;&#20105;&#12399;&#40644;&#37329;&#26399;&#12394;&#12375;&#12391;&#32066;&#12431;&#12387;&#12383;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_ENABLED_ESPIONAGE_MISSIONS</Tag>
 		<English>[ICON_BULLET]Espionage missions: </English>
 		<French>[ICON_BULLET]Espionage missions: </French>

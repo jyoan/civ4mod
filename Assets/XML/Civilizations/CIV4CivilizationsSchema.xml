@@ -599,6 +599,7 @@
 	<ElementType name="iTechCostModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iAttitudeChange" content="textOnly" dt:type="int"/>
 	<ElementType name="iDenounceAttitudeChange" content="textOnly" dt:type="int"/>
+	<ElementType name="iTributeDemandTurns" content="textOnly" dt:type="int"/>
 	<ElementType name="bBuyCities" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iCityValueModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iGoldLimitModifier" content="textOnly" dt:type="int"/>
@@ -1046,6 +1047,18 @@
 		<element type="iRange" minOccurs="0"/>
 		<element type="CivilizationTypes" minOccurs="0"/>
 	</ElementType>
+	<ElementType name="iPeaceGoldenAgePercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iCityGoldenAgePercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iEliminateGoldenAgePercent" content="textOnly" dt:type="int"/>
+	<ElementType name="FoundingOverlord" content="eltOnly">
+		<element type="CivilizationType" minOccurs="0"/>
+		<element type="LeaderType" minOccurs="0"/>
+		<element type="HandicapType" minOccurs="0"/>
+		<element type="CivilizationTypes" minOccurs="0"/>
+		<element type="iPeaceGoldenAgePercent" minOccurs="0"/>
+		<element type="iCityGoldenAgePercent" minOccurs="0"/>
+		<element type="iEliminateGoldenAgePercent" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="bDoubleInCapital" content="textOnly" dt:type="boolean"/>
 	<ElementType name="NearbyCityCommerce" content="eltOnly">
 		<element type="iRange" minOccurs="0"/>
@@ -1333,6 +1346,7 @@
 		<element type="iTechCostModifier" minOccurs="0"/>
 		<element type="iAttitudeChange" minOccurs="0"/>
 		<element type="iDenounceAttitudeChange" minOccurs="0"/>
+		<element type="iTributeDemandTurns" minOccurs="0"/>
 		<element type="Deals" minOccurs="0"/>
 		<element type="LendLease" minOccurs="0"/>
 		<element type="iRouteMovementModifierInBorders" minOccurs="0"/>
@@ -1407,6 +1421,8 @@
 		<element type="StartBias" minOccurs="0"/>
 		<element type="CityFoundedUnits" minOccurs="0"/>
 		<element type="FoundingVassal" minOccurs="0"/>
+		<element type="FoundingOverlord" minOccurs="0"/>
+
 		<element type="GoldInterest" minOccurs="0"/>
 		<element type="PeaceAnger" minOccurs="0"/>
 		<element type="iCultureRangeChange" minOccurs="0"/>

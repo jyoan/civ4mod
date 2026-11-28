@@ -1436,6 +1436,15 @@
 			<Description>TXT_KEY_TRAIT_TEST_COND_DEFENSIVE_WAR</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_COND_SHORT</ShortDescription>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_TEST_OVERLORD</Type>
+			<Description>TXT_KEY_TRAIT_TEST_OVERLORD</Description>
+			<ShortDescription>TXT_KEY_TRAIT_TEST_OVERLORD_SHORT</ShortDescription>
+			<iTributeDemandTurns>5</iTributeDemandTurns>
+			<FoundingOverlord>
+				<CivilizationType>CIVILIZATION_TEST_AI</CivilizationType>
+			</FoundingOverlord>
+		</TraitInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</TraitInfos>
 </Civ4TraitInfos>

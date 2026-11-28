@@ -4786,6 +4786,10 @@
 					<LeaderName>LEADER_TEST_VASSAL</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
+				<Leader>
+					<LeaderName>LEADER_TEST_COLONY</LeaderName>
+					<bLeaderAvailability>1</bLeaderAvailability>
+				</Leader>
 			</Leaders>
 			<Traits>
 				<Trait>

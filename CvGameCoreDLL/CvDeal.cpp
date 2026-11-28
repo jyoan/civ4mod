@@ -101,7 +101,24 @@ void CvDeal::kill(bool bKillTeam)
 		endTrade(pNode->m_data, getSecondPlayer(), getFirstPlayer(), bKillTeam);
 	}
 
+	PlayerTypes eFirstPlayer = getFirstPlayer();
+	PlayerTypes eSecondPlayer = getSecondPlayer();
+
 	GC.getGameINLINE().deleteDeal(getID());
+
+	// FoundingOverlord of the traits (added by this mod): a cancelled vassal agreement makes the master declare war, after the
+	// deal is gone. Not while declareWar cancels the deals (that war is already on its way)
+	if (!CvTeam::isCancellingWarDeals())
+	{
+		if (eFirstPlayer != NO_PLAYER)
+		{
+			GET_PLAYER(eFirstPlayer).checkIndependenceWar();
+		}
+		if (eSecondPlayer != NO_PLAYER)
+		{
+			GET_PLAYER(eSecondPlayer).checkIndependenceWar();
+		}
+	}
 }
 
 

@@ -301,3 +301,11 @@
 - 施設が変わるたびに「[検証] PyOnImprovementChanged: (x, y) 古い施設 -> 新しい施設, gold 金, hammers 生産」を出す（`PyOnImprovementChanged`）。
 - 工房に置き換えたときの金: 大商人の交易任務（交易の利益 5）の 4 分の 1 を町 100%・村 40%・集落 15%・小屋 5% で（通常の速度で 375・150・56・18）。
 - 農地を工房に置き換えたときの生産: `scaleBySpeed(30, 'Train')`（通常の速度で 30）を、そのタイルの都市に（`gainImprovementProduction`。都市画面の生産の内訳に「施設の転換により」の行）
+
+## `TRAIT_TEST_OVERLORD`（検証用志向（宗主国））・`LEADER_TEST_COLONY`（検証用指導者（植民地））
+
+- 複製元: 検証用志向（属国）・検証用指導者（属国）（2026-11-28）
+- 最初の都市を建てると、検証用 AI 文明が遠く（できれば別の大陸）に参加し、その属国になる（`FoundingOverlord` の `CivilizationType` に `CIVILIZATION_TEST_AI`。`HandicapType` は省略でゲームの難易度）。
+- 黄金期の % は省略（100・200・300）。
+- `iTributeDemandTurns` 5（標準の速度で 5 ターンに 1 回まで）。
+- 指導者は `CIVILIZATION_TEST` の指導者に入れてある
