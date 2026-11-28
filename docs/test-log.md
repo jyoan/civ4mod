@@ -191,3 +191,4 @@
 - 2026-11-26: ユニットの `iUpgradeDiscount`（検証用ユニット A から B へのアップグレードの費用が 0、所持金 0 でもアップグレードできる、説明文の「アップグレードに必要な[ICON_GOLD] -100%」）をゲーム内で確認した（検証用ユニット A）
 - 2026-11-26: 共通関数 `gainExperience`・`keepExperienceOnUpgrade`（開始ユニットの検証用ユニット A の経験値 30、B にアップグレードしても経験値 30 のまま）をゲーム内で確認した（検証用ユニット A）
 - 2026-11-27: 志向のタグ `bClaimLastReligion` とフック `PyOnLastReligionClaimed`（中世開始で、他の文明が残り 2 つの宗教の一方を創始すると最後の宗教の技術を得て創始する、聖地に大預言者とイベントログの行、志向の説明文）をゲーム内で確認した（検証用志向）
+- 2026-11-28: 共通関数 `createConscripts`・`countCityReligions`（オスマンのデヴシルメ）、`isSpecialBuildingIn`（ユスティニアヌス1世の僧院）、`extendGoldenAge` とメッセージ `TXT_KEY_MISC_GOLDEN_AGE_EXTENDED`（ペリクレス。延びた分は画面の残りターンが減らずに同じ数のままになる）、志向の説明文の征服で建つ国教の建物の文言、生産・商業の内訳で建物の補正（+N%）が「建造物: N」と出ていた不具合（基本の産出の内訳の行を `TXT_KEY_MISC_HELP_YIELD_FROM_BUILDINGS` に分けた）を、civ-design の文明でゲーム内で確認した
