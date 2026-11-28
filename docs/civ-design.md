@@ -336,6 +336,7 @@ civfanatics での公開（`master` を枠組み、この Mod をその使用例
 1 つずつ設計を詰めてから作る。
 
 2026-11-28: アステカを作った（master `7cbe66d` 昇進の `bForcedLabor`・ユニットの `iGreatWorkOccupationTurns`。civ-design で人身供犠志向とマセワリ）。
+2026-11-28: アメリカを作った（master `b304722` 志向の `FoundingOverlord`・`iTributeDemandTurns`。civ-design で独立宣言志向と宗主国の「本国」）。
 
 - アステカ: 労働者の小さな偉人化と強制労働
 - アメリカ: 宗主国のダミー文明と独立戦争の黄金期
@@ -378,6 +379,10 @@ civfanatics での公開（`master` を枠組み、この Mod をその使用例
 - どの形で属国を抜けても（解消でも拒否でも）宗主国と戦争になる。属国が解消したら宗主国が宣戦する
 - 黄金期は独立戦争に勝ったときだけ: 有利な条件で講和 = 通常の期間、宗主国の都市を占領 = 2 倍、講和なしで宗主国を滅ぼす = 3 倍。「有利な条件」の判定は実装のときに決める
 - 宗主国の AI 補正は XML で指定でき、なければほかの AI と同じ
+- 実装（2026-11-28）: 文明の志向は独立宣言 `TRAIT_DECLARATION_OF_INDEPENDENCE`（ホームステッド法の置き換え）。`FoundingOverlord` で宗主国は「本国」`CIVILIZATION_MOTHER_COUNTRY` の「国王」`LEADER_KING`、`HandicapType` は省略（ほかの AI と同じ）、黄金期は既定の 100・200・300%、`iTributeDemandTurns` 10
+- 決まったこと（2026-11-28）: 「有利な条件」は戦果（`AI_getWarSuccess`）で比べる。2 倍は奪った都市を講和の時点で持っていること。判定は最初の独立戦争の 1 回きり。要求の待ち時間は属国の側の志向のタグ。属国になって 10 ターン後からは、属国のまま宗主国に宣戦もできる（外交の会話・領土に入るときの確認。ユーザーの要望で動線を増やした）
+- 宗主国の場所: 陸のタイルが 20 以上ある別の大陸を優先し、いちばん遠い候補の半分以上離れたタイルのうち開始位置の価値が最も高いところ（最初の案は極地の小島を選んだ）
+- 宗主国は、イギリスと直接は書かないがイギリスを連想させる形（ユーザーの指定）: 旗・ユニットの見た目・固有ユニット（レッドコート）・固有建物・都市名はイギリスのもの、文明の志向はなし。国王の立ち絵は、ジョージ 3 世に似せた AI 生成の画像をユーザーが用意する予定（それまではヴィクトリアの絵）
 
 ワシントン:
 
@@ -573,7 +578,6 @@ AI: AI のアメリカはいつも要求に応じ、戦争なしで属国を抜�
 
 実装のときに決めればよい。
 
-- アメリカ: 「有利な条件で講和」の判定
 - ヴィクトリア: 聖地と企業の本社も対象にするか
 - ロシア: 都市圏の半径 +1 に「洗練」の条件を残すか
 
@@ -618,6 +622,9 @@ AI: AI のアメリカはいつも要求に応じ、戦争なしで属国を抜�
 | `TRAIT_HUMAN_SACRIFICE`（人身供犠志向、短縮名「供犠」） | アステカの文明の志向（`TRAIT_CHINAMPA` の置き換え。チナンパの志向は XML に残し、誰も持たない）。`FreePromotionSets` で `UNITCLASS_WORKER` に `PROMOTION_FORCED_LABOR`。`Help` でマセワリの生贄を説明 |
 | `PROMOTION_FORCED_LABOR`（強制労働） | `bForcedLabor` 1。名前のキーは `TXT_KEY_PROMOTION_FORCED_LABOR_NAME`（`TXT_KEY_PROMOTION_FORCED_LABOR` は master の説明の行）。ボタンは側面攻撃Ⅰ（検証用昇進の複製のまま） |
 | `UNIT_AZTEC_MACEHUALLI`（マセワリ） | アステカの固有の労働者（検証用労働者の複製）。生産の加速 20 + 1×人口、交易任務 20 + 5×交易の利益、傑作 文化 30、`iGreatWorkOccupationTurns` 1。ペディアは労働者のもの |
+| `TRAIT_DECLARATION_OF_INDEPENDENCE`（独立宣言志向、短縮名「独立」） | アメリカの文明の志向（`TRAIT_HOMESTEAD` の置き換え。ホームステッド法の志向は XML に残し、誰も持たない）。`FoundingOverlord`（`CIVILIZATION_MOTHER_COUNTRY`・`LEADER_KING`）、`iTributeDemandTurns` 10 |
+| `CIVILIZATION_MOTHER_COUNTRY`（本国） | アメリカの宗主国のダミー文明（イギリスの複製）。`bPlayable`・`bAIPlayable` 0、指導者は国王だけ、文明の志向なし。ペディアは `TXT_KEY_CIV_MOTHER_COUNTRY_PEDIA` |
+| `LEADER_KING`（国王） | 本国の指導者（ヴィクトリアの複製。帝国志向・金融志向、絵は仮にヴィクトリア） |
 | `TRAIT_LAST_PROPHET`（最後の預言者志向、短縮名「預言者」） | アラブの文明の志向（`TRAIT_BEDOUIN` の置き換え。ベドウィンの志向は XML に残し、誰も持たない）。`bClaimLastReligion` 1、`PyOnLastReligionClaimed` で聖地に大預言者 1 人 |
 
 ## 確認の記録

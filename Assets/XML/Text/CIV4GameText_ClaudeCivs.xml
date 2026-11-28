@@ -2792,4 +2792,76 @@
 		<Spanish>Forced Labor</Spanish>
 		<Japanese>&#24375;&#21046;&#21172;&#20685;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DECLARATION_OF_INDEPENDENCE</Tag>
+		<English>Declaration of Independence</English>
+		<French>Declaration of Independence</French>
+		<German>Declaration of Independence</German>
+		<Italian>Declaration of Independence</Italian>
+		<Spanish>Declaration of Independence</Spanish>
+		<Japanese>&#29420;&#31435;&#23459;&#35328;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DECLARATION_OF_INDEPENDENCE_SHORT</Tag>
+		<English>Ind</English>
+		<French>Ind</French>
+		<German>Ind</German>
+		<Italian>Ind</Italian>
+		<Spanish>Ind</Spanish>
+		<Japanese>&#29420;&#31435;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_MOTHER_COUNTRY_DESC</Tag>
+		<English>the Mother Country</English>
+		<French>the Mother Country</French>
+		<German>the Mother Country</German>
+		<Italian>the Mother Country</Italian>
+		<Spanish>the Mother Country</Spanish>
+		<Japanese>&#26412;&#22269;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_MOTHER_COUNTRY_SHORT_DESC</Tag>
+		<English>Mother Country</English>
+		<French>Mother Country</French>
+		<German>Mother Country</German>
+		<Italian>Mother Country</Italian>
+		<Spanish>Mother Country</Spanish>
+		<Japanese>&#26412;&#22269;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_MOTHER_COUNTRY_ADJECTIVE</Tag>
+		<English>Mother Country</English>
+		<French>Mother Country</French>
+		<German>Mother Country</German>
+		<Italian>Mother Country</Italian>
+		<Spanish>Mother Country</Spanish>
+		<Japanese>&#26412;&#22269;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_CIV_MOTHER_COUNTRY_PEDIA</Tag>
+		<English>The distant crown that rules the colonies across the ocean. It joins the game when America founds its first city, and America becomes its vassal (the Declaration of Independence trait). It cannot be chosen, and no random AI plays it.</English>
+		<French>The distant crown that rules the colonies across the ocean. It joins the game when America founds its first city, and America becomes its vassal (the Declaration of Independence trait). It cannot be chosen, and no random AI plays it.</French>
+		<German>The distant crown that rules the colonies across the ocean. It joins the game when America founds its first city, and America becomes its vassal (the Declaration of Independence trait). It cannot be chosen, and no random AI plays it.</German>
+		<Italian>The distant crown that rules the colonies across the ocean. It joins the game when America founds its first city, and America becomes its vassal (the Declaration of Independence trait). It cannot be chosen, and no random AI plays it.</Italian>
+		<Spanish>The distant crown that rules the colonies across the ocean. It joins the game when America founds its first city, and America becomes its vassal (the Declaration of Independence trait). It cannot be chosen, and no random AI plays it.</Spanish>
+		<Japanese>&#28023;&#12398;&#21521;&#12371;&#12358;&#12398;&#26893;&#27665;&#22320;&#12434;&#27835;&#12417;&#12427;&#36960;&#12356;&#29579;&#22269;&#12290;&#12450;&#12513;&#12522;&#12459;&#12364;&#26368;&#21021;&#12398;&#37117;&#24066;&#12434;&#24314;&#12390;&#12427;&#12392;&#12466;&#12540;&#12512;&#12395;&#21442;&#21152;&#12375;&#12289;&#12450;&#12513;&#12522;&#12459;&#12399;&#12381;&#12398;&#23646;&#22269;&#12395;&#12394;&#12427;&#65288;&#29420;&#31435;&#23459;&#35328;&#24535;&#21521;&#65289;&#12290;&#36984;&#12406;&#12371;&#12392;&#12399;&#12391;&#12365;&#12378;&#12289;&#12521;&#12531;&#12480;&#12512;&#12398; AI &#12395;&#12418;&#12394;&#12425;&#12394;&#12356;&#12290;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_KING</Tag>
+		<English>King</English>
+		<French>King</French>
+		<German>King</German>
+		<Italian>King</Italian>
+		<Spanish>King</Spanish>
+		<Japanese>&#22269;&#29579;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_KING_PEDIA</Tag>
+		<English>The king of the Mother Country, who rules the colonies from across the ocean and demands their tribute.</English>
+		<French>The king of the Mother Country, who rules the colonies from across the ocean and demands their tribute.</French>
+		<German>The king of the Mother Country, who rules the colonies from across the ocean and demands their tribute.</German>
+		<Italian>The king of the Mother Country, who rules the colonies from across the ocean and demands their tribute.</Italian>
+		<Spanish>The king of the Mother Country, who rules the colonies from across the ocean and demands their tribute.</Spanish>
+		<Japanese>&#28023;&#12398;&#21521;&#12371;&#12358;&#12363;&#12425;&#26893;&#27665;&#22320;&#12434;&#27835;&#12417;&#12289;&#36002;&#12366;&#29289;&#12434;&#27714;&#12417;&#12427;&#26412;&#22269;&#12398;&#29579;&#12290;</Japanese>
+	</TEXT>
 </Civ4GameText>

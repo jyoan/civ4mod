@@ -3823,5 +3823,15 @@
 				</FreePromotionSet>
 			</FreePromotionSets>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_DECLARATION_OF_INDEPENDENCE</Type>
+			<Description>TXT_KEY_TRAIT_DECLARATION_OF_INDEPENDENCE</Description>
+			<ShortDescription>TXT_KEY_TRAIT_DECLARATION_OF_INDEPENDENCE_SHORT</ShortDescription>
+			<iTributeDemandTurns>10</iTributeDemandTurns>
+			<FoundingOverlord>
+				<CivilizationType>CIVILIZATION_MOTHER_COUNTRY</CivilizationType>
+				<LeaderType>LEADER_KING</LeaderType>
+			</FoundingOverlord>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>

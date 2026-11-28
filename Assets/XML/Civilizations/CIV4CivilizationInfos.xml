@@ -138,7 +138,7 @@
 			</Leaders>
 			<Traits>
 				<Trait>
-					<TraitType>TRAIT_HOMESTEAD</TraitType>
+					<TraitType>TRAIT_DECLARATION_OF_INDEPENDENCE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>
@@ -5148,5 +5148,111 @@
 			<CivilizationActionSound>AS3D_AZTEC_ORDER</CivilizationActionSound>
 		</CivilizationInfo>
 	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
+		<CivilizationInfo>
+			<Type>CIVILIZATION_MOTHER_COUNTRY</Type>
+			<Description>TXT_KEY_CIV_MOTHER_COUNTRY_DESC</Description>
+			<ShortDescription>TXT_KEY_CIV_MOTHER_COUNTRY_SHORT_DESC</ShortDescription>
+			<Adjective>TXT_KEY_CIV_MOTHER_COUNTRY_ADJECTIVE</Adjective>
+			<Civilopedia>TXT_KEY_CIV_MOTHER_COUNTRY_PEDIA</Civilopedia>
+			<DefaultPlayerColor>PLAYERCOLOR_WHITE</DefaultPlayerColor>
+			<ArtDefineTag>ART_DEF_CIVILIZATION_ENGLAND</ArtDefineTag>
+			<ArtStyleType>ARTSTYLE_EUROPEAN</ArtStyleType>
+			<UnitArtStyleType>UNIT_ARTSTYLE_EUROPEAN</UnitArtStyleType>
+			<bPlayable>0</bPlayable>
+			<bAIPlayable>0</bAIPlayable>
+			<Cities>
+				<City>TXT_KEY_CITY_NAME_LONDON</City>
+				<City>TXT_KEY_CITY_NAME_YORK</City>
+				<City>TXT_KEY_CITY_NAME_NOTTHINGHAM</City>
+				<City>TXT_KEY_CITY_NAME_HASTINGS</City>
+				<City>TXT_KEY_CITY_NAME_CANTERBURY</City>
+				<City>TXT_KEY_CITY_NAME_COVENTRY</City>
+				<City>TXT_KEY_CITY_NAME_WARWICK</City>
+				<City>TXT_KEY_CITY_NAME_NEWCASTLE</City>
+				<City>TXT_KEY_CITY_NAME_OXFORD</City>
+				<City>TXT_KEY_CITY_NAME_LIVERPOOL</City>
+				<City>TXT_KEY_CITY_NAME_DOVER</City>
+				<City>TXT_KEY_CITY_NAME_BRIGHTON</City>
+				<City>TXT_KEY_CITY_NAME_NORWICH</City>
+				<City>TXT_KEY_CITY_NAME_LEEDS</City>
+				<City>TXT_KEY_CITY_NAME_READING</City>
+				<City>TXT_KEY_CITY_NAME_BIRMINGHAM</City>
+				<City>TXT_KEY_CITY_NAME_RICHMOND</City>
+				<City>TXT_KEY_CITY_NAME_EXETER</City>
+				<City>TXT_KEY_CITY_NAME_CAMBRIDGE</City>
+				<City>TXT_KEY_CITY_NAME_GLOUCESTER</City>
+				<City>TXT_KEY_CITY_NAME_MANCHESTER</City>
+				<City>TXT_KEY_CITY_NAME_BRISTOL</City>
+				<City>TXT_KEY_CITY_NAME_LEICESTER</City>
+				<City>TXT_KEY_CITY_NAME_CARLISLE</City>
+				<City>TXT_KEY_CITY_NAME_IPSWICH</City>
+				<City>TXT_KEY_CITY_NAME_PORTSMOUTH</City>
+				<City>TXT_KEY_CITY_NAME_BERWICK</City>
+				<City>TXT_KEY_CITY_NAME_BATH</City>
+				<City>TXT_KEY_CITY_NAME_MUMBLES</City>
+				<City>TXT_KEY_CITY_NAME_SOUTHAMPTON</City>
+				<City>TXT_KEY_CITY_NAME_SHEFFIELD</City>
+				<City>TXT_KEY_CITY_NAME_SALISBURY</City>
+				<City>TXT_KEY_CITY_NAME_COLCHESTER</City>
+				<City>TXT_KEY_CITY_NAME_PLYMOUTH</City>
+				<City>TXT_KEY_CITY_NAME_LANCASTER</City>
+				<City>TXT_KEY_CITY_NAME_BLACKPOOL</City>
+				<City>TXT_KEY_CITY_NAME_WINCHESTER</City>
+				<City>TXT_KEY_CITY_NAME_HULL</City>
+			</Cities>
+			<Buildings>
+				<Building>
+					<BuildingClassType>BUILDINGCLASS_BANK</BuildingClassType>
+					<BuildingType>BUILDING_ENGLISH_STOCK_EXCHANGE</BuildingType>
+				</Building>
+			</Buildings>
+			<Units>
+				<Unit>
+					<UnitClassType>UNITCLASS_RIFLEMAN</UnitClassType>
+					<UnitType>UNIT_ENGLISH_REDCOAT</UnitType>
+				</Unit>
+			</Units>
+			<FreeUnitClasses>
+				<FreeUnitClass>
+					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
+					<iFreeUnits>1</iFreeUnits>
+				</FreeUnitClass>
+			</FreeUnitClasses>
+			<FreeBuildingClasses>
+				<FreeBuildingClass>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<bFreeBuildingClass>1</bFreeBuildingClass>
+				</FreeBuildingClass>
+			</FreeBuildingClasses>
+			<FreeTechs>
+				<FreeTech>
+					<TechType>TECH_FISHING</TechType>
+					<bFreeTech>1</bFreeTech>
+				</FreeTech>
+				<FreeTech>
+					<TechType>TECH_MINING</TechType>
+					<bFreeTech>1</bFreeTech>
+				</FreeTech>
+			</FreeTechs>
+			<DisableTechs/>
+			<InitialCivics>
+				<CivicType>CIVIC_DESPOTISM</CivicType>
+				<CivicType>CIVIC_BARBARISM</CivicType>
+				<CivicType>CIVIC_TRIBALISM</CivicType>
+				<CivicType>CIVIC_DECENTRALIZATION</CivicType>
+				<CivicType>CIVIC_PAGANISM</CivicType>
+			</InitialCivics>
+			<Leaders>
+				<Leader>
+					<LeaderName>LEADER_KING</LeaderName>
+					<bLeaderAvailability>1</bLeaderAvailability>
+				</Leader>
+			</Leaders>
+			<Traits/>
+			<iStartBiasCoastal>100</iStartBiasCoastal>
+			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
+			<CivilizationSelectionSound>AS3D_ENGLAND_SELECT</CivilizationSelectionSound>
+			<CivilizationActionSound>AS3D_ENGLAND_ORDER</CivilizationActionSound>
+		</CivilizationInfo>
 	</CivilizationInfos>
 </Civ4CivilizationInfos>
