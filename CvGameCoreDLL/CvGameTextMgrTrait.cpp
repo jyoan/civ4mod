@@ -1929,6 +1929,21 @@ void CvGameTextMgr::parseTraitFeatureAndObsolescenceEffects(CvWStringBuffer& szH
 		}
 	}
 
+	// TerritoryRoutes (added by this mod): "Builds Road on the plots that become ours: Hills", a line for each route type
+	for (iJ = 0; iJ < GC.getNumRouteInfos(); ++iJ)
+	{
+		bFirstFeature = true;
+		for (iI = 0; iI < GC.getNumTerrainInfos(); ++iI)
+		{
+			if (kTrait.getTerritoryRouteType(iI) == iJ)
+			{
+				szTempBuffer.Format(L"%s  %s", NEWLINE, gDLL->getText("TXT_KEY_TRAIT_TERRITORY_ROUTES", GC.getRouteInfo((RouteTypes)iJ).getTextKeyWide()).c_str());
+				setListHelp(szHelpString, szTempBuffer.GetCString(), GC.getTerrainInfo((TerrainTypes)iI).getDescription(), L", ", bFirstFeature);
+				bFirstFeature = false;
+			}
+		}
+	}
+
 	// bIgnoreBuildingObsolescence: "Buildings never become obsolete". Otherwise NoObsoleteBuildingClasses and
 	// NoObsoleteSpecialBuildings: "Never obsolete: Castle, Monastery" (the buildings of the civilization)
 	if (kTrait.isIgnoreBuildingObsolescence())

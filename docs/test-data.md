@@ -105,6 +105,7 @@
 - 宣教師の布教と幹部の企業の進出が必ず成功する（`iReligionSpreadChange`・`iCorporationSpreadChange` 100）。
 - 黄金期の間、陸上ユニットの移動力 +1・艦船の移動力 +2（`iGoldenAgeLandMovesChange`・`iGoldenAgeSeaMovesChange`）。
 - 艦船が水に接していない要塞や都市にも入れる（`bInlandCanals`）。
+- 丘陵のタイルが領土になると道路を敷く（`TerritoryRoutes`。2026-11-28）。`bInlandCanals` は 2026-11-28 から、入れる他国の領土の要塞にも入れる。
 - 毛皮と象牙が陳腐化しない（`NoObsolescence/Bonuses`。鯨は本体どおり）。
 - 開始位置の好み: 川沿い +50%、都市圏の砂漠 1 タイルごとに +40%、森とジャングル 1 タイルごとに +20%、馬 1 つごとに +100%。
 - `CityFoundedUnits` は書いていない（確認済み。ほかの確認の邪魔になるため 2026-11-23 に外した。確かめるときは一時的に、ガレー船 1 隻（艦船なので沿岸の都市だけ）と戦士 2 体（`bCoastalOnly`）を書く）。

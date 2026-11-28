@@ -649,6 +649,11 @@ int CyUnit::getBonusCombatPercent()
 	return m_pUnit ? m_pUnit->getBonusCombatPercent() : 0;
 }
 
+bool CyUnit::isRiverAttack()
+{
+	return m_pUnit ? m_pUnit->isRiverAttack() : false;
+}
+
 int CyUnit::getAttackFromPlotPercent(CyPlot* pPlot)
 {
 	return (m_pUnit && pPlot) ? m_pUnit->getAttackFromPlotPercent(pPlot->getPlot()) : 0;

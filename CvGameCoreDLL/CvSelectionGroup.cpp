@@ -3387,7 +3387,8 @@ bool CvSelectionGroup::isAmphibPlot(const CvPlot* pPlot) const
 	CvUnit* pUnit = getHeadUnit();
 	if (NULL != pUnit)
 	{
-		bFriendly = pPlot->isFriendlyCity(*pUnit, true);
+		// A fort outside our territory the ship may enter with bInlandCanals (added by this mod) is not a landing plot either
+		bFriendly = (pPlot->isFriendlyCity(*pUnit, true) || pUnit->canEnterForeignCanalFort(pPlot));
 	}
 
 	if (!((getDomainType() == DOMAIN_SEA) && pPlot->isCoastalLand() && !bFriendly))

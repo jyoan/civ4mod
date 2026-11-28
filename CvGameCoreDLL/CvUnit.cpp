@@ -341,6 +341,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iStateReligionCityAttack = 0;
 	m_iRivalTerritoryCount = 0;
 	m_iRiverNavigationCount = 0;
+	m_iRiverAttackCount = 0;
 	m_iFreeEmbarkCount = 0;
 	m_iBuildingCombatCount = 0;
 	m_iEncirclementCount = 0;
@@ -1024,6 +1025,7 @@ void CvUnit::doCombatPromotions(CvUnit* pDefender)
 	CvUnit* pCapturedUnit;
 	int iWinner;
 	int iGold = 0;
+	int iGoldPerStrength = 0;
 	int iCapturePercent = 0;
 	int iHeal = 0;
 	int iGoldStealPercent = 0;
@@ -1114,6 +1116,7 @@ void CvUnit::doCombatPromotions(CvUnit* pDefender)
 			}
 
 			iGold += kPromotion.getGoldFromCombat();
+			iGoldPerStrength += kPromotion.getCombatGoldPerStrength();
 			iCapturePercent += kPromotion.getCombatCapturePercent();
 			iHeal += kPromotion.getCombatHealPercent();
 			iGoldStealPercent += kPromotion.getCombatGoldStealPercent();
@@ -1123,6 +1126,13 @@ void CvUnit::doCombatPromotions(CvUnit* pDefender)
 
 		pWinner = apUnits[iWinner];
 		pLoser = apUnits[1 - iWinner];
+
+		// iCombatGoldPerStrength of the promotions of the winner (added by this mod): a % of the base strength of the loser's
+		// unit type (barbarians and animals too), scaled by iTrainPercent of the game speed
+		if (iGoldPerStrength > 0)
+		{
+			iGold += (pLoser->getUnitInfo().getCombat() * iGoldPerStrength * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getTrainPercent()) / 10000;
+		}
 
 		if (iGold > 0)
 		{
@@ -4333,16 +4343,25 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 		if (!pPlot->isWater() && !canMoveAllTerrain())
 		{
 			// bRiverNavigation of the promotions (added by this mod): a land plot by a river, but not to attack (ships do not
-			// attack land units, as in BtS)
+			// attack land units, as in BtS) unless the ship has bRiverAttack (then it attacks and captures as land units do)
 			if (canSailOnRiver(pPlot))
 			{
-				if (bAttack)
+				if (bAttack && !isRiverAttack())
 				{
 					return false;
 				}
 			}
-			// bInlandCanals of the traits of the owner (added by this mod): also forts and cities that do not touch water
-			else if (!pPlot->isFriendlyCity(*this, true) || (!pPlot->isCoastalLand() && !GET_PLAYER(getOwnerINLINE()).isInlandCanals()))
+			else if (pPlot->isFriendlyCity(*this, true))
+			{
+				// bInlandCanals of the traits of the owner (added by this mod): also forts and cities that do not touch water
+				if (!pPlot->isCoastalLand() && !GET_PLAYER(getOwnerINLINE()).isInlandCanals())
+				{
+					return false;
+				}
+			}
+			// bInlandCanals (added by this mod): also the forts in no territory and in the territory of other teams the ship may
+			// enter (open borders or war, checked below), with no enemy unit there; not to attack
+			else if (bAttack || !canEnterForeignCanalFort(pPlot))
 			{
 				return false;
 			}
@@ -6870,9 +6889,9 @@ bool CvUnit::pillage()
 		changeDamage(-std::min(iPillageHeal, getDamage()));
 	}
 
-	// iPillageExperience of the promotions (added by this mod): each pillage of an improvement (not of a route) gives this
-	// experience. Not combat experience: no great general points, no Leadership
-	if (eTempImprovement != NO_IMPROVEMENT)
+	// iPillageExperience of the promotions (added by this mod): each pillage of an improvement (not of a route) outside the
+	// territory of our team gives this experience. Not combat experience: no great general points, no Leadership
+	if (eTempImprovement != NO_IMPROVEMENT && pPlot->getTeam() != getTeam())
 	{
 		int iPillageExperience = sumPromotionValues(&CvPromotionInfo::getPillageExperience);
 		if (iPillageExperience > 0)
@@ -9714,6 +9733,36 @@ bool CvUnit::isRiverNavigation() const
 	return (m_iRiverNavigationCount > 0);
 }
 
+// With bRiverAttack of the promotions (added by this mod)
+bool CvUnit::isRiverAttack() const
+{
+	return (m_iRiverAttackCount > 0);
+}
+
+// bInlandCanals of the traits of the owner (added by this mod): this ship may enter a fort (bActsAsCity) outside the territory
+// of our team, in no territory (CvPlot::isFriendlyCity is false there) or in that of another team, not a city, with no visible
+// enemy unit. CvUnit::canMoveInto checks the territory itself (open borders or war). CvSelectionGroup::isAmphibPlot uses it
+// too, so that a coastal fort is not taken for a landing plot
+bool CvUnit::canEnterForeignCanalFort(const CvPlot* pPlot) const
+{
+	if (getDomainType() != DOMAIN_SEA || !GET_PLAYER(getOwnerINLINE()).isInlandCanals())
+	{
+		return false;
+	}
+
+	if (pPlot->isCity() || pPlot->getImprovementType() == NO_IMPROVEMENT || !GC.getImprovementInfo(pPlot->getImprovementType()).isActsAsCity())
+	{
+		return false;
+	}
+
+	if (pPlot->getTeam() == getTeam())
+	{
+		return false;
+	}
+
+	return !pPlot->isVisibleEnemyUnit(this);
+}
+
 
 // The ship can stay on this land plot by sailing up the river (bRiverNavigation, added by this mod): a plot by a river
 // that is no city. Cities keep the rules of BtS (friendly cities only, canals). Which plot it may come from is checked by
@@ -11229,6 +11278,7 @@ void CvUnit::updatePromotionCounts()
 	m_iStateReligionCityAttack = sumPromotionValues(&CvPromotionInfo::getStateReligionCityAttack);
 	m_iRivalTerritoryCount = countPromotions(&CvPromotionInfo::isRivalTerritory);
 	m_iRiverNavigationCount = countPromotions(&CvPromotionInfo::isRiverNavigation);
+	m_iRiverAttackCount = countPromotions(&CvPromotionInfo::isRiverAttack);
 	m_iFreeEmbarkCount = countPromotions(&CvPromotionInfo::isFreeEmbark);
 	m_iBuildingCombatCount = countPromotions(&CvPromotionInfo::isBuildingCombat);
 	m_iEncirclementCount = countPromotions(&CvPromotionInfo::isEncirclement);
@@ -14511,6 +14561,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		m_iStateReligionCityAttack += GC.getPromotionInfo(eIndex).getStateReligionCityAttack() * iChange;
 		m_iRivalTerritoryCount += (GC.getPromotionInfo(eIndex).isRivalTerritory() ? iChange : 0);
 		m_iRiverNavigationCount += (GC.getPromotionInfo(eIndex).isRiverNavigation() ? iChange : 0);
+		m_iRiverAttackCount += (GC.getPromotionInfo(eIndex).isRiverAttack() ? iChange : 0);
 		m_iFreeEmbarkCount += (GC.getPromotionInfo(eIndex).isFreeEmbark() ? iChange : 0);
 		m_iBuildingCombatCount += (GC.getPromotionInfo(eIndex).isBuildingCombat() ? iChange : 0);
 		m_iEncirclementCount += (GC.getPromotionInfo(eIndex).isEncirclement() ? iChange : 0);

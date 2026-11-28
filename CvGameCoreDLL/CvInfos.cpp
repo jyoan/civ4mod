@@ -1952,6 +1952,8 @@ m_iBonusCombatMaxPercent(0),
 m_iWarWearinessCombatPercent(0),
 m_iWarWearinessCombatMaxPercent(0),
 m_iStrongerEnemyCombatPercent(0),
+m_iCombatGoldPerStrength(0),
+m_bRiverAttack(false),
 m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
@@ -2563,6 +2565,18 @@ int CvPromotionInfo::getWarWearinessCombatMaxPercent() const
 int CvPromotionInfo::getStrongerEnemyCombatPercent() const
 {
 	return m_iStrongerEnemyCombatPercent;
+}
+
+// iCombatGoldPerStrength (added by this mod): see CvUnit::doCombatResultPromotions
+int CvPromotionInfo::getCombatGoldPerStrength() const
+{
+	return m_iCombatGoldPerStrength;
+}
+
+// bRiverAttack (added by this mod): see CvUnit::canMoveInto
+bool CvPromotionInfo::isRiverAttack() const
+{
+	return m_bRiverAttack;
 }
 
 // BonusAffinities and BuildingCombatPercents: the bonuses, special buildings and building classes are loaded after the
@@ -3250,13 +3264,22 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 		stream->Read(&m_iWarWearinessCombatMaxPercent);
 		stream->Read(&m_iStrongerEnemyCombatPercent);
 	}
+
+	// uiFlag < 23: cache written before iCombatGoldPerStrength and bRiverAttack existed
+	m_iCombatGoldPerStrength = 0;
+	m_bRiverAttack = false;
+	if (uiFlag > 22)
+	{
+		stream->Read(&m_iCombatGoldPerStrength);
+		stream->Read(&m_bRiverAttack);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 22;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience, 19: BuildingCombatPercents, iBuildingCombatMaxPercent, 20: Encirclement, 21: iGoldenAgeAdvantageCombatPercent, 22: AttackFromTerrains, AttackFromFeatures, BonusCombatPercents, iBonusCombatMaxPercent, iWarWearinessCombatPercent, iWarWearinessCombatMaxPercent, iStrongerEnemyCombatPercent (added by this mod)
+	uint uiFlag = 23;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience, 19: BuildingCombatPercents, iBuildingCombatMaxPercent, 20: Encirclement, 21: iGoldenAgeAdvantageCombatPercent, 22: AttackFromTerrains, AttackFromFeatures, BonusCombatPercents, iBonusCombatMaxPercent, iWarWearinessCombatPercent, iWarWearinessCombatMaxPercent, iStrongerEnemyCombatPercent, 23: iCombatGoldPerStrength, bRiverAttack (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -3408,6 +3431,8 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iWarWearinessCombatPercent);
 	stream->Write(m_iWarWearinessCombatMaxPercent);
 	stream->Write(m_iStrongerEnemyCombatPercent);
+	stream->Write(m_iCombatGoldPerStrength);
+	stream->Write(m_bRiverAttack);
 }
 
 // Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
@@ -3584,6 +3609,8 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iWarWearinessCombatPercent, "iWarWearinessCombatPercent");
 	pXML->GetChildXmlValByName(&m_iWarWearinessCombatMaxPercent, "iWarWearinessCombatMaxPercent");
 	pXML->GetChildXmlValByName(&m_iStrongerEnemyCombatPercent, "iStrongerEnemyCombatPercent");
+	pXML->GetChildXmlValByName(&m_iCombatGoldPerStrength, "iCombatGoldPerStrength");
+	pXML->GetChildXmlValByName(&m_bRiverAttack, "bRiverAttack");
 
 	// BuildingCombatPercents (added by this mod): the building classes and special buildings are resolved in readPass3()
 	m_aiBuildingCombatBuildingClass.clear();

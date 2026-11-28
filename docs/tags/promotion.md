@@ -1,4 +1,6 @@
-# 昇進・呪文のタグ
+# 昇進のタグ
+
+呪文のタグは `docs/tags/spell.md`。
 
 ## 昇進
 
@@ -99,7 +101,7 @@
 - 都市は BtS のまま（味方の都市だけ。運河）。
 - 川のタイルの移動コストは、地形・地形の特徴によらず 1 で、道路は使わない（`CvPlot::movementCost`）。
 - 川のタイルは船が行動できる場所になる（`isValidDomainForAction`）ので、攻撃されると自分で守る（地形の防御も受ける）。
-- 船から陸のユニットへの攻撃と、陸の施設の略奪はできない（BtS と同じ。`canMoveInto`・`canPillage`）。
+- 船から陸のユニットへの攻撃と、陸の施設の略奪はできない（BtS と同じ。`canMoveInto`・`canPillage`）。攻撃は `bRiverAttack` の昇進があればできる（2026-11-28）。
 - 運んでいる陸上ユニットは、タイルが陸なので普通の移動で降りられ、そこから攻撃しても上陸の不利はない。
 - 全員が川を進めるグループを川のタイルへ動かすと、積んだユニットを上陸させずに船ごと進む。
 - 敵のユニットがいるときは従来どおり上陸攻撃になる（`CvSelectionGroup::isAmphibPlot`）。
@@ -141,6 +143,7 @@
 - ファイル: `CIV4PromotionInfos.xml`
 - DoC のタタールの UP から。
 - 施設を略奪するたびに経験値 +N（昇進の値の合計。`CvUnit::pillage`）。
+- 自分のチームの領土の略奪では得ない（2026-11-28 から。自分の施設を壊して稼ぐのを防ぐ）。
 - 道路の略奪では得ない。
 - 戦闘の経験値ではないので、大将軍のポイントにならず、指揮官（Leadership）の % もかからない。
 - 昇進を選べるようになるかはすぐ判定する。
@@ -383,38 +386,24 @@
 - Python は `CvPromotionInfo.getStrongerEnemyCombatPercent()`、`CyUnit.getStrongerEnemyCombatModifier(ePlayer)`。
 - キャッシュの形式: `CvPromotionInfo` `uiFlag=22`
 
-## 呪文
+### `PromotionInfo/iCombatGoldPerStrength`
 
-### `SpellInfo` の `PromotionPrereq1` / `PromotionPrereq2`、`UnitPrereq`、`UnitClassPrereq`、`UnitCombatPrereq`、`CivilizationPrereq`、`TechPrereq`、`iCasterMinLevel`、`bInBordersOnly`、`bInCityOnly`、`bHasCasted`、`bIgnoreHasCasted`、`bDisplayWhenDisabled`、`PyRequirement`、`PyResult`（と `Type`・`Description`・`Civilopedia`・`Help`・`Button`・ホットキー）
+- ファイル: `CIV4PromotionInfos.xml`
+- 勝つたびに、倒したユニットの種類の基本の戦闘力（`CvUnitInfo::getCombat`）の N% の金（2026-11-28。ブレヌスの戦利品）。
+- 攻撃・防御のどちらで勝っても、蛮族・動物に勝っても得る。
+- ゲームの速度の `iTrainPercent` をかける（標準 100、マラソン 300）。
+- 勝った側の昇進の値の合計。`iGoldFromCombat` と合わせて 1 つのメッセージ（`TXT_KEY_MISC_GOLD_FROM_COMBAT`）。
+- 説明文 `TXT_KEY_PROMOTION_COMBAT_GOLD_PER_STRENGTH`。
+- Python は `CvPromotionInfo.getCombatGoldPerStrength()`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=23`
 
-- ファイル: `CIV4SpellInfos.xml`（新規）
-- 呪文（第 1 段階。名前は FFH2 と同じ）。
-- 仕組みは `docs/spells.md`
+### `PromotionInfo/bRiverAttack`
 
-### `SpellInfo` の `bAllowAI`、`iAIWeight`
-
-- ファイル: `CIV4SpellInfos.xml`
-- 呪文の第 3 段階（名前は FFH2 と同じ）。
-- AI が使ってよい呪文と、AI の評価値に足す値。
-- 仕組みは `docs/spells.md`
-
-### `SpellInfo` の `CreateUnitType`、`iCreateUnitNum`、`bPermanentUnitCreate`、`bCopyCastersPromotions`、`CreateUnitPromotion`、`bCasterNoDuration`、`iMiscastChance`、`PyMiscast`、`bGlobal`、`iDelay`
-
-- ファイル: `CIV4SpellInfos.xml`
-- 呪文の第 2 段階 c（名前は FFH2 と同じ）。
-- 召喚・失敗・世界呪文・遅延。
-- FFH2 との違いは `docs/spells.md`
-
-### `SpellInfo` の `iRange`、`iDamage`、`iDamageLimit`、`iImmobileTurns`、`bImmuneTeam`、`bImmuneEnemy`、`bImmuneFlying`（と、`bBuffCasterOnly=0` の `AddPromotionType1`〜`3` / `RemovePromotionType1`〜`3`）
-
-- ファイル: `CIV4SpellInfos.xml`
-- 呪文の第 2 段階 b（名前は FFH2 と同じ）。
-- 周りのユニットへの効果。
-- 交戦中でない他国のユニットは常に対象外など、FFH2 との違いは `docs/spells.md`
-
-### `SpellInfo` の前提 `UnitInStackPrereq`、`BuildingPrereq`、`BuildingClassOwnedPrereq`、`CorporationPrereq`、`FeatureOrPrereq1` / `2`、`ImprovementPrereq`、`PromotionInStackPrereq`、`StateReligionPrereq`、`bAdjacentToWaterOnly` と、効果 `iCost`、`AddPromotionType1`〜`3`、`RemovePromotionType1`〜`3`、`bBuffCasterOnly`、`ConvertUnitType`、`CreateBuildingType`、`CreateFeatureType`、`CreateImprovementType`、`SpreadReligion`、`iChangePopulation`、`bSacrificeCaster`、`bRemoveHasCasted`、`Effect`、`Sound`
-
-- ファイル: `CIV4SpellInfos.xml`
-- 呪文の第 2 段階 a（名前は FFH2 と同じ）。
-- 術者自身・今いるタイル・今いる都市への効果。
-- FFH2 との違い（自分の都市・領土に限るものなど）は「呪文」の節
+- ファイル: `CIV4PromotionInfos.xml`
+- `bRiverNavigation` で川の陸のタイルに入れる船が、そこにいる陸のユニットを攻撃・捕獲できる（2026-11-28。ヴァイキング）。
+- `CvUnit::canMoveInto` の `DOMAIN_SEA` で、川のタイルへの攻撃を許す。捕獲は BtS と同じく、攻撃としての移動で起きる。
+- 勝った船はそのタイルに移る。海から攻撃すると、BtS の上陸攻撃の不利（`AMPHIB_ATTACK_MODIFIER`）がかかる。
+- セーブしない値で、`updatePromotionCounts` で数え直す。
+- 説明文 `TXT_KEY_PROMOTION_RIVER_ATTACK`。
+- Python は `CvPromotionInfo.isRiverAttack()`、`CyUnit.isRiverAttack()`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=23`

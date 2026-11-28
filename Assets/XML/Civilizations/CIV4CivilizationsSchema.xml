@@ -730,6 +730,13 @@
 	<ElementType name="FeatureRoutes" content="eltOnly">
 		<element type="FeatureRoute" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="TerritoryRoute" content="eltOnly">
+		<element type="TerrainType"/>
+		<element type="RouteType"/>
+	</ElementType>
+	<ElementType name="TerritoryRoutes" content="eltOnly">
+		<element type="TerritoryRoute" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="bAllBuildings" content="textOnly" dt:type="boolean"/>
 	<ElementType name="BuildingClasses" content="eltOnly">
 		<element type="BuildingClassType" minOccurs="0" maxOccurs="*"/>
@@ -1347,6 +1354,7 @@
 		<element type="NewCityCultureLevel" minOccurs="0"/>
 		<element type="MaintainFeatures" minOccurs="0"/>
 		<element type="FeatureRoutes" minOccurs="0"/>
+		<element type="TerritoryRoutes" minOccurs="0"/>
 		<element type="UniqueUnits" minOccurs="0"/>
 		<element type="UniqueBuildings" minOccurs="0"/>
 		<element type="NoObsolescence" minOccurs="0"/>

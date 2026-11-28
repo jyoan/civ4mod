@@ -463,12 +463,12 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_INLAND_CANALS</Tag>
-		<English>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</English>
-		<French>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</French>
-		<German>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</German>
-		<Italian>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</Italian>
-		<Spanish>[ICON_BULLET]Naval units can enter forts and cities that do not touch water</Spanish>
-		<Japanese>[ICON_BULLET]&#33382;&#33337;&#12364;&#12289;&#27700;&#12395;&#25509;&#12375;&#12390;&#12356;&#12394;&#12356;&#35201;&#22622;&#12420;&#37117;&#24066;&#12395;&#12418;&#20837;&#12428;&#12427;</Japanese>
+		<English>[ICON_BULLET]Naval units can enter forts and cities that do not touch water, forts outside any borders, and forts in the territory of other civilizations they may enter</English>
+		<French>[ICON_BULLET]Naval units can enter forts and cities that do not touch water, forts outside any borders, and forts in the territory of other civilizations they may enter</French>
+		<German>[ICON_BULLET]Naval units can enter forts and cities that do not touch water, forts outside any borders, and forts in the territory of other civilizations they may enter</German>
+		<Italian>[ICON_BULLET]Naval units can enter forts and cities that do not touch water, forts outside any borders, and forts in the territory of other civilizations they may enter</Italian>
+		<Spanish>[ICON_BULLET]Naval units can enter forts and cities that do not touch water, forts outside any borders, and forts in the territory of other civilizations they may enter</Spanish>
+		<Japanese>[ICON_BULLET]&#33382;&#33337;&#12364;&#12289;&#27700;&#12395;&#25509;&#12375;&#12390;&#12356;&#12394;&#12356;&#35201;&#22622;&#12420;&#37117;&#24066;&#12395;&#12418;&#12289;&#12393;&#12371;&#12398;&#38936;&#22303;&#12391;&#12418;&#12394;&#12356;&#35201;&#22622;&#12395;&#12418;&#12289;&#20837;&#12428;&#12427;&#20182;&#22269;&#12398;&#38936;&#22303;&#12398;&#35201;&#22622;&#12395;&#12418;&#20837;&#12428;&#12427;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_TRAIT_BARBARIAN_ALLY</Tag>
@@ -2143,5 +2143,14 @@
 		<Italian>All units with a unit combat</Italian>
 		<Spanish>All units with a unit combat</Spanish>
 		<Japanese>&#20853;&#31185;&#12398;&#12354;&#12427;&#12518;&#12491;&#12483;&#12488;&#12377;&#12409;&#12390;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TERRITORY_ROUTES</Tag>
+		<English>[ICON_BULLET]Builds %s1 on the plots that become yours: </English>
+		<French>[ICON_BULLET]Builds %s1 on the plots that become yours: </French>
+		<German>[ICON_BULLET]Builds %s1 on the plots that become yours: </German>
+		<Italian>[ICON_BULLET]Builds %s1 on the plots that become yours: </Italian>
+		<Spanish>[ICON_BULLET]Builds %s1 on the plots that become yours: </Spanish>
+		<Japanese>[ICON_BULLET]&#38936;&#22303;&#12395;&#12394;&#12387;&#12383;&#12479;&#12452;&#12523;&#12395;%s1&#12434;&#25975;&#12367;: </Japanese>
 	</TEXT>
 </Civ4GameText>

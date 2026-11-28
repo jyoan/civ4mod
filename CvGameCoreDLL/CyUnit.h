@@ -175,6 +175,7 @@ public:
 	bool isRiverNavigation();	// added by this mod
 	int getBuildingCombatPercent();	// added by this mod
 	int getBonusCombatPercent();	// added by this mod
+	bool isRiverAttack();	// added by this mod
 	int getAttackFromPlotPercent(CyPlot* pPlot);	// added by this mod
 	int getWarWearinessCombatModifier(int ePlayer);	// added by this mod
 	int getStrongerEnemyCombatModifier(int ePlayer);	// added by this mod

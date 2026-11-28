@@ -4715,6 +4715,13 @@ void CvGameTextMgr::parsePromotionStatusEffects(CvWStringBuffer& szBuffer, Promo
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_GOLD_FROM_COMBAT", GC.getPromotionInfo(ePromotion).getGoldFromCombat()));
 	}
 
+	// iCombatGoldPerStrength (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getCombatGoldPerStrength() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_COMBAT_GOLD_PER_STRENGTH", GC.getPromotionInfo(ePromotion).getCombatGoldPerStrength()));
+	}
+
 	if (GC.getPromotionInfo(ePromotion).getCombatCapturePercent() != 0)
 	{
 		szBuffer.append(pcNewline);
@@ -5000,6 +5007,13 @@ void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, Prom
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_RIVER_NAVIGATION"));
+	}
+
+	// bRiverAttack (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).isRiverAttack())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_RIVER_ATTACK"));
 	}
 
 	if (GC.getPromotionInfo(ePromotion).isFreeEmbark())

@@ -2145,6 +2145,12 @@ bool CvTraitInfo::isMaintainFeatures(int i) const
 }
 
 // The route type the feature counts as in the territory of the player (added by this mod; NO_ROUTE: none)
+// TerritoryRoutes (added by this mod): TERRAIN_HILL stands for hills, TERRAIN_PEAK for peaks (see CvPlayer::getTerritoryRouteType)
+int CvTraitInfo::getTerritoryRouteType(int iTerrain) const
+{
+	return ((iTerrain > -1) && (iTerrain < (int)m_aiTerritoryRoute.size())) ? m_aiTerritoryRoute[iTerrain] : NO_ROUTE;
+}
+
 int CvTraitInfo::getFeatureRouteType(int i) const
 {
 	FAssertMsg(i < GC.getNumFeatureInfos(), "Index out of bounds");
@@ -3316,6 +3322,34 @@ void CvTraitInfo::readFeatureRoutes(CvXMLLoadUtility* pXML)
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+
+	// TerritoryRoutes (added by this mod): <TerritoryRoute> with a TerrainType and a RouteType. The terrains are loaded before
+	// the traits, the route types after them (readPass3())
+	m_aiTerritoryRoute.clear();
+	m_aiTerritoryRouteTerrains.clear();
+	m_aszTerritoryRouteTypes.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "TerritoryRoutes"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "TerritoryRoute"))
+		{
+			do
+			{
+				pXML->GetChildXmlValByName(szTextVal, "TerrainType");
+				int iTerrain = pXML->FindInInfoClass(szTextVal);
+				pXML->GetChildXmlValByName(szTextVal, "RouteType");
+				if (iTerrain > -1)
+				{
+					m_aiTerritoryRouteTerrains.push_back(iTerrain);
+					m_aszTerritoryRouteTypes.push_back(szTextVal);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "TerritoryRoute"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 }
 
 // The part of read() for the obsolescence lists and the Python hooks (added by this mod)
@@ -3947,6 +3981,24 @@ bool CvTraitInfo::readPass3()
 			}
 			m_paiFeatureRoute[m_aiFeatureRouteFeatures[i]] = std::max(iRoute, (int)NO_ROUTE);
 		}
+	}
+
+	// TerritoryRoutes (added by this mod)
+	if (!m_aiTerritoryRouteTerrains.empty())
+	{
+		m_aiTerritoryRoute.assign(GC.getNumTerrainInfos(), NO_ROUTE);
+		for (i = 0; i < (int)m_aiTerritoryRouteTerrains.size(); i++)
+		{
+			iRoute = GC.getInfoTypeForString(m_aszTerritoryRouteTypes[i].GetCString(), true);
+			if (iRoute < 0 && !m_aszTerritoryRouteTypes[i].empty() && m_aszTerritoryRouteTypes[i] != "NONE")
+			{
+				sprintf(szMessage, "Tag: %s in TerritoryRoutes of CIV4TraitInfos.xml was incorrect", m_aszTerritoryRouteTypes[i].GetCString());
+				gDLL->MessageBox(szMessage, "XML Error");
+			}
+			m_aiTerritoryRoute[m_aiTerritoryRouteTerrains[i]] = std::max(iRoute, (int)NO_ROUTE);
+		}
+		m_aiTerritoryRouteTerrains.clear();
+		m_aszTerritoryRouteTypes.clear();
 	}
 
 	m_iCityRadiusCultureLevel = NO_CULTURELEVEL;

@@ -357,6 +357,7 @@
 - 国教が違う文明との戦闘で戦闘力 +20%（`iOtherReligionCombatPercent`）、自国の国教が広まった都市への攻撃 +30%（`iStateReligionCityAttack`）。
 - 自国が黄金期のとき、黄金期でない文明との戦闘で戦闘力 +20%（`iGoldenAgeAdvantageCombatPercent`。2026-11-26）。
 - 2026-11-28 の分: 丘陵から攻撃すると +50%（`AttackFromTerrains` の `TERRAIN_HILL`）、森から攻撃すると +25%（`AttackFromFeatures`）。森の丘陵からなら +75%。検証用資源 1 つにつき戦闘力 +10%、最大 +20%（`BonusCombatPercents`・`iBonusCombatMaxPercent`）。相手との厭戦感情が生むはずの不満の割合 1% につき、その相手との戦闘力 +1%、最大 +50%（`iWarWearinessCombatPercent`・`iWarWearinessCombatMaxPercent`）。軍事力が自分より上の文明との戦闘力 +20%（`iStrongerEnemyCombatPercent`）。
+- 勝つたびに、倒したユニットの基本の戦闘力 × 2 の金（`iCombatGoldPerStrength` 200。標準の速度。2026-11-28）。
 - 国境を開いていない他国の領土にも入れる（`bRivalTerritory`）
 
 ## `PROMOTION_TEST_STATE1` / `STATE2`（検証用状態Ⅰ・Ⅱ）
@@ -427,13 +428,14 @@
 
 - 複製元: 検証用昇進（部族集落）
 - `bRiverNavigation` 1。
+- `bRiverAttack` 1（2026-11-28）: 川の陸のタイルにいる陸のユニットを攻撃・捕獲できる。
 - 検証用志向の昇進の組で、作業船・ガレー船・三段櫂船に付く。
 - ボタンは航海術Ⅰ
 
 ## `PROMOTION_TEST_RAIDER`（検証用昇進（略奪者））
 
 - 複製元: 検証用昇進（部族集落）
-- `bFreeEmbark` 1、`bPillageNoMoveCost` 1、`iPillageHealPercent` 20、`iPillageExperience` 2。
+- `bFreeEmbark` 1、`bPillageNoMoveCost` 1、`iPillageHealPercent` 20、`iPillageExperience` 2（2026-11-28 から、自分のチームの領土の略奪では得ない）。
 - 検証用志向の昇進の組で、陸上ユニット（弓兵・白兵戦・騎乗・偵察・銃火器・攻城・装甲と、兵科のない陸上ユニット）に付く。
 - ボタンは水陸両用
 
