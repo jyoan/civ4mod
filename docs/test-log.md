@@ -233,3 +233,4 @@
 - 2026-11-28: 宣戦した側の記録（`CvTeam` の `uiFlag=2`）、`ConditionalFreeTraits` の `bDefensiveWar`（チャーチル）、志向の `iDenounceAttitudeChange`（ガンディーの非難、態度の内訳の行）をゲーム内で確認した（検証用データ。AI の宣戦は Python コンソールの `declareWar`）
 - 2026-11-28: かつての宗主国の記録（`CvTeam` の `uiFlag=3`）と昇進の `iFormerMasterCombatPercent`（ワシントン。勝率の内訳「かつての宗主国: +25%」）をゲーム内で確認した（検証用昇進（包囲）。コンソールの `ct.free`・`ct.dow`）
 - 2026-11-28: `FoundingVassal` の `CivilizationTypes`（候補からランダム、指導者もランダム、AI 補正の省略）と `RandomBasicTraits` の `iTurns` 0（1 回だけ得て入れ替えない、参加した AI はすぐ得る）をゲーム内で確認した（検証用志向（属国）・検証用志向（AI））
+- 2026-11-28: チャーチル（`bDefensiveWar` の生産 +15%、航空ユニットに迎撃Ⅰ）・ガンジー（非難 -2）・ワシントン（自由の息子たち、かつての宗主国 +25%）をゲーム内で確認した（civ-design）

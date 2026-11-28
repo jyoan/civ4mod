@@ -83,7 +83,7 @@ BtS の効果はそのままにして足す。
 | `Conquest/bStateReligion`、`Conquest/ReligionBuildings`、`Conquest/iBuildingSurviveModifier`、`Conquest/bNoPopulationLoss` | サラディン |
 | `FeatureGrowthChanges` の森、陸の非戦闘ユニットへのウッドマンⅡ（`FreePromotionSets` の `bFreePromotionNoUnitCombat`） | シッティング・ブル |
 | 外洋艦への目印の昇進と、`bHiddenNationality` の昇進を付け外しする呪文（`PromotionPrereq1`・`AddPromotionType1`・`RemovePromotionType1`・`PyResult`） | エリザベス |
-| `bAtWar` + `YieldModifiers` の生産 | チャーチル |
+| `bDefensiveWar` + `YieldModifiers` の生産、航空ユニットへの迎撃Ⅰ（`FreePromotionSets`） | チャーチル |
 | 昇進の `ImpassablePlotPassages` の山岳・`iEnemyHealChange`・`AttackFromTerrains` の山岳 | ハンニバル |
 | `PyOnCityAcquired`・`PyOnPlayerEliminated`（`startGoldenAge`。占領で半分・滅亡で全部の黄金期） | 大キュロス |
 | `UnitCombatProductionModifiers` の銃火器・装甲 | ビスマルク |
@@ -95,7 +95,7 @@ BtS の効果はそのままにして足す。
 | `bNewCityStateReligion`、`bOtherReligionsToCapital` | ザラ・ヤコブ |
 | `bBarbarianAlly`、`PrereqTech`（騎乗）+ `bBarbarianVision` | チンギス・ハーン |
 | `EnemyAttrition` | オラニエ公ヴィレム1世 |
-| `iEnemyWarWearinessModifier`、`iGreatPeopleRatePerReligion` | ガンジー（`iDefenseCombatPercent` は 2026-11-28 に外した） |
+| `iEnemyWarWearinessModifier`、`iGreatPeopleRatePerReligion`、`iDenounceAttitudeChange` | ガンジー（`iDefenseCombatPercent` は 2026-11-28 に外した） |
 | `NoObsolescence/BuildingClasses` の世界遺産 | ラムセス２世 |
 | `PrereqTech` + `iFreeSpecialist` | リンカーン |
 | `iImprovementUpgradeRateModifier`、`bImprovementUpgradeUnworked` | アメリカ |
@@ -134,7 +134,7 @@ BtS の効果はそのままにして足す。
 | `SpecialistSlotChanges`（全専門家）、`ConditionalFreeTraits` の `PrereqTech`（教育） | 朝鮮 |
 | `Conquest/iCulturePercent`、`bStackCityDefense` | 王建 |
 | `PyOnCityLost`（`createPartisans`） | ド・ゴール |
-| `bAtWar` + `PyOnGained`（`createCityConscripts`）、陸の戦闘ユニットへの `bRiver` の昇進 | ワシントン |
+| `bAtWar` + `PyOnGained`（`createCityConscripts`）、陸の戦闘ユニットへの `bRiver` の昇進、全戦闘ユニットへの `iFormerMasterCombatPercent` の昇進 | ワシントン |
 | `bAtWar` + `PyOnLost` で期間つきの志向（`CommerceModifiers` の文化、`iHappiness`） | 徳川家康 |
 | `HealthyCommercePercents`（研究）、`PyOnBuildingBuilt`（`isBuildingClassIn`） | バビロニア |
 | `CivicOptionExtraSlots`（法律） | ハンムラビ |
@@ -180,7 +180,7 @@ BtS の効果はそのままにして足す。
 | スペイン（文明） | 新世界探検: 海外に建てた都市の人口 +1、新世界に建てた都市の人口 +1（重なる）。そのうち沿岸の都市には灯台、新世界なら港も。最初に世界一周を達成すると黄金時代（2026-11-23 に追加。2 番目以降は何もない）（2026-11-22 にポルトガルの前の志向「大航海時代」を移して改名。艦船の歩哨はポルトガルに残した） | `iOverseasCityPopulation`、`iNewWorldCityPopulation`、`PyOnCityFounded`、`PyOnCircumnavigated`（`iOrder == 1 and startGoldenAge(pPlayer)`） | 実装済み `TRAIT_NEW_WORLD_EXPLORATION` |
 | シッティング・ブル | 森を育む: 領土の森が広がりやすい。陸の非戦闘ユニットにウッドマンⅡ（2026-11-28） | `FeatureGrowthChanges`、`FreePromotionSets`（`PROMOTION_WOODSMAN2`） | 実装済み `TRAIT_FOREST_KEEPER` |
 | エリザベス | 私掠免状: 外洋に出られる艦（キャラベル船以降。私掠船を除く）が、行動「私掠免状を交付」「私掠免状を返上」で国籍を隠す・戻す（どちらも移動力をすべて使い、1 ターンに 1 回）（2026-11-28 に「フリゲートが国籍を隠す」から替えた） | `FreePromotionSets` で目印の昇進 `PROMOTION_BLUE_WATER`（外洋艦隊）を 12 の艦船のクラスに配る。呪文 `SPELL_ISSUE_LETTERS_OF_MARQUE`（条件は外洋艦隊と `reqNotHasPromotion`）・`SPELL_RETURN_LETTERS_OF_MARQUE` が `PROMOTION_LETTERS_OF_MARQUE`（`bHiddenNationality`）を付け外しし、`PyResult` で `finishMoves`。`Help` | 実装済み、ゲームで確認済み `TRAIT_LETTERS_OF_MARQUE` |
-| チャーチル | ネバーサレンダー（2026-11-28 に「最も輝ける時」から改名。短縮名「不屈」。効果の変更は段階 3）: 戦時は全都市の生産 +15% | `bAtWar` で `TRAIT_FINEST_HOUR_WAR`（`YieldModifiers`） | 実装済み `TRAIT_FINEST_HOUR` |
+| チャーチル | ネバーサレンダー（2026-11-28 に「最も輝ける時」から改名。短縮名「不屈」）: 自分に宣戦してきた相手と交戦中は全都市の生産 +15%（2026-11-28 に「戦時」から変更）。航空ユニットに迎撃Ⅰ（2026-11-28） | `bDefensiveWar` で `TRAIT_FINEST_HOUR_WAR`（`YieldModifiers`）、`FreePromotionSets` で `UNITCOMBAT_AIR` に `PROMOTION_INTERCEPTION1` | 実装済み `TRAIT_FINEST_HOUR` |
 | ハンニバル | アルプス越え: 陸上ユニットが山岳に入れる（山岳でターンを迎えると 20% のダメージ）。敵の領土での回復 +10。山岳のタイルから攻撃すると戦闘力 +50%（奇襲。2026-11-28） | 昇進の `ImpassablePlotPassages`・`iEnemyHealChange`・`AttackFromTerrains`（`TERRAIN_PEAK`） | 実装済み `TRAIT_ALPS` |
 | 大キュロス | 四方世界の王（短縮名「四」。2026-11-26 に寛容王（都市を占領しても人口が減らない。サラディンと印象が重なる）から作り直した）: 都市（蛮族を除く）を占領すると、通常の半分の期間の黄金期。最後の都市を占領して文明を滅ぼすと、通常の期間の黄金期（最後の都市では両方起きる）。黄金期の最中なら延び、次に必要な偉人の数は増えない | `PyOnCityAcquired`・`PyOnPlayerEliminated` の `startGoldenAge`（`getGoldenAgeLength` なのでゲーム速度などの補正が乗る）。Help に手で書く | 実装済み `TRAIT_FOUR_QUARTERS` |
 | ビスマルク | 鉄と血: 銃火器・装甲ユニットの生産 +25% | `UnitCombatProductionModifiers` | 実装済み `TRAIT_BLOOD_AND_IRON` |
@@ -191,7 +191,7 @@ BtS の効果はそのままにして足す。
 | ザラ・ヤコブ | 信仰の王: 新しい都市に国教が広まる。ほかの文明が宗教を創始すると、首都にその宗教が広まる（さかのぼらない。2026-11-28） | `bNewCityStateReligion`、`bOtherReligionsToCapital` | 実装済み `TRAIT_KING_OF_FAITH` |
 | チンギス・ハーン | 草原の統一: 蛮族と平和。騎乗を得ると蛮族の視界を共有する（蛮族のユニット・動物・都市が見ているタイルが見える。2026-11-19 に追加。視界は強力なので騎乗を条件にした） | `bBarbarianAlly`、`ConditionalFreeTraits` の `PrereqTech`（`TECH_HORSEBACK_RIDING`）で `TRAIT_STEPPE_UNITY_VISION`（`bBarbarianVision`） | 実装済み `TRAIT_STEPPE_UNITY` |
 | スターリン | チェカ: 最初から生産「諜報」（ハンマーを諜報ポイントに）を選べる。固有ユニット「チェキスト」（スパイ。移動力 2、コスト 30）。諜報ポイント +25%。諜報任務「要人の殺害」「要人の誘拐」「体制転覆」（相手が採用できる社会制度を何でも押し付ける）「国教転覆」（自分の国教でない宗教か国教なしを押し付ける）を使える（ほかの文明は使えない。後の 2 つは 2026-11-23 に追加）。水源への毒混入・不満を煽るの値が 8 → 12 | 生産の `PrereqOrTraits`（`PROCESS_ESPIONAGE`）、`UniqueUnits`（`UNIT_CHEKIST`）、`CommerceModifiers`、諜報任務の `PrereqOrTraits`・`DisableTraits`（`ESPIONAGEMISSION_CHEKA_CITY_POISON_WATER`・`_UNHAPPINESS`） | 実装済み `TRAIT_CHEKA`（2026-11-22。焦土 `TRAIT_SCORCHED_EARTH` は同日に削除し、`EnemyAttrition` はヴィレムへ移した） |
-| ガンジー | 非暴力不服従: 敵の厭戦感情 +100%。都市の宗教 1 つにつき偉人率 +10%（2026-11-28 に防衛時の戦闘力 +10% を外し、+50% から上げた。非難は段階 3） | `iEnemyWarWearinessModifier`、`iGreatPeopleRatePerReligion` | 実装済み `TRAIT_SATYAGRAHA` |
+| ガンジー | 非暴力不服従: 敵の厭戦感情 +100%。都市の宗教 1 つにつき偉人率 +10%（2026-11-28 に防衛時の戦闘力 +10% を外し、+50% から上げた）。非難: ガンジーに宣戦した文明への、ほかの文明の態度 -2（その戦争が続く間。2026-11-28） | `iEnemyWarWearinessModifier`、`iGreatPeopleRatePerReligion`、`iDenounceAttitudeChange` -2 | 実装済み `TRAIT_SATYAGRAHA` |
 | ラムセス２世 | 我が名はオジマンディアス（2026-11-28 に「永遠の記念碑」から改名。短縮名「王」）: すべての世界遺産が陳腐化しない（BtS で陳腐化する 13 個を並べた） | `NoObsolescence/BuildingClasses` | 実装済み `TRAIT_ETERNAL_MONUMENTS` |
 | リンカーン | 奴隷解放: 自由主義を得ると全都市に無償の専門家 +1 | `PrereqTech` で `TRAIT_EMANCIPATION_ACT`（`iFreeSpecialist`） | 実装済み、ゲームで確認済み `TRAIT_EMANCIPATION` |
 | アメリカ（文明） | ホームステッド法: 小屋などの成長 +50%。文化圏の施設は市民を配置しなくても成長する（2026-11-23 に追加） | `iImprovementUpgradeRateModifier`、`bImprovementUpgradeUnworked` | 実装済み、ゲームで確認済み `TRAIT_HOMESTEAD` |
@@ -225,7 +225,7 @@ BtS の効果はそのままにして足す。
 | マリ（文明） | サハラ交易: 首都の都市圏の砂漠 1 タイルにつき、首都の食料 +0.5・商業 +1（砂漠のタイルそのものは変わらない）。砂漠が交易網をつなぐ。砂漠のバイアス | `CapitalTerrainYieldPercents`（砂漠 食料 50・商業 100）、`TerrainTrades`（砂漠）、`StartBias/Terrains`（砂漠 10） | 実装済み `TRAIT_TRANS_SAHARAN` |
 | カルタゴ（文明） | 傭兵: 普通選挙なしで、資金でユニットを緊急生産できる。資金で緊急生産したユニットは経験値 +2（普通選挙で緊急生産した場合も）（2026-11-19） | `Hurrys`（`HURRY_GOLD`、`bUnitsOnly`、`iExperience` 2） | 実装済み `TRAIT_MERCENARIES` |
 | ド・ゴール | レジスタンス: 都市を占領される（破壊される）と、その近くにパルチザンが（人口 + 2）体現れる。首都で徴兵できるユニットで、都市の文化レベルに応じて戦闘術Ⅰ～Ⅵを持つ（2026-11-19。人口と文化レベルは占領される前のもの） | `PyOnCityLost` で `createPartisans` | 実装済み `TRAIT_RESISTANCE` |
-| ワシントン | ミニットマン: 戦争が始まると（交戦相手がいない状態から）、首都と人口 3 以上の都市に、その都市で徴兵できるユニットが 1 体ずつ現れる（2026-11-19。2026-11-28 に人口 5 → 3）。陸の戦闘ユニットに昇進「デラウェア渡河」（渡河の攻撃の -25% を打ち消す。2026-11-28） | `bAtWar` で `TRAIT_MINUTEMEN_WAR`、その `PyOnGained` で `createCityConscripts`。`FreePromotionSets` で `bRiver` だけの昇進 `PROMOTION_DELAWARE` | 実装済み `TRAIT_MINUTEMEN` |
+| ワシントン | ミニットマン: 戦争が始まると（交戦相手がいない状態から）、首都と人口 3 以上の都市に、その都市で徴兵できるユニットが 1 体ずつ現れる（2026-11-19。2026-11-28 に人口 5 → 3）。陸の戦闘ユニットに昇進「デラウェア渡河」（渡河の攻撃の -25% を打ち消す。2026-11-28）。全戦闘ユニットに昇進「自由の息子たち」（現在・かつての宗主国との戦闘力 +25%。数値は仮。2026-11-28） | `bAtWar` で `TRAIT_MINUTEMEN_WAR`、その `PyOnGained` で `createCityConscripts`。`FreePromotionSets` で `bRiver` だけの昇進 `PROMOTION_DELAWARE`、`bFreePromotionAllUnitCombats` で `PROMOTION_SONS_OF_LIBERTY`（`iFormerMasterCombatPercent` 25） | 実装済み `TRAIT_MINUTEMEN` |
 | 徳川家康 | 天下泰平: 戦争が終わると（交戦相手がいなくなると）、20 ターン（ゲーム速度で変わる）泰平志向（全都市の文化 +50%、幸福 +1）を得る（2026-11-19。数値は仮） | `bAtWar` で `TRAIT_PAX_TOKUGAWA_WAR`、その `PyOnLost` で `gainTraitForTurns`（`TRAIT_PAX_TOKUGAWA_PEACE`） | 実装済み `TRAIT_PAX_TOKUGAWA` |
 | 朝鮮（文明） | 両班: ゲーム開始時から全都市で全専門家（聖職者・芸術家・科学者・商人・技術者・スパイ）の枠 +1。教育を得ると全専門家の枠が無制限になる（2026-11-21。名前は仮） | `SpecialistSlotChanges`（各 1）、`PrereqTech`（`TECH_EDUCATION`）で `TRAIT_MUNBAN`（文班。`SpecialistSlotChanges` 各 -1） | 実装済み、ゲームで確認済み `TRAIT_YANGBAN` |
 | 王建 | 後三国統一: 征服した都市のほかの文明の文化の 50% を自分の文化に移す。都市の文化による防御と建造物の防御を合計する（2026-11-21。新羅の帰順・甄萱の亡命を受け入れた統一。防衛志向・火車の守りと合わせる） | `Conquest/iCulturePercent` 50、`bStackCityDefense` | 実装済み、ゲームで確認済み `TRAIT_LATER_THREE_KINGDOMS` |
@@ -325,6 +325,8 @@ civfanatics での公開（`master` を枠組み、この Mod をその使用例
 
 #### 段階 3: 状態を保存する仕組み（`master`。セーブデータが変わる）
 
+2026-11-28: 3 つとも実装し、ゲームで確認した（master `6dbc2cc` 宣戦した側の記録・`bDefensiveWar`・`iDenounceAttitudeChange`、`8aecc0a` かつての宗主国・`iFormerMasterCombatPercent`、`27a52f9` `FoundingVassal` の `CivilizationTypes`・`RandomBasicTraits` の `iTurns` 0）。チャーチル・ガンディー・ワシントンを civ-design で書き換えた。神聖ローマの諸侯の文明は段階 4 で作る（そのとき `TRAIT_IMPERIAL_ESTATES` の `HandicapType` を外し、`CivilizationTypes` に諸侯を並べ、諸侯の指導者に `RandomBasicTraits`（`iTurns` 0・`iCount` 1）の志向を持たせる）。
+
 - 戦争を宣言した側の記録と、`ConditionalFreeTraits` の条件「自分に宣戦した相手と交戦中」（チャーチル）。ガンディーの非難にも使う
 - チームごとのかつての宗主国の記録と、現在・かつての宗主国への戦闘力（ワシントン）
 - `FoundingVassal` の拡張: AI 補正を省略可能に（省略時はゲームのほかの AI と同じ）、候補の文明からランダムに選ぶ、その指導者に基本志向を 1 つランダムに与える（神聖ローマ。AI 補正の省略はアメリカの宗主国でも使う）
@@ -396,7 +398,7 @@ AI: AI のアメリカはいつも要求に応じ、戦争なしで属国を抜�
 - チャーチル: 名前を「ネバーサレンダー」に変える
   - 自分に宣戦した相手と交戦中なら、生産 +15%。宣戦した側の記録が要る（防衛協定と属国は宣戦して参戦するので注意）
   - 航空ユニットには BtS の既存の昇進（迎撃Ⅰなど）を `FreePromotionSets` で配る
-  - 未決定: いつも配るか、条件を満たす戦争中に作ったユニットだけか
+  - いつも配る（`FreePromotionSets`。2026-11-28 にユーザーが決定）。昇進は迎撃Ⅰ（Claude の選択）
 - ヴィクトリア: 万国博覧会（世界遺産 1 つにつき研究 +1）に足す
   - 世界遺産を建てると、その都市にその遺産の偉人ポイント × N ターン分を与える（XML で N = 10。ストーンヘンジは大預言者 2 → 20）
   - 都市の偉人の進み具合と、ユニットの種類ごとの進み具合の両方に足す
@@ -569,7 +571,6 @@ AI: AI のアメリカはいつも要求に応じ、戦争なしで属国を抜�
 
 - アステカ: 固有の労働者で作るか
 - アメリカ: 「有利な条件で講和」の判定
-- チャーチル: 航空ユニットの昇進をいつも配るか、条件を満たす戦争中に作ったユニットだけか
 - ヴィクトリア: 聖地と企業の本社も対象にするか
 - ロシア: 都市圏の半径 +1 に「洗練」の条件を残すか
 

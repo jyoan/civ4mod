@@ -2140,9 +2140,25 @@
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_FINEST_HOUR_WAR</TraitType>
-					<bAtWar>1</bAtWar>
+					<bDefensiveWar>1</bDefensiveWar>
 				</ConditionalFreeTrait>
 			</ConditionalFreeTraits>
+			<FreePromotionSets>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_INTERCEPTION1</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<FreePromotionUnitCombats>
+						<FreePromotionUnitCombat>
+							<UnitCombatType>UNITCOMBAT_AIR</UnitCombatType>
+							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
+						</FreePromotionUnitCombat>
+					</FreePromotionUnitCombats>
+				</FreePromotionSet>
+			</FreePromotionSets>
 		</TraitInfo>
 		<TraitInfo>
 			<Type>TRAIT_FINEST_HOUR_WAR</Type>
@@ -2350,6 +2366,7 @@
 			<Type>TRAIT_SATYAGRAHA</Type>
 			<Description>TXT_KEY_TRAIT_SATYAGRAHA</Description>
 			<ShortDescription>TXT_KEY_TRAIT_SATYAGRAHA_SHORT</ShortDescription>
+			<iDenounceAttitudeChange>-2</iDenounceAttitudeChange>
 			<iGreatPeopleRatePerReligion>10</iGreatPeopleRatePerReligion>
 			<iEnemyWarWearinessModifier>100</iEnemyWarWearinessModifier>
 		</TraitInfo>
@@ -3105,6 +3122,15 @@
 							<bFreePromotionUnitCombat>1</bFreePromotionUnitCombat>
 						</FreePromotionUnitCombat>
 					</FreePromotionUnitCombats>
+				</FreePromotionSet>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_SONS_OF_LIBERTY</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<bFreePromotionAllUnitCombats>1</bFreePromotionAllUnitCombats>
 				</FreePromotionSet>
 			</FreePromotionSets>
 		</TraitInfo>

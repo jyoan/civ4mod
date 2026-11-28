@@ -2550,6 +2550,15 @@
 		<Japanese>&#12487;&#12521;&#12454;&#12455;&#12450;&#28193;&#27827;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_SONS_OF_LIBERTY</Tag>
+		<English>Sons of Liberty</English>
+		<French>Sons of Liberty</French>
+		<German>Sons of Liberty</German>
+		<Italian>Sons of Liberty</Italian>
+		<Spanish>Sons of Liberty</Spanish>
+		<Japanese>&#33258;&#30001;&#12398;&#24687;&#23376;&#12383;&#12385;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_AGE_OF_PERICLES_HELP</Tag>
 		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a great person (not a great general) is born during a golden age, the golden age lasts 2 more turns (at normal speed). In all, one golden age gets at most as many more turns as a golden age lasts</English>
 		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]When a great person (not a great general) is born during a golden age, the golden age lasts 2 more turns (at normal speed). In all, one golden age gets at most as many more turns as a golden age lasts</French>
