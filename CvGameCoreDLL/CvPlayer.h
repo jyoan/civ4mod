@@ -293,6 +293,9 @@ public:
 	int getGreatPeopleRatePerReligion() const;	// Exposed to Python (added by this mod)
 	bool isOtherReligionsToCapital() const;	// Exposed to Python (added by this mod)
 	bool isNoForeignCultureAnger() const;	// Exposed to Python (added by this mod)
+	int getWonderGreatPeopleTurns() const;	// added by this mod
+	int getWonderProductionCulturePercent() const;	// added by this mod
+	int getFeatureConversionChance(FeatureTypes eFrom, FeatureTypes eTo) const;	// added by this mod: FeatureConversions of the traits
 	int getTraitDefenseCombatPercent() const;	// Exposed to Python (added by this mod)
 	int getTraitWorldWonderCommerce(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)
 	int getTraitGlobalWorldWonderCommerce(CommerceTypes eCommerce) const;	// Exposed to Python (added by this mod)

@@ -2366,4 +2366,31 @@
 		<Spanish>[ICON_BULLET]%D1%%[ICON_GREATPEOPLE] from Religions in the City (%s2)</Spanish>
 		<Japanese>[ICON_BULLET]&#37117;&#24066;&#12398;&#23447;&#25945;&#12395;&#12424;&#12426;&#65288;%s2&#65289;[ICON_GREATPEOPLE]%D1%%</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_PROD_CITY_PLOTS</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_PRODUCTION] from the Plots of the City Radius (Trait)</English>
+		<French>[ICON_BULLET]%D1%%[ICON_PRODUCTION] from the Plots of the City Radius (Trait)</French>
+		<German>[ICON_BULLET]%D1%%[ICON_PRODUCTION] from the Plots of the City Radius (Trait)</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_PRODUCTION] from the Plots of the City Radius (Trait)</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_PRODUCTION] from the Plots of the City Radius (Trait)</Spanish>
+		<Japanese>[ICON_BULLET]&#37117;&#24066;&#22287;&#12398;&#22320;&#24418;&#12395;&#12424;&#12426;&#65288;&#24535;&#21521;&#65289;[ICON_PRODUCTION]%D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_WONDER_GREAT_PEOPLE</Tag>
+		<English>%s1_Wonder gives %d2[ICON_GREATPEOPLE] (%s4) to %s3!</English>
+		<French>%s1_Wonder gives %d2[ICON_GREATPEOPLE] (%s4) to %s3!</French>
+		<German>%s1_Wonder gives %d2[ICON_GREATPEOPLE] (%s4) to %s3!</German>
+		<Italian>%s1_Wonder gives %d2[ICON_GREATPEOPLE] (%s4) to %s3!</Italian>
+		<Spanish>%s1_Wonder gives %d2[ICON_GREATPEOPLE] (%s4) to %s3!</Spanish>
+		<Japanese>%s1_Wonder&#12395;&#12424;&#12426;%s3&#12395;%s4&#12398;[ICON_GREATPEOPLE]%d2</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_WONDER_CULTURE</Tag>
+		<English>%s1_Wonder gives %d2[ICON_CULTURE] to %s3!</English>
+		<French>%s1_Wonder gives %d2[ICON_CULTURE] to %s3!</French>
+		<German>%s1_Wonder gives %d2[ICON_CULTURE] to %s3!</German>
+		<Italian>%s1_Wonder gives %d2[ICON_CULTURE] to %s3!</Italian>
+		<Spanish>%s1_Wonder gives %d2[ICON_CULTURE] to %s3!</Spanish>
+		<Japanese>%s1_Wonder&#12395;&#12424;&#12426;%s3&#12395;[ICON_CULTURE]%d2</Japanese>
+	</TEXT>
 </Civ4GameText>

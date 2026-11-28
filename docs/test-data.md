@@ -216,6 +216,8 @@
 - 2026-11-26 の分（`GreatPeopleHurry`）: 偉人バーのクリックで足りない偉人ポイントを 1 ポイントあたり 3 ゴールドで購入し、その場で偉大な芸術家が生まれる（`iGoldPerPoint` 3・`UnitClassType` `UNITCLASS_ARTIST`）。種類を指定しない版は `TRAIT_TEST_AI`。
 - 2026-11-26 の分（`bClaimLastReligion`）: 他の文明が最後から 2 番目の宗教を創始すると、最後の宗教の技術を得て創始する。創始すると聖地に大預言者を出し、イベントログに「[検証] PyOnLastReligionClaimed: 都市名, 宗教名」（`PyOnLastReligionClaimed`）。
 - 2026-11-28 の分（インド・ザラ・ヤコブ・スレイマンの案）: 都市の宗教 1 つにつき研究 +5%（`CommercePercentPerReligion`）・その都市で作ったユニットの経験値 +1（`iExperiencePerReligion`）・偉人率 +10%（`iGreatPeopleRatePerReligion`）、僧院なしで宣教師を作れる（`SpecialBuildingNotRequireds`）、ほかの文明が宗教を創始すると首都に広まる（`bOtherReligionsToCapital`）、他国の文化による不満なし（`bNoForeignCultureAnger`）。ほかの文明が宗教を創始すると、イベントログに「[検証] PyOnOtherReligionFounded: 聖地の都市名, 宗教名, 創始した文明」（`PyOnOtherReligionFounded`）。
+- 2026-11-28 の分（エチオピア・クメール・ヴィクトリア・ルイ14世の案）: 都市圏の丘陵 1 つにつき宗教建築の生産 +10%、森 1 つにつき世界遺産の生産 +5%（`CityPlotBuildingProductionModifiers`。自国の領土で、都市のタイルは数えない）。世界遺産を生産で建てると、その都市に遺産の偉人ポイント 10 ターン分（`iWonderGreatPeopleTurns`）と、生産コストの 50% の文化（`iWonderProductionCulturePercent`）。穀物製粉所（`CORPORATION_1`）は検証用志向の文明だけが設立できる（企業の `PrereqOrTraits`）。
+- 2026-11-28 の分（クメールの案）: 自国の領土の森が毎ターン 5% でジャングルになる（`FeatureConversions`。ジャングルを置ける草原だけ）。
 - 確かめ方: 中世の時代で始めると、古代と古典時代の技術の宗教 5 つは 5 ターン経過後にまとめて創始され（`CvGame::doHolyCity`）、キリスト教（神学 500）とイスラム教（神授王権 1200）が残る。自分では両方を研究しない。
 
 ## `TRAIT_TEST_TEMPORARY`（検証用志向（期間））

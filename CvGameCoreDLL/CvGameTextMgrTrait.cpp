@@ -782,6 +782,49 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 	}
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_OTHER_RELIGIONS_TO_CAPITAL", kTrait.isOtherReligionsToCapital());
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_NO_FOREIGN_CULTURE_ANGER", kTrait.isNoForeignCultureAnger());
+	// CityPlotBuildingProductionModifiers, iWonderGreatPeopleTurns, iWonderProductionCulturePercent (added by this mod)
+	for (iI = 0; iI < kTrait.getNumCityPlotBuildingProductionModifiers(); ++iI)
+	{
+		CvWString szPlot;
+		CvWString szTarget;
+		if (kTrait.getCityPlotBuildingProductionFeature(iI) != NO_FEATURE)
+		{
+			szPlot = GC.getFeatureInfo((FeatureTypes)kTrait.getCityPlotBuildingProductionFeature(iI)).getDescription();
+		}
+		if (kTrait.getCityPlotBuildingProductionTerrain(iI) != NO_TERRAIN)
+		{
+			szPlot = CvWString(GC.getTerrainInfo((TerrainTypes)kTrait.getCityPlotBuildingProductionTerrain(iI)).getDescription()) + (szPlot.empty() ? L"" : L"/") + szPlot;
+		}
+		if (kTrait.getCityPlotBuildingProductionBuildingClass(iI) != NO_BUILDINGCLASS)
+		{
+			szTarget = GC.getBuildingClassInfo((BuildingClassTypes)kTrait.getCityPlotBuildingProductionBuildingClass(iI)).getDescription();
+		}
+		else if (kTrait.getCityPlotBuildingProductionSpecialBuilding(iI) != NO_SPECIALBUILDING)
+		{
+			szTarget = GC.getSpecialBuildingInfo((SpecialBuildingTypes)kTrait.getCityPlotBuildingProductionSpecialBuilding(iI)).getDescription();
+		}
+		else if (kTrait.isCityPlotBuildingProductionReligious(iI))
+		{
+			szTarget = gDLL->getText("TXT_KEY_TRAIT_RELIGIOUS_BUILDINGS");
+		}
+		else if (kTrait.isCityPlotBuildingProductionWorldWonders(iI))
+		{
+			szTarget = gDLL->getText("TXT_KEY_TRAIT_WORLD_WONDERS");
+		}
+		if (!szPlot.empty() && !szTarget.empty() && kTrait.getCityPlotBuildingProductionModifier(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_CITY_PLOT_BUILDING_PRODUCTION", szPlot.GetCString(), szTarget.GetCString(), kTrait.getCityPlotBuildingProductionModifier(iI)));
+		}
+	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_WONDER_GREAT_PEOPLE_TURNS", kTrait.getWonderGreatPeopleTurns());
+	// FeatureConversions (added by this mod): "Each turn, a Forest in our territory becomes a Jungle (1%)"
+	for (iI = 0; iI < kTrait.getNumFeatureConversions(); ++iI)
+	{
+		int iConvertChance = kTrait.getFeatureConversionChance(iI);
+		CvWString szChance = (iConvertChance % 100 == 0) ? CvWString::format(L"%d", iConvertChance / 100) : CvWString::format(L"%d.%02d", iConvertChance / 100, iConvertChance % 100);
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FEATURE_CONVERSION", GC.getFeatureInfo((FeatureTypes)kTrait.getFeatureConversionFrom(iI)).getTextKeyWide(), GC.getFeatureInfo((FeatureTypes)kTrait.getFeatureConversionTo(iI)).getTextKeyWide(), szChance.GetCString()));
+	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_WONDER_PRODUCTION_CULTURE", kTrait.getWonderProductionCulturePercent());
 
 	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
 	{

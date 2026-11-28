@@ -113,3 +113,28 @@
 - 説明文 `TXT_KEY_TRAIT_NO_CULTURE_FLIP`・`_NO_REVOLT_AND_NO_CULTURE_FLIP`（両方あればこちらだけ）・`_INSTANT_CULTURE_FLIP`・`_CULTURE_REVOLT_CHANCE`。
 - Python: `CvTraitInfo.isNoCultureFlip`・`isNoRevoltAndNoCultureFlip`・`isInstantCultureFlip`・`getCultureRevoltChance`、`CyPlayer` の同名の関数
 
+## `TraitInfo/CityPlotBuildingProductionModifiers`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 都市圏の地形・地形の特徴 1 つにつき、対象の建物の生産 %（2026-11-28。エチオピアの宗教建築、クメールの世界遺産）。
+- `<CityPlotBuildingProductionModifier>` を何個でも書ける。各項目は:
+  - タイルの条件: `TerrainType`・`FeatureType`（どちらかか両方。両方なら両方に当てはまるタイル）
+  - 対象: `BuildingClassType`・`SpecialBuildingType`・`bReligiousBuildings`（宗教の建物すべて。寺院・僧院・大聖堂など）・`bWorldWonders`（世界遺産すべて）のどれか
+  - `iProductionModifier`
+- 数えるタイルは、都市圏のうち自国の領土のもの。都市のタイルは数えない。働いているかは問わない（`CvCity::countCityPlots`）。
+- 丘陵は `TERRAIN_HILL` と下の地形の両方、山岳は `TERRAIN_PEAK` として数える。施設の下に残る地形の特徴（`MaintainFeatures`）も数える。
+- `CvCity::getProductionModifier(BuildingTypes)` に足す。その都度数えるので、タイルが変わるとすぐに変わる。
+- 生産の内訳に `TXT_KEY_MISC_HELP_PROD_CITY_PLOTS`、志向の説明文に `TXT_KEY_TRAIT_CITY_PLOT_BUILDING_PRODUCTION`。
+- 建物クラスと特別な建物は志向より後に読み込まれるので、`readPass3()` で番号に変える。
+- Python は `CyCity.countCityPlots(eTerrain, eFeature)`・`getCityPlotBuildingProductionModifier(eBuilding)`、`CvTraitInfo` の `getCityPlotBuildingProduction...(i)`
+
+## `TraitInfo/iWonderGreatPeopleTurns`、`iWonderProductionCulturePercent`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 世界遺産を生産で完成させたとき（`CvCity::popOrder` の `doWonderCompletedTraits`。2026-11-28。ヴィクトリア・ルイ14世）:
+  - `iWonderGreatPeopleTurns`: その遺産の偉人ポイント（`iGreatPeopleRateChange`）× N ターン分を、その都市の偉人ポイントと、その偉人の種類の分の両方に足す。補正なし、ゲームの速度の `iGreatPeoplePercent` をかける
+  - `iWonderProductionCulturePercent`: その遺産の生産コスト（`getProductionNeeded`。ゲームの速度に合う）の N% を、その都市の文化に足す
+- 征服で得た遺産、大預言者が建てる聖地、設立で置かれる企業の本社は、生産で完成しないので対象外。
+- どちらもイベントログにメッセージ（`TXT_KEY_MISC_WONDER_GREAT_PEOPLE`。偉人の種類も出す。`TXT_KEY_MISC_WONDER_CULTURE`）。
+- 説明文 `TXT_KEY_TRAIT_WONDER_GREAT_PEOPLE_TURNS`・`TXT_KEY_TRAIT_WONDER_PRODUCTION_CULTURE`。
+- Python は `CvTraitInfo` の同名の getter

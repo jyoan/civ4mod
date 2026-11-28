@@ -2339,3 +2339,14 @@ void CyCity::liberate(bool bConquest)
 		m_pCity->liberate(bConquest);
 	}
 }
+
+// CityPlotBuildingProductionModifiers of the traits (added by this mod)
+int CyCity::countCityPlots(int /*TerrainTypes*/ eTerrain, int /*FeatureTypes*/ eFeature)
+{
+	return m_pCity ? m_pCity->countCityPlots((TerrainTypes)eTerrain, (FeatureTypes)eFeature) : 0;
+}
+
+int CyCity::getCityPlotBuildingProductionModifier(int /*BuildingTypes*/ eBuilding)
+{
+	return m_pCity ? m_pCity->getCityPlotBuildingProductionModifier((BuildingTypes)eBuilding) : 0;
+}

@@ -278,3 +278,13 @@
 - 道の種類は志向より後に読み込まれるので、`readPass3()` で番号に変える。
 - 説明文 `TXT_KEY_TRAIT_TERRITORY_ROUTES`（「領土になったタイルに道路を敷く: 丘陵」）。
 - Python は `CvTraitInfo.getTerritoryRouteType(iTerrain)`
+
+## `TraitInfo/FeatureConversions`
+
+- ファイル: `CIV4TraitInfos.xml`
+- `<FeatureConversion>`（`FeatureType` + `ConvertFeatureType` + `iConversionChance`）を何個でも書ける（2026-11-28。スーリヤヴァルマン2世の森のジャングル化）。
+- そのプレイヤーの領土で、毎ターン、その地形の特徴のタイルが `iConversionChance`（1/10000）の確率で別の特徴になる（`CvPlot::doFeature`。乱数は `getSorenRandNum`）。
+- 変わらないタイル: 変わる先の特徴を置けない地形（`isTerrain`・`bNoCoast`・`bNoRiver`）、山岳、都市、元の特徴を条件にする施設（`getFeatureMakesValid`。森の製材所など）があるタイル。
+- 志向の値の合計（`CvPlayer::getFeatureConversionChance`）。
+- 説明文 `TXT_KEY_TRAIT_FEATURE_CONVERSION`（「毎ターン、自国の領土の森が 1% の確率でジャングルになる」）。
+- Python は `CvTraitInfo.getNumFeatureConversions()`・`getFeatureConversionFrom(i)`・`getFeatureConversionTo(i)`・`getFeatureConversionChance(i)`

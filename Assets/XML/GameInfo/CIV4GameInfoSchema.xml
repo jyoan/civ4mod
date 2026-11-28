@@ -248,6 +248,7 @@
 		<element type="MovieSound"/>
 		<element type="Sound"/>
 		<element type="iOrderPriority" minOccurs="0"/>
+		<element type="PrereqOrTraits" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="CorporationInfos" content="eltOnly">
 		<element type="CorporationInfo" minOccurs="0" maxOccurs="*"/>

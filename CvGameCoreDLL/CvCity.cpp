@@ -2223,6 +2223,12 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 			return false;
 		}
 
+		// PrereqOrTraits of the corporation (added by this mod): only the players with one of the traits found it
+		if (!GET_PLAYER(getOwnerINLINE()).hasPrereqOrTrait(GC.getCorporationInfo(eCorporation).getPrereqOrTraitsVector()))
+		{
+			return false;
+		}
+
 		for (int iCorporation = 0; iCorporation < GC.getNumCorporationInfos(); ++iCorporation)
 		{
 			if (isHeadquarters((CorporationTypes)iCorporation))
@@ -2319,6 +2325,12 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 		if (eCorporation != NO_CORPORATION)
 		{
 			if (GC.getGameINLINE().isCorporationFounded(eCorporation))
+			{
+				return false;
+			}
+
+			// PrereqOrTraits of the corporation (added by this mod)
+			if (!GET_PLAYER(getOwnerINLINE()).hasPrereqOrTrait(GC.getCorporationInfo(eCorporation).getPrereqOrTraitsVector()))
 			{
 				return false;
 			}
@@ -3480,6 +3492,9 @@ int CvCity::getProductionModifier(BuildingTypes eBuilding) const
 
 	iMultiplier += getCapitalBuildingProductionModifier(eBuilding);
 
+	// CityPlotBuildingProductionModifiers of the traits of the owner (added by this mod)
+	iMultiplier += getCityPlotBuildingProductionModifier(eBuilding);
+
 /************************************************************************************************/
 /* UNOFFICIAL_PATCH                       05/10/10                             jdog5000         */
 /*                                                                                              */
@@ -3492,6 +3507,150 @@ int CvCity::getProductionModifier(BuildingTypes eBuilding) const
 /************************************************************************************************/
 }
 
+
+// The plots of the city radius in the territory of the owner, not the city plot, of the terrain and/or the feature (added by
+// this mod; NO_TERRAIN or NO_FEATURE: any). TERRAIN_HILL counts hills (with their terrain too), TERRAIN_PEAK counts peaks
+// (not the terrain under them). For CityPlotBuildingProductionModifiers of the traits
+int CvCity::countCityPlots(TerrainTypes eTerrain, FeatureTypes eFeature) const
+{
+	TerrainTypes eHillTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_HILL", true);
+	TerrainTypes ePeakTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_PEAK", true);
+	int iCount = 0;
+	int iI;
+
+	if (eTerrain == NO_TERRAIN && eFeature == NO_FEATURE)
+	{
+		return 0;
+	}
+
+	for (iI = 0; iI < getNumCityPlots(); iI++)
+	{
+		CvPlot* pLoopPlot = getCityIndexPlot(iI);
+		if (pLoopPlot == NULL || pLoopPlot == plot() || pLoopPlot->getOwnerINLINE() != getOwnerINLINE())
+		{
+			continue;
+		}
+
+		if (eTerrain != NO_TERRAIN)
+		{
+			bool bTerrain;
+			if (eTerrain == ePeakTerrain)
+			{
+				bTerrain = pLoopPlot->isPeak();
+			}
+			else if (eTerrain == eHillTerrain)
+			{
+				bTerrain = pLoopPlot->isHills();
+			}
+			else
+			{
+				bTerrain = (!pLoopPlot->isPeak() && pLoopPlot->getTerrainType() == eTerrain);
+			}
+
+			if (!bTerrain)
+			{
+				continue;
+			}
+		}
+
+		if (eFeature != NO_FEATURE && pLoopPlot->getFeatureType() != eFeature)
+		{
+			continue;
+		}
+
+		iCount++;
+	}
+
+	return iCount;
+}
+
+// CityPlotBuildingProductionModifiers of the traits of the owner (added by this mod): for each item whose target is the
+// building (its building class, its special building, any religious building with bReligiousBuildings, any world wonder
+// with bWorldWonders), the % times the plots counted by countCityPlots
+int CvCity::getCityPlotBuildingProductionModifier(BuildingTypes eBuilding) const
+{
+	CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+	int iModifier = 0;
+	int iTrait;
+	int iI;
+
+	if (eBuilding == NO_BUILDING)
+	{
+		return 0;
+	}
+
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+
+	for (iTrait = 0; iTrait < GC.getNumTraitInfos(); iTrait++)
+	{
+		CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iTrait);
+		if (kTrait.getNumCityPlotBuildingProductionModifiers() == 0 || !kOwner.hasTrait((TraitTypes)iTrait))
+		{
+			continue;
+		}
+
+		for (iI = 0; iI < kTrait.getNumCityPlotBuildingProductionModifiers(); iI++)
+		{
+			bool bTarget = ((kTrait.getCityPlotBuildingProductionBuildingClass(iI) != NO_BUILDINGCLASS && kTrait.getCityPlotBuildingProductionBuildingClass(iI) == kBuilding.getBuildingClassType())
+				|| (kTrait.getCityPlotBuildingProductionSpecialBuilding(iI) != NO_SPECIALBUILDING && kTrait.getCityPlotBuildingProductionSpecialBuilding(iI) == kBuilding.getSpecialBuildingType())
+				|| (kTrait.isCityPlotBuildingProductionReligious(iI) && kBuilding.getReligionType() != NO_RELIGION)
+				|| (kTrait.isCityPlotBuildingProductionWorldWonders(iI) && isWorldWonderClass((BuildingClassTypes)kBuilding.getBuildingClassType())));
+
+			if (bTarget)
+			{
+				iModifier += kTrait.getCityPlotBuildingProductionModifier(iI) * countCityPlots((TerrainTypes)kTrait.getCityPlotBuildingProductionTerrain(iI), (FeatureTypes)kTrait.getCityPlotBuildingProductionFeature(iI));
+			}
+		}
+	}
+
+	return iModifier;
+}
+
+// iWonderGreatPeopleTurns and iWonderProductionCulturePercent of the traits of the owner (added by this mod): a world wonder
+// completed by production (popOrder; not a conquered one, not a holy shrine or headquarters, which are not produced)
+void CvCity::doWonderCompletedTraits(BuildingTypes eBuilding, int iProductionNeeded)
+{
+	CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	CvWString szBuffer;
+
+	if (!isWorldWonderClass((BuildingClassTypes)kBuilding.getBuildingClassType()))
+	{
+		return;
+	}
+
+	// The great people points of the wonder times the turns, scaled by iGreatPeoplePercent of the game speed, without the
+	// modifiers; to the city and to the great person type of the wonder
+	int iTurns = kOwner.getWonderGreatPeopleTurns();
+	if (iTurns > 0 && kBuilding.getGreatPeopleRateChange() > 0 && kBuilding.getGreatPeopleUnitClass() != NO_UNITCLASS)
+	{
+		int iPoints = (kBuilding.getGreatPeopleRateChange() * iTurns * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getGreatPeoplePercent()) / 100;
+		if (iPoints > 0)
+		{
+			changeGreatPeopleProgress(iPoints);
+			UnitTypes eGreatPerson = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(kBuilding.getGreatPeopleUnitClass());
+			if (eGreatPerson != NO_UNIT)
+			{
+				changeGreatPeopleUnitProgress(eGreatPerson, iPoints);
+			}
+			szBuffer = gDLL->getText("TXT_KEY_MISC_WONDER_GREAT_PEOPLE", kBuilding.getTextKeyWide(), iPoints, getNameKey(), GC.getUnitClassInfo((UnitClassTypes)kBuilding.getGreatPeopleUnitClass()).getTextKeyWide());
+			gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, kBuilding.getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), getX_INLINE(), getY_INLINE());
+		}
+	}
+
+	// A % of the production cost as culture of the owner in the city
+	int iPercent = kOwner.getWonderProductionCulturePercent();
+	if (iPercent > 0 && iProductionNeeded > 0)
+	{
+		int iCulture = (iProductionNeeded * iPercent) / 100;
+		if (iCulture > 0)
+		{
+			changeCulture(getOwnerINLINE(), iCulture, true, true);
+			szBuffer = gDLL->getText("TXT_KEY_MISC_WONDER_CULTURE", kBuilding.getTextKeyWide(), iCulture, getNameKey());
+			gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_INFO, kBuilding.getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), getX_INLINE(), getY_INLINE());
+		}
+	}
+}
 
 // iCapitalBuildingProductionModifier of the traits of the owner, for a building the capital has, in the other cities
 // (added by this mod)
@@ -13084,6 +13243,9 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			}
 
 			GET_PLAYER(getOwnerINLINE()).updateConditionalTraits();	// PrereqBuildingClass of ConditionalFreeTraits (added by this mod)
+
+			// iWonderGreatPeopleTurns and iWonderProductionCulturePercent of the traits (added by this mod)
+			doWonderCompletedTraits(eConstructBuilding, iProductionNeeded);
 
 			// PyOnBuilt of the building (added by this mod): completed by production, not the free buildings
 			if (GC.getBuildingInfo(eConstructBuilding).getPyOnBuilt()[0] != '\0')

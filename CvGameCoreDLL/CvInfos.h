@@ -4854,10 +4854,16 @@ public:
 	int getYieldProduced(int i) const;					// Exposed to Python
 	int* getYieldProducedArray() const;
 
+	// PrereqOrTraits (added by this mod): only the players with one of the traits found the corporation
+	int getNumPrereqOrTraits() const;
+	int getPrereqOrTraits(int i) const;
+	const std::vector<int>& getPrereqOrTraitsVector() const;
+
 	bool read(CvXMLLoadUtility* pXML);
 
 	//---------------------------------------PROTECTED MEMBER VARIABLES---------------------------------
 protected:
+	std::vector<int> m_aiPrereqOrTraits;	// added by this mod
 
 	int m_iChar;					
 	int m_iHeadquarterChar;	
@@ -5121,6 +5127,25 @@ public:
 	bool isSpecialBuildingNotRequired(int i) const;	// Exposed to Python (added by this mod), as the civics
 	bool isOtherReligionsToCapital() const;		// Exposed to Python (added by this mod)
 	bool isNoForeignCultureAnger() const;		// Exposed to Python (added by this mod)
+	// CityPlotBuildingProductionModifiers (added by this mod): production % of the buildings of the target (a building class,
+	// a special building, the religious buildings or the world wonders) for each plot of the terrain and/or feature in the
+	// city radius (our territory, not the city plot). NO_... for the parts not set
+	int getNumCityPlotBuildingProductionModifiers() const;	// Exposed to Python
+	int getCityPlotBuildingProductionTerrain(int i) const;	// Exposed to Python
+	int getCityPlotBuildingProductionFeature(int i) const;	// Exposed to Python
+	int getCityPlotBuildingProductionBuildingClass(int i) const;	// Exposed to Python
+	int getCityPlotBuildingProductionSpecialBuilding(int i) const;	// Exposed to Python
+	bool isCityPlotBuildingProductionReligious(int i) const;	// Exposed to Python
+	bool isCityPlotBuildingProductionWorldWonders(int i) const;	// Exposed to Python
+	int getCityPlotBuildingProductionModifier(int i) const;	// Exposed to Python
+	int getWonderGreatPeopleTurns() const;		// Exposed to Python (added by this mod)
+	int getWonderProductionCulturePercent() const;	// Exposed to Python (added by this mod)
+	// FeatureConversions (added by this mod): in the territory of the player, each turn a plot of the feature becomes the
+	// other feature with this chance (in 1/10000)
+	int getNumFeatureConversions() const;			// Exposed to Python
+	int getFeatureConversionFrom(int i) const;		// Exposed to Python
+	int getFeatureConversionTo(int i) const;		// Exposed to Python
+	int getFeatureConversionChance(int i) const;	// Exposed to Python
 	int getDefenseCombatPercent() const;		// Exposed to Python (added by this mod)
 	int getAttitudeCombatPercent(int eAttitude) const;	// Exposed to Python (AttitudeCombatPercents, added by this mod)
 	int getAttitudeCombatMaxPercent() const;	// Exposed to Python (AttitudeCombatPercents/iMaxPercent, added by this mod)
@@ -5529,6 +5554,20 @@ protected:
 	std::vector<int> m_aiSpecialBuildingNotRequiredValues;
 	bool m_bOtherReligionsToCapital;	// added by this mod
 	bool m_bNoForeignCultureAnger;	// added by this mod
+	std::vector<int> m_aiCityPlotProdTerrain;	// CityPlotBuildingProductionModifiers (added by this mod)
+	std::vector<int> m_aiCityPlotProdFeature;
+	std::vector<int> m_aiCityPlotProdBuildingClass;	// resolved in readPass3()
+	std::vector<int> m_aiCityPlotProdSpecialBuilding;	// resolved in readPass3()
+	std::vector<CvString> m_aszCityPlotProdBuildingClass;
+	std::vector<CvString> m_aszCityPlotProdSpecialBuilding;
+	std::vector<int> m_aiCityPlotProdReligious;	// 0 or 1
+	std::vector<int> m_aiCityPlotProdWorldWonders;	// 0 or 1
+	std::vector<int> m_aiCityPlotProdModifier;
+	int m_iWonderGreatPeopleTurns;	// added by this mod
+	int m_iWonderProductionCulturePercent;	// added by this mod
+	std::vector<int> m_aiFeatureConversionFrom;	// FeatureConversions (added by this mod)
+	std::vector<int> m_aiFeatureConversionTo;
+	std::vector<int> m_aiFeatureConversionChance;
 	int m_iDefenseCombatPercent;	// added by this mod
 	std::vector<int> m_aiAttitudeCombatPercent;	// added by this mod: per attitude, empty when not set
 	int m_iAttitudeCombatMaxPercent;	// added by this mod: -1 = no cap

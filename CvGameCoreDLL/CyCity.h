@@ -274,6 +274,8 @@ public:
 	void setFeatureProduction(int iNewValue);
 	int getImprovementProduction();	// added by this mod
 	void changeImprovementProduction(int iChange);	// added by this mod
+	int countCityPlots(int /*TerrainTypes*/ eTerrain, int /*FeatureTypes*/ eFeature);	// added by this mod
+	int getCityPlotBuildingProductionModifier(int /*BuildingTypes*/ eBuilding);	// added by this mod
 	int getMilitaryProductionModifier();
 	int getSpaceProductionModifier();
 	int getExtraTradeRoutes();

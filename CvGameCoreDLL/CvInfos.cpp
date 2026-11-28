@@ -20724,6 +20724,22 @@ int* CvCorporationInfo::getYieldProducedArray() const
 //
 // read from xml
 //
+// PrereqOrTraits (added by this mod): CvCity::canConstruct of the headquarters
+int CvCorporationInfo::getNumPrereqOrTraits() const
+{
+	return (int)m_aiPrereqOrTraits.size();
+}
+
+int CvCorporationInfo::getPrereqOrTraits(int i) const
+{
+	return (i > -1 && i < (int)m_aiPrereqOrTraits.size()) ? m_aiPrereqOrTraits[i] : NO_TRAIT;
+}
+
+const std::vector<int>& CvCorporationInfo::getPrereqOrTraitsVector() const
+{
+	return m_aiPrereqOrTraits;
+}
+
 bool CvCorporationInfo::read(CvXMLLoadUtility* pXML)
 {
 	CvString szTextVal;
@@ -20814,6 +20830,9 @@ bool CvCorporationInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->GetChildXmlValByName(szTextVal, "Sound");
 	setSound(szTextVal);
+
+	// PrereqOrTraits (added by this mod): the traits are loaded before the corporations
+	readPrereqOrTraits(pXML, m_aiPrereqOrTraits);
 
 	return true;
 }

@@ -24,5 +24,7 @@ void CyCityPythonInterface2(python::class_<CyCity>& x)
 		.def("hurryGreatPeople", &CyCity::hurryGreatPeople, "bool () - the owner buys the missing points and the great person is born; call it on every computer (GreatPeopleHurry of the traits, added by this mod)")
 		.def("getImprovementProduction", &CyCity::getImprovementProduction, "int () - production from replacing improvements, spent with the next production like chopping (added by this mod)")
 		.def("changeImprovementProduction", &CyCity::changeImprovementProduction, "void (int iChange) - adds production from replacing improvements (shown in its own line of the production help; added by this mod)")
+		.def("countCityPlots", &CyCity::countCityPlots, "int (int eTerrain, int eFeature) - plots of the city radius in our territory, not the city plot, of the terrain and/or feature (-1: any; TERRAIN_HILL for hills, TERRAIN_PEAK for peaks; added by this mod)")
+		.def("getCityPlotBuildingProductionModifier", &CyCity::getCityPlotBuildingProductionModifier, "int (int eBuilding) - production % of the building from CityPlotBuildingProductionModifiers of the traits (added by this mod)")
 		;
 }
