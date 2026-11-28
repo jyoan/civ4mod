@@ -86,6 +86,14 @@ m_iFoundingVassalCivilization(NO_CIVILIZATION),
 m_iFoundingVassalLeader(NO_LEADER),
 m_iFoundingVassalHandicap(NO_HANDICAP),
 m_iFoundingVassalRange(0),
+m_bFoundingOverlord(false),
+m_iFoundingOverlordCivilization(NO_CIVILIZATION),
+m_iFoundingOverlordLeader(NO_LEADER),
+m_iFoundingOverlordHandicap(NO_HANDICAP),
+m_iIndependencePeaceGoldenAgePercent(0),
+m_iIndependenceCityGoldenAgePercent(0),
+m_iIndependenceEliminateGoldenAgePercent(0),
+m_iTributeDemandTurns(0),
 m_iGoldInterestPercent(0),
 m_iGoldInterestMax(0),
 m_iPeaceAngerPerTurn(0),
@@ -719,6 +727,75 @@ int CvTraitInfo::getFoundingVassalCivilizations(int i) const
 {
 	FAssertMsg(i >= 0 && i < getNumFoundingVassalCivilizations(), "Index out of bounds");
 	return m_aiFoundingVassalCivilizations[i];
+}
+
+const std::vector<int>& CvTraitInfo::getFoundingVassalCivilizationsVector() const
+{
+	return m_aiFoundingVassalCivilizations;
+}
+
+// FoundingOverlord (added by this mod): when the player founds its first city, an AI civilization joins the game far away
+// and the player becomes its vassal (a vassal agreement). Leaving it means war, and winning that war of independence gives a
+// golden age (CvPlayer::doFoundingOverlord, CvPlayer::endIndependenceWar)
+bool CvTraitInfo::isFoundingOverlord() const
+{
+	return m_bFoundingOverlord;
+}
+
+int CvTraitInfo::getFoundingOverlordCivilization() const
+{
+	return m_iFoundingOverlordCivilization;
+}
+
+int CvTraitInfo::getFoundingOverlordLeader() const
+{
+	return m_iFoundingOverlordLeader;
+}
+
+int CvTraitInfo::getFoundingOverlordHandicap() const
+{
+	return m_iFoundingOverlordHandicap;
+}
+
+int CvTraitInfo::getNumFoundingOverlordCivilizations() const
+{
+	return (int)m_aiFoundingOverlordCivilizations.size();
+}
+
+int CvTraitInfo::getFoundingOverlordCivilizations(int i) const
+{
+	FAssertMsg(i >= 0 && i < getNumFoundingOverlordCivilizations(), "Index out of bounds");
+	return m_aiFoundingOverlordCivilizations[i];
+}
+
+const std::vector<int>& CvTraitInfo::getFoundingOverlordCivilizationsVector() const
+{
+	return m_aiFoundingOverlordCivilizations;
+}
+
+// FoundingOverlord: the golden age for winning the war of independence, in percent of the normal length. Peace while the war
+// success of the player is higher (100 when not set), peace while it holds a city taken from the master in that war (200),
+// the master destroyed without peace (300)
+int CvTraitInfo::getIndependencePeaceGoldenAgePercent() const
+{
+	return m_iIndependencePeaceGoldenAgePercent;
+}
+
+int CvTraitInfo::getIndependenceCityGoldenAgePercent() const
+{
+	return m_iIndependenceCityGoldenAgePercent;
+}
+
+int CvTraitInfo::getIndependenceEliminateGoldenAgePercent() const
+{
+	return m_iIndependenceEliminateGoldenAgePercent;
+}
+
+// iTributeDemandTurns (added by this mod): an AI master demands a resource from the player at most once in this many turns
+// (scaled by the growth percent of the game speed, CvPlayer::isTributeDemandWaiting)
+int CvTraitInfo::getTributeDemandTurns() const
+{
+	return m_iTributeDemandTurns;
 }
 
 // The team of the player is at peace with the barbarians (added by this mod, as FFH2)
@@ -3242,6 +3319,28 @@ void CvTraitInfo::readStartBias(CvXMLLoadUtility* pXML)
 		readTypeList(pXML, "CivilizationTypes", m_aszFoundingVassalCivilizations);
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
+
+	// FoundingOverlord: the types stay strings until readFoundingVassalTypes(). The golden ages: 100, 200 and 300 when not set
+	m_bFoundingOverlord = false;
+	m_iIndependencePeaceGoldenAgePercent = 0;
+	m_iIndependenceCityGoldenAgePercent = 0;
+	m_iIndependenceEliminateGoldenAgePercent = 0;
+	m_szFoundingOverlordCivilization.clear();
+	m_szFoundingOverlordLeader.clear();
+	m_szFoundingOverlordHandicap.clear();
+	m_aszFoundingOverlordCivilizations.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FoundingOverlord"))
+	{
+		m_bFoundingOverlord = true;
+		pXML->GetChildXmlValByName(m_szFoundingOverlordCivilization, "CivilizationType");
+		pXML->GetChildXmlValByName(m_szFoundingOverlordLeader, "LeaderType");
+		pXML->GetChildXmlValByName(m_szFoundingOverlordHandicap, "HandicapType");
+		readTypeList(pXML, "CivilizationTypes", m_aszFoundingOverlordCivilizations);
+		pXML->GetChildXmlValByName(&m_iIndependencePeaceGoldenAgePercent, "iPeaceGoldenAgePercent", 100);
+		pXML->GetChildXmlValByName(&m_iIndependenceCityGoldenAgePercent, "iCityGoldenAgePercent", 200);
+		pXML->GetChildXmlValByName(&m_iIndependenceEliminateGoldenAgePercent, "iEliminateGoldenAgePercent", 300);
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 }
 
 // The part of read() for gold interest, peace anger, culture range, ForbiddenCivics and the new cities (added by this mod)
@@ -3342,6 +3441,8 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iTechCostModifier, "iTechCostModifier");
 	pXML->GetChildXmlValByName(&m_iAttitudeChange, "iAttitudeChange");
 	pXML->GetChildXmlValByName(&m_iDenounceAttitudeChange, "iDenounceAttitudeChange");
+	pXML->GetChildXmlValByName(&m_iTributeDemandTurns, "iTributeDemandTurns");
+
 	// Deals: bBuyCities, iCityValueModifier, iGoldLimitModifier, iGoldValueModifier
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Deals"))
 	{
@@ -4177,6 +4278,21 @@ void CvTraitInfo::readFoundingVassalTypes()
 		if (iCiv >= 0)
 		{
 			m_aiFoundingVassalCivilizations.push_back(iCiv);
+		}
+	}
+
+	// FoundingOverlord (added by this mod): the same types
+	m_iFoundingOverlordCivilization = resolveTraitTypeString(m_szFoundingOverlordCivilization, "FoundingOverlord/CivilizationType");
+	m_iFoundingOverlordLeader = resolveTraitTypeString(m_szFoundingOverlordLeader, "FoundingOverlord/LeaderType");
+	m_iFoundingOverlordHandicap = resolveTraitTypeString(m_szFoundingOverlordHandicap, "FoundingOverlord/HandicapType");
+
+	m_aiFoundingOverlordCivilizations.clear();
+	for (iI = 0; iI < (int)m_aszFoundingOverlordCivilizations.size(); iI++)
+	{
+		int iCiv = resolveTraitTypeString(m_aszFoundingOverlordCivilizations[iI], "FoundingOverlord/CivilizationTypes");
+		if (iCiv >= 0)
+		{
+			m_aiFoundingOverlordCivilizations.push_back(iCiv);
 		}
 	}
 }

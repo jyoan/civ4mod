@@ -487,6 +487,11 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_bStackPromotionsDeferred = false;	// StackPromotions of the traits (added by this mod)
 	m_bFoundingVassal = false;
 	m_eAIHandicap = NO_HANDICAP;
+	m_bFoundingOverlordDone = false;	// FoundingOverlord of the traits (added by this mod)
+	m_eFoundingOverlord = NO_PLAYER;
+	m_iIndependenceState = 0;
+	m_iIndependenceWarTurn = -1;
+	m_iLastTributeDemandTurn = -1;	// iTributeDemandTurns of the traits (added by this mod)
 	m_bStrike = false;
 	m_bUpdatingTraitDependents = false;
 	m_bUpdatingConditionalTraits = false;
@@ -3321,6 +3326,8 @@ void CvPlayer::doTurn()
 	updateAttitudeCombatCounts();	// AttitudeCombatPercents of the traits (added by this mod)
 	doTraitPythonHook(TRAIT_PYHOOK_BEGIN_TURN);	// PyOnBeginTurn (added by this mod)
 	doEnemyAttrition();	// EnemyAttrition/iPercent of the traits (added by this mod)
+	checkIndependenceWar();	// FoundingOverlord of the traits (added by this mod): any way out of the vassal state
+
 
 	doUpdateCacheOnTurn();
 
@@ -6366,6 +6373,8 @@ void CvPlayer::found(int iX, int iY)
 	}
 
 	doFoundingVassal(pCity);	// FoundingVassal of the traits (added by this mod): only for the first city
+	doFoundingOverlord(pCity);	// FoundingOverlord of the traits (added by this mod): only for the first city
+
 }
 
 
@@ -6481,53 +6490,11 @@ CvPlot* CvPlayer::findFoundingVassalPlot(const CvCity* pCity, int iRange, Player
 	return pBestPlot;
 }
 
-// FoundingVassal of the traits (added by this mod): when the player founds its first city, an AI civilization joins the game
-// near it and joins its team (a permanent alliance, CvTeam::addTeam), with the settlers and the defenders of the start of
-// the game. Once per player (m_bFoundingVassalDone), with the first trait that has FoundingVassal. Nothing happens when no
-// player slot is free (MAX_CIV_PLAYERS), when no civilization or leader is left, or when no plot is near the city
-void CvPlayer::doFoundingVassal(CvCity* pCity)
+// FoundingVassal and FoundingOverlord of the traits (added by this mod): a free player slot for a new AI.
+PlayerTypes CvPlayer::findJoiningPlayerSlot() const
 {
-	CvPlot* pFallbackPlot;
-	CvPlot* pStartPlot;
 	PlayerTypes eNewPlayer;
-	CivilizationTypes eCiv;
-	LeaderHeadTypes eLeader;
-	TraitTypes eTrait;
-	int iRange;
-	int iValue;
-	int iBestValue;
 	int iI, iJ;
-
-	if (m_bFoundingVassalDone || pCity == NULL || isBarbarian() || isMinorCiv())
-	{
-		return;
-	}
-
-	eTrait = NO_TRAIT;
-	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-	{
-		if (GC.getTraitInfo((TraitTypes)iI).isFoundingVassal() && hasTrait((TraitTypes)iI))
-		{
-			eTrait = (TraitTypes)iI;
-			break;
-		}
-	}
-
-	if (eTrait == NO_TRAIT)
-	{
-		return;
-	}
-
-	m_bFoundingVassalDone = true;
-
-	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
-	iRange = std::max(1, kTrait.getFoundingVassalRange());
-
-	pFallbackPlot = findFoundingVassalPlot(pCity, iRange, NO_PLAYER);
-	if (pFallbackPlot == NULL)
-	{
-		return;
-	}
 
 	// The player slot: one never in the game, then a dead player (as CvPlayer::getSplitEmpirePlayer). Its team must be dead
 	// too, since CvGame::addPlayer initializes it
@@ -6552,26 +6519,32 @@ void CvPlayer::doFoundingVassal(CvCity* pCity)
 		}
 	}
 
-	if (eNewPlayer == NO_PLAYER)
-	{
-		return;
-	}
+	return eNewPlayer;
+}
+
+// FoundingVassal and FoundingOverlord of the traits (added by this mod): the civilization and the leader of a new AI. False
+// when none is left
+bool CvPlayer::chooseJoiningCivAndLeader(CivilizationTypes eTagCiv, const std::vector<int>& aiCandidates, LeaderHeadTypes eTagLeader, CivilizationTypes& eCiv, LeaderHeadTypes& eLeader) const
+{
+	int iValue;
+	int iBestValue;
+	int iI, iJ;
 
 	// The civilization and the leader: the ones of the tag when no player has used them (any pair is allowed), otherwise
 	// chosen as for a colony (CvPlayer::getSplitEmpireLeaders: an unused civilization, the DerivativeCiv first)
-	eCiv = (CivilizationTypes)kTrait.getFoundingVassalCivilization();
+	eCiv = eTagCiv;
 	if (eCiv != NO_CIVILIZATION && (eCiv == GC.getDefineINT("BARBARIAN_CIVILIZATION") || isCivilizationInGame(eCiv)))
 	{
 		eCiv = NO_CIVILIZATION;
 	}
 
 	// CivilizationTypes: one of the candidates no player uses, at random
-	if (eCiv == NO_CIVILIZATION && kTrait.getNumFoundingVassalCivilizations() > 0)
+	if (eCiv == NO_CIVILIZATION && !aiCandidates.empty())
 	{
 		std::vector<CivilizationTypes> aeCandidates;
-		for (iI = 0; iI < kTrait.getNumFoundingVassalCivilizations(); iI++)
+		for (iI = 0; iI < (int)aiCandidates.size(); iI++)
 		{
-			CivilizationTypes eLoopCiv = (CivilizationTypes)kTrait.getFoundingVassalCivilizations(iI);
+			CivilizationTypes eLoopCiv = (CivilizationTypes)aiCandidates[iI];
 			if (eLoopCiv != GC.getDefineINT("BARBARIAN_CIVILIZATION") && !isCivilizationInGame(eLoopCiv))
 			{
 				aeCandidates.push_back(eLoopCiv);
@@ -6584,7 +6557,7 @@ void CvPlayer::doFoundingVassal(CvCity* pCity)
 		}
 	}
 
-	eLeader = (LeaderHeadTypes)kTrait.getFoundingVassalLeader();
+	eLeader = eTagLeader;
 	if (eLeader != NO_LEADER && (eLeader == GC.getDefineINT("BARBARIAN_LEADER") || isLeaderInGame(eLeader)))
 	{
 		eLeader = NO_LEADER;
@@ -6620,7 +6593,7 @@ void CvPlayer::doFoundingVassal(CvCity* pCity)
 
 		if (eBestCiv == NO_CIVILIZATION)
 		{
-			return;
+			return false;
 		}
 
 		eCiv = eBestCiv;
@@ -6659,9 +6632,18 @@ void CvPlayer::doFoundingVassal(CvCity* pCity)
 
 		if (eLeader == NO_LEADER)
 		{
-			return;
+			return false;
 		}
 	}
+
+	return true;
+}
+
+// FoundingVassal and FoundingOverlord of the traits (added by this mod): adds the new AI to the game, with its starting gold.
+// Its own FoundingVassal and FoundingOverlord (if its leader has them) do not work. The caller places it and gives the units
+void CvPlayer::initJoiningPlayer(PlayerTypes eNewPlayer, CivilizationTypes eCiv, LeaderHeadTypes eLeader, HandicapTypes eAIHandicap)
+{
+	int iI;
 
 	// Remove leftover culture of a recycled player (as CvPlayer::splitEmpire)
 	for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
@@ -6675,10 +6657,73 @@ void CvPlayer::doFoundingVassal(CvCity* pCity)
 	GC.getInitCore().setLeaderName(eNewPlayer, GC.getLeaderHeadInfo(eLeader).getTextKeyWide());
 
 	CvPlayer& kNewPlayer = GET_PLAYER(eNewPlayer);
-	kNewPlayer.m_bFoundingVassalDone = true;	// its own FoundingVassal (if its leader has one) does not work
-	kNewPlayer.m_bFoundingVassal = true;
-	kNewPlayer.m_eAIHandicap = (HandicapTypes)kTrait.getFoundingVassalHandicap();
+	kNewPlayer.m_bFoundingVassalDone = true;
+	kNewPlayer.m_bFoundingOverlordDone = true;
+	kNewPlayer.m_eAIHandicap = eAIHandicap;
 	kNewPlayer.initFreeState();	// the starting gold
+}
+
+// FoundingVassal of the traits (added by this mod): when the player founds its first city, an AI civilization joins the game
+// near it and joins its team (a permanent alliance, CvTeam::addTeam), with the settlers and the defenders of the start of
+// the game. Once per player (m_bFoundingVassalDone), with the first trait that has FoundingVassal. Nothing happens when no
+// player slot is free (MAX_CIV_PLAYERS), when no civilization or leader is left, or when no plot is near the city
+void CvPlayer::doFoundingVassal(CvCity* pCity)
+{
+	CvPlot* pFallbackPlot;
+	CvPlot* pStartPlot;
+	PlayerTypes eNewPlayer;
+	CivilizationTypes eCiv;
+	LeaderHeadTypes eLeader;
+	TraitTypes eTrait;
+	int iRange;
+	int iI;
+
+	if (m_bFoundingVassalDone || pCity == NULL || isBarbarian() || isMinorCiv())
+	{
+		return;
+	}
+
+	eTrait = NO_TRAIT;
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (GC.getTraitInfo((TraitTypes)iI).isFoundingVassal() && hasTrait((TraitTypes)iI))
+		{
+			eTrait = (TraitTypes)iI;
+			break;
+		}
+	}
+
+	if (eTrait == NO_TRAIT)
+	{
+		return;
+	}
+
+	m_bFoundingVassalDone = true;
+
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+	iRange = std::max(1, kTrait.getFoundingVassalRange());
+
+	pFallbackPlot = findFoundingVassalPlot(pCity, iRange, NO_PLAYER);
+	if (pFallbackPlot == NULL)
+	{
+		return;
+	}
+
+	eNewPlayer = findJoiningPlayerSlot();
+	if (eNewPlayer == NO_PLAYER)
+	{
+		return;
+	}
+
+	if (!chooseJoiningCivAndLeader((CivilizationTypes)kTrait.getFoundingVassalCivilization(), kTrait.getFoundingVassalCivilizationsVector(), (LeaderHeadTypes)kTrait.getFoundingVassalLeader(), eCiv, eLeader))
+	{
+		return;
+	}
+
+	initJoiningPlayer(eNewPlayer, eCiv, eLeader, (HandicapTypes)kTrait.getFoundingVassalHandicap());
+
+	CvPlayer& kNewPlayer = GET_PLAYER(eNewPlayer);
+	kNewPlayer.m_bFoundingVassal = true;
 
 	pStartPlot = findFoundingVassalPlot(pCity, iRange, eNewPlayer);
 	if (pStartPlot == NULL)
@@ -11518,6 +11563,16 @@ void CvPlayer::setAlive(bool bNewValue)
 		}
 		else
 		{
+			// FoundingOverlord of the traits (added by this mod): a master destroyed during the war of independence, before its
+			// cities and deals are gone
+			for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+			{
+				if (GET_PLAYER((PlayerTypes)iI).getFoundingOverlord() == getID())
+				{
+					GET_PLAYER((PlayerTypes)iI).endIndependenceWar(getTeam(), true);
+				}
+			}
+
 			clearResearchQueue();
 			killUnits();
 			killCities();
@@ -18691,6 +18746,16 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(NUM_ATTITUDE_TYPES, m_aiAttitudeCombatCount);
 	}
+
+	// FoundingOverlord and iTributeDemandTurns of the traits (uiFlag 21). Older saves: not done, no master (reset)
+	if (uiFlag > 20)
+	{
+		pStream->Read(&m_bFoundingOverlordDone);
+		pStream->Read((int*)&m_eFoundingOverlord);
+		pStream->Read(&m_iIndependenceState);
+		pStream->Read(&m_iIndependenceWarTurn);
+		pStream->Read(&m_iLastTributeDemandTurn);
+	}
 }
 
 //
@@ -18701,7 +18766,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 20;	// 20: m_aiAttitudeCombatCount. 19: m_paiTraitCounter. 18: m_bFoundingVassalDone, m_bFoundingVassal and m_eAIHandicap. 17: m_aiExploredPlotCount and m_aiExplorationRemainder. 16: the civic slots after slot 0 (m_paeCivics). 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
+	uint uiFlag = 21;	// 21: m_bFoundingOverlordDone, m_eFoundingOverlord, m_iIndependenceState, m_iIndependenceWarTurn and m_iLastTributeDemandTurn. 20: m_aiAttitudeCombatCount. 19: m_paiTraitCounter. 18: m_bFoundingVassalDone, m_bFoundingVassal and m_eAIHandicap. 17: m_aiExploredPlotCount and m_aiExplorationRemainder. 16: the civic slots after slot 0 (m_paeCivics). 2: FEAT_GLOBAL_SPELL, 3: m_paiFreeTraitCount, 4: m_paiConditionalTraitCount, 5: m_paiBuildingClassExtraCommerce, 6: m_iPeaceAngerTimes100, 7: m_iNumUnitsKilled and m_iNumCitiesConquered, 8: m_paiSpecialistTypeExtraCommerce, 9: m_iRevolutionAnarchyTurns and m_iAnarchyTurnsSpent, 10: m_paiLearnedUnit and m_paiLearnedBuilding, 11: m_abCityConqueredBy, 12: m_paiTraitTurns, 13: m_eLastConqueror, 14: m_iRandomBasicTraitTurn and m_paiRandomBasicTrait, 15: m_abFriendlyTraitGainedFrom (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iStartingX);
@@ -19146,6 +19211,13 @@ void CvPlayer::write(FDataStreamBase* pStream)
 
 	// AttitudeCombatPercents of the traits (uiFlag 20, added by this mod)
 	pStream->Write(NUM_ATTITUDE_TYPES, m_aiAttitudeCombatCount);
+
+	// FoundingOverlord and iTributeDemandTurns of the traits (uiFlag 21, added by this mod)
+	pStream->Write(m_bFoundingOverlordDone);
+	pStream->Write(m_eFoundingOverlord);
+	pStream->Write(m_iIndependenceState);
+	pStream->Write(m_iIndependenceWarTurn);
+	pStream->Write(m_iLastTributeDemandTurn);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)

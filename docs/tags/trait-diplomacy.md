@@ -186,3 +186,49 @@ AI の態度・情報の公開・属国・取引・ユニットの贈与（レ�
   - ゲーム開始時からの戦争（蛮族、シナリオ）は、どちらも宣戦した側ではない。
   - `CvTeam::isAtDefensiveWar`: 自分のチームに宣戦した、蛮族・小文明以外のチームと交戦中（`ConditionalFreeTraits` の `bDefensiveWar`）。
   - Python: `CyTeam.isWarDeclaredOn(eTeam)`・`isAtDefensiveWar()`。
+
+## `TraitInfo/FoundingOverlord`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-28（アメリカの植民地からの独立）。
+- 最初の都市を建てると、AI の文明が遠くでゲームに参加し、このプレイヤーはその属国になる（取引の属国。`TRADE_VASSAL`）。
+- `<FoundingOverlord>` に `CivilizationType`・`LeaderType`・`HandicapType`・`CivilizationTypes`（意味は `FoundingVassal` と同じ）と、黄金期の `iPeaceGoldenAgePercent`・`iCityGoldenAgePercent`・`iEliminateGoldenAgePercent` を書く（すべて省略可。タグを書けば有効）。
+- **発動**: `CvPlayer::found` の最後、`doFoundingVassal` の次の `doFoundingOverlord`（`CvPlayerTraits.cpp`）。1 プレイヤーにつき 1 回（`m_bFoundingOverlordDone`）。複数の志向が持つときは番号の小さい志向。
+- 何も起きないとき: 属国なしのオプション、すでに誰かの属国、空きの枠がない、文明か指導者が残っていない、置ける場所がない。
+- **枠・文明・指導者・AI の補正**: `FoundingVassal` と同じ処理（`findJoiningPlayerSlot`・`chooseJoiningCivAndLeader`・`initJoiningPlayer` に分けて共有）。
+- **技術**: ゲーム開始時と同じ無料の技術（難易度の `FreeTechs`・`AIFreeTechs`、開始時代より前の時代の技術、文明の `FreeTechs`）。プレイヤーの技術は受け継がない。
+- **場所**（`findFoundingOverlordPlot`）: 陸、通行可能、誰の領土でもない、ユニットがいない、部族集落がないタイル。
+  - 最初の都市と別の大陸で、陸のタイルが 20 以上ある大陸（`FOUNDING_OVERLORD_MIN_AREA_TILES`）に候補があれば、そちらだけにする（小島を外す）
+  - その中でいちばん遠い候補の距離の半分以上離れたタイルに絞り、開始位置としての価値（`AI_foundValue` の `bStartingLoc`）が最も高いタイル
+  - 2026-11-28 の確認で、最初の案（価値が最高値の半分以上のうち、いちばん遠いタイル）が北の極地の小島を選んだので、遠さより土地の良さを優先する形に変えた
+- **ユニット**: `FoundingVassal` と同じく、AI の初期ユニットすべて（`addStartingUnits`）。指導者の `RandomBasicTraits` もすぐ得る。
+- **属国**: 接触させてから、植民地と同じ `CvTeam::assignVassal` で属国にする（属国の状態と、保存される取引）。人間でも取引の一覧に出て、`PEACE_TREATY_LENGTH` のあと解消できる（宗主国はできない）。`bHumanCanBeVassal` は要らない。
+- `implementDeal` で `TRADE_VASSAL` を渡すと、BtS が内部で作る解消用の取引（`startTeamTrade`）が取引の可否の判定（人間は AI の属国になれない）で作られず、属国の状態だけが残って解消できなくなる（2026-11-28 の確認で判明）。
+- **独立戦争の始まり**: どの形で属国を抜けても宗主国と戦争になる。
+  - 取引を解消したら、取引が消えたあとに宗主国が宣戦する（`CvDeal::kill` の最後の `checkIndependenceWar`。`declareWar` が取引を消している間は呼ばない: `CvTeam::isCancellingWarDeals`）
+  - 要求を拒否したときは BtS どおり宗主国が宣戦する
+  - 属国のまま宗主国に宣戦することもできる（属国の取引を解消できる時期から。`PEACE_TREATY_LENGTH` のあと）。`CvTeam::canChangeWarPeace` の「属国は宣戦・和平を変えられない」に、`canDeclareIndependenceWar`（宗主国に対してだけ）の例外を足した。外交の会話の宣戦、領土に入るときの宣戦の確認、ほかの文明からの宣戦の依頼（`TRADE_WAR`）が使える（2026-11-28、ユーザーの要望）
+  - そのほかの抜け方（宗主国がほかの国の属国になったなど）は、ターンの始めの `checkIndependenceWar` で宣戦する
+  - 宗主国との戦争が始まると独立戦争になり（`CvTeam::declareWar` → `startIndependenceWar`）、始まったターンを記録する。メッセージ `TXT_KEY_MISC_INDEPENDENCE_WAR_BEGINS`
+- **独立戦争の終わり**（1 回きり。`endIndependenceWar`）:
+  - 講和せずに宗主国を滅ぼした（戦争中に宗主国が滅んだ。`CvPlayer::setAlive`）: `iEliminateGoldenAgePercent`（省略時 300）
+  - 講和の時点で、この戦争で宗主国から奪った都市（自分のチームが建てた都市は除く）を持っている: `iCityGoldenAgePercent`（省略時 200）
+  - 講和の時点で、こちらの戦果（`CvTeamAI::AI_getWarSuccess`。ユニットを倒す・都市を占領すると増え、宣戦で 0 に戻る）が宗主国より多い: `iPeaceGoldenAgePercent`（省略時 100）
+  - それ以外の講和: 黄金期なし
+  - 講和の判定は `CvTeam::makePeace` で戦果が 0 に戻る前に行う
+  - 黄金期は通常の長さ（`getGoldenAgeLength`）の %。結果のメッセージ `TXT_KEY_MISC_INDEPENDENCE_*`
+  - 独立戦争の前に宗主国が滅んだら、それで終わり（黄金期なし）
+- セーブは `CvPlayer` の `uiFlag=21`（`m_bFoundingOverlordDone`・`m_eFoundingOverlord`・`m_iIndependenceState`・`m_iIndependenceWarTurn`・`m_iLastTributeDemandTurn`）。
+- 説明文: `TXT_KEY_TRAIT_FOUNDING_OVERLORD`（文明は `FoundingVassal` と同じ部品）、難易度 `TXT_KEY_TRAIT_FOUNDING_VASSAL_HANDICAP`、`TXT_KEY_TRAIT_INDEPENDENCE_WAR` と 3 つの結果の行。
+- Python: `CvTraitInfo.isFoundingOverlord`・`getFoundingOverlordCivilization`・`getFoundingOverlordLeader`・`getFoundingOverlordHandicap`・`getNumFoundingOverlordCivilizations`・`getFoundingOverlordCivilizations`・`getIndependence〜GoldenAgePercent`、`CyPlayer.getFoundingOverlord`・`getIndependenceState`（0 なし、1 属国、2 独立戦争、3 終わり）。
+- AI のアメリカは要求にいつも応じ、自分から属国を抜けない（AI の段階で判断コードが要る）。
+
+## `TraitInfo/iTributeDemandTurns`
+
+- ファイル: `CIV4TraitInfos.xml`
+- 2026-11-28（アメリカ）。
+- AI の宗主国がこのプレイヤーに資源を要求するのは、N ターンに 1 回まで（ゲームの速度の `iGrowthPercent` で調整）。
+- BtS の AI の宗主国は、属国が取引できて自分にない資源があれば毎ターンでも要求する（`CvPlayerAI::AI_doDiplo`）。どの宗主国にも効く。
+- 最後に要求されたターンをセーブする（`m_iLastTributeDemandTurn`）。要求の内容と、拒否したときの宣戦は BtS どおり。
+- 説明文 `TXT_KEY_TRAIT_TRIBUTE_DEMAND_TURNS`。
+- Python: `CvTraitInfo.getTributeDemandTurns`、`CyPlayer.getTributeDemandTurns`（調整後）・`isTributeDemandWaiting`。

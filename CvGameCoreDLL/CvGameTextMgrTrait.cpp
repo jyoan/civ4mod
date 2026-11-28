@@ -62,6 +62,56 @@ static void appendTraitValueLine(CvWStringBuffer& szHelpString, const char* szKe
 	}
 }
 
+// FoundingVassal and FoundingOverlord (added by this mod): "Rome", "one of A, B (at random)" or "a civilization", with
+// "led by Caesar" when the leader is set
+static CvWString getFoundingCivText(int iCiv, const std::vector<int>& aiCivs, int iLeader)
+{
+	CvWString szCiv;
+	int iI;
+
+	if (iCiv != NO_CIVILIZATION)
+	{
+		szCiv = getLinkText(GC.getCivilizationInfo((CivilizationTypes)iCiv).getShortDescription());
+	}
+	else if (!aiCivs.empty())
+	{
+		// CivilizationTypes: "one of A, B, C (at random)"
+		CvWString szList;
+		for (iI = 0; iI < (int)aiCivs.size(); iI++)
+		{
+			if (!szList.empty())
+			{
+				szList += L", ";
+			}
+			szList += getLinkText(GC.getCivilizationInfo((CivilizationTypes)aiCivs[iI]).getShortDescription());
+		}
+		szCiv = gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_ONE_OF", szList.GetCString());
+	}
+	else
+	{
+		szCiv = gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_ANY_CIV");
+	}
+
+	if (iLeader != NO_LEADER)
+	{
+		CvWString szLeader = getLinkText(GC.getLeaderHeadInfo((LeaderHeadTypes)iLeader).getDescription());
+		szCiv = gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_LED_BY", szCiv.GetCString(), szLeader.GetCString());
+	}
+
+	return szCiv;
+}
+
+// FoundingVassal and FoundingOverlord (added by this mod): the difficulty of the AI modifiers of the new AI, when set
+static void appendFoundingHandicapLine(CvWStringBuffer& szHelpString, int iHandicap)
+{
+	if (iHandicap != NO_HANDICAP)
+	{
+		CvWString szHandicapLine = L"  ";
+		szHandicapLine += gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_HANDICAP", GC.getHandicapInfo((HandicapTypes)iHandicap).getTextKeyWide());
+		appendTraitLine(szHelpString, szHandicapLine);
+	}
+}
+
 // One line of the help of a trait with szKey, when bFlag is set (added by this mod)
 static void appendTraitFlagLine(CvWStringBuffer& szHelpString, const char* szKey, bool bFlag)
 {
@@ -606,43 +656,26 @@ void CvGameTextMgr::parseTraitTerritoryEffects(CvWStringBuffer& szHelpString, Tr
 	// it ...", then the difficulty of its AI modifiers
 	if (kTrait.isFoundingVassal())
 	{
-		CvWString szCiv;
-		if (kTrait.getFoundingVassalCivilization() != NO_CIVILIZATION)
-		{
-			szCiv = getLinkText(GC.getCivilizationInfo((CivilizationTypes)kTrait.getFoundingVassalCivilization()).getShortDescription());
-		}
-		else if (kTrait.getNumFoundingVassalCivilizations() > 0)
-		{
-			// CivilizationTypes: "one of A, B, C (at random)"
-			CvWString szList;
-			int iI;
-			for (iI = 0; iI < kTrait.getNumFoundingVassalCivilizations(); iI++)
-			{
-				if (!szList.empty())
-				{
-					szList += L", ";
-				}
-				szList += getLinkText(GC.getCivilizationInfo((CivilizationTypes)kTrait.getFoundingVassalCivilizations(iI)).getShortDescription());
-			}
-			szCiv = gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_ONE_OF", szList.GetCString());
-		}
-		else
-		{
-			szCiv = gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_ANY_CIV");
-		}
-		if (kTrait.getFoundingVassalLeader() != NO_LEADER)
-		{
-			CvWString szLeader = getLinkText(GC.getLeaderHeadInfo((LeaderHeadTypes)kTrait.getFoundingVassalLeader()).getDescription());
-			szCiv = gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_LED_BY", szCiv.GetCString(), szLeader.GetCString());
-		}
+		CvWString szCiv = getFoundingCivText(kTrait.getFoundingVassalCivilization(), kTrait.getFoundingVassalCivilizationsVector(), kTrait.getFoundingVassalLeader());
 		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL", szCiv.GetCString(), std::max(1, kTrait.getFoundingVassalRange())));
-		if (kTrait.getFoundingVassalHandicap() != NO_HANDICAP)
-		{
-			CvWString szHandicapLine = L"  ";
-			szHandicapLine += gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_HANDICAP", GC.getHandicapInfo((HandicapTypes)kTrait.getFoundingVassalHandicap()).getTextKeyWide());
-			appendTraitLine(szHelpString, szHandicapLine);
-		}
+		appendFoundingHandicapLine(szHelpString, kTrait.getFoundingVassalHandicap());
 	}
+
+	// FoundingOverlord (added by this mod): "When founding the first city, ... joins the game far away and you become its
+	// vassal", the difficulty, then the war of independence and its golden ages
+	if (kTrait.isFoundingOverlord())
+	{
+		CvWString szCiv = getFoundingCivText(kTrait.getFoundingOverlordCivilization(), kTrait.getFoundingOverlordCivilizationsVector(), kTrait.getFoundingOverlordLeader());
+		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_FOUNDING_OVERLORD", szCiv.GetCString()));
+		appendFoundingHandicapLine(szHelpString, kTrait.getFoundingOverlordHandicap());
+		appendTraitLine(szHelpString, CvWString(L"  ") + gDLL->getText("TXT_KEY_TRAIT_INDEPENDENCE_WAR"));
+		appendTraitLine(szHelpString, CvWString(L"    ") + gDLL->getText("TXT_KEY_TRAIT_INDEPENDENCE_ELIMINATE", kTrait.getIndependenceEliminateGoldenAgePercent()));
+		appendTraitLine(szHelpString, CvWString(L"    ") + gDLL->getText("TXT_KEY_TRAIT_INDEPENDENCE_CITY", kTrait.getIndependenceCityGoldenAgePercent()));
+		appendTraitLine(szHelpString, CvWString(L"    ") + gDLL->getText("TXT_KEY_TRAIT_INDEPENDENCE_PEACE", kTrait.getIndependencePeaceGoldenAgePercent()));
+	}
+
+	// iTributeDemandTurns (added by this mod)
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_TRIBUTE_DEMAND_TURNS", kTrait.getTributeDemandTurns());
 
 	// bBarbarianAlly (added by this mod)
 	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_BARBARIAN_ALLY", kTrait.isBarbarianAlly());

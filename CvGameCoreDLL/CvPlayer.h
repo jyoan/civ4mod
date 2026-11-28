@@ -316,6 +316,22 @@ public:
 	bool isFoundingVassal() const;				// Exposed to Python (added by this mod): joined the team by FoundingVassal
 	void doFoundingVassal(CvCity* pCity);		// FoundingVassal of the traits (added by this mod)
 	CvPlot* findFoundingVassalPlot(const CvCity* pCity, int iRange, PlayerTypes eNewPlayer) const;
+	PlayerTypes findJoiningPlayerSlot() const;	// FoundingVassal and FoundingOverlord (added by this mod)
+	bool chooseJoiningCivAndLeader(CivilizationTypes eTagCiv, const std::vector<int>& aiCandidates, LeaderHeadTypes eTagLeader, CivilizationTypes& eCiv, LeaderHeadTypes& eLeader) const;
+	void initJoiningPlayer(PlayerTypes eNewPlayer, CivilizationTypes eCiv, LeaderHeadTypes eLeader, HandicapTypes eAIHandicap);
+	// FoundingOverlord of the traits (added by this mod, CvPlayerTraits.cpp)
+	void doFoundingOverlord(CvCity* pCity);
+	CvPlot* findFoundingOverlordPlot(const CvCity* pCity, PlayerTypes eNewPlayer) const;
+	PlayerTypes getFoundingOverlord() const;	// Exposed to Python: the master made by FoundingOverlord, or NO_PLAYER
+	int getIndependenceState() const;			// Exposed to Python: 0 none, 1 vassal, 2 war of independence, 3 over
+	void checkIndependenceWar();				// the master declares war when the vassal state is over
+	bool canDeclareIndependenceWar() const;		// Exposed to Python: the vassal may declare war on its master now
+	void startIndependenceWar(TeamTypes eOtherTeam);	// from CvTeam::declareWar
+	void endIndependenceWar(TeamTypes eOtherTeam, bool bEliminated);	// from CvTeam::makePeace and CvPlayer::setAlive
+	// iTributeDemandTurns of the traits (added by this mod)
+	int getTributeDemandTurns() const;			// Exposed to Python: scaled by the game speed
+	bool isTributeDemandWaiting() const;		// Exposed to Python
+	void setTributeDemanded();
 	bool isConquestStateReligion() const;		// Exposed to Python (added by this mod)
 	bool isConquestReligionBuilding(SpecialBuildingTypes eSpecialBuilding) const;	// Exposed to Python (added by this mod)
 	bool isNoTechCivic(CivicTypes eCivic) const;	// Exposed to Python (added by this mod)
@@ -1485,6 +1501,12 @@ protected:
 	bool m_bFoundingVassalDone;	// FoundingVassal of the traits was tried (added by this mod)
 	bool m_bFoundingVassal;		// this player joined the team of another one by FoundingVassal (added by this mod)
 	HandicapTypes m_eAIHandicap;	// the difficulty of the AI modifiers, NO_HANDICAP = the difficulty of the game (added by this mod)
+	bool m_bFoundingOverlordDone;	// FoundingOverlord of the traits was tried (added by this mod)
+	PlayerTypes m_eFoundingOverlord;	// the master made by FoundingOverlord (added by this mod)
+	int m_iIndependenceState;		// 0 none, 1 vassal of m_eFoundingOverlord, 2 war of independence, 3 over (added by this mod)
+	int m_iIndependenceWarTurn;		// the turn the war of independence began, -1 before (added by this mod)
+	int m_iLastTributeDemandTurn;	// the last turn an AI master demanded a resource, -1 never (iTributeDemandTurns, added by this mod)
+
 	bool m_bStrike;
 	bool m_bUpdatingTraitDependents;		// CvPlayer::updateTraitDependents is running (not saved; added by this mod)
 	bool m_bUpdatingConditionalTraits;		// CvPlayer::updateConditionalTraits is running (not saved; added by this mod)

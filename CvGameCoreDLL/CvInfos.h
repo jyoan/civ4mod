@@ -5048,6 +5048,18 @@ public:
 	int getFoundingVassalRange() const;				// Exposed to Python
 	int getNumFoundingVassalCivilizations() const;	// Exposed to Python: FoundingVassal/CivilizationTypes, the candidates
 	int getFoundingVassalCivilizations(int i) const;	// Exposed to Python
+	const std::vector<int>& getFoundingVassalCivilizationsVector() const;	// added by this mod
+	bool isFoundingOverlord() const;				// Exposed to Python: FoundingOverlord (added by this mod)
+	int getFoundingOverlordCivilization() const;	// Exposed to Python: NO_CIVILIZATION = chosen by the game
+	int getFoundingOverlordLeader() const;			// Exposed to Python: NO_LEADER = chosen by the game
+	int getFoundingOverlordHandicap() const;		// Exposed to Python: NO_HANDICAP = the difficulty of the game
+	int getNumFoundingOverlordCivilizations() const;	// Exposed to Python: FoundingOverlord/CivilizationTypes, the candidates
+	int getFoundingOverlordCivilizations(int i) const;	// Exposed to Python
+	const std::vector<int>& getFoundingOverlordCivilizationsVector() const;	// added by this mod
+	int getIndependencePeaceGoldenAgePercent() const;		// Exposed to Python: FoundingOverlord/iPeaceGoldenAgePercent
+	int getIndependenceCityGoldenAgePercent() const;		// Exposed to Python: FoundingOverlord/iCityGoldenAgePercent
+	int getIndependenceEliminateGoldenAgePercent() const;	// Exposed to Python: FoundingOverlord/iEliminateGoldenAgePercent
+	int getTributeDemandTurns() const;				// Exposed to Python: iTributeDemandTurns (added by this mod)
 	int getGoldInterestPercent() const;				// Exposed to Python
 	int getGoldInterestMax() const;					// Exposed to Python
 	int getPeaceAngerPerTurn() const;				// Exposed to Python
@@ -5483,6 +5495,20 @@ protected:
 	CvString m_szFoundingVassalHandicap;
 	std::vector<CvString> m_aszFoundingVassalCivilizations;	// FoundingVassal/CivilizationTypes, strings until readFoundingVassalTypes()
 	std::vector<int> m_aiFoundingVassalCivilizations;
+	bool m_bFoundingOverlord;				// FoundingOverlord (added by this mod)
+	int m_iFoundingOverlordCivilization;
+	int m_iFoundingOverlordLeader;
+	int m_iFoundingOverlordHandicap;
+	int m_iIndependencePeaceGoldenAgePercent;
+	int m_iIndependenceCityGoldenAgePercent;
+	int m_iIndependenceEliminateGoldenAgePercent;
+	CvString m_szFoundingOverlordCivilization;	// strings until readFoundingVassalTypes(), as FoundingVassal
+	CvString m_szFoundingOverlordLeader;
+	CvString m_szFoundingOverlordHandicap;
+	std::vector<CvString> m_aszFoundingOverlordCivilizations;
+	std::vector<int> m_aiFoundingOverlordCivilizations;
+	int m_iTributeDemandTurns;				// added by this mod
+
 	int m_iGoldInterestPercent;
 	int m_iGoldInterestMax;
 	int m_iPeaceAngerPerTurn;

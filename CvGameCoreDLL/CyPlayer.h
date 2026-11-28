@@ -488,6 +488,11 @@ public:
 	int getMaxCivicSlots();	// added by this mod (civic slots)
 	int getAIHandicapType();	// added by this mod (FoundingVassal)
 	bool isFoundingVassal();	// added by this mod (FoundingVassal)
+	int getFoundingOverlord();	// added by this mod (FoundingOverlord)
+	int getIndependenceState();	// added by this mod (FoundingOverlord)
+	bool canDeclareIndependenceWar();	// added by this mod (FoundingOverlord)
+	int getTributeDemandTurns();	// added by this mod (iTributeDemandTurns)
+	bool isTributeDemandWaiting();	// added by this mod (iTributeDemandTurns)
 	int getBuildingClassExtraCommerce(int /*BuildingClassTypes*/ eBuildingClass, int /*CommerceTypes*/ eCommerce);
 	void updateConditionalTraits();
 	int getNumUnitsKilled();

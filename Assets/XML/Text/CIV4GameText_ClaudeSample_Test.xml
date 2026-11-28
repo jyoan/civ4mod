@@ -1102,6 +1102,24 @@
 		<Japanese>&#26908; &#23646;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_OVERLORD</Tag>
+		<English>Test Trait (Overlord)</English>
+		<French>Test Trait (Overlord)</French>
+		<German>Test Trait (Overlord)</German>
+		<Italian>Test Trait (Overlord)</Italian>
+		<Spanish>Test Trait (Overlord)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#24535;&#21521;&#65288;&#23447;&#20027;&#22269;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_OVERLORD_SHORT</Tag>
+		<English>TOvl</English>
+		<French>TOvl</French>
+		<German>TOvl</German>
+		<Italian>TOvl</Italian>
+		<Spanish>TOvl</Spanish>
+		<Japanese>&#26908; &#23447;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_LEADER_TEST_VASSAL</Tag>
 		<English>Test Leader (Vassal)</English>
 		<French>Test Leader (Vassal)</French>
@@ -1109,6 +1127,15 @@
 		<Italian>Test Leader (Vassal)</Italian>
 		<Spanish>Test Leader (Vassal)</Spanish>
 		<Japanese>&#26908;&#35388;&#29992;&#25351;&#23566;&#32773;&#65288;&#23646;&#22269;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TEST_COLONY</Tag>
+		<English>Test Leader (Colony)</English>
+		<French>Test Leader (Colony)</French>
+		<German>Test Leader (Colony)</German>
+		<Italian>Test Leader (Colony)</Italian>
+		<Spanish>Test Leader (Colony)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#25351;&#23566;&#32773;&#65288;&#26893;&#27665;&#22320;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_ESPIONAGE_TEST_CITY_POISON_WATER</Tag>

@@ -4480,3 +4480,439 @@ bool CvPlayer::isUpgradeAnywhere(UnitCombatTypes eUnitCombat, bool bEnemyTerrito
 
 	return false;
 }
+
+// FoundingOverlord of the traits (added by this mod): the first trait of the player with FoundingOverlord, or NO_TRAIT
+static TraitTypes getFoundingOverlordTrait(const CvPlayer& kPlayer)
+{
+	int iI;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		if (GC.getTraitInfo((TraitTypes)iI).isFoundingOverlord() && kPlayer.hasTrait((TraitTypes)iI))
+		{
+			return (TraitTypes)iI;
+		}
+	}
+
+	return NO_TRAIT;
+}
+
+// FoundingOverlord of the traits (added by this mod): the starting plot of the master. Land that is passable, not owned,
+// without units and goody huts. Plots on other areas (continents) than the one of pCity with at least
+// FOUNDING_OVERLORD_MIN_AREA_TILES land tiles come first when there are some (no small islands). Among those plots, the
+// ones at least half as far from pCity as the farthest one are far enough, and the best of them is chosen: the farthest plot
+// alone was often a poor polar island. With eNewPlayer the value is its AI_foundValue as a starting location (plots without
+// a value are left out); with NO_PLAYER every plot has the same value and the farthest wins (a check that a plot exists,
+// and the fallback)
+static const int FOUNDING_OVERLORD_MIN_AREA_TILES = 20;
+
+CvPlot* CvPlayer::findFoundingOverlordPlot(const CvCity* pCity, PlayerTypes eNewPlayer) const
+{
+	std::vector<CvPlot*> apPlots;
+	std::vector<int> aiValues;
+	std::vector<int> aiDistances;
+	std::vector<bool> abOtherArea;
+	CvPlot* pLoopPlot;
+	CvPlot* pBestPlot;
+	bool bOtherArea;
+	bool bUseOtherArea;
+	int iValue;
+	int iDistance;
+	int iMaxDistance;
+	int iBestValue;
+	int iBestDistance;
+	int iI;
+
+	bUseOtherArea = false;
+
+	for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
+	{
+		pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
+
+		if (pLoopPlot->isWater() || pLoopPlot->isImpassable() || pLoopPlot->isOwned() || pLoopPlot->getNumUnits() > 0 || pLoopPlot->isGoody())
+		{
+			continue;
+		}
+
+		if (eNewPlayer == NO_PLAYER)
+		{
+			iValue = 1;
+		}
+		else
+		{
+			iValue = GET_PLAYER(eNewPlayer).AI_foundValue(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), -1, true);
+		}
+
+		if (iValue <= 0)
+		{
+			continue;
+		}
+
+		bOtherArea = (pLoopPlot->area() != pCity->area() && pLoopPlot->area()->getNumTiles() >= FOUNDING_OVERLORD_MIN_AREA_TILES);
+		bUseOtherArea = bUseOtherArea || bOtherArea;
+
+		apPlots.push_back(pLoopPlot);
+		aiValues.push_back(iValue);
+		aiDistances.push_back(plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE()));
+		abOtherArea.push_back(bOtherArea);
+	}
+
+	// The farthest candidate of the chosen group (the big other areas, or all the plots when they have none)
+	iMaxDistance = -1;
+	for (iI = 0; iI < (int)apPlots.size(); iI++)
+	{
+		if (!bUseOtherArea || abOtherArea[iI])
+		{
+			iMaxDistance = std::max(iMaxDistance, aiDistances[iI]);
+		}
+	}
+
+	if (iMaxDistance < 0)
+	{
+		return NULL;
+	}
+
+	pBestPlot = NULL;
+	iBestValue = 0;
+	iBestDistance = -1;
+
+	for (iI = 0; iI < (int)apPlots.size(); iI++)
+	{
+		if ((bUseOtherArea && !abOtherArea[iI]) || aiDistances[iI] * 2 < iMaxDistance)
+		{
+			continue;
+		}
+
+		iValue = aiValues[iI];
+		iDistance = aiDistances[iI];
+		if (iValue > iBestValue || (iValue == iBestValue && iDistance > iBestDistance))
+		{
+			iBestValue = iValue;
+			iBestDistance = iDistance;
+			pBestPlot = apPlots[iI];
+		}
+	}
+
+	return pBestPlot;
+}
+
+// FoundingOverlord of the traits (added by this mod): when the player founds its first city, an AI civilization joins the
+// game far away and the player becomes its vassal by a vassal agreement (so the player can cancel it after the peace treaty
+// length, as any vassal agreement). Once per player, with the first trait that has FoundingOverlord. Nothing happens with No
+// Vassal States, when no player slot is free, when no civilization or leader is left, or when no plot is found
+void CvPlayer::doFoundingOverlord(CvCity* pCity)
+{
+	CvPlot* pFallbackPlot;
+	CvPlot* pStartPlot;
+	PlayerTypes eNewPlayer;
+	CivilizationTypes eCiv;
+	LeaderHeadTypes eLeader;
+	TraitTypes eTrait;
+	TeamTypes eNewTeam;
+	bool bValid;
+	int iI, iJ;
+
+	if (m_bFoundingOverlordDone || pCity == NULL || isBarbarian() || isMinorCiv())
+	{
+		return;
+	}
+
+	eTrait = getFoundingOverlordTrait(*this);
+	if (eTrait == NO_TRAIT)
+	{
+		return;
+	}
+
+	m_bFoundingOverlordDone = true;
+
+	if (GC.getGameINLINE().isOption(GAMEOPTION_NO_VASSAL_STATES) || GET_TEAM(getTeam()).isAVassal())
+	{
+		return;
+	}
+
+	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
+
+	pFallbackPlot = findFoundingOverlordPlot(pCity, NO_PLAYER);
+	if (pFallbackPlot == NULL)
+	{
+		return;
+	}
+
+	eNewPlayer = findJoiningPlayerSlot();
+	if (eNewPlayer == NO_PLAYER)
+	{
+		return;
+	}
+
+	if (!chooseJoiningCivAndLeader((CivilizationTypes)kTrait.getFoundingOverlordCivilization(), kTrait.getFoundingOverlordCivilizationsVector(), (LeaderHeadTypes)kTrait.getFoundingOverlordLeader(), eCiv, eLeader))
+	{
+		return;
+	}
+
+	initJoiningPlayer(eNewPlayer, eCiv, eLeader, (HandicapTypes)kTrait.getFoundingOverlordHandicap());
+
+	CvPlayer& kNewPlayer = GET_PLAYER(eNewPlayer);
+	eNewTeam = kNewPlayer.getTeam();
+
+	// The free techs of the start of the game (as CvGame::initFreeState): of the difficulty, the eras before the start era and
+	// the civilization
+	for (iI = 0; iI < GC.getNumTechInfos(); iI++)
+	{
+		bValid = (GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).isFreeTechs(iI) || GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).isAIFreeTechs(iI));
+		bValid = bValid || (GC.getTechInfo((TechTypes)iI).getEra() < GC.getGameINLINE().getStartEra());
+		bValid = bValid || GC.getCivilizationInfo(eCiv).isCivilizationFreeTechs(iI);
+		if (bValid && !GET_TEAM(eNewTeam).isHasTech((TechTypes)iI))
+		{
+			GET_TEAM(eNewTeam).setHasTech((TechTypes)iI, true, NO_PLAYER, false, false);
+		}
+	}
+
+	pStartPlot = findFoundingOverlordPlot(pCity, eNewPlayer);
+	if (pStartPlot == NULL)
+	{
+		pStartPlot = pFallbackPlot;
+	}
+	kNewPlayer.setStartingPlot(pStartPlot, true);
+
+	GET_TEAM(getTeam()).meet(eNewTeam, false);
+
+	// The units: all the starting units of an AI at the difficulty of its AI modifiers, as for FoundingVassal
+	kNewPlayer.addStartingUnits();
+	kNewPlayer.doRandomBasicTraits();
+
+	// The vassal agreement, as for a colony (CvTeam::assignVassal: the vassal state and a saved deal that the vassal can cancel
+	// after the peace treaty length; a deal made through implementDeal would fail the trade checks for a human vassal)
+	GET_TEAM(eNewTeam).assignVassal(getTeam(), false);
+
+	if (GET_TEAM(getTeam()).isVassal(eNewTeam))
+	{
+		m_eFoundingOverlord = eNewPlayer;
+		m_iIndependenceState = 1;
+	}
+
+	// The message, to the players that know the new team
+	CvWString szMessage = gDLL->getText("TXT_KEY_MISC_FOUNDING_OVERLORD_JOINED", GC.getLeaderHeadInfo(eLeader).getTextKeyWide(), GC.getCivilizationInfo(eCiv).getShortDescriptionKey(), getNameKey());
+	for (iJ = 0; iJ < MAX_CIV_PLAYERS; iJ++)
+	{
+		if (GET_PLAYER((PlayerTypes)iJ).isAlive() && GET_TEAM(GET_PLAYER((PlayerTypes)iJ).getTeam()).isHasMet(eNewTeam))
+		{
+			gDLL->getInterfaceIFace()->addMessage((PlayerTypes)iJ, false, GC.getEVENT_MESSAGE_TIME(), szMessage, "AS2D_REVOLTEND", MESSAGE_TYPE_MAJOR_EVENT, ARTFILEMGR.getInterfaceArtInfo("INTERFACE_CITY_BAR_CAPITAL_TEXTURE")->getPath(), (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"), pStartPlot->getX_INLINE(), pStartPlot->getY_INLINE(), true, true);
+		}
+	}
+	GC.getGameINLINE().addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, getID(), szMessage, pStartPlot->getX_INLINE(), pStartPlot->getY_INLINE(), (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
+
+	GC.getGameINLINE().updateScore(true);
+}
+
+PlayerTypes CvPlayer::getFoundingOverlord() const
+{
+	return m_eFoundingOverlord;
+}
+
+int CvPlayer::getIndependenceState() const
+{
+	return m_iIndependenceState;
+}
+
+// FoundingOverlord of the traits (added by this mod): any end of the vassal state (a cancelled agreement, a refused demand,
+// a freed vassal) means the war of independence. The master declares war unless the war is already on. Called after a deal
+// is cancelled and at the start of the turn of the player
+void CvPlayer::checkIndependenceWar()
+{
+	if (m_iIndependenceState != 1 || m_eFoundingOverlord == NO_PLAYER || !isAlive())
+	{
+		return;
+	}
+
+	CvPlayer& kOverlord = GET_PLAYER(m_eFoundingOverlord);
+	if (!kOverlord.isAlive())
+	{
+		m_iIndependenceState = 3;
+		return;
+	}
+
+	TeamTypes eOverlordTeam = kOverlord.getTeam();
+	if (GET_TEAM(getTeam()).isVassal(eOverlordTeam))
+	{
+		return;
+	}
+
+	if (GET_TEAM(getTeam()).isAtWar(eOverlordTeam))
+	{
+		startIndependenceWar(eOverlordTeam);
+		return;
+	}
+
+	GET_TEAM(eOverlordTeam).declareWar(getTeam(), false, WARPLAN_TOTAL);
+}
+
+// FoundingOverlord of the traits (added by this mod): the player, still the vassal of its master, may declare war on it (the
+// war of independence, CvTeam::canChangeWarPeace) once it may cancel the vassal agreement: after the peace treaty length
+// (CvDeal::isCancelable of the deal with TRADE_VASSAL). Without that deal (cancelled in another way) it may at once
+bool CvPlayer::canDeclareIndependenceWar() const
+{
+	CvDeal* pLoopDeal;
+	CLLNode<TradeData>* pNode;
+	int iLoop;
+
+	if (m_iIndependenceState != 1 || m_eFoundingOverlord == NO_PLAYER || !GET_PLAYER(m_eFoundingOverlord).isAlive())
+	{
+		return false;
+	}
+
+	if (!GET_TEAM(getTeam()).isVassal(GET_PLAYER(m_eFoundingOverlord).getTeam()))
+	{
+		return false;
+	}
+
+	for (pLoopDeal = GC.getGameINLINE().firstDeal(&iLoop); pLoopDeal != NULL; pLoopDeal = GC.getGameINLINE().nextDeal(&iLoop))
+	{
+		if (!((pLoopDeal->getFirstPlayer() == getID() && pLoopDeal->getSecondPlayer() == m_eFoundingOverlord) || (pLoopDeal->getFirstPlayer() == m_eFoundingOverlord && pLoopDeal->getSecondPlayer() == getID())))
+		{
+			continue;
+		}
+
+		bool bVassalDeal = false;
+		for (pNode = pLoopDeal->headFirstTradesNode(); pNode != NULL; pNode = pLoopDeal->nextFirstTradesNode(pNode))
+		{
+			bVassalDeal = bVassalDeal || (pNode->m_data.m_eItemType == TRADE_VASSAL);
+		}
+		for (pNode = pLoopDeal->headSecondTradesNode(); pNode != NULL; pNode = pLoopDeal->nextSecondTradesNode(pNode))
+		{
+			bVassalDeal = bVassalDeal || (pNode->m_data.m_eItemType == TRADE_VASSAL);
+		}
+
+		if (bVassalDeal)
+		{
+			return pLoopDeal->isCancelable(getID());
+		}
+	}
+
+	return true;
+}
+
+// FoundingOverlord of the traits (added by this mod): a war between the team of the player and eOtherTeam began. When it is
+// the master of FoundingOverlord and the player was its vassal, the war of independence begins
+void CvPlayer::startIndependenceWar(TeamTypes eOtherTeam)
+{
+	if (m_iIndependenceState != 1 || m_eFoundingOverlord == NO_PLAYER || GET_PLAYER(m_eFoundingOverlord).getTeam() != eOtherTeam)
+	{
+		return;
+	}
+
+	m_iIndependenceState = 2;
+	m_iIndependenceWarTurn = GC.getGameINLINE().getGameTurn();
+
+	CvWString szMessage = gDLL->getText("TXT_KEY_MISC_INDEPENDENCE_WAR_BEGINS", GET_PLAYER(m_eFoundingOverlord).getCivilizationShortDescriptionKey());
+	gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(), szMessage, "AS2D_DECLAREWAR", MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"));
+}
+
+// FoundingOverlord of the traits (added by this mod): the war with eOtherTeam ends, by peace (CvTeam::makePeace, before the
+// war success is reset) or because the master is destroyed (bEliminated, CvPlayer::setAlive). Once per player: the golden
+// age of the result, in percent of the normal length (the values of the first trait with FoundingOverlord)
+// - the master destroyed while at war: iEliminateGoldenAgePercent
+// - peace while the player holds a city it took from the master in this war (not one it founded): iCityGoldenAgePercent
+// - peace while the war success of the team (CvTeamAI::AI_getWarSuccess) is higher than the one of the master: iPeaceGoldenAgePercent
+// - otherwise no golden age
+void CvPlayer::endIndependenceWar(TeamTypes eOtherTeam, bool bEliminated)
+{
+	CvCity* pLoopCity;
+	TraitTypes eTrait;
+	int iPercent;
+	int iLoop;
+	const char* szKey;
+
+	if (m_eFoundingOverlord == NO_PLAYER || GET_PLAYER(m_eFoundingOverlord).getTeam() != eOtherTeam)
+	{
+		return;
+	}
+
+	if (m_iIndependenceState == 1 && bEliminated)
+	{
+		m_iIndependenceState = 3;	// the master is gone before any war of independence
+		return;
+	}
+
+	if (m_iIndependenceState != 2)
+	{
+		return;
+	}
+
+	m_iIndependenceState = 3;
+
+	eTrait = getFoundingOverlordTrait(*this);
+	iPercent = 0;
+	szKey = "TXT_KEY_MISC_INDEPENDENCE_NO_GOLDEN_AGE";
+
+	if (bEliminated)
+	{
+		if (GET_TEAM(getTeam()).isAtWar(eOtherTeam))
+		{
+			iPercent = (eTrait != NO_TRAIT) ? GC.getTraitInfo(eTrait).getIndependenceEliminateGoldenAgePercent() : 0;
+			szKey = "TXT_KEY_MISC_INDEPENDENCE_ELIMINATE";
+		}
+	}
+	else
+	{
+		bool bHoldsCity = false;
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			if (pLoopCity->getPreviousOwner() == m_eFoundingOverlord && pLoopCity->getGameTurnAcquired() >= m_iIndependenceWarTurn && GET_PLAYER(pLoopCity->getOriginalOwner()).getTeam() != getTeam())
+			{
+				bHoldsCity = true;
+				break;
+			}
+		}
+
+		if (bHoldsCity)
+		{
+			iPercent = (eTrait != NO_TRAIT) ? GC.getTraitInfo(eTrait).getIndependenceCityGoldenAgePercent() : 0;
+			szKey = "TXT_KEY_MISC_INDEPENDENCE_CITY";
+		}
+		else if (GET_TEAM(getTeam()).AI_getWarSuccess(eOtherTeam) > GET_TEAM(eOtherTeam).AI_getWarSuccess(getTeam()))
+		{
+			iPercent = (eTrait != NO_TRAIT) ? GC.getTraitInfo(eTrait).getIndependencePeaceGoldenAgePercent() : 0;
+			szKey = "TXT_KEY_MISC_INDEPENDENCE_PEACE";
+		}
+	}
+
+	if (iPercent <= 0)
+	{
+		szKey = "TXT_KEY_MISC_INDEPENDENCE_NO_GOLDEN_AGE";
+	}
+
+	CvWString szMessage = gDLL->getText(szKey, iPercent);
+	gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(), szMessage, "AS2D_WELOVEKING", MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
+
+	if (iPercent > 0)
+	{
+		changeGoldenAgeTurns(std::max(1, (getGoldenAgeLength() * iPercent) / 100));
+	}
+}
+
+// iTributeDemandTurns of the traits (added by this mod): the turns between two demands of resources by an AI master, scaled
+// by the growth percent of the game speed (0 = no limit)
+int CvPlayer::getTributeDemandTurns() const
+{
+	int iTurns = sumTraitValues(&CvTraitInfo::getTributeDemandTurns);
+
+	if (iTurns > 0)
+	{
+		iTurns = std::max(1, (iTurns * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getGrowthPercent()) / 100);
+	}
+
+	return iTurns;
+}
+
+// An AI master does not demand a resource from this player now (CvPlayerAI::AI_doDiplo)
+bool CvPlayer::isTributeDemandWaiting() const
+{
+	int iTurns = getTributeDemandTurns();
+
+	return (iTurns > 0 && m_iLastTributeDemandTurn >= 0 && GC.getGameINLINE().getGameTurn() < m_iLastTributeDemandTurn + iTurns);
+}
+
+void CvPlayer::setTributeDemanded()
+{
+	m_iLastTributeDemandTurn = GC.getGameINLINE().getGameTurn();
+}
