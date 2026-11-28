@@ -138,6 +138,24 @@
 - キャッシュの形式: `CvImprovementInfo` `uiFlag=2`（`CvBuildInfo` にストリーム版はない）。
 - Python は `CyPlayer.canBuildByTraits(iBuild)`、`CvBuildInfo.getNumPrereqOrTraits()` / `getPrereqOrTraits(i)` / `getReplacedBuild()` / `getUnitsFromBuild()`、`CvImprovementInfo.getReplacedImprovement()`
 
+### `BuildInfo/RiverEdge`・`RiverFeature`・`iMaxPlotRiverEdges`
+
+- ファイル: `CIV4BuildInfos.xml`
+- 川（運河）を掘る作業。完成すると、労働者のいるタイルの `RiverEdge` の辺（`DIRECTION_NORTH`・`_EAST`・`_SOUTH`・`_WEST`）に川ができる（`CvPlot::digRiver`）。施設ではないので、農地などと両立する。
+- 作業できる条件（`CvPlot::canDigRiver`。満たさない作業はボタンを出さない。前提技術がまだなら、ほかの作業と同じく灰色で出る）:
+  - 辺の両側が陸のタイルで、まだ川がない
+  - 両側とも作業するプレイヤーのチームの領土
+  - 辺の両端（角）のどちらかが、既存の川の辺か湖に接している（海は数えない）
+  - `iMaxPlotRiverEdges`（0 は制限なし）: 掘ったあとに、両側のどちらのタイルも川の辺がこの数を超えない（自然の川も数える）。3 にすると、どのタイルも 1 辺は渡河なしで攻められる（都市を堀で囲めない。空き地を囲んでから都市を建てることもできない）。もともと自然の川で囲まれたタイルはそのまま
+- 流れの向き: 湖のある角、なければ川が流れ出る（か海に達する）角、なければ川のある角に向かう。両端とも同じなら北か西の角。
+- `RiverFeature`（例: `FEATURE_FLOOD_PLAINS`）: 辺の両側のタイルのうち、そのチームの領土で、地形の特徴がなく、その特徴を置ける（`canHaveFeature`。氾濫原なら平地の砂漠）タイルに置く。施設が両立しなくなるタイルには置かない。
+- 掘ったあと: 灌漑（`CvMap::updateIrrigated`）、近くの都市の真水の健康、交易網（`CvGame::updatePlotGroups`）を更新する。渡河の攻撃の不利、川の商業、川を上る船（`bRiverNavigation`）も自然の川と同じ。
+- 4 方向は 4 つの作業として書く。労働者に持たせるには `UnitsFromBuild`（例: `BUILD_ROAD`）、使える文明を絞るには `PrereqOrTraits` を使う。
+- ボタンの説明に「この辺に川を掘る」と `RiverFeature` の行を足した（`CvDLLWidgetData`。`TXT_KEY_ACTION_DIG_RIVER`・`_FEATURE`）。
+- AI の労働者は掘らない（AI の段階で対応）。
+- キャッシュ: `CvBuildInfo` にストリーム版はない。
+- Python は `CvBuildInfo.getRiverEdge()` / `getRiverFeature()` / `getMaxPlotRiverEdges()`、`CyPlot.isRiverEdge(iDirection)`
+
 ## 社会制度・資源・イベント
 
 ### `SpecialistInfo/iHappiness`、`iHealth`

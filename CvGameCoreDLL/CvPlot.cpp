@@ -1602,6 +1602,296 @@ int CvPlot::getRiverEdgeCount() const
 }
 
 
+// Digging rivers (RiverEdge of a build, added by this mod). A plot keeps the river flags of its south edge (isNOfRiver)
+// and east edge (isWOfRiver); the north and west edges belong to the plots to the north and west.
+bool CvPlot::isRiverEdge(DirectionTypes eEdge) const
+{
+	CvPlot* pPlot;
+
+	switch (eEdge)
+	{
+	case DIRECTION_NORTH:
+		pPlot = plotDirection(getX_INLINE(), getY_INLINE(), DIRECTION_NORTH);
+		return (pPlot != NULL && pPlot->isNOfRiver());
+
+	case DIRECTION_EAST:
+		return isWOfRiver();
+
+	case DIRECTION_SOUTH:
+		return isNOfRiver();
+
+	case DIRECTION_WEST:
+		pPlot = plotDirection(getX_INLINE(), getY_INLINE(), DIRECTION_WEST);
+		return (pPlot != NULL && pPlot->isWOfRiver());
+
+	default:
+		break;
+	}
+
+	return false;
+}
+
+
+// How well a new river edge may flow into a corner (the southeast corner of pCornerPlot): 0 the corner touches no river
+// edge and no lake, 1 it touches a river edge, 2 a river flows away from it (or reaches the sea there), 3 it touches a lake
+static int getRiverCornerValue(const CvPlot* pCornerPlot)
+{
+	const CvPlot* pNorthEastPlot;
+	const CvPlot* pSouthWestPlot;
+	const CvPlot* pSouthEastPlot;
+	const CvPlot* apPlots[4];
+	bool bRiver;
+	bool bOutlet;
+	bool bSea;
+	int iI;
+
+	if (pCornerPlot == NULL)
+	{
+		return 0;
+	}
+
+	pNorthEastPlot = plotDirection(pCornerPlot->getX_INLINE(), pCornerPlot->getY_INLINE(), DIRECTION_EAST);
+	pSouthWestPlot = plotDirection(pCornerPlot->getX_INLINE(), pCornerPlot->getY_INLINE(), DIRECTION_SOUTH);
+	pSouthEastPlot = plotDirection(pCornerPlot->getX_INLINE(), pCornerPlot->getY_INLINE(), DIRECTION_SOUTHEAST);
+
+	apPlots[0] = pCornerPlot;
+	apPlots[1] = pNorthEastPlot;
+	apPlots[2] = pSouthWestPlot;
+	apPlots[3] = pSouthEastPlot;
+
+	bSea = false;
+	for (iI = 0; iI < 4; iI++)
+	{
+		if (apPlots[iI] != NULL && apPlots[iI]->isWater())
+		{
+			if (apPlots[iI]->isLake())
+			{
+				return 3;
+			}
+			bSea = true;
+		}
+	}
+
+	// The four edges meeting at the corner: west (the south edge of pCornerPlot), north (its east edge), east (the south
+	// edge of the plot to the east) and south (the east edge of the plot to the south)
+	bRiver = false;
+	bOutlet = false;
+	if (pCornerPlot->isNOfRiver())
+	{
+		bRiver = true;
+		bOutlet = bOutlet || (pCornerPlot->getRiverWEDirection() == CARDINALDIRECTION_WEST);
+	}
+	if (pCornerPlot->isWOfRiver())
+	{
+		bRiver = true;
+		bOutlet = bOutlet || (pCornerPlot->getRiverNSDirection() == CARDINALDIRECTION_NORTH);
+	}
+	if (pNorthEastPlot != NULL && pNorthEastPlot->isNOfRiver())
+	{
+		bRiver = true;
+		bOutlet = bOutlet || (pNorthEastPlot->getRiverWEDirection() == CARDINALDIRECTION_EAST);
+	}
+	if (pSouthWestPlot != NULL && pSouthWestPlot->isWOfRiver())
+	{
+		bRiver = true;
+		bOutlet = bOutlet || (pSouthWestPlot->getRiverNSDirection() == CARDINALDIRECTION_SOUTH);
+	}
+
+	if (!bRiver)
+	{
+		return 0;
+	}
+
+	return ((bOutlet || bSea) ? 2 : 1);
+}
+
+
+// The two corners of the edge eEdge of pPlot, as the plots with the corner at their southeast, and the flow of a river
+// on the edge toward each corner
+static void getRiverEdgeCorners(const CvPlot* pPlot, DirectionTypes eEdge, CvPlot** ppCorner1, CardinalDirectionTypes* peFlow1, CvPlot** ppCorner2, CardinalDirectionTypes* peFlow2)
+{
+	int iX = pPlot->getX_INLINE();
+	int iY = pPlot->getY_INLINE();
+
+	switch (eEdge)
+	{
+	case DIRECTION_NORTH:
+		*ppCorner1 = plotDirection(iX, iY, DIRECTION_NORTHWEST);
+		*peFlow1 = CARDINALDIRECTION_WEST;
+		*ppCorner2 = plotDirection(iX, iY, DIRECTION_NORTH);
+		*peFlow2 = CARDINALDIRECTION_EAST;
+		break;
+
+	case DIRECTION_EAST:
+		*ppCorner1 = plotDirection(iX, iY, DIRECTION_NORTH);
+		*peFlow1 = CARDINALDIRECTION_NORTH;
+		*ppCorner2 = GC.getMapINLINE().plotINLINE(iX, iY);
+		*peFlow2 = CARDINALDIRECTION_SOUTH;
+		break;
+
+	case DIRECTION_SOUTH:
+		*ppCorner1 = plotDirection(iX, iY, DIRECTION_WEST);
+		*peFlow1 = CARDINALDIRECTION_WEST;
+		*ppCorner2 = GC.getMapINLINE().plotINLINE(iX, iY);
+		*peFlow2 = CARDINALDIRECTION_EAST;
+		break;
+
+	case DIRECTION_WEST:
+		*ppCorner1 = plotDirection(iX, iY, DIRECTION_NORTHWEST);
+		*peFlow1 = CARDINALDIRECTION_NORTH;
+		*ppCorner2 = plotDirection(iX, iY, DIRECTION_WEST);
+		*peFlow2 = CARDINALDIRECTION_SOUTH;
+		break;
+
+	default:
+		*ppCorner1 = NULL;
+		*peFlow1 = NO_CARDINALDIRECTION;
+		*ppCorner2 = NULL;
+		*peFlow2 = NO_CARDINALDIRECTION;
+		break;
+	}
+}
+
+
+// The build may dig its river edge here: both plots of the edge are land of eTeam without a river on the edge, neither
+// would have more river edges than iMaxPlotRiverEdges, and a corner of the edge touches a river edge or a lake
+bool CvPlot::canDigRiver(BuildTypes eBuild, TeamTypes eTeam) const
+{
+	CvPlot* pOtherPlot;
+	CvPlot* pCorner1;
+	CvPlot* pCorner2;
+	CardinalDirectionTypes eFlow1;
+	CardinalDirectionTypes eFlow2;
+	DirectionTypes eEdge;
+	int iMaxEdges;
+
+	eEdge = (DirectionTypes)GC.getBuildInfo(eBuild).getRiverEdge();
+	if (eEdge == NO_DIRECTION || eTeam == NO_TEAM)
+	{
+		return false;
+	}
+
+	pOtherPlot = plotDirection(getX_INLINE(), getY_INLINE(), eEdge);
+	if (pOtherPlot == NULL || isWater() || pOtherPlot->isWater())
+	{
+		return false;
+	}
+
+	if (getTeam() != eTeam || pOtherPlot->getTeam() != eTeam)
+	{
+		return false;
+	}
+
+	if (isRiverEdge(eEdge))
+	{
+		return false;
+	}
+
+	iMaxEdges = GC.getBuildInfo(eBuild).getMaxPlotRiverEdges();
+	if (iMaxEdges > 0)
+	{
+		if (getRiverEdgeCount() >= iMaxEdges || pOtherPlot->getRiverEdgeCount() >= iMaxEdges)
+		{
+			return false;
+		}
+	}
+
+	getRiverEdgeCorners(this, eEdge, &pCorner1, &eFlow1, &pCorner2, &eFlow2);
+	return (getRiverCornerValue(pCorner1) > 0 || getRiverCornerValue(pCorner2) > 0);
+}
+
+
+// Digs the river edge of the build (when the build is finished): it flows toward the better corner (a lake, then a river
+// flowing away, then any river). The plots of the edge owned by eTeam get RiverFeature where it can be.
+void CvPlot::digRiver(BuildTypes eBuild, TeamTypes eTeam)
+{
+	CvPlot* pOtherPlot;
+	CvPlot* pCorner1;
+	CvPlot* pCorner2;
+	CvPlot* apPlots[2];
+	CvPlot* pLoopPlot;
+	CvCity* pLoopCity;
+	CardinalDirectionTypes eFlow1;
+	CardinalDirectionTypes eFlow2;
+	CardinalDirectionTypes eFlow;
+	DirectionTypes eEdge;
+	FeatureTypes eFeature;
+	ImprovementTypes eImprovement;
+	int iDX, iDY;
+	int iI;
+
+	eEdge = (DirectionTypes)GC.getBuildInfo(eBuild).getRiverEdge();
+	pOtherPlot = (eEdge != NO_DIRECTION) ? plotDirection(getX_INLINE(), getY_INLINE(), eEdge) : NULL;
+	if (pOtherPlot == NULL || isRiverEdge(eEdge))
+	{
+		return;
+	}
+
+	getRiverEdgeCorners(this, eEdge, &pCorner1, &eFlow1, &pCorner2, &eFlow2);
+	eFlow = (getRiverCornerValue(pCorner2) > getRiverCornerValue(pCorner1)) ? eFlow2 : eFlow1;
+
+	switch (eEdge)
+	{
+	case DIRECTION_NORTH:
+		pOtherPlot->setNOfRiver(true, eFlow);
+		break;
+	case DIRECTION_EAST:
+		setWOfRiver(true, eFlow);
+		break;
+	case DIRECTION_SOUTH:
+		setNOfRiver(true, eFlow);
+		break;
+	case DIRECTION_WEST:
+		pOtherPlot->setWOfRiver(true, eFlow);
+		break;
+	default:
+		break;
+	}
+
+	eFeature = (FeatureTypes)GC.getBuildInfo(eBuild).getRiverFeature();
+	if (eFeature != NO_FEATURE)
+	{
+		apPlots[0] = this;
+		apPlots[1] = pOtherPlot;
+		for (iI = 0; iI < 2; iI++)
+		{
+			if (apPlots[iI]->getFeatureType() == NO_FEATURE && apPlots[iI]->getTeam() == eTeam && apPlots[iI]->canHaveFeature(eFeature))
+			{
+				apPlots[iI]->setFeatureType(eFeature);
+
+				// An improvement that cannot stay with the feature keeps the plot as it was
+				eImprovement = apPlots[iI]->getImprovementType();
+				if (eImprovement != NO_IMPROVEMENT && !apPlots[iI]->canHaveImprovement(eImprovement, eTeam))
+				{
+					apPlots[iI]->setFeatureType(NO_FEATURE);
+				}
+			}
+		}
+	}
+
+	// Fresh water: irrigation, the health of nearby cities and the trade network along rivers
+	GC.getMapINLINE().updateIrrigated();
+
+	for (iDX = -2; iDX <= 2; iDX++)
+	{
+		for (iDY = -2; iDY <= 2; iDY++)
+		{
+			pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+			if (pLoopPlot != NULL)
+			{
+				pLoopCity = pLoopPlot->getPlotCity();
+				if (pLoopCity != NULL)
+				{
+					pLoopCity->updateFreshWaterHealth();
+				}
+			}
+		}
+	}
+
+	GC.getGameINLINE().updatePlotGroups();
+}
+
+
 // A ship sailing up a river (bRiverNavigation, added by this mod) may come to this land plot by a river from the adjacent
 // pFromPlot: from the sea (the mouth of the river), or from a land plot along the river (as the trade network,
 // isRiverConnection) or across it
@@ -2706,6 +2996,17 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 			{
 				return false;
 			}
+		}
+
+		bValid = true;
+	}
+
+	// RiverEdge (added by this mod): a build that cannot dig here is not shown at all
+	if (GC.getBuildInfo(eBuild).getRiverEdge() != NO_DIRECTION)
+	{
+		if (!canDigRiver(eBuild, GET_PLAYER(ePlayer).getTeam()))
+		{
+			return false;
 		}
 
 		bValid = true;
@@ -8429,6 +8730,12 @@ bool CvPlot::changeBuildProgress(BuildTypes eBuild, int iChange, TeamTypes eTeam
 			if (GC.getBuildInfo(eBuild).getRoute() != NO_ROUTE)
 			{
 				setRouteType((RouteTypes)GC.getBuildInfo(eBuild).getRoute(), true);
+			}
+
+			// RiverEdge (added by this mod)
+			if (GC.getBuildInfo(eBuild).getRiverEdge() != NO_DIRECTION)
+			{
+				digRiver(eBuild, eTeam);
 			}
 
 			// The improvement is already set: a feature kept by the owner of the plot stays under it (added by this mod)

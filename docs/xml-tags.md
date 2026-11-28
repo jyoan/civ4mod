@@ -17,7 +17,7 @@
 | `docs/tags/promotion-combat.md` | 昇進: 戦闘力（相手・場所・状態による %。かつての宗主国の記録も） |
 | `docs/tags/spell.md` | 呪文 |
 | `docs/tags/building-civ.md` | 建物・文明 |
-| `docs/tags/improvement-civic.md` | 施設・作業、社会制度・資源・イベント・生産の種類・プロジェクト（ユニットの Python フック `PyOnCreated`・`PyOnDeath` も） |
+| `docs/tags/improvement-civic.md` | 施設・作業（川を掘る作業 `RiverEdge` も）、社会制度・資源・イベント・生産の種類・プロジェクト（ユニットの Python フック `PyOnCreated`・`PyOnDeath` も） |
 | `docs/tags/unit.md` | ユニット（前提・駐留・アップグレードの割引・傑作の反乱の期間） |
 | `docs/tags/corporation.md` | 企業（`PrereqOrTraits`） |
 | `docs/tags/misc.md` | ゲームオプション、タグのない機能（地域区分など）、志向の付け外しの仕組み、ゲームルール（`GlobalDefinesAlt.xml`）、BtS 本体の修正（Unofficial Patch を含む）、画面の表示の追加、この Mod で追加した志向 |

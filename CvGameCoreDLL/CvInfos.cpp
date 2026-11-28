@@ -15125,6 +15125,9 @@ m_bKill(false),
 m_iReplacedBuild(NO_BUILD),
 m_bCivilizationUnique(false),
 m_iUnitsFromBuild(NO_BUILD),
+m_iRiverEdge(NO_DIRECTION),
+m_iRiverFeature(NO_FEATURE),
+m_iMaxPlotRiverEdges(0),
 m_paiFeatureTech(NULL),
 m_paiFeatureTime(NULL),
 m_paiFeatureProduction(NULL),
@@ -15229,6 +15232,23 @@ int CvBuildInfo::getUnitsFromBuild() const
 	return m_iUnitsFromBuild;
 }
 
+// The edge of the worker's plot (DIRECTION_NORTH, _EAST, _SOUTH or _WEST) where the build digs a river, or NO_DIRECTION
+int CvBuildInfo::getRiverEdge() const
+{
+	return m_iRiverEdge;
+}
+
+int CvBuildInfo::getRiverFeature() const
+{
+	return m_iRiverFeature;
+}
+
+// No plot gets more river edges than this from the build (0: no limit)
+int CvBuildInfo::getMaxPlotRiverEdges() const
+{
+	return m_iMaxPlotRiverEdges;
+}
+
 // Arrays
 
 int CvBuildInfo::getFeatureTech(int i) const
@@ -15287,6 +15307,22 @@ bool CvBuildInfo::read(CvXMLLoadUtility* pXML)
 	m_iReplacedBuild = pXML->FindInInfoClass(szTextVal);
 	pXML->GetChildXmlValByName(szTextVal, "UnitsFromBuild");
 	m_iUnitsFromBuild = pXML->FindInInfoClass(szTextVal);
+
+	// RiverEdge, RiverFeature and iMaxPlotRiverEdges (added by this mod). Only the four cardinal directions are valid.
+	pXML->GetChildXmlValByName(szTextVal, "RiverEdge");
+	m_iRiverEdge = NO_DIRECTION;
+	if (szTextVal.GetLength() > 0 && szTextVal != "NONE")
+	{
+		m_iRiverEdge = GC.getTypesEnum(szTextVal);
+		if (m_iRiverEdge != DIRECTION_NORTH && m_iRiverEdge != DIRECTION_EAST && m_iRiverEdge != DIRECTION_SOUTH && m_iRiverEdge != DIRECTION_WEST)
+		{
+			FAssertMsg(false, "RiverEdge must be DIRECTION_NORTH, DIRECTION_EAST, DIRECTION_SOUTH or DIRECTION_WEST");
+			m_iRiverEdge = NO_DIRECTION;
+		}
+	}
+	pXML->GetChildXmlValByName(szTextVal, "RiverFeature");
+	m_iRiverFeature = pXML->FindInInfoClass(szTextVal);
+	pXML->GetChildXmlValByName(&m_iMaxPlotRiverEdges, "iMaxPlotRiverEdges");
 
 	pXML->SetFeatureStruct(&m_paiFeatureTech, &m_paiFeatureTime, &m_paiFeatureProduction, &m_pabFeatureRemove);
 

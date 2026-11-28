@@ -65,6 +65,9 @@
 	</ElementType>
 	<ElementType name="ReplacedBuild" content="textOnly"/>
 	<ElementType name="UnitsFromBuild" content="textOnly"/>
+	<ElementType name="RiverEdge" content="textOnly"/>
+	<ElementType name="RiverFeature" content="textOnly"/>
+	<ElementType name="iMaxPlotRiverEdges" content="textOnly" dt:type="int"/>
 	<ElementType name="BuildInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -87,6 +90,9 @@
 		<element type="PrereqOrTraits" minOccurs="0"/>
 		<element type="ReplacedBuild" minOccurs="0"/>
 		<element type="UnitsFromBuild" minOccurs="0"/>
+		<element type="RiverEdge" minOccurs="0"/>
+		<element type="RiverFeature" minOccurs="0"/>
+		<element type="iMaxPlotRiverEdges" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="BuildInfos" content="eltOnly">
 		<element type="BuildInfo" maxOccurs="*"/>

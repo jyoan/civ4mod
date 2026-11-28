@@ -2597,6 +2597,18 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 					}
 				}
 
+				// RiverEdge and RiverFeature (added by this mod)
+				if (GC.getBuildInfo(eBuild).getRiverEdge() != NO_DIRECTION)
+				{
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_ACTION_DIG_RIVER"));
+					if (GC.getBuildInfo(eBuild).getRiverFeature() != NO_FEATURE)
+					{
+						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_ACTION_DIG_RIVER_FEATURE", GC.getFeatureInfo((FeatureTypes)GC.getBuildInfo(eBuild).getRiverFeature()).getTextKeyWide()));
+					}
+				}
+
 				bValid = false;
 
 				pSelectedUnitNode = gDLL->getInterfaceIFace()->headSelectionListNode();

@@ -254,6 +254,12 @@
 - 作業時間 300（砦は 1000）、ホットキーなし。
 - 前提技術は数学のまま
 
+## `BUILD_TEST_CANAL_NORTH`・`_EAST`・`_SOUTH`・`_WEST`（検証用運河（北の辺）など）
+
+- 新規。前提の志向 `TRAIT_TEST`、`UnitsFromBuild` が道路の建設（労働者ならどれでも）。
+- `RiverEdge` がそれぞれの方向、`RiverFeature` が氾濫原、`iMaxPlotRiverEdges` 3。
+- 前提技術なし、作業時間 100（エジプト用は工学・1000 の予定）、ホットキーなし。ボタンは農場の仮のもの
+
 ## `EVENTTRIGGER_TEST_TRAIT` / `EVENT_TEST_TRAIT`（検証用志向の固有イベント）
 
 - 複製元: 森林火災

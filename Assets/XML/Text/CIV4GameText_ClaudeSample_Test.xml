@@ -472,6 +472,42 @@
 		<Japanese>[LINK=IMPROVEMENT_TEST_TERRACE]&#26908;&#35388;&#29992;&#26045;&#35373;&#65288;&#26842;&#30000;&#65289;[\LINK]&#12398;&#24314;&#35373;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_CANAL_NORTH</Tag>
+		<English>Test Canal (North Edge)</English>
+		<French>Test Canal (North Edge)</French>
+		<German>Test Canal (North Edge)</German>
+		<Italian>Test Canal (North Edge)</Italian>
+		<Spanish>Test Canal (North Edge)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#36939;&#27827;&#65288;&#21271;&#12398;&#36794;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_CANAL_EAST</Tag>
+		<English>Test Canal (East Edge)</English>
+		<French>Test Canal (East Edge)</French>
+		<German>Test Canal (East Edge)</German>
+		<Italian>Test Canal (East Edge)</Italian>
+		<Spanish>Test Canal (East Edge)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#36939;&#27827;&#65288;&#26481;&#12398;&#36794;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_CANAL_SOUTH</Tag>
+		<English>Test Canal (South Edge)</English>
+		<French>Test Canal (South Edge)</French>
+		<German>Test Canal (South Edge)</German>
+		<Italian>Test Canal (South Edge)</Italian>
+		<Spanish>Test Canal (South Edge)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#36939;&#27827;&#65288;&#21335;&#12398;&#36794;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILD_TEST_CANAL_WEST</Tag>
+		<English>Test Canal (West Edge)</English>
+		<French>Test Canal (West Edge)</French>
+		<German>Test Canal (West Edge)</German>
+		<Italian>Test Canal (West Edge)</Italian>
+		<Spanish>Test Canal (West Edge)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#36939;&#27827;&#65288;&#35199;&#12398;&#36794;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_EVENT_TRIGGER_TEST_TRAIT</Tag>
 		<English>A test event of the test trait.</English>
 		<French>A test event of the test trait.</French>
