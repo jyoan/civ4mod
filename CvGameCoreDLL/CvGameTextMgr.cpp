@@ -12060,6 +12060,9 @@ void CvGameTextMgr::setCorporationHelp(CvWStringBuffer &szBuffer, CorporationTyp
 		szBuffer.append(CvWString::format(SETCOLR L"%s" ENDCOLR , TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), kCorporation.getDescription()));
 	}
 
+	// PrereqOrTraits (added by this mod): "Requires Industrious or ..."
+	buildPrereqOrTraitsString(szBuffer, kCorporation.getPrereqOrTraitsVector());
+
 	szTempBuffer.clear();
 	for (int iI = 0; iI < NUM_YIELD_TYPES; ++iI)
 	{
@@ -14549,6 +14552,15 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 					iBaseModifier += iTraitMod;
 				}
 			}
+		}
+
+		// CityPlotBuildingProductionModifiers of the traits (added by this mod)
+		int iCityPlotBuildingMod = city.getCityPlotBuildingProductionModifier(eBuilding);
+		if (0 != iCityPlotBuildingMod)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PROD_CITY_PLOTS", iCityPlotBuildingMod));
+			szBuffer.append(NEWLINE);
+			iBaseModifier += iCityPlotBuildingMod;
 		}
 
 		// Buildings the capital has (iCapitalBuildingProductionModifier of traits, added by this mod)

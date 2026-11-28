@@ -383,6 +383,27 @@
 			</SpecialBuildingNotRequireds>
 			<bOtherReligionsToCapital>1</bOtherReligionsToCapital>
 			<bNoForeignCultureAnger>1</bNoForeignCultureAnger>
+			<CityPlotBuildingProductionModifiers>
+				<CityPlotBuildingProductionModifier>
+					<TerrainType>TERRAIN_HILL</TerrainType>
+					<bReligiousBuildings>1</bReligiousBuildings>
+					<iProductionModifier>10</iProductionModifier>
+				</CityPlotBuildingProductionModifier>
+				<CityPlotBuildingProductionModifier>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<bWorldWonders>1</bWorldWonders>
+					<iProductionModifier>5</iProductionModifier>
+				</CityPlotBuildingProductionModifier>
+			</CityPlotBuildingProductionModifiers>
+			<iWonderGreatPeopleTurns>10</iWonderGreatPeopleTurns>
+			<iWonderProductionCulturePercent>50</iWonderProductionCulturePercent>
+			<FeatureConversions>
+				<FeatureConversion>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<ConvertFeatureType>FEATURE_JUNGLE</ConvertFeatureType>
+					<iConversionChance>500</iConversionChance>
+				</FeatureConversion>
+			</FeatureConversions>
 			<iDefenseCombatPercent>10</iDefenseCombatPercent>
 			<AttitudeCombatPercents>
 				<AttitudeCombatPercent>

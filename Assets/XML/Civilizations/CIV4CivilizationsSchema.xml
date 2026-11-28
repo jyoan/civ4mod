@@ -488,6 +488,32 @@
 	</ElementType>
 	<ElementType name="bOtherReligionsToCapital" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoForeignCultureAnger" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bReligiousBuildings" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bWorldWonders" content="textOnly" dt:type="boolean"/>
+	<ElementType name="CityPlotBuildingProductionModifier" content="eltOnly">
+		<element type="TerrainType" minOccurs="0"/>
+		<element type="FeatureType" minOccurs="0"/>
+		<element type="BuildingClassType" minOccurs="0"/>
+		<element type="SpecialBuildingType" minOccurs="0"/>
+		<element type="bReligiousBuildings" minOccurs="0"/>
+		<element type="bWorldWonders" minOccurs="0"/>
+		<element type="iProductionModifier"/>
+	</ElementType>
+	<ElementType name="CityPlotBuildingProductionModifiers" content="eltOnly">
+		<element type="CityPlotBuildingProductionModifier" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iWonderGreatPeopleTurns" content="textOnly" dt:type="int"/>
+	<ElementType name="iWonderProductionCulturePercent" content="textOnly" dt:type="int"/>
+	<ElementType name="ConvertFeatureType" content="textOnly"/>
+	<ElementType name="iConversionChance" content="textOnly" dt:type="int"/>
+	<ElementType name="FeatureConversion" content="eltOnly">
+		<element type="FeatureType"/>
+		<element type="ConvertFeatureType"/>
+		<element type="iConversionChance"/>
+	</ElementType>
+	<ElementType name="FeatureConversions" content="eltOnly">
+		<element type="FeatureConversion" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="PyOnOtherReligionFounded" content="textOnly"/>
 	<ElementType name="SpecialBuildingProductionModifier" content="eltOnly">
 		<element type="SpecialBuildingType"/>
@@ -1312,6 +1338,10 @@
 		<element type="SpecialBuildingNotRequireds" minOccurs="0"/>
 		<element type="bOtherReligionsToCapital" minOccurs="0"/>
 		<element type="bNoForeignCultureAnger" minOccurs="0"/>
+		<element type="CityPlotBuildingProductionModifiers" minOccurs="0"/>
+		<element type="iWonderGreatPeopleTurns" minOccurs="0"/>
+		<element type="iWonderProductionCulturePercent" minOccurs="0"/>
+		<element type="FeatureConversions" minOccurs="0"/>
 		<element type="iDefenseCombatPercent" minOccurs="0"/>
 		<element type="AttitudeCombatPercents" minOccurs="0"/>
 		<element type="WorldWonderCommerceChanges" minOccurs="0"/>

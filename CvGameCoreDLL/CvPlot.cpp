@@ -9156,6 +9156,38 @@ void CvPlot::doFeature()
 	int iProbability;
 	int iI, iJ;
 
+	// FeatureConversions of the traits of the owner (added by this mod): in the territory of the player, the feature may become
+	// another one. Not where the new feature cannot be (its terrains, coast and river rules, peaks, cities), nor under an
+	// improvement that needs the old feature (a lumbermill on a forest)
+	if (getFeatureType() != NO_FEATURE && isOwned() && !isPeak() && !isCity())
+	{
+		FeatureTypes eOldFeature = getFeatureType();
+		ImprovementTypes eImprovement = getImprovementType();
+		if (eImprovement == NO_IMPROVEMENT || !GC.getImprovementInfo(eImprovement).getFeatureMakesValid(eOldFeature))
+		{
+			for (iI = 0; iI < GC.getNumFeatureInfos(); iI++)
+			{
+				int iConversionChance = GET_PLAYER(getOwnerINLINE()).getFeatureConversionChance(eOldFeature, (FeatureTypes)iI);
+				if (iConversionChance <= 0)
+				{
+					continue;
+				}
+
+				CvFeatureInfo& kNewFeature = GC.getFeatureInfo((FeatureTypes)iI);
+				if (!kNewFeature.isTerrain(getTerrainType()) || (kNewFeature.isNoCoast() && isCoastalLand()) || (kNewFeature.isNoRiver() && isRiver()))
+				{
+					continue;
+				}
+
+				if (GC.getGameINLINE().getSorenRandNum(10000, "Feature Conversion") < iConversionChance)
+				{
+					setFeatureType((FeatureTypes)iI);
+					break;
+				}
+			}
+		}
+	}
+
 	if (getFeatureType() != NO_FEATURE)
 	{
 		iProbability = GC.getFeatureInfo(getFeatureType()).getDisappearanceProbability();

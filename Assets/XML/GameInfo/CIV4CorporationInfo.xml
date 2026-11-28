@@ -36,6 +36,9 @@
 			<MovieFile>NONE</MovieFile>
 			<MovieSound>NONE</MovieSound>
 			<Sound>AS2D_BUILD_BANK</Sound>
+			<PrereqOrTraits>
+				<TraitType>TRAIT_TEST</TraitType>
+			</PrereqOrTraits>
 		</CorporationInfo>
 		<CorporationInfo>
 			<Type>CORPORATION_2</Type>

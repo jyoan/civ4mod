@@ -3538,6 +3538,44 @@ bool CvPlayer::isNoForeignCultureAnger() const
 	return hasTraitFlag(&CvTraitInfo::isNoForeignCultureAnger);
 }
 
+// iWonderGreatPeopleTurns and iWonderProductionCulturePercent of the traits (added by this mod)
+int CvPlayer::getWonderGreatPeopleTurns() const
+{
+	return sumTraitValues(&CvTraitInfo::getWonderGreatPeopleTurns);
+}
+
+int CvPlayer::getWonderProductionCulturePercent() const
+{
+	return sumTraitValues(&CvTraitInfo::getWonderProductionCulturePercent);
+}
+
+// FeatureConversions of the traits (added by this mod): the chance (1/10000) that a plot of eFrom in our territory becomes
+// eTo each turn, added up over the traits
+int CvPlayer::getFeatureConversionChance(FeatureTypes eFrom, FeatureTypes eTo) const
+{
+	int iChance = 0;
+	int iI, iJ;
+
+	for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
+	{
+		CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
+		if (kTrait.getNumFeatureConversions() == 0 || !hasTrait((TraitTypes)iI))
+		{
+			continue;
+		}
+
+		for (iJ = 0; iJ < kTrait.getNumFeatureConversions(); iJ++)
+		{
+			if (kTrait.getFeatureConversionFrom(iJ) == eFrom && kTrait.getFeatureConversionTo(iJ) == eTo)
+			{
+				iChance += kTrait.getFeatureConversionChance(iJ);
+			}
+		}
+	}
+
+	return iChance;
+}
+
 int CvPlayer::getTraitDefenseCombatPercent() const
 {
 	return sumTraitValues(&CvTraitInfo::getDefenseCombatPercent);

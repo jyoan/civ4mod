@@ -126,6 +126,9 @@ public:
 	int getProductionModifier(UnitTypes eUnit) const;															// Exposed to Python
 	int getProductionModifier(BuildingTypes eBuilding) const;											// Exposed to Python
 	int getCapitalBuildingProductionModifier(BuildingTypes eBuilding) const;	// added by this mod
+	int countCityPlots(TerrainTypes eTerrain, FeatureTypes eFeature) const;	// added by this mod. Exposed to Python
+	int getCityPlotBuildingProductionModifier(BuildingTypes eBuilding) const;	// added by this mod. Exposed to Python
+	void doWonderCompletedTraits(BuildingTypes eBuilding, int iProductionNeeded);	// added by this mod
 	int getProductionModifier(ProjectTypes eProject) const;												// Exposed to Python
 
 	int getOverflowProductionDifference(int iProductionNeeded, int iProduction, int iProductionModifier, int iDiff, int iModifiedProduction) const;

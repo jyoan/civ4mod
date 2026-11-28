@@ -157,6 +157,8 @@ m_iGreatPeopleRatePerReligion(0),
 m_pabSpecialBuildingNotRequired(NULL),
 m_bOtherReligionsToCapital(false),
 m_bNoForeignCultureAnger(false),
+m_iWonderGreatPeopleTurns(0),
+m_iWonderProductionCulturePercent(0),
 m_iDefenseCombatPercent(0),
 m_iAttitudeCombatMaxPercent(-1),
 m_paiWorldWonderCommerceChange(NULL),
@@ -1331,6 +1333,82 @@ bool CvTraitInfo::isOtherReligionsToCapital() const
 bool CvTraitInfo::isNoForeignCultureAnger() const
 {
 	return m_bNoForeignCultureAnger;
+}
+
+// CityPlotBuildingProductionModifiers (added by this mod): see CvCity::getCityPlotBuildingProductionModifier
+int CvTraitInfo::getNumCityPlotBuildingProductionModifiers() const
+{
+	return (int)m_aiCityPlotProdModifier.size();
+}
+
+int CvTraitInfo::getCityPlotBuildingProductionTerrain(int i) const
+{
+	return (i > -1 && i < (int)m_aiCityPlotProdTerrain.size()) ? m_aiCityPlotProdTerrain[i] : NO_TERRAIN;
+}
+
+int CvTraitInfo::getCityPlotBuildingProductionFeature(int i) const
+{
+	return (i > -1 && i < (int)m_aiCityPlotProdFeature.size()) ? m_aiCityPlotProdFeature[i] : NO_FEATURE;
+}
+
+int CvTraitInfo::getCityPlotBuildingProductionBuildingClass(int i) const
+{
+	return (i > -1 && i < (int)m_aiCityPlotProdBuildingClass.size()) ? m_aiCityPlotProdBuildingClass[i] : NO_BUILDINGCLASS;
+}
+
+int CvTraitInfo::getCityPlotBuildingProductionSpecialBuilding(int i) const
+{
+	return (i > -1 && i < (int)m_aiCityPlotProdSpecialBuilding.size()) ? m_aiCityPlotProdSpecialBuilding[i] : NO_SPECIALBUILDING;
+}
+
+bool CvTraitInfo::isCityPlotBuildingProductionReligious(int i) const
+{
+	return (i > -1 && i < (int)m_aiCityPlotProdReligious.size()) ? (m_aiCityPlotProdReligious[i] != 0) : false;
+}
+
+bool CvTraitInfo::isCityPlotBuildingProductionWorldWonders(int i) const
+{
+	return (i > -1 && i < (int)m_aiCityPlotProdWorldWonders.size()) ? (m_aiCityPlotProdWorldWonders[i] != 0) : false;
+}
+
+int CvTraitInfo::getCityPlotBuildingProductionModifier(int i) const
+{
+	return (i > -1 && i < (int)m_aiCityPlotProdModifier.size()) ? m_aiCityPlotProdModifier[i] : 0;
+}
+
+// iWonderGreatPeopleTurns (added by this mod): a world wonder completed by production gives its city the great people points
+// of the wonder times this many turns (CvCity::doWonderCompletedTraits)
+int CvTraitInfo::getWonderGreatPeopleTurns() const
+{
+	return m_iWonderGreatPeopleTurns;
+}
+
+// iWonderProductionCulturePercent (added by this mod): a world wonder completed by production gives its city this % of its
+// production cost as culture (CvCity::doWonderCompletedTraits)
+int CvTraitInfo::getWonderProductionCulturePercent() const
+{
+	return m_iWonderProductionCulturePercent;
+}
+
+// FeatureConversions (added by this mod): see CvPlot::doFeature
+int CvTraitInfo::getNumFeatureConversions() const
+{
+	return (int)m_aiFeatureConversionChance.size();
+}
+
+int CvTraitInfo::getFeatureConversionFrom(int i) const
+{
+	return (i > -1 && i < (int)m_aiFeatureConversionFrom.size()) ? m_aiFeatureConversionFrom[i] : NO_FEATURE;
+}
+
+int CvTraitInfo::getFeatureConversionTo(int i) const
+{
+	return (i > -1 && i < (int)m_aiFeatureConversionTo.size()) ? m_aiFeatureConversionTo[i] : NO_FEATURE;
+}
+
+int CvTraitInfo::getFeatureConversionChance(int i) const
+{
+	return (i > -1 && i < (int)m_aiFeatureConversionChance.size()) ? m_aiFeatureConversionChance[i] : 0;
 }
 
 // iDefenseCombatPercent (added by this mod): combat % of the units of the player when they defend (CvUnit::maxCombatStr)
@@ -3279,6 +3357,91 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	readTypeStringValueList(pXML, "SpecialBuildingNotRequireds", "SpecialBuildingNotRequired", "SpecialBuildingType", "bNotRequired", m_aszSpecialBuildingNotRequiredTypes, m_aiSpecialBuildingNotRequiredValues);
 	pXML->GetChildXmlValByName(&m_bOtherReligionsToCapital, "bOtherReligionsToCapital");
 	pXML->GetChildXmlValByName(&m_bNoForeignCultureAnger, "bNoForeignCultureAnger");
+	pXML->GetChildXmlValByName(&m_iWonderGreatPeopleTurns, "iWonderGreatPeopleTurns");
+	pXML->GetChildXmlValByName(&m_iWonderProductionCulturePercent, "iWonderProductionCulturePercent");
+
+	// FeatureConversions: the features are loaded before the traits. An item with a missing feature or no chance is dropped
+	m_aiFeatureConversionFrom.clear();
+	m_aiFeatureConversionTo.clear();
+	m_aiFeatureConversionChance.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FeatureConversions"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FeatureConversion"))
+		{
+			do
+			{
+				CvString szConvertText;
+				int iConvertFrom;
+				int iConvertTo;
+				int iConvertChance = 0;
+				pXML->GetChildXmlValByName(szConvertText, "FeatureType");
+				iConvertFrom = pXML->FindInInfoClass(szConvertText);
+				szConvertText = "";
+				pXML->GetChildXmlValByName(szConvertText, "ConvertFeatureType");
+				iConvertTo = pXML->FindInInfoClass(szConvertText);
+				pXML->GetChildXmlValByName(&iConvertChance, "iConversionChance", 0);
+				if (iConvertFrom > -1 && iConvertTo > -1 && iConvertFrom != iConvertTo && iConvertChance > 0)
+				{
+					m_aiFeatureConversionFrom.push_back(iConvertFrom);
+					m_aiFeatureConversionTo.push_back(iConvertTo);
+					m_aiFeatureConversionChance.push_back(iConvertChance);
+				}
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "FeatureConversion"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
+
+	// CityPlotBuildingProductionModifiers: the terrains and features are loaded before the traits, the building classes and
+	// special buildings after them (readPass3())
+	m_aiCityPlotProdTerrain.clear();
+	m_aiCityPlotProdFeature.clear();
+	m_aiCityPlotProdBuildingClass.clear();
+	m_aiCityPlotProdSpecialBuilding.clear();
+	m_aszCityPlotProdBuildingClass.clear();
+	m_aszCityPlotProdSpecialBuilding.clear();
+	m_aiCityPlotProdReligious.clear();
+	m_aiCityPlotProdWorldWonders.clear();
+	m_aiCityPlotProdModifier.clear();
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CityPlotBuildingProductionModifiers"))
+	{
+		if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "CityPlotBuildingProductionModifier"))
+		{
+			do
+			{
+				CvString szPlotText;
+				bool bPlotFlag;
+				int iPlotValue = 0;
+				pXML->GetChildXmlValByName(szPlotText, "TerrainType");
+				m_aiCityPlotProdTerrain.push_back(pXML->FindInInfoClass(szPlotText));
+				szPlotText = "";
+				pXML->GetChildXmlValByName(szPlotText, "FeatureType");
+				m_aiCityPlotProdFeature.push_back(pXML->FindInInfoClass(szPlotText));
+				szPlotText = "";
+				pXML->GetChildXmlValByName(szPlotText, "BuildingClassType");
+				m_aszCityPlotProdBuildingClass.push_back(szPlotText);
+				szPlotText = "";
+				pXML->GetChildXmlValByName(szPlotText, "SpecialBuildingType");
+				m_aszCityPlotProdSpecialBuilding.push_back(szPlotText);
+				bPlotFlag = false;
+				pXML->GetChildXmlValByName(&bPlotFlag, "bReligiousBuildings");
+				m_aiCityPlotProdReligious.push_back(bPlotFlag ? 1 : 0);
+				bPlotFlag = false;
+				pXML->GetChildXmlValByName(&bPlotFlag, "bWorldWonders");
+				m_aiCityPlotProdWorldWonders.push_back(bPlotFlag ? 1 : 0);
+				pXML->GetChildXmlValByName(&iPlotValue, "iProductionModifier", 0);
+				m_aiCityPlotProdModifier.push_back(iPlotValue);
+			}
+			while (gDLL->getXMLIFace()->LocateNextSiblingNodeByTagName(pXML->GetXML(), "CityPlotBuildingProductionModifier"));
+
+			gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+		}
+
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
+	}
 	pXML->GetChildXmlValByName(&m_iDefenseCombatPercent, "iDefenseCombatPercent");
 	// AttitudeCombatPercents: any number of AttitudeCombatPercent (AttitudeType, iCombatPercent), then iMaxPercent (-1 when
 	// left out). The attitudes are loaded before the traits
@@ -4186,6 +4349,38 @@ bool CvTraitInfo::readPass3()
 	m_aszNoObsoleteSpecialBuildingTypes.clear();
 	resolveTypeList("NoObsolescence/Bonuses", m_aszNoObsoleteBonusTypes, GC.getNumBonusInfos(), &m_pabNoObsoleteBonus);
 	m_aszNoObsoleteBonusTypes.clear();
+
+	// CityPlotBuildingProductionModifiers (added by this mod): the building classes and special buildings
+	m_aiCityPlotProdBuildingClass.clear();
+	m_aiCityPlotProdSpecialBuilding.clear();
+	for (i = 0; i < (int)m_aszCityPlotProdBuildingClass.size(); i++)
+	{
+		int iCityPlotType = NO_BUILDINGCLASS;
+		if (!m_aszCityPlotProdBuildingClass[i].empty() && m_aszCityPlotProdBuildingClass[i] != "NONE")
+		{
+			iCityPlotType = GC.getInfoTypeForString(m_aszCityPlotProdBuildingClass[i].GetCString(), true);
+			if (iCityPlotType < 0)
+			{
+				sprintf(szMessage, "Tag: %s in CityPlotBuildingProductionModifiers of CIV4TraitInfos.xml was incorrect", m_aszCityPlotProdBuildingClass[i].GetCString());
+				gDLL->MessageBox(szMessage, "XML Error");
+			}
+		}
+		m_aiCityPlotProdBuildingClass.push_back(std::max(iCityPlotType, (int)NO_BUILDINGCLASS));
+
+		iCityPlotType = NO_SPECIALBUILDING;
+		if (!m_aszCityPlotProdSpecialBuilding[i].empty() && m_aszCityPlotProdSpecialBuilding[i] != "NONE")
+		{
+			iCityPlotType = GC.getInfoTypeForString(m_aszCityPlotProdSpecialBuilding[i].GetCString(), true);
+			if (iCityPlotType < 0)
+			{
+				sprintf(szMessage, "Tag: %s in CityPlotBuildingProductionModifiers of CIV4TraitInfos.xml was incorrect", m_aszCityPlotProdSpecialBuilding[i].GetCString());
+				gDLL->MessageBox(szMessage, "XML Error");
+			}
+		}
+		m_aiCityPlotProdSpecialBuilding.push_back(std::max(iCityPlotType, (int)NO_SPECIALBUILDING));
+	}
+	m_aszCityPlotProdBuildingClass.clear();
+	m_aszCityPlotProdSpecialBuilding.clear();
 
 	// SpecialBuildingNotRequireds (added by this mod): bNotRequired 0 items are dropped by readTypeStringValueList
 	resolveTypeList("SpecialBuildingNotRequireds", m_aszSpecialBuildingNotRequiredTypes, GC.getNumSpecialBuildingInfos(), &m_pabSpecialBuildingNotRequired);
