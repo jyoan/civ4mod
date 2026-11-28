@@ -15054,7 +15054,8 @@ void CvGameTextMgr::setBaseYieldBreakdownHelp(CvWStringBuffer &szBuffer, CvCity&
 
 	if (iBuildings != 0)
 	{
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_BUILDINGS", iBuildings, info.getChar()));
+		// Not TXT_KEY_MISC_HELP_YIELD_BUILDINGS: BtS uses that key for the modifier of the buildings (+N%)
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_FROM_BUILDINGS", iBuildings, info.getChar()));
 		szBuffer.append(NEWLINE);
 	}
 
