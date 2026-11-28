@@ -25433,7 +25433,6 @@
 			<iLeaderExperience>0</iLeaderExperience>
 			<iGreatWorkOccupationTurns>1</iGreatWorkOccupationTurns>
 		</UnitInfo>
-	<!-- Entries
- of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
+	<!-- Entries of the civ-design branch go below this line, entries of master above it (CLAUDE.md, git) -->
 	</UnitInfos>
 </Civ4UnitInfos>
