@@ -1019,6 +1019,12 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szString, const CvUnit* pUnit, 
 				szString.append(gDLL->getText("TXT_KEY_UNIT_BUILDING_COMBAT_NOW", pUnit->getBuildingCombatPercent()));
 			}
 
+			// BonusCombatPercents (added by this mod): the part from the bonuses of the owner
+			if (pUnit->getBonusCombatPercent() != 0)
+			{
+				szString.append(gDLL->getText("TXT_KEY_UNIT_BONUS_COMBAT_NOW", pUnit->getBonusCombatPercent()));
+			}
+
 			// AttitudeCombatPercents of the traits (added by this mod): the part from the attitudes of the AI players
 			if (GET_PLAYER(pUnit->getOwnerINLINE()).getAttitudeCombatPercent() != 0)
 			{
@@ -1996,6 +2002,32 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_REVENGE_MOD", iModifier));
 			}
 
+			// iWarWearinessCombatPercent and iStrongerEnemyCombatPercent of the promotions of the attacker (added by this mod)
+			iModifier = pAttacker->getWarWearinessCombatModifier(pDefender->getOwnerINLINE());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_WAR_WEARINESS_MOD", iModifier));
+			}
+
+			iModifier = pAttacker->getStrongerEnemyCombatModifier(pDefender->getOwnerINLINE());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_STRONGER_ENEMY_MOD", iModifier));
+			}
+
+			// AttackFromTerrains / AttackFromFeatures of the promotions of the attacker (added by this mod)
+			iModifier = pAttacker->getAttackFromPlotPercent(pAttacker->plot());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ATTACK_FROM_MOD", iModifier));
+			}
+
 			// Encirclement of the promotions of the attacker (added by this mod)
 			iModifier = pAttacker->getEncirclementPercent(pDefender->plot(), pAttacker->plot(), &iEncircleSide, &iEncircleRear);
 
@@ -2228,6 +2260,23 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 			{
 				szString.append(NEWLINE);
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_REVENGE_MOD", iModifier));
+			}
+
+			// iWarWearinessCombatPercent and iStrongerEnemyCombatPercent of the promotions of the defender (added by this mod)
+			iModifier = pDefender->getWarWearinessCombatModifier(pAttacker->getOwnerINLINE());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_WAR_WEARINESS_MOD", iModifier));
+			}
+
+			iModifier = pDefender->getStrongerEnemyCombatModifier(pAttacker->getOwnerINLINE());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_STRONGER_ENEMY_MOD", iModifier));
 			}
 
 			iModifier = pDefender->domainModifier(pAttacker->getDomainType());
@@ -3802,6 +3851,11 @@ void CvGameTextMgr::parseTraitsWithTurns(CvWStringBuffer &szHelpString, TraitTyp
 						szHelpString.append(szTempBuffer);
 					}
 				}
+				if (GC.getTraitInfo(eTrait).isFreePromotionSetAllUnitCombats(iSet))
+				{
+					szTempBuffer.Format(L"\n        %c%s", gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_FREE_PROMOTION_ALL_UNIT_COMBATS").GetCString());
+					szHelpString.append(szTempBuffer);
+				}
 				if (GC.getTraitInfo(eTrait).isFreePromotionSetNoUnitCombat(iSet))
 				{
 					szTempBuffer.Format(L"\n        %c%s", gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_FREE_PROMOTION_NO_UNIT_COMBAT").GetCString());
@@ -4785,6 +4839,66 @@ void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, Prom
 		{
 			szBuffer.append(pcNewline);
 			szBuffer.append(gDLL->getText("TXT_KEY_BONUS_AFFINITY", GC.getPromotionInfo(ePromotion).getBonusAffinity(iAffinityBonus), getLinkText(GC.getBonusInfo((BonusTypes)iAffinityBonus).getDescription()).GetCString()));
+		}
+	}
+
+	// BonusCombatPercents and iBonusCombatMaxPercent (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).isBonusCombat())
+	{
+		for (int iCombatBonus = 0; iCombatBonus < GC.getNumBonusInfos(); ++iCombatBonus)
+		{
+			if (GC.getPromotionInfo(ePromotion).getBonusCombatPercent(iCombatBonus) != 0)
+			{
+				szBuffer.append(pcNewline);
+				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_BONUS_COMBAT", GC.getPromotionInfo(ePromotion).getBonusCombatPercent(iCombatBonus), getLinkText(GC.getBonusInfo((BonusTypes)iCombatBonus).getDescription()).GetCString()));
+			}
+		}
+
+		if (GC.getPromotionInfo(ePromotion).getBonusCombatMaxPercent() > 0)
+		{
+			szBuffer.append(pcNewline);
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_BONUS_COMBAT_MAX", GC.getPromotionInfo(ePromotion).getBonusCombatMaxPercent()));
+		}
+	}
+
+	// iWarWearinessCombatPercent, iWarWearinessCombatMaxPercent, iStrongerEnemyCombatPercent (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getWarWearinessCombatPercent() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_WAR_WEARINESS_COMBAT", GC.getPromotionInfo(ePromotion).getWarWearinessCombatPercent()));
+		if (GC.getPromotionInfo(ePromotion).getWarWearinessCombatMaxPercent() > 0)
+		{
+			szBuffer.append(pcNewline);
+			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_WAR_WEARINESS_COMBAT_MAX", GC.getPromotionInfo(ePromotion).getWarWearinessCombatMaxPercent()));
+		}
+	}
+
+	if (GC.getPromotionInfo(ePromotion).getStrongerEnemyCombatPercent() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_STRONGER_ENEMY_COMBAT", GC.getPromotionInfo(ePromotion).getStrongerEnemyCombatPercent()));
+	}
+
+	// AttackFromTerrains / AttackFromFeatures (added by this mod): the terrains have no Civilopedia link here (TERRAIN_HILL and
+	// TERRAIN_PEAK are not real terrains)
+	if (GC.getPromotionInfo(ePromotion).isAttackFromPlot())
+	{
+		for (int iFromTerrain = 0; iFromTerrain < GC.getNumTerrainInfos(); ++iFromTerrain)
+		{
+			if (GC.getPromotionInfo(ePromotion).getAttackFromTerrainPercent(iFromTerrain) != 0)
+			{
+				szBuffer.append(pcNewline);
+				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ATTACK_FROM", GC.getPromotionInfo(ePromotion).getAttackFromTerrainPercent(iFromTerrain), GC.getTerrainInfo((TerrainTypes)iFromTerrain).getTextKeyWide()));
+			}
+		}
+
+		for (int iFromFeature = 0; iFromFeature < GC.getNumFeatureInfos(); ++iFromFeature)
+		{
+			if (GC.getPromotionInfo(ePromotion).getAttackFromFeaturePercent(iFromFeature) != 0)
+			{
+				szBuffer.append(pcNewline);
+				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_ATTACK_FROM", GC.getPromotionInfo(ePromotion).getAttackFromFeaturePercent(iFromFeature), GC.getFeatureInfo((FeatureTypes)iFromFeature).getTextKeyWide()));
+			}
 		}
 	}
 

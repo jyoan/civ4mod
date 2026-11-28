@@ -218,5 +218,6 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("isNoForcedCivics", &CyPlayer::isNoForcedCivics, "bool () - runs a civic with bNoForcedCivics: no civics forced by resolutions or espionage (added by this mod)")
 		.def("isForcedCivicOption", &CyPlayer::isForcedCivicOption, "bool (int eCivicOption) - the resolutions force a civic of the option on this player (CyGame.isForceCivicOption unless isNoForcedCivics; added by this mod)")
 		.def("isLockedImprovement", &CyPlayer::isLockedImprovement, "bool (int eImprovement) - LockedImprovements of the traits: not replaced or pillaged by the player on its plots (added by this mod)")
+		.def("getWarWearinessAngerPercentAgainst", &CyPlayer::getWarWearinessAngerPercentAgainst, "int (int ePlayer) - percent of unhappiness the war weariness against ePlayer would cause, before the war weariness modifiers of this player (added by this mod)")
 		;
 }

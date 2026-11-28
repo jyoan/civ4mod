@@ -2321,4 +2321,31 @@
 		<Spanish>%s1: %d3 great people points bought for %d2[ICON_GOLD]</Spanish>
 		<Japanese>%s1&#12391; %d2[ICON_GOLD] &#12434;&#25173;&#12356;&#12289;&#20553;&#20154;&#12509;&#12452;&#12531;&#12488; %d3 &#12434;&#36092;&#20837;&#12375;&#12383;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_COMBAT_PLOT_WAR_WEARINESS_MOD</Tag>
+		<English>[ICON_BULLET]%D1%% War Weariness</English>
+		<French>[ICON_BULLET]%D1%% War Weariness</French>
+		<German>[ICON_BULLET]%D1%% War Weariness</German>
+		<Italian>[ICON_BULLET]%D1%% War Weariness</Italian>
+		<Spanish>[ICON_BULLET]%D1%% War Weariness</Spanish>
+		<Japanese>[ICON_BULLET]&#21421;&#25126;&#24863;&#24773;: %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_COMBAT_PLOT_STRONGER_ENEMY_MOD</Tag>
+		<English>[ICON_BULLET]%D1%% Stronger Enemy</English>
+		<French>[ICON_BULLET]%D1%% Stronger Enemy</French>
+		<German>[ICON_BULLET]%D1%% Stronger Enemy</German>
+		<Italian>[ICON_BULLET]%D1%% Stronger Enemy</Italian>
+		<Spanish>[ICON_BULLET]%D1%% Stronger Enemy</Spanish>
+		<Japanese>[ICON_BULLET]&#36557;&#20107;&#21147;&#12364;&#19978;&#12398;&#30456;&#25163;: %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_COMBAT_PLOT_ATTACK_FROM_MOD</Tag>
+		<English>[ICON_BULLET]%D1%% Attacking from Terrain</English>
+		<French>[ICON_BULLET]%D1%% Attacking from Terrain</French>
+		<German>[ICON_BULLET]%D1%% Attacking from Terrain</German>
+		<Italian>[ICON_BULLET]%D1%% Attacking from Terrain</Italian>
+		<Spanish>[ICON_BULLET]%D1%% Attacking from Terrain</Spanish>
+		<Japanese>[ICON_BULLET]&#25915;&#25731;&#12377;&#12427;&#20596;&#12398;&#22320;&#24418;: %D1%%</Japanese>
+	</TEXT>
 </Civ4GameText>

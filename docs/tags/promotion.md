@@ -330,6 +330,59 @@
 - 昇進のキャッシュの `uiFlag` 21。
 - Python: `CvPromotionInfo.getGoldenAgeAdvantageCombatPercent()`
 
+### `PromotionInfo/AttackFromTerrains`、`AttackFromFeatures`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 攻撃する側のいるタイルの地形・地形の特徴による攻撃の戦闘力 %（2026-11-28。ハンニバル）。
+- 書式は `<AttackFromTerrain>` が `TerrainType` + `iAttackFromTerrain`、`<AttackFromFeature>` が `FeatureType` + `iAttackFromFeature`。
+- 山岳は `TERRAIN_PEAK` で書く（その下の地形は数えない）。
+- 丘陵は下の地形と `TERRAIN_HILL` の両方を数える。地形の特徴の分も足す。
+- 持っている昇進の合計（`CvUnit::getAttackFromPlotPercent`。昇進の数は `m_iAttackFromPlotCount` で覚え、セーブしない）。
+- 戦闘力の計算（`CvUnit::maxCombatStr` の攻撃する側の補正）に入るので、AI の勝率にも入る。
+- 勝率の内訳に `TXT_KEY_COMBAT_PLOT_ATTACK_FROM_MOD`、昇進の説明に `TXT_KEY_PROMOTION_ATTACK_FROM`。
+- Python は `CvPromotionInfo.getAttackFromTerrainPercent(i)` / `getAttackFromFeaturePercent(i)`、`CyUnit.getAttackFromPlotPercent(pPlot)`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=22`
+
+### `PromotionInfo/BonusCombatPercents`、`iBonusCombatMaxPercent`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 持ち主がその資源を持つ数 1 つにつき戦闘力 %（2026-11-28。モンゴル）。
+- 書式は `<BonusCombatPercent>` が `BonusType` + `iCombatPercent`。
+- 数は `BonusAffinities` と同じく首都の交易網の中の数（`CvPlayer::getNumAvailableBonuses`。輸入も含む）。
+- `iBonusCombatMaxPercent` は昇進ごとの合計の上限（0 なら上限なし）。昇進が複数あれば、それぞれの値を足す。
+- 追加の戦闘力（`CvUnit::getExtraCombatPercent`）に含めるので、そのつど計算され、資源の数が変わるとすぐに変わる。
+- ユニットのマウスオーバーに `TXT_KEY_UNIT_BONUS_COMBAT_NOW`（「（うち資源から +N%）」）。
+- 昇進の説明に `TXT_KEY_PROMOTION_BONUS_COMBAT`・`TXT_KEY_PROMOTION_BONUS_COMBAT_MAX`。
+- 資源は昇進より後に読み込まれるので、`CvPromotionInfo::readPass3` で番号に変える。
+- Python は `CvPromotionInfo.getBonusCombatPercent(i)` / `getBonusCombatMaxPercent()`、`CyUnit.getBonusCombatPercent()`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=22`
+
+### `PromotionInfo/iWarWearinessCombatPercent`、`iWarWearinessCombatMaxPercent`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- その相手との厭戦感情による戦闘力 %（2026-11-28。ブーディカ。最初は志向のタグにしたが、コミット前に昇進に移した）。
+- 厭戦感情（`CvTeam::getWarWeariness`）を、それが生むはずの不満の割合（%）にする（`CvPlayer::getWarWearinessAngerPercentAgainst`）:
+  - `updateWarWearinessPercentAnger` と同じ計算だが、相手のチームだけ
+  - 相手の `iEnemyWarWearinessModifier` は入れない
+  - 自分の志向・社会制度・建物の `iWarWearinessModifier` をかける前（-100% でも数える）
+  - 厭戦感情は不満が 0 でも数え続け、戦争中は少しずつ減り、和平で 99% 減る
+- その割合 × `iWarWearinessCombatPercent` / 100 が戦闘力 %。`iWarWearinessCombatMaxPercent` が上限（0 なら上限なし）。
+- どちらも持っている昇進の合計（`CvUnit::getWarWearinessCombatModifier`。セーブせず読み込み時に数え直す）。
+- 攻撃・防御のどちらでも効き、勝率の内訳に `TXT_KEY_COMBAT_PLOT_WAR_WEARINESS_MOD`。
+- 昇進の説明に `TXT_KEY_PROMOTION_WAR_WEARINESS_COMBAT`・`_MAX`。
+- Python は `CvPromotionInfo` の getter、`CyUnit.getWarWearinessCombatModifier(ePlayer)`、`CyPlayer.getWarWearinessAngerPercentAgainst(ePlayer)`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=22`
+
+### `PromotionInfo/iStrongerEnemyCombatPercent`
+
+- ファイル: `CIV4PromotionInfos.xml`
+- 軍事力が持ち主より上の文明との戦闘力 %（2026-11-28。フリードリッヒ。最初は志向のタグにしたが、コミット前に昇進に移した）。
+- 軍事力は `CvPlayer::getPower`（ゲーム情報の画面の軍事力）。蛮族と同じチームは対象外。
+- 持っている昇進の合計（`CvUnit::getStrongerEnemyCombatModifier`）。攻撃・防御のどちらでも効く。
+- 勝率の内訳に `TXT_KEY_COMBAT_PLOT_STRONGER_ENEMY_MOD`、昇進の説明に `TXT_KEY_PROMOTION_STRONGER_ENEMY_COMBAT`。
+- Python は `CvPromotionInfo.getStrongerEnemyCombatPercent()`、`CyUnit.getStrongerEnemyCombatModifier(ePlayer)`。
+- キャッシュの形式: `CvPromotionInfo` `uiFlag=22`
+
 ## 呪文
 
 ### `SpellInfo` の `PromotionPrereq1` / `PromotionPrereq2`、`UnitPrereq`、`UnitClassPrereq`、`UnitCombatPrereq`、`CivilizationPrereq`、`TechPrereq`、`iCasterMinLevel`、`bInBordersOnly`、`bInCityOnly`、`bHasCasted`、`bIgnoreHasCasted`、`bDisplayWhenDisabled`、`PyRequirement`、`PyResult`（と `Type`・`Description`・`Civilopedia`・`Help`・`Button`・ホットキー）

@@ -328,6 +328,7 @@
 		<element type="UnitClassType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="bFreePromotionNoUnitCombat" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bFreePromotionAllUnitCombats" content="textOnly" dt:type="boolean"/>
 	<ElementType name="DomainType" content="textOnly"/>
 	<ElementType name="FreePromotionDomains" content="eltOnly">
 		<element type="DomainType" minOccurs="0" maxOccurs="*"/>
@@ -336,6 +337,7 @@
 		<element type="FreePromotions"/>
 		<element type="FreePromotionUnitCombats" minOccurs="0"/>
 		<element type="FreePromotionUnitClasses" minOccurs="0"/>
+		<element type="bFreePromotionAllUnitCombats" minOccurs="0"/>
 		<element type="bFreePromotionNoUnitCombat" minOccurs="0"/>
 		<element type="FreePromotionDomains" minOccurs="0"/>
 	</ElementType>

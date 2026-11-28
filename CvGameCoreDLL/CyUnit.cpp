@@ -644,6 +644,26 @@ int CyUnit::getBuildingCombatPercent()
 	return m_pUnit ? m_pUnit->getBuildingCombatPercent() : 0;
 }
 
+int CyUnit::getBonusCombatPercent()
+{
+	return m_pUnit ? m_pUnit->getBonusCombatPercent() : 0;
+}
+
+int CyUnit::getAttackFromPlotPercent(CyPlot* pPlot)
+{
+	return (m_pUnit && pPlot) ? m_pUnit->getAttackFromPlotPercent(pPlot->getPlot()) : 0;
+}
+
+int CyUnit::getWarWearinessCombatModifier(int ePlayer)
+{
+	return m_pUnit ? m_pUnit->getWarWearinessCombatModifier((PlayerTypes)ePlayer) : 0;
+}
+
+int CyUnit::getStrongerEnemyCombatModifier(int ePlayer)
+{
+	return m_pUnit ? m_pUnit->getStrongerEnemyCombatModifier((PlayerTypes)ePlayer) : 0;
+}
+
 // Encirclement of the promotions (added by this mod): pCenter is the plot of the defender, pFront the plot of the attacker
 int CyUnit::getEncirclementPercent(CyPlot* pCenter, CyPlot* pFront)
 {

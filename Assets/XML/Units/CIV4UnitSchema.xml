@@ -548,6 +548,33 @@
 	<ElementType name="BonusAffinities" content="eltOnly">
 		<element type="BonusAffinity" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
+	<ElementType name="iAttackFromTerrain" content="textOnly" dt:type="int"/>
+	<ElementType name="AttackFromTerrain" content="eltOnly">
+		<element type="TerrainType"/>
+		<element type="iAttackFromTerrain"/>
+	</ElementType>
+	<ElementType name="AttackFromTerrains" content="eltOnly">
+		<element type="AttackFromTerrain" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iAttackFromFeature" content="textOnly" dt:type="int"/>
+	<ElementType name="AttackFromFeature" content="eltOnly">
+		<element type="FeatureType"/>
+		<element type="iAttackFromFeature"/>
+	</ElementType>
+	<ElementType name="AttackFromFeatures" content="eltOnly">
+		<element type="AttackFromFeature" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="BonusCombatPercent" content="eltOnly">
+		<element type="BonusType"/>
+		<element type="iCombatPercent"/>
+	</ElementType>
+	<ElementType name="BonusCombatPercents" content="eltOnly">
+		<element type="BonusCombatPercent" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iBonusCombatMaxPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iWarWearinessCombatPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iWarWearinessCombatMaxPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iStrongerEnemyCombatPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="BuildingClassType" content="textOnly"/>
 	<ElementType name="SpecialBuildingType" content="textOnly"/>
 	<ElementType name="bStateReligion" content="textOnly" dt:type="boolean"/>
@@ -1060,6 +1087,13 @@
 		<element type="BuildingCombatPercents" minOccurs="0"/>
 		<element type="iBuildingCombatMaxPercent" minOccurs="0"/>
 		<element type="Encirclement" minOccurs="0"/>
+		<element type="AttackFromTerrains" minOccurs="0"/>
+		<element type="AttackFromFeatures" minOccurs="0"/>
+		<element type="BonusCombatPercents" minOccurs="0"/>
+		<element type="iBonusCombatMaxPercent" minOccurs="0"/>
+		<element type="iWarWearinessCombatPercent" minOccurs="0"/>
+		<element type="iWarWearinessCombatMaxPercent" minOccurs="0"/>
+		<element type="iStrongerEnemyCombatPercent" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

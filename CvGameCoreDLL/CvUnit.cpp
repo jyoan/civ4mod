@@ -344,6 +344,11 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iFreeEmbarkCount = 0;
 	m_iBuildingCombatCount = 0;
 	m_iEncirclementCount = 0;
+	m_iBonusCombatCount = 0;
+	m_iAttackFromPlotCount = 0;
+	m_iWarWearinessCombatPercent = 0;
+	m_iWarWearinessCombatMaxPercent = 0;
+	m_iStrongerEnemyCombatPercent = 0;
 	m_iNoDamagePenaltyCount = 0;
 	m_iHiddenNationalityCount = 0;
 	m_iExtraCityAttackPercent = 0;
@@ -10154,6 +10159,9 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 		// Encirclement of the promotions of the attacker: its units around the attacked plot (added by this mod)
 		iTempModifier -= pAttacker->getEncirclementPercent(pAttackedPlot, pAttacker->plot());
 
+		// AttackFromTerrains / AttackFromFeatures of the promotions of the attacker: the plot it attacks from (added by this mod)
+		iTempModifier -= pAttacker->getAttackFromPlotPercent(pAttacker->plot());
+
 		if (pAttackedPlot->isHills())
 		{
 			iExtraModifier = -pAttacker->hillsAttackModifier();
@@ -10252,6 +10260,12 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 			// iRevengeCombatPercent of the traits of both owners (added by this mod)
 			iTempModifier += GET_PLAYER(getOwnerINLINE()).getRevengeCombatModifier(pAttacker->getOwnerINLINE());
 			iTempModifier -= GET_PLAYER(pAttacker->getOwnerINLINE()).getRevengeCombatModifier(getOwnerINLINE());
+
+			// iWarWearinessCombatPercent and iStrongerEnemyCombatPercent of the promotions of both units (added by this mod)
+			iTempModifier += getWarWearinessCombatModifier(pAttacker->getOwnerINLINE());
+			iTempModifier -= pAttacker->getWarWearinessCombatModifier(getOwnerINLINE());
+			iTempModifier += getStrongerEnemyCombatModifier(pAttacker->getOwnerINLINE());
+			iTempModifier -= pAttacker->getStrongerEnemyCombatModifier(getOwnerINLINE());
 
 			if (pAttacker->isAnimal())
 			{
@@ -11218,6 +11232,11 @@ void CvUnit::updatePromotionCounts()
 	m_iFreeEmbarkCount = countPromotions(&CvPromotionInfo::isFreeEmbark);
 	m_iBuildingCombatCount = countPromotions(&CvPromotionInfo::isBuildingCombat);
 	m_iEncirclementCount = countPromotions(&CvPromotionInfo::isEncirclement);
+	m_iBonusCombatCount = countPromotions(&CvPromotionInfo::isBonusCombat);
+	m_iAttackFromPlotCount = countPromotions(&CvPromotionInfo::isAttackFromPlot);
+	m_iWarWearinessCombatPercent = sumPromotionValues(&CvPromotionInfo::getWarWearinessCombatPercent);
+	m_iWarWearinessCombatMaxPercent = sumPromotionValues(&CvPromotionInfo::getWarWearinessCombatMaxPercent);
+	m_iStrongerEnemyCombatPercent = sumPromotionValues(&CvPromotionInfo::getStrongerEnemyCombatPercent);
 	m_iNoDamagePenaltyCount = countPromotions(&CvPromotionInfo::isNoDamagePenalty);
 	m_iHiddenNationalityCount = countPromotions(&CvPromotionInfo::isHiddenNationality);
 
@@ -11329,6 +11348,146 @@ int CvUnit::getBuildingCombatPercent() const
 	}
 
 	return iPercent;
+}
+
+// BonusCombatPercents of the promotions (added by this mod): for each promotion, the % of each bonus times the copies the
+// owner has (in the trade network of the capital, CvPlayer::getNumAvailableBonuses: imports count), capped by
+// iBonusCombatMaxPercent of the promotion (0: no cap); added up over the promotions. Worked out each time, so it follows the
+// bonuses at once
+int CvUnit::getBonusCombatPercent() const
+{
+	int iPercent = 0;
+	int iPromotionPercent;
+	int iPromotion;
+	int iBonus;
+
+	if (m_iBonusCombatCount <= 0 || getOwnerINLINE() == NO_PLAYER)
+	{
+		return 0;
+	}
+
+	for (iPromotion = 0; iPromotion < GC.getNumPromotionInfos(); iPromotion++)
+	{
+		if (!isHasPromotion((PromotionTypes)iPromotion))
+		{
+			continue;
+		}
+
+		CvPromotionInfo& kPromotion = GC.getPromotionInfo((PromotionTypes)iPromotion);
+		if (!kPromotion.isBonusCombat())
+		{
+			continue;
+		}
+
+		iPromotionPercent = 0;
+		for (iBonus = 0; iBonus < GC.getNumBonusInfos(); iBonus++)
+		{
+			if (kPromotion.getBonusCombatPercent(iBonus) != 0)
+			{
+				iPromotionPercent += kPromotion.getBonusCombatPercent(iBonus) * GET_PLAYER(getOwnerINLINE()).getNumAvailableBonuses((BonusTypes)iBonus);
+			}
+		}
+
+		if (kPromotion.getBonusCombatMaxPercent() > 0 && iPromotionPercent > kPromotion.getBonusCombatMaxPercent())
+		{
+			iPromotionPercent = kPromotion.getBonusCombatMaxPercent();
+		}
+
+		iPercent += iPromotionPercent;
+	}
+
+	return iPercent;
+}
+
+// AttackFromTerrains / AttackFromFeatures of the promotions (added by this mod): the attack % of this unit attacking from
+// pPlot. A peak counts as TERRAIN_PEAK (not its terrain), hills count as their terrain and TERRAIN_HILL, and the feature
+// adds its own %
+int CvUnit::getAttackFromPlotPercent(const CvPlot* pPlot) const
+{
+	TerrainTypes eHillTerrain;
+	TerrainTypes ePeakTerrain;
+	int iPercent = 0;
+	int iPromotion;
+
+	if (m_iAttackFromPlotCount <= 0 || pPlot == NULL)
+	{
+		return 0;
+	}
+
+	eHillTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_HILL", true);
+	ePeakTerrain = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_PEAK", true);
+
+	for (iPromotion = 0; iPromotion < GC.getNumPromotionInfos(); iPromotion++)
+	{
+		if (!isHasPromotion((PromotionTypes)iPromotion))
+		{
+			continue;
+		}
+
+		CvPromotionInfo& kPromotion = GC.getPromotionInfo((PromotionTypes)iPromotion);
+		if (!kPromotion.isAttackFromPlot())
+		{
+			continue;
+		}
+
+		if (pPlot->isPeak())
+		{
+			iPercent += kPromotion.getAttackFromTerrainPercent(ePeakTerrain);
+		}
+		else
+		{
+			iPercent += kPromotion.getAttackFromTerrainPercent(pPlot->getTerrainType());
+			if (pPlot->isHills())
+			{
+				iPercent += kPromotion.getAttackFromTerrainPercent(eHillTerrain);
+			}
+		}
+
+		if (pPlot->getFeatureType() != NO_FEATURE)
+		{
+			iPercent += kPromotion.getAttackFromFeaturePercent(pPlot->getFeatureType());
+		}
+	}
+
+	return iPercent;
+}
+
+// iWarWearinessCombatPercent of the promotions (added by this mod): combat % against the units of ePlayer, the percent of
+// unhappiness the war weariness against it would cause (CvPlayer::getWarWearinessAngerPercentAgainst) times the % of the
+// promotions, capped by their iWarWearinessCombatMaxPercent (0: no cap). The values are added up over the promotions
+int CvUnit::getWarWearinessCombatModifier(PlayerTypes ePlayer) const
+{
+	int iModifier;
+
+	if (m_iWarWearinessCombatPercent == 0 || getOwnerINLINE() == NO_PLAYER)
+	{
+		return 0;
+	}
+
+	iModifier = GET_PLAYER(getOwnerINLINE()).getWarWearinessAngerPercentAgainst(ePlayer) * m_iWarWearinessCombatPercent / 100;
+	if (m_iWarWearinessCombatMaxPercent > 0 && iModifier > m_iWarWearinessCombatMaxPercent)
+	{
+		iModifier = m_iWarWearinessCombatMaxPercent;
+	}
+
+	return iModifier;
+}
+
+// iStrongerEnemyCombatPercent of the promotions (added by this mod): combat % against the units of ePlayer when ePlayer has
+// more power than the owner (CvPlayer::getPower, the military power of the info screens). Not the barbarians
+int CvUnit::getStrongerEnemyCombatModifier(PlayerTypes ePlayer) const
+{
+	if (m_iStrongerEnemyCombatPercent == 0 || getOwnerINLINE() == NO_PLAYER || ePlayer == NO_PLAYER || ePlayer == getOwnerINLINE())
+	{
+		return 0;
+	}
+
+	if (GET_PLAYER(ePlayer).isBarbarian() || GET_PLAYER(ePlayer).getTeam() == getTeam())
+	{
+		return 0;
+	}
+
+	return (GET_PLAYER(ePlayer).getPower() > GET_PLAYER(getOwnerINLINE()).getPower()) ? m_iStrongerEnemyCombatPercent : 0;
 }
 
 // Encirclement of the promotions (added by this mod): around pCenter, the units of the team of this unit that can fight,
@@ -13323,6 +13482,9 @@ int CvUnit::getExtraCombatPercent() const
 	// BuildingCombatPercents of the promotions (added by this mod)
 	iPercent += getBuildingCombatPercent();
 
+	// BonusCombatPercents of the promotions (added by this mod)
+	iPercent += getBonusCombatPercent();
+
 	// iCombatPercent of the traits of the owner (added by this mod)
 	iPercent += GET_PLAYER(getOwnerINLINE()).getTraitCombatPercent();
 
@@ -14352,6 +14514,11 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		m_iFreeEmbarkCount += (GC.getPromotionInfo(eIndex).isFreeEmbark() ? iChange : 0);
 		m_iBuildingCombatCount += (GC.getPromotionInfo(eIndex).isBuildingCombat() ? iChange : 0);
 		m_iEncirclementCount += (GC.getPromotionInfo(eIndex).isEncirclement() ? iChange : 0);
+		m_iBonusCombatCount += (GC.getPromotionInfo(eIndex).isBonusCombat() ? iChange : 0);
+		m_iAttackFromPlotCount += (GC.getPromotionInfo(eIndex).isAttackFromPlot() ? iChange : 0);
+		m_iWarWearinessCombatPercent += GC.getPromotionInfo(eIndex).getWarWearinessCombatPercent() * iChange;
+		m_iWarWearinessCombatMaxPercent += GC.getPromotionInfo(eIndex).getWarWearinessCombatMaxPercent() * iChange;
+		m_iStrongerEnemyCombatPercent += GC.getPromotionInfo(eIndex).getStrongerEnemyCombatPercent() * iChange;
 		m_iNoDamagePenaltyCount += (GC.getPromotionInfo(eIndex).isNoDamagePenalty() ? iChange : 0);
 
 		// BonusAffinities (added by this mod)
