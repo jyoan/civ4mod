@@ -2349,6 +2349,15 @@
 		<Japanese>[ICON_BULLET]&#36557;&#20107;&#21147;&#12364;&#19978;&#12398;&#30456;&#25163;: %D1%%</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_COMBAT_PLOT_FORMER_MASTER_MOD</Tag>
+		<English>[ICON_BULLET]%D1%% Former Master</English>
+		<French>[ICON_BULLET]%D1%% Former Master</French>
+		<German>[ICON_BULLET]%D1%% Former Master</German>
+		<Italian>[ICON_BULLET]%D1%% Former Master</Italian>
+		<Spanish>[ICON_BULLET]%D1%% Former Master</Spanish>
+		<Japanese>[ICON_BULLET]&#12363;&#12388;&#12390;&#12398;&#23447;&#20027;&#22269;: %D1%%</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_COMBAT_PLOT_ATTACK_FROM_MOD</Tag>
 		<English>[ICON_BULLET]%D1%% Attacking from Terrain</English>
 		<French>[ICON_BULLET]%D1%% Attacking from Terrain</French>

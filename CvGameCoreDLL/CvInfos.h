@@ -634,6 +634,8 @@ public:
 	int getWarWearinessCombatMaxPercent() const;			// Exposed to Python
 	// iStrongerEnemyCombatPercent (added by this mod): combat % against the players with more power (CvPlayer::getPower)
 	int getStrongerEnemyCombatPercent() const;				// Exposed to Python
+	// iFormerMasterCombatPercent (added by this mod): combat % against the current and former masters of the team
+	int getFormerMasterCombatPercent() const;				// Exposed to Python
 	// iCombatGoldPerStrength (added by this mod): gold for a win, a % of the base strength of the loser's unit type
 	int getCombatGoldPerStrength() const;					// Exposed to Python
 	// bRiverAttack (added by this mod): a ship with bRiverNavigation may attack (and capture) land units on river plots
@@ -774,6 +776,7 @@ protected:
 	int m_iWarWearinessCombatMaxPercent;	// added by this mod
 	int m_iStrongerEnemyCombatPercent;		// added by this mod
 	int m_iCombatGoldPerStrength;			// added by this mod
+	int m_iFormerMasterCombatPercent;		// added by this mod
 	bool m_bRiverAttack;					// added by this mod
 
 	bool m_bLeader;

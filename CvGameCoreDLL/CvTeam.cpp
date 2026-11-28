@@ -47,6 +47,7 @@ CvTeam::CvTeam()
 	m_abForcePeace = new bool[MAX_TEAMS];
 	m_abVassal = new bool[MAX_TEAMS];
 	m_abWarDeclaredOn = new bool[MAX_TEAMS];	// added by this mod
+	m_abFormerMaster = new bool[MAX_TEAMS];		// added by this mod
 	m_abCanLaunch = NULL;
 
 	m_paiRouteChange = NULL;
@@ -92,6 +93,7 @@ CvTeam::~CvTeam()
 	SAFE_DELETE_ARRAY(m_abForcePeace);
 	SAFE_DELETE_ARRAY(m_abVassal);
 	SAFE_DELETE_ARRAY(m_abWarDeclaredOn);	// added by this mod
+	SAFE_DELETE_ARRAY(m_abFormerMaster);	// added by this mod
 }
 
 
@@ -201,6 +203,7 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 		m_abForcePeace[iI] = false;
 		m_abVassal[iI] = false;
 		m_abWarDeclaredOn[iI] = false;	// added by this mod
+		m_abFormerMaster[iI] = false;	// added by this mod
 
 		if (!bConstructorCall && getID() != NO_TEAM)
 		{
@@ -219,6 +222,7 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 			kLoopTeam.m_abForcePeace[getID()] = false;
 			kLoopTeam.m_abVassal[getID()] = false;
 			kLoopTeam.m_abWarDeclaredOn[getID()] = false;	// added by this mod
+			kLoopTeam.m_abFormerMaster[getID()] = false;	// added by this mod
 		}
 	}
 
@@ -3461,6 +3465,26 @@ bool CvTeam::isAtDefensiveWar() const
 	return false;
 }
 
+// The former masters (added by this mod): this team was a vassal of eTeam and the vassal state has ended (CvTeam::setVassal).
+// Kept after a new vassal state with the same team (isMasterOrFormerMaster counts both). Used by iFormerMasterCombatPercent
+// of the promotions
+bool CvTeam::isFormerMaster(TeamTypes eTeam) const
+{
+	FAssertMsg(eTeam >= 0, "eTeam is expected to be non-negative (invalid Index)");
+	FAssertMsg(eTeam < MAX_TEAMS, "eTeam is expected to be within maximum bounds (invalid Index)");
+	return m_abFormerMaster[eTeam];
+}
+
+bool CvTeam::isMasterOrFormerMaster(TeamTypes eTeam) const
+{
+	if (eTeam == NO_TEAM || eTeam == getID())
+	{
+		return false;
+	}
+
+	return (isVassal(eTeam) || isFormerMaster(eTeam));
+}
+
 // The side that declared the war with eEnemy (added by this mod), for both teams. Updates the ConditionalFreeTraits of their
 // players when it changes
 void CvTeam::setWarDeclaration(TeamTypes eEnemy, bool bThisDeclared, bool bEnemyDeclared)
@@ -4051,6 +4075,13 @@ void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 		}
 
 		m_abVassal[eIndex] = bNewValue;
+
+		// The former masters (added by this mod): any end of the vassal state (independence, a broken capitulation, a freed
+		// vassal) except a team that is reset
+		if (!bNewValue)
+		{
+			m_abFormerMaster[eIndex] = true;
+		}
 
 		for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
 		{
@@ -6685,6 +6716,10 @@ void CvTeam::read(FDataStreamBase* pStream)
 	{
 		pStream->Read(MAX_TEAMS, m_abWarDeclaredOn);
 	}
+	if (uiFlag > 2)
+	{
+		pStream->Read(MAX_TEAMS, m_abFormerMaster);
+	}
 }
 
 
@@ -6692,7 +6727,7 @@ void CvTeam::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 2;	// 1: m_iCircumnavigatedOrder, 2: m_abWarDeclaredOn (added by this mod)
+	uint uiFlag = 3;	// 1: m_iCircumnavigatedOrder, 2: m_abWarDeclaredOn, 3: m_abFormerMaster (added by this mod)
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iNumMembers);
@@ -6780,6 +6815,7 @@ void CvTeam::write(FDataStreamBase* pStream)
 
 	pStream->Write(m_iCircumnavigatedOrder);	// added by this mod
 	pStream->Write(MAX_TEAMS, m_abWarDeclaredOn);	// added by this mod
+	pStream->Write(MAX_TEAMS, m_abFormerMaster);	// added by this mod
 }
 
 // CACHE: cache frequently used values

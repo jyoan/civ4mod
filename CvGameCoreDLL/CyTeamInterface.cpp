@@ -128,6 +128,8 @@ void CyTeamPythonInterface()
 		.def("getCircumnavigatedOrder", &CyTeam::getCircumnavigatedOrder, "int () - 1 for the first team to circumnavigate the globe, 2 for the second..., 0 before it does")
 		.def("isWarDeclaredOn", &CyTeam::isWarDeclaredOn, "bool (int eTeam) - this team declared the current war with eTeam (added by this mod)")
 		.def("isAtDefensiveWar", &CyTeam::isAtDefensiveWar, "bool () - at war with a team that declared that war on this team (added by this mod)")
+		.def("isFormerMaster", &CyTeam::isFormerMaster, "bool (int eTeam) - this team was a vassal of eTeam and is not now (added by this mod)")
+		.def("isMasterOrFormerMaster", &CyTeam::isMasterOrFormerMaster, "bool (int eTeam) - eTeam is or was the master of this team (added by this mod)")
 		.def("isMapCentering", &CyTeam::isMapCentering, "bool () - map is centered")
 		.def("setMapCentering", &CyTeam::setMapCentering, "void (bNewValue)")
 

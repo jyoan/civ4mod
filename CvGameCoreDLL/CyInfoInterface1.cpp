@@ -234,6 +234,7 @@ void CyInfoPythonInterface1()
 		.def("getWarWearinessCombatPercent", &CvPromotionInfo::getWarWearinessCombatPercent, "int () - (added by this mod)")
 		.def("getWarWearinessCombatMaxPercent", &CvPromotionInfo::getWarWearinessCombatMaxPercent, "int () - 0 = no cap (added by this mod)")
 		.def("getStrongerEnemyCombatPercent", &CvPromotionInfo::getStrongerEnemyCombatPercent, "int () - (added by this mod)")
+		.def("getFormerMasterCombatPercent", &CvPromotionInfo::getFormerMasterCombatPercent, "int () - (added by this mod)")
 		.def("getCombatGoldPerStrength", &CvPromotionInfo::getCombatGoldPerStrength, "int () - (added by this mod)")
 		.def("isRiverAttack", &CvPromotionInfo::isRiverAttack, "bool () - (added by this mod)")
 

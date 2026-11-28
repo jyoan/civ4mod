@@ -200,6 +200,9 @@ public:
 	bool isAtDefensiveWar() const;					// Exposed to Python: at war with a team (not minor, not barbarian) that declared it on this team
 	void setWarDeclaration(TeamTypes eEnemy, bool bThisDeclared, bool bEnemyDeclared);
 
+	bool isFormerMaster(TeamTypes eTeam) const;			// Exposed to Python (added by this mod): this team was a vassal of eTeam and is not now
+	bool isMasterOrFormerMaster(TeamTypes eTeam) const;	// Exposed to Python (added by this mod)
+
 	bool isMapCentering() const;																							// Exposed to Python	
 	void setMapCentering(bool bNewValue);																					// Exposed to Python	
 																																								
@@ -432,6 +435,7 @@ protected:
 	bool* m_abForcePeace;
 	bool* m_abVassal;
 	bool* m_abWarDeclaredOn;	// added by this mod: this team declared the current war with the team
+	bool* m_abFormerMaster;		// added by this mod: this team was a vassal of the team (set when the vassal state ends)
 	bool* m_abCanLaunch;
 
 	int* m_paiRouteChange;

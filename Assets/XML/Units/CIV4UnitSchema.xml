@@ -577,6 +577,7 @@
 	<ElementType name="iStrongerEnemyCombatPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iCombatGoldPerStrength" content="textOnly" dt:type="int"/>
 	<ElementType name="bRiverAttack" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iFormerMasterCombatPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="BuildingClassType" content="textOnly"/>
 	<ElementType name="SpecialBuildingType" content="textOnly"/>
 	<ElementType name="bStateReligion" content="textOnly" dt:type="boolean"/>
@@ -1098,6 +1099,7 @@
 		<element type="iStrongerEnemyCombatPercent" minOccurs="0"/>
 		<element type="iCombatGoldPerStrength" minOccurs="0"/>
 		<element type="bRiverAttack" minOccurs="0"/>
+		<element type="iFormerMasterCombatPercent" minOccurs="0"/>
 		<element type="HotKey"/>
 		<element type="bAltDown"/>
 		<element type="bShiftDown"/>

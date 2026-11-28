@@ -28,3 +28,4 @@
 - Warlords(J) のコピーに Unofficial Patch の修正: `CvMapGeneratorUtil.py`
 - 無印 Civ4(J) のコピーに Unofficial Patch の修正: `pyHelper\Popup.py`
 - 新規: `Screens\CvPediaTrait.py`・`Screens\CvPediaSpell.py`・`EntryPoints\CvSpellInterface.py`・`EntryPoints\CvTraitInterface.py`・`EntryPoints\CvHookInterface.py`・`CvHookUtils.py`（XML の Python の式の共通の関数は `CvHookUtils.py`）
+- 新規・検証用（配布には入れない）: `ct.py`（Python コンソール用の短いコマンド。`import ct` のあと `ct.ls()`（プレイヤーとチームの一覧、戦争・宣戦した側・宗主国の印）・`ct.war(t)`（チーム t が自分に宣戦）・`ct.dow(t)`（自分が t に宣戦）・`ct.peace(t)`・`ct.free(t)`（t をかつての宗主国にする）。2026-11-28。コンソールはコピペがきかないため。コンソールを開くには `CivilizationIV.ini` の `CheatCode = chipotle` と Shift + ~）

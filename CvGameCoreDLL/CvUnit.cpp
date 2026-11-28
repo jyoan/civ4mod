@@ -350,6 +350,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iWarWearinessCombatPercent = 0;
 	m_iWarWearinessCombatMaxPercent = 0;
 	m_iStrongerEnemyCombatPercent = 0;
+	m_iFormerMasterCombatPercent = 0;
 	m_iNoDamagePenaltyCount = 0;
 	m_iHiddenNationalityCount = 0;
 	m_iExtraCityAttackPercent = 0;
@@ -10316,6 +10317,10 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 			iTempModifier += getStrongerEnemyCombatModifier(pAttacker->getOwnerINLINE());
 			iTempModifier -= pAttacker->getStrongerEnemyCombatModifier(getOwnerINLINE());
 
+			// iFormerMasterCombatPercent of the promotions of both units (added by this mod)
+			iTempModifier += getFormerMasterCombatModifier(pAttacker->getOwnerINLINE());
+			iTempModifier -= pAttacker->getFormerMasterCombatModifier(getOwnerINLINE());
+
 			if (pAttacker->isAnimal())
 			{
 				iExtraModifier = animalCombatModifier();
@@ -11287,6 +11292,7 @@ void CvUnit::updatePromotionCounts()
 	m_iWarWearinessCombatPercent = sumPromotionValues(&CvPromotionInfo::getWarWearinessCombatPercent);
 	m_iWarWearinessCombatMaxPercent = sumPromotionValues(&CvPromotionInfo::getWarWearinessCombatMaxPercent);
 	m_iStrongerEnemyCombatPercent = sumPromotionValues(&CvPromotionInfo::getStrongerEnemyCombatPercent);
+	m_iFormerMasterCombatPercent = sumPromotionValues(&CvPromotionInfo::getFormerMasterCombatPercent);
 	m_iNoDamagePenaltyCount = countPromotions(&CvPromotionInfo::isNoDamagePenalty);
 	m_iHiddenNationalityCount = countPromotions(&CvPromotionInfo::isHiddenNationality);
 
@@ -11538,6 +11544,18 @@ int CvUnit::getStrongerEnemyCombatModifier(PlayerTypes ePlayer) const
 	}
 
 	return (GET_PLAYER(ePlayer).getPower() > GET_PLAYER(getOwnerINLINE()).getPower()) ? m_iStrongerEnemyCombatPercent : 0;
+}
+
+// iFormerMasterCombatPercent of the promotions (added by this mod): combat % against the units of ePlayer when its team is or
+// was the master of the team of the owner (CvTeam::isMasterOrFormerMaster)
+int CvUnit::getFormerMasterCombatModifier(PlayerTypes ePlayer) const
+{
+	if (m_iFormerMasterCombatPercent == 0 || getOwnerINLINE() == NO_PLAYER || ePlayer == NO_PLAYER || ePlayer == getOwnerINLINE())
+	{
+		return 0;
+	}
+
+	return GET_TEAM(getTeam()).isMasterOrFormerMaster(GET_PLAYER(ePlayer).getTeam()) ? m_iFormerMasterCombatPercent : 0;
 }
 
 // Encirclement of the promotions (added by this mod): around pCenter, the units of the team of this unit that can fight,
@@ -14570,6 +14588,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue)
 		m_iWarWearinessCombatPercent += GC.getPromotionInfo(eIndex).getWarWearinessCombatPercent() * iChange;
 		m_iWarWearinessCombatMaxPercent += GC.getPromotionInfo(eIndex).getWarWearinessCombatMaxPercent() * iChange;
 		m_iStrongerEnemyCombatPercent += GC.getPromotionInfo(eIndex).getStrongerEnemyCombatPercent() * iChange;
+		m_iFormerMasterCombatPercent += GC.getPromotionInfo(eIndex).getFormerMasterCombatPercent() * iChange;
 		m_iNoDamagePenaltyCount += (GC.getPromotionInfo(eIndex).isNoDamagePenalty() ? iChange : 0);
 
 		// BonusAffinities (added by this mod)

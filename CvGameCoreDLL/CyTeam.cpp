@@ -563,6 +563,16 @@ bool CyTeam::isAtDefensiveWar()
 	return m_pTeam ? m_pTeam->isAtDefensiveWar() : false;
 }
 
+bool CyTeam::isFormerMaster(int /*TeamTypes*/ eTeam)
+{
+	return m_pTeam ? m_pTeam->isFormerMaster((TeamTypes)eTeam) : false;
+}
+
+bool CyTeam::isMasterOrFormerMaster(int /*TeamTypes*/ eTeam)
+{
+	return m_pTeam ? m_pTeam->isMasterOrFormerMaster((TeamTypes)eTeam) : false;
+}
+
 bool CyTeam::isMapCentering()
 {
 	return m_pTeam ? m_pTeam->isMapCentering() : false;

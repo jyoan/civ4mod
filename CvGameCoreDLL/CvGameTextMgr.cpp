@@ -2019,6 +2019,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_STRONGER_ENEMY_MOD", iModifier));
 			}
 
+			// iFormerMasterCombatPercent of the promotions of the attacker (added by this mod)
+			iModifier = pAttacker->getFormerMasterCombatModifier(pDefender->getOwnerINLINE());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_FORMER_MASTER_MOD", iModifier));
+			}
+
 			// AttackFromTerrains / AttackFromFeatures of the promotions of the attacker (added by this mod)
 			iModifier = pAttacker->getAttackFromPlotPercent(pAttacker->plot());
 
@@ -2277,6 +2286,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 			{
 				szString.append(NEWLINE);
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_STRONGER_ENEMY_MOD", iModifier));
+			}
+
+			// iFormerMasterCombatPercent of the promotions of the defender (added by this mod)
+			iModifier = pDefender->getFormerMasterCombatModifier(pAttacker->getOwnerINLINE());
+
+			if (iModifier != 0)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_FORMER_MASTER_MOD", iModifier));
 			}
 
 			iModifier = pDefender->domainModifier(pAttacker->getDomainType());
@@ -4884,6 +4902,13 @@ void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, Prom
 	{
 		szBuffer.append(pcNewline);
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_STRONGER_ENEMY_COMBAT", GC.getPromotionInfo(ePromotion).getStrongerEnemyCombatPercent()));
+	}
+
+	// iFormerMasterCombatPercent (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).getFormerMasterCombatPercent() != 0)
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_FORMER_MASTER_COMBAT", GC.getPromotionInfo(ePromotion).getFormerMasterCombatPercent()));
 	}
 
 	// AttackFromTerrains / AttackFromFeatures (added by this mod): the terrains have no Civilopedia link here (TERRAIN_HILL and

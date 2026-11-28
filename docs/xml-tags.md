@@ -13,7 +13,8 @@
 | `docs/tags/trait-diplomacy.md` | 志向: 外交（属国 `bHumanCanBeVassal`・`FoundingVassal`、情報の公開 `bReveal...`、取引 `Deals`、レンドリース `LendLease`、宣戦した側の記録と非難 `iDenounceAttitudeChange`） |
 | `docs/tags/trait-hooks.md` | 志向: Python フック（`Py...`）と `CvHookUtils.py` の共通関数（暦の偉人・優先地域）、`ConditionalFreeTraits`、`bLongCountCalendar` |
 | `docs/tags/espionage.md` | 諜報任務: 志向による使用の制限（`PrereqOrTraits`・`DisableTraits`）、この Mod で足した任務（要人の殺害・誘拐、任意の社会制度を押し付ける体制転覆 `bSwitchAnyCivic`、任意の宗教か国教なしを押し付ける国教転覆 `bSwitchAnyReligion`・`bSwitchNoReligion`） |
-| `docs/tags/promotion.md` | 昇進 |
+| `docs/tags/promotion.md` | 昇進（戦闘の結果・移動・そのほか） |
+| `docs/tags/promotion-combat.md` | 昇進: 戦闘力（相手・場所・状態による %。かつての宗主国の記録も） |
 | `docs/tags/spell.md` | 呪文 |
 | `docs/tags/building-civ.md` | 建物・文明 |
 | `docs/tags/improvement-civic.md` | 施設・作業、社会制度・資源・ユニット・イベント・生産の種類・プロジェクト |
