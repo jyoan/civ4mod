@@ -152,6 +152,7 @@
 - 掘ったあと: 灌漑（`CvMap::updateIrrigated`）、近くの都市の真水の健康、交易網（`CvGame::updatePlotGroups`）を更新する。渡河の攻撃の不利、川の商業、川を上る船（`bRiverNavigation`）も自然の川と同じ。
 - 4 方向は 4 つの作業として書く。労働者に持たせるには `UnitsFromBuild`（例: `BUILD_ROAD`）、使える文明を絞るには `PrereqOrTraits` を使う。
 - ボタンの説明に「この辺に川を掘る」と `RiverFeature` の行を足した（`CvDLLWidgetData`。`TXT_KEY_ACTION_DIG_RIVER`・`_FEATURE`）。
+- 志向の説明文は「固有の施設」ではなく、4 方向をまとめて「（技術）で、労働者が自国の領土で川を掘れる（川か湖から）」の 1 行（`CvGameTextMgrTrait.cpp`。`TXT_KEY_TRAIT_DIG_RIVER`・`_TECH`）。
 - AI の労働者は掘らない（AI の段階で対応）。
 - キャッシュ: `CvBuildInfo` にストリーム版はない。
 - Python は `CvBuildInfo.getRiverEdge()` / `getRiverFeature()` / `getMaxPlotRiverEdges()`、`CyPlot.isRiverEdge(iDirection)`

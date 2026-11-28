@@ -1986,16 +1986,26 @@ void CvGameTextMgr::parseTraitUniqueImprovements(CvWStringBuffer& szHelpString, 
 	CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
 	CvWString szTempBuffer;
 	CvWString szText;
+	BuildTypes eRiverBuild = NO_BUILD;
 	int iI, iJ;
 
 	// PrereqOrTraits of the builds: "Unique improvement: Terrace", "Unique improvement: Terrace (replaces Farm)" (added by
-	// this mod)
+	// this mod). Builds digging a river (RiverEdge, one per direction) make one line together below.
 	for (iI = 0; iI < GC.getNumBuildInfos(); ++iI)
 	{
 		CvBuildInfo& kBuild = GC.getBuildInfo((BuildTypes)iI);
 
 		for (iJ = 0; iJ < kBuild.getNumPrereqOrTraits(); ++iJ)
 		{
+			if (kBuild.getPrereqOrTraits(iJ) == eTrait && kBuild.getRiverEdge() != NO_DIRECTION)
+			{
+				if (eRiverBuild == NO_BUILD)
+				{
+					eRiverBuild = (BuildTypes)iI;
+				}
+				break;
+			}
+
 			if (kBuild.getPrereqOrTraits(iJ) == eTrait)
 			{
 				szText = getLinkText(getBuildResultDescription(kBuild));
@@ -2013,6 +2023,22 @@ void CvGameTextMgr::parseTraitUniqueImprovements(CvWStringBuffer& szHelpString, 
 				break;
 			}
 		}
+	}
+
+	// "Workers can dig rivers (Engineering)"
+	if (eRiverBuild != NO_BUILD)
+	{
+		TechTypes eTech = (TechTypes)GC.getBuildInfo(eRiverBuild).getTechPrereq();
+		if (eTech != NO_TECH)
+		{
+			szText = getLinkText(GC.getTechInfo(eTech).getDescription());
+			szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_DIG_RIVER_TECH", szText.GetCString()).c_str());
+		}
+		else
+		{
+			szTempBuffer.Format(L"%s  %c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), gDLL->getText("TXT_KEY_TRAIT_DIG_RIVER").c_str());
+		}
+		szHelpString.append(szTempBuffer);
 	}
 }
 

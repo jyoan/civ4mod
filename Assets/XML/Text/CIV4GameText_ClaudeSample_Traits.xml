@@ -588,6 +588,24 @@
 		<Japanese>&#65288;&#27839;&#23736;&#12398;&#37117;&#24066;&#12398;&#12415;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DIG_RIVER</Tag>
+		<English>Workers can dig rivers in your territory, from a river or a lake</English>
+		<French>Workers can dig rivers in your territory, from a river or a lake</French>
+		<German>Workers can dig rivers in your territory, from a river or a lake</German>
+		<Italian>Workers can dig rivers in your territory, from a river or a lake</Italian>
+		<Spanish>Workers can dig rivers in your territory, from a river or a lake</Spanish>
+		<Japanese>&#21172;&#20685;&#32773;&#12364;&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#24029;&#12434;&#25496;&#12428;&#12427;&#65288;&#24029;&#12363;&#28246;&#12363;&#12425;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_DIG_RIVER_TECH</Tag>
+		<English>With %s1_Tech, workers can dig rivers in your territory, from a river or a lake</English>
+		<French>With %s1_Tech, workers can dig rivers in your territory, from a river or a lake</French>
+		<German>With %s1_Tech, workers can dig rivers in your territory, from a river or a lake</German>
+		<Italian>With %s1_Tech, workers can dig rivers in your territory, from a river or a lake</Italian>
+		<Spanish>With %s1_Tech, workers can dig rivers in your territory, from a river or a lake</Spanish>
+		<Japanese>%s1_Tech&#12391;&#12289;&#21172;&#20685;&#32773;&#12364;&#33258;&#22269;&#12398;&#38936;&#22303;&#12391;&#24029;&#12434;&#25496;&#12428;&#12427;&#65288;&#24029;&#12363;&#28246;&#12363;&#12425;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_UNIQUE_IMPROVEMENT</Tag>
 		<English>Unique improvement: %s1_Name</English>
 		<French>Unique improvement: %s1_Name</French>
