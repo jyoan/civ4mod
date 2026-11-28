@@ -232,11 +232,11 @@
 - `bBarbarianAlly` 1、`bBarbarianVision` 1、`bNoUnhealthyPopulation` 1、`bBuildingOnlyHealthy` 1、`bMilitaryFoodProduction` 1、労働の社会制度を同時に 2 つ採用できる（`CivicOptionExtraSlots` の `CIVICOPTION_LABOR` 1。検証用社会制度をやめると失うので、枠を失ったときの確認用）。
 - 検証用志向の `ConditionalFreeTraits` で、検証用社会制度を採用している間だけ付く（蛮族や不衛生を使うほかの確認に影響しないように）
 
-## `TRAIT_TEST_COND_*`（検証用条件（…）、10 個）
+## `TRAIT_TEST_COND_*`（検証用条件（…）、11 個）
 
 - 効果なし（`_ANARCHY` だけ、全ユニットの戦闘力 +25%（`iCombatPercent`）。無政府期間中だけ付くので、付け外しで今いるユニットの戦闘力が変わることを確かめる）。
 - 検証用志向の `ConditionalFreeTraits` で、条件を満たす間だけ付く。
-- 外交顧問（F4）で自分の指導者アイコンにカーソルを置くと出る志向の一覧で、どの条件を満たしているかがわかる: `_GOLDEN_AGE`（`bGoldenAge`）、`_ANARCHY`（`bAnarchy`）、`_NORMAL`（`bNoGoldenAge` + `bNoAnarchy`）、`_CITIES`（`iMinCities` 3 + `iMaxCities` 4）、`_BONUS`（`PrereqBonus` 馬）、`_BUILDING`（`PrereqBuildingClass` 兵舎）、`_VASSAL`（`bVassal`）、`_MASTER`（`bHasVassal`）、`_RANK`（`iMinScoreRank` 2）、`_PYTHON`（`PyCondition` `pPlayer.getGold() >= 200`、説明は `PyConditionText` の `TXT_KEY_CONDITION_TEST_GOLD`「資金が200以上」）。
+- 外交顧問（F4）で自分の指導者アイコンにカーソルを置くと出る志向の一覧で、どの条件を満たしているかがわかる: `_GOLDEN_AGE`（`bGoldenAge`）、`_ANARCHY`（`bAnarchy`）、`_NORMAL`（`bNoGoldenAge` + `bNoAnarchy`）、`_CITIES`（`iMinCities` 3 + `iMaxCities` 4）、`_BONUS`（`PrereqBonus` 馬）、`_BUILDING`（`PrereqBuildingClass` 兵舎）、`_VASSAL`（`bVassal`）、`_MASTER`（`bHasVassal`）、`_RANK`（`iMinScoreRank` 2）、`_PYTHON`（`PyCondition` `pPlayer.getGold() >= 200`、説明は `PyConditionText` の `TXT_KEY_CONDITION_TEST_GOLD`「資金が200以上」）、`_DEFENSIVE_WAR`（`bDefensiveWar`。2026-11-28）。
 - 略称はすべて `TXT_KEY_TRAIT_TEST_COND_SHORT`（TC）
 
 ## `TRAIT_TEST_INSANE`（検証用志向（狂気））
@@ -249,6 +249,7 @@
 - 検証用 AI 文明の文明の志向。
 - ゲーム開始時に `TECH_TEST_DIPLOMACY` を得る（`FreeTechs`）。
 - 都市は文化で寝返らない（反乱は起きる。`CultureFlip/bNoFlip`）。
+- この文明に宣戦して交戦中のチームへの、ほかの文明の態度 -2（`iDenounceAttitudeChange`。2026-11-28）。
 - 反乱も止める確認は一時的に `CultureFlip/bNoRevoltAndNoFlip` に替える
 - 偉人バーのクリックで足りない偉人ポイントを 1 ポイントあたり 2 ゴールドで購入し、都市の偉人ポイントの割合で選ばれる偉人がその場で生まれる（`GreatPeopleHurry/iGoldPerPoint` 2、`UnitClassType` なし。2026-11-26）。確かめるときは検証用 AI 文明（指導者は検証用指導者（要求）。人間が操作するので要求は来ない）でプレイする
 

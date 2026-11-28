@@ -515,6 +515,7 @@ public:
 	int getAnarchyGoldenAgePercent();	// added by this mod
 	int getTechCostModifier();	// added by this mod
 	int getAttitudeChange();	// added by this mod
+	int getDenounceAttitudeChange();	// added by this mod
 	int getRouteMovementModifierInBorders();	// added by this mod
 	int getTraitCombatPercent();	// added by this mod
 	int getHappinessPerReligion();	// added by this mod

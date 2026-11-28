@@ -147,6 +147,7 @@ m_iEnemyAttritionLimit(100),
 m_iAnarchyGoldenAgePercent(0),
 m_iTechCostModifier(0),
 m_iAttitudeChange(0),
+m_iDenounceAttitudeChange(0),
 m_iRouteMovementModifierInBorders(0),
 m_iCombatPercent(0),
 m_iHappinessPerReligion(0),
@@ -1262,6 +1263,13 @@ int CvTraitInfo::getTechCostModifier() const
 int CvTraitInfo::getAttitudeChange() const
 {
 	return m_iAttitudeChange;
+}
+
+// iDenounceAttitudeChange (added by this mod): while a team that declared the war on the player is at war with it, the
+// attitude of the other players (the AI) toward the players of that team (CvPlayerAI::AI_getDenounceAttitude)
+int CvTraitInfo::getDenounceAttitudeChange() const
+{
+	return m_iDenounceAttitudeChange;
 }
 
 // iRouteMovementModifierInBorders (added by this mod): % to the movement cost of routes between plots of the team of the
@@ -3318,6 +3326,7 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iAnarchyGoldenAgePercent, "iAnarchyGoldenAgePercent");
 	pXML->GetChildXmlValByName(&m_iTechCostModifier, "iTechCostModifier");
 	pXML->GetChildXmlValByName(&m_iAttitudeChange, "iAttitudeChange");
+	pXML->GetChildXmlValByName(&m_iDenounceAttitudeChange, "iDenounceAttitudeChange");
 	// Deals: bBuyCities, iCityValueModifier, iGoldLimitModifier, iGoldValueModifier
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Deals"))
 	{
@@ -3647,6 +3656,7 @@ void CvTraitInfo::readConditionalFreeTraits(CvXMLLoadUtility* pXML)
 				kCondition.iTrait = NO_TRAIT;
 				kCondition.bAtWar = false;
 				kCondition.bAtPeace = false;
+				kCondition.bDefensiveWar = false;
 				kCondition.iStateReligion = NO_RELIGION;
 				kCondition.bNoStateReligion = false;
 				kCondition.iEraMin = NO_ERA;
@@ -3672,6 +3682,7 @@ void CvTraitInfo::readConditionalFreeTraits(CvXMLLoadUtility* pXML)
 				kCondition.iPrereqTech = pXML->FindInInfoClass(szTextVal);
 				pXML->GetChildXmlValByName(&kCondition.bAtWar, "bAtWar");
 				pXML->GetChildXmlValByName(&kCondition.bAtPeace, "bAtPeace");
+				pXML->GetChildXmlValByName(&kCondition.bDefensiveWar, "bDefensiveWar");
 				pXML->GetChildXmlValByName(&kCondition.bNoStateReligion, "bNoStateReligion");
 				pXML->GetChildXmlValByName(&kCondition.bFavoriteCivic, "bFavoriteCivic");
 				pXML->GetChildXmlValByName(&kCondition.iMinUnitsKilled, "iMinUnitsKilled");

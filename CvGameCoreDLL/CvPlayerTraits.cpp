@@ -471,6 +471,12 @@ bool CvPlayer::isConditionalFreeTraitActive(const ConditionalFreeTrait& kConditi
 		return false;
 	}
 
+	// bDefensiveWar (added by this mod)
+	if (kCondition.bDefensiveWar && !GET_TEAM(getTeam()).isAtDefensiveWar())
+	{
+		return false;
+	}
+
 	if (kCondition.iStateReligion != NO_RELIGION && getStateReligion() != kCondition.iStateReligion)
 	{
 		return false;
@@ -3385,6 +3391,12 @@ int CvPlayer::getTechCostModifier() const
 int CvPlayer::getAttitudeChange() const
 {
 	return sumTraitValues(&CvTraitInfo::getAttitudeChange);
+}
+
+// iDenounceAttitudeChange of the traits (added by this mod): see CvPlayerAI::AI_getDenounceAttitude
+int CvPlayer::getDenounceAttitudeChange() const
+{
+	return sumTraitValues(&CvTraitInfo::getDenounceAttitudeChange);
 }
 
 // iRouteMovementModifierInBorders of the traits (added by this mod): see CvPlot::movementCost

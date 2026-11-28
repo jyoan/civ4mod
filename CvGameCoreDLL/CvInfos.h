@@ -4894,6 +4894,7 @@ struct ConditionalFreeTrait
 	int iTrait;
 	bool bAtWar;				// at war with a team that is not a minor civilization or the barbarians
 	bool bAtPeace;			// not at war (as bAtWar)
+	bool bDefensiveWar;		// at war with a team that declared that war on the team of the player (as bAtWar, added by this mod)
 	int iStateReligion;		// NO_RELIGION: any
 	bool bNoStateReligion;
 	int iEraMin;			// NO_ERA: no limit (the current era of the player)
@@ -5117,6 +5118,7 @@ public:
 	int getAnarchyGoldenAgePercent() const;			// Exposed to Python (added by this mod)
 	int getTechCostModifier() const;			// Exposed to Python (added by this mod)
 	int getAttitudeChange() const;			// Exposed to Python (added by this mod)
+	int getDenounceAttitudeChange() const;	// Exposed to Python (added by this mod)
 	int getRouteMovementModifierInBorders() const;	// Exposed to Python (added by this mod)
 	int getCombatPercent() const;			// Exposed to Python (added by this mod)
 	int getHappinessPerReligion() const;		// Exposed to Python (added by this mod)
@@ -5542,6 +5544,7 @@ protected:
 	int m_iAnarchyGoldenAgePercent;	// added by this mod
 	int m_iTechCostModifier;	// added by this mod
 	int m_iAttitudeChange;	// added by this mod
+	int m_iDenounceAttitudeChange;	// added by this mod
 	int m_iRouteMovementModifierInBorders;	// added by this mod
 	int m_iCombatPercent;	// added by this mod
 	int m_iHappinessPerReligion;	// added by this mod

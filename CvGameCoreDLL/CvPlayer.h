@@ -280,6 +280,7 @@ public:
 	int getAnarchyGoldenAgePercent() const;			// Exposed to Python (added by this mod)
 	int getTechCostModifier() const;			// Exposed to Python (added by this mod)
 	int getAttitudeChange() const;			// Exposed to Python (added by this mod)
+	int getDenounceAttitudeChange() const;	// Exposed to Python (added by this mod)
 	int getRouteMovementModifierInBorders() const;	// Exposed to Python (added by this mod)
 	int getTraitCombatPercent() const;			// Exposed to Python (added by this mod)
 	void updateAttitudeCombatCounts();			// AttitudeCombatPercents of the traits (added by this mod)

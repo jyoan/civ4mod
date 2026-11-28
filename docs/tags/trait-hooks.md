@@ -95,6 +95,7 @@
 - 各項目は `TraitType`（与える志向）と条件（どれも省略可。書いたものすべてを満たすとき）:
   - `bAtWar`（蛮族・小文明以外のどこかと交戦中。チーム単位）
   - `bAtPeace`（交戦していない）
+  - `bDefensiveWar`（自分のチームに宣戦してきた、蛮族・小文明以外のチームと交戦中。宣戦した側の記録 `CvTeam::isAtDefensiveWar` は `docs/tags/trait-diplomacy.md` の `iDenounceAttitudeChange`。2026-11-28、チャーチル用）
   - `StateReligion`（その宗教が国教）
   - `bNoStateReligion`（国教なし）
   - `EraMin` / `EraMax`（そのプレイヤーの今の時代が範囲内）

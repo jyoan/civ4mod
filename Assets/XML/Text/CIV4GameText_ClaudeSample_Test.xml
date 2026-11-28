@@ -868,6 +868,15 @@
 		<Japanese>&#26908;&#35388;&#29992;&#26465;&#20214;&#65288;&#23646;&#22269;&#12434;&#25345;&#12388;&#65289;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_TRAIT_TEST_COND_DEFENSIVE_WAR</Tag>
+		<English>Test Condition (defensive war)</English>
+		<French>Test Condition (defensive war)</French>
+		<German>Test Condition (defensive war)</German>
+		<Italian>Test Condition (defensive war)</Italian>
+		<Spanish>Test Condition (defensive war)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#26465;&#20214;&#65288;&#38450;&#34907;&#25126;&#20105;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_TRAIT_TEST_COND_RANK</Tag>
 		<English>Test Condition (score rank 2 or lower)</English>
 		<French>Test Condition (score rank 2 or lower)</French>

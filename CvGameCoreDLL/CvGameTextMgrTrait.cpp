@@ -187,6 +187,10 @@ CvWString getConditionalFreeTraitConditions(const ConditionalFreeTrait& kConditi
 	{
 		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_AT_PEACE"));
 	}
+	if (kCondition.bDefensiveWar)
+	{
+		appendConditionText(szConditions, gDLL->getText("TXT_KEY_CONDITION_DEFENSIVE_WAR"));
+	}
 	if (kCondition.iStateReligion != NO_RELIGION)
 	{
 		szText = getLinkText(GC.getReligionInfo((ReligionTypes)kCondition.iStateReligion).getDescription());
@@ -381,6 +385,7 @@ void CvGameTextMgr::parseTraitCityFoundingEffects(CvWStringBuffer& szHelpString,
 	// iTechCostModifier, iAttitudeChange (added by this mod)
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_TECH_COST", kTrait.getTechCostModifier());
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_ATTITUDE_CHANGE", kTrait.getAttitudeChange());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_DENOUNCE_ATTITUDE", kTrait.getDenounceAttitudeChange());
 
 	// iAnarchyGoldenAgePercent (added by this mod)
 	if (kTrait.getAnarchyGoldenAgePercent() > 0)

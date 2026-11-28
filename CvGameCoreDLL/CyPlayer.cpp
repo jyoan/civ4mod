@@ -2311,6 +2311,11 @@ int CyPlayer::getAttitudeChange()
 	return m_pPlayer ? m_pPlayer->getAttitudeChange() : 0;
 }
 
+int CyPlayer::getDenounceAttitudeChange()
+{
+	return m_pPlayer ? m_pPlayer->getDenounceAttitudeChange() : 0;
+}
+
 int CyPlayer::getRouteMovementModifierInBorders()
 {
 	return m_pPlayer ? m_pPlayer->getRouteMovementModifierInBorders() : 0;
