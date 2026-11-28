@@ -611,6 +611,21 @@ void CvGameTextMgr::parseTraitTerritoryEffects(CvWStringBuffer& szHelpString, Tr
 		{
 			szCiv = getLinkText(GC.getCivilizationInfo((CivilizationTypes)kTrait.getFoundingVassalCivilization()).getShortDescription());
 		}
+		else if (kTrait.getNumFoundingVassalCivilizations() > 0)
+		{
+			// CivilizationTypes: "one of A, B, C (at random)"
+			CvWString szList;
+			int iI;
+			for (iI = 0; iI < kTrait.getNumFoundingVassalCivilizations(); iI++)
+			{
+				if (!szList.empty())
+				{
+					szList += L", ";
+				}
+				szList += getLinkText(GC.getCivilizationInfo((CivilizationTypes)kTrait.getFoundingVassalCivilizations(iI)).getShortDescription());
+			}
+			szCiv = gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_ONE_OF", szList.GetCString());
+		}
 		else
 		{
 			szCiv = gDLL->getText("TXT_KEY_TRAIT_FOUNDING_VASSAL_ANY_CIV");
@@ -930,7 +945,15 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 	// are scaled by the game speed when it is known
 	if (kTrait.isRandomBasicTraits() && kTrait.getRandomBasicTraitCount() > 0)
 	{
-		appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_RANDOM_BASIC_TRAITS", CvPlayer::getRandomBasicTraitTurnsForSpeed(kTrait.getRandomBasicTraitTurns()), kTrait.getRandomBasicTraitCount()));
+		if (kTrait.getRandomBasicTraitTurns() <= 0)
+		{
+			// iTurns 0: "Gains 1 random basic trait (it does not change)"
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_RANDOM_BASIC_TRAITS_ONCE", kTrait.getRandomBasicTraitCount()));
+		}
+		else
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_RANDOM_BASIC_TRAITS", CvPlayer::getRandomBasicTraitTurnsForSpeed(kTrait.getRandomBasicTraitTurns()), kTrait.getRandomBasicTraitCount()));
+		}
 	}
 
 	// iUnitCostModifier / iBuildingCostModifier: "-20% production cost of units" (added by this mod)

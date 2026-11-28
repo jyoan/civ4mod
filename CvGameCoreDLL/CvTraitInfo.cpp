@@ -708,6 +708,19 @@ int CvTraitInfo::getFoundingVassalRange() const
 	return m_iFoundingVassalRange;
 }
 
+// FoundingVassal/CivilizationTypes (added by this mod): the civilization is chosen at random among these (the ones no player
+// uses) when CivilizationType is not set or is used
+int CvTraitInfo::getNumFoundingVassalCivilizations() const
+{
+	return (int)m_aiFoundingVassalCivilizations.size();
+}
+
+int CvTraitInfo::getFoundingVassalCivilizations(int i) const
+{
+	FAssertMsg(i >= 0 && i < getNumFoundingVassalCivilizations(), "Index out of bounds");
+	return m_aiFoundingVassalCivilizations[i];
+}
+
 // The team of the player is at peace with the barbarians (added by this mod, as FFH2)
 bool CvTraitInfo::isBarbarianAlly() const
 {
@@ -3218,6 +3231,7 @@ void CvTraitInfo::readStartBias(CvXMLLoadUtility* pXML)
 	m_szFoundingVassalCivilization.clear();
 	m_szFoundingVassalLeader.clear();
 	m_szFoundingVassalHandicap.clear();
+	m_aszFoundingVassalCivilizations.clear();
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "FoundingVassal"))
 	{
 		m_bFoundingVassal = true;
@@ -3225,6 +3239,7 @@ void CvTraitInfo::readStartBias(CvXMLLoadUtility* pXML)
 		pXML->GetChildXmlValByName(m_szFoundingVassalLeader, "LeaderType");
 		pXML->GetChildXmlValByName(m_szFoundingVassalHandicap, "HandicapType");
 		pXML->GetChildXmlValByName(&m_iFoundingVassalRange, "iRange", 5);
+		readTypeList(pXML, "CivilizationTypes", m_aszFoundingVassalCivilizations);
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 }
@@ -4153,6 +4168,17 @@ void CvTraitInfo::readFoundingVassalTypes()
 	m_iFoundingVassalCivilization = resolveTraitTypeString(m_szFoundingVassalCivilization, "FoundingVassal/CivilizationType");
 	m_iFoundingVassalLeader = resolveTraitTypeString(m_szFoundingVassalLeader, "FoundingVassal/LeaderType");
 	m_iFoundingVassalHandicap = resolveTraitTypeString(m_szFoundingVassalHandicap, "FoundingVassal/HandicapType");
+
+	int iI;
+	m_aiFoundingVassalCivilizations.clear();
+	for (iI = 0; iI < (int)m_aszFoundingVassalCivilizations.size(); iI++)
+	{
+		int iCiv = resolveTraitTypeString(m_aszFoundingVassalCivilizations[iI], "FoundingVassal/CivilizationTypes");
+		if (iCiv >= 0)
+		{
+			m_aiFoundingVassalCivilizations.push_back(iCiv);
+		}
+	}
 }
 
 bool CvTraitInfo::readPass3()

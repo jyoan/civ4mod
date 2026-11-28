@@ -1328,6 +1328,10 @@
 			<CultureFlip>
 				<bNoFlip>1</bNoFlip>
 			</CultureFlip>
+			<RandomBasicTraits>
+				<iTurns>0</iTurns>
+				<iCount>1</iCount>
+			</RandomBasicTraits>
 			<iDenounceAttitudeChange>-2</iDenounceAttitudeChange>
 			<FreeTechs>
 				<FreeTech>
@@ -1360,10 +1364,11 @@
 			<Description>TXT_KEY_TRAIT_TEST_FOUNDING_VASSAL</Description>
 			<ShortDescription>TXT_KEY_TRAIT_TEST_FOUNDING_VASSAL_SHORT</ShortDescription>
 			<FoundingVassal>
-				<CivilizationType>CIVILIZATION_CELT</CivilizationType>
-				<LeaderType>LEADER_GANDHI</LeaderType>
-				<HandicapType>HANDICAP_NOBLE</HandicapType>
 				<iRange>5</iRange>
+				<CivilizationTypes>
+					<CivilizationType>CIVILIZATION_TEST_AI</CivilizationType>
+					<CivilizationType>CIVILIZATION_CELT</CivilizationType>
+				</CivilizationTypes>
 			</FoundingVassal>
 		</TraitInfo>
 		<TraitInfo>

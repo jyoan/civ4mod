@@ -250,6 +250,7 @@
 - ゲーム開始時に `TECH_TEST_DIPLOMACY` を得る（`FreeTechs`）。
 - 都市は文化で寝返らない（反乱は起きる。`CultureFlip/bNoFlip`）。
 - この文明に宣戦して交戦中のチームへの、ほかの文明の態度 -2（`iDenounceAttitudeChange`。2026-11-28）。
+- 基本志向を 1 つランダムに得て、入れ替えない（`RandomBasicTraits` の `iTurns` 0・`iCount` 1。2026-11-28。検証用志向（属国）で参加したときの確認用）。
 - 反乱も止める確認は一時的に `CultureFlip/bNoRevoltAndNoFlip` に替える
 - 偉人バーのクリックで足りない偉人ポイントを 1 ポイントあたり 2 ゴールドで購入し、都市の偉人ポイントの割合で選ばれる偉人がその場で生まれる（`GreatPeopleHurry/iGoldPerPoint` 2、`UnitClassType` なし。2026-11-26）。確かめるときは検証用 AI 文明（指導者は検証用指導者（要求）。人間が操作するので要求は来ない）でプレイする
 
@@ -262,11 +263,11 @@
 ## `TRAIT_TEST_FOUNDING_VASSAL`（検証用志向（属国））・`LEADER_TEST_VASSAL`（検証用指導者（属国））
 
 - 複製元: 検証用志向（海）・検証用指導者（海）
-- 最初の都市を建てると、5 タイル以内にケルト（指導者はガンジー）が AI の初期ユニット（貴族・古代なら開拓者と戦士か斥候）を連れて参加し、永久同盟でチームに入る。
-- AI 補正は貴族（`FoundingVassal` の `CIVILIZATION_CELT`・`LEADER_GANDHI`・`HANDICAP_NOBLE`・`iRange` 5）。
+- 最初の都市を建てると、5 タイル以内に検証用 AI 文明かケルト（ランダム。指導者はその文明の指導者からランダム）が AI の初期ユニット（貴族・古代なら開拓者と戦士か斥候）を連れて参加し、永久同盟でチームに入る。
+- AI 補正はゲームの難易度（`FoundingVassal` の `iRange` 5、`CivilizationTypes` に `CIVILIZATION_TEST_AI`・`CIVILIZATION_CELT`。2026-11-28 に `CIVILIZATION_CELT`・`LEADER_GANDHI`・`HANDICAP_NOBLE` の指定から替えた）。
+- 検証用 AI 文明が参加すると、検証用志向（AI）の `RandomBasicTraits` で基本志向を 1 つ得て、そのまま変わらない。
 - 指導者は `CIVILIZATION_TEST` の指導者に入れてある。
-- ケルトやガンジーがすでにゲームにいると自動で選ぶ。
-- 自動の選択を確かめるときは一時的に `NONE` にする
+- 候補がどちらもゲームにいると自動で選ぶ
 
 ## `TRAIT_TEST_CALENDAR`（検証用志向（暦））
 

@@ -5041,6 +5041,8 @@ public:
 	int getFoundingVassalLeader() const;			// Exposed to Python: NO_LEADER = chosen by the game
 	int getFoundingVassalHandicap() const;			// Exposed to Python: NO_HANDICAP = the difficulty of the game
 	int getFoundingVassalRange() const;				// Exposed to Python
+	int getNumFoundingVassalCivilizations() const;	// Exposed to Python: FoundingVassal/CivilizationTypes, the candidates
+	int getFoundingVassalCivilizations(int i) const;	// Exposed to Python
 	int getGoldInterestPercent() const;				// Exposed to Python
 	int getGoldInterestMax() const;					// Exposed to Python
 	int getPeaceAngerPerTurn() const;				// Exposed to Python
@@ -5474,6 +5476,8 @@ protected:
 	CvString m_szFoundingVassalCivilization;	// read() keeps the types as strings until readPass3() (loaded after the traits)
 	CvString m_szFoundingVassalLeader;
 	CvString m_szFoundingVassalHandicap;
+	std::vector<CvString> m_aszFoundingVassalCivilizations;	// FoundingVassal/CivilizationTypes, strings until readFoundingVassalTypes()
+	std::vector<int> m_aiFoundingVassalCivilizations;
 	int m_iGoldInterestPercent;
 	int m_iGoldInterestMax;
 	int m_iPeaceAngerPerTurn;

@@ -1036,11 +1036,15 @@
 	<ElementType name="LeaderType" content="textOnly"/>
 	<ElementType name="HandicapType" content="textOnly"/>
 	<ElementType name="iRange" content="textOnly" dt:type="int"/>
+	<ElementType name="CivilizationTypes" content="eltOnly">
+		<element type="CivilizationType" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
 	<ElementType name="FoundingVassal" content="eltOnly">
 		<element type="CivilizationType" minOccurs="0"/>
 		<element type="LeaderType" minOccurs="0"/>
 		<element type="HandicapType" minOccurs="0"/>
 		<element type="iRange" minOccurs="0"/>
+		<element type="CivilizationTypes" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="bDoubleInCapital" content="textOnly" dt:type="boolean"/>
 	<ElementType name="NearbyCityCommerce" content="eltOnly">

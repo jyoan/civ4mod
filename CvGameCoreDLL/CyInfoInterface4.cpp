@@ -198,6 +198,8 @@ void CyInfoPythonInterfaceTrait2(python::class_<CvTraitInfo, python::bases<CvInf
 		.def("getFoundingVassalLeader", &CvTraitInfo::getFoundingVassalLeader, "int ()")
 		.def("getFoundingVassalHandicap", &CvTraitInfo::getFoundingVassalHandicap, "int ()")
 		.def("getFoundingVassalRange", &CvTraitInfo::getFoundingVassalRange, "int ()")
+		.def("getNumFoundingVassalCivilizations", &CvTraitInfo::getNumFoundingVassalCivilizations, "int ()")
+		.def("getFoundingVassalCivilizations", &CvTraitInfo::getFoundingVassalCivilizations, "int (int i)")
 		;
 }
 
