@@ -2747,4 +2747,49 @@
 		<Spanish>Tem</Spanish>
 		<Japanese>&#23546;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HUMAN_SACRIFICE</Tag>
+		<English>Human Sacrifice</English>
+		<French>Human Sacrifice</French>
+		<German>Human Sacrifice</German>
+		<Italian>Human Sacrifice</Italian>
+		<Spanish>Human Sacrifice</Spanish>
+		<Japanese>&#20154;&#36523;&#20379;&#29344;&#24535;&#21521;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HUMAN_SACRIFICE_SHORT</Tag>
+		<English>Sac</English>
+		<French>Sac</French>
+		<German>Sac</German>
+		<Italian>Sac</Italian>
+		<Spanish>Sac</Spanish>
+		<Japanese>&#20379;&#29344;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_HUMAN_SACRIFICE_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]The unique worker Macehualli can be sacrificed in a city: hurry production, culture, or gold in a foreign city</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]The unique worker Macehualli can be sacrificed in a city: hurry production, culture, or gold in a foreign city</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]The unique worker Macehualli can be sacrificed in a city: hurry production, culture, or gold in a foreign city</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]The unique worker Macehualli can be sacrificed in a city: hurry production, culture, or gold in a foreign city</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]The unique worker Macehualli can be sacrificed in a city: hurry production, culture, or gold in a foreign city</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#22266;&#26377;&#12518;&#12491;&#12483;&#12488;&#12398;&#12510;&#12475;&#12527;&#12522;&#12434;&#37117;&#24066;&#12391;&#29983;&#36100;&#12395;&#12391;&#12365;&#12427;&#65288;&#29983;&#29987;&#12398;&#21152;&#36895;&#12289;&#25991;&#21270;&#12289;&#22806;&#22269;&#12398;&#37117;&#24066;&#12391;&#37329;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_AZTEC_MACEHUALLI</Tag>
+		<English>Macehualli</English>
+		<French>Macehualli</French>
+		<German>Macehualli</German>
+		<Italian>Macehualli</Italian>
+		<Spanish>Macehualli</Spanish>
+		<Japanese>&#12510;&#12475;&#12527;&#12522;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_FORCED_LABOR_NAME</Tag>
+		<English>Forced Labor</English>
+		<French>Forced Labor</French>
+		<German>Forced Labor</German>
+		<Italian>Forced Labor</Italian>
+		<Spanish>Forced Labor</Spanish>
+		<Japanese>&#24375;&#21046;&#21172;&#20685;</Japanese>
+	</TEXT>
 </Civ4GameText>

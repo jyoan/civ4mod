@@ -315,6 +315,10 @@
 					<UnitClassType>UNITCLASS_SWORDSMAN</UnitClassType>
 					<UnitType>UNIT_AZTEC_JAGUAR</UnitType>
 				</Unit>
+				<Unit>
+					<UnitClassType>UNITCLASS_WORKER</UnitClassType>
+					<UnitType>UNIT_AZTEC_MACEHUALLI</UnitType>
+				</Unit>
 			</Units>
 			<FreeUnitClasses>
 				<FreeUnitClass>
@@ -354,7 +358,7 @@
 			</Leaders>
 			<Traits>
 				<Trait>
-					<TraitType>TRAIT_CHINAMPA</TraitType>
+					<TraitType>TRAIT_HUMAN_SACRIFICE</TraitType>
 					<bTrait>1</bTrait>
 				</Trait>
 			</Traits>

@@ -3795,5 +3795,24 @@
 				</Features>
 			</StartBias>
 		</TraitInfo>
+		<TraitInfo>
+			<Type>TRAIT_HUMAN_SACRIFICE</Type>
+			<Description>TXT_KEY_TRAIT_HUMAN_SACRIFICE</Description>
+			<ShortDescription>TXT_KEY_TRAIT_HUMAN_SACRIFICE_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_HUMAN_SACRIFICE_HELP</Help>
+			<FreePromotionSets>
+				<FreePromotionSet>
+					<FreePromotions>
+						<FreePromotion>
+							<PromotionType>PROMOTION_FORCED_LABOR</PromotionType>
+							<bFreePromotion>1</bFreePromotion>
+						</FreePromotion>
+					</FreePromotions>
+					<FreePromotionUnitClasses>
+						<UnitClassType>UNITCLASS_WORKER</UnitClassType>
+					</FreePromotionUnitClasses>
+				</FreePromotionSet>
+			</FreePromotionSets>
+		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>

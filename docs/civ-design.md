@@ -335,6 +335,8 @@ civfanatics での公開（`master` を枠組み、この Mod をその使用例
 
 1 つずつ設計を詰めてから作る。
 
+2026-11-28: アステカを作った（master `7cbe66d` 昇進の `bForcedLabor`・ユニットの `iGreatWorkOccupationTurns`。civ-design で人身供犠志向とマセワリ）。
+
 - アステカ: 労働者の小さな偉人化と強制労働
 - アメリカ: 宗主国のダミー文明と独立戦争の黄金期
 - エジプト: 運河の掘削（川を作る作業）
@@ -361,8 +363,10 @@ civfanatics での公開（`master` を枠組み、この Mod をその使用例
 - 金（奴隷売買）: 大商人と同じく外国の都市だけ。労働者は `bRivalTerritory` 0 なので相互通行が要る（新しいコードは不要）
 - 文化: BtS の傑作は反乱の期間を 0 にするが、労働者の分は 1 ターン短くするだけ（新しいコード）
 - 強制労働（常に有効）: 地形改善（森の伐採も）がすぐに終わり、本来かかったターン数だけ労働者が動けなくなる（BtS の移動できないタイマー）。スタックなら、できればターン数を均等に割る（同じグループの労働者）。都市には施設を作れないので、生贄とぶつからない
-- 作り方の案（ユーザーは未決定）: アステカの固有の労働者（`UNITCLASS_WORKER` の置き換え）に偉人の値を XML で持たせる。奴隷化と捕獲は文明のそのクラスのユニットを作るので、モンテスマの花の戦争（25% で労働者）ともかみ合う。新しいタグは 1 ターンの短縮と強制労働だけになる
+- 作り方（2026-11-28 に決定）: アステカの固有の労働者（`UNITCLASS_WORKER` の置き換え）に偉人の値を XML で持たせる。奴隷化と捕獲は文明のそのクラスのユニットを作るので、モンテスマの花の戦争（25% で労働者）ともかみ合う。新しいタグは 1 ターンの短縮と強制労働だけになる
 - AI: 偉人の任務は偉人の UnitAI でしか使わないので、AI の段階で判断コードが要る
+- 実装（2026-11-28）: 固有ユニット「マセワリ」`UNIT_AZTEC_MACEHUALLI`（`UNITCLASS_WORKER` の置き換え。加速 20 + 1×人口、交易任務 20 + 5×交易の利益、傑作 文化 30、`iGreatWorkOccupationTurns` 1）。文明の志向は人身供犠 `TRAIT_HUMAN_SACRIFICE`（チナンパの置き換え）で、`FreePromotionSets` で労働者に昇進「強制労働」`PROMOTION_FORCED_LABOR`（`bForcedLabor`）を配る
+- 強制労働はすべての作業（道・伐採も）が対象。完成が早いだけで、労働者が再び動けるのは強制労働なしと同じターン（前借り）
 
 #### アメリカ
 
@@ -569,7 +573,6 @@ AI: AI のアメリカはいつも要求に応じ、戦争なしで属国を抜�
 
 実装のときに決めればよい。
 
-- アステカ: 固有の労働者で作るか
 - アメリカ: 「有利な条件で講和」の判定
 - ヴィクトリア: 聖地と企業の本社も対象にするか
 - ロシア: 都市圏の半径 +1 に「洗練」の条件を残すか
@@ -612,6 +615,9 @@ AI: AI のアメリカはいつも要求に応じ、戦争なしで属国を抜�
 | `TRAIT_TWELVE_PALADINS`（十二聖騎士志向、短縮名「聖騎士」） | シャルルマーニュの 3 つ目の志向。`UniqueUnits` で大将軍を聖騎士に置き換える。`Help` に聖騎士の経験値・アップグレードを書いた |
 | `UNIT_PALADIN`（聖騎士） | 大将軍の複製（合流・定住・陸軍士官学校、グラフィックとボタンも同じ）。`UniqueNames` 12 人（`TXT_KEY_PALADIN_*`）、`UnitClassUpgrades` は陸上で戦闘力と兵科を持つ 36 クラス（偵察・白兵戦・銃・弓兵・騎乗・装甲・ヘリコプター・攻城）、`FreePromotions` 大将軍・武勇、`PyOnCreated` `(gainExperience(pUnit, 30), keepExperienceOnUpgrade(pUnit))` |
 | `PROMOTION_VALOR`（武勇） | `iFreeXPPerTurn` 1、`iFreeXPCap` 100。`UnitCombats` は空でレベルアップでは選べない。アイコンは統率の流用 |
+| `TRAIT_HUMAN_SACRIFICE`（人身供犠志向、短縮名「供犠」） | アステカの文明の志向（`TRAIT_CHINAMPA` の置き換え。チナンパの志向は XML に残し、誰も持たない）。`FreePromotionSets` で `UNITCLASS_WORKER` に `PROMOTION_FORCED_LABOR`。`Help` でマセワリの生贄を説明 |
+| `PROMOTION_FORCED_LABOR`（強制労働） | `bForcedLabor` 1。名前のキーは `TXT_KEY_PROMOTION_FORCED_LABOR_NAME`（`TXT_KEY_PROMOTION_FORCED_LABOR` は master の説明の行）。ボタンは側面攻撃Ⅰ（検証用昇進の複製のまま） |
+| `UNIT_AZTEC_MACEHUALLI`（マセワリ） | アステカの固有の労働者（検証用労働者の複製）。生産の加速 20 + 1×人口、交易任務 20 + 5×交易の利益、傑作 文化 30、`iGreatWorkOccupationTurns` 1。ペディアは労働者のもの |
 | `TRAIT_LAST_PROPHET`（最後の預言者志向、短縮名「預言者」） | アラブの文明の志向（`TRAIT_BEDOUIN` の置き換え。ベドウィンの志向は XML に残し、誰も持たない）。`bClaimLastReligion` 1、`PyOnLastReligionClaimed` で聖地に大預言者 1 人 |
 
 ## 確認の記録
