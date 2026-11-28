@@ -11925,6 +11925,48 @@ void CvGameTextMgr::setReligionHelpCity(CvWStringBuffer &szBuffer, ReligionTypes
 		bHandled = true;
 	}
 
+	// CommercePercentPerReligion, iGreatPeopleRatePerReligion and iExperiencePerReligion of the traits of the owner (added by
+	// this mod): for every religion in the city
+	for (i = 0; i < NUM_COMMERCE_TYPES; i++)
+	{
+		int iCommercePercent = GET_PLAYER(pCity->getOwnerINLINE()).getCommercePercentPerReligion((CommerceTypes)i);
+		if (iCommercePercent != 0)
+		{
+			if (bHandled)
+			{
+				szBuffer.append(L", ");
+			}
+
+			szTempBuffer.Format(L"%s%d%%%c", iCommercePercent > 0 ? "+" : "", iCommercePercent, GC.getCommerceInfo((CommerceTypes)i).getChar());
+			szBuffer.append(szTempBuffer);
+			bHandled = true;
+		}
+	}
+
+	int iReligionGreatPeople = GET_PLAYER(pCity->getOwnerINLINE()).getGreatPeopleRatePerReligion();
+	if (iReligionGreatPeople != 0)
+	{
+		if (bHandled)
+		{
+			szBuffer.append(L", ");
+		}
+
+		szBuffer.append(gDLL->getText("TXT_KEY_RELIGION_BIRTH_RATE_MOD", iReligionGreatPeople));
+		bHandled = true;
+	}
+
+	int iReligionExperience = GET_PLAYER(pCity->getOwnerINLINE()).getExperiencePerReligion();
+	if (iReligionExperience != 0)
+	{
+		if (bHandled)
+		{
+			szBuffer.append(L", ");
+		}
+
+		szBuffer.append(gDLL->getText("TXT_KEY_RELIGION_FREE_XP", iReligionExperience));
+		bHandled = true;
+	}
+
 	if (eStateReligion == eReligion || bForceState)
 	{
 		iHappiness = (pCity->getStateReligionHappiness(eReligion) + GET_PLAYER(pCity->getOwnerINLINE()).getStateReligionHappiness());
@@ -15039,6 +15081,15 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 		}
 	}
 
+	// CommercePercentPerReligion of the traits (added by this mod)
+	int iReligionCommerceMod = owner.getCommercePercentPerReligion(eCommerceType) * city.getReligionCount();
+	if (iReligionCommerceMod != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_YIELD_RELIGIONS", iReligionCommerceMod, info.getChar()));
+		szBuffer.append(NEWLINE);
+		iModifier += iReligionCommerceMod;
+	}
+
 	// Capital
 	int iCapitalMod = city.isCapital() ? owner.getCapitalCommerceRateModifier(eCommerceType) : 0;
 	if (iCapitalMod != 0)
@@ -15677,6 +15728,15 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 			if (0 != iTraitMod && owner.getStateReligion() != NO_RELIGION && city.isHasReligion(owner.getStateReligion()))
 			{
 				szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_GREATPEOPLE_TRAIT_STATE_RELIGION", iTraitMod, trait.getTextKeyWide()));
+				szBuffer.append(NEWLINE);
+				iModifier += iTraitMod;
+			}
+
+			// iGreatPeopleRatePerReligion of the traits, for each religion in the city (added by this mod)
+			iTraitMod = trait.getGreatPeopleRatePerReligion() * city.getReligionCount();
+			if (0 != iTraitMod)
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_GREATPEOPLE_TRAIT_RELIGIONS", iTraitMod, trait.getTextKeyWide()));
 				szBuffer.append(NEWLINE);
 				iModifier += iTraitMod;
 			}

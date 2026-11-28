@@ -762,6 +762,26 @@ void CvGameTextMgr::parseTraitEconomyEffects(CvWStringBuffer& szHelpString, Trai
 
 	// iHappinessPerReligion, CommercePerReligion, iDefenseCombatPercent, iEnemyWarWearinessModifier (added by this mod)
 	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_HAPPINESS_PER_RELIGION", kTrait.getHappinessPerReligion());
+	// CommercePercentPerReligion, iExperiencePerReligion, iGreatPeopleRatePerReligion, SpecialBuildingNotRequireds,
+	// bOtherReligionsToCapital, bNoForeignCultureAnger (added by this mod)
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; ++iI)
+	{
+		if (kTrait.getCommercePercentPerReligion(iI) != 0)
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_COMMERCE_PERCENT_PER_RELIGION", kTrait.getCommercePercentPerReligion(iI), GC.getCommerceInfo((CommerceTypes)iI).getChar()));
+		}
+	}
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_EXPERIENCE_PER_RELIGION", kTrait.getExperiencePerReligion());
+	appendTraitValueLine(szHelpString, "TXT_KEY_TRAIT_GREAT_PEOPLE_RATE_PER_RELIGION", kTrait.getGreatPeopleRatePerReligion());
+	for (iI = 0; iI < GC.getNumSpecialBuildingInfos(); ++iI)
+	{
+		if (kTrait.isSpecialBuildingNotRequired(iI))
+		{
+			appendTraitLine(szHelpString, gDLL->getText("TXT_KEY_TRAIT_SPECIAL_BUILDING_NOT_REQUIRED", GC.getSpecialBuildingInfo((SpecialBuildingTypes)iI).getTextKeyWide()));
+		}
+	}
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_OTHER_RELIGIONS_TO_CAPITAL", kTrait.isOtherReligionsToCapital());
+	appendTraitFlagLine(szHelpString, "TXT_KEY_TRAIT_NO_FOREIGN_CULTURE_ANGER", kTrait.isNoForeignCultureAnger());
 
 	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
 	{

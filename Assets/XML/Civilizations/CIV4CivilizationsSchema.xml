@@ -473,6 +473,22 @@
 	</ElementType>
 	<ElementType name="iEnemyMoveCostInBorders" content="textOnly" dt:type="int"/>
 	<ElementType name="iRevengeCombatPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="CommercePercentPerReligion" content="eltOnly">
+		<element type="iCommerce" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="iExperiencePerReligion" content="textOnly" dt:type="int"/>
+	<ElementType name="iGreatPeopleRatePerReligion" content="textOnly" dt:type="int"/>
+	<ElementType name="bNotRequired" content="textOnly" dt:type="boolean"/>
+	<ElementType name="SpecialBuildingNotRequired" content="eltOnly">
+		<element type="SpecialBuildingType"/>
+		<element type="bNotRequired"/>
+	</ElementType>
+	<ElementType name="SpecialBuildingNotRequireds" content="eltOnly">
+		<element type="SpecialBuildingNotRequired" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="bOtherReligionsToCapital" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bNoForeignCultureAnger" content="textOnly" dt:type="boolean"/>
+	<ElementType name="PyOnOtherReligionFounded" content="textOnly"/>
 	<ElementType name="SpecialBuildingProductionModifier" content="eltOnly">
 		<element type="SpecialBuildingType"/>
 		<element type="iProductionModifier"/>
@@ -1290,6 +1306,12 @@
 		<element type="Hurrys" minOccurs="0"/>
 		<element type="iHappinessPerReligion" minOccurs="0"/>
 		<element type="CommercePerReligion" minOccurs="0"/>
+		<element type="CommercePercentPerReligion" minOccurs="0"/>
+		<element type="iExperiencePerReligion" minOccurs="0"/>
+		<element type="iGreatPeopleRatePerReligion" minOccurs="0"/>
+		<element type="SpecialBuildingNotRequireds" minOccurs="0"/>
+		<element type="bOtherReligionsToCapital" minOccurs="0"/>
+		<element type="bNoForeignCultureAnger" minOccurs="0"/>
 		<element type="iDefenseCombatPercent" minOccurs="0"/>
 		<element type="AttitudeCombatPercents" minOccurs="0"/>
 		<element type="WorldWonderCommerceChanges" minOccurs="0"/>
@@ -1386,6 +1408,7 @@
 		<element type="PyOnPlayerEliminated" minOccurs="0"/>
 		<element type="PyOnImprovementChanged" minOccurs="0"/>
 		<element type="PyOnLastReligionClaimed" minOccurs="0"/>
+		<element type="PyOnOtherReligionFounded" minOccurs="0"/>
 		<element type="ConditionalFreeTraits" minOccurs="0"/>
 		<element type="ExtraYieldThresholds" minOccurs="0"/>
 		<element type="TradeYieldModifiers" minOccurs="0"/>

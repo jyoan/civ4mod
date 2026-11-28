@@ -409,6 +409,20 @@
 				<iCommerce>0</iCommerce>
 				<iCommerce>1</iCommerce>
 			</CommercePerReligion>
+			<CommercePercentPerReligion>
+				<iCommerce>0</iCommerce>
+				<iCommerce>5</iCommerce>
+			</CommercePercentPerReligion>
+			<iExperiencePerReligion>1</iExperiencePerReligion>
+			<iGreatPeopleRatePerReligion>10</iGreatPeopleRatePerReligion>
+			<SpecialBuildingNotRequireds>
+				<SpecialBuildingNotRequired>
+					<SpecialBuildingType>SPECIALBUILDING_MONASTERY</SpecialBuildingType>
+					<bNotRequired>1</bNotRequired>
+				</SpecialBuildingNotRequired>
+			</SpecialBuildingNotRequireds>
+			<bOtherReligionsToCapital>1</bOtherReligionsToCapital>
+			<bNoForeignCultureAnger>1</bNoForeignCultureAnger>
 			<iDefenseCombatPercent>10</iDefenseCombatPercent>
 			<AttitudeCombatPercents>
 				<AttitudeCombatPercent>
@@ -718,6 +732,7 @@
 			<PyOnCircumnavigated>(iOrder == 1 and startGoldenAge(pPlayer), iOrder &gt; 1 and gainCircumnavigationMoves(pPlayer),showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnCircumnavigated', 'iOrder ' + str(iOrder))))</PyOnCircumnavigated>
 			<PyOnPlayerEliminated>(startGoldenAge(pPlayer), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnPlayerEliminated', gc.getPlayer(iEliminatedPlayer).getCivilizationShortDescription(0) + ', golden age turns ' + str(pPlayer.getGoldenAgeTurns()))))</PyOnPlayerEliminated>
 			<PyOnLastReligionClaimed>(createUnits(pPlayer, 'UNITCLASS_PROPHET', 1, pCity.plot()), showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnLastReligionClaimed', cityName(pCity) + ', ' + infoDescription('Religion', eReligion))))</PyOnLastReligionClaimed>
+			<PyOnOtherReligionFounded>showMessage(pPlayer, 'TXT_KEY_CLAUDE_TEST_HOOK_LOG', ('PyOnOtherReligionFounded', cityName(pCity) + ', ' + infoDescription('Religion', eReligion) + ', ' + gc.getPlayer(iFounder).getCivilizationShortDescription(0)))</PyOnOtherReligionFounded>
 			<ConditionalFreeTraits>
 				<ConditionalFreeTrait>
 					<TraitType>TRAIT_AGGRESSIVE</TraitType>

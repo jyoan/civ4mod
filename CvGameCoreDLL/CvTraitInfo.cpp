@@ -151,6 +151,12 @@ m_iRouteMovementModifierInBorders(0),
 m_iCombatPercent(0),
 m_iHappinessPerReligion(0),
 m_paiCommercePerReligion(NULL),
+m_paiCommercePercentPerReligion(NULL),
+m_iExperiencePerReligion(0),
+m_iGreatPeopleRatePerReligion(0),
+m_pabSpecialBuildingNotRequired(NULL),
+m_bOtherReligionsToCapital(false),
+m_bNoForeignCultureAnger(false),
 m_iDefenseCombatPercent(0),
 m_iAttitudeCombatMaxPercent(-1),
 m_paiWorldWonderCommerceChange(NULL),
@@ -317,6 +323,8 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY(m_paiGlobalWorldWonderYieldChange);
 	SAFE_DELETE_ARRAY(m_paiSpecialistExtraYield);
 	SAFE_DELETE_ARRAY(m_paiCommercePerReligion);
+	SAFE_DELETE_ARRAY(m_paiCommercePercentPerReligion);
+	SAFE_DELETE_ARRAY(m_pabSpecialBuildingNotRequired);
 	SAFE_DELETE_ARRAY(m_paiWorldWonderCommerceChange);
 	SAFE_DELETE_ARRAY(m_paiGlobalWorldWonderCommerceChange);
 	SAFE_DELETE_ARRAY(m_paiNearbyCityCommerce);
@@ -1280,6 +1288,49 @@ int CvTraitInfo::getCommercePerReligion(int i) const
 	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
 	FAssertMsg(i > -1, "Index out of bounds");
 	return m_paiCommercePerReligion ? m_paiCommercePerReligion[i] : 0;
+}
+
+// CommercePercentPerReligion (added by this mod): commerce % of each city of the player for each religion in the city
+// (CvCity::getTotalCommerceRateModifier)
+int CvTraitInfo::getCommercePercentPerReligion(int i) const
+{
+	FAssertMsg(i < NUM_COMMERCE_TYPES, "Index out of bounds");
+	FAssertMsg(i > -1, "Index out of bounds");
+	return m_paiCommercePercentPerReligion ? m_paiCommercePercentPerReligion[i] : 0;
+}
+
+// iExperiencePerReligion (added by this mod): experience of the units built in a city for each religion in it
+// (CvCity::getProductionExperience)
+int CvTraitInfo::getExperiencePerReligion() const
+{
+	return m_iExperiencePerReligion;
+}
+
+// iGreatPeopleRatePerReligion (added by this mod): great people rate % of a city for each religion in it
+// (CvCity::getTotalGreatPeopleRateModifier)
+int CvTraitInfo::getGreatPeopleRatePerReligion() const
+{
+	return m_iGreatPeopleRatePerReligion;
+}
+
+// SpecialBuildingNotRequireds (added by this mod): as the civics, units that need a building of the special building (the
+// missionaries and their monastery) can be trained without it (CvPlayer::isSpecialBuildingNotRequired)
+bool CvTraitInfo::isSpecialBuildingNotRequired(int i) const
+{
+	return (m_pabSpecialBuildingNotRequired != NULL && i > -1 && i < GC.getNumSpecialBuildingInfos()) ? m_pabSpecialBuildingNotRequired[i] : false;
+}
+
+// bOtherReligionsToCapital (added by this mod): a religion founded by another player spreads to the capital of the player
+// (CvPlayer::foundReligion)
+bool CvTraitInfo::isOtherReligionsToCapital() const
+{
+	return m_bOtherReligionsToCapital;
+}
+
+// bNoForeignCultureAnger (added by this mod): no unhappiness from the culture of other players (CvCity::getCulturePercentAnger)
+bool CvTraitInfo::isNoForeignCultureAnger() const
+{
+	return m_bNoForeignCultureAnger;
 }
 
 // iDefenseCombatPercent (added by this mod): combat % of the units of the player when they defend (CvUnit::maxCombatStr)
@@ -2344,6 +2395,12 @@ const TCHAR* CvTraitInfo::getPyOnLastReligionClaimed() const
 	return m_aszPythonHook[TRAIT_PYHOOK_LAST_RELIGION_CLAIMED];
 }
 
+// PyOnOtherReligionFounded (added by this mod): another player founded a religion (CvPlayer::foundReligion)
+const TCHAR* CvTraitInfo::getPyOnOtherReligionFounded() const
+{
+	return m_aszPythonHook[TRAIT_PYHOOK_OTHER_RELIGION_FOUNDED];
+}
+
 // ConditionalFreeTraits (added by this mod): the traits the player has while the conditions hold
 int CvTraitInfo::getNumConditionalFreeTraits() const
 {
@@ -3215,6 +3272,13 @@ void CvTraitInfo::readCityAndEconomyValues(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCombatPercent, "iCombatPercent");
 	pXML->GetChildXmlValByName(&m_iHappinessPerReligion, "iHappinessPerReligion");
 	readCommerceChanges(pXML, "CommercePerReligion", &m_paiCommercePerReligion);
+	readCommerceChanges(pXML, "CommercePercentPerReligion", &m_paiCommercePercentPerReligion);
+	pXML->GetChildXmlValByName(&m_iExperiencePerReligion, "iExperiencePerReligion");
+	pXML->GetChildXmlValByName(&m_iGreatPeopleRatePerReligion, "iGreatPeopleRatePerReligion");
+	// SpecialBuildingNotRequireds: the special buildings are loaded after the traits, so readPass3() finds them
+	readTypeStringValueList(pXML, "SpecialBuildingNotRequireds", "SpecialBuildingNotRequired", "SpecialBuildingType", "bNotRequired", m_aszSpecialBuildingNotRequiredTypes, m_aiSpecialBuildingNotRequiredValues);
+	pXML->GetChildXmlValByName(&m_bOtherReligionsToCapital, "bOtherReligionsToCapital");
+	pXML->GetChildXmlValByName(&m_bNoForeignCultureAnger, "bNoForeignCultureAnger");
 	pXML->GetChildXmlValByName(&m_iDefenseCombatPercent, "iDefenseCombatPercent");
 	// AttitudeCombatPercents: any number of AttitudeCombatPercent (AttitudeType, iCombatPercent), then iMaxPercent (-1 when
 	// left out). The attitudes are loaded before the traits
@@ -3398,6 +3462,7 @@ void CvTraitInfo::readObsolescenceAndHooks(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_PLAYER_ELIMINATED], "PyOnPlayerEliminated");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_IMPROVEMENT_CHANGED], "PyOnImprovementChanged");
 	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_LAST_RELIGION_CLAIMED], "PyOnLastReligionClaimed");
+	pXML->GetChildXmlValByName(m_aszPythonHook[TRAIT_PYHOOK_OTHER_RELIGION_FOUNDED], "PyOnOtherReligionFounded");
 }
 
 // The part of read() for ConditionalFreeTraits (added by this mod)
@@ -4121,6 +4186,11 @@ bool CvTraitInfo::readPass3()
 	m_aszNoObsoleteSpecialBuildingTypes.clear();
 	resolveTypeList("NoObsolescence/Bonuses", m_aszNoObsoleteBonusTypes, GC.getNumBonusInfos(), &m_pabNoObsoleteBonus);
 	m_aszNoObsoleteBonusTypes.clear();
+
+	// SpecialBuildingNotRequireds (added by this mod): bNotRequired 0 items are dropped by readTypeStringValueList
+	resolveTypeList("SpecialBuildingNotRequireds", m_aszSpecialBuildingNotRequiredTypes, GC.getNumSpecialBuildingInfos(), &m_pabSpecialBuildingNotRequired);
+	m_aszSpecialBuildingNotRequiredTypes.clear();
+	m_aiSpecialBuildingNotRequiredValues.clear();
 
 	// SpecialBuildingProductionModifiers (added by this mod)
 	m_aiSpecialBuildingProductionModifier.clear();

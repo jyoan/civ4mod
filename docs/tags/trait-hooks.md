@@ -147,6 +147,8 @@
 - 与えるのはフックが呼ばれるターンの初めなので、技術を得た次のターンの初めになる。
 - 周期が終わったターンは周期の数を返す（式で `and` につなげられる）
 
+- `PyOnOtherReligionFounded`（2026-11-28）は `docs/tags/trait-religion.md`。
+
 ## `TraitInfo/PyOnOtherCityFounded`
 
 - ファイル: `CIV4TraitInfos.xml`
