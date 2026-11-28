@@ -31,7 +31,7 @@ CLAUDE.md の「XML」の補足。Info の読み込み順に関わるタグを�
 ## XML キャッシュ
 
 - `CvCivilizationInfo` などストリーム版 `read` / `write` を持つ Info クラスは、exe が XML キャッシュ（`%LOCALAPPDATA%\My Games\Beyond the Sword(J)\cache`）経由でも読み込む。exe は `CvGlobals::read/write*InfoArray` を呼び、そこから各 Info の `read` / `write` が使われる
-- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする。現在の値: `CvCivilizationInfo`=3、`CvCivicInfo`=9、`CvBuildingInfo`=18、`CvUnitInfo`=6、`CvPromotionInfo`=24、`CvTechInfo`=2、`CvImprovementInfo`=7、`CvEventTriggerInfo`=1、`CvBonusInfo`=2（上げたらここも直す）
+- これらのクラスに項目を足したら、`write` の `uiFlag` を上げ、`read` では `uiFlag` を見て古いキャッシュも読めるようにする。現在の値: `CvCivilizationInfo`=3、`CvCivicInfo`=9、`CvBuildingInfo`=18、`CvUnitInfo`=7、`CvPromotionInfo`=25、`CvTechInfo`=2、`CvImprovementInfo`=7、`CvEventTriggerInfo`=1、`CvBonusInfo`=2（上げたらここも直す）
 - Info の数が変わるとキャッシュを消す理由: ユニット・建物・指導者・文明などのキャッシュは「志向の数」などの数だけ配列を読むため、XML を変えていないファイルの古いキャッシュがずれて読まれ、データ破損や強制終了の原因になる
 - キャッシュを消すときは、Civ4 が起動していないことを確認してから、cache フォルダ内の `*.dat` だけを消す（フォルダは残す。次回起動時に作り直される。BtS 本体や他の Mod も次回の起動が少し遅くなるだけ）
 - 観察（2026-10-31）: cache フォルダにあるのは `catalogCiv4BeyondSword*.dat`（ファイル一覧のキャッシュ）だけで、XML の Info ごとのキャッシュは見当たらなかった。Mod 実行時は XML キャッシュが使われていない可能性が高い。ただし確証はないので、`uiFlag` による形式の区別とキャッシュ削除のルールは守る

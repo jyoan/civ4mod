@@ -286,6 +286,7 @@ public:
 
 	bool canBuild(const CvPlot* pPlot, BuildTypes eBuild, bool bTestVisible = false) const;				// Exposed to Python
 	bool build(BuildTypes eBuild);
+	bool forcedLaborBuild(BuildTypes eBuild);	// added by this mod: bForcedLabor of the promotions
 
 	bool canPromote(PromotionTypes ePromotion, int iLeaderUnitId) const;																												// Exposed to Python 
 	void promote(PromotionTypes ePromotion, int iLeaderUnitId);																																// Exposed to Python 
@@ -346,6 +347,7 @@ public:
 	bool isRivalTerritory() const;																				// Exposed to Python 
 	bool isRiverNavigation() const;		// Exposed to Python (added by this mod)
 	bool isRiverAttack() const;			// Exposed to Python (added by this mod)
+	bool isForcedLabor() const;			// added by this mod: bForcedLabor of the promotions
 	bool canEnterForeignCanalFort(const CvPlot* pPlot) const;	// added by this mod: bInlandCanals, forts outside our territory
 	bool canSailOnRiver(const CvPlot* pPlot) const;	// added by this mod
 	bool isFreeEmbark() const;			// Exposed to Python (added by this mod)
@@ -897,6 +899,7 @@ protected:
 	int m_iRivalTerritoryCount;	// added by this mod: promotions with bRivalTerritory (not saved)
 	int m_iRiverNavigationCount;	// added by this mod: promotions with bRiverNavigation (not saved)
 	int m_iRiverAttackCount;	// added by this mod: promotions with bRiverAttack (not saved)
+	int m_iForcedLaborCount;	// added by this mod: promotions with bForcedLabor (not saved)
 	int m_iFreeEmbarkCount;	// added by this mod: promotions with bFreeEmbark (not saved)
 	int m_iBuildingCombatCount;	// added by this mod: promotions with BuildingCombatPercents (not saved)
 	int m_iEncirclementCount;	// added by this mod: promotions with Encirclement (not saved)

@@ -5041,6 +5041,13 @@ void CvGameTextMgr::parsePromotionSpecialEffects(CvWStringBuffer& szBuffer, Prom
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_RIVER_ATTACK"));
 	}
 
+	// bForcedLabor (added by this mod)
+	if (GC.getPromotionInfo(ePromotion).isForcedLabor())
+	{
+		szBuffer.append(pcNewline);
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_FORCED_LABOR"));
+	}
+
 	if (GC.getPromotionInfo(ePromotion).isFreeEmbark())
 	{
 		szBuffer.append(pcNewline);
@@ -7175,7 +7182,15 @@ void CvGameTextMgr::setBasicUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit,
 
 		szBuffer.append(NEWLINE);
 		szBuffer.append(gDLL->getText("TXT_KEY_UNIT_GREAT_WORK", iCulture));
+
+		// iGreatWorkOccupationTurns (added by this mod)
+		if (GC.getUnitInfo(eUnit).getGreatWorkOccupationTurns() > 0)
+		{
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText("TXT_KEY_UNIT_GREAT_WORK_OCCUPATION", GC.getUnitInfo(eUnit).getGreatWorkOccupationTurns()));
+		}
 	}
+
 
 	if (GC.getUnitInfo(eUnit).getEspionagePoints() > 0)
 	{

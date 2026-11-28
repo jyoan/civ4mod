@@ -640,6 +640,8 @@ public:
 	int getCombatGoldPerStrength() const;					// Exposed to Python
 	// bRiverAttack (added by this mod): a ship with bRiverNavigation may attack (and capture) land units on river plots
 	bool isRiverAttack() const;								// Exposed to Python
+	// bForcedLabor (added by this mod): a build finishes at once, and the workers stay immobile for the turns it would have taken
+	bool isForcedLabor() const;								// Exposed to Python
 	bool readPass3();					// added by this mod: the bonuses and building classes are loaded after the promotions
 
 	const TCHAR* getSound() const;				// Exposed to Python
@@ -778,6 +780,7 @@ protected:
 	int m_iCombatGoldPerStrength;			// added by this mod
 	int m_iFormerMasterCombatPercent;		// added by this mod
 	bool m_bRiverAttack;					// added by this mod
+	bool m_bForcedLabor;					// added by this mod
 
 	bool m_bLeader;
 	bool m_bBlitz;									
@@ -1324,6 +1327,7 @@ public:
 	// PrereqOrImprovements
 	int getStationedAttitudeChange() const;				// Exposed to Python (iStationedAttitudeChange, added by this mod)
 	int getUpgradeDiscount() const;				// Exposed to Python (iUpgradeDiscount, added by this mod)
+	int getGreatWorkOccupationTurns() const;	// Exposed to Python (iGreatWorkOccupationTurns, added by this mod)
 	int getPrereqPopulation() const;				// Exposed to Python
 	int getPrereqCultureLevel() const;				// Exposed to Python
 	int getNumPrereqOrTerrains() const;				// Exposed to Python
@@ -1537,6 +1541,7 @@ protected:
 	int m_iPrereqPopulation;	// added by this mod
 	int m_iStationedAttitudeChange;	// added by this mod
 	int m_iUpgradeDiscount;	// added by this mod
+	int m_iGreatWorkOccupationTurns;	// added by this mod
 	int m_iPrereqCultureLevel;	// added by this mod
 	std::vector<int> m_aiBonusAffinity;	// [bonus], empty when not set (added by this mod)
 	CvString m_szPyOnCreated;	// added by this mod
