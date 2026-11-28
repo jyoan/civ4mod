@@ -1039,6 +1039,70 @@
 		<Spanish>The effects count once for each copy</Spanish>
 		<Japanese>&#21177;&#26524;&#12399;&#25345;&#12387;&#12390;&#12356;&#12427;&#25968;&#12384;&#12369;&#37325;&#12394;&#12427;</Japanese>
 	</TEXT>
+	<!-- Wandering bonuses (added by this mod) -->
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_WANDER</Tag>
+		<English>Moves to another tile within %d2 tiles every %d1 turns</English>
+		<French>Moves to another tile within %d2 tiles every %d1 turns</French>
+		<German>Moves to another tile within %d2 tiles every %d1 turns</German>
+		<Italian>Moves to another tile within %d2 tiles every %d1 turns</Italian>
+		<Spanish>Moves to another tile within %d2 tiles every %d1 turns</Spanish>
+		<Japanese>%d1&#12479;&#12540;&#12531;&#12372;&#12392;&#12395;%d2&#12479;&#12452;&#12523;&#20197;&#20869;&#12398;&#21029;&#12398;&#12479;&#12452;&#12523;&#12408;&#31227;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_WANDER_SETTLE</Tag>
+		<English>Stops and turns into %s1_Bonus when:</English>
+		<French>Stops and turns into %s1_Bonus when:</French>
+		<German>Stops and turns into %s1_Bonus when:</German>
+		<Italian>Stops and turns into %s1_Bonus when:</Italian>
+		<Spanish>Stops and turns into %s1_Bonus when:</Spanish>
+		<Japanese>&#27425;&#12398;&#12392;&#12365;&#12399;&#27490;&#12414;&#12426;&#12289;%s1_Bonus&#12395;&#22793;&#12431;&#12427;:</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_WANDER_STOP</Tag>
+		<English>Does not move while:</English>
+		<French>Does not move while:</French>
+		<German>Does not move while:</German>
+		<Italian>Does not move while:</Italian>
+		<Spanish>Does not move while:</Spanish>
+		<Japanese>&#27425;&#12398;&#38291;&#12399;&#31227;&#21205;&#12375;&#12394;&#12356;:</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_WANDER_STOP_TERRITORY</Tag>
+		<English>[ICON_BULLET]It is in the culture of a civilization that can see it</English>
+		<French>[ICON_BULLET]It is in the culture of a civilization that can see it</French>
+		<German>[ICON_BULLET]It is in the culture of a civilization that can see it</German>
+		<Italian>[ICON_BULLET]It is in the culture of a civilization that can see it</Italian>
+		<Spanish>[ICON_BULLET]It is in the culture of a civilization that can see it</Spanish>
+		<Japanese>[ICON_BULLET]&#12371;&#12398;&#36039;&#28304;&#12364;&#35211;&#12360;&#12427;&#25991;&#26126;&#12398;&#25991;&#21270;&#22287;&#12398;&#20013;&#12395;&#12354;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_WANDER_STOP_UNIT</Tag>
+		<English>[ICON_BULLET]A unit of a civilization that can see it is on the tile</English>
+		<French>[ICON_BULLET]A unit of a civilization that can see it is on the tile</French>
+		<German>[ICON_BULLET]A unit of a civilization that can see it is on the tile</German>
+		<Italian>[ICON_BULLET]A unit of a civilization that can see it is on the tile</Italian>
+		<Spanish>[ICON_BULLET]A unit of a civilization that can see it is on the tile</Spanish>
+		<Japanese>[ICON_BULLET]&#12371;&#12398;&#36039;&#28304;&#12364;&#35211;&#12360;&#12427;&#25991;&#26126;&#12398;&#12518;&#12491;&#12483;&#12488;&#12364;&#21516;&#12376;&#12479;&#12452;&#12523;&#12395;&#12356;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BONUS_WANDER_STOP_IMPROVEMENT</Tag>
+		<English>[ICON_BULLET]The tile has an improvement that connects it</English>
+		<French>[ICON_BULLET]The tile has an improvement that connects it</French>
+		<German>[ICON_BULLET]The tile has an improvement that connects it</German>
+		<Italian>[ICON_BULLET]The tile has an improvement that connects it</Italian>
+		<Spanish>[ICON_BULLET]The tile has an improvement that connects it</Spanish>
+		<Japanese>[ICON_BULLET]&#12371;&#12398;&#36039;&#28304;&#12434;&#26377;&#21177;&#12395;&#12377;&#12427;&#26045;&#35373;&#12364;&#12479;&#12452;&#12523;&#12395;&#12354;&#12427;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_WANDERING_BONUS_SETTLED</Tag>
+		<English>%s1_Bonus has stopped wandering and turned into %s2_Bonus!</English>
+		<French>%s1_Bonus has stopped wandering and turned into %s2_Bonus!</French>
+		<German>%s1_Bonus has stopped wandering and turned into %s2_Bonus!</German>
+		<Italian>%s1_Bonus has stopped wandering and turned into %s2_Bonus!</Italian>
+		<Spanish>%s1_Bonus has stopped wandering and turned into %s2_Bonus!</Spanish>
+		<Japanese>%s1_Bonus&#12364;&#31227;&#21205;&#12434;&#12420;&#12417;&#12289;%s2_Bonus&#12395;&#12394;&#12387;&#12383;&#65281;</Japanese>
+	</TEXT>
 	<!-- Regions (added by this mod): the globe layer and the plot help -->
 	<TEXT>
 		<Tag>TXT_KEY_GLOBELAYER_REGIONS</Tag>

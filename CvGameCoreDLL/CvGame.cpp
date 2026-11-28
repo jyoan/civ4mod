@@ -3316,6 +3316,12 @@ void CvGame::updateTraitBonuses()
 	{
 		const CvBonusInfo& kBonus = GC.getBonusInfo((BonusTypes)iI);
 
+		// A wandering bonus that turns into another bonus is placed only once: the copies are used up (added by this mod)
+		if (kBonus.getWanderTurns() > 0 && kBonus.getWanderSettleBonus() != NO_BONUS)
+		{
+			continue;
+		}
+
 		if (kBonus.getNumPrereqOrTraits() > 0 && kBonus.getPlacementOrder() >= 0 && GC.getMapINLINE().getNumBonuses((BonusTypes)iI) == 0)
 		{
 			for (iJ = 0; iJ < MAX_CIV_PLAYERS; iJ++)
@@ -3335,6 +3341,164 @@ void CvGame::updateTraitBonuses()
 			}
 		}
 	}
+}
+
+
+// Wandering bonuses (added by this mod). At the end of each turn a bonus with iWanderTurns first checks its stop flags; a
+// stopped bonus turns into WanderSettleBonus (with NONE it only stays while stopped). Otherwise, on turns divisible by
+// iWanderTurns, it moves to a random plot within iWanderRange in the same area where it can be placed (canHaveBonus)
+void CvGame::doWanderingBonuses()
+{
+	std::vector<int> aiPlots;
+	std::vector<CvPlot*> apTargets;
+	CvPlot* pPlot;
+	CvPlot* pLoopPlot;
+	BonusTypes eBonus;
+	int iRange;
+	int iI, iDX, iDY;
+
+	for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
+	{
+		eBonus = GC.getMapINLINE().plotByIndexINLINE(iI)->getBonusType();
+
+		if (eBonus != NO_BONUS && GC.getBonusInfo(eBonus).getWanderTurns() > 0)
+		{
+			aiPlots.push_back(iI);
+		}
+	}
+
+	for (iI = 0; iI < (int)aiPlots.size(); iI++)
+	{
+		pPlot = GC.getMapINLINE().plotByIndexINLINE(aiPlots[iI]);
+		eBonus = pPlot->getBonusType();
+
+		if (settleWanderingBonus(pPlot, eBonus))
+		{
+			continue;
+		}
+
+		if (getGameTurn() % GC.getBonusInfo(eBonus).getWanderTurns() != 0)
+		{
+			continue;
+		}
+
+		apTargets.clear();
+		iRange = GC.getBonusInfo(eBonus).getWanderRange();
+
+		for (iDX = -iRange; iDX <= iRange; iDX++)
+		{
+			for (iDY = -iRange; iDY <= iRange; iDY++)
+			{
+				if (iDX == 0 && iDY == 0)
+				{
+					continue;
+				}
+
+				pLoopPlot = plotXY(pPlot->getX_INLINE(), pPlot->getY_INLINE(), iDX, iDY);
+
+				if (pLoopPlot != NULL && pLoopPlot->getArea() == pPlot->getArea() && plotDistance(pPlot->getX_INLINE(), pPlot->getY_INLINE(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE()) <= iRange)
+				{
+					if (pLoopPlot->canHaveBonus(eBonus))
+					{
+						apTargets.push_back(pLoopPlot);
+					}
+				}
+			}
+		}
+
+		if (apTargets.empty())
+		{
+			continue;
+		}
+
+		pLoopPlot = apTargets[getSorenRandNum((int)apTargets.size(), "Wandering bonus")];
+		pPlot->setBonusType(NO_BONUS);
+		pLoopPlot->setBonusType(eBonus);
+
+		settleWanderingBonus(pLoopPlot, eBonus);
+	}
+}
+
+
+// The stop flags of a wandering bonus: in the culture of a player who sees it (the traits and TechReveal), a unit of such a
+// player on the plot, or an improvement that connects the bonus (added by this mod)
+bool CvGame::isWanderingBonusStopped(const CvPlot* pPlot, BonusTypes eBonus) const
+{
+	const CvBonusInfo& kBonus = GC.getBonusInfo(eBonus);
+	CLLNode<IDInfo>* pUnitNode;
+	CvUnit* pLoopUnit;
+
+	if (kBonus.isWanderStopTerritory() && pPlot->isOwned())
+	{
+		if (pPlot->getBonusType(GET_PLAYER(pPlot->getOwnerINLINE()).getTeam()) == eBonus)
+		{
+			return true;
+		}
+	}
+
+	if (kBonus.isWanderStopUnit())
+	{
+		pUnitNode = pPlot->headUnitNode();
+
+		while (pUnitNode != NULL)
+		{
+			pLoopUnit = ::getUnit(pUnitNode->m_data);
+			pUnitNode = pPlot->nextUnitNode(pUnitNode);
+
+			if (pPlot->getBonusType(pLoopUnit->getTeam()) == eBonus)
+			{
+				return true;
+			}
+		}
+	}
+
+	if (kBonus.isWanderStopImprovement() && pPlot->getImprovementType() != NO_IMPROVEMENT)
+	{
+		if (GC.getImprovementInfo(pPlot->getImprovementType()).isImprovementBonusTrade(eBonus))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+// A stopped wandering bonus turns into WanderSettleBonus and the players who saw it get a message. Returns whether it stopped
+bool CvGame::settleWanderingBonus(CvPlot* pPlot, BonusTypes eBonus)
+{
+	BonusTypes eSettleBonus = (BonusTypes)GC.getBonusInfo(eBonus).getWanderSettleBonus();
+	CvWString szBuffer;
+	bool abSaw[MAX_CIV_PLAYERS];
+	int iI;
+
+	if (!isWanderingBonusStopped(pPlot, eBonus))
+	{
+		return false;
+	}
+
+	if (eSettleBonus == NO_BONUS)
+	{
+		return true;
+	}
+
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		abSaw[iI] = (GET_PLAYER((PlayerTypes)iI).isAlive() && pPlot->getBonusType(GET_PLAYER((PlayerTypes)iI).getTeam()) == eBonus);
+	}
+
+	pPlot->setBonusType(eSettleBonus);
+
+	szBuffer = gDLL->getText("TXT_KEY_MISC_WANDERING_BONUS_SETTLED", GC.getBonusInfo(eBonus).getTextKeyWide(), GC.getBonusInfo(eSettleBonus).getTextKeyWide());
+	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
+	{
+		if (abSaw[iI])
+		{
+			gDLL->getInterfaceIFace()->addMessage((PlayerTypes)iI, false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_DISCOVERBONUS", MESSAGE_TYPE_MINOR_EVENT, GC.getBonusInfo(eBonus).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), pPlot->getX_INLINE(), pPlot->getY_INLINE(), true, true);
+		}
+	}
+
+	return true;
 }
 
 
@@ -5838,6 +6002,8 @@ void CvGame::doTurn()
 	doDiploVote();
 
 	updateTraitBonuses();	// added by this mod
+
+	doWanderingBonuses();	// added by this mod
 
 	gDLL->getInterfaceIFace()->setEndTurnMessage(false);
 	gDLL->getInterfaceIFace()->setHasMovedUnit(false);

@@ -266,6 +266,31 @@
 - キャッシュの形式: `CvBonusInfo` `uiFlag=2`。
 - Python は `CvBonusInfo` の同名の関数、`CyPlayer.getBonusHealChange()`・`getBonusHealChangeEnemy()`・`getBonusDiscoverRandModifier()`
 
+### `BonusInfo/Wander`（`iTurns`・`iRange`・`SettleBonus`・`bStopTerritory`・`bStopUnit`・`bStopImprovement`）
+
+- ファイル: `CIV4BonusInfos.xml`
+- 移動する資源（2026-11-28。モンゴルの名馬）。
+- 子のタグを `<Wander>` のノードにまとめて書く。
+- 毎ターンの終わり（`CvGame::doWanderingBonuses`。`updateTraitBonuses` の後）に、まず止まる条件を見て、満たしていなければ移動する。
+- 移動するのはゲームのターン数が `iTurns` で割り切れるターン（セーブに何も足さない。資源はすべて同じターンに動く）。
+- 移動先: 同じ地域の `iRange` タイル以内（`plotDistance`）で `CvPlot::canHaveBonus` が通るタイルから、同期した乱数で 1 つ選ぶ。
+  - 地形・平地・丘陵・緯度・`iMinAreaSize` は配置と同じ判定。候補がなければ動かない。陸か海かのフラグはない（同じ地域で決まる）。
+- 移動した直後にも止まる条件を見る。
+- 止まる条件（どれかを満たせば止まる）:
+  - `bStopTerritory`: その資源が見える文明の文化圏の中にある
+  - `bStopUnit`: その資源が見える文明のユニットが同じタイルにいる（ターンの終わりに。通り抜けは数えない）
+  - `bStopImprovement`: その資源を有効にする施設（`isImprovementBonusTrade`）がタイルにある
+- 「見える」は `CvPlot::getBonusType(チーム)`（`PrereqOrTraits` の志向と `TechReveal`。志向の `RevealBonuses` も効く）。
+- 止まった資源は `SettleBonus` に変わり、それまでその資源が見えていたプレイヤーにメッセージ（`TXT_KEY_MISC_WANDERING_BONUS_SETTLED`）。
+  - 変わった先は普通の資源なので、文化圏の外で変わればほかの文明も国境で覆って取れる。
+  - `SettleBonus` が `NONE` なら変わらず、条件を満たしている間だけ動かない。
+- `SettleBonus` を持つ資源は使い切りで、`updateTraitBonuses` で置き直さない（ゲームの途中で志向を持つプレイヤーが現れても置かれない）。
+- `SettleBonus` は `FindInInfoClass` で読むので、ファイルの中でこの資源より前にある資源を書く。
+- 資源の説明（ペディアとマウスオーバー）に `TXT_KEY_BONUS_WANDER`・`TXT_KEY_BONUS_WANDER_SETTLE`（`NONE` なら `TXT_KEY_BONUS_WANDER_STOP`）と条件の行。
+- AI のコードはない（国境が広がれば止まる）。
+- キャッシュの形式: `CvBonusInfo` `uiFlag=3`。
+- Python は `CvBonusInfo` の `Wander` を頭に付けた関数（`getWanderTurns()`・`getWanderRange()`・`getWanderSettleBonus()`・`isWanderStop...()`）
+
 ### `CivicInfo/FreeTraits`（`BuildingInfo`・`TechInfo` にも同名タグ）
 
 - ファイル: `CIV4CivicInfos.xml`、`CIV4BuildingInfos.xml`、`CIV4TechInfos.xml`

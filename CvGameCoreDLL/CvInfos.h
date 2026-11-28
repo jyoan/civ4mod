@@ -3742,6 +3742,14 @@ public:
 	int getCommerceModifier(int i) const;			// Exposed to Python
 	int* getCommerceModifierArray() const;
 	int getFreePromotion() const;				// Exposed to Python
+	// Wandering bonuses (added by this mod): every iWanderTurns turns the bonus moves to a random plot within
+	// iWanderRange in the same area; the stop flags keep it in place, and a stopped bonus turns into WanderSettleBonus
+	int getWanderTurns() const;				// Exposed to Python
+	int getWanderRange() const;				// Exposed to Python
+	int getWanderSettleBonus() const;				// Exposed to Python
+	bool isWanderStopTerritory() const;				// Exposed to Python
+	bool isWanderStopUnit() const;				// Exposed to Python
+	bool isWanderStopImprovement() const;				// Exposed to Python
 	int getTechCityTrade() const;				// Exposed to Python
 	int getTechObsolete() const;				// Exposed to Python
 	int getAITradeModifier() const;			// Exposed to Python
@@ -3808,6 +3816,12 @@ protected:
 	int m_iHealChangeEnemy;	// added by this mod
 	int m_iDiscoverRandModifier;	// added by this mod
 	int m_iFreePromotion;	// added by this mod
+	int m_iWanderTurns;	// added by this mod
+	int m_iWanderRange;	// added by this mod
+	int m_iWanderSettleBonus;	// added by this mod
+	bool m_bWanderStopTerritory;	// added by this mod
+	bool m_bWanderStopUnit;	// added by this mod
+	bool m_bWanderStopImprovement;	// added by this mod
 	int* m_piYieldModifier;	// added by this mod
 	int* m_piCommerceModifier;	// added by this mod
 	int m_iTechCityTrade;

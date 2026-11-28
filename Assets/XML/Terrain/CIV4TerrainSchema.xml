@@ -255,6 +255,19 @@
 	<ElementType name="iHealChangeEnemy" content="textOnly" dt:type="int"/>
 	<ElementType name="iDiscoverRandModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="FreePromotion" content="textOnly"/>
+	<ElementType name="iTurns" content="textOnly" dt:type="int"/>
+	<ElementType name="SettleBonus" content="textOnly"/>
+	<ElementType name="bStopTerritory" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bStopUnit" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bStopImprovement" content="textOnly" dt:type="boolean"/>
+	<ElementType name="Wander" content="eltOnly">
+		<element type="iTurns" minOccurs="0"/>
+		<element type="iRange" minOccurs="0"/>
+		<element type="SettleBonus" minOccurs="0"/>
+		<element type="bStopTerritory" minOccurs="0"/>
+		<element type="bStopUnit" minOccurs="0"/>
+		<element type="bStopImprovement" minOccurs="0"/>
+	</ElementType>
 	<ElementType name="BonusInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
@@ -301,6 +314,7 @@
 		<element type="iHealChange" minOccurs="0"/>
 		<element type="iHealChangeEnemy" minOccurs="0"/>
 		<element type="iDiscoverRandModifier" minOccurs="0"/>
+		<element type="Wander" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="BonusInfos" content="eltOnly">
 		<element type="BonusInfo" maxOccurs="*"/>

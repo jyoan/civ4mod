@@ -616,6 +616,15 @@
 		<Japanese>&#26908;&#35388;&#29992;&#36039;&#28304;</Japanese>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_BONUS_TEST_WANDER</Tag>
+		<English>Test Resource (Wandering)</English>
+		<French>Test Resource (Wandering)</French>
+		<German>Test Resource (Wandering)</German>
+		<Italian>Test Resource (Wandering)</Italian>
+		<Spanish>Test Resource (Wandering)</Spanish>
+		<Japanese>&#26908;&#35388;&#29992;&#36039;&#28304;&#65288;&#31227;&#21205;&#65289;</Japanese>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_IMPROVEMENT_TEST_LANDMARK</Tag>
 		<English>Test Landmark</English>
 		<French>Test Landmark</French>

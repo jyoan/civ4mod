@@ -16955,6 +16955,12 @@ m_iHealChange(0),
 m_iHealChangeEnemy(0),
 m_iDiscoverRandModifier(0),
 m_iFreePromotion(NO_PROMOTION),
+m_iWanderTurns(0),
+m_iWanderRange(0),
+m_iWanderSettleBonus(NO_BONUS),
+m_bWanderStopTerritory(false),
+m_bWanderStopUnit(false),
+m_bWanderStopImprovement(false),
 m_piYieldModifier(NULL),
 m_piCommerceModifier(NULL),
 m_piYieldChange(NULL),
@@ -17077,6 +17083,36 @@ int* CvBonusInfo::getCommerceModifierArray() const
 int CvBonusInfo::getFreePromotion() const
 {
 	return m_iFreePromotion;
+}
+
+int CvBonusInfo::getWanderTurns() const
+{
+	return m_iWanderTurns;
+}
+
+int CvBonusInfo::getWanderRange() const
+{
+	return m_iWanderRange;
+}
+
+int CvBonusInfo::getWanderSettleBonus() const
+{
+	return m_iWanderSettleBonus;
+}
+
+bool CvBonusInfo::isWanderStopTerritory() const
+{
+	return m_bWanderStopTerritory;
+}
+
+bool CvBonusInfo::isWanderStopUnit() const
+{
+	return m_bWanderStopUnit;
+}
+
+bool CvBonusInfo::isWanderStopImprovement() const
+{
+	return m_bWanderStopImprovement;
 }
 
 int CvBonusInfo::getTechCityTrade() const
@@ -17383,13 +17419,22 @@ void CvBonusInfo::read(FDataStreamBase* stream)
 			m_piCommerceModifier[iI] = 0;
 		}
 	}
+	if (uiFlag > 2)
+	{
+		stream->Read(&m_iWanderTurns);
+		stream->Read(&m_iWanderRange);
+		stream->Read(&m_iWanderSettleBonus);
+		stream->Read(&m_bWanderStopTerritory);
+		stream->Read(&m_bWanderStopUnit);
+		stream->Read(&m_bWanderStopImprovement);
+	}
 }
 
 void CvBonusInfo::write(FDataStreamBase* stream)
 {
 	CvInfoBase::write(stream);
 
-	uint uiFlag=2;	// 1: PrereqOrTraits, 2: the effects of FFH2 (added by this mod)
+	uint uiFlag=3;	// 1: PrereqOrTraits, 2: the effects of FFH2, 3: wandering (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iBonusClassType);
@@ -17442,6 +17487,12 @@ void CvBonusInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iFreePromotion);
 	stream->Write(NUM_YIELD_TYPES, m_piYieldModifier);
 	stream->Write(NUM_COMMERCE_TYPES, m_piCommerceModifier);
+	stream->Write(m_iWanderTurns);
+	stream->Write(m_iWanderRange);
+	stream->Write(m_iWanderSettleBonus);
+	stream->Write(m_bWanderStopTerritory);
+	stream->Write(m_bWanderStopUnit);
+	stream->Write(m_bWanderStopImprovement);
 }
 
 bool CvBonusInfo::read(CvXMLLoadUtility* pXML)
@@ -17487,6 +17538,19 @@ bool CvBonusInfo::read(CvXMLLoadUtility* pXML)
 	else
 	{
 		pXML->InitList(&m_piCommerceModifier, NUM_COMMERCE_TYPES);
+	}
+
+	// Wandering bonuses (added by this mod). SettleBonus must come earlier in the file than this bonus
+	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "Wander"))
+	{
+		pXML->GetChildXmlValByName(&m_iWanderTurns, "iTurns");
+		pXML->GetChildXmlValByName(&m_iWanderRange, "iRange");
+		pXML->GetChildXmlValByName(szTextVal, "SettleBonus");
+		m_iWanderSettleBonus = pXML->FindInInfoClass(szTextVal);
+		pXML->GetChildXmlValByName(&m_bWanderStopTerritory, "bStopTerritory");
+		pXML->GetChildXmlValByName(&m_bWanderStopUnit, "bStopUnit");
+		pXML->GetChildXmlValByName(&m_bWanderStopImprovement, "bStopImprovement");
+		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}
 
 	pXML->GetChildXmlValByName( szTextVal, "TechReveal");

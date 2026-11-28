@@ -11624,6 +11624,45 @@ void CvGameTextMgr::buildBonusEffectsString(CvWStringBuffer& szBuffer, BonusType
 		szBuffer.append(NEWLINE);
 		szBuffer.append(gDLL->getText("TXT_KEY_BONUS_MODIFIER_PER_BONUS"));
 	}
+
+	if (kBonus.getWanderTurns() > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_BONUS_WANDER", kBonus.getWanderTurns(), kBonus.getWanderRange()));
+
+		if (kBonus.isWanderStopTerritory() || kBonus.isWanderStopUnit() || kBonus.isWanderStopImprovement())
+		{
+			szBuffer.append(NEWLINE);
+			if (kBonus.getWanderSettleBonus() != NO_BONUS)
+			{
+				szTempBuffer.Format(L"<link=literal>%s</link>", GC.getBonusInfo((BonusTypes)kBonus.getWanderSettleBonus()).getDescription());
+				szBuffer.append(gDLL->getText("TXT_KEY_BONUS_WANDER_SETTLE", szTempBuffer.GetCString()));
+			}
+			else
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_BONUS_WANDER_STOP"));
+			}
+
+			if (kBonus.isWanderStopTerritory())
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(L"  ");
+				szBuffer.append(gDLL->getText("TXT_KEY_BONUS_WANDER_STOP_TERRITORY"));
+			}
+			if (kBonus.isWanderStopUnit())
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(L"  ");
+				szBuffer.append(gDLL->getText("TXT_KEY_BONUS_WANDER_STOP_UNIT"));
+			}
+			if (kBonus.isWanderStopImprovement())
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(L"  ");
+				szBuffer.append(gDLL->getText("TXT_KEY_BONUS_WANDER_STOP_IMPROVEMENT"));
+			}
+		}
+	}
 }
 
 void CvGameTextMgr::setBonusHelp(CvWStringBuffer &szBuffer, BonusTypes eBonus, bool bCivilopediaText)
