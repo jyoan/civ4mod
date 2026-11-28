@@ -227,6 +227,13 @@ void CyInfoPythonInterface1()
 		.def("getEncirclementSidePercent", &CvPromotionInfo::getEncirclementSidePercent, "int ()")
 		.def("getEncirclementRearPercent", &CvPromotionInfo::getEncirclementRearPercent, "int ()")
 		.def("getEncirclementMaxUnitsPerPlot", &CvPromotionInfo::getEncirclementMaxUnitsPerPlot, "int ()")
+		.def("getAttackFromTerrainPercent", &CvPromotionInfo::getAttackFromTerrainPercent, "int (int iTerrain) - AttackFromTerrains (added by this mod)")
+		.def("getAttackFromFeaturePercent", &CvPromotionInfo::getAttackFromFeaturePercent, "int (int iFeature) - AttackFromFeatures (added by this mod)")
+		.def("getBonusCombatPercent", &CvPromotionInfo::getBonusCombatPercent, "int (int iBonus) - BonusCombatPercents (added by this mod)")
+		.def("getBonusCombatMaxPercent", &CvPromotionInfo::getBonusCombatMaxPercent, "int () - 0 = no cap (added by this mod)")
+		.def("getWarWearinessCombatPercent", &CvPromotionInfo::getWarWearinessCombatPercent, "int () - (added by this mod)")
+		.def("getWarWearinessCombatMaxPercent", &CvPromotionInfo::getWarWearinessCombatMaxPercent, "int () - 0 = no cap (added by this mod)")
+		.def("getStrongerEnemyCombatPercent", &CvPromotionInfo::getStrongerEnemyCombatPercent, "int () - (added by this mod)")
 
 		.def("getSound", &CvPromotionInfo::getSound, "string ()")
 

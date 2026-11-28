@@ -618,6 +618,22 @@ public:
 	int getEncirclementRearPercent() const;			// Exposed to Python
 	int getEncirclementMaxUnitsPerPlot() const;		// Exposed to Python
 	bool isEncirclement() const;						// has iSidePercent or iRearPercent
+	// AttackFromTerrains / AttackFromFeatures (added by this mod): attack % when the unit attacks from a plot of the terrain
+	// (TERRAIN_HILL also for hills, TERRAIN_PEAK for peaks) or with the feature
+	int getAttackFromTerrainPercent(int iTerrain) const;	// Exposed to Python
+	int getAttackFromFeaturePercent(int iFeature) const;	// Exposed to Python
+	bool isAttackFromPlot() const;							// has AttackFromTerrains or AttackFromFeatures
+	// BonusCombatPercents (added by this mod): combat % for each copy of the bonus the owner has; iBonusCombatMaxPercent caps
+	// the total of the unit (0: no cap)
+	int getBonusCombatPercent(int iBonus) const;			// Exposed to Python
+	int getBonusCombatMaxPercent() const;					// Exposed to Python
+	bool isBonusCombat() const;								// has BonusCombatPercents
+	// iWarWearinessCombatPercent (added by this mod): combat % against a player, as a % of the percent of unhappiness the war
+	// weariness against it would cause; iWarWearinessCombatMaxPercent caps it (0: no cap)
+	int getWarWearinessCombatPercent() const;				// Exposed to Python
+	int getWarWearinessCombatMaxPercent() const;			// Exposed to Python
+	// iStrongerEnemyCombatPercent (added by this mod): combat % against the players with more power (CvPlayer::getPower)
+	int getStrongerEnemyCombatPercent() const;				// Exposed to Python
 	bool readPass3();					// added by this mod: the bonuses and building classes are loaded after the promotions
 
 	const TCHAR* getSound() const;				// Exposed to Python
@@ -744,6 +760,15 @@ protected:
 	int m_iEncirclementSidePercent;		// Encirclement (added by this mod)
 	int m_iEncirclementRearPercent;
 	int m_iEncirclementMaxUnitsPerPlot;
+	std::vector<int> m_aiAttackFromTerrainPercent;	// AttackFromTerrains, [terrain], empty when not set (added by this mod)
+	std::vector<int> m_aiAttackFromFeaturePercent;	// AttackFromFeatures, [feature], empty when not set (added by this mod)
+	std::vector<int> m_aiBonusCombatPercent;		// BonusCombatPercents, [bonus], empty when not set (added by this mod)
+	std::vector<CvString> m_aszBonusCombatTypes;	// as strings until readPass3()
+	std::vector<int> m_aiBonusCombatValues;
+	int m_iBonusCombatMaxPercent;
+	int m_iWarWearinessCombatPercent;		// added by this mod
+	int m_iWarWearinessCombatMaxPercent;	// added by this mod
+	int m_iStrongerEnemyCombatPercent;		// added by this mod
 
 	bool m_bLeader;
 	bool m_bBlitz;									
@@ -5305,6 +5330,7 @@ public:
 	bool isUnitCombatFreePromotion(int iUnitCombat, int iPromotion) const;				// Exposed to Python
 	bool isFreePromotionSetUnitClass(int iSet, int iUnitClass) const;	// added by this mod. Exposed to Python
 	bool isFreePromotionSetNoUnitCombat(int iSet) const;				// added by this mod. Exposed to Python
+	bool isFreePromotionSetAllUnitCombats(int iSet) const;				// added by this mod. Exposed to Python
 	bool isFreePromotionSetDomain(int iSet, int iDomain) const;			// added by this mod: true for every domain without FreePromotionDomains. Exposed to Python
 	bool isFreePromotionSetUnit(int iSet, int iUnit) const;				// added by this mod. Exposed to Python
 	bool isUnitFreePromotion(int iUnit, int iPromotion) const;			// added by this mod: any set. Exposed to Python
@@ -5665,6 +5691,7 @@ protected:
 	std::vector< std::vector<bool> > m_aabFreePromotionSetUnitCombat;		// [set][unit combat]
 	std::vector< std::vector<int> > m_aaiFreePromotionSetUnitClasses;	// [set] FreePromotionUnitClasses (added by this mod)
 	std::vector<bool> m_abFreePromotionSetNoUnitCombat;				// [set] bFreePromotionNoUnitCombat
+	std::vector<bool> m_abFreePromotionSetAllUnitCombats;			// [set] bFreePromotionAllUnitCombats (added by this mod)
 	std::vector< std::vector<int> > m_aaiFreePromotionSetDomains;		// [set] FreePromotionDomains (empty: any)
 
 };

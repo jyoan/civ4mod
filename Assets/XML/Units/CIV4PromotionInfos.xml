@@ -4554,6 +4554,28 @@
 					<iAffinity>1</iAffinity>
 				</BonusAffinity>
 			</BonusAffinities>
+			<AttackFromTerrains>
+				<AttackFromTerrain>
+					<TerrainType>TERRAIN_HILL</TerrainType>
+					<iAttackFromTerrain>50</iAttackFromTerrain>
+				</AttackFromTerrain>
+			</AttackFromTerrains>
+			<AttackFromFeatures>
+				<AttackFromFeature>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<iAttackFromFeature>25</iAttackFromFeature>
+				</AttackFromFeature>
+			</AttackFromFeatures>
+			<BonusCombatPercents>
+				<BonusCombatPercent>
+					<BonusType>BONUS_TEST</BonusType>
+					<iCombatPercent>10</iCombatPercent>
+				</BonusCombatPercent>
+			</BonusCombatPercents>
+			<iBonusCombatMaxPercent>20</iBonusCombatMaxPercent>
+			<iWarWearinessCombatPercent>100</iWarWearinessCombatPercent>
+			<iWarWearinessCombatMaxPercent>50</iWarWearinessCombatMaxPercent>
+			<iStrongerEnemyCombatPercent>20</iStrongerEnemyCombatPercent>
 			<HotKey/>
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>

@@ -803,6 +803,7 @@ public:
 	int getWarWearinessPercentAnger() const;																																	// Exposed to Python 
 	void updateWarWearinessPercentAnger();
 	int getModifiedWarWearinessPercentAnger(int iWarWearinessPercentAnger) const;
+	int getWarWearinessAngerPercentAgainst(PlayerTypes ePlayer) const;	// added by this mod. Exposed to Python
 
 	int getWarWearinessModifier() const;																																			// Exposed to Python
 	void changeWarWearinessModifier(int iChange);

@@ -2459,6 +2459,11 @@ int CyPlayer::getRevengeCombatModifier(int ePlayer)
 	return m_pPlayer ? m_pPlayer->getRevengeCombatModifier((PlayerTypes)ePlayer) : 0;
 }
 
+int CyPlayer::getWarWearinessAngerPercentAgainst(int ePlayer)
+{
+	return m_pPlayer ? m_pPlayer->getWarWearinessAngerPercentAgainst((PlayerTypes)ePlayer) : 0;
+}
+
 bool CyPlayer::isCityConqueredBy(int ePlayer)
 {
 	return m_pPlayer ? m_pPlayer->isCityConqueredBy((PlayerTypes)ePlayer) : false;

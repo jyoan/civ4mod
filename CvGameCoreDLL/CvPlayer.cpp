@@ -10686,6 +10686,25 @@ int CvPlayer::getModifiedWarWearinessPercentAnger(int iWarWearinessPercentAnger)
 }
 
 
+// The percent of unhappiness the war weariness of our team against the team of ePlayer would cause (added by this mod, for
+// iWarWearinessCombatPercent of the promotions). CvTeam::getWarWeariness keeps counting when the unhappiness is 0, falls
+// slowly during the war and by 99% at peace. As updateWarWearinessPercentAnger, but for one team, without
+// iEnemyWarWearinessModifier of the other team and before the iWarWearinessModifier of the traits, civics and buildings (so
+// -100% still counts); in percent of the population, not in PERCENT_ANGER_DIVISOR
+int CvPlayer::getWarWearinessAngerPercentAgainst(PlayerTypes ePlayer) const
+{
+	int iAnger;
+
+	if (ePlayer == NO_PLAYER || ePlayer == getID() || isBarbarian() || isMinorCiv() || GET_PLAYER(ePlayer).isBarbarian() || GET_PLAYER(ePlayer).isMinorCiv() || GET_PLAYER(ePlayer).getTeam() == getTeam())
+	{
+		return 0;
+	}
+
+	iAnger = getModifiedWarWearinessPercentAnger(GET_TEAM(getTeam()).getWarWeariness(GET_PLAYER(ePlayer).getTeam()) / 100);
+	return (iAnger * 100) / std::max(1, GC.getPERCENT_ANGER_DIVISOR());
+}
+
+
 int CvPlayer::getWarWearinessModifier() const			
 {
 	return m_iWarWearinessModifier;

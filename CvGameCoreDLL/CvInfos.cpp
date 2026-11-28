@@ -1948,6 +1948,10 @@ m_iBuildingCombatMaxPercent(-1),
 m_iEncirclementSidePercent(0),
 m_iEncirclementRearPercent(0),
 m_iEncirclementMaxUnitsPerPlot(-1),
+m_iBonusCombatMaxPercent(0),
+m_iWarWearinessCombatPercent(0),
+m_iWarWearinessCombatMaxPercent(0),
+m_iStrongerEnemyCombatPercent(0),
 m_iRiverCrossingDamagePercent(0),
 m_bRemovedByCombat(false),
 m_bRemovedWhenHealed(false),
@@ -2509,6 +2513,58 @@ bool CvPromotionInfo::isEncirclement() const
 	return (m_iEncirclementSidePercent != 0 || m_iEncirclementRearPercent != 0);
 }
 
+// AttackFromTerrains (added by this mod): TERRAIN_HILL and TERRAIN_PEAK stand for hills and peaks (see CvUnit)
+int CvPromotionInfo::getAttackFromTerrainPercent(int iTerrain) const
+{
+	return ((iTerrain > -1) && (iTerrain < (int)m_aiAttackFromTerrainPercent.size())) ? m_aiAttackFromTerrainPercent[iTerrain] : 0;
+}
+
+// AttackFromFeatures (added by this mod)
+int CvPromotionInfo::getAttackFromFeaturePercent(int iFeature) const
+{
+	return ((iFeature > -1) && (iFeature < (int)m_aiAttackFromFeaturePercent.size())) ? m_aiAttackFromFeaturePercent[iFeature] : 0;
+}
+
+bool CvPromotionInfo::isAttackFromPlot() const
+{
+	return (!m_aiAttackFromTerrainPercent.empty() || !m_aiAttackFromFeaturePercent.empty());
+}
+
+// BonusCombatPercents (added by this mod)
+int CvPromotionInfo::getBonusCombatPercent(int iBonus) const
+{
+	return ((iBonus > -1) && (iBonus < (int)m_aiBonusCombatPercent.size())) ? m_aiBonusCombatPercent[iBonus] : 0;
+}
+
+// iBonusCombatMaxPercent (added by this mod): the cap of the total of BonusCombatPercents (0: no cap)
+int CvPromotionInfo::getBonusCombatMaxPercent() const
+{
+	return m_iBonusCombatMaxPercent;
+}
+
+bool CvPromotionInfo::isBonusCombat() const
+{
+	return !m_aiBonusCombatPercent.empty();
+}
+
+// iWarWearinessCombatPercent (added by this mod): see CvUnit::getWarWearinessCombatModifier
+int CvPromotionInfo::getWarWearinessCombatPercent() const
+{
+	return m_iWarWearinessCombatPercent;
+}
+
+// iWarWearinessCombatMaxPercent (added by this mod): 0 = no cap
+int CvPromotionInfo::getWarWearinessCombatMaxPercent() const
+{
+	return m_iWarWearinessCombatMaxPercent;
+}
+
+// iStrongerEnemyCombatPercent (added by this mod): see CvUnit::getStrongerEnemyCombatModifier
+int CvPromotionInfo::getStrongerEnemyCombatPercent() const
+{
+	return m_iStrongerEnemyCombatPercent;
+}
+
 // BonusAffinities and BuildingCombatPercents: the bonuses, special buildings and building classes are loaded after the
 // promotions (added by this mod). Nothing to do for infos from the cache
 bool CvPromotionInfo::readPass3()
@@ -2568,6 +2624,33 @@ bool CvPromotionInfo::readPass3()
 
 		m_aszBuildingCombatBuildingClassTypes.clear();
 		m_aszBuildingCombatSpecialBuildingTypes.clear();
+	}
+
+	// BonusCombatPercents (added by this mod)
+	if (!m_aszBonusCombatTypes.empty())
+	{
+		m_aiBonusCombatPercent.clear();
+		for (i = 0; i < (int)m_aszBonusCombatTypes.size(); i++)
+		{
+			iBonus = GC.getInfoTypeForString(m_aszBonusCombatTypes[i].GetCString(), true);
+			if (iBonus < 0)
+			{
+				if (m_aszBonusCombatTypes[i] != "NONE")
+				{
+					sprintf(szMessage, "Tag: %s in BonusCombatPercents of CIV4PromotionInfos.xml was incorrect", m_aszBonusCombatTypes[i].GetCString());
+					gDLL->MessageBox(szMessage, "XML Error");
+				}
+				continue;
+			}
+
+			if (m_aiBonusCombatPercent.empty())
+			{
+				m_aiBonusCombatPercent.resize(GC.getNumBonusInfos(), 0);
+			}
+			m_aiBonusCombatPercent[iBonus] += m_aiBonusCombatValues[i];
+		}
+		m_aszBonusCombatTypes.clear();
+		m_aiBonusCombatValues.clear();
 	}
 
 	if (m_aszBonusAffinityTypes.empty())
@@ -3147,13 +3230,33 @@ void CvPromotionInfo::read(FDataStreamBase* stream)
 	{
 		stream->Read(&m_iGoldenAgeAdvantageCombatPercent);
 	}
+
+	// uiFlag < 22: cache written before AttackFromTerrains, AttackFromFeatures, BonusCombatPercents and the war weariness and
+	// stronger enemy combat tags existed
+	m_aiAttackFromTerrainPercent.clear();
+	m_aiAttackFromFeaturePercent.clear();
+	m_aiBonusCombatPercent.clear();
+	m_iBonusCombatMaxPercent = 0;
+	m_iWarWearinessCombatPercent = 0;
+	m_iWarWearinessCombatMaxPercent = 0;
+	m_iStrongerEnemyCombatPercent = 0;
+	if (uiFlag > 21)
+	{
+		readPrereqOrTraits(stream, m_aiAttackFromTerrainPercent);
+		readPrereqOrTraits(stream, m_aiAttackFromFeaturePercent);
+		readPrereqOrTraits(stream, m_aiBonusCombatPercent);
+		stream->Read(&m_iBonusCombatMaxPercent);
+		stream->Read(&m_iWarWearinessCombatPercent);
+		stream->Read(&m_iWarWearinessCombatMaxPercent);
+		stream->Read(&m_iStrongerEnemyCombatPercent);
+	}
 }
 
 void CvPromotionInfo::write(FDataStreamBase* stream)
 {
 	CvHotkeyInfo::write(stream);
 
-	uint uiFlag = 21;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience, 19: BuildingCombatPercents, iBuildingCombatMaxPercent, 20: Encirclement, 21: iGoldenAgeAdvantageCombatPercent (added by this mod)
+	uint uiFlag = 22;	// 12: BonusAffinities, 13: iCombatPercentOverseas, 14: iOtherReligionCombatPercent, iStateReligionCityAttack, 15: bRivalTerritory, 16: Python hooks, 17: bRiverNavigation, bFreeEmbark, bPillageNoMoveCost, iPillageHealPercent, 18: iPillageExperience, 19: BuildingCombatPercents, iBuildingCombatMaxPercent, 20: Encirclement, 21: iGoldenAgeAdvantageCombatPercent, 22: AttackFromTerrains, AttackFromFeatures, BonusCombatPercents, iBonusCombatMaxPercent, iWarWearinessCombatPercent, iWarWearinessCombatMaxPercent, iStrongerEnemyCombatPercent (added by this mod)
 	stream->Write(uiFlag);		// flag for expansion
 
 	stream->Write(m_iLayerAnimationPath);			
@@ -3298,6 +3401,13 @@ void CvPromotionInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iEncirclementRearPercent);
 	stream->Write(m_iEncirclementMaxUnitsPerPlot);
 	stream->Write(m_iGoldenAgeAdvantageCombatPercent);
+	writePrereqOrTraits(stream, m_aiAttackFromTerrainPercent);
+	writePrereqOrTraits(stream, m_aiAttackFromFeaturePercent);
+	writePrereqOrTraits(stream, m_aiBonusCombatPercent);
+	stream->Write(m_iBonusCombatMaxPercent);
+	stream->Write(m_iWarWearinessCombatPercent);
+	stream->Write(m_iWarWearinessCombatMaxPercent);
+	stream->Write(m_iStrongerEnemyCombatPercent);
 }
 
 // Reads a list like <BonusAffinities> (szListTag): any number of szItemTag with szTypeTag and the number szValueTag. The
@@ -3463,6 +3573,17 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bHiddenNationality, "bHiddenNationality");
 	// BonusAffinities (added by this mod): resolved in readPass3(), after the bonuses are loaded
 	readTypeStringValueList(pXML, "BonusAffinities", "BonusAffinity", "BonusType", "iAffinity", m_aszBonusAffinityTypes, m_aiBonusAffinityValues);
+
+	// AttackFromTerrains, AttackFromFeatures (added by this mod): the terrains and features are loaded before the promotions
+	readTypeValueList(pXML, "AttackFromTerrains", "AttackFromTerrain", "TerrainType", "iAttackFromTerrain", GC.getNumTerrainInfos(), m_aiAttackFromTerrainPercent);
+	readTypeValueList(pXML, "AttackFromFeatures", "AttackFromFeature", "FeatureType", "iAttackFromFeature", GC.getNumFeatureInfos(), m_aiAttackFromFeaturePercent);
+
+	// BonusCombatPercents (added by this mod): resolved in readPass3(), after the bonuses are loaded
+	readTypeStringValueList(pXML, "BonusCombatPercents", "BonusCombatPercent", "BonusType", "iCombatPercent", m_aszBonusCombatTypes, m_aiBonusCombatValues);
+	pXML->GetChildXmlValByName(&m_iBonusCombatMaxPercent, "iBonusCombatMaxPercent");
+	pXML->GetChildXmlValByName(&m_iWarWearinessCombatPercent, "iWarWearinessCombatPercent");
+	pXML->GetChildXmlValByName(&m_iWarWearinessCombatMaxPercent, "iWarWearinessCombatMaxPercent");
+	pXML->GetChildXmlValByName(&m_iStrongerEnemyCombatPercent, "iStrongerEnemyCombatPercent");
 
 	// BuildingCombatPercents (added by this mod): the building classes and special buildings are resolved in readPass3()
 	m_aiBuildingCombatBuildingClass.clear();

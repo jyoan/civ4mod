@@ -9,6 +9,11 @@
 - 各組は `<FreePromotions>`（省略不可）と、対象の指定を持つ。
 - 対象は `<FreePromotionUnitCombats>`（既存と同じ書式の兵科）、`<FreePromotionUnitClasses>`（`UnitClassType` を何個でも。兵科のない労働者や開拓者も指定できる）、`<bFreePromotionNoUnitCombat>`（兵科のないユニットすべて: 労働者、開拓者、宣教師、幹部、偉人、スパイ、作業船など）のどれかに当てはまるユニットで、`<FreePromotionDomains>`（`DomainType` を何個でも）があれば、その領域のユニットだけに絞る（兵科やユニットクラスの指定にも効く）。
 - 対象の指定はどれも省略可（`CvTraitInfo::isFreePromotionSetUnit`）。
+- `<bFreePromotionAllUnitCombats>`（2026-11-28）: 兵科のあるユニットすべて（戦闘ユニット）。
+  - `FreePromotionDomains` がなければ全領域（陸・海・空）、あれば その領域の戦闘ユニットだけ
+  - ほかの対象の指定と併用でき、どれかに当てはまれば配る
+  - 志向の説明文に `TXT_KEY_TRAIT_FREE_PROMOTION_ALL_UNIT_COMBATS`（「兵科のあるユニットすべて」）
+  - 戦闘力の効果を志向から全戦闘ユニットに配るときに使う（ブーディカ・フリードリッヒ）
 - 組の中の全昇進を対象に付与する。
 - 既存の `FreePromotions` / `FreePromotionUnitCombats` と併用可。
 - 付与はユニット生成時（既存のセーブでも新しいユニットには効く）。
