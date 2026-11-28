@@ -2630,4 +2630,49 @@
 		<Spanish>Age</Spanish>
 		<Japanese>&#26178;</Japanese>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PROMOTION_BLUE_WATER</Tag>
+		<English>Blue Water Navy</English>
+		<French>Blue Water Navy</French>
+		<German>Blue Water Navy</German>
+		<Italian>Blue Water Navy</Italian>
+		<Spanish>Blue Water Navy</Spanish>
+		<Japanese>&#22806;&#27915;&#33382;&#38538;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_ISSUE_LETTERS_OF_MARQUE</Tag>
+		<English>Issue Letters of Marque</English>
+		<French>Issue Letters of Marque</French>
+		<German>Issue Letters of Marque</German>
+		<Italian>Issue Letters of Marque</Italian>
+		<Spanish>Issue Letters of Marque</Spanish>
+		<Japanese>&#31169;&#25504;&#20813;&#29366;&#12434;&#20132;&#20184;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_RETURN_LETTERS_OF_MARQUE</Tag>
+		<English>Return Letters of Marque</English>
+		<French>Return Letters of Marque</French>
+		<German>Return Letters of Marque</German>
+		<Italian>Return Letters of Marque</Italian>
+		<Spanish>Return Letters of Marque</Spanish>
+		<Japanese>&#31169;&#25504;&#20813;&#29366;&#12434;&#36820;&#19978;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_SPELL_LETTERS_OF_MARQUE_HELP</Tag>
+		<English>[ICON_BULLET]Uses all moves of the ship</English>
+		<French>[ICON_BULLET]Uses all moves of the ship</French>
+		<German>[ICON_BULLET]Uses all moves of the ship</German>
+		<Italian>[ICON_BULLET]Uses all moves of the ship</Italian>
+		<Spanish>[ICON_BULLET]Uses all moves of the ship</Spanish>
+		<Japanese>[ICON_BULLET]&#33382;&#12398;&#31227;&#21205;&#21147;&#12434;&#12377;&#12409;&#12390;&#20351;&#12358;</Japanese>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_TRAIT_LETTERS_OF_MARQUE_HELP</Tag>
+		<English>[NEWLINE][SPACE][SPACE][ICON_BULLET]Ships of the Blue Water Navy can take or return Letters of Marque (hidden nationality) with an action, using all their moves</English>
+		<French>[NEWLINE][SPACE][SPACE][ICON_BULLET]Ships of the Blue Water Navy can take or return Letters of Marque (hidden nationality) with an action, using all their moves</French>
+		<German>[NEWLINE][SPACE][SPACE][ICON_BULLET]Ships of the Blue Water Navy can take or return Letters of Marque (hidden nationality) with an action, using all their moves</German>
+		<Italian>[NEWLINE][SPACE][SPACE][ICON_BULLET]Ships of the Blue Water Navy can take or return Letters of Marque (hidden nationality) with an action, using all their moves</Italian>
+		<Spanish>[NEWLINE][SPACE][SPACE][ICON_BULLET]Ships of the Blue Water Navy can take or return Letters of Marque (hidden nationality) with an action, using all their moves</Spanish>
+		<Japanese>[NEWLINE][SPACE][SPACE][ICON_BULLET]&#22806;&#27915;&#33382;&#38538;&#12398;&#33382;&#12399;&#12289;&#34892;&#21205;&#12391;&#31169;&#25504;&#20813;&#29366;&#65288;&#22269;&#31821;&#12434;&#38560;&#12377;&#65289;&#12434;&#20132;&#20184;&#12539;&#36820;&#19978;&#12391;&#12365;&#12427;&#65288;&#33382;&#12398;&#31227;&#21205;&#21147;&#12434;&#12377;&#12409;&#12390;&#20351;&#12358;&#65289;</Japanese>
+	</TEXT>
 </Civ4GameText>

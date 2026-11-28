@@ -82,7 +82,7 @@ BtS の効果はそのままにして足す。
 | `ExplorationRewards` の海外の旧世界・新世界、金・研究、艦船への歩哨の昇進 | ポルトガル |
 | `Conquest/bStateReligion`、`Conquest/ReligionBuildings`、`Conquest/iBuildingSurviveModifier`、`Conquest/bNoPopulationLoss` | サラディン |
 | `FeatureGrowthChanges` の森、陸の非戦闘ユニットへのウッドマンⅡ（`FreePromotionSets` の `bFreePromotionNoUnitCombat`） | シッティング・ブル |
-| フリゲートへの `bHiddenNationality` の昇進 | エリザベス |
+| 外洋艦への目印の昇進と、`bHiddenNationality` の昇進を付け外しする呪文（`PromotionPrereq1`・`AddPromotionType1`・`RemovePromotionType1`・`PyResult`） | エリザベス |
 | `bAtWar` + `YieldModifiers` の生産 | チャーチル |
 | 昇進の `ImpassablePlotPassages` の山岳・`iEnemyHealChange` | ハンニバル |
 | `PyOnCityAcquired`・`PyOnPlayerEliminated`（`startGoldenAge`。占領で半分・滅亡で全部の黄金期） | 大キュロス |
@@ -174,7 +174,7 @@ BtS の効果はそのままにして足す。
 | ポルトガル（文明） | 大航海時代: そのターンに初めて見えた海外の陸地 1 タイルにつき、旧世界なら金 +1・研究 +1、新世界なら金 +2・研究 +2（ターンの終わりにまとめて。端数は持ち越し）。艦船に歩哨（2026-11-22 に作り直した。歩哨のほかの前の内容はスペインへ移した。地図によって弱く、外洋に出られるのも遅いので数値は大きめ。数値は仮） | `ExplorationRewards`（`EXPLORE_PLOT_OVERSEAS_OLD_WORLD` 金・研究 100、`EXPLORE_PLOT_OVERSEAS_NEW_WORLD` 金・研究 200）、`FreePromotionSets`（`PROMOTION_SENTRY`） | 実装済み `TRAIT_AGE_OF_DISCOVERY` |
 | スペイン（文明） | 新世界探検: 海外に建てた都市の人口 +1、新世界に建てた都市の人口 +1（重なる）。そのうち沿岸の都市には灯台、新世界なら港も。最初に世界一周を達成すると黄金時代（2026-11-23 に追加。2 番目以降は何もない）（2026-11-22 にポルトガルの前の志向「大航海時代」を移して改名。艦船の歩哨はポルトガルに残した） | `iOverseasCityPopulation`、`iNewWorldCityPopulation`、`PyOnCityFounded`、`PyOnCircumnavigated`（`iOrder == 1 and startGoldenAge(pPlayer)`） | 実装済み `TRAIT_NEW_WORLD_EXPLORATION` |
 | シッティング・ブル | 森を育む: 領土の森が広がりやすい。陸の非戦闘ユニットにウッドマンⅡ（2026-11-28） | `FeatureGrowthChanges`、`FreePromotionSets`（`PROMOTION_WOODSMAN2`） | 実装済み `TRAIT_FOREST_KEEPER` |
-| エリザベス | 私掠免状: フリゲートが国籍を隠す | 昇進の `bHiddenNationality` | 実装済み `TRAIT_LETTERS_OF_MARQUE` |
+| エリザベス | 私掠免状: 外洋に出られる艦（キャラベル船以降。私掠船を除く）が、行動「私掠免状を交付」「私掠免状を返上」で国籍を隠す・戻す（どちらも移動力をすべて使い、1 ターンに 1 回）（2026-11-28 に「フリゲートが国籍を隠す」から替えた） | `FreePromotionSets` で目印の昇進 `PROMOTION_BLUE_WATER`（外洋艦隊）を 12 の艦船のクラスに配る。呪文 `SPELL_ISSUE_LETTERS_OF_MARQUE`（条件は外洋艦隊と `reqNotHasPromotion`）・`SPELL_RETURN_LETTERS_OF_MARQUE` が `PROMOTION_LETTERS_OF_MARQUE`（`bHiddenNationality`）を付け外しし、`PyResult` で `finishMoves`。`Help` | 実装済み、ゲームで確認済み `TRAIT_LETTERS_OF_MARQUE` |
 | チャーチル | ネバーサレンダー（2026-11-28 に「最も輝ける時」から改名。短縮名「不屈」。効果の変更は段階 3）: 戦時は全都市の生産 +15% | `bAtWar` で `TRAIT_FINEST_HOUR_WAR`（`YieldModifiers`） | 実装済み `TRAIT_FINEST_HOUR` |
 | ハンニバル | アルプス越え: 陸上ユニットが山岳に入れる（山岳でターンを迎えると 20% のダメージ）。敵の領土での回復 +10（2026-11-28） | 昇進の `ImpassablePlotPassages`・`iEnemyHealChange` | 実装済み `TRAIT_ALPS` |
 | 大キュロス | 四方世界の王（短縮名「四」。2026-11-26 に寛容王（都市を占領しても人口が減らない。サラディンと印象が重なる）から作り直した）: 都市（蛮族を除く）を占領すると、通常の半分の期間の黄金期。最後の都市を占領して文明を滅ぼすと、通常の期間の黄金期（最後の都市では両方起きる）。黄金期の最中なら延び、次に必要な偉人の数は増えない | `PyOnCityAcquired`・`PyOnPlayerEliminated` の `startGoldenAge`（`getGoldenAgeLength` なのでゲーム速度などの補正が乗る）。Help に手で書く | 実装済み `TRAIT_FOUR_QUARTERS` |
@@ -269,7 +269,7 @@ civfanatics での公開（`master` を枠組み、この Mod をその使用例
 
 共通関数が要るものは `master` の `CvHookUtils.py` に足す。
 
-2026-11-28: エリザベス以外の 18 件を実装し、ゲームで確認した（共通関数 `createConscripts`・`countCityReligions`・`isSpecialBuildingIn`・`extendGoldenAge` は `master`）。エリザベスの呪文は未実装。
+2026-11-28: 19 件すべてを実装し、ゲームで確認した（共通関数 `createConscripts`・`countCityReligions`・`isSpecialBuildingIn`・`extendGoldenAge` は `master`）。
 
 - シッティング・ブル: 非戦闘ユニットにウッドマンⅡ
 - イギリス（文明）: 艦船の生産 +25%、海洋ユニットに戦闘術Ⅰ

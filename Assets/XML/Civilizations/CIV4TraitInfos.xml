@@ -2067,16 +2067,28 @@
 			<Type>TRAIT_LETTERS_OF_MARQUE</Type>
 			<Description>TXT_KEY_TRAIT_LETTERS_OF_MARQUE</Description>
 			<ShortDescription>TXT_KEY_TRAIT_LETTERS_OF_MARQUE_SHORT</ShortDescription>
+			<Help>TXT_KEY_TRAIT_LETTERS_OF_MARQUE_HELP</Help>
 			<FreePromotionSets>
 				<FreePromotionSet>
 					<FreePromotions>
 						<FreePromotion>
-							<PromotionType>PROMOTION_LETTERS_OF_MARQUE</PromotionType>
+							<PromotionType>PROMOTION_BLUE_WATER</PromotionType>
 							<bFreePromotion>1</bFreePromotion>
 						</FreePromotion>
 					</FreePromotions>
 					<FreePromotionUnitClasses>
+						<UnitClassType>UNITCLASS_CARAVEL</UnitClassType>
+						<UnitClassType>UNITCLASS_GALLEON</UnitClassType>
 						<UnitClassType>UNITCLASS_FRIGATE</UnitClassType>
+						<UnitClassType>UNITCLASS_SHIP_OF_THE_LINE</UnitClassType>
+						<UnitClassType>UNITCLASS_TRANSPORT</UnitClassType>
+						<UnitClassType>UNITCLASS_DESTROYER</UnitClassType>
+						<UnitClassType>UNITCLASS_BATTLESHIP</UnitClassType>
+						<UnitClassType>UNITCLASS_MISSILE_CRUISER</UnitClassType>
+						<UnitClassType>UNITCLASS_STEALTH_DESTROYER</UnitClassType>
+						<UnitClassType>UNITCLASS_SUBMARINE</UnitClassType>
+						<UnitClassType>UNITCLASS_ATTACK_SUBMARINE</UnitClassType>
+						<UnitClassType>UNITCLASS_CARRIER</UnitClassType>
 					</FreePromotionUnitClasses>
 				</FreePromotionSet>
 			</FreePromotionSets>

@@ -243,5 +243,28 @@
 			<bDisplayWhenDisabled>1</bDisplayWhenDisabled>
 			<Button>Art/Interface/Buttons/Process/ProcessResearch.dds</Button>
 		</SpellInfo>
+		<SpellInfo>
+			<Type>SPELL_ISSUE_LETTERS_OF_MARQUE</Type>
+			<Description>TXT_KEY_SPELL_ISSUE_LETTERS_OF_MARQUE</Description>
+			<Help>TXT_KEY_SPELL_LETTERS_OF_MARQUE_HELP</Help>
+			<PromotionPrereq1>PROMOTION_BLUE_WATER</PromotionPrereq1>
+			<bHasCasted>1</bHasCasted>
+			<bBuffCasterOnly>1</bBuffCasterOnly>
+			<PyResult>pCaster.finishMoves()</PyResult>
+			<PyRequirement>reqNotHasPromotion(pCaster, 'PROMOTION_LETTERS_OF_MARQUE')</PyRequirement>
+			<AddPromotionType1>PROMOTION_LETTERS_OF_MARQUE</AddPromotionType1>
+			<Button>,Art/Interface/Buttons/Promotions/Sentry.dds,Art/Interface/Buttons/Promotions_Atlas.dds,5,6</Button>
+		</SpellInfo>
+		<SpellInfo>
+			<Type>SPELL_RETURN_LETTERS_OF_MARQUE</Type>
+			<Description>TXT_KEY_SPELL_RETURN_LETTERS_OF_MARQUE</Description>
+			<Help>TXT_KEY_SPELL_LETTERS_OF_MARQUE_HELP</Help>
+			<PromotionPrereq1>PROMOTION_LETTERS_OF_MARQUE</PromotionPrereq1>
+			<bHasCasted>1</bHasCasted>
+			<bBuffCasterOnly>1</bBuffCasterOnly>
+			<PyResult>pCaster.finishMoves()</PyResult>
+			<RemovePromotionType1>PROMOTION_LETTERS_OF_MARQUE</RemovePromotionType1>
+			<Button>,Art/Interface/Buttons/Promotions/Sentry.dds,Art/Interface/Buttons/Promotions_Atlas.dds,5,6</Button>
+		</SpellInfo>
 	</SpellInfos>
 </Civ4SpellInfos>
